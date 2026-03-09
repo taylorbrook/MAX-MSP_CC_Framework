@@ -1,0 +1,152 @@
+# Requirements: MaxSystem
+
+**Defined:** 2026-03-08
+**Core Value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work — with as much automated validation as possible before manual testing.
+
+## v1 Requirements
+
+Requirements for initial release. Each maps to roadmap phases.
+
+### Object Database
+
+- [ ] **ODB-01**: Framework includes structured knowledge base of MAX objects with name, maxclass, inlets, outlets, arguments, and message types
+- [ ] **ODB-02**: Object database sourced from MAX installation XML refpages (1,924 files), py2max MaxRef, and manual curation
+- [ ] **ODB-03**: Objects version-tagged for MAX 8 vs MAX 9 compatibility
+- [ ] **ODB-04**: MAX 9 objects included (ABL devices, step sequencer, array, string objects)
+- [ ] **ODB-05**: Object entries include domain classification (Max, MSP, Jitter, MC)
+- [ ] **ODB-06**: Object entries include signal vs control inlet/outlet types
+- [ ] **ODB-07**: RNBO-compatible object subset marked separately in database
+
+### Patch Generation
+
+- [ ] **PAT-01**: Framework generates valid .maxpat JSON files that open in MAX without errors
+- [ ] **PAT-02**: Generated patches include correct patcher wrapper, boxes array, and lines array structure
+- [ ] **PAT-03**: Subpatcher and bpatcher generation supported (nested patchers)
+- [ ] **PAT-04**: Connection validation checks outlet/inlet index bounds before output
+- [ ] **PAT-05**: Connection validation enforces signal/control type matching (MSP outlets to MSP inlets)
+- [ ] **PAT-06**: Patch layout engine positions objects with top-to-bottom signal flow convention
+- [ ] **PAT-07**: Layout engine spaces objects readably (~80-120px vertical, ~150-200px horizontal)
+- [ ] **PAT-08**: Multi-layer validation pipeline: JSON validity, object existence, connection bounds, domain-specific checks
+
+### Code Generation
+
+- [ ] **CODE-01**: Gen~ GenExpr code generation with correct syntax (in/out keywords, Param declarations, C-style operators)
+- [ ] **CODE-02**: Gen~ codebox objects embedded correctly in .maxpat patches
+- [ ] **CODE-03**: Standalone .gendsp file generation for Gen~ patchers
+- [ ] **CODE-04**: Node for Max (node.script) JavaScript generation with MAX API integration
+- [ ] **CODE-05**: js object V8 JavaScript generation with patcher API access
+- [ ] **CODE-06**: RNBO~ patch generation using only RNBO-compatible object subset
+- [ ] **CODE-07**: RNBO~ export target awareness (VST3/AU, Web Audio, C++)
+
+### External Development
+
+- [ ] **EXT-01**: C/C++ MAX external project scaffolding (directory structure, CMake/build system)
+- [ ] **EXT-02**: External development supports Min-DevKit and/or Max SDK (research determines choice)
+- [ ] **EXT-03**: External inlet/outlet setup and message handling code generation
+- [ ] **EXT-04**: External DSP processing method generation for audio objects
+- [ ] **EXT-05**: External build and compilation support for macOS (Apple Silicon)
+
+### Agent System
+
+- [ ] **AGT-01**: Domain-specialized agents for patch generation, DSP/Gen~, RNBO~, js/Node, externals
+- [ ] **AGT-02**: UI/layout specialist agent handling both presentation mode and patching mode
+- [ ] **AGT-03**: Generator-critic validation loops — critics review output before user sees it
+- [ ] **AGT-04**: DSP critic checks signal flow, audio rate consistency, feedback loops
+- [ ] **AGT-05**: Connection/structure critic validates object usage and patch architecture
+- [ ] **AGT-06**: Persistent agent memory — learned patterns accumulate across sessions and projects
+- [ ] **AGT-07**: Agent memory write-back on session completion with deduplication
+
+### Framework
+
+- [ ] **FRM-01**: Multi-project isolation — each MAX project gets its own directory, context, and state
+- [ ] **FRM-02**: Slash commands for project lifecycle: ideation, research, planning, execution, verification
+- [ ] **FRM-03**: Project status tracking per MAX project (stage, phase, completion state)
+- [ ] **FRM-04**: CLAUDE.md with MAX/MSP development rules, conventions, and object reference guidance
+- [ ] **FRM-05**: Hooks for pre/post validation (file writes trigger patch validation)
+- [ ] **FRM-06**: Structured manual testing protocol for features requiring MAX to validate
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Templates & Patterns
+
+- **TMPL-01**: Template library for common synthesis patterns (subtractive, FM, granular, additive)
+- **TMPL-02**: Template library for common effects (delay, reverb, filter, distortion)
+- **TMPL-03**: Template library for sequencing patterns (step, euclidean, generative)
+- **TMPL-04**: Template library for control patterns (MIDI I/O, OSC, sensor input)
+- **TMPL-05**: Composable templates — synth templates droppable into sequencer templates
+
+### Advanced Features
+
+- **ADV-01**: Intelligent object selection — context-aware recommendations based on task
+- **ADV-02**: MAX for Live integration (Live API, device types, parameter mapping)
+- **ADV-03**: Deep Jitter support (specialized agents, validation, templates for video/GL)
+- **ADV-04**: Patch-from-description natural language interface
+
+## Out of Scope
+
+| Feature | Reason |
+|---------|--------|
+| Real-time MAX control via OSC/MCP | Claude cannot process audio; creates fragile dependency on MAX running |
+| Patch-from-screenshot analysis | .maxpat JSON is the source of truth; screenshots are lossy |
+| Automatic patch complexity management | Overrides expert user's architectural judgment |
+| py2max as runtime dependency | Adds Python overhead; extract knowledge instead |
+| Agent teams for patch generation | Single-file conflict; use teams for read-only research/review only |
+| MAX for Live (v1) | Separate domain with its own API; defer until standalone MAX is solid |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| ODB-01 | — | Pending |
+| ODB-02 | — | Pending |
+| ODB-03 | — | Pending |
+| ODB-04 | — | Pending |
+| ODB-05 | — | Pending |
+| ODB-06 | — | Pending |
+| ODB-07 | — | Pending |
+| PAT-01 | — | Pending |
+| PAT-02 | — | Pending |
+| PAT-03 | — | Pending |
+| PAT-04 | — | Pending |
+| PAT-05 | — | Pending |
+| PAT-06 | — | Pending |
+| PAT-07 | — | Pending |
+| PAT-08 | — | Pending |
+| CODE-01 | — | Pending |
+| CODE-02 | — | Pending |
+| CODE-03 | — | Pending |
+| CODE-04 | — | Pending |
+| CODE-05 | — | Pending |
+| CODE-06 | — | Pending |
+| CODE-07 | — | Pending |
+| EXT-01 | — | Pending |
+| EXT-02 | — | Pending |
+| EXT-03 | — | Pending |
+| EXT-04 | — | Pending |
+| EXT-05 | — | Pending |
+| AGT-01 | — | Pending |
+| AGT-02 | — | Pending |
+| AGT-03 | — | Pending |
+| AGT-04 | — | Pending |
+| AGT-05 | — | Pending |
+| AGT-06 | — | Pending |
+| AGT-07 | — | Pending |
+| FRM-01 | — | Pending |
+| FRM-02 | — | Pending |
+| FRM-03 | — | Pending |
+| FRM-04 | — | Pending |
+| FRM-05 | — | Pending |
+| FRM-06 | — | Pending |
+
+**Coverage:**
+- v1 requirements: 39 total
+- Mapped to phases: 0
+- Unmapped: 39 ⚠️
+
+---
+*Requirements defined: 2026-03-08*
+*Last updated: 2026-03-08 after initial definition*
