@@ -19,9 +19,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Patch Generation
 
-- [ ] **PAT-01**: Framework generates valid .maxpat JSON files that open in MAX without errors
-- [ ] **PAT-02**: Generated patches include correct patcher wrapper, boxes array, and lines array structure
-- [ ] **PAT-03**: Subpatcher and bpatcher generation supported (nested patchers)
+- [x] **PAT-01**: Framework generates valid .maxpat JSON files that open in MAX without errors
+- [x] **PAT-02**: Generated patches include correct patcher wrapper, boxes array, and lines array structure
+- [x] **PAT-03**: Subpatcher and bpatcher generation supported (nested patchers)
 - [ ] **PAT-04**: Connection validation checks outlet/inlet index bounds before output
 - [ ] **PAT-05**: Connection validation enforces signal/control type matching (MSP outlets to MSP inlets)
 - [ ] **PAT-06**: Patch layout engine positions objects with top-to-bottom signal flow convention
@@ -108,9 +108,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ODB-05 | Phase 1 | Complete |
 | ODB-06 | Phase 1 | Complete |
 | ODB-07 | Phase 1 | Complete |
-| PAT-01 | Phase 2 | Pending |
-| PAT-02 | Phase 2 | Pending |
-| PAT-03 | Phase 2 | Pending |
+| PAT-01 | Phase 2 | Complete |
+| PAT-02 | Phase 2 | Complete |
+| PAT-03 | Phase 2 | Complete |
 | PAT-04 | Phase 2 | Pending |
 | PAT-05 | Phase 2 | Pending |
 | PAT-06 | Phase 2 | Pending |
