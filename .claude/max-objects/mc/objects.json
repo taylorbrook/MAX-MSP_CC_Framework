@@ -53,9 +53,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.!/~": {
     "name": "mc.!/~",
@@ -110,9 +111,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.!=~": {
     "name": "mc.!=~",
@@ -179,9 +181,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.%~": {
     "name": "mc.%~",
@@ -237,9 +240,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.*~": {
     "name": "mc.*~",
@@ -295,9 +299,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.+=~": {
     "name": "mc.+=~",
@@ -351,9 +356,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.+~": {
     "name": "mc.+~",
@@ -410,9 +416,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.-~": {
     "name": "mc.-~",
@@ -468,9 +475,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc./~": {
     "name": "mc./~",
@@ -527,9 +535,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.2d.wave~": {
     "name": "mc.2d.wave~",
@@ -625,9 +634,10 @@
       "oscillator",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.<=~": {
     "name": "mc.<=~",
@@ -692,9 +702,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.<~": {
     "name": "mc.<~",
@@ -753,9 +764,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.==~": {
     "name": "mc.==~",
@@ -822,9 +834,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.>=~": {
     "name": "mc.>=~",
@@ -890,9 +903,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.>~": {
     "name": "mc.>~",
@@ -952,9 +966,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.abs~": {
     "name": "mc.abs~",
@@ -1000,9 +1015,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.acosh~": {
     "name": "mc.acosh~",
@@ -1051,9 +1067,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.acos~": {
     "name": "mc.acos~",
@@ -1102,9 +1119,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.adc~": {
     "name": "mc.adc~",
@@ -1162,9 +1180,10 @@
     "tags": [
       "mc"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.adsr~": {
     "name": "mc.adsr~",
@@ -1323,9 +1342,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.allpass~": {
     "name": "mc.allpass~",
@@ -1406,9 +1426,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.amxd~": {
     "name": "mc.amxd~",
@@ -1549,9 +1570,10 @@
       "Max for Live devices",
       "Live MSP Objects"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.apply~": {
     "name": "mc.apply~",
@@ -1634,9 +1656,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.asinh~": {
     "name": "mc.asinh~",
@@ -1684,9 +1707,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.asin~": {
     "name": "mc.asin~",
@@ -1734,9 +1758,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.assign": {
     "name": "mc.assign",
@@ -1820,9 +1845,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.atan2~": {
     "name": "mc.atan2~",
@@ -1879,9 +1905,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.atanh~": {
     "name": "mc.atanh~",
@@ -1930,9 +1957,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.atan~": {
     "name": "mc.atan~",
@@ -1981,9 +2009,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.atodb~": {
     "name": "mc.atodb~",
@@ -2032,9 +2061,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.average~": {
     "name": "mc.average~",
@@ -2098,9 +2128,10 @@
       "MSP Analysis",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.avg~": {
     "name": "mc.avg~",
@@ -2149,9 +2180,10 @@
       "MSP Analysis",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.bands~": {
     "name": "mc.bands~",
@@ -2184,9 +2216,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.biquad~": {
     "name": "mc.biquad~",
@@ -2313,9 +2346,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.bitand~": {
     "name": "mc.bitand~",
@@ -2386,9 +2420,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.bitnot~": {
     "name": "mc.bitnot~",
@@ -2445,9 +2480,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.bitor~": {
     "name": "mc.bitor~",
@@ -2518,9 +2554,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.bitsafe~": {
     "name": "mc.bitsafe~",
@@ -2569,9 +2606,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.bitshift~": {
     "name": "mc.bitshift~",
@@ -2635,9 +2673,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.bitxor~": {
     "name": "mc.bitxor~",
@@ -2707,9 +2746,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.buffir~": {
     "name": "mc.buffir~",
@@ -2788,9 +2828,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.cartopol~": {
     "name": "mc.cartopol~",
@@ -2860,9 +2901,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.cascade~": {
     "name": "mc.cascade~",
@@ -2927,9 +2969,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.cell": {
     "name": "mc.cell",
@@ -2995,9 +3038,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.change~": {
     "name": "mc.change~",
@@ -3046,9 +3090,10 @@
       "MSP",
       "MSP Analysis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.channelcount~": {
     "name": "mc.channelcount~",
@@ -3105,9 +3150,10 @@
       "MSP System",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.chord~": {
     "name": "mc.chord~",
@@ -3227,9 +3273,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.click~": {
     "name": "mc.click~",
@@ -3281,9 +3328,10 @@
       "MSP",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.clip~": {
     "name": "mc.clip~",
@@ -3359,9 +3407,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.combine~": {
     "name": "mc.combine~",
@@ -3426,9 +3475,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.comb~": {
     "name": "mc.comb~",
@@ -3531,9 +3581,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.cosh~": {
     "name": "mc.cosh~",
@@ -3591,9 +3642,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.cosx~": {
     "name": "mc.cosx~",
@@ -3651,9 +3703,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.cos~": {
     "name": "mc.cos~",
@@ -3718,9 +3771,10 @@
       "MSP Operators",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.count~": {
     "name": "mc.count~",
@@ -3810,9 +3864,10 @@
       "MSP Analysis",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.cross~": {
     "name": "mc.cross~",
@@ -3879,9 +3934,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.curve~": {
     "name": "mc.curve~",
@@ -3977,9 +4033,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.cycle~": {
     "name": "mc.cycle~",
@@ -4088,9 +4145,10 @@
       "oscillator",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.dac~": {
     "name": "mc.dac~",
@@ -4143,9 +4201,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.dbtoa~": {
     "name": "mc.dbtoa~",
@@ -4194,9 +4253,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.degrade~": {
     "name": "mc.degrade~",
@@ -4265,9 +4325,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.deinterleave~": {
     "name": "mc.deinterleave~",
@@ -4326,9 +4387,10 @@
       "MSP System",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.delay~": {
     "name": "mc.delay~",
@@ -4412,9 +4474,10 @@
       "MSP",
       "MSP Delays"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.deltaclip~": {
     "name": "mc.deltaclip~",
@@ -4485,9 +4548,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.delta~": {
     "name": "mc.delta~",
@@ -4534,9 +4598,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.downsamp~": {
     "name": "mc.downsamp~",
@@ -4592,9 +4657,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.dup~": {
     "name": "mc.dup~",
@@ -4652,9 +4718,10 @@
       "MSP System",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.edge~": {
     "name": "mc.edge~",
@@ -4701,9 +4768,10 @@
       "MSP",
       "MSP Analysis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.evolve~": {
     "name": "mc.evolve~",
@@ -4781,9 +4849,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.ezadc~": {
     "name": "mc.ezadc~",
@@ -4897,9 +4966,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.ezdac~": {
     "name": "mc.ezdac~",
@@ -5006,9 +5076,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.fffb~": {
     "name": "mc.fffb~",
@@ -5106,9 +5177,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.fft~": {
     "name": "mc.fft~",
@@ -5224,9 +5296,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.filtercoeff~": {
     "name": "mc.filtercoeff~",
@@ -5342,9 +5415,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.frameaccum~": {
     "name": "mc.frameaccum~",
@@ -5391,9 +5465,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.frameaverage~": {
     "name": "mc.frameaverage~",
@@ -5457,9 +5532,10 @@
       "FFT",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.framedelta~": {
     "name": "mc.framedelta~",
@@ -5506,9 +5582,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.framesmooth~": {
     "name": "mc.framesmooth~",
@@ -5571,9 +5648,10 @@
       "FFT",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.freqshift~": {
     "name": "mc.freqshift~",
@@ -5644,9 +5722,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.ftom~": {
     "name": "mc.ftom~",
@@ -5731,9 +5810,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.function": {
     "name": "mc.function",
@@ -6099,9 +6179,10 @@
       "Max",
       "MSP U/I"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.fzero~": {
     "name": "mc.fzero~",
@@ -6214,9 +6295,10 @@
       "MSP",
       "MSP Analysis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.gain~": {
     "name": "mc.gain~",
@@ -6364,9 +6446,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.gate~": {
     "name": "mc.gate~",
@@ -6443,9 +6526,10 @@
       "MSP",
       "MSP Routing"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.gen": {
     "name": "mc.gen",
@@ -6591,9 +6675,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.generate~": {
     "name": "mc.generate~",
@@ -6703,9 +6788,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.gen~": {
     "name": "mc.gen~",
@@ -6838,9 +6924,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.getattr": {
     "name": "mc.getattr",
@@ -6914,9 +7001,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.gradient~": {
     "name": "mc.gradient~",
@@ -6999,9 +7087,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.groove~": {
     "name": "mc.groove~",
@@ -7201,9 +7290,10 @@
       "MSP",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.hilbert~": {
     "name": "mc.hilbert~",
@@ -7258,9 +7348,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.ifft~": {
     "name": "mc.ifft~",
@@ -7375,9 +7466,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.index~": {
     "name": "mc.index~",
@@ -7449,9 +7541,10 @@
       "MSP",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.interleave~": {
     "name": "mc.interleave~",
@@ -7510,9 +7603,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.in~": {
     "name": "mc.in~",
@@ -7577,9 +7671,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.jit.peek~": {
     "name": "mc.jit.peek~",
@@ -7674,9 +7769,10 @@
       "Jitter",
       "Jitter Audio"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.kink~": {
     "name": "mc.kink~",
@@ -7732,9 +7828,10 @@
       "MSP",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.limi~": {
     "name": "mc.limi~",
@@ -7833,9 +7930,10 @@
       "compressor",
       "dynamics"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.line": {
     "name": "mc.line",
@@ -7940,9 +8038,10 @@
       "Data",
       "Timing"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.line~": {
     "name": "mc.line~",
@@ -8023,9 +8122,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.list~": {
     "name": "mc.list~",
@@ -8085,9 +8185,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.live.gain~": {
     "name": "mc.live.gain~",
@@ -8325,9 +8426,10 @@
       "Live MSP Objects",
       "Live UI Objects"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.log~": {
     "name": "mc.log~",
@@ -8383,9 +8485,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.lookup~": {
     "name": "mc.lookup~",
@@ -8472,9 +8575,10 @@
       "MSP",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.lores~": {
     "name": "mc.lores~",
@@ -8560,9 +8664,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.loudness~": {
     "name": "mc.loudness~",
@@ -8663,9 +8768,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.makelist": {
     "name": "mc.makelist",
@@ -8743,9 +8849,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.matrix~": {
     "name": "mc.matrix~",
@@ -8849,9 +8956,10 @@
       "MSP",
       "MSP Routing"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.maximum~": {
     "name": "mc.maximum~",
@@ -8912,9 +9020,10 @@
       "MSP Analysis",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.midiplayer~": {
     "name": "mc.midiplayer~",
@@ -9025,9 +9134,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.miditarget": {
     "name": "mc.miditarget",
@@ -9082,9 +9192,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.minimum~": {
     "name": "mc.minimum~",
@@ -9145,9 +9256,10 @@
       "MSP Analysis",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.minmax~": {
     "name": "mc.minmax~",
@@ -9223,9 +9335,10 @@
       "MSP Analysis",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.mixdown~": {
     "name": "mc.mixdown~",
@@ -9329,9 +9442,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.mstosamps~": {
     "name": "mc.mstosamps~",
@@ -9387,9 +9501,10 @@
       "MSP",
       "MSP System"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.mtof~": {
     "name": "mc.mtof~",
@@ -9474,9 +9589,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.noise~": {
     "name": "mc.noise~",
@@ -9521,9 +9637,10 @@
       "MSP",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.normalize~": {
     "name": "mc.normalize~",
@@ -9579,9 +9696,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.noteallocator~": {
     "name": "mc.noteallocator~",
@@ -9691,9 +9809,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.number~": {
     "name": "mc.number~",
@@ -9860,9 +9979,10 @@
       "MSP",
       "mc"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.omx.4band~": {
     "name": "mc.omx.4band~",
@@ -9967,9 +10087,10 @@
       "MSP",
       "MSP Dynamics"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.omx.5band~": {
     "name": "mc.omx.5band~",
@@ -10115,9 +10236,10 @@
       "MSP",
       "MSP Dynamics"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.omx.comp~": {
     "name": "mc.omx.comp~",
@@ -10214,9 +10336,10 @@
       "MSP",
       "MSP Dynamics"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.omx.peaklim~": {
     "name": "mc.omx.peaklim~",
@@ -10298,9 +10421,10 @@
       "MSP",
       "MSP Dynamics"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.onepole~": {
     "name": "mc.onepole~",
@@ -10370,9 +10494,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.op~": {
     "name": "mc.op~",
@@ -10418,9 +10543,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.out~": {
     "name": "mc.out~",
@@ -10478,9 +10604,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.overdrive~": {
     "name": "mc.overdrive~",
@@ -10542,9 +10669,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.pack~": {
     "name": "mc.pack~",
@@ -10616,9 +10744,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.pattern~": {
     "name": "mc.pattern~",
@@ -10756,9 +10885,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.peakamp~": {
     "name": "mc.peakamp~",
@@ -10831,9 +10961,10 @@
       "MSP Analysis",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.peek~": {
     "name": "mc.peek~",
@@ -10914,9 +11045,10 @@
       "MSP",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.pfft~": {
     "name": "mc.pfft~",
@@ -11048,9 +11180,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.phasegroove~": {
     "name": "mc.phasegroove~",
@@ -11098,9 +11231,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.phaseshift~": {
     "name": "mc.phaseshift~",
@@ -11169,9 +11303,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.phasewrap~": {
     "name": "mc.phasewrap~",
@@ -11219,9 +11354,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.phasor~": {
     "name": "mc.phasor~",
@@ -11329,9 +11465,10 @@
       "MSP",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.pink~": {
     "name": "mc.pink~",
@@ -11375,9 +11512,10 @@
       "MSP",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.pitchshift~": {
     "name": "mc.pitchshift~",
@@ -11472,9 +11610,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.playlist~": {
     "name": "mc.playlist~",
@@ -11777,9 +11916,10 @@
       "Audio",
       "Soundfiles"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.play~": {
     "name": "mc.play~",
@@ -11866,9 +12006,10 @@
       "MSP",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.poltocar~": {
     "name": "mc.poltocar~",
@@ -11938,9 +12079,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.poly~": {
     "name": "mc.poly~",
@@ -12110,9 +12252,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.pong~": {
     "name": "mc.pong~",
@@ -12197,9 +12340,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.pow~": {
     "name": "mc.pow~",
@@ -12255,9 +12399,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.rampsmooth~": {
     "name": "mc.rampsmooth~",
@@ -12338,9 +12483,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.ramp~": {
     "name": "mc.ramp~",
@@ -12464,9 +12610,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.rand~": {
     "name": "mc.rand~",
@@ -12516,9 +12663,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.range~": {
     "name": "mc.range~",
@@ -12612,9 +12760,10 @@
       "MSP",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.rate~": {
     "name": "mc.rate~",
@@ -12686,9 +12835,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.record~": {
     "name": "mc.record~",
@@ -12791,9 +12941,10 @@
       "MSP",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.rect~": {
     "name": "mc.rect~",
@@ -12867,9 +13018,10 @@
       "oscillator",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.resize~": {
     "name": "mc.resize~",
@@ -12936,9 +13088,10 @@
       "MSP Modifiers",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.reson~": {
     "name": "mc.reson~",
@@ -13043,9 +13196,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.retune~": {
     "name": "mc.retune~",
@@ -13203,9 +13357,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.round~": {
     "name": "mc.round~",
@@ -13269,9 +13424,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.route": {
     "name": "mc.route",
@@ -13338,9 +13494,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.r~": {
     "name": "mc.r~",
@@ -13406,9 +13563,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.sah~": {
     "name": "mc.sah~",
@@ -13481,9 +13639,10 @@
     "tags": [
       "MSP Generators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.sampstoms~": {
     "name": "mc.sampstoms~",
@@ -13540,9 +13699,10 @@
       "MSP",
       "MSP System"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.sash~": {
     "name": "mc.sash~",
@@ -13639,9 +13799,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.saw~": {
     "name": "mc.saw~",
@@ -13703,9 +13864,10 @@
       "oscillator",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.scale~": {
     "name": "mc.scale~",
@@ -13820,9 +13982,10 @@
       "MSP",
       "math"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.selector~": {
     "name": "mc.selector~",
@@ -13899,9 +14062,10 @@
       "MSP",
       "MSP Routing"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.separate~": {
     "name": "mc.separate~",
@@ -13961,9 +14125,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.seq~": {
     "name": "mc.seq~",
@@ -14041,9 +14206,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.sfizz~": {
     "name": "mc.sfizz~",
@@ -14184,9 +14350,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.sfplay~": {
     "name": "mc.sfplay~",
@@ -14390,9 +14557,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.sfrecord~": {
     "name": "mc.sfrecord~",
@@ -14492,9 +14660,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.shape~": {
     "name": "mc.shape~",
@@ -14565,9 +14734,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.sig~": {
     "name": "mc.sig~",
@@ -14619,9 +14789,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.sinh~": {
     "name": "mc.sinh~",
@@ -14669,9 +14840,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.sinx~": {
     "name": "mc.sinx~",
@@ -14719,9 +14891,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.slide~": {
     "name": "mc.slide~",
@@ -14801,9 +14974,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.snapshot~": {
     "name": "mc.snapshot~",
@@ -14882,9 +15056,10 @@
       "MSP",
       "MSP Analysis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.snowfall~": {
     "name": "mc.snowfall~",
@@ -15018,9 +15193,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.snowphasor~": {
     "name": "mc.snowphasor~",
@@ -15147,9 +15323,10 @@
       "MSP Functions",
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.spike~": {
     "name": "mc.spike~",
@@ -15207,9 +15384,10 @@
       "MSP",
       "MSP Analysis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.sqrt~": {
     "name": "mc.sqrt~",
@@ -15257,9 +15435,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.stash~": {
     "name": "mc.stash~",
@@ -15400,9 +15579,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.stepdiv~": {
     "name": "mc.stepdiv~",
@@ -15476,9 +15656,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.stepfun~": {
     "name": "mc.stepfun~",
@@ -15566,9 +15747,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.stereo~": {
     "name": "mc.stereo~",
@@ -15666,9 +15848,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.stutter~": {
     "name": "mc.stutter~",
@@ -15764,9 +15947,10 @@
       "MSP",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.subdiv~": {
     "name": "mc.subdiv~",
@@ -15864,9 +16048,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.svf~": {
     "name": "mc.svf~",
@@ -15980,9 +16165,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.swing~": {
     "name": "mc.swing~",
@@ -16057,9 +16243,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.sync~": {
     "name": "mc.sync~",
@@ -16138,9 +16325,10 @@
       "MSP",
       "MSP Analysis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.s~": {
     "name": "mc.s~",
@@ -16195,9 +16383,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.table~": {
     "name": "mc.table~",
@@ -16324,9 +16513,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.tanh~": {
     "name": "mc.tanh~",
@@ -16375,9 +16565,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.tanx~": {
     "name": "mc.tanx~",
@@ -16426,9 +16617,10 @@
       "MSP",
       "MSP Operators"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.tapin~": {
     "name": "mc.tapin~",
@@ -16480,9 +16672,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.tapout~": {
     "name": "mc.tapout~",
@@ -16540,9 +16733,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.target": {
     "name": "mc.target",
@@ -16628,9 +16822,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.targetlist": {
     "name": "mc.targetlist",
@@ -16716,9 +16911,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.teeth~": {
     "name": "mc.teeth~",
@@ -16836,9 +17032,10 @@
       "MSP",
       "MSP Filters"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.thresh~": {
     "name": "mc.thresh~",
@@ -16909,9 +17106,10 @@
       "MSP",
       "MSP Analysis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.train~": {
     "name": "mc.train~",
@@ -17016,9 +17214,10 @@
       "MSP",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.transpose~": {
     "name": "mc.transpose~",
@@ -17087,9 +17286,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.trapezoid~": {
     "name": "mc.trapezoid~",
@@ -17177,9 +17377,10 @@
       "oscillator",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.triangle~": {
     "name": "mc.triangle~",
@@ -17250,9 +17451,10 @@
       "oscillator",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.tri~": {
     "name": "mc.tri~",
@@ -17326,9 +17528,10 @@
       "oscillator",
       "MSP Synthesis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.trunc~": {
     "name": "mc.trunc~",
@@ -17375,9 +17578,10 @@
       "MSP",
       "MSP Modifiers"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.twist~": {
     "name": "mc.twist~",
@@ -17450,9 +17654,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.unpack~": {
     "name": "mc.unpack~",
@@ -17524,9 +17729,10 @@
     "tags": [
       "MC"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.updown~": {
     "name": "mc.updown~",
@@ -17599,9 +17805,10 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.vectral~": {
     "name": "mc.vectral~",
@@ -17680,9 +17887,10 @@
       "MSP",
       "MSP FFT"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.voiceallocator~": {
     "name": "mc.voiceallocator~",
@@ -17767,9 +17975,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.vst~": {
     "name": "mc.vst~",
@@ -17978,9 +18187,10 @@
       "MSP",
       "MSP Plug-ins"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.wave~": {
     "name": "mc.wave~",
@@ -18086,9 +18296,10 @@
       "oscillator",
       "MSP Sampling"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.what~": {
     "name": "mc.what~",
@@ -18165,9 +18376,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.where~": {
     "name": "mc.where~",
@@ -18221,9 +18433,10 @@
     "tags": [
       "MSP"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.zerox~": {
     "name": "mc.zerox~",
@@ -18278,9 +18491,10 @@
       "MSP",
       "MSP Analysis"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mc.zigzag~": {
     "name": "mc.zigzag~",
@@ -18396,8 +18610,9 @@
       "MSP",
       "MSP Functions"
     ],
-    "min_version": 8,
+    "min_version": 8.1,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   }
 }

@@ -299,9 +299,10 @@
       "effect",
       "filter"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.channeleq~": {
     "name": "abl.device.channeleq~",
@@ -445,9 +446,10 @@
       "filter",
       "utility"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.compressor~": {
     "name": "abl.device.compressor~",
@@ -589,9 +591,10 @@
       "utility",
       "dynamics"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.delay~": {
     "name": "abl.device.delay~",
@@ -730,9 +733,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.drift~": {
     "name": "abl.device.drift~",
@@ -1132,9 +1136,10 @@
     "tags": [
       "instrument"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.drumbuss~": {
     "name": "abl.device.drumbuss~",
@@ -1300,9 +1305,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.drumsampler~": {
     "name": "abl.device.drumsampler~",
@@ -1565,9 +1571,10 @@
     "tags": [
       "sampler"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.echo~": {
     "name": "abl.device.echo~",
@@ -1803,9 +1810,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.limiter~": {
     "name": "abl.device.limiter~",
@@ -1939,9 +1947,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.redux~": {
     "name": "abl.device.redux~",
@@ -2091,9 +2100,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.reverb~": {
     "name": "abl.device.reverb~",
@@ -2209,9 +2219,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.roar~": {
     "name": "abl.device.roar~",
@@ -2655,9 +2666,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.spectralresonator~": {
     "name": "abl.device.spectralresonator~",
@@ -2786,9 +2798,10 @@
     "tags": [
       "spectral"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.spectraltime~": {
     "name": "abl.device.spectraltime~",
@@ -2952,9 +2965,10 @@
     "tags": [
       "spectral"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.device.utility~": {
     "name": "abl.device.utility~",
@@ -3099,9 +3113,10 @@
       "utility",
       "dynamics"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.alternate~": {
     "name": "abl.dsp.alternate~",
@@ -3244,9 +3259,10 @@
     "tags": [
       "generator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.basicshapes~": {
     "name": "abl.dsp.basicshapes~",
@@ -3337,9 +3353,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.bitgrunge~": {
     "name": "abl.dsp.bitgrunge~",
@@ -3429,9 +3446,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.bubble~": {
     "name": "abl.dsp.bubble~",
@@ -3522,9 +3540,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.chip~": {
     "name": "abl.dsp.chip~",
@@ -3614,9 +3633,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.chorus~": {
     "name": "abl.dsp.chorus~",
@@ -3756,9 +3776,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.compander~": {
     "name": "abl.dsp.compander~",
@@ -3813,9 +3834,10 @@
     "tags": [
       "utility"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.crackle~": {
     "name": "abl.dsp.crackle~",
@@ -3906,9 +3928,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.darkhall~": {
     "name": "abl.dsp.darkhall~",
@@ -4083,9 +4106,10 @@
       "effect",
       "reverb"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.dfm~": {
     "name": "abl.dsp.dfm~",
@@ -4187,9 +4211,10 @@
       "filter",
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.distortion~": {
     "name": "abl.dsp.distortion~",
@@ -4339,9 +4364,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.doubler~": {
     "name": "abl.dsp.doubler~",
@@ -4536,9 +4562,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.dualbasicshapes~": {
     "name": "abl.dsp.dualbasicshapes~",
@@ -4628,9 +4655,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.ensemble~": {
     "name": "abl.dsp.ensemble~",
@@ -4775,9 +4803,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.envfollower~": {
     "name": "abl.dsp.envfollower~",
@@ -4854,9 +4883,10 @@
     "tags": [
       "utility"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.euclid~": {
     "name": "abl.dsp.euclid~",
@@ -5006,9 +5036,10 @@
     "tags": [
       "generator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.expshaper~": {
     "name": "abl.dsp.expshaper~",
@@ -5065,9 +5096,10 @@
     "tags": [
       "utility"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.extratone~": {
     "name": "abl.dsp.extratone~",
@@ -5157,9 +5189,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.filterednoise~": {
     "name": "abl.dsp.filterednoise~",
@@ -5249,9 +5282,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.filther~": {
     "name": "abl.dsp.filther~",
@@ -5348,9 +5382,10 @@
       "effect",
       "filter"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.flanger~": {
     "name": "abl.dsp.flanger~",
@@ -5545,9 +5580,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.fmbass~": {
     "name": "abl.dsp.fmbass~",
@@ -5639,9 +5675,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.foldfm~": {
     "name": "abl.dsp.foldfm~",
@@ -5733,9 +5770,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.fuzz~": {
     "name": "abl.dsp.fuzz~",
@@ -5885,9 +5923,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.harmonicfm~": {
     "name": "abl.dsp.harmonicfm~",
@@ -5978,9 +6017,10 @@
     "tags": [
       "generator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.meldfilter~": {
     "name": "abl.dsp.meldfilter~",
@@ -6085,9 +6125,10 @@
     "tags": [
       "filter"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.meldosc~": {
     "name": "abl.dsp.meldosc~",
@@ -6200,9 +6241,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.modalresonator~": {
     "name": "abl.dsp.modalresonator~",
@@ -6300,9 +6342,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.modulator~": {
     "name": "abl.dsp.modulator~",
@@ -6445,9 +6488,10 @@
     "tags": [
       "generator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.noiseloop~": {
     "name": "abl.dsp.noiseloop~",
@@ -6538,9 +6582,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.noisyshapes~": {
     "name": "abl.dsp.noisyshapes~",
@@ -6630,9 +6675,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.overdrive~": {
     "name": "abl.dsp.overdrive~",
@@ -6782,9 +6828,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.phaser~": {
     "name": "abl.dsp.phaser~",
@@ -7020,9 +7067,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.pitchestimator~": {
     "name": "abl.dsp.pitchestimator~",
@@ -7068,9 +7116,10 @@
     "tags": [
       "analysis"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.pitchshifter~": {
     "name": "abl.dsp.pitchshifter~",
@@ -7164,9 +7213,10 @@
       "effect",
       "pitch"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.prism~": {
     "name": "abl.dsp.prism~",
@@ -7291,9 +7341,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.pulsate~": {
     "name": "abl.dsp.pulsate~",
@@ -7417,9 +7468,10 @@
     "tags": [
       "generator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.quartz~": {
     "name": "abl.dsp.quartz~",
@@ -7607,9 +7659,10 @@
       "effect",
       "reverb"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.rain~": {
     "name": "abl.dsp.rain~",
@@ -7700,9 +7753,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.ramp~": {
     "name": "abl.dsp.ramp~",
@@ -7845,9 +7899,10 @@
     "tags": [
       "generator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.ringmod~": {
     "name": "abl.dsp.ringmod~",
@@ -7934,9 +7989,10 @@
       "effect",
       "pitch"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.saturator~": {
     "name": "abl.dsp.saturator~",
@@ -8057,9 +8113,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.shepard~": {
     "name": "abl.dsp.shepard~",
@@ -8148,9 +8205,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.shimmer~": {
     "name": "abl.dsp.shimmer~",
@@ -8325,9 +8383,10 @@
       "effect",
       "reverb"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.simplefm~": {
     "name": "abl.dsp.simplefm~",
@@ -8418,9 +8477,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.squarefifth~": {
     "name": "abl.dsp.squarefifth~",
@@ -8510,9 +8570,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.squaresync~": {
     "name": "abl.dsp.squaresync~",
@@ -8602,9 +8663,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.stereolfo~": {
     "name": "abl.dsp.stereolfo~",
@@ -8710,9 +8772,10 @@
       "modulation",
       "utility"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.subosc~": {
     "name": "abl.dsp.subosc~",
@@ -8801,9 +8864,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.swarm~": {
     "name": "abl.dsp.swarm~",
@@ -8898,9 +8962,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.tarp~": {
     "name": "abl.dsp.tarp~",
@@ -8984,9 +9049,10 @@
     "tags": [
       "oscillator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.tides~": {
     "name": "abl.dsp.tides~",
@@ -9135,9 +9201,10 @@
       "effect",
       "reverb"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.transform~": {
     "name": "abl.dsp.transform~",
@@ -9207,9 +9274,10 @@
     "tags": [
       "modulation"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.transientdesign~": {
     "name": "abl.dsp.transientdesign~",
@@ -9295,9 +9363,10 @@
       "dynamics",
       "utility"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.velvetnoise~": {
     "name": "abl.dsp.velvetnoise~",
@@ -9348,9 +9417,10 @@
     "tags": [
       "utility"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.vibrato~": {
     "name": "abl.dsp.vibrato~",
@@ -9500,9 +9570,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.vowel~": {
     "name": "abl.dsp.vowel~",
@@ -9599,9 +9670,10 @@
       "filter",
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.wander~": {
     "name": "abl.dsp.wander~",
@@ -9744,9 +9816,10 @@
     "tags": [
       "generator"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abl.dsp.waveshaper~": {
     "name": "abl.dsp.waveshaper~",
@@ -9892,9 +9965,10 @@
     "tags": [
       "effect"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.bang": {
     "name": "jit.bang",
@@ -9949,7 +10023,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.framecount": {
     "name": "jit.framecount",
@@ -10005,7 +10080,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.line": {
     "name": "jit.line",
@@ -10080,7 +10156,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.mo.field": {
     "name": "jit.mo.field",
@@ -10139,7 +10216,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.mo.fieldmask": {
     "name": "jit.mo.fieldmask",
@@ -10192,7 +10270,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.mo.func": {
     "name": "jit.mo.func",
@@ -10300,7 +10379,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.mo.join": {
     "name": "jit.mo.join",
@@ -10372,7 +10452,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.mo.time": {
     "name": "jit.mo.time",
@@ -10493,7 +10574,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.adsrui": {
     "name": "live.adsrui",
@@ -10634,7 +10716,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.adsr~": {
     "name": "live.adsr~",
@@ -10743,7 +10826,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.scope~": {
     "name": "live.scope~",
@@ -10877,7 +10961,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mira.motion": {
     "name": "mira.motion",
@@ -10902,7 +10987,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mira.multitouch": {
     "name": "mira.multitouch",
@@ -10988,6 +11074,7 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   }
 }

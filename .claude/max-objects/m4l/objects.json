@@ -16,7 +16,8 @@
     "tags": [],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "amxd~": {
     "name": "amxd~",
@@ -159,7 +160,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.arrows": {
     "name": "live.arrows",
@@ -273,7 +275,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.banks": {
     "name": "live.banks",
@@ -336,7 +339,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.button": {
     "name": "live.button",
@@ -451,7 +455,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.colors": {
     "name": "live.colors",
@@ -509,7 +514,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.comment": {
     "name": "live.comment",
@@ -602,7 +608,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.dial": {
     "name": "live.dial",
@@ -772,7 +779,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.drop": {
     "name": "live.drop",
@@ -871,7 +879,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.gain~": {
     "name": "live.gain~",
@@ -1122,7 +1131,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.grid": {
     "name": "live.grid",
@@ -1343,7 +1353,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.line": {
     "name": "live.line",
@@ -1408,7 +1419,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.map": {
     "name": "live.map",
@@ -1489,7 +1501,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.menu": {
     "name": "live.menu",
@@ -1656,7 +1669,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.meter~": {
     "name": "live.meter~",
@@ -1798,7 +1812,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.miditool.in": {
     "name": "live.miditool.in",
@@ -1867,7 +1882,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.miditool.out": {
     "name": "live.miditool.out",
@@ -1908,7 +1924,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.modulate~": {
     "name": "live.modulate~",
@@ -1987,7 +2004,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.numbox": {
     "name": "live.numbox",
@@ -2138,7 +2156,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.object": {
     "name": "live.object",
@@ -2183,7 +2202,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.observer": {
     "name": "live.observer",
@@ -2228,7 +2248,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.param~": {
     "name": "live.param~",
@@ -2269,7 +2290,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.path": {
     "name": "live.path",
@@ -2312,7 +2334,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.push": {
     "name": "live.push",
@@ -2382,7 +2405,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.remote~": {
     "name": "live.remote~",
@@ -2430,7 +2454,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.routing": {
     "name": "live.routing",
@@ -2520,7 +2545,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.slider": {
     "name": "live.slider",
@@ -2660,7 +2686,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.step": {
     "name": "live.step",
@@ -2964,7 +2991,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.tab": {
     "name": "live.tab",
@@ -3187,7 +3215,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.text": {
     "name": "live.text",
@@ -3415,7 +3444,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.thisdevice": {
     "name": "live.thisdevice",
@@ -3484,7 +3514,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "live.toggle": {
     "name": "live.toggle",
@@ -3623,7 +3654,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "paraminspector": {
     "name": "paraminspector",
@@ -3791,6 +3823,7 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   }
 }

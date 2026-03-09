@@ -1,0 +1,15 @@
+{
+  "_comment": "Object aliases. Key = alias, value = canonical name.",
+  "aliases": {
+    "t": "trigger",
+    "b": "bangbang",
+    "i": "int",
+    "f": "float",
+    "p": "patcher",
+    "sel": "select",
+    "r": "receive",
+    "s": "send",
+    "r~": "receive~",
+    "s~": "send~"
+  }
+}

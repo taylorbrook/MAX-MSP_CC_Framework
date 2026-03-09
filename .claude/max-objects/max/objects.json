@@ -57,7 +57,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "!/": {
     "name": "!/",
@@ -117,7 +118,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "!=": {
     "name": "!=",
@@ -189,7 +191,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "%": {
     "name": "%",
@@ -251,7 +254,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "&": {
     "name": "&",
@@ -313,7 +317,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "&&": {
     "name": "&&",
@@ -374,7 +379,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "*": {
     "name": "*",
@@ -432,7 +438,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "+": {
     "name": "+",
@@ -492,7 +499,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "-": {
     "name": "-",
@@ -553,7 +561,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "/": {
     "name": "/",
@@ -615,7 +624,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "<": {
     "name": "<",
@@ -678,7 +688,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "<<": {
     "name": "<<",
@@ -739,7 +750,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "<=": {
     "name": "<=",
@@ -808,7 +820,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "==": {
     "name": "==",
@@ -880,7 +893,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   ">": {
     "name": ">",
@@ -943,7 +957,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   ">=": {
     "name": ">=",
@@ -1012,7 +1027,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   ">>": {
     "name": ">>",
@@ -1073,7 +1089,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "abs": {
     "name": "abs",
@@ -1122,7 +1139,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "absolutepath": {
     "name": "absolutepath",
@@ -1176,7 +1194,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "accum": {
     "name": "accum",
@@ -1246,7 +1265,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "acos": {
     "name": "acos",
@@ -1297,7 +1317,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "acosh": {
     "name": "acosh",
@@ -1349,7 +1370,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "active": {
     "name": "active",
@@ -1378,7 +1400,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "anal": {
     "name": "anal",
@@ -1429,7 +1452,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "append": {
     "name": "append",
@@ -1487,7 +1511,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "array": {
     "name": "array",
@@ -1634,7 +1659,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.change": {
     "name": "array.change",
@@ -1708,9 +1734,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.compare": {
     "name": "array.compare",
@@ -1771,9 +1798,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.concat": {
     "name": "array.concat",
@@ -1829,9 +1857,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.deserialize": {
     "name": "array.deserialize",
@@ -1880,9 +1909,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.every": {
     "name": "array.every",
@@ -1950,9 +1980,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.expr": {
     "name": "array.expr",
@@ -2046,9 +2077,10 @@
       "Math",
       "Array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.fill": {
     "name": "array.fill",
@@ -2137,9 +2169,10 @@
       "Max",
       "Array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.filter": {
     "name": "array.filter",
@@ -2208,9 +2241,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.flatten": {
     "name": "array.flatten",
@@ -2268,9 +2302,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.foreach": {
     "name": "array.foreach",
@@ -2338,9 +2373,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.frombuffer": {
     "name": "array.frombuffer",
@@ -2433,9 +2469,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.group": {
     "name": "array.group",
@@ -2501,9 +2538,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.index": {
     "name": "array.index",
@@ -2577,9 +2615,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.indexmap": {
     "name": "array.indexmap",
@@ -2639,9 +2678,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.indexof": {
     "name": "array.indexof",
@@ -2706,9 +2746,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.insert": {
     "name": "array.insert",
@@ -2779,9 +2820,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.iter": {
     "name": "array.iter",
@@ -2837,9 +2879,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.join": {
     "name": "array.join",
@@ -2892,9 +2935,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.length": {
     "name": "array.length",
@@ -2941,9 +2985,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.map": {
     "name": "array.map",
@@ -3010,9 +3055,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.max": {
     "name": "array.max",
@@ -3070,9 +3116,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.mean": {
     "name": "array.mean",
@@ -3130,9 +3177,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.median": {
     "name": "array.median",
@@ -3196,9 +3244,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.min": {
     "name": "array.min",
@@ -3256,9 +3305,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.mode": {
     "name": "array.mode",
@@ -3315,9 +3365,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.pop": {
     "name": "array.pop",
@@ -3394,9 +3445,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.push": {
     "name": "array.push",
@@ -3461,9 +3513,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.random": {
     "name": "array.random",
@@ -3554,9 +3607,10 @@
       "Max",
       "Array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.reduce": {
     "name": "array.reduce",
@@ -3637,9 +3691,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.regexp": {
     "name": "array.regexp",
@@ -3754,9 +3809,10 @@
     "tags": [
       "Max"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.remove": {
     "name": "array.remove",
@@ -3828,9 +3884,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.replace": {
     "name": "array.replace",
@@ -3900,9 +3957,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.reverse": {
     "name": "array.reverse",
@@ -3955,9 +4013,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.rotate": {
     "name": "array.rotate",
@@ -4018,9 +4077,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.routepass": {
     "name": "array.routepass",
@@ -4080,9 +4140,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.scramble": {
     "name": "array.scramble",
@@ -4141,9 +4202,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.sect": {
     "name": "array.sect",
@@ -4200,9 +4262,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.shift": {
     "name": "array.shift",
@@ -4279,9 +4342,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.slice": {
     "name": "array.slice",
@@ -4343,9 +4407,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.some": {
     "name": "array.some",
@@ -4413,9 +4478,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.sort": {
     "name": "array.sort",
@@ -4492,9 +4558,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.split": {
     "name": "array.split",
@@ -4562,9 +4629,10 @@
       "zl.slice"
     ],
     "tags": [],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.stddev": {
     "name": "array.stddev",
@@ -4621,9 +4689,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.stream": {
     "name": "array.stream",
@@ -4693,9 +4762,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.subarray": {
     "name": "array.subarray",
@@ -4757,9 +4827,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.thin": {
     "name": "array.thin",
@@ -4805,9 +4876,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.tobuffer": {
     "name": "array.tobuffer",
@@ -4895,9 +4967,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.tolist": {
     "name": "array.tolist",
@@ -4957,9 +5030,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.tostring": {
     "name": "array.tostring",
@@ -5007,9 +5081,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.tosymbol": {
     "name": "array.tosymbol",
@@ -5057,9 +5132,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.tuplewise": {
     "name": "array.tuplewise",
@@ -5128,9 +5204,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.union": {
     "name": "array.union",
@@ -5187,9 +5264,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.unique": {
     "name": "array.unique",
@@ -5246,9 +5324,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.unshift": {
     "name": "array.unshift",
@@ -5320,9 +5399,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "array.wrap": {
     "name": "array.wrap",
@@ -5376,9 +5456,10 @@
     "tags": [
       "array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "asin": {
     "name": "asin",
@@ -5430,7 +5511,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "asinh": {
     "name": "asinh",
@@ -5482,7 +5564,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "atan": {
     "name": "atan",
@@ -5535,7 +5618,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "atan2": {
     "name": "atan2",
@@ -5596,7 +5680,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "atanh": {
     "name": "atanh",
@@ -5649,7 +5734,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "atodb": {
     "name": "atodb",
@@ -5704,7 +5790,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "atoi": {
     "name": "atoi",
@@ -5783,7 +5870,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "attrui": {
     "name": "attrui",
@@ -5962,7 +6050,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "autopattr": {
     "name": "autopattr",
@@ -6064,7 +6153,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "bag": {
     "name": "bag",
@@ -6129,7 +6219,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "bangbang": {
     "name": "bangbang",
@@ -6188,7 +6279,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "bendin": {
     "name": "bendin",
@@ -6280,7 +6372,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "bendout": {
     "name": "bendout",
@@ -6365,7 +6458,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "bgcolor": {
     "name": "bgcolor",
@@ -6446,7 +6540,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "bline": {
     "name": "bline",
@@ -6508,7 +6603,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "bondo": {
     "name": "bondo",
@@ -6590,7 +6686,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "borax": {
     "name": "borax",
@@ -6712,7 +6809,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "bpatcher": {
     "name": "bpatcher",
@@ -6811,7 +6909,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "bucket": {
     "name": "bucket",
@@ -6879,7 +6978,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "buddy": {
     "name": "buddy",
@@ -6892,17 +6992,17 @@
     "inlets": [
       {
         "id": 0,
-        "type": "control",
+        "type": "anything",
         "signal": false,
-        "digest": "Input to be Synchronized",
+        "digest": "Input 1",
         "hot": true
       },
       {
         "id": 1,
-        "type": "control",
+        "type": "anything",
         "signal": false,
-        "digest": "Input to be Synchronized",
-        "hot": false
+        "digest": "Input 2",
+        "hot": true
       }
     ],
     "outlets": [
@@ -6952,7 +7052,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "button": {
     "name": "button",
@@ -7062,7 +7163,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "capture": {
     "name": "capture",
@@ -7149,7 +7251,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "cartopol": {
     "name": "cartopol",
@@ -7215,7 +7318,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "change": {
     "name": "change",
@@ -7286,7 +7390,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "chooser": {
     "name": "chooser",
@@ -7523,7 +7628,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "clip": {
     "name": "clip",
@@ -7606,7 +7712,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "clocker": {
     "name": "clocker",
@@ -7709,7 +7816,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "closebang": {
     "name": "closebang",
@@ -7756,7 +7864,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "coll": {
     "name": "coll",
@@ -7769,9 +7878,16 @@
     "inlets": [
       {
         "id": 0,
-        "type": "control",
+        "type": "anything",
         "signal": false,
-        "digest": "Single Item Outputs Data, Multiple Items Store Data",
+        "digest": "Messages and data",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "int",
+        "signal": false,
+        "digest": "Index",
         "hot": true
       }
     ],
@@ -7894,7 +8010,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "coll.codebox": {
     "name": "coll.codebox",
@@ -8056,7 +8173,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "colorpicker": {
     "name": "colorpicker",
@@ -8125,7 +8243,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "combine": {
     "name": "combine",
@@ -8205,7 +8324,8 @@
       "outlet_count": "fixed:1",
       "default_inlets": 2,
       "default_outlets": 1
-    }
+    },
+    "rnbo_compatible": false
   },
   "comment": {
     "name": "comment",
@@ -8310,7 +8430,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "conformpath": {
     "name": "conformpath",
@@ -8376,7 +8497,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "console": {
     "name": "console",
@@ -8459,7 +8581,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "cos": {
     "name": "cos",
@@ -8511,7 +8634,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "cosh": {
     "name": "cosh",
@@ -8563,7 +8687,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "counter": {
     "name": "counter",
@@ -8686,7 +8811,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "cpuclock": {
     "name": "cpuclock",
@@ -8739,7 +8865,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "crosspatch": {
     "name": "crosspatch",
@@ -9015,7 +9142,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "ctlin": {
     "name": "ctlin",
@@ -9107,7 +9235,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "ctlout": {
     "name": "ctlout",
@@ -9195,7 +9324,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "cycle": {
     "name": "cycle",
@@ -9266,7 +9396,8 @@
       "outlet_count": "first_arg",
       "default_inlets": 1,
       "default_outlets": 2
-    }
+    },
+    "rnbo_compatible": false
   },
   "date": {
     "name": "date",
@@ -9329,7 +9460,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dbtoa": {
     "name": "dbtoa",
@@ -9384,7 +9516,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "decide": {
     "name": "decide",
@@ -9443,7 +9576,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "decode": {
     "name": "decode",
@@ -9516,7 +9650,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "defer": {
     "name": "defer",
@@ -9570,7 +9705,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "deferlow": {
     "name": "deferlow",
@@ -9625,7 +9761,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "delay": {
     "name": "delay",
@@ -9705,7 +9842,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "detonate": {
     "name": "detonate",
@@ -9879,7 +10017,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dial": {
     "name": "dial",
@@ -10032,7 +10171,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "dialog": {
     "name": "dialog",
@@ -10123,7 +10263,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict": {
     "name": "dict",
@@ -10283,7 +10424,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.codebox": {
     "name": "dict.codebox",
@@ -10457,7 +10599,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.compare": {
     "name": "dict.compare",
@@ -10523,7 +10666,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.deserialize": {
     "name": "dict.deserialize",
@@ -10589,7 +10733,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.group": {
     "name": "dict.group",
@@ -10657,7 +10802,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.iter": {
     "name": "dict.iter",
@@ -10711,7 +10857,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.join": {
     "name": "dict.join",
@@ -10780,7 +10927,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.pack": {
     "name": "dict.pack",
@@ -10874,7 +11022,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.print": {
     "name": "dict.print",
@@ -10928,7 +11077,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.route": {
     "name": "dict.route",
@@ -11001,7 +11151,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.serialize": {
     "name": "dict.serialize",
@@ -11065,7 +11216,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.slice": {
     "name": "dict.slice",
@@ -11130,7 +11282,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.strip": {
     "name": "dict.strip",
@@ -11203,7 +11356,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.unpack": {
     "name": "dict.unpack",
@@ -11293,7 +11447,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dict.view": {
     "name": "dict.view",
@@ -11346,7 +11501,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "dropfile": {
     "name": "dropfile",
@@ -11431,7 +11587,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "drunk": {
     "name": "drunk",
@@ -11533,7 +11690,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "dsp": {
     "name": "dsp",
@@ -11690,7 +11848,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "error": {
     "name": "error",
@@ -11740,7 +11899,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "expr": {
     "name": "expr",
@@ -11846,7 +12006,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "filedate": {
     "name": "filedate",
@@ -11898,7 +12059,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "filein": {
     "name": "filein",
@@ -11983,7 +12145,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "filepath": {
     "name": "filepath",
@@ -12044,7 +12207,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "filewatch": {
     "name": "filewatch",
@@ -12098,7 +12262,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "float": {
     "name": "float",
@@ -12160,7 +12325,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "flonum": {
     "name": "flonum",
@@ -12303,7 +12469,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "flush": {
     "name": "flush",
@@ -12374,7 +12541,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "folder": {
     "name": "folder",
@@ -12438,7 +12606,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "follow": {
     "name": "follow",
@@ -12507,7 +12676,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "fontlist": {
     "name": "fontlist",
@@ -12556,7 +12726,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "forward": {
     "name": "forward",
@@ -12607,7 +12778,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "fpic": {
     "name": "fpic",
@@ -12710,7 +12882,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "freebang": {
     "name": "freebang",
@@ -12757,7 +12930,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "fromsymbol": {
     "name": "fromsymbol",
@@ -12817,7 +12991,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "ftom": {
     "name": "ftom",
@@ -12911,7 +13086,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "funbuff": {
     "name": "funbuff",
@@ -13006,7 +13182,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "function": {
     "name": "function",
@@ -13304,7 +13481,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "funnel": {
     "name": "funnel",
@@ -13353,12 +13531,12 @@
     "verified": false,
     "variable_io": true,
     "io_rule": {
-      "description": "First arg sets inlet count. Outlets = 1. Default: 2 inlets.",
       "inlet_count": "first_arg",
       "outlet_count": "fixed:1",
       "default_inlets": 2,
-      "default_outlets": 1
-    }
+      "description": "First argument sets number of inlets."
+    },
+    "rnbo_compatible": false
   },
   "gamepad": {
     "name": "gamepad",
@@ -13427,7 +13605,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "gate": {
     "name": "gate",
@@ -13499,12 +13678,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "First arg sets outlet count. Inlets = 2 (control + input). Default: 1 outlet.",
       "inlet_count": "fixed:2",
       "outlet_count": "first_arg",
-      "default_inlets": 2,
-      "default_outlets": 1
-    }
+      "default_outlets": 1,
+      "description": "First argument sets number of outlets."
+    },
+    "rnbo_compatible": true
   },
   "gestalt": {
     "name": "gestalt",
@@ -13572,7 +13751,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "getattr": {
     "name": "getattr",
@@ -13648,7 +13828,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "ggate": {
     "name": "ggate",
@@ -13770,7 +13951,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "grab": {
     "name": "grab",
@@ -13836,7 +14018,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "gswitch": {
     "name": "gswitch",
@@ -13960,7 +14143,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "hi": {
     "name": "hi",
@@ -14025,7 +14209,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "hid": {
     "name": "hid",
@@ -14099,7 +14284,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "hint": {
     "name": "hint",
@@ -14155,7 +14341,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "histo": {
     "name": "histo",
@@ -14222,7 +14409,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "hover": {
     "name": "hover",
@@ -14291,7 +14479,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "if": {
     "name": "if",
@@ -14378,7 +14567,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "imovie": {
     "name": "imovie",
@@ -14500,7 +14690,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "incdec": {
     "name": "incdec",
@@ -14607,7 +14798,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "inlet": {
     "name": "inlet",
@@ -14680,7 +14872,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "int": {
     "name": "int",
@@ -14742,7 +14935,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "itable": {
     "name": "itable",
@@ -14965,7 +15159,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "iter": {
     "name": "iter",
@@ -15021,7 +15216,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "itoa": {
     "name": "itoa",
@@ -15099,7 +15295,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jbox": {
     "name": "jbox",
@@ -15226,7 +15423,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.cellblock": {
     "name": "jit.cellblock",
@@ -15514,7 +15712,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit_kernel": {
     "name": "jit_kernel",
@@ -15556,7 +15755,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "join": {
     "name": "join",
@@ -15626,12 +15826,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "Number of arguments determines number of inlets. Default: 2 inlets.",
-      "inlet_count": "arg_count",
+      "inlet_count": "first_arg",
       "outlet_count": "fixed:1",
       "default_inlets": 2,
-      "default_outlets": 1
-    }
+      "description": "First argument sets number of inlets."
+    },
+    "rnbo_compatible": true
   },
   "js": {
     "name": "js",
@@ -15728,7 +15928,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jstrigger": {
     "name": "jstrigger",
@@ -15774,7 +15975,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jsui": {
     "name": "jsui",
@@ -15890,7 +16092,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jweb": {
     "name": "jweb",
@@ -15971,7 +16174,8 @@
     "tags": [],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jweb~": {
     "name": "jweb~",
@@ -16065,7 +16269,8 @@
     "tags": [],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "key": {
     "name": "key",
@@ -16130,7 +16335,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "keyup": {
     "name": "keyup",
@@ -16195,7 +16401,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "kslider": {
     "name": "kslider",
@@ -16343,7 +16550,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "lcd": {
     "name": "lcd",
@@ -16484,7 +16692,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "led": {
     "name": "led",
@@ -16597,7 +16806,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "line": {
     "name": "line",
@@ -16704,7 +16914,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "linedrive": {
     "name": "linedrive",
@@ -16758,7 +16969,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "listbox": {
     "name": "listbox",
@@ -16929,7 +17141,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "listfunnel": {
     "name": "listfunnel",
@@ -16981,7 +17194,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "loadbang": {
     "name": "loadbang",
@@ -17030,7 +17244,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "loadmess": {
     "name": "loadmess",
@@ -17094,7 +17309,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "makenote": {
     "name": "makenote",
@@ -17198,7 +17414,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mappings": {
     "name": "mappings",
@@ -17239,7 +17456,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "match": {
     "name": "match",
@@ -17295,7 +17513,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "matrix": {
     "name": "matrix",
@@ -17424,7 +17643,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "matrixctrl": {
     "name": "matrixctrl",
@@ -17642,7 +17862,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "max": {
     "name": "max",
@@ -18451,7 +18672,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "maximum": {
     "name": "maximum",
@@ -18464,17 +18686,17 @@
     "inlets": [
       {
         "id": 0,
-        "type": "control",
+        "type": "number",
         "signal": false,
-        "digest": "Compares Left and Right Inlets",
+        "digest": "Left value",
         "hot": true
       },
       {
         "id": 1,
-        "type": "control",
+        "type": "number",
         "signal": false,
-        "digest": "Value to be Compared",
-        "hot": false
+        "digest": "Right value",
+        "hot": true
       }
     ],
     "outlets": [
@@ -18520,7 +18742,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "maxurl": {
     "name": "maxurl",
@@ -18592,7 +18815,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mean": {
     "name": "mean",
@@ -18654,7 +18878,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "menubar": {
     "name": "menubar",
@@ -18737,7 +18962,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "message": {
     "name": "message",
@@ -18861,7 +19087,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "messageview": {
     "name": "messageview",
@@ -18935,7 +19162,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "metro": {
     "name": "metro",
@@ -19040,7 +19268,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "midiflush": {
     "name": "midiflush",
@@ -19093,7 +19322,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "midiformat": {
     "name": "midiformat",
@@ -19171,7 +19401,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "midiin": {
     "name": "midiin",
@@ -19255,7 +19486,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "midiinfo": {
     "name": "midiinfo",
@@ -19330,7 +19562,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "midiout": {
     "name": "midiout",
@@ -19405,7 +19638,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "midiparse": {
     "name": "midiparse",
@@ -19515,7 +19749,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "midiselect": {
     "name": "midiselect",
@@ -19651,7 +19886,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "minimum": {
     "name": "minimum",
@@ -19664,17 +19900,17 @@
     "inlets": [
       {
         "id": 0,
-        "type": "control",
+        "type": "number",
         "signal": false,
-        "digest": "Compares Left and Right Inlets",
+        "digest": "Left value",
         "hot": true
       },
       {
         "id": 1,
-        "type": "control",
+        "type": "number",
         "signal": false,
-        "digest": "Value to be Compared",
-        "hot": false
+        "digest": "Right value",
+        "hot": true
       }
     ],
     "outlets": [
@@ -19719,7 +19955,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mira.frame": {
     "name": "mira.frame",
@@ -19792,7 +20029,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "modifiers": {
     "name": "modifiers",
@@ -19869,7 +20107,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mousefilter": {
     "name": "mousefilter",
@@ -19921,7 +20160,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mousestate": {
     "name": "mousestate",
@@ -20030,7 +20270,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "movie": {
     "name": "movie",
@@ -20152,7 +20393,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mpeconfig": {
     "name": "mpeconfig",
@@ -20225,7 +20467,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mpeformat": {
     "name": "mpeformat",
@@ -20409,7 +20652,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mpeparse": {
     "name": "mpeparse",
@@ -20534,7 +20778,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mtof": {
     "name": "mtof",
@@ -20623,7 +20868,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "mtr": {
     "name": "mtr",
@@ -20789,7 +21035,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "multislider": {
     "name": "multislider",
@@ -21071,7 +21318,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mxj": {
     "name": "mxj",
@@ -21118,7 +21366,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "next": {
     "name": "next",
@@ -21177,7 +21426,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "nodes": {
     "name": "nodes",
@@ -21423,7 +21673,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "notein": {
     "name": "notein",
@@ -21521,7 +21772,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "noteout": {
     "name": "noteout",
@@ -21616,7 +21868,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "nrpnin": {
     "name": "nrpnin",
@@ -21701,7 +21954,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "nrpnout": {
     "name": "nrpnout",
@@ -21793,7 +22047,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "nslider": {
     "name": "nslider",
@@ -21932,7 +22187,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "number": {
     "name": "number",
@@ -22103,7 +22359,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "numkey": {
     "name": "numkey",
@@ -22161,7 +22418,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "offer": {
     "name": "offer",
@@ -22221,7 +22479,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "onebang": {
     "name": "onebang",
@@ -22288,7 +22547,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "onecopy": {
     "name": "onecopy",
@@ -22320,7 +22580,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "opendialog": {
     "name": "opendialog",
@@ -22401,7 +22662,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "osc.codebox": {
     "name": "osc.codebox",
@@ -22487,7 +22749,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "osc.packet": {
     "name": "osc.packet",
@@ -22553,7 +22816,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "outlet": {
     "name": "outlet",
@@ -22622,7 +22886,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pack": {
     "name": "pack",
@@ -22696,12 +22961,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "Number of arguments determines number of inlets. Default: 2 inlets (0, 0).",
       "inlet_count": "arg_count",
       "outlet_count": "fixed:1",
       "default_inlets": 2,
-      "default_outlets": 1
-    }
+      "description": "Number of arguments determines number of inlets. Default: 2 inlets."
+    },
+    "rnbo_compatible": true
   },
   "pak": {
     "name": "pak",
@@ -22769,7 +23034,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "panel": {
     "name": "panel",
@@ -22897,7 +23163,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "param": {
     "name": "param",
@@ -22976,7 +23243,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "param.osc": {
     "name": "param.osc",
@@ -23048,7 +23316,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "past": {
     "name": "past",
@@ -23108,7 +23377,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "patcher": {
     "name": "patcher",
@@ -23553,7 +23823,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "patcherargs": {
     "name": "patcherargs",
@@ -23609,7 +23880,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pattr": {
     "name": "pattr",
@@ -23757,7 +24029,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pattrforward": {
     "name": "pattrforward",
@@ -23824,7 +24097,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pattrhub": {
     "name": "pattrhub",
@@ -23899,7 +24173,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pattrmarker": {
     "name": "pattrmarker",
@@ -23962,7 +24237,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pattrstorage": {
     "name": "pattrstorage",
@@ -24164,7 +24440,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pcontrol": {
     "name": "pcontrol",
@@ -24221,7 +24498,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "peak": {
     "name": "peak",
@@ -24296,7 +24574,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "pgmin": {
     "name": "pgmin",
@@ -24388,7 +24667,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "pgmout": {
     "name": "pgmout",
@@ -24477,7 +24757,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "pictctrl": {
     "name": "pictctrl",
@@ -24663,7 +24944,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pictslider": {
     "name": "pictslider",
@@ -24900,7 +25182,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pipe": {
     "name": "pipe",
@@ -24978,7 +25261,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "playbar": {
     "name": "playbar",
@@ -25077,7 +25361,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "poltocar": {
     "name": "poltocar",
@@ -25143,7 +25428,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "poly": {
     "name": "poly",
@@ -25227,7 +25513,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "polyin": {
     "name": "polyin",
@@ -25326,7 +25613,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "polymidiin": {
     "name": "polymidiin",
@@ -25364,7 +25652,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "polyout": {
     "name": "polyout",
@@ -25456,7 +25745,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "pong": {
     "name": "pong",
@@ -25537,7 +25827,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pow": {
     "name": "pow",
@@ -25598,7 +25889,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "prepend": {
     "name": "prepend",
@@ -25653,7 +25945,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "preset": {
     "name": "preset",
@@ -25853,7 +26146,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "print": {
     "name": "print",
@@ -25933,7 +26227,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "prob": {
     "name": "prob",
@@ -26001,7 +26296,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "project": {
     "name": "project",
@@ -26087,7 +26383,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pv": {
     "name": "pv",
@@ -26151,7 +26448,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "pvar": {
     "name": "pvar",
@@ -26215,7 +26513,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "qlim": {
     "name": "qlim",
@@ -26294,7 +26593,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "qlist": {
     "name": "qlist",
@@ -26370,7 +26670,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "qmetro": {
     "name": "qmetro",
@@ -26474,7 +26775,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "quickthresh": {
     "name": "quickthresh",
@@ -26570,7 +26872,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "radiogroup": {
     "name": "radiogroup",
@@ -26714,7 +27017,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "random": {
     "name": "random",
@@ -26807,7 +27111,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "receive": {
     "name": "receive",
@@ -26864,7 +27169,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "regexp": {
     "name": "regexp",
@@ -26978,7 +27284,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "relativepath": {
     "name": "relativepath",
@@ -27029,7 +27336,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "repl": {
     "name": "repl",
@@ -27129,7 +27437,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "round": {
     "name": "round",
@@ -27195,7 +27504,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "route": {
     "name": "route",
@@ -27272,12 +27582,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "Outlets = arg count + 1 (extra outlet for unmatched). Default: 3 outlets.",
       "inlet_count": "fixed:1",
-      "outlet_count": "arg_count_plus_1",
-      "default_inlets": 1,
-      "default_outlets": 3
-    }
+      "outlet_count": "arg_count+1",
+      "default_outlets": 3,
+      "description": "Number of arguments determines outlets + 1 unmatched outlet. Default: 3 outlets."
+    },
+    "rnbo_compatible": true
   },
   "routepass": {
     "name": "routepass",
@@ -27358,7 +27668,8 @@
       "outlet_count": "arg_count_plus_1",
       "default_inlets": 1,
       "default_outlets": 3
-    }
+    },
+    "rnbo_compatible": true
   },
   "router": {
     "name": "router",
@@ -27443,7 +27754,8 @@
       "outlet_count": "second_arg",
       "default_inlets": 2,
       "default_outlets": 2
-    }
+    },
+    "rnbo_compatible": false
   },
   "rpnin": {
     "name": "rpnin",
@@ -27528,7 +27840,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "rpnout": {
     "name": "rpnout",
@@ -27620,7 +27933,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "rslider": {
     "name": "rslider",
@@ -27775,7 +28089,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "rtin": {
     "name": "rtin",
@@ -27846,7 +28161,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "savebang": {
     "name": "savebang",
@@ -27892,7 +28208,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "savedialog": {
     "name": "savedialog",
@@ -27962,7 +28279,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "scale": {
     "name": "scale",
@@ -28083,7 +28401,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "schedule": {
     "name": "schedule",
@@ -28150,7 +28469,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "screensize": {
     "name": "screensize",
@@ -28208,7 +28528,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "select": {
     "name": "select",
@@ -28297,12 +28618,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "Outlets = arg count + 1 (extra outlet for non-match). Default: 2 outlets.",
       "inlet_count": "fixed:1",
-      "outlet_count": "arg_count_plus_1",
-      "default_inlets": 1,
-      "default_outlets": 2
-    }
+      "outlet_count": "arg_count+1",
+      "default_outlets": 2,
+      "description": "Number of arguments determines outlets + 1 unmatched outlet."
+    },
+    "rnbo_compatible": true
   },
   "send": {
     "name": "send",
@@ -28354,7 +28675,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "seq": {
     "name": "seq",
@@ -28447,7 +28769,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "serial": {
     "name": "serial",
@@ -28630,7 +28953,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "setclock": {
     "name": "setclock",
@@ -28705,7 +29029,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "sin": {
     "name": "sin",
@@ -28757,7 +29082,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "sinh": {
     "name": "sinh",
@@ -28809,7 +29135,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "slide": {
     "name": "slide",
@@ -28882,7 +29209,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "slider": {
     "name": "slider",
@@ -29037,7 +29365,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "speedlim": {
     "name": "speedlim",
@@ -29122,7 +29451,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "spell": {
     "name": "spell",
@@ -29184,7 +29514,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "split": {
     "name": "split",
@@ -29262,7 +29593,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "spray": {
     "name": "spray",
@@ -29339,12 +29671,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "First arg sets outlet count. Inlets = 1. Default: 2 outlets.",
       "inlet_count": "fixed:1",
       "outlet_count": "first_arg",
-      "default_inlets": 1,
-      "default_outlets": 2
-    }
+      "default_outlets": 2,
+      "description": "First argument sets number of outlets."
+    },
+    "rnbo_compatible": false
   },
   "sprintf": {
     "name": "sprintf",
@@ -29412,7 +29744,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "sqrt": {
     "name": "sqrt",
@@ -29462,7 +29795,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "standalone": {
     "name": "standalone",
@@ -29574,7 +29908,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "stepcounter": {
     "name": "stepcounter",
@@ -29654,7 +29989,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string": {
     "name": "string",
@@ -29783,7 +30119,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.append": {
     "name": "string.append",
@@ -29855,9 +30192,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.bytes": {
     "name": "string.bytes",
@@ -29913,9 +30251,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.change": {
     "name": "string.change",
@@ -29981,9 +30320,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.compare": {
     "name": "string.compare",
@@ -30054,9 +30394,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.concat": {
     "name": "string.concat",
@@ -30108,9 +30449,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.contains": {
     "name": "string.contains",
@@ -30169,9 +30511,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.endswith": {
     "name": "string.endswith",
@@ -30230,9 +30573,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.frombytes": {
     "name": "string.frombytes",
@@ -30287,9 +30631,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.fromsymlist": {
     "name": "string.fromsymlist",
@@ -30337,9 +30682,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.fromutf8": {
     "name": "string.fromutf8",
@@ -30401,9 +30747,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.index": {
     "name": "string.index",
@@ -30469,9 +30816,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.indexof": {
     "name": "string.indexof",
@@ -30529,9 +30877,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.iter": {
     "name": "string.iter",
@@ -30576,9 +30925,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.length": {
     "name": "string.length",
@@ -30630,9 +30980,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.prepend": {
     "name": "string.prepend",
@@ -30706,9 +31057,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.regexp": {
     "name": "string.regexp",
@@ -30818,9 +31170,10 @@
     "tags": [
       "Max"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.remove": {
     "name": "string.remove",
@@ -30893,9 +31246,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.replace": {
     "name": "string.replace",
@@ -30966,9 +31320,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.replaceall": {
     "name": "string.replaceall",
@@ -31033,9 +31388,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.reverse": {
     "name": "string.reverse",
@@ -31087,9 +31443,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.rotate": {
     "name": "string.rotate",
@@ -31149,9 +31506,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.slice": {
     "name": "string.slice",
@@ -31209,9 +31567,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.split": {
     "name": "string.split",
@@ -31276,9 +31635,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.sprintf": {
     "name": "string.sprintf",
@@ -31338,9 +31698,10 @@
       "Max",
       "Array"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.startswith": {
     "name": "string.startswith",
@@ -31399,9 +31760,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.substring": {
     "name": "string.substring",
@@ -31459,9 +31821,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.toarray": {
     "name": "string.toarray",
@@ -31518,9 +31881,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.tolist": {
     "name": "string.tolist",
@@ -31577,9 +31941,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.tolower": {
     "name": "string.tolower",
@@ -31623,9 +31988,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.tosymbol": {
     "name": "string.tosymbol",
@@ -31675,9 +32041,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.toupper": {
     "name": "string.toupper",
@@ -31721,9 +32088,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.trim": {
     "name": "string.trim",
@@ -31782,9 +32150,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.trimend": {
     "name": "string.trimend",
@@ -31836,9 +32205,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.trimstart": {
     "name": "string.trimstart",
@@ -31883,9 +32253,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.utf8": {
     "name": "string.utf8",
@@ -31934,9 +32305,10 @@
     "tags": [
       "string"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "string.withpass": {
     "name": "string.withpass",
@@ -31995,9 +32367,10 @@
     "tags": [
       "TEXT_HERE"
     ],
-    "min_version": 8,
+    "min_version": 9,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "stripnote": {
     "name": "stripnote",
@@ -32062,7 +32435,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "strippath": {
     "name": "strippath",
@@ -32121,7 +32495,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "substitute": {
     "name": "substitute",
@@ -32201,7 +32576,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "suckah": {
     "name": "suckah",
@@ -32267,7 +32643,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "suspend": {
     "name": "suspend",
@@ -32314,7 +32691,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "sustain": {
     "name": "sustain",
@@ -32399,7 +32777,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "swap": {
     "name": "swap",
@@ -32470,7 +32849,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "swatch": {
     "name": "swatch",
@@ -32583,7 +32963,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "switch": {
     "name": "switch",
@@ -32664,12 +33045,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "First arg sets inlet count (+1 for control). Outlets = 1. Default: 2 inlets.",
-      "inlet_count": "first_arg_plus_1",
+      "inlet_count": "first_arg+1",
       "outlet_count": "fixed:1",
       "default_inlets": 2,
-      "default_outlets": 1
-    }
+      "description": "First argument + 1 sets number of inlets."
+    },
+    "rnbo_compatible": true
   },
   "sxformat": {
     "name": "sxformat",
@@ -32730,7 +33111,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "sysexin": {
     "name": "sysexin",
@@ -32799,7 +33181,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "tab": {
     "name": "tab",
@@ -33042,7 +33425,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "tabcontroller": {
     "name": "tabcontroller",
@@ -33120,7 +33504,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "table": {
     "name": "table",
@@ -33269,7 +33654,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "tan": {
     "name": "tan",
@@ -33322,7 +33708,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "tanh": {
     "name": "tanh",
@@ -33375,7 +33762,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "tempo": {
     "name": "tempo",
@@ -33451,7 +33839,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "text": {
     "name": "text",
@@ -33547,7 +33936,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "text.codebox": {
     "name": "text.codebox",
@@ -33697,7 +34087,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "textbox": {
     "name": "textbox",
@@ -33868,7 +34259,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "textbutton": {
     "name": "textbutton",
@@ -34098,7 +34490,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "textedit": {
     "name": "textedit",
@@ -34288,7 +34681,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "themecolor": {
     "name": "themecolor",
@@ -34353,7 +34747,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "thisobject": {
     "name": "thisobject",
@@ -34448,7 +34843,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "thispatcher": {
     "name": "thispatcher",
@@ -34514,7 +34910,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "threadcheck": {
     "name": "threadcheck",
@@ -34579,7 +34976,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "thresh": {
     "name": "thresh",
@@ -34592,16 +34990,16 @@
     "inlets": [
       {
         "id": 0,
-        "type": "control",
+        "type": "int",
         "signal": false,
-        "digest": "Numbers to be Gathered Into list",
+        "digest": "Input values",
         "hot": true
       },
       {
         "id": 1,
-        "type": "control",
+        "type": "int",
         "signal": false,
-        "digest": "Arrival Threshold",
+        "digest": "Low threshold",
         "hot": false
       }
     ],
@@ -34651,7 +35049,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "timepoint": {
     "name": "timepoint",
@@ -34717,7 +35116,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "timer": {
     "name": "timer",
@@ -34796,7 +35196,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "togedge": {
     "name": "togedge",
@@ -34853,7 +35254,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "toggle": {
     "name": "toggle",
@@ -34976,7 +35378,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "tosymbol": {
     "name": "tosymbol",
@@ -35037,7 +35440,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "touchin": {
     "name": "touchin",
@@ -35124,7 +35528,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "touchout": {
     "name": "touchout",
@@ -35207,7 +35612,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "translate": {
     "name": "translate",
@@ -35300,7 +35706,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "transport": {
     "name": "transport",
@@ -35435,7 +35842,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "trigger": {
     "name": "trigger",
@@ -35504,12 +35912,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "Number of arguments determines number of outlets. Each argument (i, f, b, l, s, or a constant) creates one outlet. Default: 2 outlets (int, int).",
       "inlet_count": "fixed:1",
       "outlet_count": "arg_count",
-      "default_inlets": 1,
-      "default_outlets": 2
-    }
+      "default_outlets": 2,
+      "description": "Number of arguments determines number of outlets. Each argument (i, f, b, l, s) creates one outlet. Default: 2 outlets."
+    },
+    "rnbo_compatible": true
   },
   "trough": {
     "name": "trough",
@@ -35582,7 +35990,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "ubutton": {
     "name": "ubutton",
@@ -35711,7 +36120,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "udpreceive": {
     "name": "udpreceive",
@@ -35782,7 +36192,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "udpsend": {
     "name": "udpsend",
@@ -35832,7 +36243,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "umenu": {
     "name": "umenu",
@@ -36117,7 +36529,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "universal": {
     "name": "universal",
@@ -36172,7 +36585,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "unjoin": {
     "name": "unjoin",
@@ -36245,12 +36659,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "Number of arguments determines number of outlets. Default: 2 outlets.",
       "inlet_count": "fixed:1",
-      "outlet_count": "arg_count",
-      "default_inlets": 1,
-      "default_outlets": 2
-    }
+      "outlet_count": "first_arg",
+      "default_outlets": 2,
+      "description": "First argument sets number of outlets."
+    },
+    "rnbo_compatible": true
   },
   "unpack": {
     "name": "unpack",
@@ -36316,12 +36730,12 @@
     "verified": true,
     "variable_io": true,
     "io_rule": {
-      "description": "Number of arguments determines number of outlets. Default: 2 outlets.",
       "inlet_count": "fixed:1",
       "outlet_count": "arg_count",
-      "default_inlets": 1,
-      "default_outlets": 2
-    }
+      "default_outlets": 2,
+      "description": "Number of arguments determines number of outlets. Default: 2 outlets."
+    },
+    "rnbo_compatible": true
   },
   "urn": {
     "name": "urn",
@@ -36395,7 +36809,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "uzi": {
     "name": "uzi",
@@ -36478,7 +36893,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": true
   },
   "v8": {
     "name": "v8",
@@ -36572,7 +36988,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "v8.codebox": {
     "name": "v8.codebox",
@@ -36665,7 +37082,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "v8ui": {
     "name": "v8ui",
@@ -36774,7 +37192,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "value": {
     "name": "value",
@@ -36839,7 +37258,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "vdp": {
     "name": "vdp",
@@ -36934,7 +37354,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "vexpr": {
     "name": "vexpr",
@@ -37022,7 +37443,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "vstscan": {
     "name": "vstscan",
@@ -37073,7 +37495,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "when": {
     "name": "when",
@@ -37139,7 +37562,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "xbendin": {
     "name": "xbendin",
@@ -37201,7 +37625,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "xbendout": {
     "name": "xbendout",
@@ -37268,7 +37693,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "xctlin": {
     "name": "xctlin",
@@ -37341,7 +37767,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "xctlout": {
     "name": "xctlout",
@@ -37424,7 +37851,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "xmidiin": {
     "name": "xmidiin",
@@ -37516,7 +37944,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "xnotein": {
     "name": "xnotein",
@@ -37584,7 +38013,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "xnoteout": {
     "name": "xnoteout",
@@ -37660,7 +38090,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl": {
     "name": "zl",
@@ -37673,17 +38104,17 @@
     "inlets": [
       {
         "id": 0,
-        "type": "inactive",
+        "type": "anything",
         "signal": false,
-        "digest": "(inactive)",
+        "digest": "Input list",
         "hot": true
       },
       {
         "id": 1,
-        "type": "inactive",
+        "type": "anything",
         "signal": false,
-        "digest": "(inactive)",
-        "hot": false
+        "digest": "Argument list",
+        "hot": true
       }
     ],
     "outlets": [
@@ -37768,7 +38199,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.change": {
     "name": "zl.change",
@@ -37876,7 +38308,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.compare": {
     "name": "zl.compare",
@@ -37984,7 +38417,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.delace": {
     "name": "zl.delace",
@@ -38085,7 +38519,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.ecils": {
     "name": "zl.ecils",
@@ -38193,7 +38628,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.filter": {
     "name": "zl.filter",
@@ -38301,7 +38737,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.group": {
     "name": "zl.group",
@@ -38409,7 +38846,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.indexmap": {
     "name": "zl.indexmap",
@@ -38517,7 +38955,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.iter": {
     "name": "zl.iter",
@@ -38625,7 +39064,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.join": {
     "name": "zl.join",
@@ -38733,7 +39173,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.lace": {
     "name": "zl.lace",
@@ -38841,7 +39282,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.len": {
     "name": "zl.len",
@@ -38942,7 +39384,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.lookup": {
     "name": "zl.lookup",
@@ -39050,7 +39493,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.median": {
     "name": "zl.median",
@@ -39151,7 +39595,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.mth": {
     "name": "zl.mth",
@@ -39265,7 +39710,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.nth": {
     "name": "zl.nth",
@@ -39379,7 +39825,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.queue": {
     "name": "zl.queue",
@@ -39480,7 +39927,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.reg": {
     "name": "zl.reg",
@@ -39588,7 +40036,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.rev": {
     "name": "zl.rev",
@@ -39696,7 +40145,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.rot": {
     "name": "zl.rot",
@@ -39804,7 +40254,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.scramble": {
     "name": "zl.scramble",
@@ -39912,7 +40363,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.sect": {
     "name": "zl.sect",
@@ -40020,7 +40472,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.slice": {
     "name": "zl.slice",
@@ -40128,7 +40581,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.sort": {
     "name": "zl.sort",
@@ -40236,7 +40690,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.stack": {
     "name": "zl.stack",
@@ -40337,7 +40792,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.stream": {
     "name": "zl.stream",
@@ -40445,7 +40901,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.sub": {
     "name": "zl.sub",
@@ -40553,7 +41010,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.sum": {
     "name": "zl.sum",
@@ -40654,7 +41112,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.swap": {
     "name": "zl.swap",
@@ -40762,7 +41221,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.thin": {
     "name": "zl.thin",
@@ -40863,7 +41323,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.union": {
     "name": "zl.union",
@@ -40971,7 +41432,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zl.unique": {
     "name": "zl.unique",
@@ -41079,7 +41541,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "zmap": {
     "name": "zmap",
@@ -41181,7 +41644,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "|": {
     "name": "|",
@@ -41243,7 +41707,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "||": {
     "name": "||",
@@ -41304,6 +41769,7 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   }
 }

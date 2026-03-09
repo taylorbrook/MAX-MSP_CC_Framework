@@ -359,7 +359,8 @@
     "tags": [],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "Jitter Matrix Operators": {
     "name": "Jitter Matrix Operators",
@@ -445,7 +446,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.3m": {
     "name": "jit.3m",
@@ -519,7 +521,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.alphablend": {
     "name": "jit.alphablend",
@@ -580,7 +583,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.altern": {
     "name": "jit.altern",
@@ -663,7 +667,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.ameba": {
     "name": "jit.ameba",
@@ -731,7 +736,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.anim.drive": {
     "name": "jit.anim.drive",
@@ -915,7 +921,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.anim.node": {
     "name": "jit.anim.node",
@@ -1143,7 +1150,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.anim.path": {
     "name": "jit.anim.path",
@@ -1350,7 +1358,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.argb2ayuv": {
     "name": "jit.argb2ayuv",
@@ -1399,7 +1408,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.argb2grgb": {
     "name": "jit.argb2grgb",
@@ -1448,7 +1458,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.argb2uyvy": {
     "name": "jit.argb2uyvy",
@@ -1497,7 +1508,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.avc": {
     "name": "jit.avc",
@@ -1560,7 +1572,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.avg4": {
     "name": "jit.avg4",
@@ -1623,7 +1636,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.axis2quat": {
     "name": "jit.axis2quat",
@@ -1690,7 +1704,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.ayuv2argb": {
     "name": "jit.ayuv2argb",
@@ -1739,7 +1754,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.ayuv2luma": {
     "name": "jit.ayuv2luma",
@@ -1787,7 +1803,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.ayuv2uyvy": {
     "name": "jit.ayuv2uyvy",
@@ -1836,7 +1853,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.bfg": {
     "name": "jit.bfg",
@@ -1941,7 +1959,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.brass": {
     "name": "jit.brass",
@@ -2013,7 +2032,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.brcosa": {
     "name": "jit.brcosa",
@@ -2078,7 +2098,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.bsort": {
     "name": "jit.bsort",
@@ -2145,7 +2166,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.buffer~": {
     "name": "jit.buffer~",
@@ -2307,7 +2329,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.catch~": {
     "name": "jit.catch~",
@@ -2400,7 +2423,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.change": {
     "name": "jit.change",
@@ -2461,7 +2485,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.charmap": {
     "name": "jit.charmap",
@@ -2515,7 +2540,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.chromakey": {
     "name": "jit.chromakey",
@@ -2606,7 +2632,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.clip": {
     "name": "jit.clip",
@@ -2663,7 +2690,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.coerce": {
     "name": "jit.coerce",
@@ -2711,7 +2739,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.colorspace": {
     "name": "jit.colorspace",
@@ -2770,7 +2799,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.concat": {
     "name": "jit.concat",
@@ -2848,7 +2878,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.convolve": {
     "name": "jit.convolve",
@@ -2912,7 +2943,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.conway": {
     "name": "jit.conway",
@@ -2978,7 +3010,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.cycle": {
     "name": "jit.cycle",
@@ -3060,7 +3093,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.demultiplex": {
     "name": "jit.demultiplex",
@@ -3137,7 +3171,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.desktop": {
     "name": "jit.desktop",
@@ -3189,7 +3224,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.dimmap": {
     "name": "jit.dimmap",
@@ -3246,7 +3282,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.dimop": {
     "name": "jit.dimop",
@@ -3303,7 +3340,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.displays": {
     "name": "jit.displays",
@@ -3369,7 +3407,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.dx.grab": {
     "name": "jit.dx.grab",
@@ -3585,7 +3624,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.dx.videoout": {
     "name": "jit.dx.videoout",
@@ -3645,7 +3685,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.eclipse": {
     "name": "jit.eclipse",
@@ -3749,7 +3790,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.euler2quat": {
     "name": "jit.euler2quat",
@@ -3821,7 +3863,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.expr": {
     "name": "jit.expr",
@@ -3907,7 +3950,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.fastblur": {
     "name": "jit.fastblur",
@@ -3979,7 +4023,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.fft": {
     "name": "jit.fft",
@@ -4032,7 +4077,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.fill": {
     "name": "jit.fill",
@@ -4107,7 +4153,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.findbounds": {
     "name": "jit.findbounds",
@@ -4180,7 +4227,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.fluoride": {
     "name": "jit.fluoride",
@@ -4247,7 +4295,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.fprint": {
     "name": "jit.fprint",
@@ -4332,7 +4381,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.fpsgui": {
     "name": "jit.fpsgui",
@@ -4470,7 +4520,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.freeframe": {
     "name": "jit.freeframe",
@@ -4549,7 +4600,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gen": {
     "name": "jit.gen",
@@ -4638,7 +4690,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gen.codebox": {
     "name": "jit.gen.codebox",
@@ -4751,7 +4804,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gencoord": {
     "name": "jit.gencoord",
@@ -4808,7 +4862,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.asyncread": {
     "name": "jit.gl.asyncread",
@@ -4885,7 +4940,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.bfg": {
     "name": "jit.gl.bfg",
@@ -5090,7 +5146,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.camera": {
     "name": "jit.gl.camera",
@@ -5273,7 +5330,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.cornerpin": {
     "name": "jit.gl.cornerpin",
@@ -5415,7 +5473,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.cubemap": {
     "name": "jit.gl.cubemap",
@@ -5580,7 +5639,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.graph": {
     "name": "jit.gl.graph",
@@ -5665,7 +5725,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.gridshape": {
     "name": "jit.gl.gridshape",
@@ -5749,7 +5810,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.handle": {
     "name": "jit.gl.handle",
@@ -5877,7 +5939,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.isosurf": {
     "name": "jit.gl.isosurf",
@@ -5975,7 +6038,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.light": {
     "name": "jit.gl.light",
@@ -6108,7 +6172,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.lua": {
     "name": "jit.gl.lua",
@@ -6210,7 +6275,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.material": {
     "name": "jit.gl.material",
@@ -6417,7 +6483,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.mesh": {
     "name": "jit.gl.mesh",
@@ -6587,7 +6654,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.model": {
     "name": "jit.gl.model",
@@ -6753,7 +6821,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.multiple": {
     "name": "jit.gl.multiple",
@@ -6850,7 +6919,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.node": {
     "name": "jit.gl.node",
@@ -6948,7 +7018,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.nurbs": {
     "name": "jit.gl.nurbs",
@@ -7037,7 +7108,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.pass": {
     "name": "jit.gl.pass",
@@ -7146,7 +7218,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.path": {
     "name": "jit.gl.path",
@@ -7291,7 +7364,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.physdraw": {
     "name": "jit.gl.physdraw",
@@ -7367,7 +7441,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.picker": {
     "name": "jit.gl.picker",
@@ -7436,7 +7511,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.pix": {
     "name": "jit.gl.pix",
@@ -7615,7 +7691,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.pix.codebox": {
     "name": "jit.gl.pix.codebox",
@@ -7849,7 +7926,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.plato": {
     "name": "jit.gl.plato",
@@ -7917,7 +7995,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.render": {
     "name": "jit.gl.render",
@@ -8071,7 +8150,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.shader": {
     "name": "jit.gl.shader",
@@ -8161,7 +8241,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.sketch": {
     "name": "jit.gl.sketch",
@@ -8283,7 +8364,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.skybox": {
     "name": "jit.gl.skybox",
@@ -8342,7 +8424,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.slab": {
     "name": "jit.gl.slab",
@@ -8515,7 +8598,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.text": {
     "name": "jit.gl.text",
@@ -8664,7 +8748,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.texture": {
     "name": "jit.gl.texture",
@@ -8874,7 +8959,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.videoplane": {
     "name": "jit.gl.videoplane",
@@ -8967,7 +9053,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gl.volume": {
     "name": "jit.gl.volume",
@@ -9053,7 +9140,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.glop": {
     "name": "jit.glop",
@@ -9110,7 +9198,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.glue": {
     "name": "jit.glue",
@@ -9176,7 +9265,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.grab": {
     "name": "jit.grab",
@@ -9327,7 +9417,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.gradient": {
     "name": "jit.gradient",
@@ -9389,7 +9480,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.graph": {
     "name": "jit.graph",
@@ -9456,7 +9548,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.grgb2argb": {
     "name": "jit.grgb2argb",
@@ -9504,7 +9597,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.hatch": {
     "name": "jit.hatch",
@@ -9567,7 +9661,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.hello": {
     "name": "jit.hello",
@@ -9609,7 +9704,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.histogram": {
     "name": "jit.histogram",
@@ -9671,7 +9767,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.hsl2rgb": {
     "name": "jit.hsl2rgb",
@@ -9720,7 +9817,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.hue": {
     "name": "jit.hue",
@@ -9774,7 +9872,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.iter": {
     "name": "jit.iter",
@@ -9841,7 +9940,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.keyscreen": {
     "name": "jit.keyscreen",
@@ -9964,7 +10064,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.la.determinant": {
     "name": "jit.la.determinant",
@@ -10019,7 +10120,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.la.diagproduct": {
     "name": "jit.la.diagproduct",
@@ -10068,7 +10170,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.la.inverse": {
     "name": "jit.la.inverse",
@@ -10124,7 +10227,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.la.mult": {
     "name": "jit.la.mult",
@@ -10181,7 +10285,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.la.trace": {
     "name": "jit.la.trace",
@@ -10230,7 +10335,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.la.uppertri": {
     "name": "jit.la.uppertri",
@@ -10290,7 +10396,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.lcd": {
     "name": "jit.lcd",
@@ -10379,7 +10486,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.linden": {
     "name": "jit.linden",
@@ -10456,7 +10564,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.luma2ayuv": {
     "name": "jit.luma2ayuv",
@@ -10504,7 +10613,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.luma2uyvy": {
     "name": "jit.luma2uyvy",
@@ -10552,7 +10662,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.lumakey": {
     "name": "jit.lumakey",
@@ -10658,7 +10769,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.map": {
     "name": "jit.map",
@@ -10717,7 +10829,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.matrix": {
     "name": "jit.matrix",
@@ -10876,7 +10989,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.matrixinfo": {
     "name": "jit.matrixinfo",
@@ -10924,7 +11038,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.matrixset": {
     "name": "jit.matrixset",
@@ -11054,7 +11169,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.mgraphics": {
     "name": "jit.mgraphics",
@@ -11213,7 +11329,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.movie": {
     "name": "jit.movie",
@@ -11488,7 +11605,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.movie~": {
     "name": "jit.movie~",
@@ -11751,7 +11869,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.multiplex": {
     "name": "jit.multiplex",
@@ -11839,7 +11958,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.mxform2d": {
     "name": "jit.mxform2d",
@@ -11911,7 +12031,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.net.recv": {
     "name": "jit.net.recv",
@@ -11983,7 +12104,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.net.send": {
     "name": "jit.net.send",
@@ -12072,7 +12194,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.noise": {
     "name": "jit.noise",
@@ -12125,7 +12248,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.normalize": {
     "name": "jit.normalize",
@@ -12182,7 +12306,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.obref": {
     "name": "jit.obref",
@@ -12225,7 +12350,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.op": {
     "name": "jit.op",
@@ -12297,7 +12423,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.openexr": {
     "name": "jit.openexr",
@@ -12398,7 +12525,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.p.bounds": {
     "name": "jit.p.bounds",
@@ -12470,7 +12598,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.p.shiva": {
     "name": "jit.p.shiva",
@@ -12552,7 +12681,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.p.vishnu": {
     "name": "jit.p.vishnu",
@@ -12649,7 +12779,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.pack": {
     "name": "jit.pack",
@@ -12746,7 +12877,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.path": {
     "name": "jit.path",
@@ -12923,7 +13055,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.peek~": {
     "name": "jit.peek~",
@@ -13020,7 +13153,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.6dof": {
     "name": "jit.phys.6dof",
@@ -13248,7 +13382,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.barslide": {
     "name": "jit.phys.barslide",
@@ -13451,7 +13586,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.body": {
     "name": "jit.phys.body",
@@ -13684,7 +13820,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.conetwist": {
     "name": "jit.phys.conetwist",
@@ -13852,7 +13989,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.ghost": {
     "name": "jit.phys.ghost",
@@ -13997,7 +14135,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.hinge": {
     "name": "jit.phys.hinge",
@@ -14180,7 +14319,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.multiple": {
     "name": "jit.phys.multiple",
@@ -14389,7 +14529,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.picker": {
     "name": "jit.phys.picker",
@@ -14508,7 +14649,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.point2point": {
     "name": "jit.phys.point2point",
@@ -14621,7 +14763,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.phys.world": {
     "name": "jit.phys.world",
@@ -14770,7 +14913,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.pix": {
     "name": "jit.pix",
@@ -14857,7 +15001,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.pix.codebox": {
     "name": "jit.pix.codebox",
@@ -14970,7 +15115,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.planeop": {
     "name": "jit.planeop",
@@ -15022,7 +15168,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.playlist": {
     "name": "jit.playlist",
@@ -15182,7 +15329,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.plot": {
     "name": "jit.plot",
@@ -15258,7 +15406,8 @@
     ],
     "min_version": 8,
     "verified": false,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.plume": {
     "name": "jit.plume",
@@ -15363,7 +15512,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.plur": {
     "name": "jit.plur",
@@ -15459,7 +15609,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.poke~": {
     "name": "jit.poke~",
@@ -15552,7 +15703,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.print": {
     "name": "jit.print",
@@ -15645,7 +15797,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.proxy": {
     "name": "jit.proxy",
@@ -15712,7 +15865,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.pwindow": {
     "name": "jit.pwindow",
@@ -15873,7 +16027,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.pworld": {
     "name": "jit.pworld",
@@ -16065,7 +16220,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.qball": {
     "name": "jit.qball",
@@ -16131,7 +16287,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.qfaker": {
     "name": "jit.qfaker",
@@ -16189,7 +16346,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.qt.grab": {
     "name": "jit.qt.grab",
@@ -16340,7 +16498,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.qt.movie": {
     "name": "jit.qt.movie",
@@ -16594,7 +16753,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.qt.record": {
     "name": "jit.qt.record",
@@ -16715,7 +16875,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.qt.videoout": {
     "name": "jit.qt.videoout",
@@ -16797,7 +16958,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.quat": {
     "name": "jit.quat",
@@ -16896,7 +17058,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.quat2axis": {
     "name": "jit.quat2axis",
@@ -16963,7 +17126,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.quat2euler": {
     "name": "jit.quat2euler",
@@ -17035,7 +17199,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.record": {
     "name": "jit.record",
@@ -17164,7 +17329,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.release~": {
     "name": "jit.release~",
@@ -17232,7 +17398,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.repos": {
     "name": "jit.repos",
@@ -17312,7 +17479,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.resamp": {
     "name": "jit.resamp",
@@ -17395,7 +17563,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.reverse": {
     "name": "jit.reverse",
@@ -17473,7 +17642,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.rgb2hsl": {
     "name": "jit.rgb2hsl",
@@ -17553,7 +17723,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.rgb2luma": {
     "name": "jit.rgb2luma",
@@ -17623,7 +17794,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.robcross": {
     "name": "jit.robcross",
@@ -17676,7 +17848,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.rota": {
     "name": "jit.rota",
@@ -17849,7 +18022,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.roy": {
     "name": "jit.roy",
@@ -17918,7 +18092,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.rubix": {
     "name": "jit.rubix",
@@ -18002,7 +18177,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.scalebias": {
     "name": "jit.scalebias",
@@ -18106,7 +18282,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.scanoffset": {
     "name": "jit.scanoffset",
@@ -18185,7 +18362,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.scanslide": {
     "name": "jit.scanslide",
@@ -18259,7 +18437,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.scanwrap": {
     "name": "jit.scanwrap",
@@ -18313,7 +18492,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.scissors": {
     "name": "jit.scissors",
@@ -18376,7 +18556,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.scope": {
     "name": "jit.scope",
@@ -18529,7 +18710,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.shade": {
     "name": "jit.shade",
@@ -18607,7 +18789,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.slide": {
     "name": "jit.slide",
@@ -18665,7 +18848,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.sobel": {
     "name": "jit.sobel",
@@ -18723,7 +18907,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.spill": {
     "name": "jit.spill",
@@ -18787,7 +18972,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.split": {
     "name": "jit.split",
@@ -18859,7 +19045,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.sprinkle": {
     "name": "jit.sprinkle",
@@ -18922,7 +19109,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.str.fromsymbol": {
     "name": "jit.str.fromsymbol",
@@ -18975,7 +19163,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.str.op": {
     "name": "jit.str.op",
@@ -19057,7 +19246,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.str.regexp": {
     "name": "jit.str.regexp",
@@ -19140,7 +19330,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.str.tosymbol": {
     "name": "jit.str.tosymbol",
@@ -19195,7 +19386,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.streak": {
     "name": "jit.streak",
@@ -19263,7 +19455,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.submatrix": {
     "name": "jit.submatrix",
@@ -19316,7 +19509,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.textfile": {
     "name": "jit.textfile",
@@ -19399,7 +19593,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.thin": {
     "name": "jit.thin",
@@ -19447,7 +19642,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.tiffany": {
     "name": "jit.tiffany",
@@ -19528,7 +19724,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.traffic": {
     "name": "jit.traffic",
@@ -19583,7 +19780,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.transpose": {
     "name": "jit.transpose",
@@ -19630,7 +19828,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.turtle": {
     "name": "jit.turtle",
@@ -19707,7 +19906,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.uldl": {
     "name": "jit.uldl",
@@ -19823,7 +20023,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.unpack": {
     "name": "jit.unpack",
@@ -19909,7 +20110,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.uyvy2argb": {
     "name": "jit.uyvy2argb",
@@ -19964,7 +20166,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.uyvy2ayuv": {
     "name": "jit.uyvy2ayuv",
@@ -20019,7 +20222,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.uyvy2luma": {
     "name": "jit.uyvy2luma",
@@ -20068,7 +20272,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.vcr": {
     "name": "jit.vcr",
@@ -20194,7 +20399,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.wake": {
     "name": "jit.wake",
@@ -20373,7 +20579,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.window": {
     "name": "jit.window",
@@ -20566,7 +20773,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.world": {
     "name": "jit.world",
@@ -20847,7 +21055,8 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "jit.xfade": {
     "name": "jit.xfade",
@@ -20906,6 +21115,7 @@
     ],
     "min_version": 8,
     "verified": true,
-    "variable_io": false
+    "variable_io": false,
+    "rnbo_compatible": false
   }
 }

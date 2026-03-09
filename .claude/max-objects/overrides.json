@@ -1,0 +1,73 @@
+{
+  "_comment": "Expert corrections. Merged on top of extracted data. Fields here override extraction.",
+  "objects": {
+    "cycle~": {
+      "min_version": 4
+    },
+    "coll": {
+      "inlets": [
+        {"id": 0, "type": "anything", "signal": false, "digest": "Messages and data", "hot": true},
+        {"id": 1, "type": "int", "signal": false, "digest": "Index", "hot": true}
+      ],
+      "_note": "coll has two hot inlets (exception to cold-inlet convention)"
+    },
+    "zl": {
+      "inlets": [
+        {"id": 0, "type": "anything", "signal": false, "digest": "Input list", "hot": true},
+        {"id": 1, "type": "anything", "signal": false, "digest": "Argument list", "hot": true}
+      ],
+      "_note": "zl has two hot inlets"
+    },
+    "buddy": {
+      "inlets": [
+        {"id": 0, "type": "anything", "signal": false, "digest": "Input 1", "hot": true},
+        {"id": 1, "type": "anything", "signal": false, "digest": "Input 2", "hot": true}
+      ],
+      "_note": "buddy has all hot inlets -- outputs only when all inlets have received"
+    },
+    "thresh": {
+      "inlets": [
+        {"id": 0, "type": "int", "signal": false, "digest": "Input values", "hot": true},
+        {"id": 1, "type": "int", "signal": false, "digest": "Low threshold", "hot": false}
+      ]
+    },
+    "maximum": {
+      "inlets": [
+        {"id": 0, "type": "number", "signal": false, "digest": "Left value", "hot": true},
+        {"id": 1, "type": "number", "signal": false, "digest": "Right value", "hot": true}
+      ],
+      "_note": "maximum has two hot inlets"
+    },
+    "minimum": {
+      "inlets": [
+        {"id": 0, "type": "number", "signal": false, "digest": "Left value", "hot": true},
+        {"id": 1, "type": "number", "signal": false, "digest": "Right value", "hot": true}
+      ],
+      "_note": "minimum has two hot inlets"
+    }
+  },
+  "version_map": {
+    "9": {
+      "prefixes": ["array.", "string.", "abl.", "mc.abl."],
+      "exact": ["step", "step~"]
+    },
+    "8.1": {
+      "prefixes": ["mc."]
+    }
+  },
+  "variable_io_rules": {
+    "pack": {"inlet_count": "arg_count", "outlet_count": "fixed:1", "default_inlets": 2, "description": "Number of arguments determines number of inlets. Default: 2 inlets."},
+    "unpack": {"inlet_count": "fixed:1", "outlet_count": "arg_count", "default_outlets": 2, "description": "Number of arguments determines number of outlets. Default: 2 outlets."},
+    "trigger": {"inlet_count": "fixed:1", "outlet_count": "arg_count", "default_outlets": 2, "description": "Number of arguments determines number of outlets. Each argument (i, f, b, l, s) creates one outlet. Default: 2 outlets."},
+    "route": {"inlet_count": "fixed:1", "outlet_count": "arg_count+1", "default_outlets": 3, "description": "Number of arguments determines outlets + 1 unmatched outlet. Default: 3 outlets."},
+    "select": {"inlet_count": "fixed:1", "outlet_count": "arg_count+1", "default_outlets": 2, "description": "Number of arguments determines outlets + 1 unmatched outlet."},
+    "gate": {"inlet_count": "fixed:2", "outlet_count": "first_arg", "default_outlets": 1, "description": "First argument sets number of outlets."},
+    "switch": {"inlet_count": "first_arg+1", "outlet_count": "fixed:1", "default_inlets": 2, "description": "First argument + 1 sets number of inlets."},
+    "spray": {"inlet_count": "fixed:1", "outlet_count": "first_arg", "default_outlets": 2, "description": "First argument sets number of outlets."},
+    "funnel": {"inlet_count": "first_arg", "outlet_count": "fixed:1", "default_inlets": 2, "description": "First argument sets number of inlets."},
+    "matrix~": {"inlet_count": "first_arg", "outlet_count": "second_arg", "default_inlets": 1, "default_outlets": 1, "description": "First arg = inputs, second arg = outputs."},
+    "selector~": {"inlet_count": "first_arg+1", "outlet_count": "fixed:1", "default_inlets": 2, "description": "First argument + 1 sets number of inlets."},
+    "join": {"inlet_count": "first_arg", "outlet_count": "fixed:1", "default_inlets": 2, "description": "First argument sets number of inlets."},
+    "unjoin": {"inlet_count": "fixed:1", "outlet_count": "first_arg", "default_outlets": 2, "description": "First argument sets number of outlets."}
+  }
+}

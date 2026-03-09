@@ -1,0 +1,24 @@
+{
+  "_comment": "Common object pairings. Claude should suggest companions when using these objects.",
+  "pairs": [
+    {"objects": ["tapin~", "tapout~"], "relationship": "required_pair", "note": "tapin~ always needs tapout~ to read the delay buffer"},
+    {"objects": ["send~", "receive~"], "relationship": "required_pair", "note": "Audio bus send/receive -- names must match"},
+    {"objects": ["send", "receive"], "relationship": "required_pair", "note": "Control bus send/receive -- names must match"},
+    {"objects": ["notein", "stripnote"], "relationship": "common_pair", "note": "stripnote removes note-off messages from notein"},
+    {"objects": ["loadbang", "trigger"], "relationship": "common_pair", "note": "loadbang often feeds trigger for initialization fan-out"},
+    {"objects": ["buffer~", "play~"], "relationship": "common_pair", "note": "play~ reads from buffer~"},
+    {"objects": ["buffer~", "groove~"], "relationship": "common_pair", "note": "groove~ reads from buffer~ with loop control"},
+    {"objects": ["buffer~", "wave~"], "relationship": "common_pair", "note": "wave~ reads from buffer~ with phasor input"},
+    {"objects": ["buffer~", "record~"], "relationship": "common_pair", "note": "record~ writes to buffer~"},
+    {"objects": ["buffer~", "index~"], "relationship": "common_pair", "note": "index~ reads from buffer~ by sample index"},
+    {"objects": ["phasor~", "wave~"], "relationship": "common_pair", "note": "phasor~ drives wave~ for wavetable synthesis"},
+    {"objects": ["adsr~", "function"], "relationship": "common_pair", "note": "function can visually edit adsr~ parameters"},
+    {"objects": ["metro", "counter"], "relationship": "common_pair", "note": "metro drives counter for sequencing"},
+    {"objects": ["dac~", "ezdac~"], "relationship": "equivalent", "note": "ezdac~ is dac~ with UI toggle"},
+    {"objects": ["adc~", "ezadc~"], "relationship": "equivalent", "note": "ezadc~ is adc~ with UI toggle"},
+    {"objects": ["line~", "*~"], "relationship": "common_pair", "note": "line~ for smoothing, *~ for gain control"},
+    {"objects": ["snapshot~", "number"], "relationship": "common_pair", "note": "snapshot~ converts signal to control, number displays it"},
+    {"objects": ["poly~", "thispoly~"], "relationship": "required_pair", "note": "thispoly~ must exist inside poly~ subpatcher for voice management"},
+    {"objects": ["pfft~", "fftin~", "fftout~"], "relationship": "required_group", "note": "fftin~/fftout~ must exist inside pfft~ subpatcher"}
+  ]
+}

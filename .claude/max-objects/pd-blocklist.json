@@ -1,0 +1,24 @@
+{
+  "_comment": "Pure Data objects that do NOT exist in MAX/MSP. LLMs commonly confuse these.",
+  "blocklist": {
+    "osc~": {"max_equivalent": "cycle~", "reason": "PD sinusoidal oscillator"},
+    "lop~": {"max_equivalent": "onepole~", "reason": "PD one-pole lowpass filter"},
+    "hip~": {"max_equivalent": "onepole~", "reason": "PD one-pole highpass filter"},
+    "bp~": {"max_equivalent": "reson~", "reason": "PD bandpass filter"},
+    "vcf~": {"max_equivalent": "reson~ or biquad~", "reason": "PD voltage-controlled filter"},
+    "tabread~": {"max_equivalent": "index~ or play~ or wave~", "reason": "PD table read"},
+    "tabwrite~": {"max_equivalent": "poke~ or record~", "reason": "PD table write"},
+    "catch~": {"max_equivalent": "receive~", "reason": "PD audio bus receive"},
+    "throw~": {"max_equivalent": "send~", "reason": "PD audio bus send"},
+    "readsf~": {"max_equivalent": "sfplay~", "reason": "PD sound file reader"},
+    "writesf~": {"max_equivalent": "sfrecord~", "reason": "PD sound file writer"},
+    "tabread": {"max_equivalent": "table or coll", "reason": "PD table lookup"},
+    "tabwrite": {"max_equivalent": "table or coll", "reason": "PD table write"},
+    "soundfiler": {"max_equivalent": "buffer~", "reason": "PD sound file loader"},
+    "vline~": {"max_equivalent": "line~", "reason": "PD virtual line"},
+    "netsend": {"max_equivalent": "udpsend or mxj net.tcp.send", "reason": "PD network send"},
+    "netreceive": {"max_equivalent": "udpreceive or mxj net.tcp.recv", "reason": "PD network receive"},
+    "wrap~": {"max_equivalent": "pong~ @mode wrap", "reason": "PD wrap (MAX uses pong~ or %~ operator)"},
+    "clip~": {"max_equivalent": "clip~ exists in MAX too -- verify context", "reason": "Both PD and MAX have clip~"}
+  }
+}
