@@ -61,7 +61,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **FRM-01**: Multi-project isolation -- each MAX project gets its own directory, context, and state
 - [ ] **FRM-02**: Slash commands for project lifecycle: ideation, research, planning, execution, verification
 - [ ] **FRM-03**: Project status tracking per MAX project (stage, phase, completion state)
-- [ ] **FRM-04**: CLAUDE.md with MAX/MSP development rules, conventions, and object reference guidance
+- [x] **FRM-04**: CLAUDE.md with MAX/MSP development rules, conventions, and object reference guidance
 - [ ] **FRM-05**: Hooks for pre/post validation (file writes trigger patch validation)
 - [ ] **FRM-06**: Structured manual testing protocol for features requiring MAX to validate
 
@@ -138,7 +138,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FRM-01 | Phase 4 | Pending |
 | FRM-02 | Phase 4 | Pending |
 | FRM-03 | Phase 4 | Pending |
-| FRM-04 | Phase 1 | Pending |
+| FRM-04 | Phase 1 | Complete |
 | FRM-05 | Phase 2 | Pending |
 | FRM-06 | Phase 4 | Pending |
 
@@ -149,4 +149,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-08*
-*Last updated: 2026-03-09 after Plan 01-02 completion (ODB-02, ODB-03, ODB-04, ODB-07 complete)*
+*Last updated: 2026-03-09 after Plan 01-03 completion (Phase 1 complete: all ODB + FRM-04)*
