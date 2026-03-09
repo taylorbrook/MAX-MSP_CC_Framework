@@ -1,7 +1,7 @@
 # Requirements: MaxSystem
 
 **Defined:** 2026-03-08
-**Core Value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work — with as much automated validation as possible before manual testing.
+**Core Value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
 
 ## v1 Requirements
 
@@ -50,15 +50,15 @@ Requirements for initial release. Each maps to roadmap phases.
 
 - [ ] **AGT-01**: Domain-specialized agents for patch generation, DSP/Gen~, RNBO~, js/Node, externals
 - [ ] **AGT-02**: UI/layout specialist agent handling both presentation mode and patching mode
-- [ ] **AGT-03**: Generator-critic validation loops — critics review output before user sees it
+- [ ] **AGT-03**: Generator-critic validation loops -- critics review output before user sees it
 - [ ] **AGT-04**: DSP critic checks signal flow, audio rate consistency, feedback loops
 - [ ] **AGT-05**: Connection/structure critic validates object usage and patch architecture
-- [ ] **AGT-06**: Persistent agent memory — learned patterns accumulate across sessions and projects
+- [ ] **AGT-06**: Persistent agent memory -- learned patterns accumulate across sessions and projects
 - [ ] **AGT-07**: Agent memory write-back on session completion with deduplication
 
 ### Framework
 
-- [ ] **FRM-01**: Multi-project isolation — each MAX project gets its own directory, context, and state
+- [ ] **FRM-01**: Multi-project isolation -- each MAX project gets its own directory, context, and state
 - [ ] **FRM-02**: Slash commands for project lifecycle: ideation, research, planning, execution, verification
 - [ ] **FRM-03**: Project status tracking per MAX project (stage, phase, completion state)
 - [ ] **FRM-04**: CLAUDE.md with MAX/MSP development rules, conventions, and object reference guidance
@@ -75,11 +75,11 @@ Deferred to future release. Tracked but not in current roadmap.
 - **TMPL-02**: Template library for common effects (delay, reverb, filter, distortion)
 - **TMPL-03**: Template library for sequencing patterns (step, euclidean, generative)
 - **TMPL-04**: Template library for control patterns (MIDI I/O, OSC, sensor input)
-- **TMPL-05**: Composable templates — synth templates droppable into sequencer templates
+- **TMPL-05**: Composable templates -- synth templates droppable into sequencer templates
 
 ### Advanced Features
 
-- **ADV-01**: Intelligent object selection — context-aware recommendations based on task
+- **ADV-01**: Intelligent object selection -- context-aware recommendations based on task
 - **ADV-02**: MAX for Live integration (Live API, device types, parameter mapping)
 - **ADV-03**: Deep Jitter support (specialized agents, validation, templates for video/GL)
 - **ADV-04**: Patch-from-description natural language interface
@@ -101,52 +101,52 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ODB-01 | — | Pending |
-| ODB-02 | — | Pending |
-| ODB-03 | — | Pending |
-| ODB-04 | — | Pending |
-| ODB-05 | — | Pending |
-| ODB-06 | — | Pending |
-| ODB-07 | — | Pending |
-| PAT-01 | — | Pending |
-| PAT-02 | — | Pending |
-| PAT-03 | — | Pending |
-| PAT-04 | — | Pending |
-| PAT-05 | — | Pending |
-| PAT-06 | — | Pending |
-| PAT-07 | — | Pending |
-| PAT-08 | — | Pending |
-| CODE-01 | — | Pending |
-| CODE-02 | — | Pending |
-| CODE-03 | — | Pending |
-| CODE-04 | — | Pending |
-| CODE-05 | — | Pending |
-| CODE-06 | — | Pending |
-| CODE-07 | — | Pending |
-| EXT-01 | — | Pending |
-| EXT-02 | — | Pending |
-| EXT-03 | — | Pending |
-| EXT-04 | — | Pending |
-| EXT-05 | — | Pending |
-| AGT-01 | — | Pending |
-| AGT-02 | — | Pending |
-| AGT-03 | — | Pending |
-| AGT-04 | — | Pending |
-| AGT-05 | — | Pending |
-| AGT-06 | — | Pending |
-| AGT-07 | — | Pending |
-| FRM-01 | — | Pending |
-| FRM-02 | — | Pending |
-| FRM-03 | — | Pending |
-| FRM-04 | — | Pending |
-| FRM-05 | — | Pending |
-| FRM-06 | — | Pending |
+| ODB-01 | Phase 1 | Pending |
+| ODB-02 | Phase 1 | Pending |
+| ODB-03 | Phase 1 | Pending |
+| ODB-04 | Phase 1 | Pending |
+| ODB-05 | Phase 1 | Pending |
+| ODB-06 | Phase 1 | Pending |
+| ODB-07 | Phase 1 | Pending |
+| PAT-01 | Phase 2 | Pending |
+| PAT-02 | Phase 2 | Pending |
+| PAT-03 | Phase 2 | Pending |
+| PAT-04 | Phase 2 | Pending |
+| PAT-05 | Phase 2 | Pending |
+| PAT-06 | Phase 2 | Pending |
+| PAT-07 | Phase 2 | Pending |
+| PAT-08 | Phase 2 | Pending |
+| CODE-01 | Phase 3 | Pending |
+| CODE-02 | Phase 3 | Pending |
+| CODE-03 | Phase 3 | Pending |
+| CODE-04 | Phase 3 | Pending |
+| CODE-05 | Phase 3 | Pending |
+| CODE-06 | Phase 5 | Pending |
+| CODE-07 | Phase 5 | Pending |
+| EXT-01 | Phase 5 | Pending |
+| EXT-02 | Phase 5 | Pending |
+| EXT-03 | Phase 5 | Pending |
+| EXT-04 | Phase 5 | Pending |
+| EXT-05 | Phase 5 | Pending |
+| AGT-01 | Phase 4 | Pending |
+| AGT-02 | Phase 4 | Pending |
+| AGT-03 | Phase 4 | Pending |
+| AGT-04 | Phase 4 | Pending |
+| AGT-05 | Phase 4 | Pending |
+| AGT-06 | Phase 4 | Pending |
+| AGT-07 | Phase 4 | Pending |
+| FRM-01 | Phase 4 | Pending |
+| FRM-02 | Phase 4 | Pending |
+| FRM-03 | Phase 4 | Pending |
+| FRM-04 | Phase 1 | Pending |
+| FRM-05 | Phase 2 | Pending |
+| FRM-06 | Phase 4 | Pending |
 
 **Coverage:**
-- v1 requirements: 39 total
-- Mapped to phases: 0
-- Unmapped: 39 ⚠️
+- v1 requirements: 40 total
+- Mapped to phases: 40
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-08*
-*Last updated: 2026-03-08 after initial definition*
+*Last updated: 2026-03-08 after roadmap creation*
