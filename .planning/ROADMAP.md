@@ -47,11 +47,13 @@ Plans:
   3. Connection validation catches outlet/inlet index out-of-bounds and signal-to-control type mismatches before output
   4. Objects are positioned with top-to-bottom signal flow, readable spacing (~80-120px vertical, ~150-200px horizontal), and no overlaps
   5. Multi-layer validation pipeline runs automatically: JSON structure validity, object existence against database, connection bounds and type checks, domain-specific rules
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md -- Core data model (Patcher/Box/Patchline), object database interface, maxclass resolution, box sizing
+- [ ] 02-02-PLAN.md -- Column-based layout engine with topological sort and spacing
+- [ ] 02-03-PLAN.md -- Four-layer validation pipeline with auto-fix and domain rules
+- [ ] 02-04-PLAN.md -- Public API, file write hooks, end-to-end integration tests
 
 ### Phase 3: Code Generation
 **Goal**: Claude generates valid Gen~ GenExpr DSP code, js/V8 scripts, and Node for Max JavaScript that integrate correctly with MAX patches
@@ -107,11 +109,11 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Object Knowledge Base | 3/3 | Complete | 2026-03-09 |
-| 2. Patch Generation and Validation | 0/? | Not started | - |
+| 2. Patch Generation and Validation | 0/4 | Planned | - |
 | 3. Code Generation | 0/? | Not started | - |
 | 4. Agent System and Orchestration | 0/? | Not started | - |
 | 5. RNBO and External Development | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-09 (Phase 1 complete)*
+*Last updated: 2026-03-09 (Phase 2 planned)*
