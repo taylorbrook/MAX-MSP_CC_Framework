@@ -30,11 +30,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Each object entry includes its domain (Max, MSP, Jitter, MC), signal vs control inlet/outlet types, and MAX 8/9 version compatibility
   4. RNBO-compatible objects are identifiable as a distinct subset within the database
   5. CLAUDE.md exists with MAX/MSP development rules, object reference guidance, and conventions that Claude follows during generation
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md -- Extract all MAX XML refpages into domain-organized JSON files with test scaffold
+- [ ] 01-02-PLAN.md -- Enrich database with RNBO flags, version tags, aliases, relationships, and overrides
+- [ ] 01-03-PLAN.md -- Create CLAUDE.md development rules and database validation script
 
 ### Phase 2: Patch Generation and Validation
 **Goal**: Framework generates .maxpat files that open in MAX without errors, with readable layout and validated connections
@@ -105,7 +106,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Object Knowledge Base | 0/? | Not started | - |
+| 1. Object Knowledge Base | 0/3 | Planning complete | - |
 | 2. Patch Generation and Validation | 0/? | Not started | - |
 | 3. Code Generation | 0/? | Not started | - |
 | 4. Agent System and Orchestration | 0/? | Not started | - |
@@ -113,4 +114,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-08*
+*Last updated: 2026-03-09*
