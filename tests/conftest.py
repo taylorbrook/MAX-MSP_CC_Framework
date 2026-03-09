@@ -9,7 +9,9 @@ import pytest
 DB_ROOT = Path(__file__).resolve().parent.parent / ".claude" / "max-objects"
 
 VALID_DOMAINS = {"Max", "MSP", "Jitter", "MC", "Gen", "M4L", "Packages", "RNBO"}
-DOMAIN_DIRS = ["max", "msp", "jitter", "mc", "gen", "m4l", "packages", "rnbo"]
+# Order matters for object_by_name: core domains loaded last so they take priority
+# when objects with the same name exist in multiple domains (e.g., RNBO cycle~ vs MSP cycle~)
+DOMAIN_DIRS = ["rnbo", "packages", "m4l", "gen", "mc", "jitter", "msp", "max"]
 
 
 @pytest.fixture(scope="session")

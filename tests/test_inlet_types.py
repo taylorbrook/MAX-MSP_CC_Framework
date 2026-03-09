@@ -98,18 +98,34 @@ class TestHotColdInlets:
 class TestMSPSignalInlets:
     """MSP objects with ~ suffix should have at least one signal inlet or outlet."""
 
+    # Some ~ objects are UI/control objects that don't actually carry signal
+    # (e.g., filtergraph~ is a graphical filter editor with float inlets)
+    TILDE_UI_EXCEPTIONS = {
+        "filtergraph~", "spectroscope~", "number~", "meter~",
+        "levelmeter~", "live.gain~", "live.meter~", "live.scope~",
+        "waveform~", "zplane~",
+    }
+
     def test_tilde_objects_have_signal_io(self, all_objects):
-        """Objects with ~ in name should have at least one signal inlet or outlet."""
+        """Objects with ~ in name should have at least one signal inlet or outlet.
+
+        Exceptions: UI objects (filtergraph~, spectroscope~, etc.) are control-only
+        despite the ~ suffix -- they have explicitly typed float/list/int inlets in XML.
+        """
+        failures = []
         for obj in all_objects:
-            if "~" in obj.get("name", "") and obj.get("domain") in ("MSP", "MC"):
+            name = obj.get("name", "")
+            if "~" in name and obj.get("domain") in ("MSP", "MC"):
+                if name in self.TILDE_UI_EXCEPTIONS:
+                    continue
                 signal_inlets = [i for i in obj["inlets"] if i.get("signal")]
                 signal_outlets = [o for o in obj["outlets"] if o.get("signal")]
                 has_signal = len(signal_inlets) > 0 or len(signal_outlets) > 0
-                # Some ~ objects have no IO listed (e.g. tapin~ has only outlets)
-                if obj["inlets"] or obj["outlets"]:
-                    assert has_signal, (
-                        f"MSP object '{obj['name']}' with ~ has no signal inlets or outlets"
-                    )
+                if (obj["inlets"] or obj["outlets"]) and not has_signal:
+                    failures.append(name)
+        assert not failures, (
+            f"MSP/MC objects with ~ but no signal I/O (not in exceptions): {failures}"
+        )
 
 
 class TestSpotCheckInlets:

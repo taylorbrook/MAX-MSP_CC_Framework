@@ -1,7 +1,6 @@
 """ODB-02: Verify extraction counts and coverage."""
 
 import pytest
-from conftest import DB_ROOT, DOMAIN_DIRS
 
 
 class TestSourceCoverage:

@@ -1,0 +1,22 @@
+{
+  "total_files_found": 2015,
+  "total_objects": 2015,
+  "domain_counts": {
+    "max": 470,
+    "msp": 248,
+    "jitter": 210,
+    "mc": 215,
+    "gen": 189,
+    "m4l": 33,
+    "rnbo": 560,
+    "packages": 87
+  },
+  "error_count": 0,
+  "errors": [],
+  "inlet_type_fallback_count": 0,
+  "variable_io_count": 17,
+  "empty_inlets_count": 133,
+  "empty_outlets_count": 159,
+  "extraction_timestamp": "2026-03-09T21:33:41.724900+00:00",
+  "max_installation_path": "/Applications/Max.app/Contents/Resources/C74"
+}

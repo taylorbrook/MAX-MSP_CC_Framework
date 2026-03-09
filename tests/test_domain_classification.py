@@ -1,7 +1,8 @@
 """ODB-05: Verify domain classification for every object."""
 
 import pytest
-from conftest import VALID_DOMAINS
+
+VALID_DOMAINS = {"Max", "MSP", "Jitter", "MC", "Gen", "M4L", "Packages", "RNBO"}
 
 
 class TestDomainClassification:

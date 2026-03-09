@@ -342,6 +342,46 @@ def assign_domain(name: str, module: str, source_domain_hint: str) -> str:
     return source_domain_hint
 
 
+def infer_signal_types_for_tilde_objects(obj: dict) -> dict:
+    """For MSP/MC objects with ~ in their name, infer signal types from INLET_TYPE/OUTLET_TYPE.
+
+    Many MSP objects have generic 'INLET_TYPE' in XML which gets normalized to 'control'.
+    For audio objects (name ends with ~), these should be 'signal' instead.
+    MC objects (mc.xxx~) similarly should use 'mc_signal'.
+    """
+    name = obj.get("name", "")
+    module = obj.get("module", "")
+    domain = obj.get("domain", "")
+
+    if "~" not in name:
+        return obj
+
+    is_mc = name.startswith("mc.")
+
+    # Infer inlet types
+    for inlet in obj.get("inlets", []):
+        if inlet.get("type") == "control":
+            if is_mc:
+                inlet["type"] = "mc_signal"
+            else:
+                inlet["type"] = "signal"
+            inlet["signal"] = True
+            # Re-apply hot: signal inlets are hot for MSP/MC
+            if module in ("msp",) or domain in ("MSP", "MC"):
+                inlet["hot"] = True
+
+    # Infer outlet types
+    for outlet in obj.get("outlets", []):
+        if outlet.get("type") == "control":
+            if is_mc:
+                outlet["type"] = "mc_signal"
+            else:
+                outlet["type"] = "signal"
+            outlet["signal"] = True
+
+    return obj
+
+
 # ---------------------------------------------------------------------------
 # Standard refpage parser
 # ---------------------------------------------------------------------------
@@ -366,7 +406,11 @@ def parse_standard_xml(filepath: Path, module_hint: str, domain_hint: str) -> di
     module = normalize_module(raw_module, module_hint)
     category = root.get("category", "")
 
-    domain = assign_domain(name, module, domain_hint)
+    # When module was empty in XML and we're parsing a package, prefer the package domain
+    if not raw_module.strip() and domain_hint == "Packages":
+        domain = "Packages"
+    else:
+        domain = assign_domain(name, module, domain_hint)
 
     # Extract digest
     digest = ""
@@ -508,6 +552,9 @@ def parse_standard_xml(filepath: Path, module_hint: str, domain_hint: str) -> di
 
     if io_rule:
         obj["io_rule"] = io_rule
+
+    # Post-process: infer signal types for ~ objects with generic INLET_TYPE
+    obj = infer_signal_types_for_tilde_objects(obj)
 
     return obj
 
