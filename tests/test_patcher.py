@@ -166,7 +166,7 @@ class TestBoxSerialization:
         bd = b.to_dict()
         assert bd["box"]["numinlets"] == 1
         assert bd["box"]["numoutlets"] == 1
-        assert bd["box"]["outlettype"] == ["int"]
+        assert bd["box"]["outlettype"] == [""]  # control outlets use "" per research
 
     def test_ui_box_fixed_size(self):
         """UI box has fixed-size patching_rect."""
