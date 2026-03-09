@@ -9,12 +9,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Object Database
 
-- [ ] **ODB-01**: Framework includes structured knowledge base of MAX objects with name, maxclass, inlets, outlets, arguments, and message types
-- [ ] **ODB-02**: Object database sourced from MAX installation XML refpages (1,924 files), py2max MaxRef, and manual curation
+- [x] **ODB-01**: Framework includes structured knowledge base of MAX objects with name, maxclass, inlets, outlets, arguments, and message types
+- [x] **ODB-02**: Object database sourced from MAX installation XML refpages (1,924 files), py2max MaxRef, and manual curation
 - [ ] **ODB-03**: Objects version-tagged for MAX 8 vs MAX 9 compatibility
 - [ ] **ODB-04**: MAX 9 objects included (ABL devices, step sequencer, array, string objects)
-- [ ] **ODB-05**: Object entries include domain classification (Max, MSP, Jitter, MC)
-- [ ] **ODB-06**: Object entries include signal vs control inlet/outlet types
+- [x] **ODB-05**: Object entries include domain classification (Max, MSP, Jitter, MC)
+- [x] **ODB-06**: Object entries include signal vs control inlet/outlet types
 - [ ] **ODB-07**: RNBO-compatible object subset marked separately in database
 
 ### Patch Generation
@@ -101,12 +101,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| ODB-01 | Phase 1 | Pending |
-| ODB-02 | Phase 1 | Pending |
+| ODB-01 | Phase 1 | Complete |
+| ODB-02 | Phase 1 | Complete |
 | ODB-03 | Phase 1 | Pending |
 | ODB-04 | Phase 1 | Pending |
-| ODB-05 | Phase 1 | Pending |
-| ODB-06 | Phase 1 | Pending |
+| ODB-05 | Phase 1 | Complete |
+| ODB-06 | Phase 1 | Complete |
 | ODB-07 | Phase 1 | Pending |
 | PAT-01 | Phase 2 | Pending |
 | PAT-02 | Phase 2 | Pending |
