@@ -18,6 +18,9 @@ H_GUTTER = 70           # Horizontal gutter between columns (center of 60-80 ran
 # Subpatcher default window size
 SUBPATCHER_RECT = [100.0, 100.0, 400.0, 300.0]
 
+# Gen~ inner patcher background color (light gray, matches MAX default)
+GEN_PATCHER_BGCOLOR = [0.9, 0.9, 0.9, 1.0]
+
 # Complete MAX 9 patcher wrapper defaults (from 02-RESEARCH.md Pattern 1)
 DEFAULT_PATCHER_PROPS = {
     "fileversion": 1,

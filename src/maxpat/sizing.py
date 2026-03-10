@@ -61,6 +61,8 @@ UI_SIZES: dict[str, tuple[float, float] | None] = {
     "gain~":         (22.0, 140.0),
     "ezdac~":        (45.0, 45.0),
     "ezadc~":        (45.0, 45.0),
+    # Gen~
+    "gen~":          (150.0, 22.0),
     # Max for Live UI
     "live.dial":     (44.0, 66.0),
     "live.slider":   (39.0, 87.0),

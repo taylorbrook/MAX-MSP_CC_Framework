@@ -36,6 +36,8 @@ UI_MAXCLASSES: frozenset[str] = frozenset({
     # MSP UI
     "meter~", "levelmeter~", "spectroscope~", "scope~",
     "number~", "gain~", "ezdac~", "ezadc~",
+    # Gen~ (uses own maxclass, not "newobj")
+    "gen~",
     # Max for Live UI
     "live.dial", "live.slider", "live.numbox",
     "live.toggle", "live.button", "live.text",
