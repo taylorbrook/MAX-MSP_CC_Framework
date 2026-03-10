@@ -1,18 +1,23 @@
-"""External project scaffolding, code generation, and help patch generation.
+"""External project scaffolding, code generation, build, and help patch generation.
 
 Provides:
 - scaffold_external: Creates complete Min-DevKit project directory structure
   with CMakeLists.txt, C++ source file, and .maxhelp help patch.
 - generate_external_code: Returns C++ code string for an archetype.
 - generate_help_patch: Builds a Patcher for the .maxhelp file.
+- setup_min_devkit: Initializes Min-DevKit as a git submodule.
+- build_external: cmake/make build loop with auto-fix and .mxo validation.
+- auto_fix: Attempts to fix known compiler error patterns.
 
 Three supported archetypes: message, dsp, scheduler.
-Build and compilation are handled in Plan 03 (not in this module).
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
+import re
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -270,3 +275,289 @@ def scaffold_external(
         "cmake": cmake_path,
         "help": help_path,
     }
+
+
+# ── Plan 03: Build system integration ────────────────────────────────────
+
+
+def setup_min_devkit(ext_dir: Path) -> bool:
+    """Initialize Min-DevKit as a git submodule in the external project.
+
+    Checks if min-devkit/source/min-api already exists (already set up).
+    If not, runs ``git submodule add`` with recursive init to pull
+    min-devkit and its nested min-api submodule.
+
+    Args:
+        ext_dir: Root directory of the external project.
+
+    Returns:
+        True if min-devkit is present (or successfully initialized),
+        False if setup failed.
+    """
+    min_api_marker = ext_dir / "min-devkit" / "source" / "min-api"
+    if min_api_marker.exists():
+        return True
+
+    # Attempt git submodule add
+    try:
+        result = subprocess.run(
+            [
+                "git", "submodule", "add",
+                "https://github.com/Cycling74/min-devkit.git",
+                "min-devkit",
+            ],
+            cwd=str(ext_dir),
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if result.returncode != 0:
+            return False
+
+        # Recursive init for nested submodules (min-api)
+        result = subprocess.run(
+            ["git", "submodule", "update", "--init", "--recursive"],
+            cwd=str(ext_dir),
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if result.returncode != 0:
+            return False
+
+        # Verify min-api headers exist after setup
+        return min_api_marker.exists()
+
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return False
+
+
+def build_external(
+    ext_dir: Path,
+    max_attempts: int = 5,
+) -> "BuildResult":
+    """Build a Min-DevKit external using cmake/make with auto-fix loop.
+
+    Steps per attempt:
+    1. cmake -G "Unix Makefiles" .. (configure)
+    2. cmake --build . --config Release (build)
+    3. On success: find .mxo, validate, return BuildResult(success=True)
+    4. On error: parse errors, attempt auto_fix, track error hashes
+    5. If same error hash seen twice, stop (loop detected)
+    6. After max_attempts: return BuildResult(success=False)
+
+    Uses "Unix Makefiles" generator (NOT Xcode) for headless operation
+    per Pitfall #5 in research.
+
+    Args:
+        ext_dir: Root directory of the external project (contains
+            source/, CMakeLists.txt).
+        max_attempts: Maximum number of build attempts before giving up.
+
+    Returns:
+        BuildResult with success status, .mxo path, errors, and attempts.
+    """
+    from src.maxpat.ext_validation import BuildResult, validate_mxo, parse_compiler_errors
+
+    build_dir = ext_dir / "build"
+    build_dir.mkdir(exist_ok=True)
+
+    seen_error_hashes: set[str] = set()
+    last_errors: list[str] = []
+
+    for attempt in range(1, max_attempts + 1):
+        # Step 1: Configure
+        configure_result = subprocess.run(
+            ["cmake", "-G", "Unix Makefiles", ".."],
+            cwd=str(build_dir),
+            capture_output=True,
+            text=True,
+            timeout=60,
+        )
+        if configure_result.returncode != 0:
+            # Parse configure errors
+            parsed = parse_compiler_errors(configure_result.stderr)
+            last_errors = [e["message"] for e in parsed] if parsed else [configure_result.stderr.strip()]
+
+            # Check for loop
+            error_hash = _hash_errors(last_errors)
+            if error_hash in seen_error_hashes:
+                return BuildResult(
+                    success=False,
+                    mxo_path=None,
+                    errors=last_errors,
+                    attempts=attempt,
+                    message=f"Build failed: repeated configure error after {attempt} attempts",
+                )
+            seen_error_hashes.add(error_hash)
+
+            # Try auto-fix on parsed errors
+            if parsed and auto_fix(parsed, ext_dir):
+                continue
+            # No fix possible -- keep trying until max
+            continue
+
+        # Step 2: Build
+        build_result = subprocess.run(
+            ["cmake", "--build", ".", "--config", "Release"],
+            cwd=str(build_dir),
+            capture_output=True,
+            text=True,
+            timeout=120,
+        )
+        if build_result.returncode == 0:
+            # Step 3: Find and validate .mxo
+            mxo_files = list(build_dir.rglob("*.mxo"))
+            if mxo_files:
+                mxo_path = mxo_files[0]
+                valid, msg = validate_mxo(mxo_path)
+                return BuildResult(
+                    success=valid,
+                    mxo_path=mxo_path if valid else None,
+                    errors=[] if valid else [msg],
+                    attempts=attempt,
+                    message=msg,
+                )
+            return BuildResult(
+                success=False,
+                mxo_path=None,
+                errors=["Build succeeded but no .mxo found"],
+                attempts=attempt,
+                message="Build succeeded but no .mxo output found",
+            )
+
+        # Step 4: Parse compiler errors
+        parsed = parse_compiler_errors(build_result.stderr)
+        last_errors = [e["message"] for e in parsed] if parsed else [build_result.stderr.strip()]
+
+        # Step 5: Loop detection
+        error_hash = _hash_errors(last_errors)
+        if error_hash in seen_error_hashes:
+            return BuildResult(
+                success=False,
+                mxo_path=None,
+                errors=last_errors,
+                attempts=attempt,
+                message=f"Build failed: same errors recurring after {attempt} attempts",
+            )
+        seen_error_hashes.add(error_hash)
+
+        # Step 6: Attempt auto-fix
+        if parsed:
+            auto_fix(parsed, ext_dir)
+
+    return BuildResult(
+        success=False,
+        mxo_path=None,
+        errors=last_errors,
+        attempts=max_attempts,
+        message=f"Build failed after {max_attempts} attempts",
+    )
+
+
+def _hash_errors(errors: list[str]) -> str:
+    """Create a hash of error messages for loop detection."""
+    combined = "\n".join(sorted(errors))
+    return hashlib.md5(combined.encode()).hexdigest()
+
+
+# Regex patterns for auto-fixable compiler errors
+_MISSING_SEMICOLON_RE = re.compile(
+    r"expected\s+';'",
+    re.IGNORECASE,
+)
+_MISSING_INCLUDE_RE = re.compile(
+    r"'([^']+\.h)'\s+file\s+not\s+found",
+    re.IGNORECASE,
+)
+
+
+def auto_fix(
+    errors: list[dict],
+    ext_dir: Path,
+) -> bool:
+    """Attempt to fix known compiler error patterns in source files.
+
+    Handles:
+    - Missing semicolons: adds `;` at the indicated line.
+    - Missing includes: adds ``#include "header.h"`` to the source file.
+
+    Only fixes well-known patterns. Complex or unknown errors are
+    left unfixed (returns False), causing the caller to escalate
+    per Pitfall #6.
+
+    Args:
+        errors: Parsed compiler error dicts from parse_compiler_errors.
+        ext_dir: Root directory of the external project.
+
+    Returns:
+        True if at least one fix was applied, False if all errors
+        are unfixable.
+    """
+    any_fixed = False
+
+    for error in errors:
+        file_path = Path(error["file"])
+        if not file_path.is_absolute():
+            file_path = ext_dir / file_path
+        if not file_path.exists():
+            continue
+
+        message = error["message"]
+        line_num = error["line"]
+
+        # Fix: missing semicolon
+        if _MISSING_SEMICOLON_RE.search(message):
+            if _fix_missing_semicolon(file_path, line_num):
+                any_fixed = True
+                continue
+
+        # Fix: missing include
+        include_match = _MISSING_INCLUDE_RE.search(message)
+        if include_match:
+            header = include_match.group(1)
+            if _fix_missing_include(file_path, header):
+                any_fixed = True
+                continue
+
+    return any_fixed
+
+
+def _fix_missing_semicolon(file_path: Path, line_num: int) -> bool:
+    """Add a semicolon at the end of the indicated line."""
+    try:
+        lines = file_path.read_text().splitlines(keepends=True)
+        if line_num < 1 or line_num > len(lines):
+            return False
+
+        idx = line_num - 1
+        line = lines[idx].rstrip("\n")
+        if not line.rstrip().endswith(";"):
+            lines[idx] = line.rstrip() + ";\n"
+            file_path.write_text("".join(lines))
+            return True
+        return False
+    except OSError:
+        return False
+
+
+def _fix_missing_include(file_path: Path, header: str) -> bool:
+    """Add a missing #include directive at the top of the file."""
+    try:
+        content = file_path.read_text()
+        include_line = f'#include "{header}"'
+        if include_line in content:
+            return False  # Already present
+
+        # Insert after existing includes or at the top
+        lines = content.splitlines(keepends=True)
+        insert_idx = 0
+        for i, line in enumerate(lines):
+            if line.strip().startswith("#include"):
+                insert_idx = i + 1
+
+        lines.insert(insert_idx, include_line + "\n")
+        file_path.write_text("".join(lines))
+        return True
+    except OSError:
+        return False
