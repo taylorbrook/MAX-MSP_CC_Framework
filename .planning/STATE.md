@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Phase 4 context gathered
-last_updated: "2026-03-10T05:21:54.765Z"
-last_activity: 2026-03-10 -- Plan 03-02 executed (N4M/js code generation, code validation, hook extension)
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-03-10T15:16:24.429Z"
+last_activity: 2026-03-10 -- Plan 04-02 executed (persistent memory system with dual-scope storage and deduplication)
 progress:
   total_phases: 5
   completed_phases: 3
-  total_plans: 9
-  completed_plans: 9
+  total_plans: 15
+  completed_plans: 11
   percent: 100
 ---
 
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Phase 3 complete. Ready for Phase 4: Agent Framework
+**Current focus:** Phase 4 in progress -- Agent System and Orchestration
 
 ## Current Position
 
-Phase: 3 of 5 (Code Generation) -- COMPLETE
-Plan: 2 of 2 in current phase (2 complete)
-Status: Phase 3 complete -- all code generation capabilities implemented
-Last activity: 2026-03-10 -- Plan 03-02 executed (N4M/js code generation, code validation, hook extension)
+Phase: 4 of 5 (Agent System and Orchestration) -- IN PROGRESS
+Plan: 2 of 6 in current phase (2 complete)
+Status: Plan 04-02 complete -- persistent memory system with deduplication
+Last activity: 2026-03-10 -- Plan 04-02 executed (persistent memory system with dual-scope storage and deduplication)
 
-Progress: [██████████] 100%
+Progress: [███████░░░] 73%
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Progress: [██████████] 100%
 | Phase 02 P04 | 8min | 2 tasks | 6 files |
 | Phase 03 P01 | 5min | 3 tasks | 10 files |
 | Phase 03 P02 | 5min | 3 tasks | 7 files |
+| Phase 04 P02 | 3min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,9 @@ Recent decisions affecting current work:
 - [03-02]: All code validation is report-only (no auto-fix) per user decision
 - [03-02]: GenExpr validator skips declared variable names from Param/History/Buffer/Data when checking operators
 - [03-02]: detect_js_type checks require('max-api') first (N4M), then inlets= (js V8)
+- [Phase 04]: Global memory uses per-domain subdirectories; project memory uses flat single file
+- [Phase 04]: Memory dedup by domain + pattern name (case-insensitive) at write time
+- [Phase 04]: base_dir parameter on MemoryStore for test isolation via tmp_path
 
 ### Pending Todos
 
@@ -117,6 +121,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T05:21:54.763Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-agent-system-and-orchestration/04-CONTEXT.md
+Last session: 2026-03-10T15:16:20.278Z
+Stopped at: Completed 04-02-PLAN.md
+Resume file: None

@@ -53,8 +53,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [ ] **AGT-03**: Generator-critic validation loops -- critics review output before user sees it
 - [ ] **AGT-04**: DSP critic checks signal flow, audio rate consistency, feedback loops
 - [ ] **AGT-05**: Connection/structure critic validates object usage and patch architecture
-- [ ] **AGT-06**: Persistent agent memory -- learned patterns accumulate across sessions and projects
-- [ ] **AGT-07**: Agent memory write-back on session completion with deduplication
+- [x] **AGT-06**: Persistent agent memory -- learned patterns accumulate across sessions and projects
+- [x] **AGT-07**: Agent memory write-back on session completion with deduplication
 
 ### Framework
 
@@ -133,8 +133,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AGT-03 | Phase 4 | Pending |
 | AGT-04 | Phase 4 | Pending |
 | AGT-05 | Phase 4 | Pending |
-| AGT-06 | Phase 4 | Pending |
-| AGT-07 | Phase 4 | Pending |
+| AGT-06 | Phase 4 | Complete |
+| AGT-07 | Phase 4 | Complete |
 | FRM-01 | Phase 4 | Pending |
 | FRM-02 | Phase 4 | Pending |
 | FRM-03 | Phase 4 | Pending |
