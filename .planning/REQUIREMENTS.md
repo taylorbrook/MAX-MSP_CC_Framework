@@ -44,7 +44,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **EXT-02**: External development supports Min-DevKit and/or Max SDK (research determines choice)
 - [x] **EXT-03**: External inlet/outlet setup and message handling code generation
 - [x] **EXT-04**: External DSP processing method generation for audio objects
-- [ ] **EXT-05**: External build and compilation support for macOS (Apple Silicon)
+- [x] **EXT-05**: External build and compilation support for macOS (Apple Silicon)
 
 ### Agent System
 
@@ -127,7 +127,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXT-02 | Phase 5 | Complete |
 | EXT-03 | Phase 5 | Complete |
 | EXT-04 | Phase 5 | Complete |
-| EXT-05 | Phase 5 | Pending |
+| EXT-05 | Phase 5 | Complete |
 | AGT-01 | Phase 4 | Complete |
 | AGT-02 | Phase 4 | Complete |
 | AGT-03 | Phase 4 | Complete |

@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in-progress
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-03-10T17:56:39Z"
-last_activity: 2026-03-10 -- Plan 05-01 executed (RNBODatabase + add_rnbo + 23 tests)
+stopped_at: Completed 05-03-PLAN.md
+last_updated: "2026-03-10T18:06:20.370Z"
+last_activity: 2026-03-10 -- Plan 05-03 executed (build system, .mxo validation, 21 new tests)
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 19
   completed_plans: 18
-  percent: 94
+  percent: 95
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 5 of 5 (RNBO and External Development) -- IN PROGRESS
-Plan: 3 of 4 in current phase (3 complete)
-Status: Plan 05-01 complete -- RNBODatabase + add_rnbo + 23 tests
-Last activity: 2026-03-10 -- Plan 05-01 executed (RNBODatabase + add_rnbo + 23 tests)
+Plan: 4 of 4 in current phase (3 complete)
+Status: Plan 05-03 complete -- build_external + validate_mxo + auto-fix loop
+Last activity: 2026-03-10 -- Plan 05-03 executed (build system, .mxo validation, 21 new tests)
 
-Progress: [█████████░] 94%
+Progress: [██████████] 95%
 
 ## Performance Metrics
 
@@ -66,6 +66,7 @@ Progress: [█████████░] 94%
 | Phase 04 P06 | 3min | 2 tasks | 11 files |
 | Phase 05 P02 | 4min | 2 tasks | 3 files |
 | Phase 05 P01 | 4min | 2 tasks | 3 files |
+| Phase 05 P03 | 4min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -142,6 +143,9 @@ Recent decisions affecting current work:
 - [05-01]: RNBO validation uses 3 layers: rnbo-objects, rnbo-target, rnbo-contained (parallel to main validation pipeline)
 - [05-01]: Self-containedness enforcement is error-level (strict) per user decision
 - [05-01]: C++ embedded target uses 128 param limit (MIDI CC count practical estimate)
+- [Phase 05-03]: Unix Makefiles generator (not Xcode) for headless cmake builds per Pitfall #5
+- [Phase 05-03]: Error hash tracking via MD5 of sorted error messages for build loop detection
+- [Phase 05-03]: Auto-fix limited to missing semicolons and missing includes only (per Pitfall #6)
 
 ### Pending Todos
 
@@ -155,6 +159,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T17:56:39Z
-Stopped at: Completed 05-01-PLAN.md
-Resume file: .planning/phases/05-rnbo-and-external-development/05-CONTEXT.md
+Last session: 2026-03-10T18:06:20.368Z
+Stopped at: Completed 05-03-PLAN.md
+Resume file: None
