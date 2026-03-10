@@ -261,3 +261,172 @@ class TestMaxclassFix:
         from src.maxpat.maxclass_map import UI_MAXCLASSES
 
         assert "gen~" in UI_MAXCLASSES
+
+
+# ---------------------------------------------------------------------------
+# TestGenBox -- add_gen method on Patcher (CODE-02)
+# ---------------------------------------------------------------------------
+
+class TestGenBox:
+    """Tests for gen~ codebox embedding in Patcher (CODE-02)."""
+
+    def test_add_gen_creates_box(self):
+        """add_gen returns (Box, Patcher) tuple, outer box maxclass is 'gen~'."""
+        from src.maxpat.patcher import Patcher, Box
+
+        p = Patcher()
+        code = "out1 = in1 * 0.5;"
+        box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
+
+        assert isinstance(box, Box)
+        assert isinstance(inner, Patcher)
+        assert box.maxclass == "gen~"
+
+    def test_add_gen_outer_box_io(self):
+        """Outer gen~ box has correct numinlets, numoutlets, outlettype."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1 + in2;"
+        box, inner = p.add_gen(code, num_inputs=2, num_outputs=1)
+
+        assert box.numinlets == 2
+        assert box.numoutlets == 1
+        assert box.outlettype == ["signal"]
+
+    def test_add_gen_multi_output_signal(self):
+        """Multi-output gen~ has all signal outlets."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1;\nout2 = in1 * 0.5;"
+        box, inner = p.add_gen(code, num_inputs=1, num_outputs=2)
+
+        assert box.numoutlets == 2
+        assert box.outlettype == ["signal", "signal"]
+
+    def test_add_gen_inner_patcher(self):
+        """Inner patcher has codebox + in + out objects."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1 * 0.5;"
+        box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
+
+        # inner should have 3 boxes: in 1, codebox, out 1
+        assert len(inner.boxes) == 3
+
+        maxclasses = [b.maxclass for b in inner.boxes]
+        assert "codebox" in maxclasses
+
+    def test_add_gen_patchlines(self):
+        """Inner patcher has correct patchlines: in->codebox->out."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1 * 0.5;"
+        box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
+
+        # 2 patchlines: in->codebox, codebox->out
+        assert len(inner.lines) == 2
+
+    def test_add_gen_io_autodetect(self):
+        """Code with in1 and out1 auto-detects 1 input, 1 output."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1 * 0.5;"
+        box, inner = p.add_gen(code)
+
+        assert box.numinlets == 1
+        assert box.numoutlets == 1
+
+    def test_add_gen_multi_io_autodetect(self):
+        """Code with in1, in2 and out1, out2 auto-detects correctly."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1 + in2;\nout2 = in1 - in2;"
+        box, inner = p.add_gen(code)
+
+        assert box.numinlets == 2
+        assert box.numoutlets == 2
+
+    def test_add_gen_serialization(self):
+        """to_dict() produces valid gen~ JSON structure with nested patcher."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1 * 0.5;"
+        box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
+
+        d = box.to_dict()
+        assert d["box"]["maxclass"] == "gen~"
+        assert "patcher" in d["box"]
+        assert "boxes" in d["box"]["patcher"]
+        assert "lines" in d["box"]["patcher"]
+
+    def test_add_gen_codebox_in_serialization(self):
+        """Serialized inner patcher contains codebox with 'code' attribute."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1 * 0.5;"
+        box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
+
+        d = box.to_dict()
+        inner_boxes = d["box"]["patcher"]["boxes"]
+
+        codebox = None
+        for bw in inner_boxes:
+            if bw["box"]["maxclass"] == "codebox":
+                codebox = bw["box"]
+                break
+
+        assert codebox is not None
+        assert codebox["code"] == code
+
+    def test_add_gen_generate_patch(self):
+        """Full pipeline: add_gen + generate_patch produces valid .maxpat."""
+        from src.maxpat.patcher import Patcher
+        from src.maxpat import generate_patch
+
+        p = Patcher()
+        code = "out1 = in1 * 0.5;"
+        box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
+
+        # Add dac~ so patch is complete
+        dac = p.add_box("dac~")
+        p.add_connection(box, 0, dac, 0)
+
+        patch_dict, results = generate_patch(p)
+
+        assert "patcher" in patch_dict
+        # Find the gen~ box in serialized output
+        gen_boxes = [
+            b for b in patch_dict["patcher"]["boxes"]
+            if b["box"]["maxclass"] == "gen~"
+        ]
+        assert len(gen_boxes) == 1
+        assert "patcher" in gen_boxes[0]["box"]
+
+    def test_add_gen_zero_inputs(self):
+        """Generator with no inputs (pure oscillator) creates gen~ with 0 inlets."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "Param freq(440, min=20, max=20000);\nout1 = cycle(freq);"
+        box, inner = p.add_gen(code, num_inputs=0, num_outputs=1)
+
+        assert box.numinlets == 0
+        assert box.numoutlets == 1
+
+    def test_add_gen_in_patcher_boxes(self):
+        """add_gen appends the gen~ box to the patcher's boxes list."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        code = "out1 = in1 * 0.5;"
+        box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
+
+        assert box in p.boxes
