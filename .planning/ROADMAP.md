@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 3: Code Generation** - Gen~ GenExpr, js/V8, and Node for Max code generation with syntax validation
 - [x] **Phase 4: Agent System and Orchestration** - Domain-specialized agents, generator-critic loops, persistent memory, multi-project isolation, and slash commands (completed 2026-03-10)
 - [ ] **Phase 5: RNBO and External Development** - RNBO-compatible patch generation with export awareness and C/C++ external scaffolding via Min-DevKit
-- [ ] **Phase 6: Fix Skill Documentation Signatures** - Correct 9 API signature mismatches in skill/command documentation files (gap closure from v1.0 audit)
+- [x] **Phase 6: Fix Skill Documentation Signatures** - Correct 9 API signature mismatches in skill/command documentation files (gap closure from v1.0 audit)
 
 ## Phase Details
 
@@ -121,7 +121,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 06-01-PLAN.md -- Add signature-accuracy tests and fix all 9 API signature mismatches in SKILL.md and command files
+- [x] 06-01-PLAN.md -- Add signature-accuracy tests and fix all 9 API signature mismatches in SKILL.md and command files
 
 ## Progress
 
@@ -135,7 +135,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 3. Code Generation | 1/2 | In Progress|  |
 | 4. Agent System and Orchestration | 6/6 | Complete   | 2026-03-10 |
 | 5. RNBO and External Development | 2/4 | In Progress | - |
-| 6. Fix Skill Documentation Signatures | 0/1 | Planned | - |
+| 6. Fix Skill Documentation Signatures | 1/1 | Complete | 2026-03-10 |
 
 ---
 *Roadmap created: 2026-03-08*

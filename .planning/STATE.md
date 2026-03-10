@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 05-04-PLAN.md (v1.0 milestone complete)
-last_updated: "2026-03-10T18:21:24.276Z"
-last_activity: 2026-03-10 -- Plan 05-04 executed (RNBO/ext critics, agent upgrades, public API)
+stopped_at: Completed 06-01-PLAN.md (Phase 6 complete -- gap closure DOC-SIG-01)
+last_updated: "2026-03-10T20:18:25Z"
+last_activity: 2026-03-10 -- Plan 06-01 executed (fix skill documentation signatures)
 progress:
-  total_phases: 5
-  completed_phases: 5
-  total_plans: 19
-  completed_plans: 19
+  total_phases: 6
+  completed_phases: 6
+  total_plans: 20
+  completed_plans: 20
   percent: 100
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v1.0 milestone COMPLETE -- all 5 phases finished
+**Current focus:** v1.0 milestone COMPLETE -- all 6 phases finished (including gap closure)
 
 ## Current Position
 
-Phase: 5 of 5 (RNBO and External Development) -- COMPLETE
-Plan: 4 of 4 in current phase (4 complete)
-Status: Phase 5 complete -- all RNBO and external capabilities implemented
-Last activity: 2026-03-10 -- Plan 05-04 executed (RNBO/ext critics, agent upgrades, public API)
+Phase: 6 of 6 (Fix Skill Documentation Signatures) -- COMPLETE
+Plan: 1 of 1 in current phase (1 complete)
+Status: Phase 6 complete -- all API signature mismatches fixed, DOC-SIG-01 closed
+Last activity: 2026-03-10 -- Plan 06-01 executed (fix skill documentation signatures)
 
 Progress: [██████████] 100%
 
@@ -68,6 +68,7 @@ Progress: [██████████] 100%
 | Phase 05 P01 | 4min | 2 tasks | 3 files |
 | Phase 05 P03 | 4min | 2 tasks | 3 files |
 | Phase 05 P04 | 5min | 3 tasks | 10 files |
+| Phase 06 P01 | 3min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -151,6 +152,8 @@ Recent decisions affecting current work:
 - [Phase 05-04]: External critic checks MIN_EXTERNAL, c74_min.h, class/macro match, archetype-specific requirements
 - [Phase 05-04]: review_patch auto-detects rnbo~ boxes by scanning maxclass and invokes RNBO critic
 - [Phase 05-04]: Agent SKILL.md files rewritten from scratch (not patched) to ensure clean non-stub content
+- [06-01]: TDD approach for signature fixes: 8 failing tests written first, then docs fixed to pass
+- [06-01]: Public API import paths (from src.maxpat import) used in max-verify.md, not internal module paths
 
 ### Pending Todos
 
@@ -164,6 +167,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T18:14:20.000Z
-Stopped at: Completed 05-04-PLAN.md (v1.0 milestone complete)
+Last session: 2026-03-10T20:18:25Z
+Stopped at: Completed 06-01-PLAN.md (Phase 6 complete -- gap closure DOC-SIG-01)
 Resume file: None
