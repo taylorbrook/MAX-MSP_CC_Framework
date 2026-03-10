@@ -99,11 +99,13 @@ Plans:
   2. RNBO~ generation is aware of export targets (VST3/AU, Web Audio, C++) and constrains patches accordingly
   3. C/C++ external project scaffolding generates correct directory structure and CMake/build system files for Min-DevKit
   4. External code generation produces inlet/outlet setup, message handling, and DSP processing methods that compile on macOS (Apple Silicon)
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 05-01: TBD
-- [ ] 05-02: TBD
+- [ ] 05-01-PLAN.md -- RNBO generation (RNBODatabase, add_rnbo, target-aware validation, param extraction)
+- [ ] 05-02-PLAN.md -- External scaffolding and code generation (Min-DevKit templates, three archetypes, help patches)
+- [ ] 05-03-PLAN.md -- External build system (cmake/make invocation, auto-fix loop, .mxo validation)
+- [ ] 05-04-PLAN.md -- Critics, agent upgrades, and public API integration (RNBO/ext critics, stub-to-full agents)
 
 ## Progress
 
@@ -116,8 +118,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Patch Generation and Validation | 4/4 | Complete | 2026-03-10 |
 | 3. Code Generation | 1/2 | In Progress|  |
 | 4. Agent System and Orchestration | 6/6 | Complete   | 2026-03-10 |
-| 5. RNBO and External Development | 0/? | Not started | - |
+| 5. RNBO and External Development | 0/4 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-10 (Phase 04 revised -- 6 plans in 3 waves, split from 5)*
+*Last updated: 2026-03-10 (Phase 05 planned -- 4 plans in 3 waves)*
