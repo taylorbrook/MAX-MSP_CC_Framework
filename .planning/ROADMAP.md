@@ -133,12 +133,15 @@ Plans:
   1. `max-build.md` no longer labels RNBO and external agents as "stub"
   2. `dispatch-rules.md` no longer labels RNBO and external agents as "STUB — not yet implemented"
   3. `RNBO agent SKILL.md` clarifies whether `validate_rnbo_patch` validates inner patch content vs full rnbo~ wrapper
-**Plans**: 0 plans (to be created via `/gsd:plan-phase 7`)
+**Plans**: 1 plan
+
+Plans:
+- [ ] 07-01-PLAN.md — TDD regression tests + fix stale stub labels in max-build.md, dispatch-rules.md, and RNBO SKILL.md
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -148,8 +151,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 4. Agent System and Orchestration | 6/6 | Complete   | 2026-03-10 |
 | 5. RNBO and External Development | 2/4 | In Progress | - |
 | 6. Fix Skill Documentation Signatures | 1/1 | Complete | 2026-03-10 |
-| 7. Fix Stale Agent Documentation | 0/0 | Not Started | - |
+| 7. Fix Stale Agent Documentation | 0/1 | Not Started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-10 (Phase 7 added — gap closure for DOC-01, DOC-02, DOC-03)*
+*Last updated: 2026-03-10 (Phase 7 planned — 1 plan for DOC-01, DOC-02, DOC-03 gap closure)*
