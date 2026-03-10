@@ -175,20 +175,20 @@ class TestSpacing:
     def test_dynamic_column_width(self):
         """Column width adapts to widest object in that column."""
         p = Patcher()
-        # Create a wide object (long text) and a narrow one in column 0
+        # Create a wide object (long text) and a narrow non-UI one in column 0
         wide = p.add_box("trigger", ["b", "i", "f", "s"])  # long text
-        narrow = p.add_box("toggle")
+        narrow = p.add_box("*~", ["0.1"])  # narrow non-UI object
         target = p.add_box("ezdac~")
         p.add_connection(wide, 0, target, 0)
         p.add_connection(narrow, 0, target, 0)
 
         apply_layout(p)
 
+        # Both wide and narrow should be in the same column (same x)
+        assert wide.patching_rect[0] == narrow.patching_rect[0]
         # target column x should account for the widest object in column 0
         wide_right = wide.patching_rect[0] + wide.patching_rect[2]
-        narrow_right = narrow.patching_rect[0] + narrow.patching_rect[2]
-        max_right = max(wide_right, narrow_right)
-        gutter = target.patching_rect[0] - max_right
+        gutter = target.patching_rect[0] - wide_right
         assert 50 <= gutter <= 90, f"Dynamic gutter {gutter} not correct"
 
 
