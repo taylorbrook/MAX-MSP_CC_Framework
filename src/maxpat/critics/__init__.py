@@ -2,18 +2,20 @@
 
 Provides review_patch() which combines DSP and structure critics to catch
 design problems that the mechanical validation pipeline does not detect.
+
+Usage:
+    from src.maxpat.critics import review_patch, CriticResult
+
+    results = review_patch(patch_dict)
+    for r in results:
+        print(r)  # [severity] finding
 """
 
 from __future__ import annotations
 
 from src.maxpat.critics.base import CriticResult
 from src.maxpat.critics.dsp_critic import review_dsp
-
-# Structure critic stub -- will be implemented in Task 2
-try:
-    from src.maxpat.critics.structure_critic import review_structure as _review_structure
-except ImportError:
-    _review_structure = None
+from src.maxpat.critics.structure_critic import review_structure
 
 
 def review_patch(
@@ -21,6 +23,9 @@ def review_patch(
     code_context: dict | None = None,
 ) -> list[CriticResult]:
     """Run all critics on a patch and return combined results.
+
+    Combines DSP critic (signal flow, gen~ I/O, gain staging) and
+    structure critic (fan-out, hot/cold ordering, duplicates).
 
     Args:
         patch_dict: A .maxpat-format dict.
@@ -31,13 +36,13 @@ def review_patch(
     """
     results: list[CriticResult] = []
     results.extend(review_dsp(patch_dict, code_context=code_context))
-    if _review_structure is not None:
-        results.extend(_review_structure(patch_dict))
+    results.extend(review_structure(patch_dict))
     return results
 
 
 __all__ = [
     "review_patch",
-    "CriticResult",
     "review_dsp",
+    "review_structure",
+    "CriticResult",
 ]
