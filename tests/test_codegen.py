@@ -430,3 +430,126 @@ class TestGenBox:
         box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
 
         assert box in p.boxes
+
+
+# ---------------------------------------------------------------------------
+# TestGendspFile -- .gendsp file write support (CODE-03 integration)
+# ---------------------------------------------------------------------------
+
+class TestGendspFile:
+    """Tests for .gendsp file write and integration."""
+
+    def test_write_gendsp_creates_file(self, tmp_path):
+        """write_gendsp creates a .gendsp file on disk."""
+        from src.maxpat.hooks import write_gendsp
+
+        code = "out1 = in1 * 0.5;"
+        output_path = tmp_path / "test.gendsp"
+
+        write_gendsp(code, output_path, num_inputs=1, num_outputs=1)
+
+        assert output_path.exists()
+
+    def test_write_gendsp_valid_json(self, tmp_path):
+        """Written .gendsp file is valid JSON with 'patcher' key."""
+        from src.maxpat.hooks import write_gendsp
+
+        code = "out1 = in1 * 0.5;"
+        output_path = tmp_path / "test.gendsp"
+
+        write_gendsp(code, output_path, num_inputs=1, num_outputs=1)
+
+        data = json.loads(output_path.read_text())
+        assert "patcher" in data
+        assert "boxes" in data["patcher"]
+        assert "lines" in data["patcher"]
+
+    def test_write_gendsp_returns_dict(self, tmp_path):
+        """write_gendsp returns the generated dict."""
+        from src.maxpat.hooks import write_gendsp
+
+        code = "out1 = in1 * 0.5;"
+        output_path = tmp_path / "test.gendsp"
+
+        result = write_gendsp(code, output_path, num_inputs=1, num_outputs=1)
+
+        assert isinstance(result, dict)
+        assert "patcher" in result
+
+    def test_write_gendsp_creates_parent_dirs(self, tmp_path):
+        """write_gendsp creates parent directories if needed."""
+        from src.maxpat.hooks import write_gendsp
+
+        code = "out1 = in1;"
+        output_path = tmp_path / "nested" / "dir" / "test.gendsp"
+
+        write_gendsp(code, output_path, num_inputs=1, num_outputs=1)
+
+        assert output_path.exists()
+
+    def test_write_gendsp_fixture_comparison(self, tmp_path):
+        """Structural comparison against simple.gendsp fixture."""
+        from src.maxpat.hooks import write_gendsp
+
+        code = "Param freq(440, min=20, max=20000);\nParam amp(0.5, min=0, max=1);\nout1 = cycle(freq) * amp;"
+        output_path = tmp_path / "simple.gendsp"
+
+        result = write_gendsp(code, output_path)
+
+        # Load fixture
+        fixture_path = Path(__file__).parent / "fixtures" / "expected" / "simple.gendsp"
+        fixture = json.loads(fixture_path.read_text())
+
+        # Structural comparison: same box count, same object types, same patchline count
+        assert len(result["patcher"]["boxes"]) == len(fixture["patcher"]["boxes"])
+        assert len(result["patcher"]["lines"]) == len(fixture["patcher"]["lines"])
+
+        # Same maxclass types
+        result_types = sorted(b["box"]["maxclass"] for b in result["patcher"]["boxes"])
+        fixture_types = sorted(b["box"]["maxclass"] for b in fixture["patcher"]["boxes"])
+        assert result_types == fixture_types
+
+    def test_gendsp_roundtrip(self, tmp_path):
+        """Generate -> write -> read back -> verify structure matches."""
+        from src.maxpat.hooks import write_gendsp
+
+        code = "out1 = in1 + in2;"
+        output_path = tmp_path / "roundtrip.gendsp"
+
+        original = write_gendsp(code, output_path, num_inputs=2, num_outputs=1)
+
+        # Read back
+        loaded = json.loads(output_path.read_text())
+
+        # Structure matches
+        assert len(loaded["patcher"]["boxes"]) == len(original["patcher"]["boxes"])
+        assert len(loaded["patcher"]["lines"]) == len(original["patcher"]["lines"])
+        assert loaded["patcher"]["bgcolor"] == original["patcher"]["bgcolor"]
+
+
+# ---------------------------------------------------------------------------
+# TestPublicAPI -- verify public API exports
+# ---------------------------------------------------------------------------
+
+class TestPublicAPI:
+    """Tests for public API exports."""
+
+    def test_build_genexpr_importable(self):
+        """build_genexpr is importable from src.maxpat."""
+        from src.maxpat import build_genexpr
+        assert callable(build_genexpr)
+
+    def test_parse_genexpr_io_importable(self):
+        """parse_genexpr_io is importable from src.maxpat."""
+        from src.maxpat import parse_genexpr_io
+        assert callable(parse_genexpr_io)
+
+    def test_generate_gendsp_importable(self):
+        """generate_gendsp is importable from src.maxpat."""
+        from src.maxpat import generate_gendsp
+        assert callable(generate_gendsp)
+
+    def test_write_gendsp_importable(self):
+        """write_gendsp is importable from src.maxpat."""
+        from src.maxpat import write_gendsp
+        assert callable(write_gendsp)

@@ -89,6 +89,40 @@ def write_patch(
     return results
 
 
+def write_gendsp(
+    code: str,
+    path: str | Path,
+    num_inputs: int | None = None,
+    num_outputs: int | None = None,
+) -> dict:
+    """Generate and write a .gendsp file to disk.
+
+    Creates a standalone .gendsp file containing a Gen patcher with
+    codebox, in/out objects, and patchlines.
+
+    Args:
+        code: GenExpr source code for the codebox.
+        path: Output file path for the .gendsp file.
+        num_inputs: Number of inputs. Auto-detected from code if None.
+        num_outputs: Number of outputs. Auto-detected from code if None.
+
+    Returns:
+        The generated .gendsp dict.
+    """
+    from src.maxpat.codegen import generate_gendsp
+
+    path = Path(path)
+    gendsp_dict = generate_gendsp(code, num_inputs, num_outputs)
+
+    # Create parent directories if needed
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Write JSON with readable formatting
+    path.write_text(json.dumps(gendsp_dict, indent=2))
+
+    return gendsp_dict
+
+
 def validate_file(path: str | Path) -> list[ValidationResult]:
     """Load and validate an existing .maxpat file from disk.
 
