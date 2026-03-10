@@ -17,6 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 3: Code Generation** - Gen~ GenExpr, js/V8, and Node for Max code generation with syntax validation
 - [x] **Phase 4: Agent System and Orchestration** - Domain-specialized agents, generator-critic loops, persistent memory, multi-project isolation, and slash commands (completed 2026-03-10)
 - [ ] **Phase 5: RNBO and External Development** - RNBO-compatible patch generation with export awareness and C/C++ external scaffolding via Min-DevKit
+- [ ] **Phase 6: Fix Skill Documentation Signatures** - Correct 9 API signature mismatches in skill/command documentation files (gap closure from v1.0 audit)
 
 ## Phase Details
 
@@ -107,6 +108,18 @@ Plans:
 - [ ] 05-03-PLAN.md -- External build system (cmake/make invocation, auto-fix loop, .mxo validation)
 - [ ] 05-04-PLAN.md -- Critics, agent upgrades, and public API integration (RNBO/ext critics, stub-to-full agents)
 
+### Phase 6: Fix Skill Documentation Signatures
+**Goal**: Correct all API signature mismatches in skill/command documentation so Claude agents reference accurate function signatures during generation
+**Depends on**: Phase 5 (or can run independently — documentation-only changes)
+**Requirements**: AGT-01, FRM-02 (already satisfied — this closes integration gap DOC-SIG-01)
+**Gap Closure:** Closes integration gap DOC-SIG-01 from v1.0 audit
+**Success Criteria** (what must be TRUE):
+  1. All function signatures in max-patch-agent/SKILL.md match actual Python API (`add_connection`, `write_patch(patcher, path)`)
+  2. All function signatures in max-dsp-agent/SKILL.md match actual Python API (`build_genexpr`, `generate_gendsp`, `add_gen`)
+  3. All function signatures in max-js-agent/SKILL.md match actual Python API (`generate_n4m_script`, `generate_js_script`)
+  4. All import paths in max-verify.md match actual module locations
+**Plans**: 0 plans (pending `/gsd:plan-phase 6`)
+
 ## Progress
 
 **Execution Order:**
@@ -119,7 +132,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 3. Code Generation | 1/2 | In Progress|  |
 | 4. Agent System and Orchestration | 6/6 | Complete   | 2026-03-10 |
 | 5. RNBO and External Development | 2/4 | In Progress | - |
+| 6. Fix Skill Documentation Signatures | 0/0 | Pending | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-10 (Plan 05-01 complete -- RNBO generation)*
+*Last updated: 2026-03-10 (Phase 6 added -- gap closure from v1.0 audit)*
