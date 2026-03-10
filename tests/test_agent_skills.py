@@ -361,3 +361,122 @@ def test_total_skill_count() -> None:
         f"Expected at least 10 skill directories, found {len(skill_dirs)}: "
         f"{sorted(d.name for d in skill_dirs)}"
     )
+
+
+# -- Test: API signature accuracy (DOC-SIG-01) --
+
+COMMANDS_DIR = Path(__file__).resolve().parent.parent / ".claude" / "commands"
+
+
+def _read_command(name: str) -> str:
+    """Read the contents of a command markdown file."""
+    path = COMMANDS_DIR / f"{name}.md"
+    return path.read_text()
+
+
+def test_patch_agent_uses_add_connection() -> None:
+    """max-patch-agent SKILL.md must use add_connection (not connect) for
+    connecting boxes."""
+    content = _read_skill("max-patch-agent")
+    assert "add_connection" in content, (
+        "max-patch-agent SKILL.md should reference add_connection"
+    )
+    assert ".connect(src" not in content and "connect(src," not in content, (
+        "max-patch-agent SKILL.md should NOT reference the old .connect(src "
+        "signature"
+    )
+
+
+def test_patch_agent_write_patch_signature() -> None:
+    """max-patch-agent SKILL.md must use write_patch(patcher, ...) not
+    write_patch(patch_dict, ...)."""
+    content = _read_skill("max-patch-agent")
+    assert "write_patch(patcher" in content, (
+        "max-patch-agent SKILL.md should reference write_patch(patcher, ...)"
+    )
+    assert "write_patch(patch_dict" not in content, (
+        "max-patch-agent SKILL.md should NOT reference write_patch(patch_dict)"
+    )
+
+
+def test_dsp_agent_build_genexpr_signature() -> None:
+    """max-dsp-agent SKILL.md must use build_genexpr(params, code_body, ...)
+    with correct parameter order."""
+    content = _read_skill("max-dsp-agent")
+    assert "build_genexpr(params, code_body" in content, (
+        "max-dsp-agent SKILL.md should reference "
+        "build_genexpr(params, code_body, ...)"
+    )
+    assert "build_genexpr(code, params" not in content, (
+        "max-dsp-agent SKILL.md should NOT have reversed parameter order "
+        "build_genexpr(code, params)"
+    )
+
+
+def test_dsp_agent_add_gen_signature() -> None:
+    """max-dsp-agent SKILL.md must use add_gen(code, ...) without a name
+    parameter."""
+    content = _read_skill("max-dsp-agent")
+    assert "add_gen(code" in content, (
+        "max-dsp-agent SKILL.md should reference add_gen(code, ...)"
+    )
+    assert "add_gen(name" not in content, (
+        "max-dsp-agent SKILL.md should NOT reference add_gen(name, ...)"
+    )
+
+
+def test_dsp_agent_generate_gendsp_signature() -> None:
+    """max-dsp-agent SKILL.md must use generate_gendsp(code, num_inputs, ...)
+    not generate_gendsp(code, params)."""
+    content = _read_skill("max-dsp-agent")
+    assert "generate_gendsp(code, num_inputs" in content, (
+        "max-dsp-agent SKILL.md should reference "
+        "generate_gendsp(code, num_inputs, ...)"
+    )
+    assert "generate_gendsp(code, params" not in content, (
+        "max-dsp-agent SKILL.md should NOT reference "
+        "generate_gendsp(code, params)"
+    )
+
+
+def test_js_agent_n4m_script_signature() -> None:
+    """max-js-agent SKILL.md must use generate_n4m_script(handlers,
+    dict_access=None) not (handlers, options)."""
+    content = _read_skill("max-js-agent")
+    assert "generate_n4m_script(handlers, dict_access" in content, (
+        "max-js-agent SKILL.md should reference "
+        "generate_n4m_script(handlers, dict_access=None)"
+    )
+    assert "generate_n4m_script(handlers, options" not in content, (
+        "max-js-agent SKILL.md should NOT reference "
+        "generate_n4m_script(handlers, options)"
+    )
+
+
+def test_js_agent_js_script_signature() -> None:
+    """max-js-agent SKILL.md must use generate_js_script(num_inlets, ...)
+    not generate_js_script(handlers, ...)."""
+    content = _read_skill("max-js-agent")
+    assert "generate_js_script(num_inlets" in content, (
+        "max-js-agent SKILL.md should reference "
+        "generate_js_script(num_inlets, ...)"
+    )
+    assert "generate_js_script(handlers" not in content, (
+        "max-js-agent SKILL.md should NOT reference "
+        "generate_js_script(handlers, ...)"
+    )
+
+
+def test_verify_command_import_paths() -> None:
+    """max-verify.md must use public API import paths from src.maxpat,
+    not from src.maxpat.validation or src.maxpat.code_validation."""
+    content = _read_command("max-verify")
+    assert "from src.maxpat import" in content, (
+        "max-verify.md should use 'from src.maxpat import' for public API"
+    )
+    assert "from src.maxpat.validation" not in content, (
+        "max-verify.md should NOT use 'from src.maxpat.validation import'"
+    )
+    assert "from src.maxpat.code_validation" not in content, (
+        "max-verify.md should NOT use 'from src.maxpat.code_validation import'"
+    )
