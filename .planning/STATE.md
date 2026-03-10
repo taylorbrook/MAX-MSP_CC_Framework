@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: Completed 05-03-PLAN.md
-last_updated: "2026-03-10T18:06:20.370Z"
-last_activity: 2026-03-10 -- Plan 05-03 executed (build system, .mxo validation, 21 new tests)
+status: complete
+stopped_at: Completed 05-04-PLAN.md (final plan)
+last_updated: "2026-03-10T18:14:20.000Z"
+last_activity: 2026-03-10 -- Plan 05-04 executed (RNBO/ext critics, agent upgrades, public API)
 progress:
   total_phases: 5
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 19
-  completed_plans: 18
-  percent: 95
+  completed_plans: 19
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Phase 5 in progress -- RNBO and External Development
+**Current focus:** v1.0 milestone COMPLETE -- all 5 phases finished
 
 ## Current Position
 
-Phase: 5 of 5 (RNBO and External Development) -- IN PROGRESS
-Plan: 4 of 4 in current phase (3 complete)
-Status: Plan 05-03 complete -- build_external + validate_mxo + auto-fix loop
-Last activity: 2026-03-10 -- Plan 05-03 executed (build system, .mxo validation, 21 new tests)
+Phase: 5 of 5 (RNBO and External Development) -- COMPLETE
+Plan: 4 of 4 in current phase (4 complete)
+Status: Phase 5 complete -- all RNBO and external capabilities implemented
+Last activity: 2026-03-10 -- Plan 05-04 executed (RNBO/ext critics, agent upgrades, public API)
 
-Progress: [██████████] 95%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -67,6 +67,7 @@ Progress: [██████████] 95%
 | Phase 05 P02 | 4min | 2 tasks | 3 files |
 | Phase 05 P01 | 4min | 2 tasks | 3 files |
 | Phase 05 P03 | 4min | 2 tasks | 3 files |
+| Phase 05 P04 | 5min | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -146,6 +147,10 @@ Recent decisions affecting current work:
 - [Phase 05-03]: Unix Makefiles generator (not Xcode) for headless cmake builds per Pitfall #5
 - [Phase 05-03]: Error hash tracking via MD5 of sorted error messages for build loop detection
 - [Phase 05-03]: Auto-fix limited to missing semicolons and missing includes only (per Pitfall #6)
+- [Phase 05-04]: RNBO critic checks param naming (lowercase_with_underscores), I/O completeness, and duplicate params
+- [Phase 05-04]: External critic checks MIN_EXTERNAL, c74_min.h, class/macro match, archetype-specific requirements
+- [Phase 05-04]: review_patch auto-detects rnbo~ boxes by scanning maxclass and invokes RNBO critic
+- [Phase 05-04]: Agent SKILL.md files rewritten from scratch (not patched) to ensure clean non-stub content
 
 ### Pending Todos
 
@@ -159,6 +164,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T18:06:20.368Z
-Stopped at: Completed 05-03-PLAN.md
+Last session: 2026-03-10T18:14:20.000Z
+Stopped at: Completed 05-04-PLAN.md (v1.0 milestone complete)
 Resume file: None
