@@ -40,6 +40,24 @@ from src.maxpat.code_validation import (
     detect_js_type,
 )
 from src.maxpat.db_lookup import ObjectDatabase
+from src.maxpat.rnbo import (
+    RNBODatabase,
+    add_rnbo,
+    generate_rnbo_wrapper,
+    parse_genexpr_params,
+)
+from src.maxpat.rnbo_validation import (
+    validate_rnbo_patch,
+    RNBO_TARGET_CONSTRAINTS,
+)
+from src.maxpat.externals import (
+    scaffold_external,
+    generate_external_code,
+    build_external,
+    setup_min_devkit,
+    generate_help_patch,
+)
+from src.maxpat.ext_validation import validate_mxo, BuildResult
 
 
 def generate_patch(patcher: Patcher) -> tuple[dict, list[ValidationResult]]:
@@ -115,4 +133,19 @@ __all__ = [
     "PatchValidationError",
     # Database
     "ObjectDatabase",
+    # RNBO
+    "RNBODatabase",
+    "add_rnbo",
+    "generate_rnbo_wrapper",
+    "parse_genexpr_params",
+    "validate_rnbo_patch",
+    "RNBO_TARGET_CONSTRAINTS",
+    # Externals
+    "scaffold_external",
+    "generate_external_code",
+    "build_external",
+    "setup_min_devkit",
+    "generate_help_patch",
+    "validate_mxo",
+    "BuildResult",
 ]

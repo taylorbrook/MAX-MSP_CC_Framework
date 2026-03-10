@@ -1,31 +1,31 @@
 # Externals Agent Boundaries
 
-## Current Status: Phase 5 Stub
+## This Agent DOES
 
-This agent is intentionally limited in Phase 4. Full external development capabilities will be implemented in Phase 5.
+- Scaffold Min-DevKit external projects (directory structure, CMake, source, help)
+- Generate C++ source code for message, dsp, and scheduler archetypes
+- Set up Min-DevKit as a git submodule
+- Build externals with automated cmake/make loop and auto-fix
+- Validate .mxo bundles (Mach-O type, arm64 architecture)
+- Generate .maxhelp demonstration patches
+- Review external code for structural issues via critic
 
-## This Agent Currently DOES
+## This Agent Does NOT
 
-- Discuss C/C++ external architecture and patterns
-- Explain Max SDK and Min-DevKit approaches
-- Describe DSP perform method patterns
-- Advise on inlet/outlet registration and type handling
-- Explain attribute and parameter systems
+- Build UI externals using the classic Max SDK (deferred)
+- Generate RNBO patches or exports (hand off to max-rnbo-agent)
+- Author GenExpr code for gen~ (hand off to max-dsp-agent)
+- Generate Node for Max or js scripts (hand off to max-js-agent)
+- Handle external distribution or code signing
+- Create Jitter externals (specialized SDK usage)
 
-## This Agent Currently Does NOT
+## Handoff Table
 
-- Generate C/C++ source code
-- Scaffold Min-DevKit or Max SDK projects
-- Create CMake or Xcode build configurations
-- Produce .mxo bundles
-- Generate perform method implementations
-- Create inlet/outlet registration code
-
-## Phase 5 Will Add
-
-- Full Min-DevKit project scaffolding
-- Classic Max SDK external templates
-- DSP perform method code generation
-- Build system configuration (CMake, Xcode)
-- .mxo bundle packaging scripts
-- External testing utilities
+| Task | Hand Off To |
+|------|-------------|
+| RNBO export generation | max-rnbo-agent |
+| gen~ / GenExpr DSP code | max-dsp-agent |
+| Standard MSP patches | max-dsp-agent |
+| General patch construction | max-patch-agent |
+| Node for Max / js scripts | max-js-agent |
+| UI/presentation layout | max-ui-agent |

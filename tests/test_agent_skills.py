@@ -133,28 +133,58 @@ def test_ui_agent_references_presentation_mode() -> None:
     )
 
 
-# ── Test: RNBO and Externals stubs contain Phase 5 deferral ────────
+# ── Test: RNBO and Externals agents are full (not stubs) ───────────
 
 
-def test_rnbo_stub_has_phase5_deferral() -> None:
-    """RNBO agent (stub) must contain Phase 5 deferral message."""
+def test_rnbo_agent_not_stub() -> None:
+    """RNBO agent SKILL.md must NOT contain stub markers."""
     content = _read_skill("max-rnbo-agent")
-    assert "phase 5" in content.lower(), (
-        "RNBO stub should mention Phase 5 deferral"
+    content_lower = content.lower()
+    assert "stub" not in content_lower, (
+        "RNBO agent should no longer be a stub"
     )
-    assert "not yet implemented" in content.lower() or "stub" in content.lower(), (
-        "RNBO stub should indicate features are not yet implemented"
+    assert "phase 5 deferral" not in content_lower, (
+        "RNBO agent should not contain Phase 5 deferral message"
+    )
+    assert "not yet implemented" not in content_lower, (
+        "RNBO agent should not say features are not yet implemented"
     )
 
 
-def test_ext_stub_has_phase5_deferral() -> None:
-    """Externals agent (stub) must contain Phase 5 deferral message."""
+def test_ext_agent_not_stub() -> None:
+    """Externals agent SKILL.md must NOT contain stub markers."""
     content = _read_skill("max-ext-agent")
-    assert "phase 5" in content.lower(), (
-        "Externals stub should mention Phase 5 deferral"
+    content_lower = content.lower()
+    assert "stub" not in content_lower, (
+        "Externals agent should no longer be a stub"
     )
-    assert "not yet implemented" in content.lower() or "stub" in content.lower(), (
-        "Externals stub should indicate features are not yet implemented"
+    assert "phase 5 deferral" not in content_lower, (
+        "Externals agent should not contain Phase 5 deferral message"
+    )
+    assert "not yet implemented" not in content_lower, (
+        "Externals agent should not say features are not yet implemented"
+    )
+
+
+def test_rnbo_agent_has_api_refs() -> None:
+    """RNBO agent SKILL.md must reference key Python API functions."""
+    content = _read_skill("max-rnbo-agent")
+    assert "add_rnbo" in content, (
+        "RNBO agent should reference add_rnbo function"
+    )
+    assert "validate_rnbo_patch" in content, (
+        "RNBO agent should reference validate_rnbo_patch function"
+    )
+
+
+def test_ext_agent_has_api_refs() -> None:
+    """Externals agent SKILL.md must reference key Python API functions."""
+    content = _read_skill("max-ext-agent")
+    assert "scaffold_external" in content, (
+        "Externals agent should reference scaffold_external function"
+    )
+    assert "build_external" in content, (
+        "Externals agent should reference build_external function"
     )
 
 
