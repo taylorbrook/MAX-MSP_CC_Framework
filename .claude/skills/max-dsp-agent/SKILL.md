@@ -33,13 +33,13 @@ Before any generation:
 ## Capabilities
 
 ### GenExpr Code Generation
-- `build_genexpr(code, params)` -- build validated GenExpr code string
+- `build_genexpr(params, code_body, num_inputs=1, num_outputs=1)` -- build validated GenExpr code string
 - `parse_genexpr_io(code)` -- detect input/output count from GenExpr code
-- `generate_gendsp(code, params)` -- generate standalone .gendsp file
+- `generate_gendsp(code, num_inputs=None, num_outputs=None)` -- generate standalone .gendsp JSON dict
 - GenExpr syntax: `in 1`/`out 1` for I/O, `Param` for parameters, `History` for feedback, `Buffer`/`Data` for samples
 
 ### Gen~ Patch Integration
-- `Patcher.add_gen(name, code)` -- embed gen~ codebox in a .maxpat
+- `Patcher.add_gen(code, num_inputs=None, num_outputs=None)` -- embed gen~ codebox in a .maxpat
 - Codebox via `Box.__new__()` pattern (structural object bypassing DB)
 - Codebox code stored in `extra_attrs` for serialization
 

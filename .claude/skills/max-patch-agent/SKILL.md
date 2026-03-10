@@ -35,16 +35,16 @@ Before any generation:
 - Create `Patcher` instances with boxes and connections via `src.maxpat.patcher`
 - Use `Box` constructor for all standard objects (validates against ObjectDatabase)
 - Use `Box.__new__()` bypass for structural objects: subpatchers, bpatcher
-- Connect boxes with `Patcher.connect(source, outlet, dest, inlet)`
+- Connect boxes with `Patcher.add_connection(src_box, src_outlet, dst_box, dst_inlet)`
 
 ### Key Functions
 - `Patcher()` -- create a new patch
 - `Box(name, args, db)` -- create a validated box
 - `Patcher.add_box(box)` -- add box to patch
-- `Patcher.connect(src, src_out, dst, dst_in)` -- connect boxes
+- `Patcher.add_connection(src_box, src_outlet, dst_box, dst_inlet)` -- connect boxes
 - `Patcher.add_subpatcher(name)` -- add a subpatcher
 - `generate_patch(patcher)` -- layout + serialize + validate
-- `write_patch(patch_dict, path)` -- write .maxpat with validation hooks
+- `write_patch(patcher, path, validate=True)` -- write .maxpat with validation hooks
 
 ### Object Expertise
 - Control flow: trigger, gate, switch, select, route, if, expr

@@ -36,8 +36,7 @@ Run the full validation pipeline and critic review on all generated files in the
 ## Python Modules
 
 ```python
-from src.maxpat.validation import validate_file
-from src.maxpat.code_validation import validate_code_file
+from src.maxpat import validate_file, validate_code_file
 from src.maxpat.critics import review_patch, CriticResult
 from src.maxpat.project import get_active_project, update_status
 ```

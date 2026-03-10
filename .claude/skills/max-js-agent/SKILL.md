@@ -28,7 +28,7 @@ Before any generation:
 ## Capabilities
 
 ### Node for Max (N4M) Script Generation
-- `generate_n4m_script(handlers, options)` -- generate a complete N4M script
+- `generate_n4m_script(handlers, dict_access=None)` -- generate a complete N4M script
 - CommonJS format: `const maxAPI = require('max-api')`
 - Handler registration: `maxAPI.addHandler('name', callback)`
 - Output: `maxAPI.outlet(value)` to send data to MAX
@@ -37,7 +37,7 @@ Before any generation:
 - Use for: file I/O, network requests, complex data processing, anything Node.js does better than MAX
 
 ### js Object (V8) Script Generation
-- `generate_js_script(handlers, options)` -- generate a complete js V8 script
+- `generate_js_script(num_inlets=1, num_outlets=1, handlers=None)` -- generate a complete js V8 script
 - I/O configuration: `inlets = N`, `outlets = N`
 - Handler functions: `bang()`, `msg_int(v)`, `msg_float(v)`, `list()`, `anything(msg, args)`
 - Output: `outlet(outlet_index, value)` to send data
