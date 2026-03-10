@@ -80,14 +80,15 @@ Plans:
   3. Agent memory persists learned patterns across sessions and projects, with write-back on session completion and deduplication of stored patterns
   4. Each MAX project is isolated in its own directory with independent context, state, and status tracking
   5. Slash commands orchestrate the project lifecycle (ideation, research, planning, execution, verification) and a structured manual testing protocol exists for features requiring MAX to validate
-**Plans**: 5 plans
+**Plans**: 6 plans
 
 Plans:
 - [ ] 04-01-PLAN.md -- DSP and structure critic Python modules extending validation pipeline
 - [ ] 04-02-PLAN.md -- Persistent memory system with dual-scope storage and deduplication
 - [ ] 04-03-PLAN.md -- Project lifecycle infrastructure with directory isolation, status tracking, and test protocol
-- [ ] 04-04-PLAN.md -- Agent skill definitions (router, 6 specialists, critic, memory, lifecycle)
-- [ ] 04-05-PLAN.md -- Slash commands for project lifecycle (10 commands)
+- [ ] 04-04-PLAN.md -- Router and specialist agent skill definitions (router + 6 specialists)
+- [ ] 04-05-PLAN.md -- Critic, memory, and lifecycle agent skills plus validation tests
+- [ ] 04-06-PLAN.md -- Slash commands for project lifecycle (10 commands)
 
 ### Phase 5: RNBO and External Development
 **Goal**: Framework generates RNBO-compatible patches with export target awareness and scaffolds C/C++ external projects with build system support
@@ -114,9 +115,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Object Knowledge Base | 3/3 | Complete | 2026-03-09 |
 | 2. Patch Generation and Validation | 4/4 | Complete | 2026-03-10 |
 | 3. Code Generation | 1/2 | In Progress|  |
-| 4. Agent System and Orchestration | 0/5 | Planned | - |
+| 4. Agent System and Orchestration | 0/6 | Planned | - |
 | 5. RNBO and External Development | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-10 (Phase 04 planned -- 5 plans in 3 waves)*
+*Last updated: 2026-03-10 (Phase 04 revised -- 6 plans in 3 waves, split from 5)*

@@ -2,8 +2,8 @@
 phase: 4
 slug: agent-system-and-orchestration
 status: draft
-nyquist_compliant: false
-wave_0_complete: false
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-03-09
 ---
 
@@ -34,43 +34,37 @@ created: 2026-03-09
 
 ---
 
+## Wave 0 Strategy
+
+Wave 0 test files are created **inline by TDD tasks** in Plans 01, 02, and 03. Each TDD task writes tests FIRST (RED phase), then implements (GREEN phase). No separate Wave 0 plan is needed because:
+
+- Plan 01 (critics): Creates `tests/test_critics.py` as part of TDD Tasks 1-2
+- Plan 02 (memory): Creates `tests/test_memory.py` as part of TDD Tasks 1-2
+- Plan 03 (project/testing): Creates `tests/test_project.py` and `tests/test_testing.py` as part of TDD Tasks 1-2
+- Plan 05 (agent skills): Creates `tests/test_agent_skills.py` in Task 2
+- Plan 06 (commands): Creates `tests/test_commands.py` in Task 2
+
+All test files are authored before their corresponding production code within each plan's TDD cycle.
+
+---
+
 ## Per-Task Verification Map
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 04-01-01 | 01 | 0 | AGT-03 | unit | `python -m pytest tests/test_critics.py -x` | ❌ W0 | ⬜ pending |
-| 04-01-02 | 01 | 0 | AGT-06 | unit | `python -m pytest tests/test_memory.py -x` | ❌ W0 | ⬜ pending |
-| 04-01-03 | 01 | 0 | FRM-01 | unit | `python -m pytest tests/test_project.py -x` | ❌ W0 | ⬜ pending |
-| 04-01-04 | 01 | 0 | FRM-02 | unit | `python -m pytest tests/test_commands.py -x` | ❌ W0 | ⬜ pending |
-| 04-01-05 | 01 | 0 | AGT-01 | unit | `python -m pytest tests/test_agent_skills.py -x` | ❌ W0 | ⬜ pending |
-| 04-01-06 | 01 | 0 | FRM-06 | unit | `python -m pytest tests/test_testing.py -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 1 | AGT-01 | unit | `python -m pytest tests/test_agent_skills.py -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 1 | AGT-02 | unit | `python -m pytest tests/test_agent_skills.py::test_ui_agent -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 1 | AGT-03 | unit | `python -m pytest tests/test_critics.py::test_critic_loop -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 1 | AGT-04 | unit | `python -m pytest tests/test_critics.py::test_dsp_critic -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 1 | AGT-05 | unit | `python -m pytest tests/test_critics.py::test_structure_critic -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 2 | AGT-06 | unit | `python -m pytest tests/test_memory.py -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 2 | AGT-07 | unit | `python -m pytest tests/test_memory.py::test_dedup -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 3 | FRM-01 | unit | `python -m pytest tests/test_project.py::test_create -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 3 | FRM-02 | unit | `python -m pytest tests/test_commands.py -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 3 | FRM-03 | unit | `python -m pytest tests/test_project.py::test_status -x` | ❌ W0 | ⬜ pending |
-| 04-XX-XX | XX | 3 | FRM-06 | unit | `python -m pytest tests/test_testing.py -x` | ❌ W0 | ⬜ pending |
+| 04-01-T1 | 01 | 1 | AGT-03,04,05 | unit (TDD) | `python -m pytest tests/test_critics.py -x` | inline TDD | pending |
+| 04-01-T2 | 01 | 1 | AGT-03,04,05 | unit (TDD) | `python -m pytest tests/test_critics.py -x` | inline TDD | pending |
+| 04-02-T1 | 02 | 1 | AGT-06,07 | unit (TDD) | `python -m pytest tests/test_memory.py -x` | inline TDD | pending |
+| 04-02-T2 | 02 | 1 | AGT-07 | unit (TDD) | `python -m pytest tests/test_memory.py -x` | inline TDD | pending |
+| 04-03-T1 | 03 | 1 | FRM-01,03 | unit (TDD) | `python -m pytest tests/test_project.py -x` | inline TDD | pending |
+| 04-03-T2 | 03 | 1 | FRM-06 | unit (TDD) | `python -m pytest tests/test_testing.py -x` | inline TDD | pending |
+| 04-04-T1 | 04 | 2 | AGT-01,02 | structure | frontmatter grep check | N/A (markdown) | pending |
+| 04-05-T1 | 05 | 2 | AGT-01,03 | structure | frontmatter grep check | N/A (markdown) | pending |
+| 04-05-T2 | 05 | 2 | AGT-01 | unit | `python -m pytest tests/test_agent_skills.py -x` | inline | pending |
+| 04-06-T1 | 06 | 3 | FRM-02 | structure | ls existence check | N/A (markdown) | pending |
+| 04-06-T2 | 06 | 3 | FRM-02 | unit | `python -m pytest tests/test_commands.py -x` | inline | pending |
 
-*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
-
----
-
-## Wave 0 Requirements
-
-- [ ] `tests/test_critics.py` — stubs for AGT-03, AGT-04, AGT-05
-- [ ] `tests/test_memory.py` — stubs for AGT-06, AGT-07
-- [ ] `tests/test_project.py` — stubs for FRM-01, FRM-03
-- [ ] `tests/test_commands.py` — stubs for FRM-02
-- [ ] `tests/test_agent_skills.py` — stubs for AGT-01, AGT-02
-- [ ] `tests/test_testing.py` — stubs for FRM-06
-- [ ] `src/maxpat/critics/__init__.py` — critic package init
-
-*All test files are Wave 0 -- none exist yet.*
+*Status: pending | green | red | flaky*
 
 ---
 
@@ -86,11 +80,11 @@ created: 2026-03-09
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 15s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references (handled inline by TDD plans)
+- [x] No watch-mode flags
+- [x] Feedback latency < 15s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved
