@@ -1,12 +1,15 @@
-"""GenExpr code builder and .gendsp file generation.
+"""GenExpr code builder, .gendsp file generation, and JavaScript code generators.
 
-Provides tools for building syntactically correct GenExpr DSP code and
-generating standalone .gendsp files with correct patcher structure.
+Provides tools for building syntactically correct GenExpr DSP code,
+generating standalone .gendsp files with correct patcher structure,
+and generating Node for Max (N4M) and js object V8 JavaScript.
 
 Exports:
 - parse_genexpr_io: Extract input/output counts from GenExpr code
 - build_genexpr: Build formatted GenExpr code with Params and sections
 - generate_gendsp: Generate a complete .gendsp JSON dict
+- generate_n4m_script: Generate Node for Max JavaScript with CommonJS require
+- generate_js_script: Generate js object V8 JavaScript with handlers
 """
 
 from __future__ import annotations
@@ -202,3 +205,135 @@ def generate_gendsp(
     patcher["lines"] = lines
 
     return {"patcher": patcher}
+
+
+def generate_n4m_script(
+    handlers: list[dict],
+    dict_access: list[str] | None = None,
+) -> str:
+    """Generate a complete Node for Max JavaScript string.
+
+    Produces CommonJS-style code with ``require("max-api")``, handler
+    registrations via ``maxAPI.addHandler``, and optional async dict
+    access functions with try/catch error handling.
+
+    Args:
+        handlers: List of handler dicts, each with keys:
+            ``name`` (str), ``args`` (list[str]), ``body`` (str).
+        dict_access: Optional list of dict names to generate async
+            getter/setter helper functions for.
+
+    Returns:
+        Complete N4M JavaScript source string.
+    """
+    sections: list[str] = []
+
+    # Require statement
+    sections.append('const maxAPI = require("max-api");')
+
+    # Dict access helpers (async with try/catch)
+    if dict_access:
+        sections.append("")
+        sections.append("// === DICT ACCESS ===")
+        for dict_name in dict_access:
+            sections.append(f"""
+async function getDict_{dict_name}() {{
+    try {{
+        const data = await maxAPI.getDict("{dict_name}");
+        return data;
+    }} catch (e) {{
+        maxAPI.post("Error getting dict {dict_name}: " + e.message);
+        return null;
+    }}
+}}
+
+async function setDict_{dict_name}(data) {{
+    try {{
+        await maxAPI.setDict("{dict_name}", data);
+    }} catch (e) {{
+        maxAPI.post("Error setting dict {dict_name}: " + e.message);
+    }}
+}}""".rstrip())
+
+    # Handlers
+    sections.append("")
+    sections.append("// === HANDLERS ===")
+    for handler in handlers:
+        name = handler["name"]
+        args = handler.get("args", [])
+        body = handler.get("body", "")
+        args_str = ", ".join(args)
+
+        # Indent body lines
+        body_lines = body.strip().split("\n")
+        indented_body = "\n".join(f"    {line}" for line in body_lines)
+
+        sections.append(f"""
+maxAPI.addHandler("{name}", ({args_str}) => {{
+{indented_body}
+}});""".rstrip())
+
+    return "\n".join(sections) + "\n"
+
+
+def generate_js_script(
+    num_inlets: int = 1,
+    num_outlets: int = 1,
+    handlers: list[dict] | None = None,
+) -> str:
+    """Generate a complete js object V8 JavaScript string.
+
+    Produces code with ``inlets``/``outlets`` declarations and handler
+    functions. If no handlers are specified, generates default handlers
+    for bang, msg_int, msg_float, and list with placeholder bodies.
+
+    Args:
+        num_inlets: Number of inlets to declare.
+        num_outlets: Number of outlets to declare.
+        handlers: Optional list of handler dicts, each with keys:
+            ``type`` (str -- one of bang, msg_int, msg_float, list,
+            anything) and ``body`` (str).
+            If None, default handlers are generated.
+
+    Returns:
+        Complete js object V8 JavaScript source string.
+    """
+    sections: list[str] = []
+
+    # I/O declarations
+    sections.append(f"inlets = {num_inlets};")
+    sections.append(f"outlets = {num_outlets};")
+
+    if handlers is None:
+        # Default handlers with placeholder bodies
+        handlers = [
+            {"type": "bang", "body": "outlet(0, \"bang\");"},
+            {"type": "msg_int", "body": "outlet(0, v);"},
+            {"type": "msg_float", "body": "outlet(0, v);"},
+            {"type": "list", "body": "outlet(0, arrayfromargs(arguments));"},
+        ]
+
+    # Standard argument signatures for handler types
+    _handler_args = {
+        "bang": "",
+        "msg_int": "v",
+        "msg_float": "v",
+        "list": "",
+        "anything": "msg",
+    }
+
+    for handler in handlers:
+        handler_type = handler["type"]
+        body = handler.get("body", "")
+        args_str = _handler_args.get(handler_type, "")
+
+        # Indent body lines
+        body_lines = body.strip().split("\n")
+        indented_body = "\n".join(f"    {line}" for line in body_lines)
+
+        sections.append(f"""
+function {handler_type}({args_str}) {{
+{indented_body}
+}}""".rstrip())
+
+    return "\n".join(sections) + "\n"

@@ -662,6 +662,109 @@ class Patcher:
         self.boxes.append(parent_box)
         return (parent_box, inner)
 
+    def add_node_script(
+        self,
+        filename: str,
+        code: str | None = None,
+        num_outlets: int = 2,
+        x: float = 0.0,
+        y: float = 0.0,
+    ) -> tuple[Box, str | None]:
+        """Add a node.script box for Node for Max.
+
+        node.script is NOT in the object database (it is a MAX infrastructure
+        object). Uses Box.__new__ to bypass DB lookup.
+
+        Args:
+            filename: JavaScript file name (e.g., "myscript.js").
+            code: Optional N4M JavaScript code string. Caller is responsible
+                for writing it to disk.
+            num_outlets: Number of outlets (default 2: data + status).
+            x: Horizontal position.
+            y: Vertical position.
+
+        Returns:
+            (box, code) tuple. code is None if not provided.
+        """
+        box_id = self._gen_id()
+        text = f"node.script {filename}"
+
+        box = Box.__new__(Box)
+        box.name = "node.script"
+        box.args = [filename]
+        box.id = box_id
+        box.maxclass = "newobj"
+        box.text = text
+        box.numinlets = 1
+        box.numoutlets = num_outlets
+        box.outlettype = [""] * num_outlets
+        w, h = calculate_box_size(text, "newobj")
+        box.patching_rect = [x, y, w, h]
+        box.fontname = FONT_NAME
+        box.fontsize = FONT_SIZE
+        box.presentation = False
+        box.presentation_rect = None
+        box.extra_attrs = {}
+        box._inner_patcher = None
+        box._saved_object_attributes = None
+        box._bpatcher_attrs = None
+
+        self.boxes.append(box)
+        return (box, code)
+
+    def add_js(
+        self,
+        filename: str,
+        code: str | None = None,
+        num_inlets: int = 1,
+        num_outlets: int = 1,
+        x: float = 0.0,
+        y: float = 0.0,
+    ) -> tuple[Box, str | None]:
+        """Add a js object box for V8 JavaScript.
+
+        In .maxpat files, js uses maxclass="newobj" with text="js filename.js"
+        (not maxclass="js"). Uses Box.__new__ to bypass DB lookup and ensure
+        the correct maxclass.
+
+        Args:
+            filename: JavaScript file name (e.g., "myobject.js").
+            code: Optional js V8 JavaScript code string. Caller is responsible
+                for writing it to disk.
+            num_inlets: Number of inlets.
+            num_outlets: Number of outlets.
+            x: Horizontal position.
+            y: Vertical position.
+
+        Returns:
+            (box, code) tuple. code is None if not provided.
+        """
+        box_id = self._gen_id()
+        text = f"js {filename}"
+
+        box = Box.__new__(Box)
+        box.name = "js"
+        box.args = [filename]
+        box.id = box_id
+        box.maxclass = "newobj"
+        box.text = text
+        box.numinlets = num_inlets
+        box.numoutlets = num_outlets
+        box.outlettype = [""] * num_outlets
+        w, h = calculate_box_size(text, "newobj")
+        box.patching_rect = [x, y, w, h]
+        box.fontname = FONT_NAME
+        box.fontsize = FONT_SIZE
+        box.presentation = False
+        box.presentation_rect = None
+        box.extra_attrs = {}
+        box._inner_patcher = None
+        box._saved_object_attributes = None
+        box._bpatcher_attrs = None
+
+        self.boxes.append(box)
+        return (box, code)
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize to complete .maxpat JSON structure.
 
