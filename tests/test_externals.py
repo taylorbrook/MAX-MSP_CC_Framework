@@ -1,13 +1,18 @@
-"""Tests for C/C++ external scaffolding, code generation, and help patches.
+"""Tests for C/C++ external scaffolding, code generation, help patches,
+build system integration, and .mxo validation.
 
-Covers requirements EXT-01 through EXT-04:
+Covers requirements EXT-01 through EXT-05:
 - Three Min-DevKit C++ archetypes (message, DSP, scheduler)
 - CMakeLists.txt generation with correct min-api paths
 - External project scaffolding (directory structure)
 - Help patch generation (.maxhelp valid JSON)
+- Build invocation with auto-fix loop (EXT-05)
+- .mxo Mach-O arm64 validation (EXT-05)
 """
 
 import json
+from pathlib import Path
+from unittest.mock import patch, MagicMock
 
 import pytest
 
@@ -572,3 +577,179 @@ class TestGenerateExternalCode:
             attributes=[],
         )
         assert "timer<>" in code
+
+
+# ── Plan 03 Task 1: .mxo validation, BuildResult, parse_compiler_errors ──
+
+
+class TestBuildResult:
+    """BuildResult dataclass captures build outcomes."""
+
+    def test_build_result_success(self):
+        from src.maxpat.ext_validation import BuildResult
+
+        result = BuildResult(
+            success=True,
+            mxo_path=Path("/tmp/test.mxo"),
+            errors=[],
+            attempts=1,
+            message="Build successful",
+        )
+        assert result.success is True
+        assert result.mxo_path == Path("/tmp/test.mxo")
+        assert result.errors == []
+        assert result.attempts == 1
+        assert result.message == "Build successful"
+
+    def test_build_result_failure(self):
+        from src.maxpat.ext_validation import BuildResult
+
+        result = BuildResult(
+            success=False,
+            mxo_path=None,
+            errors=["error: unknown type", "error: missing semicolon"],
+            attempts=3,
+            message="Build failed after 3 attempts",
+        )
+        assert result.success is False
+        assert result.mxo_path is None
+        assert len(result.errors) == 2
+        assert result.attempts == 3
+
+
+class TestMxoValidation:
+    """validate_mxo checks .mxo bundle structure and Mach-O type."""
+
+    def test_mxo_validation_not_found(self, tmp_path):
+        from src.maxpat.ext_validation import validate_mxo
+
+        nonexistent = tmp_path / "nonexistent.mxo"
+        valid, msg = validate_mxo(nonexistent)
+        assert valid is False
+        assert "not" in msg.lower() or "exist" in msg.lower() or "mxo" in msg.lower()
+
+    def test_mxo_validation_no_binary(self, tmp_path):
+        from src.maxpat.ext_validation import validate_mxo
+
+        # Create .mxo dir but no Contents/MacOS/binary
+        mxo_dir = tmp_path / "test.mxo"
+        mxo_dir.mkdir()
+        valid, msg = validate_mxo(mxo_dir)
+        assert valid is False
+        assert "binary" in msg.lower() or "not found" in msg.lower() or "contents" in msg.lower()
+
+    def test_mxo_validation_wrong_suffix(self, tmp_path):
+        from src.maxpat.ext_validation import validate_mxo
+
+        bad = tmp_path / "test.dylib"
+        bad.mkdir()
+        valid, msg = validate_mxo(bad)
+        assert valid is False
+
+    def test_mxo_validation_with_mock_binary(self, tmp_path):
+        """Mock subprocess to simulate valid Mach-O binary check."""
+        from src.maxpat.ext_validation import validate_mxo
+
+        # Create mock .mxo bundle structure
+        mxo_dir = tmp_path / "test.mxo"
+        binary_dir = mxo_dir / "Contents" / "MacOS"
+        binary_dir.mkdir(parents=True)
+        binary = binary_dir / "test"
+        binary.write_bytes(b"\xcf\xfa\xed\xfe")  # mock binary
+
+        file_result = MagicMock()
+        file_result.stdout = "test: Mach-O 64-bit bundle arm64"
+        file_result.returncode = 0
+
+        lipo_result = MagicMock()
+        lipo_result.stdout = "Non-fat file: test is architecture: arm64"
+        lipo_result.returncode = 0
+
+        with patch("subprocess.run", side_effect=[file_result, lipo_result]):
+            valid, msg = validate_mxo(mxo_dir)
+            assert valid is True
+            assert "arm64" in msg.lower() or "valid" in msg.lower()
+
+    def test_mxo_validation_not_macho(self, tmp_path):
+        """Mock file command returning non-Mach-O result."""
+        from src.maxpat.ext_validation import validate_mxo
+
+        mxo_dir = tmp_path / "test.mxo"
+        binary_dir = mxo_dir / "Contents" / "MacOS"
+        binary_dir.mkdir(parents=True)
+        binary = binary_dir / "test"
+        binary.write_bytes(b"not a binary")
+
+        file_result = MagicMock()
+        file_result.stdout = "test: ASCII text"
+        file_result.returncode = 0
+
+        with patch("subprocess.run", return_value=file_result):
+            valid, msg = validate_mxo(mxo_dir)
+            assert valid is False
+            assert "mach-o" in msg.lower() or "not" in msg.lower()
+
+    def test_mxo_validation_wrong_arch(self, tmp_path):
+        """Mock lipo command returning x86_64 instead of arm64."""
+        from src.maxpat.ext_validation import validate_mxo
+
+        mxo_dir = tmp_path / "test.mxo"
+        binary_dir = mxo_dir / "Contents" / "MacOS"
+        binary_dir.mkdir(parents=True)
+        binary = binary_dir / "test"
+        binary.write_bytes(b"\xcf\xfa\xed\xfe")
+
+        file_result = MagicMock()
+        file_result.stdout = "test: Mach-O 64-bit bundle x86_64"
+        file_result.returncode = 0
+
+        lipo_result = MagicMock()
+        lipo_result.stdout = "Non-fat file: test is architecture: x86_64"
+        lipo_result.returncode = 0
+
+        with patch("subprocess.run", side_effect=[file_result, lipo_result]):
+            valid, msg = validate_mxo(mxo_dir)
+            assert valid is False
+            assert "arm64" in msg.lower() or "x86_64" in msg.lower()
+
+
+class TestParseCompilerErrors:
+    """parse_compiler_errors extracts structured error info from gcc/clang output."""
+
+    def test_parse_compiler_errors(self):
+        from src.maxpat.ext_validation import parse_compiler_errors
+
+        stderr = (
+            "/source/my_ext.cpp:15:10: error: unknown type name 'inlet'\n"
+            "/source/my_ext.cpp:22:5: warning: unused variable 'x'\n"
+        )
+        errors = parse_compiler_errors(stderr)
+        assert len(errors) == 2
+        assert errors[0]["file"] == "/source/my_ext.cpp"
+        assert errors[0]["line"] == 15
+        assert errors[0]["column"] == 10
+        assert errors[0]["severity"] == "error"
+        assert "unknown type" in errors[0]["message"]
+        assert errors[1]["severity"] == "warning"
+        assert errors[1]["line"] == 22
+
+    def test_parse_compiler_errors_empty(self):
+        from src.maxpat.ext_validation import parse_compiler_errors
+
+        errors = parse_compiler_errors("")
+        assert errors == []
+
+    def test_parse_compiler_errors_no_matches(self):
+        from src.maxpat.ext_validation import parse_compiler_errors
+
+        errors = parse_compiler_errors("Build succeeded.\nDone.")
+        assert errors == []
+
+    def test_parse_compiler_errors_fatal_error(self):
+        from src.maxpat.ext_validation import parse_compiler_errors
+
+        stderr = "/source/my_ext.cpp:1:10: fatal error: 'c74_min.h' file not found\n"
+        errors = parse_compiler_errors(stderr)
+        assert len(errors) == 1
+        assert errors[0]["severity"] == "fatal error"
+        assert "c74_min.h" in errors[0]["message"]
