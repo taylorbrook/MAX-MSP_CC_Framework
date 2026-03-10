@@ -1,10 +1,13 @@
-"""File write hooks that trigger validation on .maxpat output.
+"""File write hooks that trigger validation on .maxpat, .gendsp, and .js output.
 
-Implements FRM-05: auto hook on .maxpat file write triggers validation.
+Implements FRM-05: auto hook on file write triggers validation.
 
 Provides:
 - write_patch: Generate, validate, and write a .maxpat file to disk.
+- write_gendsp: Generate and write a .gendsp file to disk.
+- write_js: Write JavaScript code and run code validation.
 - validate_file: Load and validate an existing .maxpat file from disk.
+- validate_code_file: Validate .gendsp or .js code files from disk.
 - PatchGenerationError: Raised when unfixable errors prevent generation.
 - PatchValidationError: Raised when validation blocks file write.
 """
@@ -151,3 +154,111 @@ def validate_file(path: str | Path) -> list[ValidationResult]:
 
     # Run the validation pipeline on the loaded dict
     return validate_patch(data)
+
+
+def validate_code_file(path: str | Path) -> list[ValidationResult]:
+    """Validate a .gendsp or .js code file from disk.
+
+    For .gendsp files: parses JSON, extracts codebox code attribute,
+    and runs validate_genexpr on it.
+
+    For .js files: reads content, uses detect_js_type to determine
+    if N4M or js V8, and runs the appropriate validator.
+
+    Args:
+        path: Path to the .gendsp or .js file.
+
+    Returns:
+        List of ValidationResult from the code validator.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+    """
+    from src.maxpat.code_validation import (
+        validate_genexpr,
+        validate_js,
+        validate_n4m,
+        detect_js_type,
+    )
+
+    path = Path(path)
+
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {path}")
+
+    content = path.read_text()
+
+    if path.suffix == ".gendsp":
+        # Parse JSON and extract codebox code
+        try:
+            data = json.loads(content)
+        except json.JSONDecodeError as e:
+            return [ValidationResult(
+                "json", "error",
+                f"Invalid JSON in .gendsp file: {e}",
+            )]
+
+        # Find the codebox and extract code
+        code = None
+        for box_entry in data.get("patcher", {}).get("boxes", []):
+            box = box_entry.get("box", {})
+            if box.get("maxclass") == "codebox" and "code" in box:
+                code = box["code"]
+                break
+
+        if code is None:
+            return [ValidationResult(
+                "code", "warning",
+                "No codebox with 'code' attribute found in .gendsp file",
+            )]
+
+        return validate_genexpr(code)
+
+    elif path.suffix == ".js":
+        js_type = detect_js_type(content)
+        if js_type == "n4m":
+            return validate_n4m(content)
+        elif js_type == "js":
+            return validate_js(content)
+        else:
+            return [ValidationResult(
+                "code", "warning",
+                "Could not determine JavaScript type (N4M or js V8) -- "
+                "missing require('max-api') or inlets declaration",
+            )]
+
+    else:
+        return [ValidationResult(
+            "code", "warning",
+            f"Unsupported file extension: {path.suffix} "
+            f"(expected .gendsp or .js)",
+        )]
+
+
+def write_js(
+    code: str,
+    path: str | Path,
+) -> list[ValidationResult]:
+    """Write JavaScript code to disk and run code validation.
+
+    Writes the code to the specified .js file path, then runs
+    validate_code_file on the written file. Validation is report-only
+    and never blocks the write.
+
+    Args:
+        code: JavaScript source code (N4M or js V8).
+        path: Output file path for the .js file.
+
+    Returns:
+        List of ValidationResult from code validation.
+    """
+    path = Path(path)
+
+    # Create parent directories if needed
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Write the file first (never blocked by validation)
+    path.write_text(code)
+
+    # Run validation on the written file
+    return validate_code_file(path)

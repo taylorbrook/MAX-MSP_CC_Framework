@@ -20,7 +20,9 @@ from src.maxpat.layout import apply_layout
 from src.maxpat.hooks import (
     write_patch,
     write_gendsp,
+    write_js,
     validate_file,
+    validate_code_file,
     PatchGenerationError,
     PatchValidationError,
 )
@@ -28,6 +30,14 @@ from src.maxpat.codegen import (
     build_genexpr,
     parse_genexpr_io,
     generate_gendsp,
+    generate_n4m_script,
+    generate_js_script,
+)
+from src.maxpat.code_validation import (
+    validate_genexpr,
+    validate_js,
+    validate_n4m,
+    detect_js_type,
 )
 from src.maxpat.db_lookup import ObjectDatabase
 
@@ -82,12 +92,21 @@ __all__ = [
     # File I/O
     "write_patch",
     "write_gendsp",
+    "write_js",
     "validate_file",
+    "validate_code_file",
     # Code generation
     "build_genexpr",
     "parse_genexpr_io",
     "generate_gendsp",
-    # Validation
+    "generate_n4m_script",
+    "generate_js_script",
+    # Code validation
+    "validate_genexpr",
+    "validate_js",
+    "validate_n4m",
+    "detect_js_type",
+    # Patch validation
     "validate_patch",
     "has_blocking_errors",
     "ValidationResult",

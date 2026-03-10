@@ -692,3 +692,72 @@ class TestJsObject:
         assert box.numinlets == 3
         assert box.numoutlets == 2
         assert box.outlettype == ["", ""]
+
+
+# ---------------------------------------------------------------------------
+# TestHookIntegration -- write_js and validate_code_file integration
+# ---------------------------------------------------------------------------
+
+class TestHookIntegration:
+    """Integration tests for write_js and validate_code_file."""
+
+    def test_write_js_n4m(self, tmp_path):
+        """write_js writes N4M script, validate_code_file detects N4M and validates."""
+        from src.maxpat.codegen import generate_n4m_script
+        from src.maxpat.hooks import write_js, validate_code_file
+
+        handlers = [{"name": "bang", "args": [], "body": 'maxAPI.outlet("done");'}]
+        code = generate_n4m_script(handlers)
+        output_path = tmp_path / "test_n4m.js"
+
+        results = write_js(code, output_path)
+
+        assert output_path.exists()
+        assert output_path.read_text() == code
+
+        # Validation should not have errors
+        errors = [r for r in results if r.level == "error"]
+        assert len(errors) == 0
+
+        # validate_code_file should also work
+        results2 = validate_code_file(output_path)
+        errors2 = [r for r in results2 if r.level == "error"]
+        assert len(errors2) == 0
+
+    def test_write_js_v8(self, tmp_path):
+        """write_js writes js script, validate_code_file detects js and validates."""
+        from src.maxpat.codegen import generate_js_script
+        from src.maxpat.hooks import write_js, validate_code_file
+
+        code = generate_js_script(num_inlets=2, num_outlets=1)
+        output_path = tmp_path / "test_v8.js"
+
+        results = write_js(code, output_path)
+
+        assert output_path.exists()
+
+        errors = [r for r in results if r.level == "error"]
+        assert len(errors) == 0
+
+        # validate_code_file should detect js type
+        results2 = validate_code_file(output_path)
+        errors2 = [r for r in results2 if r.level == "error"]
+        assert len(errors2) == 0
+
+    def test_validate_gendsp_file(self, tmp_path):
+        """validate_code_file on .gendsp extracts codebox code and validates GenExpr."""
+        from src.maxpat.hooks import write_gendsp, validate_code_file
+
+        code = "out1 = in1 * 0.5;"
+        output_path = tmp_path / "test.gendsp"
+
+        write_gendsp(code, output_path, num_inputs=1, num_outputs=1)
+
+        results = validate_code_file(output_path)
+
+        # Should have info-level I/O detection, no errors
+        errors = [r for r in results if r.level == "error"]
+        assert len(errors) == 0
+
+        info = [r for r in results if r.level == "info"]
+        assert any("1 input" in r.message and "1 output" in r.message for r in info)

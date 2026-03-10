@@ -212,3 +212,55 @@ class TestDetectJsType:
 
         code = 'console.log("hello");\n'
         assert detect_js_type(code) is None
+
+
+# ---------------------------------------------------------------------------
+# TestValidateCodeFile -- hook integration tests
+# ---------------------------------------------------------------------------
+
+class TestValidateCodeFile:
+    """Integration tests for validate_code_file hook."""
+
+    def test_validate_code_file_gendsp(self, tmp_path):
+        """validates a .gendsp file."""
+        from src.maxpat.hooks import write_gendsp, validate_code_file
+
+        code = "out1 = in1 * 0.5;"
+        output_path = tmp_path / "test.gendsp"
+        write_gendsp(code, output_path, num_inputs=1, num_outputs=1)
+
+        results = validate_code_file(output_path)
+        errors = [r for r in results if r.level == "error"]
+        assert len(errors) == 0
+
+    def test_validate_code_file_n4m(self, tmp_path):
+        """validates a N4M .js file."""
+        from src.maxpat.hooks import validate_code_file
+
+        code = 'const maxAPI = require("max-api");\n\nmaxAPI.addHandler("bang", () => {\n    maxAPI.outlet("done");\n});\n'
+        output_path = tmp_path / "test_n4m.js"
+        output_path.write_text(code)
+
+        results = validate_code_file(output_path)
+        errors = [r for r in results if r.level == "error"]
+        assert len(errors) == 0
+
+    def test_validate_code_file_js(self, tmp_path):
+        """validates a js .js file."""
+        from src.maxpat.hooks import validate_code_file
+
+        code = 'inlets = 1;\noutlets = 1;\n\nfunction bang() {\n    outlet(0, "ready");\n}\n'
+        output_path = tmp_path / "test_v8.js"
+        output_path.write_text(code)
+
+        results = validate_code_file(output_path)
+        errors = [r for r in results if r.level == "error"]
+        assert len(errors) == 0
+
+    def test_validate_code_file_not_found(self):
+        """raises FileNotFoundError."""
+        from src.maxpat.hooks import validate_code_file
+
+        import pytest
+        with pytest.raises(FileNotFoundError):
+            validate_code_file("/nonexistent/path/test.js")
