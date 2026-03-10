@@ -154,20 +154,30 @@ def test_write_patch_creates_parent_directories(tmp_path):
     assert out_path.exists()
 
 
-def test_write_patch_blocks_on_unfixable_errors():
+def test_write_patch_blocks_on_unfixable_errors(tmp_path):
     """write_patch raises PatchValidationError on unfixable errors."""
-    from src.maxpat import Patcher, write_patch, PatchValidationError
+    from src.maxpat import Patcher, write_patch, PatchGenerationError
 
-    # Create a patcher, then corrupt it to have blocking errors
+    # Create a patcher and add a box, then corrupt the box to produce
+    # an unfixable validation error. We monkeypatch to_dict to return
+    # a dict that fails structural validation.
     p = Patcher()
     p.add_box("ezdac~")
 
-    # Corrupt the internal structure to cause blocking validation errors
-    # Remove boxes from the patcher props to cause JSON structure error
-    p.props["boxes"] = "not_a_list"
+    # Save original to_dict and replace with one that returns corrupted data
+    original_to_dict = p.to_dict
 
-    with pytest.raises(PatchValidationError):
-        write_patch(p, "/tmp/should_not_exist.maxpat")
+    def corrupted_to_dict():
+        d = original_to_dict()
+        # Replace boxes with a non-list to trigger JSON structure error
+        d["patcher"]["boxes"] = "not_a_list"
+        return d
+
+    p.to_dict = corrupted_to_dict
+
+    out_path = tmp_path / "should_not_exist.maxpat"
+    with pytest.raises(PatchGenerationError):
+        write_patch(p, str(out_path))
 
 
 def test_write_patch_returns_results(tmp_path):
