@@ -193,3 +193,11 @@ def test_new_references_lifecycle_skill() -> None:
     assert "max-lifecycle" in content, (
         "max-new.md should reference max-lifecycle skill"
     )
+
+
+def test_build_no_stub_labels() -> None:
+    """max-build.md must not label RNBO or ext agents as stubs."""
+    content = _read_command("max-build")
+    assert "stub" not in content.lower(), (
+        "max-build.md should not label any agent as a stub"
+    )

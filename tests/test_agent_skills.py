@@ -480,3 +480,32 @@ def test_verify_command_import_paths() -> None:
     assert "from src.maxpat.code_validation" not in content, (
         "max-verify.md should NOT use 'from src.maxpat.code_validation import'"
     )
+
+
+def test_dispatch_rules_no_stub_labels() -> None:
+    """dispatch-rules.md must not label RNBO or ext agents as STUB."""
+    path = SKILLS_DIR / "max-router" / "references" / "dispatch-rules.md"
+    content = path.read_text()
+    assert "-- STUB" not in content, (
+        "dispatch-rules.md should not have -- STUB markers in section headers"
+    )
+    assert "Phase 5 stub" not in content, (
+        "dispatch-rules.md should not have Phase 5 stub notes"
+    )
+    assert "RNBO (stub)" not in content, (
+        "dispatch-rules.md edge case table should not label RNBO as stub"
+    )
+
+
+def test_rnbo_validate_scope_documented() -> None:
+    """RNBO SKILL.md must clarify that validate_rnbo_patch takes the inner
+    RNBO patcher, not the full rnbo~ wrapper."""
+    content = _read_skill("max-rnbo-agent")
+    # Find the validate_rnbo_patch line and check it mentions "inner"
+    for line in content.splitlines():
+        if "validate_rnbo_patch" in line and "3-layer" in line:
+            assert "inner" in line.lower(), (
+                "validate_rnbo_patch description should clarify inner patcher scope"
+            )
+            return
+    pytest.fail("Could not find validate_rnbo_patch description line in RNBO SKILL.md")
