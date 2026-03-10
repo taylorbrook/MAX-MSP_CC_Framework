@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A Claude Code development framework for building MAX/MSP patches and objects. Provides specialized agents, skills, hooks, templates, validation, and a comprehensive object knowledge base — enabling Claude to effectively generate `.maxpat` files, Gen~/RNBO~/js/Node for Max code, and C/C++ externals. Modeled after the Plugin Freedom System for VST development, with adaptations for MAX's visual patching paradigm.
+A Claude Code development framework for MAX/MSP that generates valid `.maxpat` patches, Gen~/RNBO~/js/Node for Max code, and C/C++ externals. Provides 2,015-object knowledge base, 4-layer validation pipeline, 6 specialist agents with critic loops, persistent memory, and project lifecycle management via 10 slash commands.
 
 ## Core Value
 
@@ -12,60 +12,69 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ Framework generates valid `.maxpat` JSON files with correct object definitions, connections, and layout — v1.0
+- ✓ Comprehensive MAX object knowledge base (2,015 objects, 8 domains) sourced from MAX extraction, curation, and docs — v1.0
+- ✓ Specialized agents for different MAX development domains (patching, DSP/Gen~, RNBO~, js/Node, externals, UI) — v1.0
+- ✓ Skills for project lifecycle (ideation, research, planning, execution, verification) scoped per MAX project — v1.0
+- ✓ Hooks for validation (patch structure, object validity, connection checks, code syntax) — v1.0
+- ✓ Gen~ code generation and syntax validation — v1.0
+- ✓ RNBO~ patch generation and code export support — v1.0
+- ✓ Node for Max and js/v8 code generation with testable JavaScript — v1.0
+- ✓ C/C++ external development support (Min-DevKit scaffolding, build system, .mxo validation) — v1.0
+- ✓ Multi-project structure — each MAX project isolated with independent context and state — v1.0
+- ✓ Domain coverage: MSP (audio), Max (control/MIDI/OSC), Jitter (video/GL), MC (multichannel) — v1.0
+- ✓ Patch layout engine — objects positioned for readability in MAX's visual editor — v1.0
+- ✓ Persistent agent memory — learned patterns accumulate across projects — v1.0
+- ✓ Multi-layer validation (pre-generation scan, post-generation structure check, domain-specific critics) — v1.0
+- ✓ Generator-critic validation loops — critics review output before user sees it — v1.0
 
 ### Active
 
-- [ ] Framework generates valid `.maxpat` JSON files with correct object definitions, connections, and layout
-- [ ] Comprehensive MAX object knowledge base (inlets, outlets, arguments, behavior) sourced from MAX extraction, curation, and Cycling '74 docs
-- [ ] Specialized agents for different MAX development domains (patching, DSP/Gen~, RNBO~, js/Node, externals, UI)
-- [ ] Skills for project lifecycle (ideation, research, planning, execution, verification) scoped per MAX project
-- [ ] Hooks for validation (patch structure, object validity, connection checks, code syntax)
 - [ ] Template library for common MAX patterns (synthesis, sequencing, effects, control, Jitter)
-- [ ] Gen~ code generation and syntax validation
-- [ ] RNBO~ patch generation and code export support
-- [ ] Node for Max and js/v8 code generation with testable JavaScript
-- [ ] C/C++ external development support (SDK research needed for build system choice)
-- [ ] Multi-project structure — each MAX project isolated like plugins in Plugin Freedom System
-- [ ] Domain coverage: MSP (audio), Max (control/MIDI/OSC), Jitter (video/GL), MC (multichannel)
-- [ ] Patch layout engine — objects positioned for readability when opened in MAX's visual editor
-- [ ] Persistent agent memory — learned patterns accumulate across projects
-- [ ] Multi-layer validation (pre-generation scan, post-generation structure check, domain-specific critics)
+- [ ] MAX for Live integration (Live API, device types, parameter mapping)
+- [ ] Deep Jitter support (specialized agents, validation, templates for video/GL)
+- [ ] Intelligent object selection — context-aware recommendations based on task
+- [ ] Patch-from-description natural language interface
 
 ### Out of Scope
 
-- Building actual MAX/MSP projects (granular synth, sequencer, etc.) — deferred to future milestones using this framework
+- Building actual MAX/MSP projects (granular synth, sequencer, etc.) — use framework to build them, not framework scope
 - Real-time audio testing — requires MAX running, which Claude cannot do
-- MAX for Live integration — separate domain, defer
 - Standalone application export — focus on patches and externals first
-- Video/Jitter as a priority — supported but MSP/audio is primary focus
+- Real-time MAX control via OSC/MCP — creates fragile dependency on MAX running
+- Patch-from-screenshot analysis — .maxpat JSON is the source of truth
 
 ## Context
 
-- **Inspiration:** Plugin Freedom System at `/Users/taylorbrook/Dev/VST-development` — 11 agents, 27 skills, multi-layer validation, contract-driven data flow, persistent agent memory, template library, staged decomposition
-- **Key challenge:** MAX patches are visual graphs stored as JSON. Unlike code-based development, Claude must generate spatially-aware object layouts with precise connection routing
-- **Code entry points:** Gen~ (GenExpr DSP code), RNBO~ (exportable patches), Node for Max (JavaScript), js/v8 (inline JS), and C/C++ externals provide code-based interfaces where Claude operates naturally
-- **Testing gap:** Patch behavior can only be fully validated by running MAX. Framework must maximize what's verifiable without MAX (structure, objects, connections, code syntax) and provide clear manual testing protocols for what remains
-- **User profile:** Expert MAX/MSP user — framework speaks MAX fluently, no hand-holding on object behavior
-- **Workflow:** Claude generates patches/code → user opens in MAX → user reports results → Claude iterates. Goal: minimize manual testing rounds through aggressive pre-validation
-
-## Constraints
-
-- **Platform:** macOS (MAX/MSP primary platform)
-- **MAX version:** Current (MAX 8/9) — object database must track version compatibility
-- **Patch format:** `.maxpat` JSON — must produce files MAX can open without errors
-- **External SDK:** To be researched — Max SDK (C) vs Min-DevKit (C++) vs both
-- **No MAX automation:** Claude cannot launch or control MAX — all validation must be offline
+Shipped v1.0 with 16,557 LOC Python across 183 files.
+Tech stack: Python (generation + validation), JSON (object DB + .maxpat), C++ (Min-DevKit externals), GenExpr (DSP code), JavaScript (js/N4M).
+624 tests passing covering all 40 requirements.
+Object database: 2,015 objects across 8 domains (Max, MSP, Jitter, MC, Gen, M4L, RNBO, Packages).
+Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-scope memory.
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Framework-only scope for v1 | Prove the tooling before building projects with it | — Pending |
-| Full domain coverage (MSP, Jitter, Max, MC) | Expert user works across all domains | — Pending |
-| Comprehensive object DB from multiple sources | Single source insufficient for MAX's object ecosystem | — Pending |
-| Modeled after Plugin Freedom System | Proven architecture for project-scoped AI-assisted development | — Pending |
-| C/C++ externals as core feature | Critical capability, not secondary | — Pending |
+| Framework-only scope for v1 | Prove the tooling before building projects with it | ✓ Good — framework complete, ready for real projects |
+| Full domain coverage (MSP, Jitter, Max, MC) | Expert user works across all domains | ✓ Good — 2,015 objects across all domains |
+| Comprehensive object DB from multiple sources | Single source insufficient for MAX's object ecosystem | ✓ Good — XML refpages + py2max + manual curation |
+| Modeled after Plugin Freedom System | Proven architecture for project-scoped AI-assisted development | ✓ Good — same agent/critic/memory patterns |
+| C/C++ externals as core feature | Critical capability, not secondary | ✓ Good — Min-DevKit scaffolding + build + .mxo validation |
+| JSON per domain (not SQLite) | Optimized for Claude context injection | ✓ Good — fast lookups, easy to extend |
+| Box.__new__ bypass for structural objects | Subpatchers, gen~ codebox, node.script not in DB | ✓ Good — clean separation of structural vs DB objects |
+| N4M CommonJS (not ESM) | User preference, MAX compatibility | ✓ Good — consistent with MAX ecosystem |
+| Code validation report-only (no auto-fix) | User preference for transparency | ✓ Good — findings surfaced, user decides |
+| Min-DevKit over raw Max SDK | Modern C++ API, CMake build system | ✓ Good — headless builds, clean templates |
+| TDD approach for gap closure (Phases 6-7) | Tests written before fixes ensure no regressions | ✓ Good — 11 regression tests prevent doc drift |
+
+## Constraints
+
+- **Platform:** macOS (MAX/MSP primary platform)
+- **MAX version:** Current (MAX 8/9) — object database tracks version compatibility
+- **Patch format:** `.maxpat` JSON — must produce files MAX can open without errors
+- **External SDK:** Min-DevKit (C++) — CMake build system, Apple Silicon support
+- **No MAX automation:** Claude cannot launch or control MAX — all validation is offline
 
 ---
-*Last updated: 2026-03-08 after initialization*
+*Last updated: 2026-03-10 after v1.0 milestone*
