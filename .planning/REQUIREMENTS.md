@@ -24,8 +24,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PAT-03**: Subpatcher and bpatcher generation supported (nested patchers)
 - [ ] **PAT-04**: Connection validation checks outlet/inlet index bounds before output
 - [ ] **PAT-05**: Connection validation enforces signal/control type matching (MSP outlets to MSP inlets)
-- [ ] **PAT-06**: Patch layout engine positions objects with top-to-bottom signal flow convention
-- [ ] **PAT-07**: Layout engine spaces objects readably (~80-120px vertical, ~150-200px horizontal)
+- [x] **PAT-06**: Patch layout engine positions objects with top-to-bottom signal flow convention
+- [x] **PAT-07**: Layout engine spaces objects readably (~80-120px vertical, ~150-200px horizontal)
 - [ ] **PAT-08**: Multi-layer validation pipeline: JSON validity, object existence, connection bounds, domain-specific checks
 
 ### Code Generation
@@ -113,8 +113,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PAT-03 | Phase 2 | Complete |
 | PAT-04 | Phase 2 | Pending |
 | PAT-05 | Phase 2 | Pending |
-| PAT-06 | Phase 2 | Pending |
-| PAT-07 | Phase 2 | Pending |
+| PAT-06 | Phase 2 | Complete |
+| PAT-07 | Phase 2 | Complete |
 | PAT-08 | Phase 2 | Pending |
 | CODE-01 | Phase 3 | Pending |
 | CODE-02 | Phase 3 | Pending |
@@ -149,4 +149,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-03-08*
-*Last updated: 2026-03-09 after Plan 01-03 completion (Phase 1 complete: all ODB + FRM-04)*
+*Last updated: 2026-03-10 after Plan 02-02 completion (PAT-06, PAT-07 complete)*

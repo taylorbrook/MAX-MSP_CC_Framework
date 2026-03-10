@@ -50,8 +50,8 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Core data model (Patcher/Box/Patchline), object database interface, maxclass resolution, box sizing
-- [ ] 02-02-PLAN.md -- Column-based layout engine with topological sort and spacing
+- [x] 02-01-PLAN.md -- Core data model (Patcher/Box/Patchline), object database interface, maxclass resolution, box sizing
+- [x] 02-02-PLAN.md -- Column-based layout engine with topological sort and spacing
 - [ ] 02-03-PLAN.md -- Four-layer validation pipeline with auto-fix and domain rules
 - [ ] 02-04-PLAN.md -- Public API, file write hooks, end-to-end integration tests
 
@@ -109,11 +109,11 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Object Knowledge Base | 3/3 | Complete | 2026-03-09 |
-| 2. Patch Generation and Validation | 0/4 | Planned | - |
+| 2. Patch Generation and Validation | 2/4 | In Progress | - |
 | 3. Code Generation | 0/? | Not started | - |
 | 4. Agent System and Orchestration | 0/? | Not started | - |
 | 5. RNBO and External Development | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-09 (Phase 2 planned)*
+*Last updated: 2026-03-10 (Plan 02-02 complete)*
