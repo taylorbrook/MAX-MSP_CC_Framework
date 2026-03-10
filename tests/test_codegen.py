@@ -553,3 +553,142 @@ class TestPublicAPI:
         """write_gendsp is importable from src.maxpat."""
         from src.maxpat import write_gendsp
         assert callable(write_gendsp)
+
+
+# ---------------------------------------------------------------------------
+# TestN4M -- Node for Max code generation (CODE-04)
+# ---------------------------------------------------------------------------
+
+class TestN4M:
+    """Tests for Node for Max code generation."""
+
+    def test_generate_n4m_basic(self):
+        """generates valid N4M with require and handler."""
+        from src.maxpat.codegen import generate_n4m_script
+
+        handlers = [{"name": "bang", "args": [], "body": 'maxAPI.outlet("processed");'}]
+        result = generate_n4m_script(handlers)
+
+        assert 'require("max-api")' in result
+        assert 'addHandler("bang"' in result
+        assert 'maxAPI.outlet("processed");' in result
+
+    def test_generate_n4m_dict_access(self):
+        """includes async dict access with try/catch."""
+        from src.maxpat.codegen import generate_n4m_script
+
+        handlers = [{"name": "bang", "args": [], "body": 'maxAPI.outlet("done");'}]
+        result = generate_n4m_script(handlers, dict_access=["mydict"])
+
+        assert "getDict" in result
+        assert "setDict" in result
+        assert "try" in result
+        assert "catch" in result
+        assert "maxAPI.post" in result
+        assert "mydict" in result
+
+    def test_generate_n4m_multiple_handlers(self):
+        """multiple addHandler calls."""
+        from src.maxpat.codegen import generate_n4m_script
+
+        handlers = [
+            {"name": "bang", "args": [], "body": 'maxAPI.outlet("bang");'},
+            {"name": "set_value", "args": ["value"], "body": "maxAPI.outlet(value);"},
+            {"name": "reset", "args": [], "body": 'maxAPI.outlet("reset");'},
+        ]
+        result = generate_n4m_script(handlers)
+
+        assert result.count("addHandler") == 3
+        assert 'addHandler("bang"' in result
+        assert 'addHandler("set_value"' in result
+        assert 'addHandler("reset"' in result
+
+    def test_add_node_script_box(self):
+        """creates box with correct maxclass and text."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        box, code = p.add_node_script("myscript.js")
+
+        assert box.maxclass == "newobj"
+        assert box.text == "node.script myscript.js"
+        assert box.numinlets == 1
+        assert code is None
+
+    def test_add_node_script_outlets(self):
+        """num_outlets parameter sets outlet count."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        box, code = p.add_node_script("test.js", num_outlets=3)
+
+        assert box.numoutlets == 3
+        assert box.outlettype == ["", "", ""]
+
+
+# ---------------------------------------------------------------------------
+# TestJsObject -- js object V8 code generation (CODE-05)
+# ---------------------------------------------------------------------------
+
+class TestJsObject:
+    """Tests for js object V8 code generation."""
+
+    def test_generate_js_basic(self):
+        """generates valid js with inlets/outlets and handlers."""
+        from src.maxpat.codegen import generate_js_script
+
+        handlers = [
+            {"type": "bang", "body": 'outlet(0, "ready");'},
+            {"type": "msg_int", "body": "outlet(0, v * 2);"},
+        ]
+        result = generate_js_script(num_inlets=2, num_outlets=1, handlers=handlers)
+
+        assert "inlets = 2;" in result
+        assert "outlets = 1;" in result
+        assert "function bang()" in result
+        assert 'outlet(0, "ready");' in result
+        assert "function msg_int(v)" in result
+
+    def test_generate_js_default_handlers(self):
+        """None handlers generates defaults."""
+        from src.maxpat.codegen import generate_js_script
+
+        result = generate_js_script(num_inlets=1, num_outlets=1)
+
+        assert "inlets = 1;" in result
+        assert "outlets = 1;" in result
+        assert "function bang()" in result
+        assert "function msg_int(v)" in result
+        assert "function msg_float(v)" in result
+        assert "function list()" in result
+
+    def test_generate_js_custom_io(self):
+        """custom inlet/outlet count in declarations."""
+        from src.maxpat.codegen import generate_js_script
+
+        result = generate_js_script(num_inlets=4, num_outlets=3)
+
+        assert "inlets = 4;" in result
+        assert "outlets = 3;" in result
+
+    def test_add_js_box(self):
+        """creates box with maxclass="newobj" and text="js filename.js"."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        box, code = p.add_js("myobject.js")
+
+        assert box.maxclass == "newobj"
+        assert box.text == "js myobject.js"
+        assert code is None
+
+    def test_add_js_io(self):
+        """num_inlets/num_outlets set correctly on box."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        box, code = p.add_js("test.js", num_inlets=3, num_outlets=2)
+
+        assert box.numinlets == 3
+        assert box.numoutlets == 2
+        assert box.outlettype == ["", ""]
