@@ -110,7 +110,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Object Knowledge Base | 3/3 | Complete | 2026-03-09 |
 | 2. Patch Generation and Validation | 4/4 | Complete | 2026-03-10 |
-| 3. Code Generation | 0/2 | Planned | - |
+| 3. Code Generation | 1/2 | In Progress|  |
 | 4. Agent System and Orchestration | 0/? | Not started | - |
 | 5. RNBO and External Development | 0/? | Not started | - |
 

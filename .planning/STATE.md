@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 3 context gathered
-last_updated: "2026-03-10T01:23:53.735Z"
-last_activity: 2026-03-10 -- Plan 02-04 executed (public API, hooks, integration tests)
+status: in-progress
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-03-10T03:32:18.322Z"
+last_activity: 2026-03-10 -- Plan 03-01 executed (GenExpr code builder, gen~ codebox, .gendsp generation)
 progress:
   total_phases: 5
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
-  percent: 100
+  total_plans: 9
+  completed_plans: 8
+  percent: 89
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Phase 2: Patch Generation and Validation
+**Current focus:** Phase 3: Code Generation
 
 ## Current Position
 
-Phase: 2 of 5 (Patch Generation and Validation) -- COMPLETE
-Plan: 4 of 4 in current phase (4 complete)
-Status: Phase 02 complete -- all patch generation plans executed
-Last activity: 2026-03-10 -- Plan 02-04 executed (public API, hooks, integration tests)
+Phase: 3 of 5 (Code Generation)
+Plan: 1 of 1 in current phase (1 complete)
+Status: Plan 03-01 complete -- GenExpr code generation
+Last activity: 2026-03-10 -- Plan 03-01 executed (GenExpr code builder, gen~ codebox, .gendsp generation)
 
-Progress: [##########] 100%
+Progress: [█████████░] 89%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 5min
-- Total execution time: 0.6 hours
+- Total execution time: 0.7 hours
 
 **By Phase:**
 
@@ -45,9 +45,10 @@ Progress: [##########] 100%
 |-------|-------|-------|----------|
 | 1. Object Knowledge Base | 3/3 | 16min | 5min |
 | 2. Patch Generation | 4/4 | 18min | 4min |
+| 3. Code Generation | 1/? | 5min | 5min |
 
 **Recent Trend:**
-- Last 5 plans: 1min, 7min, 1min, 2min, 8min
+- Last 5 plans: 7min, 1min, 2min, 8min, 5min
 - Trend: Steady
 
 *Updated after each plan completion*
@@ -55,6 +56,7 @@ Progress: [##########] 100%
 | Phase 02 P02 | 1min | 1 task | 2 files |
 | Phase 02 P03 | 2min | 1 task | 2 files |
 | Phase 02 P04 | 8min | 2 tasks | 6 files |
+| Phase 03 P01 | 5min | 3 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -91,6 +93,10 @@ Recent decisions affecting current work:
 - [02-04]: write_patch validate=False returns empty list for callers that handle validation elsewhere
 - [02-04]: Fixture comparison by structural properties (box count, names, topology) not exact positions
 - [02-04]: validate_file returns error-level ValidationResult for invalid JSON (not exception)
+- [03-01]: gen~ codebox via Box.__new__ pattern (same as add_subpatcher) -- bypasses DB lookup for structural objects
+- [03-01]: Codebox code stored in extra_attrs dict for automatic inclusion in to_dict() serialization
+- [03-01]: GenExpr I/O auto-detection uses word-boundary regex to avoid false matches on variable names
+- [03-01]: Codebox outlettype uses empty string (gen~ operates at sample rate internally, types implicit)
 
 ### Pending Todos
 
@@ -104,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T01:23:53.733Z
-Stopped at: Phase 3 context gathered
-Resume file: .planning/phases/03-code-generation/03-CONTEXT.md
+Last session: 2026-03-10T03:32:18Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: .planning/phases/03-code-generation/03-01-SUMMARY.md
