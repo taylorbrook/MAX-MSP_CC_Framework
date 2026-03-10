@@ -237,3 +237,83 @@ class TestDirectoryCreation:
         entry = MemoryEntry("p1", "dsp", "2026-03-10", "c1", "r1")
         store.write(entry)
         assert (base / "dsp" / "patterns.md").exists()
+
+
+# --- Task 2: Deduplication on write ---
+
+
+class TestDeduplication:
+    """Writing duplicate entries is prevented by domain + pattern name (case-insensitive)."""
+
+    def test_exact_duplicate_returns_false(self, tmp_path: Path):
+        """Writing same pattern+domain twice returns False on second write."""
+        store = MemoryStore(scope="global", base_dir=tmp_path)
+        entry = MemoryEntry(
+            pattern="prefer line~ for gain",
+            domain="dsp",
+            observed="2026-03-10",
+            context="Context A",
+            rule="Rule A",
+        )
+        result1 = store.write(entry)
+        result2 = store.write(entry)
+        assert result1 is True
+        assert result2 is False
+        # File should have only one entry
+        entries = store.read(domain="dsp")
+        assert len(entries) == 1
+
+    def test_different_pattern_same_domain_succeeds(self, tmp_path: Path):
+        """Different pattern name in same domain succeeds."""
+        store = MemoryStore(scope="global", base_dir=tmp_path)
+        entry_a = MemoryEntry("prefer line~ for gain", "dsp", "2026-03-10", "c1", "r1")
+        entry_b = MemoryEntry("always include meter~", "dsp", "2026-03-10", "c2", "r2")
+        assert store.write(entry_a) is True
+        assert store.write(entry_b) is True
+        entries = store.read(domain="dsp")
+        assert len(entries) == 2
+
+    def test_same_pattern_different_domain_succeeds(self, tmp_path: Path):
+        """Same pattern name in different domain succeeds (different scope)."""
+        store = MemoryStore(scope="global", base_dir=tmp_path)
+        entry_dsp = MemoryEntry("prefer line~ for gain", "dsp", "2026-03-10", "c1", "r1")
+        entry_ui = MemoryEntry("prefer line~ for gain", "ui", "2026-03-10", "c2", "r2")
+        assert store.write(entry_dsp) is True
+        assert store.write(entry_ui) is True
+        assert len(store.read(domain="dsp")) == 1
+        assert len(store.read(domain="ui")) == 1
+
+    def test_case_insensitive_dedup(self, tmp_path: Path):
+        """Dedup is case-insensitive on pattern name."""
+        store = MemoryStore(scope="global", base_dir=tmp_path)
+        entry1 = MemoryEntry("Prefer Line~", "dsp", "2026-03-10", "c1", "r1")
+        entry2 = MemoryEntry("prefer line~", "dsp", "2026-03-10", "c2", "r2")
+        assert store.write(entry1) is True
+        assert store.write(entry2) is False
+        entries = store.read(domain="dsp")
+        assert len(entries) == 1
+        # Original casing preserved
+        assert entries[0].pattern == "Prefer Line~"
+
+    def test_after_dedup_read_returns_unique(self, tmp_path: Path):
+        """After dedup write attempts, read() returns only unique entries."""
+        store = MemoryStore(scope="global", base_dir=tmp_path)
+        store.write(MemoryEntry("p1", "dsp", "2026-03-10", "c1", "r1"))
+        store.write(MemoryEntry("p1", "dsp", "2026-03-10", "c2", "r2"))  # dedup
+        store.write(MemoryEntry("p2", "dsp", "2026-03-10", "c3", "r3"))
+        store.write(MemoryEntry("p2", "dsp", "2026-03-10", "c4", "r4"))  # dedup
+        entries = store.read(domain="dsp")
+        assert len(entries) == 2
+        patterns = [e.pattern for e in entries]
+        assert "p1" in patterns
+        assert "p2" in patterns
+
+    def test_dedup_project_scope(self, tmp_path: Path):
+        """Dedup works in project scope too."""
+        project_dir = tmp_path / "proj"
+        project_dir.mkdir()
+        store = MemoryStore(scope="project", project_dir=project_dir)
+        assert store.write(MemoryEntry("p1", "dsp", "2026-03-10", "c1", "r1")) is True
+        assert store.write(MemoryEntry("p1", "dsp", "2026-03-10", "c2", "r2")) is False
+        entries = store.read()
+        assert len(entries) == 1
