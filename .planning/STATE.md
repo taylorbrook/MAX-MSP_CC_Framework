@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-03-10T15:15:27Z"
-last_activity: 2026-03-10 -- Plan 04-03 executed (project lifecycle and test checklist generation)
+status: completed
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-03-10T15:18:28.453Z"
+last_activity: 2026-03-10 -- Plan 04-01 executed (DSP and structure critics)
 progress:
   total_phases: 5
   completed_phases: 3
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 4 of 5 (Agent System and Orchestration) -- IN PROGRESS
-Plan: 3 of 6 in current phase (3 complete)
-Status: Plan 04-03 complete -- project lifecycle and test checklist generation
-Last activity: 2026-03-10 -- Plan 04-03 executed (project lifecycle and test checklist generation)
+Plan: 3 of 6 in current phase (3 complete, wave 1 done)
+Status: Plan 04-01 complete -- DSP and structure critics extending validation pipeline
+Last activity: 2026-03-10 -- Plan 04-01 executed (DSP and structure critics)
 
 Progress: [████████░░] 80%
 
@@ -60,6 +60,7 @@ Progress: [████████░░] 80%
 | Phase 03 P02 | 5min | 3 tasks | 7 files |
 | Phase 04 P02 | 3min | 2 tasks | 2 files |
 | Phase 04 P03 | 3min | 2 tasks | 4 files |
+| Phase 04 P01 | 5min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,10 @@ Recent decisions affecting current work:
 - [04-03]: Project name validation via regex ^[a-z0-9]+(-[a-z0-9]+)*$ (no leading/trailing hyphens)
 - [04-03]: Desync detection: get_active_project returns None when referenced project dir is missing
 - [04-03]: Test checklist detects object types by scanning box text first-word and maxclass for UI objects
+- [Phase 04]: Control-to-signal rate check only flags inlet 0 to reduce false positives
+- [Phase 04]: Signal connections exempted from structure checks (all hot in audio domain per Rule #3)
+- [Phase 04]: gen~ I/O check supports both embedded codebox and external code_context dict
+- [Phase 04]: CriticResult uses __slots__ matching ValidationResult pattern for consistency
 
 ### Pending Todos
 
@@ -126,6 +131,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T15:15:27Z
-Stopped at: Completed 04-03-PLAN.md
+Last session: 2026-03-10T15:18:28.451Z
+Stopped at: Completed 04-01-PLAN.md
 Resume file: None
