@@ -48,8 +48,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Agent System
 
-- [ ] **AGT-01**: Domain-specialized agents for patch generation, DSP/Gen~, RNBO~, js/Node, externals
-- [ ] **AGT-02**: UI/layout specialist agent handling both presentation mode and patching mode
+- [x] **AGT-01**: Domain-specialized agents for patch generation, DSP/Gen~, RNBO~, js/Node, externals
+- [x] **AGT-02**: UI/layout specialist agent handling both presentation mode and patching mode
 - [x] **AGT-03**: Generator-critic validation loops -- critics review output before user sees it
 - [x] **AGT-04**: DSP critic checks signal flow, audio rate consistency, feedback loops
 - [x] **AGT-05**: Connection/structure critic validates object usage and patch architecture
@@ -128,8 +128,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EXT-03 | Phase 5 | Pending |
 | EXT-04 | Phase 5 | Pending |
 | EXT-05 | Phase 5 | Pending |
-| AGT-01 | Phase 4 | Pending |
-| AGT-02 | Phase 4 | Pending |
+| AGT-01 | Phase 4 | Complete |
+| AGT-02 | Phase 4 | Complete |
 | AGT-03 | Phase 4 | Complete |
 | AGT-04 | Phase 4 | Complete |
 | AGT-05 | Phase 4 | Complete |

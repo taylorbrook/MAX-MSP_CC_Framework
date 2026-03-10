@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: completed
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-03-10T15:18:28.453Z"
-last_activity: 2026-03-10 -- Plan 04-01 executed (DSP and structure critics)
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-03-10T15:27:55.336Z"
+last_activity: 2026-03-10 -- Plan 04-04 executed (router + specialist agents)
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 15
-  completed_plans: 12
-  percent: 80
+  completed_plans: 14
+  percent: 87
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-08)
 ## Current Position
 
 Phase: 4 of 5 (Agent System and Orchestration) -- IN PROGRESS
-Plan: 3 of 6 in current phase (3 complete, wave 1 done)
-Status: Plan 04-01 complete -- DSP and structure critics extending validation pipeline
-Last activity: 2026-03-10 -- Plan 04-01 executed (DSP and structure critics)
+Plan: 4 of 6 in current phase (4 complete, wave 2 started)
+Status: Plan 04-04 complete -- Router and 6 specialist agent skills
+Last activity: 2026-03-10 -- Plan 04-04 executed (router + specialist agents)
 
-Progress: [████████░░] 80%
+Progress: [█████████░] 93%
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [████████░░] 80%
 | Phase 04 P02 | 3min | 2 tasks | 2 files |
 | Phase 04 P03 | 3min | 2 tasks | 4 files |
 | Phase 04 P01 | 5min | 2 tasks | 5 files |
+| Phase 04 P04 | 5min | 1 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -118,6 +119,10 @@ Recent decisions affecting current work:
 - [Phase 04]: Signal connections exempted from structure checks (all hot in audio domain per Rule #3)
 - [Phase 04]: gen~ I/O check supports both embedded codebox and external code_context dict
 - [Phase 04]: CriticResult uses __slots__ matching ValidationResult pattern for consistency
+- [Phase 04]: Router dispatch uses keyword/intent tables per domain for deterministic routing
+- [Phase 04]: Lead agent hierarchy for multi-domain tie-breaking: DSP > Patch > js > UI
+- [Phase 04]: Merge protocol enforces single file ownership -- no two agents write to same file
+- [Phase 04]: Stub agents (RNBO/Ext) provide limited current help rather than returning empty errors
 
 ### Pending Todos
 
@@ -131,6 +136,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T15:18:28.451Z
-Stopped at: Completed 04-01-PLAN.md
+Last session: 2026-03-10T15:27:30.968Z
+Stopped at: Completed 04-04-PLAN.md
 Resume file: None
