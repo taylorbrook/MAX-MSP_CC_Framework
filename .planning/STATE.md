@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: completed
-stopped_at: Phase 5 context gathered
-last_updated: "2026-03-10T17:24:46.856Z"
-last_activity: 2026-03-10 -- Plan 04-06 executed (10 slash commands + 59 tests)
+status: in-progress
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-03-10T17:55:44Z"
+last_activity: 2026-03-10 -- Plan 05-02 executed (3 archetypes + 40 tests)
 progress:
   total_phases: 5
   completed_phases: 4
-  total_plans: 15
-  completed_plans: 15
-  percent: 100
+  total_plans: 19
+  completed_plans: 17
+  percent: 89
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-08)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Phase 4 complete -- Agent System and Orchestration
+**Current focus:** Phase 5 in progress -- RNBO and External Development
 
 ## Current Position
 
-Phase: 4 of 5 (Agent System and Orchestration) -- COMPLETE
-Plan: 6 of 6 in current phase (6 complete, all waves done)
-Status: Plan 04-06 complete -- 10 slash commands + 59 validation tests
-Last activity: 2026-03-10 -- Plan 04-06 executed (10 slash commands + 59 tests)
+Phase: 5 of 5 (RNBO and External Development) -- IN PROGRESS
+Plan: 2 of 4 in current phase (2 complete)
+Status: Plan 05-02 complete -- 3 archetypes + 40 tests
+Last activity: 2026-03-10 -- Plan 05-02 executed (3 archetypes + 40 tests)
 
-Progress: [██████████] 100%
+Progress: [████████░░] 89%
 
 ## Performance Metrics
 
@@ -64,6 +64,7 @@ Progress: [██████████] 100%
 | Phase 04 P04 | 5min | 1 tasks | 15 files |
 | Phase 04 P05 | 6min | 2 tasks | 9 files |
 | Phase 04 P06 | 3min | 2 tasks | 11 files |
+| Phase 05 P02 | 4min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -131,6 +132,10 @@ Recent decisions affecting current work:
 - [04-06]: Command frontmatter uses name/description/argument-hint fields for Claude command discovery
 - [04-06]: Commands route to skills (not directly to Python) maintaining the agent abstraction layer
 - [04-06]: Cross-reference pattern: commands -> skills -> Python modules (layered abstraction)
+- [05-02]: Python f-strings for C++ template rendering (not Jinja2) -- templates are small, no external dependency
+- [05-02]: Box.__new__ bypass for external object in help patches -- custom externals not in DB
+- [05-02]: Help patch writes raw JSON (not write_patch) to avoid validation on non-DB objects
+- [05-02]: DSP help patch includes *~ 0.25 gain stage between external and dac~ for safety
 
 ### Pending Todos
 
@@ -144,6 +149,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-10T17:24:46.854Z
-Stopped at: Phase 5 context gathered
+Last session: 2026-03-10T17:55:44Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: .planning/phases/05-rnbo-and-external-development/05-CONTEXT.md
