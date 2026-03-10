@@ -12,6 +12,7 @@ import pytest
 
 from src.maxpat.critics.base import CriticResult
 from src.maxpat.critics.dsp_critic import review_dsp
+from src.maxpat.critics.structure_critic import review_structure
 from src.maxpat.critics import review_patch
 
 
@@ -341,3 +342,327 @@ class TestReviewPatch:
         patch = _no_gain_staging_patch()
         results = review_patch(patch)
         assert any("gain" in r.finding.lower() for r in results)
+
+
+# ===========================================================================
+# Fixtures: Patch dicts for structure critic tests
+# ===========================================================================
+
+def _fan_out_no_trigger_patch() -> dict:
+    """One outlet connected to 3 destinations without trigger object."""
+    boxes = [
+        {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "metro 500",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": ["bang"],
+        },
+        {
+            "id": "obj-2",
+            "maxclass": "newobj",
+            "text": "counter 0 10",
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": ["", "", "", ""],
+        },
+        {
+            "id": "obj-3",
+            "maxclass": "toggle",
+            "text": "",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": ["int"],
+        },
+        {
+            "id": "obj-4",
+            "maxclass": "newobj",
+            "text": "print",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        },
+    ]
+    lines = [
+        {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        {"source": ["obj-1", 0], "destination": ["obj-3", 0]},
+        {"source": ["obj-1", 0], "destination": ["obj-4", 0]},
+    ]
+    return _make_patch(boxes, lines)
+
+
+def _fan_out_with_trigger_patch() -> dict:
+    """Trigger object fanning out -- no warning expected."""
+    boxes = [
+        {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "bang",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": ["bang"],
+        },
+        {
+            "id": "obj-2",
+            "maxclass": "newobj",
+            "text": "trigger b b b",
+            "numinlets": 1,
+            "numoutlets": 3,
+            "outlettype": ["bang", "bang", "bang"],
+        },
+        {
+            "id": "obj-3",
+            "maxclass": "newobj",
+            "text": "print a",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        },
+        {
+            "id": "obj-4",
+            "maxclass": "newobj",
+            "text": "print b",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        },
+        {
+            "id": "obj-5",
+            "maxclass": "newobj",
+            "text": "print c",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        },
+    ]
+    lines = [
+        {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        {"source": ["obj-2", 0], "destination": ["obj-3", 0]},
+        {"source": ["obj-2", 1], "destination": ["obj-4", 0]},
+        {"source": ["obj-2", 2], "destination": ["obj-5", 0]},
+    ]
+    return _make_patch(boxes, lines)
+
+
+def _hot_cold_ordering_issue_patch() -> dict:
+    """Two separate sources feed hot and cold inlets of + without trigger."""
+    boxes = [
+        {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "metro 500",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": ["bang"],
+        },
+        {
+            "id": "obj-2",
+            "maxclass": "newobj",
+            "text": "random 100",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": ["int"],
+        },
+        {
+            "id": "obj-3",
+            "maxclass": "newobj",
+            "text": "random 50",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": ["int"],
+        },
+        {
+            "id": "obj-4",
+            "maxclass": "newobj",
+            "text": "+",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": ["int"],
+        },
+    ]
+    lines = [
+        # Two separate sources feeding hot (inlet 0) and cold (inlet 1)
+        # of + without trigger-based ordering
+        {"source": ["obj-2", 0], "destination": ["obj-4", 0]},
+        {"source": ["obj-3", 0], "destination": ["obj-4", 1]},
+    ]
+    return _make_patch(boxes, lines)
+
+
+def _duplicate_patchlines_patch() -> dict:
+    """Patch with duplicate connections."""
+    boxes = [
+        {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "metro 500",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": ["bang"],
+        },
+        {
+            "id": "obj-2",
+            "maxclass": "newobj",
+            "text": "print",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        },
+    ]
+    lines = [
+        {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+    ]
+    return _make_patch(boxes, lines)
+
+
+def _clean_structure_patch() -> dict:
+    """Clean patch with no structure issues."""
+    boxes = [
+        {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "metro 500",
+            "numinlets": 2,
+            "numoutlets": 1,
+            "outlettype": ["bang"],
+        },
+        {
+            "id": "obj-2",
+            "maxclass": "newobj",
+            "text": "counter 0 10",
+            "numinlets": 5,
+            "numoutlets": 4,
+            "outlettype": ["", "", "", ""],
+        },
+    ]
+    lines = [
+        {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+    ]
+    return _make_patch(boxes, lines)
+
+
+# ===========================================================================
+# Structure Critic tests
+# ===========================================================================
+
+class TestStructureCritic:
+    """Test the structure critic checks."""
+
+    def test_fan_out_without_trigger_detected(self):
+        """One outlet to 3 destinations without trigger -> warning."""
+        patch = _fan_out_no_trigger_patch()
+        results = review_structure(patch)
+        warnings = [r for r in results if r.severity == "warning"]
+        assert len(warnings) >= 1
+        assert any("fan" in r.finding.lower() or "trigger" in r.finding.lower() for r in warnings)
+
+    def test_fan_out_with_trigger_no_warning(self):
+        """Trigger object fanning out -> no fan-out warning."""
+        patch = _fan_out_with_trigger_patch()
+        results = review_structure(patch)
+        fan_warnings = [
+            r for r in results
+            if r.severity == "warning" and "fan" in r.finding.lower()
+        ]
+        assert len(fan_warnings) == 0
+
+    def test_hot_cold_ordering_detected(self):
+        """Multiple sources feeding hot+cold inlets without trigger -> warning."""
+        patch = _hot_cold_ordering_issue_patch()
+        results = review_structure(patch)
+        warnings = [r for r in results if r.severity == "warning"]
+        assert len(warnings) >= 1
+        assert any(
+            "hot" in r.finding.lower() or "cold" in r.finding.lower()
+            or "ordering" in r.finding.lower() or "order" in r.finding.lower()
+            for r in warnings
+        )
+
+    def test_duplicate_patchlines_detected(self):
+        """Duplicate connections -> warning."""
+        patch = _duplicate_patchlines_patch()
+        results = review_structure(patch)
+        warnings = [r for r in results if r.severity == "warning"]
+        assert len(warnings) >= 1
+        assert any("duplicate" in r.finding.lower() or "redundant" in r.finding.lower() for r in warnings)
+
+    def test_clean_patch_no_warnings(self):
+        """Clean patch -> no structure warnings."""
+        patch = _clean_structure_patch()
+        results = review_structure(patch)
+        assert len(results) == 0
+
+
+# ===========================================================================
+# review_patch combined integration tests
+# ===========================================================================
+
+class TestReviewPatchCombined:
+    """Test review_patch() combining DSP and structure critics."""
+
+    def test_review_patch_combines_both_critics(self):
+        """review_patch catches both DSP and structure issues."""
+        # Create a patch with both gain staging issue AND fan-out issue
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "cycle~ 440",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "dac~",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "metro 500",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["bang"],
+            },
+            {
+                "id": "obj-4",
+                "maxclass": "newobj",
+                "text": "print a",
+                "numinlets": 1,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+            {
+                "id": "obj-5",
+                "maxclass": "newobj",
+                "text": "print b",
+                "numinlets": 1,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-3", 0], "destination": ["obj-4", 0]},
+            {"source": ["obj-3", 0], "destination": ["obj-5", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_patch(patch)
+
+        # Should have both gain staging and fan-out warnings
+        has_gain = any("gain" in r.finding.lower() for r in results)
+        has_fan_out = any("fan" in r.finding.lower() or "trigger" in r.finding.lower() for r in results)
+        assert has_gain, "Expected gain staging warning from DSP critic"
+        assert has_fan_out, "Expected fan-out warning from structure critic"
+
+    def test_clean_patch_no_results(self):
+        """Clean patch with proper gain staging and no structure issues."""
+        patch = _proper_gain_staging_patch()
+        results = review_patch(patch)
+        assert len(results) == 0, f"Expected no findings, got: {results}"
