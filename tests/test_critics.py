@@ -1,9 +1,9 @@
-"""Tests for the critic system -- DSP and structure critics.
+"""Tests for the critic system -- DSP, structure, RNBO, and external critics.
 
 Critics perform semantic/architectural review of generated patches,
 catching design problems (missing gain staging, gen~ I/O mismatches,
-fan-out without trigger) that the mechanical validation pipeline
-does not detect.
+fan-out without trigger, RNBO param issues, external code issues) that
+the mechanical validation pipeline does not detect.
 """
 
 from __future__ import annotations
@@ -13,6 +13,8 @@ import pytest
 from src.maxpat.critics.base import CriticResult
 from src.maxpat.critics.dsp_critic import review_dsp
 from src.maxpat.critics.structure_critic import review_structure
+from src.maxpat.critics.rnbo_critic import review_rnbo
+from src.maxpat.critics.ext_critic import review_external
 from src.maxpat.critics import review_patch
 
 
@@ -666,3 +668,388 @@ class TestReviewPatchCombined:
         patch = _proper_gain_staging_patch()
         results = review_patch(patch)
         assert len(results) == 0, f"Expected no findings, got: {results}"
+
+
+# ===========================================================================
+# RNBO Critic fixtures
+# ===========================================================================
+
+def _rnbo_patch_with_pascal_case_params() -> dict:
+    """RNBO patch with PascalCase param names -- should warn."""
+    return {
+        "patcher": {
+            "boxes": [
+                {"box": {
+                    "id": "obj-1",
+                    "maxclass": "rnbo~",
+                    "text": "rnbo~",
+                    "numinlets": 3,
+                    "numoutlets": 3,
+                    "patcher": {
+                        "boxes": [
+                            {"box": {
+                                "id": "obj-10",
+                                "maxclass": "newobj",
+                                "text": "in~ 1",
+                                "numinlets": 0,
+                                "numoutlets": 1,
+                            }},
+                            {"box": {
+                                "id": "obj-11",
+                                "maxclass": "newobj",
+                                "text": "out~ 1",
+                                "numinlets": 1,
+                                "numoutlets": 0,
+                            }},
+                            {"box": {
+                                "id": "obj-12",
+                                "maxclass": "newobj",
+                                "text": "param @name GainLevel @min 0 @max 1 @initial 0.5",
+                                "numinlets": 2,
+                                "numoutlets": 2,
+                            }},
+                            {"box": {
+                                "id": "obj-13",
+                                "maxclass": "newobj",
+                                "text": "param @name FilterCutoff @min 20 @max 20000 @initial 1000",
+                                "numinlets": 2,
+                                "numoutlets": 2,
+                            }},
+                        ],
+                        "lines": [],
+                    },
+                }},
+            ],
+            "lines": [],
+        }
+    }
+
+
+def _rnbo_patch_missing_io() -> dict:
+    """RNBO patch with no in~/out~ in inner patcher -- blocker."""
+    return {
+        "patcher": {
+            "boxes": [
+                {"box": {
+                    "id": "obj-1",
+                    "maxclass": "rnbo~",
+                    "text": "rnbo~",
+                    "numinlets": 3,
+                    "numoutlets": 3,
+                    "patcher": {
+                        "boxes": [
+                            {"box": {
+                                "id": "obj-10",
+                                "maxclass": "newobj",
+                                "text": "param @name gain @min 0 @max 1 @initial 0.5",
+                                "numinlets": 2,
+                                "numoutlets": 2,
+                            }},
+                        ],
+                        "lines": [],
+                    },
+                }},
+            ],
+            "lines": [],
+        }
+    }
+
+
+def _rnbo_patch_duplicate_params() -> dict:
+    """RNBO patch with duplicate param names -- blocker."""
+    return {
+        "patcher": {
+            "boxes": [
+                {"box": {
+                    "id": "obj-1",
+                    "maxclass": "rnbo~",
+                    "text": "rnbo~",
+                    "numinlets": 3,
+                    "numoutlets": 3,
+                    "patcher": {
+                        "boxes": [
+                            {"box": {
+                                "id": "obj-10",
+                                "maxclass": "newobj",
+                                "text": "in~ 1",
+                                "numinlets": 0,
+                                "numoutlets": 1,
+                            }},
+                            {"box": {
+                                "id": "obj-11",
+                                "maxclass": "newobj",
+                                "text": "out~ 1",
+                                "numinlets": 1,
+                                "numoutlets": 0,
+                            }},
+                            {"box": {
+                                "id": "obj-12",
+                                "maxclass": "newobj",
+                                "text": "param @name gain @min 0 @max 1 @initial 0.5",
+                                "numinlets": 2,
+                                "numoutlets": 2,
+                            }},
+                            {"box": {
+                                "id": "obj-13",
+                                "maxclass": "newobj",
+                                "text": "param @name gain @min 0 @max 2 @initial 1.0",
+                                "numinlets": 2,
+                                "numoutlets": 2,
+                            }},
+                        ],
+                        "lines": [],
+                    },
+                }},
+            ],
+            "lines": [],
+        }
+    }
+
+
+def _rnbo_patch_clean() -> dict:
+    """Well-formed RNBO patch -- no findings expected."""
+    return {
+        "patcher": {
+            "boxes": [
+                {"box": {
+                    "id": "obj-1",
+                    "maxclass": "rnbo~",
+                    "text": "rnbo~",
+                    "numinlets": 3,
+                    "numoutlets": 3,
+                    "patcher": {
+                        "boxes": [
+                            {"box": {
+                                "id": "obj-10",
+                                "maxclass": "newobj",
+                                "text": "in~ 1",
+                                "numinlets": 0,
+                                "numoutlets": 1,
+                            }},
+                            {"box": {
+                                "id": "obj-11",
+                                "maxclass": "newobj",
+                                "text": "out~ 1",
+                                "numinlets": 1,
+                                "numoutlets": 0,
+                            }},
+                            {"box": {
+                                "id": "obj-12",
+                                "maxclass": "newobj",
+                                "text": "param @name gain_level @min 0 @max 1 @initial 0.5",
+                                "numinlets": 2,
+                                "numoutlets": 2,
+                            }},
+                        ],
+                        "lines": [],
+                    },
+                }},
+            ],
+            "lines": [],
+        }
+    }
+
+
+# ===========================================================================
+# External critic fixtures
+# ===========================================================================
+
+_CLEAN_MESSAGE_EXT = '''\
+#include "c74_min.h"
+
+using namespace c74::min;
+
+class my_object : public object<my_object> {
+public:
+    MIN_DESCRIPTION {"A simple message object"};
+    MIN_TAGS {"utilities"};
+    MIN_AUTHOR {"Test"};
+
+    inlet<>  input  { this, "(anything) input" };
+    outlet<> output { this, "(anything) output" };
+
+    message<> bang { this, "bang",
+        MIN_FUNCTION {
+            output.send("bang");
+            return {};
+        }
+    };
+};
+
+MIN_EXTERNAL(my_object);
+'''
+
+_MISSING_MIN_EXTERNAL = '''\
+#include "c74_min.h"
+
+using namespace c74::min;
+
+class my_object : public object<my_object> {
+public:
+    inlet<>  input  { this, "(anything) input" };
+    outlet<> output { this, "(anything) output" };
+};
+'''
+
+_MISSING_INCLUDE = '''\
+using namespace c74::min;
+
+class my_object : public object<my_object> {
+public:
+    inlet<>  input  { this, "(anything) input" };
+    outlet<> output { this, "(anything) output" };
+};
+
+MIN_EXTERNAL(my_object);
+'''
+
+_DSP_NO_OPERATOR = '''\
+#include "c74_min.h"
+
+using namespace c74::min;
+
+class my_dsp : public object<my_dsp> {
+public:
+    inlet<>  input  { this, "(signal) input" };
+    outlet<> output { this, "(signal) output" };
+};
+
+MIN_EXTERNAL(my_dsp);
+'''
+
+_SCHEDULER_NO_TIMER = '''\
+#include "c74_min.h"
+
+using namespace c74::min;
+
+class my_sched : public object<my_sched> {
+public:
+    inlet<>  input  { this, "(toggle) on/off" };
+    outlet<> output { this, "(bang) tick" };
+};
+
+MIN_EXTERNAL(my_sched);
+'''
+
+_CODE_WITH_TODOS = '''\
+#include "c74_min.h"
+
+using namespace c74::min;
+
+class my_object : public object<my_object> {
+public:
+    inlet<>  input  { this, "(anything) input" };
+    outlet<> output { this, "(anything) output" };
+
+    // TODO: implement bang handler
+    // TODO: add attribute support
+};
+
+MIN_EXTERNAL(my_object);
+'''
+
+
+# ===========================================================================
+# RNBO Critic tests
+# ===========================================================================
+
+class TestRNBOCritic:
+    """Test the RNBO critic checks."""
+
+    def test_rnbo_critic_param_naming(self):
+        """PascalCase param names should produce warnings."""
+        patch = _rnbo_patch_with_pascal_case_params()
+        results = review_rnbo(patch)
+        warnings = [r for r in results if r.severity == "warning"]
+        assert len(warnings) >= 2, f"Expected >=2 param naming warnings, got {warnings}"
+        assert any("GainLevel" in r.finding for r in warnings)
+        assert any("FilterCutoff" in r.finding for r in warnings)
+
+    def test_rnbo_critic_missing_io(self):
+        """Missing in~/out~ in inner patcher should be a blocker."""
+        patch = _rnbo_patch_missing_io()
+        results = review_rnbo(patch)
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1
+        assert any("in~" in r.finding.lower() or "out~" in r.finding.lower() for r in blockers)
+
+    def test_rnbo_critic_duplicate_params(self):
+        """Duplicate param names should be a blocker."""
+        patch = _rnbo_patch_duplicate_params()
+        results = review_rnbo(patch)
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1
+        assert any("duplicate" in r.finding.lower() for r in blockers)
+
+    def test_rnbo_critic_clean(self):
+        """Well-formed RNBO patch should produce no findings."""
+        patch = _rnbo_patch_clean()
+        results = review_rnbo(patch)
+        assert len(results) == 0, f"Expected no findings, got: {results}"
+
+
+# ===========================================================================
+# External Critic tests
+# ===========================================================================
+
+class TestExternalCritic:
+    """Test the external code critic checks."""
+
+    def test_ext_critic_missing_min_external(self):
+        """Missing MIN_EXTERNAL should be a blocker."""
+        results = review_external(_MISSING_MIN_EXTERNAL, archetype="message")
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1
+        assert any("MIN_EXTERNAL" in r.finding for r in blockers)
+
+    def test_ext_critic_missing_include(self):
+        """Missing c74_min.h include should be a blocker."""
+        results = review_external(_MISSING_INCLUDE, archetype="message")
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1
+        assert any("c74_min.h" in r.finding for r in blockers)
+
+    def test_ext_critic_dsp_no_operator(self):
+        """DSP archetype without sample_operator or vector_operator should be a blocker."""
+        results = review_external(_DSP_NO_OPERATOR, archetype="dsp")
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1
+        assert any("operator" in r.finding.lower() for r in blockers)
+
+    def test_ext_critic_scheduler_no_timer(self):
+        """Scheduler archetype without timer<> should be a blocker."""
+        results = review_external(_SCHEDULER_NO_TIMER, archetype="scheduler")
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1
+        assert any("timer" in r.finding.lower() for r in blockers)
+
+    def test_ext_critic_todo_notes(self):
+        """TODO comments should produce notes."""
+        results = review_external(_CODE_WITH_TODOS, archetype="message")
+        notes = [r for r in results if r.severity == "note"]
+        assert len(notes) >= 1
+        assert any("TODO" in r.finding for r in notes)
+
+    def test_ext_critic_clean_message(self):
+        """Well-formed message external should produce no blockers."""
+        results = review_external(_CLEAN_MESSAGE_EXT, archetype="message")
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) == 0, f"Expected no blockers, got: {blockers}"
+
+
+# ===========================================================================
+# review_patch RNBO integration tests
+# ===========================================================================
+
+class TestReviewPatchRNBO:
+    """Test review_patch() auto-invokes RNBO critic when rnbo~ detected."""
+
+    def test_review_patch_includes_rnbo(self):
+        """review_patch runs RNBO critic when rnbo~ boxes are in the patch."""
+        patch = _rnbo_patch_with_pascal_case_params()
+        results = review_patch(patch)
+        # Should include RNBO param naming warnings
+        rnbo_warnings = [r for r in results if "GainLevel" in r.finding or "FilterCutoff" in r.finding]
+        assert len(rnbo_warnings) >= 2, (
+            f"Expected RNBO param warnings in review_patch, got: {results}"
+        )
