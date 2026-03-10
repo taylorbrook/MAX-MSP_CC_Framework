@@ -110,20 +110,23 @@ Plans:
 
 ### Phase 6: Fix Skill Documentation Signatures
 **Goal**: Correct all API signature mismatches in skill/command documentation so Claude agents reference accurate function signatures during generation
-**Depends on**: Phase 5 (or can run independently — documentation-only changes)
-**Requirements**: AGT-01, FRM-02 (already satisfied — this closes integration gap DOC-SIG-01)
+**Depends on**: Phase 5 (or can run independently -- documentation-only changes)
+**Requirements**: AGT-01, FRM-02 (already satisfied -- this closes integration gap DOC-SIG-01)
 **Gap Closure:** Closes integration gap DOC-SIG-01 from v1.0 audit
 **Success Criteria** (what must be TRUE):
   1. All function signatures in max-patch-agent/SKILL.md match actual Python API (`add_connection`, `write_patch(patcher, path)`)
   2. All function signatures in max-dsp-agent/SKILL.md match actual Python API (`build_genexpr`, `generate_gendsp`, `add_gen`)
   3. All function signatures in max-js-agent/SKILL.md match actual Python API (`generate_n4m_script`, `generate_js_script`)
   4. All import paths in max-verify.md match actual module locations
-**Plans**: 0 plans (pending `/gsd:plan-phase 6`)
+**Plans**: 1 plan
+
+Plans:
+- [ ] 06-01-PLAN.md -- Add signature-accuracy tests and fix all 9 API signature mismatches in SKILL.md and command files
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -132,8 +135,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 3. Code Generation | 1/2 | In Progress|  |
 | 4. Agent System and Orchestration | 6/6 | Complete   | 2026-03-10 |
 | 5. RNBO and External Development | 2/4 | In Progress | - |
-| 6. Fix Skill Documentation Signatures | 0/0 | Pending | - |
+| 6. Fix Skill Documentation Signatures | 0/1 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-10 (Phase 6 added -- gap closure from v1.0 audit)*
+*Last updated: 2026-03-10 (Phase 6 planned -- 1 plan for gap closure DOC-SIG-01)*
