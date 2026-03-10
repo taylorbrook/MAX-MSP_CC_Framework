@@ -64,11 +64,11 @@ Plans:
   2. Gen~ codebox objects embed correctly in .maxpat patches, and standalone .gendsp files generate for Gen~ patchers
   3. Node for Max (node.script) JavaScript generates with correct MAX API integration (handlers, post function, Dict access)
   4. js object V8 JavaScript generates with correct patcher API access (inlets, outlets, bang/msg_int/msg_float handlers)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [ ] 03-01-PLAN.md -- GenExpr code builder, gen~ codebox embedding in .maxpat, standalone .gendsp generation
+- [ ] 03-02-PLAN.md -- N4M and js code generation, code validation (GenExpr/js/N4M), hook extension for .gendsp/.js
 
 ### Phase 4: Agent System and Orchestration
 **Goal**: Domain-specialized agents with critic validation loops, persistent memory, and project lifecycle management enable Claude to work across MAX projects with accumulated expertise
@@ -110,10 +110,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Object Knowledge Base | 3/3 | Complete | 2026-03-09 |
 | 2. Patch Generation and Validation | 4/4 | Complete | 2026-03-10 |
-| 3. Code Generation | 0/? | Not started | - |
+| 3. Code Generation | 0/2 | Planned | - |
 | 4. Agent System and Orchestration | 0/? | Not started | - |
 | 5. RNBO and External Development | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-10 (Phase 02 complete -- all 4 plans)*
+*Last updated: 2026-03-10 (Phase 03 planned -- 2 plans in 2 waves)*
