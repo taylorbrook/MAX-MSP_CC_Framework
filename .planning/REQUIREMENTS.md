@@ -22,11 +22,11 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PAT-01**: Framework generates valid .maxpat JSON files that open in MAX without errors
 - [x] **PAT-02**: Generated patches include correct patcher wrapper, boxes array, and lines array structure
 - [x] **PAT-03**: Subpatcher and bpatcher generation supported (nested patchers)
-- [ ] **PAT-04**: Connection validation checks outlet/inlet index bounds before output
-- [ ] **PAT-05**: Connection validation enforces signal/control type matching (MSP outlets to MSP inlets)
+- [x] **PAT-04**: Connection validation checks outlet/inlet index bounds before output
+- [x] **PAT-05**: Connection validation enforces signal/control type matching (MSP outlets to MSP inlets)
 - [x] **PAT-06**: Patch layout engine positions objects with top-to-bottom signal flow convention
 - [x] **PAT-07**: Layout engine spaces objects readably (~80-120px vertical, ~150-200px horizontal)
-- [ ] **PAT-08**: Multi-layer validation pipeline: JSON validity, object existence, connection bounds, domain-specific checks
+- [x] **PAT-08**: Multi-layer validation pipeline: JSON validity, object existence, connection bounds, domain-specific checks
 
 ### Code Generation
 
@@ -111,11 +111,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PAT-01 | Phase 2 | Complete |
 | PAT-02 | Phase 2 | Complete |
 | PAT-03 | Phase 2 | Complete |
-| PAT-04 | Phase 2 | Pending |
-| PAT-05 | Phase 2 | Pending |
+| PAT-04 | Phase 2 | Complete |
+| PAT-05 | Phase 2 | Complete |
 | PAT-06 | Phase 2 | Complete |
 | PAT-07 | Phase 2 | Complete |
-| PAT-08 | Phase 2 | Pending |
+| PAT-08 | Phase 2 | Complete |
 | CODE-01 | Phase 3 | Pending |
 | CODE-02 | Phase 3 | Pending |
 | CODE-03 | Phase 3 | Pending |
