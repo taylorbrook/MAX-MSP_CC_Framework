@@ -753,3 +753,237 @@ class TestParseCompilerErrors:
         assert len(errors) == 1
         assert errors[0]["severity"] == "fatal error"
         assert "c74_min.h" in errors[0]["message"]
+
+
+# ── Plan 03 Task 2: Build loop, auto-fix, and Min-DevKit submodule ──────
+
+
+class TestAutoFix:
+    """auto_fix applies known compiler error fixes."""
+
+    def test_auto_fix_missing_semicolon(self, tmp_path):
+        from src.maxpat.externals import auto_fix
+
+        # Create a source file missing a semicolon
+        source_dir = tmp_path / "source"
+        source_dir.mkdir()
+        src_file = source_dir / "test_ext.cpp"
+        src_file.write_text(
+            '#include "c74_min.h"\n'
+            "using namespace c74::min\n"  # missing semicolon on line 2
+            "class test_ext {};\n"
+        )
+
+        errors = [
+            {
+                "file": str(src_file),
+                "line": 2,
+                "column": 27,
+                "severity": "error",
+                "message": "expected ';' after top level declarator",
+            }
+        ]
+        result = auto_fix(errors, tmp_path)
+        assert result is True
+
+        # Verify semicolon was added
+        fixed = src_file.read_text()
+        lines = fixed.splitlines()
+        assert lines[1].rstrip().endswith(";")
+
+    def test_auto_fix_missing_include(self, tmp_path):
+        from src.maxpat.externals import auto_fix
+
+        source_dir = tmp_path / "source"
+        source_dir.mkdir()
+        src_file = source_dir / "test_ext.cpp"
+        src_file.write_text(
+            '#include "c74_min.h"\n'
+            "using namespace c74::min;\n"
+        )
+
+        errors = [
+            {
+                "file": str(src_file),
+                "line": 1,
+                "column": 10,
+                "severity": "fatal error",
+                "message": "'some_header.h' file not found",
+            }
+        ]
+        result = auto_fix(errors, tmp_path)
+        assert result is True
+
+        fixed = src_file.read_text()
+        assert '#include "some_header.h"' in fixed
+
+    def test_auto_fix_unfixable(self, tmp_path):
+        from src.maxpat.externals import auto_fix
+
+        errors = [
+            {
+                "file": "/nonexistent/file.cpp",
+                "line": 10,
+                "column": 5,
+                "severity": "error",
+                "message": "no matching function for call to 'complex_function'",
+            }
+        ]
+        result = auto_fix(errors, tmp_path)
+        assert result is False
+
+
+class TestAutoFixLoopDetection:
+    """Same error recurring triggers early exit from build loop."""
+
+    def test_auto_fix_loop_detection(self, tmp_path):
+        """build_external detects repeated errors and stops early."""
+        from src.maxpat.externals import build_external
+
+        # Create a minimal scaffolded project (no real cmake)
+        source_dir = tmp_path / "source"
+        source_dir.mkdir()
+        src_file = source_dir / "test_ext.cpp"
+        src_file.write_text('#include "c74_min.h"\n')
+
+        cmake_error = MagicMock()
+        cmake_error.returncode = 1
+        cmake_error.stdout = ""
+        # Same error every time (unfixable)
+        cmake_error.stderr = (
+            "/source/test_ext.cpp:5:1: error: undeclared identifier 'foo'\n"
+        )
+
+        with patch("subprocess.run", return_value=cmake_error):
+            result = build_external(tmp_path, max_attempts=5)
+            assert result.success is False
+            # Should stop before max_attempts due to loop detection
+            assert result.attempts <= 5
+
+
+class TestSetupMinDevkit:
+    """setup_min_devkit initializes git submodule."""
+
+    def test_setup_min_devkit_already_present(self, tmp_path):
+        from src.maxpat.externals import setup_min_devkit
+
+        # Create the directory structure that indicates min-devkit is present
+        min_api_dir = tmp_path / "min-devkit" / "source" / "min-api"
+        min_api_dir.mkdir(parents=True)
+        # Create a marker header file
+        include_dir = min_api_dir / "include"
+        include_dir.mkdir()
+        (include_dir / "c74_min.h").write_text("// header")
+
+        result = setup_min_devkit(tmp_path)
+        assert result is True
+
+    def test_setup_min_devkit_not_present(self, tmp_path):
+        """When min-devkit is missing, setup attempts git submodule add."""
+        from src.maxpat.externals import setup_min_devkit
+
+        # Mock subprocess to simulate git submodule add failure (no git repo)
+        mock_result = MagicMock()
+        mock_result.returncode = 1
+        mock_result.stderr = "not a git repository"
+
+        with patch("subprocess.run", return_value=mock_result):
+            result = setup_min_devkit(tmp_path)
+            assert result is False
+
+
+class TestBuildInvocation:
+    """build_external invokes cmake with correct commands."""
+
+    def test_build_external_no_cmake(self, tmp_path):
+        """Returns BuildResult failure when cmake configure fails."""
+        from src.maxpat.externals import build_external
+
+        source_dir = tmp_path / "source"
+        source_dir.mkdir()
+        (source_dir / "test.cpp").write_text('#include "c74_min.h"\n')
+
+        # Mock cmake configure failure
+        cmake_fail = MagicMock()
+        cmake_fail.returncode = 1
+        cmake_fail.stdout = ""
+        cmake_fail.stderr = "cmake: command not found\n"
+
+        with patch("subprocess.run", return_value=cmake_fail):
+            result = build_external(tmp_path, max_attempts=1)
+            assert result.success is False
+            assert result.attempts >= 1
+
+    def test_build_invocation_mocked(self, tmp_path):
+        """Verify cmake is called with Unix Makefiles generator."""
+        from src.maxpat.externals import build_external
+
+        source_dir = tmp_path / "source"
+        source_dir.mkdir()
+        (source_dir / "test.cpp").write_text('#include "c74_min.h"\n')
+
+        call_log = []
+
+        def mock_run(cmd, **kwargs):
+            call_log.append(cmd)
+            result = MagicMock()
+            result.returncode = 1
+            result.stdout = ""
+            result.stderr = ""
+            return result
+
+        with patch("subprocess.run", side_effect=mock_run):
+            build_external(tmp_path, max_attempts=1)
+
+        # Check cmake was called with "Unix Makefiles" (NOT Xcode)
+        cmake_calls = [c for c in call_log if "cmake" in str(c[0])]
+        assert len(cmake_calls) >= 1
+        configure_call = cmake_calls[0]
+        assert "Unix Makefiles" in configure_call, (
+            f"Expected 'Unix Makefiles' generator in cmake call: {configure_call}"
+        )
+
+    def test_build_external_success_mocked(self, tmp_path):
+        """Mock a successful build with .mxo output."""
+        from src.maxpat.externals import build_external
+
+        source_dir = tmp_path / "source"
+        source_dir.mkdir()
+        (source_dir / "test.cpp").write_text('#include "c74_min.h"\n')
+
+        # Create a mock .mxo bundle in build/
+        build_dir = tmp_path / "build"
+        build_dir.mkdir()
+        mxo_dir = build_dir / "test.mxo"
+        binary_dir = mxo_dir / "Contents" / "MacOS"
+        binary_dir.mkdir(parents=True)
+        (binary_dir / "test").write_bytes(b"\xcf\xfa\xed\xfe")
+
+        call_count = [0]
+
+        def mock_run(cmd, **kwargs):
+            call_count[0] += 1
+            result = MagicMock()
+            if isinstance(cmd, list) and cmd[0] == "cmake":
+                result.returncode = 0
+                result.stdout = "Build successful"
+                result.stderr = ""
+            elif isinstance(cmd, list) and cmd[0] == "file":
+                result.returncode = 0
+                result.stdout = "test: Mach-O 64-bit bundle arm64"
+                result.stderr = ""
+            elif isinstance(cmd, list) and cmd[0] == "lipo":
+                result.returncode = 0
+                result.stdout = "Non-fat file: test is architecture: arm64"
+                result.stderr = ""
+            else:
+                result.returncode = 0
+                result.stdout = ""
+                result.stderr = ""
+            return result
+
+        with patch("subprocess.run", side_effect=mock_run):
+            result = build_external(tmp_path, max_attempts=5)
+            assert result.success is True
+            assert result.mxo_path is not None
+            assert result.attempts == 1
