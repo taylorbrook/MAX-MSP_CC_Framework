@@ -58,12 +58,12 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Framework
 
-- [ ] **FRM-01**: Multi-project isolation -- each MAX project gets its own directory, context, and state
+- [x] **FRM-01**: Multi-project isolation -- each MAX project gets its own directory, context, and state
 - [ ] **FRM-02**: Slash commands for project lifecycle: ideation, research, planning, execution, verification
-- [ ] **FRM-03**: Project status tracking per MAX project (stage, phase, completion state)
+- [x] **FRM-03**: Project status tracking per MAX project (stage, phase, completion state)
 - [x] **FRM-04**: CLAUDE.md with MAX/MSP development rules, conventions, and object reference guidance
 - [x] **FRM-05**: Hooks for pre/post validation (file writes trigger patch validation)
-- [ ] **FRM-06**: Structured manual testing protocol for features requiring MAX to validate
+- [x] **FRM-06**: Structured manual testing protocol for features requiring MAX to validate
 
 ## v2 Requirements
 
@@ -135,12 +135,12 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AGT-05 | Phase 4 | Pending |
 | AGT-06 | Phase 4 | Complete |
 | AGT-07 | Phase 4 | Complete |
-| FRM-01 | Phase 4 | Pending |
+| FRM-01 | Phase 4 | Complete |
 | FRM-02 | Phase 4 | Pending |
-| FRM-03 | Phase 4 | Pending |
+| FRM-03 | Phase 4 | Complete |
 | FRM-04 | Phase 1 | Complete |
 | FRM-05 | Phase 2 | Complete |
-| FRM-06 | Phase 4 | Pending |
+| FRM-06 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 40 total
