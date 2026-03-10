@@ -102,8 +102,8 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- RNBO generation (RNBODatabase, add_rnbo, target-aware validation, param extraction)
-- [ ] 05-02-PLAN.md -- External scaffolding and code generation (Min-DevKit templates, three archetypes, help patches)
+- [x] 05-01-PLAN.md -- RNBO generation (RNBODatabase, add_rnbo, target-aware validation, param extraction)
+- [x] 05-02-PLAN.md -- External scaffolding and code generation (Min-DevKit templates, three archetypes, help patches)
 - [ ] 05-03-PLAN.md -- External build system (cmake/make invocation, auto-fix loop, .mxo validation)
 - [ ] 05-04-PLAN.md -- Critics, agent upgrades, and public API integration (RNBO/ext critics, stub-to-full agents)
 
@@ -118,8 +118,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Patch Generation and Validation | 4/4 | Complete | 2026-03-10 |
 | 3. Code Generation | 1/2 | In Progress|  |
 | 4. Agent System and Orchestration | 6/6 | Complete   | 2026-03-10 |
-| 5. RNBO and External Development | 1/4 | In Progress|  |
+| 5. RNBO and External Development | 2/4 | In Progress | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-10 (Phase 05 planned -- 4 plans in 3 waves)*
+*Last updated: 2026-03-10 (Plan 05-01 complete -- RNBO generation)*

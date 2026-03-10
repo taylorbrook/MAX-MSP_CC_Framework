@@ -35,8 +35,8 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **CODE-03**: Standalone .gendsp file generation for Gen~ patchers
 - [x] **CODE-04**: Node for Max (node.script) JavaScript generation with MAX API integration
 - [x] **CODE-05**: js object V8 JavaScript generation with patcher API access
-- [ ] **CODE-06**: RNBO~ patch generation using only RNBO-compatible object subset
-- [ ] **CODE-07**: RNBO~ export target awareness (VST3/AU, Web Audio, C++)
+- [x] **CODE-06**: RNBO~ patch generation using only RNBO-compatible object subset
+- [x] **CODE-07**: RNBO~ export target awareness (VST3/AU, Web Audio, C++)
 
 ### External Development
 
@@ -121,8 +121,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CODE-03 | Phase 3 | Complete |
 | CODE-04 | Phase 3 | Complete |
 | CODE-05 | Phase 3 | Complete |
-| CODE-06 | Phase 5 | Pending |
-| CODE-07 | Phase 5 | Pending |
+| CODE-06 | Phase 5 | Complete |
+| CODE-07 | Phase 5 | Complete |
 | EXT-01 | Phase 5 | Complete |
 | EXT-02 | Phase 5 | Complete |
 | EXT-03 | Phase 5 | Complete |
