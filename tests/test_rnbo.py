@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import pytest
 
-from src.maxpat.rnbo import RNBODatabase, parse_genexpr_params
+from src.maxpat.rnbo import RNBODatabase, parse_genexpr_params, add_rnbo, generate_rnbo_wrapper
 from src.maxpat.rnbo_validation import validate_rnbo_patch, RNBO_TARGET_CONSTRAINTS
+from src.maxpat.patcher import Box, Patcher
 
 
 # ===========================================================================
@@ -214,3 +215,127 @@ out1 = in1 * 0.5;
 """
     params = parse_genexpr_params(code)
     assert params == []
+
+
+# ===========================================================================
+# Task 2: add_rnbo() tests
+# ===========================================================================
+
+
+def test_add_rnbo_basic():
+    """add_rnbo creates rnbo~ with 2 in, 2 out, returns box + inner patcher."""
+    p = Patcher()
+    box, inner = add_rnbo(p, audio_ins=2, audio_outs=2)
+    assert isinstance(box, Box)
+    assert isinstance(inner, Patcher)
+    assert box.name == "rnbo~"
+    assert box in p.boxes
+
+
+def test_add_rnbo_inner_patcher_has_io():
+    """Inner patcher contains in~ and out~ objects."""
+    p = Patcher()
+    box, inner = add_rnbo(p, audio_ins=2, audio_outs=2)
+
+    inner_names = [b.name for b in inner.boxes]
+    # Should have 2 in~ and 2 out~
+    assert inner_names.count("in~") == 2
+    assert inner_names.count("out~") == 2
+
+
+def test_add_rnbo_params():
+    """Params appear as param objects in inner patcher."""
+    p = Patcher()
+    params = [
+        {"name": "freq", "default": 440.0, "min": 20.0, "max": 20000.0},
+        {"name": "gain", "default": 0.5, "min": 0.0, "max": 1.0},
+    ]
+    box, inner = add_rnbo(p, params=params, audio_ins=1, audio_outs=1)
+
+    param_boxes = [b for b in inner.boxes if b.name == "param"]
+    assert len(param_boxes) == 2
+    # Check param text contains the name and range attributes
+    assert any("freq" in b.text for b in param_boxes)
+    assert any("gain" in b.text for b in param_boxes)
+
+
+def test_add_rnbo_rejects_non_rnbo():
+    """ValueError when non-RNBO object passed."""
+    p = Patcher()
+    with pytest.raises(ValueError, match="not RNBO-compatible"):
+        add_rnbo(p, objects=[{"name": "jit.matrix"}], audio_ins=1, audio_outs=1)
+
+
+def test_add_rnbo_box_new_pattern():
+    """Parent box uses Box.__new__, maxclass is 'rnbo~'."""
+    p = Patcher()
+    box, inner = add_rnbo(p, audio_ins=1, audio_outs=1)
+    # Box.__new__ pattern means maxclass is set directly (not via DB lookup)
+    assert box.maxclass == "rnbo~"
+    # Should have text "rnbo~"
+    assert box.text == "rnbo~"
+
+
+def test_add_rnbo_variable_io():
+    """numinlets/numoutlets match audio I/O + 1 message."""
+    p = Patcher()
+    box, inner = add_rnbo(p, audio_ins=3, audio_outs=2)
+    # 3 audio inputs + 1 message inlet = 4
+    assert box.numinlets == 4
+    # 2 audio outputs + 1 message outlet = 3
+    assert box.numoutlets == 3
+    # Outlet types: 2 signal + 1 control
+    assert box.outlettype == ["signal", "signal", ""]
+
+
+def test_add_rnbo_inport_outport():
+    """Inner patcher has inport and outport for message I/O."""
+    p = Patcher()
+    box, inner = add_rnbo(p, audio_ins=1, audio_outs=1)
+
+    inner_names = [b.name for b in inner.boxes]
+    assert "inport" in inner_names
+    assert "outport" in inner_names
+
+
+def test_generate_rnbo_wrapper():
+    """Wrapper has adc~, rnbo~, dac~ connected."""
+    wrapper = generate_rnbo_wrapper(audio_ins=2, audio_outs=2)
+    assert isinstance(wrapper, Patcher)
+
+    names = [b.name for b in wrapper.boxes]
+    assert "rnbo~" in names
+    assert "adc~" in names
+    assert "dac~" in names
+
+    # Should have connections from adc~ to rnbo~ and rnbo~ to dac~
+    assert len(wrapper.lines) >= 4  # 2 adc->rnbo + 2 rnbo->dac
+
+
+def test_rnbo_generation_serializes():
+    """Patcher.to_dict() produces valid JSON structure."""
+    p = Patcher()
+    box, inner = add_rnbo(
+        p,
+        params=[{"name": "freq", "default": 440.0, "min": 20.0, "max": 20000.0}],
+        audio_ins=1,
+        audio_outs=1,
+    )
+
+    patch_dict = p.to_dict()
+    assert "patcher" in patch_dict
+    assert "boxes" in patch_dict["patcher"]
+
+    # The rnbo~ box should have an embedded patcher
+    rnbo_box_dict = None
+    for box_entry in patch_dict["patcher"]["boxes"]:
+        box_d = box_entry.get("box", {})
+        if box_d.get("maxclass") == "rnbo~":
+            rnbo_box_dict = box_d
+            break
+
+    assert rnbo_box_dict is not None
+    assert "patcher" in rnbo_box_dict  # Inner patcher embedded
+    inner_patcher = rnbo_box_dict["patcher"]
+    assert "boxes" in inner_patcher
+    assert len(inner_patcher["boxes"]) >= 3  # in~, out~, param at minimum
