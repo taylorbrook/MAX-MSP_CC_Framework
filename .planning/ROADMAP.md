@@ -18,6 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Agent System and Orchestration** - Domain-specialized agents, generator-critic loops, persistent memory, multi-project isolation, and slash commands (completed 2026-03-10)
 - [ ] **Phase 5: RNBO and External Development** - RNBO-compatible patch generation with export awareness and C/C++ external scaffolding via Min-DevKit
 - [x] **Phase 6: Fix Skill Documentation Signatures** - Correct 9 API signature mismatches in skill/command documentation files (gap closure from v1.0 audit)
+- [ ] **Phase 7: Fix Stale Agent Documentation** - Remove stale "stub" labels and clarify RNBO validation scope in agent documentation files (gap closure from v1.0 audit)
 
 ## Phase Details
 
@@ -123,6 +124,17 @@ Plans:
 Plans:
 - [x] 06-01-PLAN.md -- Add signature-accuracy tests and fix all 9 API signature mismatches in SKILL.md and command files
 
+### Phase 7: Fix Stale Agent Documentation
+**Goal**: Agent documentation accurately reflects implemented status — no stale "stub" labels, and RNBO validation scope is clearly documented
+**Depends on**: Phase 5 (or can run independently — documentation-only changes)
+**Requirements**: AGT-01, AGT-02, FRM-02, CODE-06, CODE-07 (already satisfied — this closes integration gaps DOC-01, DOC-02, DOC-03)
+**Gap Closure:** Closes integration gaps DOC-01, DOC-02, DOC-03 from v1.0 audit
+**Success Criteria** (what must be TRUE):
+  1. `max-build.md` no longer labels RNBO and external agents as "stub"
+  2. `dispatch-rules.md` no longer labels RNBO and external agents as "STUB — not yet implemented"
+  3. `RNBO agent SKILL.md` clarifies whether `validate_rnbo_patch` validates inner patch content vs full rnbo~ wrapper
+**Plans**: 0 plans (to be created via `/gsd:plan-phase 7`)
+
 ## Progress
 
 **Execution Order:**
@@ -136,7 +148,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6
 | 4. Agent System and Orchestration | 6/6 | Complete   | 2026-03-10 |
 | 5. RNBO and External Development | 2/4 | In Progress | - |
 | 6. Fix Skill Documentation Signatures | 1/1 | Complete | 2026-03-10 |
+| 7. Fix Stale Agent Documentation | 0/0 | Not Started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-10 (Phase 6 planned -- 1 plan for gap closure DOC-SIG-01)*
+*Last updated: 2026-03-10 (Phase 7 added — gap closure for DOC-01, DOC-02, DOC-03)*
