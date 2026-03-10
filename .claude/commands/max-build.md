@@ -29,8 +29,8 @@ Generate MAX/MSP patches, Gen~ code, JavaScript, or other artifacts by routing t
    - max-dsp-agent (GenExpr, signal chains, audio)
    - max-js-agent (JavaScript, Node for Max)
    - max-ui-agent (presentation mode, layout, controls)
-   - max-rnbo-agent (RNBO export -- stub, Phase 5)
-   - max-ext-agent (externals -- stub, Phase 5)
+   - max-rnbo-agent (RNBO export, target validation, param mapping)
+   - max-ext-agent (C++ externals, Min-DevKit scaffolding, build)
 
 6. **Critic loop** -- run the max-critic skill on generated output:
    - Invoke `review_patch(patch_dict, code_context)` from `src.maxpat.critics`

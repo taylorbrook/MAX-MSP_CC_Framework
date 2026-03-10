@@ -34,7 +34,7 @@ Detailed keyword-to-agent mapping for the router agent. The router scans the use
 - "Design a signal chain..."
 - "Add feedback delay..."
 
-### max-rnbo-agent (RNBO Export) -- STUB
+### max-rnbo-agent (RNBO Export)
 
 **Primary keywords:** rnbo, rnbo~, export, vst, vst3, au, audio unit, plugin, web audio, c++ export, embedded, raspberry pi, target
 
@@ -45,8 +45,6 @@ Detailed keyword-to-agent mapping for the router agent. The router scans the use
 - "Make this RNBO-compatible..."
 - "Build for Web Audio..."
 - "Target embedded hardware..."
-
-**Note:** This agent is a Phase 5 stub. It will acknowledge the request and explain that RNBO generation is not yet implemented, but can help with compatibility checking.
 
 ### max-js-agent (JavaScript/Node)
 
@@ -61,7 +59,7 @@ Detailed keyword-to-agent mapping for the router agent. The router scans the use
 - "Build a MIDI processor in N4M..."
 - "Script that reads/writes files..."
 
-### max-ext-agent (Externals/C++) -- STUB
+### max-ext-agent (Externals/C++)
 
 **Primary keywords:** external, sdk, c++, c, compile, build, mxo, min-devkit, max-sdk, xcode
 
@@ -71,8 +69,6 @@ Detailed keyword-to-agent mapping for the router agent. The router scans the use
 - "Build a C++ external..."
 - "Create a custom object..."
 - "Compile for Max..."
-
-**Note:** This agent is a Phase 5 stub. It will acknowledge the request and explain that external development is not yet implemented, but can discuss architecture.
 
 ### max-ui-agent (UI/Layout)
 
@@ -105,7 +101,7 @@ When keywords match multiple domains:
 | "data parser in js" | js | js | Pure JavaScript task |
 | "audio visualizer" | DSP + UI + js | DSP | Signal analysis drives display |
 | "preset manager" | Patch + js | Patch | Patch routing with js storage |
-| "export synth as VST" | RNBO (stub) | RNBO | Export request -> stub response |
+| "export synth as VST" | RNBO | RNBO | Export target dispatch |
 
 ## Single vs Multi-Agent Decision
 

@@ -53,7 +53,7 @@ from src.maxpat.hooks import write_patch
 - `add_rnbo(patcher, objects, params, target, audio_ins, audio_outs)`: Add rnbo~ container to an existing Patcher
 - `generate_rnbo_wrapper(params, target, audio_ins, audio_outs)`: Build complete adc~ -> rnbo~ -> dac~ wrapper Patcher
 - `parse_genexpr_params(code)`: Extract Param declarations from GenExpr code
-- `validate_rnbo_patch(patch_dict, target)`: 3-layer validation (rnbo-objects, rnbo-target, rnbo-contained)
+- `validate_rnbo_patch(patch_dict, target)`: 3-layer validation on the **inner RNBO patcher** (not the full rnbo~ wrapper). Checks: rnbo-objects, rnbo-target, rnbo-contained
 - `RNBO_TARGET_CONSTRAINTS`: Per-target constraint definitions (plugin, web, cpp)
 
 ## Output Protocol
