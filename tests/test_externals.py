@@ -373,3 +373,202 @@ class TestTestTemplate:
         code = render_test_template("my_ext")
         assert "TEST_CASE" in code
         assert "my_ext" in code
+
+
+# ── Task 2: External scaffolding and help patch tests ────────────────────
+
+
+class TestScaffoldStructure:
+    """scaffold_external creates correct Min-DevKit directory structure."""
+
+    def test_scaffold_structure(self, tmp_path):
+        from src.maxpat.externals import scaffold_external
+
+        result = scaffold_external(
+            project_dir=tmp_path,
+            name="my_ext",
+            archetype="message",
+            description="A test external",
+            inlets=[{"comment": "(anything) input"}],
+            outlets=[{"comment": "(anything) output"}],
+            handlers=["bang"],
+        )
+        root = tmp_path / "my_ext"
+        assert root.exists()
+        assert (root / "source").is_dir()
+        assert (root / "help").is_dir()
+        assert (root / "CMakeLists.txt").is_file()
+
+    def test_scaffold_message(self, tmp_path):
+        from src.maxpat.externals import scaffold_external
+
+        result = scaffold_external(
+            project_dir=tmp_path,
+            name="msg_ext",
+            archetype="message",
+            description="Message processor",
+            inlets=[{"comment": "(anything) input"}],
+            outlets=[{"comment": "(anything) output"}],
+            handlers=["bang", "number"],
+        )
+        cpp_file = tmp_path / "msg_ext" / "source" / "msg_ext.cpp"
+        assert cpp_file.is_file()
+        code = cpp_file.read_text()
+        assert '#include "c74_min.h"' in code
+        assert "message<>" in code
+        assert "MIN_EXTERNAL(msg_ext)" in code
+
+    def test_scaffold_dsp(self, tmp_path):
+        from src.maxpat.externals import scaffold_external
+
+        result = scaffold_external(
+            project_dir=tmp_path,
+            name="dsp_ext",
+            archetype="dsp",
+            description="Audio processor",
+            num_inputs=1,
+            num_outputs=1,
+            params=[],
+        )
+        cpp_file = tmp_path / "dsp_ext" / "source" / "dsp_ext.cpp"
+        assert cpp_file.is_file()
+        code = cpp_file.read_text()
+        assert "sample_operator" in code
+        assert "operator()" in code
+
+    def test_scaffold_scheduler(self, tmp_path):
+        from src.maxpat.externals import scaffold_external
+
+        result = scaffold_external(
+            project_dir=tmp_path,
+            name="sched_ext",
+            archetype="scheduler",
+            description="Timer external",
+            interval_default=250.0,
+            attributes=[],
+        )
+        cpp_file = tmp_path / "sched_ext" / "source" / "sched_ext.cpp"
+        assert cpp_file.is_file()
+        code = cpp_file.read_text()
+        assert "timer<>" in code
+        assert "250.0" in code
+
+    def test_scaffold_returns_paths(self, tmp_path):
+        from src.maxpat.externals import scaffold_external
+
+        result = scaffold_external(
+            project_dir=tmp_path,
+            name="my_ext",
+            archetype="message",
+            description="Test",
+            inlets=[{"comment": "in"}],
+            outlets=[{"comment": "out"}],
+            handlers=["bang"],
+        )
+        assert "root" in result
+        assert "source" in result
+        assert "cmake" in result
+        assert "help" in result
+        # All paths should exist
+        for key in ("root", "source", "cmake", "help"):
+            assert result[key].exists(), f"{key} path does not exist: {result[key]}"
+
+    def test_scaffold_invalid_archetype(self, tmp_path):
+        from src.maxpat.externals import scaffold_external
+
+        with pytest.raises(ValueError, match="archetype"):
+            scaffold_external(
+                project_dir=tmp_path,
+                name="bad_ext",
+                archetype="unknown",
+                description="Bad",
+            )
+
+
+class TestHelpPatch:
+    """Help patch generation produces valid .maxpat JSON."""
+
+    def test_help_patch_valid_json(self, tmp_path):
+        from src.maxpat.externals import scaffold_external
+
+        scaffold_external(
+            project_dir=tmp_path,
+            name="help_test",
+            archetype="message",
+            description="Help test",
+            inlets=[{"comment": "(anything) input"}],
+            outlets=[{"comment": "(anything) output"}],
+            handlers=["bang"],
+        )
+        help_file = tmp_path / "help_test" / "help" / "help_test.maxhelp"
+        assert help_file.is_file()
+        data = json.loads(help_file.read_text())
+        assert "patcher" in data
+        assert "boxes" in data["patcher"]
+
+    def test_help_patch_contains_external(self, tmp_path):
+        from src.maxpat.externals import scaffold_external
+
+        scaffold_external(
+            project_dir=tmp_path,
+            name="ext_in_help",
+            archetype="message",
+            description="Test external",
+            inlets=[{"comment": "(anything) input"}],
+            outlets=[{"comment": "(anything) output"}],
+            handlers=["bang"],
+        )
+        help_file = tmp_path / "ext_in_help" / "help" / "ext_in_help.maxhelp"
+        data = json.loads(help_file.read_text())
+        # The external's name should appear in one of the box texts
+        box_texts = [
+            b["box"].get("text", "")
+            for b in data["patcher"]["boxes"]
+        ]
+        assert any("ext_in_help" in t for t in box_texts), (
+            f"External name not found in help patch boxes: {box_texts}"
+        )
+
+
+class TestGenerateExternalCode:
+    """generate_external_code returns C++ string without file I/O."""
+
+    def test_generate_external_code(self):
+        from src.maxpat.externals import generate_external_code
+
+        code = generate_external_code(
+            name="code_gen_test",
+            archetype="message",
+            description="Test",
+            inlets=[{"comment": "in"}],
+            outlets=[{"comment": "out"}],
+            handlers=["bang"],
+        )
+        assert isinstance(code, str)
+        assert '#include "c74_min.h"' in code
+        assert "MIN_EXTERNAL(code_gen_test)" in code
+
+    def test_generate_external_code_dsp(self):
+        from src.maxpat.externals import generate_external_code
+
+        code = generate_external_code(
+            name="dsp_gen",
+            archetype="dsp",
+            description="DSP test",
+            num_inputs=2,
+            num_outputs=2,
+            params=[],
+        )
+        assert "sample_operator<2, 2>" in code
+
+    def test_generate_external_code_scheduler(self):
+        from src.maxpat.externals import generate_external_code
+
+        code = generate_external_code(
+            name="sched_gen",
+            archetype="scheduler",
+            description="Scheduler test",
+            interval_default=100.0,
+            attributes=[],
+        )
+        assert "timer<>" in code
