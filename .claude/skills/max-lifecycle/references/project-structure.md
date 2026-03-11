@@ -36,7 +36,6 @@ Populated during `/max:discuss` or conversational kickoff in `/max:new`. Contain
 - Audio/MIDI requirements
 - Signal flow description (inputs, processing, outputs)
 - UI needs (controls, displays, panels)
-- Target MAX version
 - Any specific object preferences or constraints
 
 ### status.md

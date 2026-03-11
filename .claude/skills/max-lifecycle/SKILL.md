@@ -36,7 +36,7 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 
 ### Project Creation
 - Create new project with `create_project(name, base_dir)` which scaffolds the full directory structure
-- Start conversational kickoff: ask clarifying questions about audio/MIDI requirements, signal flow, UI needs, target MAX version
+- Start conversational kickoff: ask clarifying questions about audio/MIDI requirements, signal flow, UI needs
 - Write answers to project's `context.md`
 - See `references/project-structure.md` for standard directory layout
 
