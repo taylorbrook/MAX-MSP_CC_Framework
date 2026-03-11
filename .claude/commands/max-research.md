@@ -25,7 +25,7 @@ Research MAX-specific approaches, object choices, signal flow patterns, and tech
    - Recommended objects and why
    - Signal flow patterns for the approach
    - Alternative techniques with tradeoffs
-   - Any version compatibility notes (MAX 8 vs 9)
+   - Any version compatibility notes for MAX 9 objects used
 
 5. **Write findings to context** -- append research results to the project's `context.md` under a "Research" section.
 

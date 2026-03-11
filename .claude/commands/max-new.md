@@ -17,11 +17,10 @@ Create a new MAX/MSP project with the given name and begin the conversational ki
    - Call `create_project(name, base_dir)` to scaffold the full directory structure under `patches/{name}/`
    - Call `set_active_project(name, base_dir)` to make this the active project
 
-3. **Start conversational kickoff** -- ask the user to describe what they want to build, then ask 3-5 clarifying questions:
+3. **Start conversational kickoff** -- ask the user to describe what they want to build, then ask 3-4 clarifying questions:
    - What audio/MIDI requirements does this project have? (audio input/output, MIDI in/out, both?)
    - What is the signal flow? (describe the chain from source to output)
    - Does this need a UI/presentation mode? If so, what controls?
-   - What is the target MAX version? (8, 9, or latest)
    - Are there any specific MAX objects or techniques you want to use?
 
 4. **Record answers** -- write the user's responses to the project's `context.md` file in the project directory.

@@ -143,11 +143,11 @@ If you are about to use an object with `~` that is not in the database, check th
 
 ## Version Compatibility
 
+All patches target MAX 9. This is the required version for all projects -- do not ask users to choose a version.
+
 - Check `min_version` field before using objects
 - MAX 9 objects (`array.*`, `string.*`, `abl.*`): only available in MAX 9+
 - MC objects (`mc.*`): available from MAX 8.1+
-- When generating patches, note the target MAX version and avoid using objects above that version
-- If no target version is specified, assume MAX 9 (current)
 
 ## Variable I/O Objects
 
