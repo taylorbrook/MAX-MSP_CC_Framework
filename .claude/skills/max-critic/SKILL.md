@@ -22,11 +22,13 @@ Before running the critic loop:
 
 ## Capabilities
 
-- Invoke `review_patch(patch_dict, code_context)` from `src.maxpat.critics`
+- Invoke `review_patch(patch_dict, code_context=None, ext_code=None, ext_archetype="message")` from `src.maxpat.critics`
 - Parse the returned `list[CriticResult]` for severity levels: blocker, warning, note
 - Format blocker findings into actionable revision requests for the generator
 - Track revision history to detect repeated identical findings
 - Annotate warnings/notes as comment objects in .maxpat or code comments
+- The RNBO critic (`review_rnbo`) auto-invokes when rnbo~ boxes are detected in the patch
+- The external critic (`review_external`) invokes when `ext_code` is provided
 
 ## Critic Loop Protocol
 

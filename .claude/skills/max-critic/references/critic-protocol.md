@@ -13,10 +13,10 @@ Accept `patch_dict` (and optionally `code_context` with genexpr/js/n4m code stri
 ```python
 from src.maxpat.critics import review_patch, CriticResult
 
-results = review_patch(patch_dict, code_context=code_context)
+results = review_patch(patch_dict, code_context=code_context, ext_code=ext_code, ext_archetype=ext_archetype)
 ```
 
-This invokes both the DSP critic (`review_dsp`) and the structure critic (`review_structure`).
+This invokes the DSP critic (`review_dsp`), structure critic (`review_structure`), and conditionally the RNBO critic (`review_rnbo`, when rnbo~ boxes detected) and external critic (`review_external`, when `ext_code` provided).
 
 ### Step 3: Classify Results
 
