@@ -37,6 +37,7 @@ Before any generation:
 - `parse_genexpr_io(code)` -- detect input/output count from GenExpr code
 - `generate_gendsp(code, num_inputs=None, num_outputs=None)` -- generate standalone .gendsp JSON dict
 - GenExpr syntax: `in 1`/`out 1` for I/O, `Param` for parameters, `History` for feedback, `Buffer`/`Data` for samples
+- **Declaration ordering rule:** ALL declarations (`Param`, `Delay`, `History`, `Buffer`, `Data`) MUST appear at the top of the codebox, before any expressions or assignments. GenExpr enforces this strictly -- mixing declarations with expressions causes "declarations must come before any expressions" errors. Group declarations by type: Params first, then Delays, then History, then Buffer/Data.
 
 ### Gen~ Patch Integration
 - `Patcher.add_gen(code, num_inputs=None, num_outputs=None)` -- embed gen~ codebox in a .maxpat
@@ -51,6 +52,12 @@ Before any generation:
 - Effects: reverb~, chorus~, flanger~, phaser~
 - Gain: *~ for level control, line~ for smooth transitions, dbtoa/atodb for dB conversion
 - Monitoring: meter~, levelmeter~, scope~, spectroscope~, snapshot~
+
+### Bpatcher Argument Substitution (for reusable DSP subpatches)
+- `#N` tokens must be **standalone** in object text -- never embedded in compound strings
+- WRONG: `buffer~ slot-#1`, `send~ slot-#1-out` -- compound substitution fails in MAX
+- RIGHT: `buffer~ #1`, `send~ #2` with bpatcher args `["slot-1", "slot-1-out"]`
+- See CLAUDE.md "Bpatcher and Abstraction Arguments" section for full rules
 
 ### Audio Architecture Patterns
 - Proper gain staging: never connect raw oscillators to dac~ at full volume

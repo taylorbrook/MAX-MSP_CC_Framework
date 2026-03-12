@@ -149,6 +149,32 @@ All patches target MAX 9. This is the required version for all projects -- do no
 - MAX 9 objects (`array.*`, `string.*`, `abl.*`): only available in MAX 9+
 - MC objects (`mc.*`): available from MAX 8.1+
 
+## Bpatcher and Abstraction Arguments (`#N` Substitution)
+
+When a `.maxpat` file is loaded as a bpatcher (or abstraction), MAX substitutes `#1`, `#2`, etc. with the arguments passed via the bpatcher's `args` attribute.
+
+**Critical rule: `#N` must be a standalone token in the object text, never embedded in a compound string.**
+
+```
+WRONG:  buffer~ slot-#1          (compound -- #1 embedded in "slot-#1")
+RIGHT:  buffer~ #1               (standalone -- pass "slot-1" as the arg)
+
+WRONG:  send~ slot-#1-out        (compound)
+RIGHT:  send~ #2                 (standalone -- pass "slot-1-out" as second arg)
+```
+
+When a bpatcher instance needs multiple distinct names (e.g., a buffer name and a send name), pass each as a separate argument and use `#1`, `#2`, etc. as standalone tokens:
+
+```json
+"args": [ "slot-1", "slot-1-out" ]
+```
+
+Inside the subpatch, use `#1` and `#2` directly:
+- `buffer~ #1` becomes `buffer~ slot-1`
+- `send~ #2` becomes `send~ slot-1-out`
+
+This applies equally to newobj boxes and message boxes (`set #1`, `setbuffer #1`).
+
 ## Variable I/O Objects
 
 Some objects change inlet/outlet count based on arguments. Check `variable_io` and `io_rule` fields:

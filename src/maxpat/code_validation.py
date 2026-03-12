@@ -24,7 +24,7 @@ if TYPE_CHECKING:
 # GenExpr keywords and built-ins that should NOT be checked against the operator database
 _GENEXPR_KEYWORDS = frozenset({
     "if", "else", "for", "while", "return", "break", "continue",
-    "Param", "History", "Buffer", "Data", "SampleRate", "FixedArray",
+    "Param", "History", "Delay", "Buffer", "Data", "SampleRate", "FixedArray",
     "in", "out", "min", "max", "abs", "sqrt", "pow", "exp", "log",
     "sin", "cos", "tan", "asin", "acos", "atan", "atan2",
     "floor", "ceil", "round", "trunc", "fract",
@@ -125,7 +125,30 @@ def validate_genexpr(
                 f"(recommended: Param {param_name}(default, min=N, max=N))",
             ))
 
-    # Check 5: Operator validation against gen/objects.json
+    # Check 5: Declaration ordering -- all declarations must precede expressions
+    _DECL_PREFIXES = ("Param ", "History ", "Delay ", "Buffer ", "Data ")
+    last_decl_line = -1
+    first_expr_line = -1
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("//") or stripped.startswith("#"):
+            continue
+        if any(stripped.startswith(p) for p in _DECL_PREFIXES):
+            last_decl_line = i
+            if first_expr_line >= 0:
+                results.append(ValidationResult(
+                    "code", "error",
+                    f"Line {i + 1}: declaration '{stripped.split('(')[0].strip()}' "
+                    f"appears after expression on line {first_expr_line + 1}. "
+                    f"All Param/Delay/History/Buffer/Data declarations must come "
+                    f"before any expressions in GenExpr.",
+                ))
+                break  # one error is enough to flag the issue
+        elif "=" in stripped or re.search(r"\w+\.\w+\(", stripped):
+            if first_expr_line < 0:
+                first_expr_line = i
+
+    # Check 6: Operator validation against gen/objects.json
     if db is None:
         from src.maxpat.db_lookup import ObjectDatabase
         db = ObjectDatabase()
@@ -133,7 +156,7 @@ def validate_genexpr(
     # Extract names declared by Param/History/Buffer/Data so we can skip them
     # as operators. These are variable names, not function calls.
     declared_names = set()
-    decl_pattern = re.compile(r"(?:Param|History|Buffer|Data)\s+(\w+)\s*\(")
+    decl_pattern = re.compile(r"(?:Param|History|Delay|Buffer|Data)\s+(\w+)\s*\(")
     for match in decl_pattern.finditer(code):
         declared_names.add(match.group(1))
 

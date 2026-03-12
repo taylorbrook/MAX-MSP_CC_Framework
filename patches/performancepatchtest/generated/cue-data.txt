@@ -1,0 +1,5 @@
+1, 0. 0. 0. 500 0.3 1. 0. none none none;
+2, 1. 0. 0. 300 0.5 1. 0. none none none;
+3, 1. 1. 0. 500 0.4 3. 0. none none none;
+4, 0. 0. 1. 500 0.3 1. 10. none none none;
+5, 1. 1. 1. 250 0.6 4. 15. none none none;

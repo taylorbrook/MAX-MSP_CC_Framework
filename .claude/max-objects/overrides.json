@@ -44,6 +44,126 @@
         {"id": 1, "type": "number", "signal": false, "digest": "Right value", "hot": true}
       ],
       "_note": "minimum has two hot inlets"
+    },
+    "buffer~": {
+      "inlets": [
+        {"id": 0, "type": "anything", "signal": false, "digest": "Messages: read, write, size, etc.", "hot": true}
+      ],
+      "outlets": [
+        {"id": 0, "type": "", "signal": false, "digest": "Mouse position in editing window (ms)"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang when read/write operation completed"}
+      ],
+      "_note": "buffer~ outlets are control, not signal. Right outlet (1) bangs on file load completion."
+    },
+    "info~": {
+      "outlets": [
+        {"id": 0, "type": "", "signal": false, "digest": "Sample frames (int)"},
+        {"id": 1, "type": "", "signal": false, "digest": "Number of channels (int)"},
+        {"id": 2, "type": "", "signal": false, "digest": "Sample rate (float)"},
+        {"id": 3, "type": "", "signal": false, "digest": "Length in ms (float)"},
+        {"id": 4, "type": "", "signal": false, "digest": "State (modified flag)"}
+      ],
+      "_note": "info~ outlets are control (numbers), not signal."
+    },
+    "line~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Signal output"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang when line reaches destination"}
+      ],
+      "_note": "Outlet 0 is signal, outlet 1 is control bang."
+    },
+    "curve~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Signal output"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang when curve reaches destination"}
+      ],
+      "_note": "Outlet 0 is signal, outlet 1 is control bang."
+    },
+    "play~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Audio output"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang when playback reaches destination or is stopped"}
+      ],
+      "_note": "Outlet 0 is signal, outlet 1 is control bang."
+    },
+    "sfplay~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Audio output left"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang when done playing"}
+      ],
+      "_note": "Outlet 0 is signal, outlet 1 is control bang. Multi-channel sfplay~ has more signal outlets before the bang outlet."
+    },
+    "polybuffer~": {
+      "outlets": [
+        {"id": 0, "type": "", "signal": false, "digest": "Messages and buffer info"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang when file/folder read operation completed"}
+      ],
+      "_note": "Both outlets are control."
+    },
+    "train~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Impulse train signal"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang on 0 to 1 transition"}
+      ],
+      "_note": "Outlet 0 is signal, outlet 1 is control bang."
+    },
+    "ramp~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Ramp signal output"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang when ramp completes"}
+      ],
+      "_note": "Outlet 0 is signal, outlet 1 is control bang."
+    },
+    "meter~": {
+      "outlets": [
+        {"id": 0, "type": "", "signal": false, "digest": "Peak value for each metering interval (float)"}
+      ],
+      "_note": "Outlet is control (float), not signal."
+    },
+    "peek~": {
+      "outlets": [
+        {"id": 0, "type": "", "signal": false, "digest": "buffer~ value at sample index (float)"}
+      ],
+      "_note": "Outlet is control (float), not signal."
+    },
+    "thispoly~": {
+      "outlets": [
+        {"id": 0, "type": "", "signal": false, "digest": "Instance index of patcher (int)"},
+        {"id": 1, "type": "", "signal": false, "digest": "Mute flag 0/1 for instance (int)"}
+      ],
+      "_note": "Both outlets are control."
+    },
+    "stretch~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Audio output"},
+        {"id": 1, "type": "", "signal": false, "digest": "bang when done"}
+      ],
+      "_note": "Outlet 0 is signal, outlet 1 is control bang."
+    },
+    "zigzag~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Signal output"},
+        {"id": 1, "type": "signal", "signal": true, "digest": "Current index (signal)"},
+        {"id": 2, "type": "", "signal": false, "digest": "Contents of current list"},
+        {"id": 3, "type": "", "signal": false, "digest": "bang when line reaches destination"}
+      ],
+      "_note": "Outlets 0-1 are signal, outlets 2-3 are control."
+    },
+    "vst~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Audio output left"},
+        {"id": 1, "type": "signal", "signal": true, "digest": "Audio output right"},
+        {"id": 2, "type": "", "signal": false, "digest": "Dump output"},
+        {"id": 3, "type": "", "signal": false, "digest": "Parameter index and value when changed"}
+      ],
+      "_note": "Outlets 0-1 are signal, outlets 2-3 are control."
+    },
+    "stash~": {
+      "outlets": [
+        {"id": 0, "type": "signal", "signal": true, "digest": "Signal output"},
+        {"id": 1, "type": "", "signal": false, "digest": "Index (int)"}
+      ],
+      "_note": "Outlet 0 is signal, outlet 1 is control."
     }
   },
   "version_map": {

@@ -70,6 +70,16 @@ class ObjectDatabase:
                 for name, obj in data.items():
                     self._objects[name] = obj
 
+        # Apply object overrides (deep-merge onto loaded objects)
+        if overrides_path.exists():
+            overrides_data = json.loads(overrides_path.read_text())
+            for name, overrides in overrides_data.get("objects", {}).items():
+                if name in self._objects:
+                    for key, value in overrides.items():
+                        if key.startswith("_"):
+                            continue  # skip comments
+                        self._objects[name][key] = value
+
     def lookup(self, name: str) -> dict | None:
         """Look up an object by name, resolving aliases.
 

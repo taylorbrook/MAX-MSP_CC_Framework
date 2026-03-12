@@ -53,8 +53,8 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 - Validate project directory exists on switch (detect desync)
 
 ### Test Protocol Execution
-- Generate manual test checklist from patch with `generate_test_checklist(patch_dict, name, path)`
-- Save test results with `save_test_results(results, project_dir)`
+- Generate manual test checklist from patch with `generate_test_checklist(patch_dict, patch_name, patch_path="")`
+- Save test results with `save_test_results(project_dir, test_name, results_md)`
 - See `references/test-protocol.md` for checklist format and result recording
 
 ## References

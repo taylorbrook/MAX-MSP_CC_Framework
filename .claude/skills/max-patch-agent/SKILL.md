@@ -54,6 +54,14 @@ Before any generation:
 - Communication: send/receive, forward, pattr, pattrstorage
 - Organization: subpatcher, bpatcher, abstraction references
 
+### Bpatcher Argument Substitution
+- `#N` tokens in bpatcher subpatches must be **standalone** (space-delimited), never embedded in compound strings
+- WRONG: `buffer~ slot-#1` -- compound substitution fails silently in MAX
+- RIGHT: `buffer~ #1` with bpatcher arg `"slot-1"` -- standalone token works correctly
+- When multiple distinct names are needed, use separate args (`#1`, `#2`, etc.)
+- Example args: `["slot-1", "slot-1-out"]` where `#1` = buffer name, `#2` = send name
+- See CLAUDE.md "Bpatcher and Abstraction Arguments" section for full details
+
 ### Pattern Application
 - Top-to-bottom signal flow (CLAUDE.md Rule #4)
 - Explicit `trigger` objects for fan-out (never multi-connect from one outlet)

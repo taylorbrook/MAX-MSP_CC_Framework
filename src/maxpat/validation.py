@@ -12,6 +12,7 @@ Only unfixable structural errors block output.
 
 from __future__ import annotations
 
+import re as _re
 from collections import defaultdict
 from typing import TYPE_CHECKING
 
@@ -438,6 +439,9 @@ def _validate_domain_rules(
             has_signal_out.add(src_id)
             has_signal_in.add(dst_id)
 
+    # --- Rule: Compound #N argument substitution ---
+    results.extend(_check_compound_argument_substitution(box_lookup))
+
     # --- Rule: Unterminated signal chains ---
     results.extend(_check_unterminated_chains(box_lookup, has_signal_out))
 
@@ -459,6 +463,43 @@ def _get_box_name(box_dict: dict) -> str:
             return text.split()[0]
         return ""
     return maxclass
+
+
+# Pattern matching compound #N usage: text containing #N preceded or followed
+# by non-whitespace characters (e.g., "slot-#1", "#1-out", "my#2thing").
+# Standalone #N (space-delimited or at start/end of text) is fine.
+_COMPOUND_ARG_PATTERN = _re.compile(r'(?:\S)#\d+|#\d+(?=\S)')
+
+
+def _check_compound_argument_substitution(
+    box_lookup: dict[str, dict],
+) -> list[ValidationResult]:
+    """Warn about compound #N argument substitution in object/message text.
+
+    In bpatchers and abstractions, #1 etc. must be standalone tokens.
+    Compound forms like 'slot-#1' or '#1-out' do not substitute correctly.
+    """
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        text = box.get("text", "")
+        if not text:
+            continue
+
+        # Only check objects/messages that actually use #N
+        if "#" not in text:
+            continue
+
+        matches = _COMPOUND_ARG_PATTERN.findall(text)
+        if matches:
+            results.append(ValidationResult(
+                "domain", "warning",
+                f"Compound #N substitution in '{text}' ({box_id}) -- "
+                f"#N must be a standalone token (e.g., 'buffer~ #1' not "
+                f"'buffer~ slot-#1'). Pass the full name as the bpatcher arg.",
+            ))
+
+    return results
 
 
 def _check_unterminated_chains(

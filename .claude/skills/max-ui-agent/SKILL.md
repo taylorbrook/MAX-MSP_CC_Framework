@@ -35,11 +35,23 @@ Before any generation:
 - Panel objects as visual containers and section backgrounds
 - Consistent spacing and alignment across control groups
 
-### Layout Engine Integration
-- `apply_layout(patcher)` from `src.maxpat.layout` -- column-based auto-layout for patching mode
-- Presentation layout uses 4-per-row grid with 60px horizontal and 40px vertical spacing
-- UI controls extracted from column assignment, repositioned above their first connected target
-- Disconnected nodes (no connections) placed in final column
+### Layout Engine Integration (Patching Mode)
+- `apply_layout(patcher)` from `src.maxpat.layout` -- row-based topological auto-layout for patching mode
+- **Top-to-bottom signal flow:** topological depth maps to y-position (rows), objects at the same depth spread horizontally within each row
+- **Connected component detection:** independent signal chains (e.g., transport vs mixer) are automatically detected and placed side by side as separate vertical groups
+- **Within-row ordering:** objects in the same row are sorted by the average x-position of their parents to minimize cable crossings
+- **Midpoint generation:** backward-direction cables (source outlet right of destination inlet) automatically get L-shaped midpoints for clean segmented routing
+- **Disconnected objects** (bpatchers with send~/receive~, presentation-only comments) are placed to the right of all connected components
+- **Recursive:** `apply_layout` automatically positions objects inside subpatchers, gen~ patchers, and embedded bpatchers -- no manual subpatcher layout needed
+- **Presentation_rect is preserved:** If you set `presentation_rect` on a box BEFORE `apply_layout` runs (or before `write_patch`/`generate_patch` is called), the layout engine will NOT overwrite it. Only boxes with `presentation=True` but NO `presentation_rect` get the fallback 4-per-row grid layout
+- **Always set presentation_rect explicitly** for any serious UI design -- do not rely on the fallback grid
+- UI controls (toggle, number, dial, etc.) extracted from row assignment, repositioned above their first connected target
+
+### Patchline Midpoints
+- `Patchline` supports optional `midpoints: list[float]` for segmented cable routing
+- Format: flat list `[x1, y1, x2, y2, ...]` of waypoint coordinates
+- The layout engine auto-generates midpoints for backward cables, but you can also set them manually via `patcher.add_connection(src, 0, dst, 0, midpoints=[x1, y1, x2, y2])`
+- Use midpoints when cables must route around objects or when connections span distant sections of the patch
 
 ### UI Object Expertise
 - **Knobs/Faders:** dial, live.dial, slider, live.slider, multislider, rslider

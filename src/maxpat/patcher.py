@@ -27,7 +27,11 @@ from src.maxpat.db_lookup import ObjectDatabase
 class Patchline:
     """A connection between two boxes in a MAX patcher.
 
-    Serializes to: {"patchline": {"source": [id, outlet], "destination": [id, inlet], "order": N}}
+    Serializes to: {"patchline": {"source": [id, outlet], "destination": [id, inlet], ...}}
+
+    Supports optional midpoints for segmented cable routing. Midpoints is a
+    flat list of [x1, y1, x2, y2, ...] coordinates that the cable routes
+    through, creating right-angle bends instead of diagonal lines.
     """
 
     def __init__(
@@ -38,6 +42,7 @@ class Patchline:
         dest_inlet: int,
         order: int = 0,
         hidden: bool = False,
+        midpoints: list[float] | None = None,
     ):
         self.source_id = source_id
         self.source_outlet = source_outlet
@@ -45,6 +50,7 @@ class Patchline:
         self.dest_inlet = dest_inlet
         self.order = order
         self.hidden = hidden
+        self.midpoints = midpoints
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to .maxpat patchline JSON structure."""
@@ -55,6 +61,8 @@ class Patchline:
         }
         if self.hidden:
             d["hidden"] = 1
+        if self.midpoints:
+            d["midpoints"] = list(self.midpoints)
         return {"patchline": d}
 
 
@@ -337,6 +345,7 @@ class Patcher:
         dst_inlet: int,
         order: int = 0,
         hidden: bool = False,
+        midpoints: list[float] | None = None,
     ) -> Patchline:
         """Add a connection (patchline) between two boxes.
 
@@ -347,6 +356,8 @@ class Patcher:
             dst_inlet: Destination inlet index.
             order: Execution order (default 0).
             hidden: Whether the connection is hidden.
+            midpoints: Optional cable routing waypoints as flat [x1, y1, x2, y2, ...]
+                      list. Creates segmented cables with right-angle bends.
 
         Returns:
             The created Patchline.
@@ -358,6 +369,7 @@ class Patcher:
             dest_inlet=dst_inlet,
             order=order,
             hidden=hidden,
+            midpoints=midpoints,
         )
         self.lines.append(pl)
         return pl

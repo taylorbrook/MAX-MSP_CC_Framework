@@ -1,11 +1,14 @@
-"""Column-based layout engine with topological sort and position assignment.
+"""Row-based layout engine with component grouping and midpoint generation.
 
-Positions MAX objects in a patcher for readable signal flow using:
-1. Kahn's algorithm (topological sort by levels) to assign boxes to columns
-2. Dynamic column widths based on widest object per column
-3. Vertical stacking within columns with V_SPACING
-4. UI control objects positioned above their targets
-5. Presentation mode grid layout for UI objects
+Positions MAX objects in a patcher for readable top-to-bottom signal flow:
+1. Connected component detection to separate independent signal chains
+2. Kahn's algorithm (topological sort by levels) to assign boxes to rows
+3. Row-based layout: levels flow top-to-bottom, objects spread horizontally
+4. Within-row ordering by parent position to minimize cable crossings
+5. UI control objects positioned above their targets
+6. Disconnected objects (bpatchers, presentation-only) placed to the right
+7. Midpoint generation for backward-direction patch cables
+8. Presentation mode grid layout for UI objects
 
 Implements PAT-06 (top-to-bottom signal flow) and PAT-07 (readable spacing).
 """
@@ -30,16 +33,27 @@ _UI_CONTROL_NAMES = frozenset({
     "live.toggle", "live.button",
 })
 
-# Starting position for the first column and first object
+# Starting position for the first row and first object
 _START_X = 30.0
 _START_Y = 30.0
 
+# Gap between independent components laid out side by side
+_COMPONENT_GAP = 120.0
+
+# Minimum pixel difference to trigger midpoint generation for backward cables
+_BACKWARD_THRESHOLD = 30.0
+
+# Margin from box edge to first/last inlet/outlet center
+_IO_MARGIN = 7.0
+
 
 def apply_layout(patcher: Patcher) -> None:
-    """Position all boxes in a patcher using column-based topological layout.
+    """Position all boxes using row-based topological layout with component grouping.
 
-    Mutates box patching_rect positions in-place. This is the main entry point
-    for the layout engine.
+    Signal flow is top-to-bottom: topological depth maps to y-position.
+    Independent signal chains are placed side by side as vertical groups.
+    Disconnected objects (bpatchers, presentation-only) go to the right.
+    Backward-direction cables get midpoints for clean segmented routing.
 
     Args:
         patcher: A Patcher instance containing boxes and lines.
@@ -50,53 +64,73 @@ def apply_layout(patcher: Patcher) -> None:
     # Build adjacency graph from patcher.lines
     adj, in_degree, reverse_adj = _build_graph(patcher.boxes, patcher.lines)
 
-    # Assign boxes to columns via topological sort (Kahn's algorithm)
-    columns = _topological_columns(patcher.boxes, adj, in_degree)
+    # Separate connected components from disconnected objects
+    components, disconnected = _find_components(patcher.boxes, adj)
 
-    # Identify UI controls that should be positioned above their targets
-    ui_controls = _identify_ui_controls(patcher.boxes, patcher.lines, columns)
+    # Layout each component as a vertical group (top-to-bottom rows)
+    cursor_x = _START_X
+    for component_boxes in components:
+        # Filter graph to this component
+        comp_ids = {b.id for b in component_boxes}
+        comp_adj = {
+            k: [v for v in vs if v in comp_ids]
+            for k, vs in adj.items() if k in comp_ids
+        }
+        comp_in_degree = {k: v for k, v in in_degree.items() if k in comp_ids}
 
-    # Remove UI controls from their columns (they'll be placed above targets)
-    for box_id in ui_controls:
-        for col in columns:
-            col[:] = [b for b in col if b.id != box_id]
-    # Clean up any empty columns that resulted from removing UI controls
-    columns = [col for col in columns if col]
+        # Topological sort into levels (rows)
+        rows = _topological_levels(component_boxes, comp_adj, comp_in_degree)
+        if not rows:
+            continue
 
-    # Compute x-positions for each column
-    col_x_positions = _compute_column_positions(columns)
+        # Identify and extract UI controls
+        ui_controls = _identify_ui_controls(component_boxes, patcher.lines, rows)
+        for box_id in ui_controls:
+            for row in rows:
+                row[:] = [b for b in row if b.id != box_id]
+        rows = [r for r in rows if r]
+        if not rows:
+            continue
 
-    # Assign positions to boxes in each column
-    for col_idx, column in enumerate(columns):
-        x = col_x_positions[col_idx]
-        y = _START_Y
-        for box in column:
-            box.patching_rect[0] = x
-            box.patching_rect[1] = y
-            y += box.patching_rect[3] + V_SPACING
+        # Position this component starting at cursor_x
+        comp_width = _position_component(
+            rows, cursor_x, _START_Y, reverse_adj, patcher.boxes,
+        )
 
-    # Position UI controls above their targets
-    _place_ui_controls(patcher, ui_controls, columns, col_x_positions)
+        # Position UI controls above their targets
+        _place_ui_controls(patcher.boxes, ui_controls)
+
+        cursor_x += comp_width + _COMPONENT_GAP
+
+    # Place disconnected objects to the right of all components
+    if disconnected:
+        _position_disconnected(disconnected, cursor_x, _START_Y)
+
+    # Generate midpoints for backward-direction cables
+    _generate_midpoints(patcher)
+
+    # Recursively layout inner patchers (subpatchers, gen~, bpatchers)
+    for box in patcher.boxes:
+        if box._inner_patcher is not None and box._inner_patcher.boxes:
+            apply_layout(box._inner_patcher)
 
     # Apply presentation mode layout if any boxes have presentation=True
     _apply_presentation_layout(patcher.boxes)
+
+
+# ---------------------------------------------------------------------------
+# Graph building
+# ---------------------------------------------------------------------------
 
 
 def _build_graph(
     boxes: list[Box],
     lines: list,
 ) -> tuple[dict[str, list[str]], dict[str, int], dict[str, list[str]]]:
-    """Build adjacency and in-degree dicts from boxes and lines.
-
-    Args:
-        boxes: List of Box objects.
-        lines: List of Patchline objects.
+    """Build adjacency, in-degree, and reverse-adjacency dicts from lines.
 
     Returns:
         (adjacency, in_degree, reverse_adjacency) tuple.
-        adjacency: source_id -> [dest_ids]
-        in_degree: box_id -> number of incoming connections
-        reverse_adjacency: dest_id -> [source_ids]
     """
     all_ids = {b.id for b in boxes}
     adj: dict[str, list[str]] = defaultdict(list)
@@ -116,49 +150,96 @@ def _build_graph(
     return dict(adj), in_degree, dict(reverse_adj)
 
 
-def _topological_columns(
+# ---------------------------------------------------------------------------
+# Connected components
+# ---------------------------------------------------------------------------
+
+
+def _find_components(
+    boxes: list[Box],
+    adj: dict[str, list[str]],
+) -> tuple[list[list[Box]], list[Box]]:
+    """Find connected components and disconnected objects.
+
+    Uses undirected BFS to group connected boxes. Objects with no
+    connections at all are returned separately as disconnected.
+
+    Returns:
+        (components, disconnected) where components is a list of Box lists
+        sorted largest-first, and disconnected is isolated Box objects.
+    """
+    # Build undirected adjacency
+    undirected: dict[str, set[str]] = defaultdict(set)
+    for src, dsts in adj.items():
+        for dst in dsts:
+            undirected[src].add(dst)
+            undirected[dst].add(src)
+
+    box_map = {b.id: b for b in boxes}
+    visited: set[str] = set()
+    components: list[list[Box]] = []
+    disconnected: list[Box] = []
+
+    for box in boxes:
+        if box.id in visited:
+            continue
+        if box.id not in undirected:
+            disconnected.append(box)
+            visited.add(box.id)
+            continue
+
+        # BFS from this box
+        component_ids: list[str] = []
+        queue = deque([box.id])
+        while queue:
+            node = queue.popleft()
+            if node in visited:
+                continue
+            visited.add(node)
+            component_ids.append(node)
+            for neighbor in undirected.get(node, set()):
+                if neighbor not in visited:
+                    queue.append(neighbor)
+
+        comp_boxes = [box_map[bid] for bid in component_ids if bid in box_map]
+        if comp_boxes:
+            components.append(comp_boxes)
+
+    # Largest component first for primary placement
+    components.sort(key=len, reverse=True)
+
+    return components, disconnected
+
+
+# ---------------------------------------------------------------------------
+# Topological sort
+# ---------------------------------------------------------------------------
+
+
+def _topological_levels(
     boxes: list[Box],
     adj: dict[str, list[str]],
     in_degree: dict[str, int],
 ) -> list[list[Box]]:
-    """Assign boxes to columns using Kahn's algorithm (BFS by levels).
+    """Assign boxes to levels using Kahn's algorithm (BFS by depth).
 
-    Each level in the BFS becomes one column. Source nodes (in-degree 0)
-    are in the first column.
-
-    Args:
-        boxes: List of Box objects.
-        adj: Adjacency dict (source_id -> [dest_ids]).
-        in_degree: In-degree dict (box_id -> count).
-
-    Returns:
-        List of columns, each column is a list of Box objects.
+    Each level becomes a row in the layout. Source nodes (in-degree 0)
+    are in level 0 (top row).
     """
     box_map = {b.id: b for b in boxes}
+    comp_ids = {b.id for b in boxes}
 
-    # Identify truly disconnected nodes (no incoming AND no outgoing connections)
-    has_connections = set()
-    for box_id in adj:
-        has_connections.add(box_id)
-        for neighbor_id in adj[box_id]:
-            has_connections.add(neighbor_id)
-
-    disconnected_ids = {b.id for b in boxes if b.id not in has_connections}
-
-    # Initialize queue with source nodes (in-degree 0, but NOT disconnected)
     queue = deque()
     for box in boxes:
-        if in_degree.get(box.id, 0) == 0 and box.id not in disconnected_ids:
+        if in_degree.get(box.id, 0) == 0:
             queue.append(box.id)
 
-    columns: list[list[Box]] = []
+    levels: list[list[Box]] = []
     visited: set[str] = set()
-
-    # Track working in-degrees (don't mutate original)
     work_in_degree = dict(in_degree)
 
     while queue:
-        column: list[Box] = []
+        level: list[Box] = []
         next_queue: deque[str] = deque()
 
         while queue:
@@ -167,83 +248,129 @@ def _topological_columns(
                 continue
             visited.add(node_id)
             if node_id in box_map:
-                column.append(box_map[node_id])
+                level.append(box_map[node_id])
 
             for neighbor_id in adj.get(node_id, []):
+                if neighbor_id not in comp_ids:
+                    continue
                 work_in_degree[neighbor_id] = work_in_degree.get(neighbor_id, 0) - 1
                 if work_in_degree[neighbor_id] == 0 and neighbor_id not in visited:
                     next_queue.append(neighbor_id)
 
-        if column:
-            columns.append(column)
+        if level:
+            levels.append(level)
         queue = next_queue
 
-    # Handle disconnected nodes (not visited by topological sort)
+    # Handle any remaining (cycle participants)
     remaining = [b for b in boxes if b.id not in visited]
     if remaining:
-        columns.append(remaining)
+        levels.append(remaining)
 
-    return columns
+    return levels
 
 
-def _compute_column_positions(columns: list[list[Box]]) -> list[float]:
-    """Compute the x-position for each column.
+# ---------------------------------------------------------------------------
+# Component positioning (row-based, top-to-bottom)
+# ---------------------------------------------------------------------------
 
-    First column starts at _START_X. Each subsequent column's x is:
-    previous_x + max(width of all boxes in previous column) + H_GUTTER.
 
-    Args:
-        columns: List of columns (each a list of Box objects).
+def _position_component(
+    rows: list[list[Box]],
+    start_x: float,
+    start_y: float,
+    reverse_adj: dict[str, list[str]],
+    all_boxes: list[Box],
+) -> float:
+    """Position boxes in a component as top-to-bottom rows.
 
-    Returns:
-        List of x-positions, one per column.
+    Each topological level is a row. Within each row (except the first),
+    objects are sorted by the average x-position of their parents to
+    minimize cable crossings.
+
+    Returns the total width of the component.
     """
-    if not columns:
-        return []
+    if not rows:
+        return 0.0
 
-    positions = [_START_X]
+    box_map = {b.id: b for b in all_boxes}
 
-    for i in range(1, len(columns)):
-        prev_col = columns[i - 1]
-        # Find widest box in previous column
-        max_width = max(b.patching_rect[2] for b in prev_col) if prev_col else 0
-        next_x = positions[i - 1] + max_width + H_GUTTER
-        positions.append(next_x)
+    # Compute y position for each row
+    row_y: list[float] = [start_y]
+    for i in range(1, len(rows)):
+        prev_row = rows[i - 1]
+        max_height = max(b.patching_rect[3] for b in prev_row)
+        row_y.append(row_y[-1] + max_height + V_SPACING)
 
-    return positions
+    # Position boxes row by row
+    max_right = start_x
+    for row_idx, row in enumerate(rows):
+        # Sort non-first rows by parent x to reduce cable crossings
+        if row_idx > 0 and len(row) > 1:
+            _sort_row_by_parent_x(row, reverse_adj, box_map)
+
+        y = row_y[row_idx]
+        x = start_x
+        for box in row:
+            box.patching_rect[0] = x
+            box.patching_rect[1] = y
+            x += box.patching_rect[2] + H_GUTTER
+
+        row_right = x - H_GUTTER
+        if row_right > max_right:
+            max_right = row_right
+
+    return max_right - start_x
+
+
+def _sort_row_by_parent_x(
+    row: list[Box],
+    reverse_adj: dict[str, list[str]],
+    box_map: dict[str, Box],
+) -> None:
+    """Sort objects in a row by the average x-position of their parents.
+
+    Parents in previous rows are already positioned, so their patching_rect
+    x values are valid. This reduces cable crossings.
+    """
+    def parent_avg_x(box: Box) -> float:
+        parents = reverse_adj.get(box.id, [])
+        if not parents:
+            return 0.0
+        xs = []
+        for pid in parents:
+            parent = box_map.get(pid)
+            if parent:
+                xs.append(parent.patching_rect[0])
+        return sum(xs) / len(xs) if xs else 0.0
+
+    row.sort(key=parent_avg_x)
+
+
+# ---------------------------------------------------------------------------
+# UI control identification and positioning
+# ---------------------------------------------------------------------------
 
 
 def _identify_ui_controls(
     boxes: list[Box],
     lines: list,
-    columns: list[list[Box]],
+    rows: list[list[Box]],
 ) -> dict[str, Box]:
     """Identify UI control objects that should be placed above their targets.
 
     A UI control qualifies if:
     1. Its name is in _UI_CONTROL_NAMES
-    2. It connects to exactly one target (first connection target used)
-    3. The target is in the same or the next column
-
-    Args:
-        boxes: All boxes in the patcher.
-        lines: All patchlines.
-        columns: Current column assignment.
-
-    Returns:
-        Dict mapping box_id -> target Box for UI controls to reposition.
+    2. It connects to a target (first connection target used)
+    3. The target is in the same or the next row
     """
-    # Build column index: box_id -> column_index
-    col_index: dict[str, int] = {}
-    for c_idx, col in enumerate(columns):
-        for b in col:
-            col_index[b.id] = c_idx
+    row_index: dict[str, int] = {}
+    for r_idx, row in enumerate(rows):
+        for b in row:
+            row_index[b.id] = r_idx
 
-    # Build box lookup
     box_map = {b.id: b for b in boxes}
 
-    # Find connections from UI controls
-    ui_connections: dict[str, str] = {}  # ui_box_id -> first target_id
+    ui_connections: dict[str, str] = {}
     for line in lines:
         src = line.source_id
         if src not in ui_connections and src in box_map:
@@ -251,36 +378,27 @@ def _identify_ui_controls(
             if src_box.name in _UI_CONTROL_NAMES:
                 ui_connections[src] = line.dest_id
 
-    # Filter: only those where target is in same or next column
     result: dict[str, Box] = {}
     for ui_id, target_id in ui_connections.items():
-        if ui_id in col_index and target_id in col_index:
-            ui_col = col_index[ui_id]
-            target_col = col_index[target_id]
-            if target_col == ui_col or target_col == ui_col + 1:
-                result[ui_id] = box_map[target_id]
+        if ui_id in row_index and target_id in row_index:
+            ui_row = row_index[ui_id]
+            target_row = row_index[target_id]
+            if target_row == ui_row or target_row == ui_row + 1:
+                if target_id in box_map:
+                    result[ui_id] = box_map[target_id]
 
     return result
 
 
 def _place_ui_controls(
-    patcher: Patcher,
+    all_boxes: list[Box],
     ui_controls: dict[str, Box],
-    columns: list[list[Box]],
-    col_x_positions: list[float],
 ) -> None:
     """Position UI control objects above their targets.
 
-    Sets the UI control's x to match target's x, and y to target_y - ui_height - V_SPACING/2.
-    If this would create negative y or overlap with other objects, keeps reasonable position.
-
-    Args:
-        patcher: The patcher (to look up boxes by id).
-        ui_controls: Dict of ui_box_id -> target Box.
-        columns: Column lists (after UI controls removed).
-        col_x_positions: X positions per column.
+    Sets the UI control's x to match target's x, and y above target.
     """
-    box_map = {b.id: b for b in patcher.boxes}
+    box_map = {b.id: b for b in all_boxes}
 
     for ui_id, target_box in ui_controls.items():
         ui_box = box_map.get(ui_id)
@@ -299,27 +417,107 @@ def _place_ui_controls(
         ui_box.patching_rect[1] = new_y
 
 
+# ---------------------------------------------------------------------------
+# Disconnected object positioning
+# ---------------------------------------------------------------------------
+
+
+def _position_disconnected(
+    boxes: list[Box],
+    start_x: float,
+    start_y: float,
+) -> None:
+    """Place disconnected objects in a column to the right of components."""
+    y = start_y
+    for box in boxes:
+        box.patching_rect[0] = start_x
+        box.patching_rect[1] = y
+        y += box.patching_rect[3] + V_SPACING
+
+
+# ---------------------------------------------------------------------------
+# Midpoint generation for backward cables
+# ---------------------------------------------------------------------------
+
+
+def _outlet_x(box: Box, outlet_idx: int) -> float:
+    """Approximate x position of an outlet on a box."""
+    x = box.patching_rect[0]
+    w = box.patching_rect[2]
+    n = box.numoutlets
+    if n <= 1:
+        return x + w * 0.5
+    usable = w - 2 * _IO_MARGIN
+    spacing = usable / (n - 1)
+    return x + _IO_MARGIN + outlet_idx * spacing
+
+
+def _inlet_x(box: Box, inlet_idx: int) -> float:
+    """Approximate x position of an inlet on a box."""
+    x = box.patching_rect[0]
+    w = box.patching_rect[2]
+    n = box.numinlets
+    if n <= 1:
+        return x + w * 0.5
+    usable = w - 2 * _IO_MARGIN
+    spacing = usable / (n - 1)
+    return x + _IO_MARGIN + inlet_idx * spacing
+
+
+def _generate_midpoints(patcher: Patcher) -> None:
+    """Add midpoints to patchlines where cables would go backward.
+
+    When a source outlet is significantly to the right of the destination
+    inlet, creates an L-shaped cable route (down then left) using midpoints.
+    Only adds midpoints to lines that don't already have them.
+    """
+    box_map = {b.id: b for b in patcher.boxes}
+
+    for line in patcher.lines:
+        if line.midpoints:
+            continue  # Already has midpoints (manually set)
+
+        src_box = box_map.get(line.source_id)
+        dst_box = box_map.get(line.dest_id)
+        if not src_box or not dst_box:
+            continue
+
+        src_ox = _outlet_x(src_box, line.source_outlet)
+        src_oy = src_box.patching_rect[1] + src_box.patching_rect[3]
+        dst_ix = _inlet_x(dst_box, line.dest_inlet)
+        dst_iy = dst_box.patching_rect[1]
+
+        # Only add midpoints for significantly backward cables
+        if src_ox > dst_ix + _BACKWARD_THRESHOLD:
+            mid_y = (src_oy + dst_iy) * 0.5
+            line.midpoints = [src_ox, mid_y, dst_ix, mid_y]
+
+
+# ---------------------------------------------------------------------------
+# Presentation mode layout (unchanged)
+# ---------------------------------------------------------------------------
+
+
 def _apply_presentation_layout(boxes: list[Box]) -> None:
     """Set presentation_rect on boxes with presentation=True.
 
     Arranges presentation objects in a grid layout (left-to-right, wrapping).
-    Uses presentation_rect = [20 + col*spacing, 20 + row*spacing, w, h].
-
-    Args:
-        boxes: All boxes in the patcher.
+    Only applies to boxes that don't already have a presentation_rect set.
     """
     pres_boxes = [b for b in boxes if b.presentation]
     if not pres_boxes:
         return
 
-    # Grid layout parameters
     grid_x_start = 20.0
     grid_y_start = 20.0
-    grid_h_spacing = 60.0  # horizontal spacing between grid items
-    grid_v_spacing = 40.0  # vertical spacing between grid rows
+    grid_h_spacing = 60.0
+    grid_v_spacing = 40.0
     max_per_row = 4
 
     for idx, box in enumerate(pres_boxes):
+        # Respect existing presentation_rect (set by generator or UI agent)
+        if box.presentation_rect is not None:
+            continue
         col = idx % max_per_row
         row = idx // max_per_row
         w = box.patching_rect[2]

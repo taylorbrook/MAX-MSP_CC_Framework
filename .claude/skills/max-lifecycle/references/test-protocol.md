@@ -61,8 +61,9 @@ After the user completes testing:
 from src.maxpat.testing import save_test_results
 
 save_test_results(
-    results="[completed checklist markdown with Pass/Fail marked]",
-    project_dir=Path("patches/my-synth")
+    project_dir=Path("patches/my-synth"),
+    test_name="my-synth",
+    results_md="[completed checklist markdown with Pass/Fail marked]"
 )
 ```
 
