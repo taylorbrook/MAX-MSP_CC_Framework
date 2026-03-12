@@ -2,7 +2,7 @@
 
 An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversational creation of MAX patches and externals. Design, build, and iterate on MAX through dialogue with [Claude Code](https://claude.ai/claude-code).
 
-> **Note:** Generated patches must be opened and tested in MAX. This framework produces valid `.maxpat` files, Gen~ code, JavaScript, and C++ externals — but there is no in-framework audio preview or simulation. All testing is manual in MAX 9.
+> **Note:** Generated patches must be opened and tested in MAX. This framework produces valid `.maxpat` files, Gen~ code, JavaScript, and C++ externals — but there is no in-framework audio preview or simulation. All testing is manual in MAX 9. There are safety checks in place, but audio coding done by AI is still risky so don't blow your ears off!
 
 ## Features
 
@@ -137,7 +137,3 @@ MAX-MSP_CC_Framework/
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
----
-
-Built for MAX 9 with [Claude Code](https://claude.ai/claude-code).
