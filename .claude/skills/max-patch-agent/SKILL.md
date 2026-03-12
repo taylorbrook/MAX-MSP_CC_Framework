@@ -45,6 +45,10 @@ Before any generation:
 - `Patcher.add_subpatcher(name)` -- add a subpatcher
 - `generate_patch(patcher)` -- layout + serialize + validate
 - `write_patch(patcher, path, validate=True)` -- write .maxpat with validation hooks
+- `Patcher.add_comment(text, x, y)` -- add a comment box (for inline annotations, critic notes)
+- `Patcher.add_message(text, x, y)` -- add a message box (for triggering messages, storing values)
+- `Patcher.add_node_script(filename, code=None, num_outlets=2, x, y)` -- add a node.script box for Node for Max (returns tuple of Box and code string)
+- `Patcher.add_js(filename, code=None, num_inlets=1, num_outlets=1, x, y)` -- add a js object box for V8 JavaScript (returns tuple of Box and code string)
 
 ### Object Expertise
 - Control flow: trigger, gate, switch, select, route, if, expr
