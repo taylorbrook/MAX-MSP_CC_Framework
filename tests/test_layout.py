@@ -151,7 +151,7 @@ class TestSpacing:
         a_bottom = a.patching_rect[1] + a.patching_rect[3]
         b_top = b.patching_rect[1]
         gap = b_top - a_bottom
-        assert 60 <= gap <= 140, f"Vertical gap {gap} outside acceptable range"
+        assert 10 <= gap <= 40, f"Vertical gap {gap} outside acceptable range"
 
     def test_horizontal_gutter_within_row(self):
         """Horizontal gutter between objects in the same row."""
@@ -170,7 +170,7 @@ class TestSpacing:
         left_box = b if b.patching_rect[0] == xs[0] else c
         left_right_edge = left_box.patching_rect[0] + left_box.patching_rect[2]
         gutter = xs[1] - left_right_edge
-        assert 50 <= gutter <= 90, f"Horizontal gutter {gutter} outside range"
+        assert 5 <= gutter <= 30, f"Horizontal gutter {gutter} outside range"
 
     def test_dynamic_row_height(self):
         """Row height adapts to tallest object in that row."""
@@ -281,7 +281,7 @@ class TestUIControlPositioning:
 
 
 class TestMidpointGeneration:
-    """Test that backward cables get midpoints for clean routing."""
+    """Test midpoint generation for all cable routing patterns."""
 
     def test_backward_cable_gets_midpoints(self):
         """A connection going right-to-left should get midpoints."""
@@ -301,6 +301,102 @@ class TestMidpointGeneration:
                 # Whether midpoints are needed depends on final positions
                 # Just verify no crash and midpoints are either None or a list
                 assert line.midpoints is None or isinstance(line.midpoints, list)
+
+    def test_forward_horizontal_cable_gets_midpoints(self):
+        """A long forward horizontal cable (left-to-right) gets midpoints."""
+        p = Patcher()
+        # Manually position objects far apart horizontally
+        src = p.add_box("sig~")
+        src.patching_rect = [50.0, 200.0, 44.0, 22.0]
+        dst = p.add_box("svf~")
+        dst.patching_rect = [500.0, 300.0, 44.0, 22.0]
+        p.add_connection(src, 0, dst, 0)
+
+        # Call _generate_midpoints directly (skip full layout to preserve positions)
+        from src.maxpat.layout import _generate_midpoints
+        _generate_midpoints(p)
+
+        line = p.lines[0]
+        assert line.midpoints is not None
+        assert len(line.midpoints) == 4  # 2 midpoints (x1, y1, x2, y2)
+        # Horizontal segment: both midpoints share the same Y
+        assert line.midpoints[1] == line.midpoints[3]
+
+    def test_vertical_cable_no_midpoints(self):
+        """A near-vertical cable should NOT get midpoints."""
+        p = Patcher()
+        src = p.add_box("*~", ["0.5"])
+        src.patching_rect = [100.0, 50.0, 44.0, 22.0]
+        dst = p.add_box("*~", ["0.3"])
+        dst.patching_rect = [100.0, 150.0, 44.0, 22.0]
+        p.add_connection(src, 0, dst, 0)
+
+        from src.maxpat.layout import _generate_midpoints
+        _generate_midpoints(p)
+
+        assert p.lines[0].midpoints is None
+
+    def test_upward_cable_gets_bus_routing(self):
+        """An upward cable with large distance gets 3-midpoint bus routing."""
+        p = Patcher()
+        # Source at bottom, dest at top (like init cable)
+        src = p.add_box("message")
+        src.text = "127"
+        src.patching_rect = [100.0, 800.0, 30.0, 22.0]
+        dst = p.add_box("dial")
+        dst.patching_rect = [50.0, 100.0, 40.0, 40.0]
+        p.add_connection(src, 0, dst, 0)
+
+        from src.maxpat.layout import _generate_midpoints
+        _generate_midpoints(p)
+
+        line = p.lines[0]
+        assert line.midpoints is not None
+        assert len(line.midpoints) == 6  # 3 midpoints for bus routing
+        # Bus X should be to the right of both objects
+        bus_x = line.midpoints[0]
+        src_right = src.patching_rect[0] + src.patching_rect[2]
+        assert bus_x > src_right
+
+    def test_parallel_bus_cables_spaced_apart(self):
+        """Multiple upward cables get different bus X positions."""
+        p = Patcher()
+        src1 = p.add_box("message")
+        src1.text = "100"
+        src1.patching_rect = [100.0, 800.0, 30.0, 22.0]
+        src2 = p.add_box("message")
+        src2.text = "200"
+        src2.patching_rect = [150.0, 800.0, 30.0, 22.0]
+        dst1 = p.add_box("dial")
+        dst1.patching_rect = [50.0, 100.0, 40.0, 40.0]
+        dst2 = p.add_box("dial")
+        dst2.patching_rect = [50.0, 300.0, 40.0, 40.0]
+        p.add_connection(src1, 0, dst1, 0)
+        p.add_connection(src2, 0, dst2, 0)
+
+        from src.maxpat.layout import _generate_midpoints
+        _generate_midpoints(p)
+
+        bus_x_1 = p.lines[0].midpoints[0]
+        bus_x_2 = p.lines[1].midpoints[0]
+        # Bus cables should have different X positions
+        assert bus_x_1 != bus_x_2
+        assert abs(bus_x_1 - bus_x_2) >= 8.0  # BUS_SPACING
+
+    def test_manual_midpoints_preserved(self):
+        """Manually set midpoints are not overwritten by auto-generation."""
+        p = Patcher()
+        src = p.add_box("sig~")
+        src.patching_rect = [50.0, 200.0, 44.0, 22.0]
+        dst = p.add_box("svf~")
+        dst.patching_rect = [500.0, 300.0, 44.0, 22.0]
+        manual_mp = [100.0, 250.0, 450.0, 250.0]
+        p.add_connection(src, 0, dst, 0, midpoints=manual_mp)
+
+        from src.maxpat.layout import _generate_midpoints
+        _generate_midpoints(p)
+
+        assert p.lines[0].midpoints == manual_mp
 
 
 # ---------------------------------------------------------------------------
@@ -385,3 +481,75 @@ class TestComplexGraph:
             b.patching_rect[0] for b in p.boxes if b.id != metro.id
         )
         assert metro.patching_rect[0] >= max_connected_x
+
+
+# ---------------------------------------------------------------------------
+# Patcher rect auto-sizing
+# ---------------------------------------------------------------------------
+
+
+class TestAutoSizing:
+    """Test that patcher rect is auto-sized to fit content."""
+
+    def test_rect_fits_all_objects(self):
+        """Patcher rect width and height encompass all objects."""
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("*~", ["0.5"])
+        c = p.add_box("ezdac~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+
+        apply_layout(p)
+
+        rect = p.props["rect"]
+        patcher_w = rect[2]
+        patcher_h = rect[3]
+
+        for box in p.boxes:
+            right = box.patching_rect[0] + box.patching_rect[2]
+            bottom = box.patching_rect[1] + box.patching_rect[3]
+            assert right < patcher_w, f"Object extends past patcher width"
+            assert bottom < patcher_h, f"Object extends past patcher height"
+
+    def test_rect_includes_bus_routes(self):
+        """Patcher rect accounts for bus routing midpoints."""
+        p = Patcher()
+        src = p.add_box("message")
+        src.text = "127"
+        src.patching_rect = [100.0, 800.0, 30.0, 22.0]
+        dst = p.add_box("dial")
+        dst.patching_rect = [50.0, 100.0, 40.0, 40.0]
+        p.add_connection(src, 0, dst, 0)
+
+        apply_layout(p)
+
+        rect = p.props["rect"]
+        # Bus midpoints should be within the patcher rect
+        line = p.lines[0]
+        if line.midpoints:
+            for j in range(0, len(line.midpoints), 2):
+                assert line.midpoints[j] < rect[2]
+
+    def test_minimum_size_enforced(self):
+        """Patcher rect has minimum dimensions even with few objects."""
+        p = Patcher()
+        box = p.add_box("cycle~", ["440"])
+        p.add_connection(box, 0, box, 0)  # self-loop
+
+        apply_layout(p)
+
+        rect = p.props["rect"]
+        assert rect[2] >= 400.0
+        assert rect[3] >= 300.0
+
+    def test_subpatcher_not_auto_sized(self):
+        """Subpatchers should not have their rect auto-sized."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher("test", inlets=1, outlets=1)
+
+        original_rect = list(inner.props["rect"])
+        apply_layout(p)
+
+        # Inner patcher rect should not change from auto-sizing
+        assert inner.props["rect"] == original_rect

@@ -12,8 +12,15 @@ MIN_BOX_WIDTH = 40.0    # Minimum box width for very short objects
 DEFAULT_HEIGHT = 22.0   # Standard text box height (newobj, message)
 
 # Layout spacing constants
-V_SPACING = 100         # Vertical spacing between objects (center of 80-120 range)
-H_GUTTER = 70           # Horizontal gutter between columns (center of 60-80 range)
+V_SPACING = 20          # Vertical gap between rows (~16-20px matches real MAX patches)
+H_GUTTER = 15           # Horizontal gap between objects in a row
+
+# Midpoint generation thresholds
+HORIZONTAL_THRESHOLD = 20.0   # Min horizontal offset to trigger midpoint generation
+UPWARD_BUS_THRESHOLD = 60.0   # Min upward distance to use right-edge bus routing
+BUS_MARGIN = 30.0             # Gap between rightmost object and bus start X
+BUS_SPACING = 8.0             # Spacing between parallel bus cables
+PATCHER_PADDING = 40.0        # Padding around content for auto-sized patcher rect
 
 # Subpatcher default window size
 SUBPATCHER_RECT = [100.0, 100.0, 400.0, 300.0]
