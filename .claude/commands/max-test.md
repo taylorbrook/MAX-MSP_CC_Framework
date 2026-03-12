@@ -16,7 +16,7 @@ Generate a manual test checklist for patches in the active project, then record 
    - If a patch name is provided, locate that specific `.maxpat` file in `generated/`
    - If no name provided, find all `.maxpat` files in the project's `generated/` directory
 
-3. **Generate test checklist** -- for each patch, call `generate_test_checklist(patch_dict, name, path)` from `src.maxpat.testing`:
+3. **Generate test checklist** -- for each patch, call `generate_test_checklist(patch_dict, patch_name, patch_path="")` from `src.maxpat.testing`:
    - The checklist is based on detected objects: audio objects get signal flow tests, MIDI objects get note tests, UI objects get interaction tests
    - Each checklist item describes what to do in MAX and what to expect
 
@@ -30,7 +30,7 @@ Generate a manual test checklist for patches in the active project, then record 
    ...
    ```
 
-5. **Record results** -- after the user reports which tests passed/failed, call `save_test_results(results, project_dir)` from `src.maxpat.testing` to persist the results.
+5. **Record results** -- after the user reports which tests passed/failed, call `save_test_results(project_dir, test_name, results_md)` from `src.maxpat.testing` to persist the results.
 
 6. **Update status** -- record test results in the project status.
 
