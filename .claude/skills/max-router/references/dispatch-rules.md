@@ -93,6 +93,8 @@ When keywords match multiple domains:
 
 ### Edge Cases
 
+Some terms are ambiguous between data/control operations and audio/signal operations. The table below includes explicit disambiguation for common cases. When the user's description is still ambiguous after checking these rules, prefer the DSP interpretation if the project context includes audio objects, otherwise prefer the data/control interpretation.
+
 | Task Description | Agents | Lead | Reasoning |
 |-----------------|--------|------|-----------|
 | "synth with knobs" | DSP + UI | DSP | Audio generation is primary |
@@ -102,6 +104,13 @@ When keywords match multiple domains:
 | "audio visualizer" | DSP + UI + js | DSP | Signal analysis drives display |
 | "preset manager" | Patch + js | Patch | Patch routing with js storage |
 | "export synth as VST" | RNBO | RNBO | Export target dispatch |
+| "filter the data" | js or Patch | js | Data filtering = JavaScript array ops, not audio |
+| "audio filter" / "lowpass filter" | DSP | DSP | Audio filtering = signal processing (biquad~, onepole~, svf~) |
+| "buffer management" / "load samples into buffer~" | DSP | DSP | buffer~ is MSP domain, sample playback/recording |
+| "buffer data" / "buffer array" | js or Patch | js/Patch | Data buffering = storing/queuing values, not audio buffers |
+| "gen~ buffer" / "Buffer operator" | DSP | DSP | Gen~ Buffer/Data operators for sample access inside gen~ |
+| "delay messages" / "delayed bang" | Patch | Patch | Control-rate delay = delay/pipe objects |
+| "delay effect" / "audio delay" | DSP | DSP | Signal delay = tapin~/tapout~ or gen~ Delay operator |
 
 ## Single vs Multi-Agent Decision
 
