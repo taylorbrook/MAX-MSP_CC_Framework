@@ -8,9 +8,12 @@ import pytest
 from src.maxpat.audit import BoxInstance
 from src.maxpat.audit.parser import (
     HelpPatchParser,
+    filter_degenerate,
+    is_degenerate,
     parse_object_text,
     traverse_patcher,
 )
+from src.maxpat.db_lookup import ObjectDatabase
 
 
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "sample_help.json"
@@ -225,3 +228,152 @@ class TestHelpPatchParser:
         instances = parser.parse_file(FIXTURE_PATH)
         for inst in instances:
             assert str(FIXTURE_PATH) in inst.source_file or FIXTURE_PATH.name in inst.source_file
+
+
+# ---------------------------------------------------------------------------
+# Test: degenerate instance filtering
+# ---------------------------------------------------------------------------
+
+@pytest.fixture
+def db():
+    """ObjectDatabase loaded with default DB for realistic filtering tests."""
+    return ObjectDatabase()
+
+
+class TestDegenerateFiltering:
+    """Degenerate instance filtering identifies label objects while preserving
+    legitimate sinks and connected instances."""
+
+    def test_unconnected_matching_io_is_not_filtered(self, db):
+        """An unconnected box whose I/O counts match the DB is NOT filtered.
+        e.g., print has 1 inlet, 0 outlets in DB."""
+        inst = BoxInstance(
+            name="print",
+            text="print",
+            numinlets=1,
+            numoutlets=0,
+            outlettype=[],
+            patching_rect=[0, 0, 33, 22],
+            box_id="obj-1",
+            depth=0,
+            is_connected=False,
+        )
+        assert is_degenerate(inst, db) is False
+
+    def test_unconnected_mismatched_io_is_filtered(self, db):
+        """An unconnected box whose I/O counts do NOT match the DB IS filtered.
+        e.g., a cycle~ used as a label with numinlets=0, numoutlets=0."""
+        inst = BoxInstance(
+            name="cycle~",
+            text="cycle~",
+            numinlets=0,
+            numoutlets=0,
+            outlettype=[],
+            patching_rect=[0, 0, 50, 22],
+            box_id="obj-2",
+            depth=0,
+            is_connected=False,
+        )
+        assert is_degenerate(inst, db) is True
+
+    def test_connected_box_never_filtered(self, db):
+        """A connected box is NEVER filtered, regardless of I/O count mismatch."""
+        inst = BoxInstance(
+            name="cycle~",
+            text="cycle~",
+            numinlets=0,
+            numoutlets=0,
+            outlettype=[],
+            patching_rect=[0, 0, 50, 22],
+            box_id="obj-3",
+            depth=0,
+            is_connected=True,
+        )
+        assert is_degenerate(inst, db) is False
+
+    def test_unknown_object_no_connections_is_filtered(self, db):
+        """An unknown object (not in DB) with no connections IS filtered."""
+        inst = BoxInstance(
+            name="totally_fake_object_xyz",
+            text="totally_fake_object_xyz",
+            numinlets=1,
+            numoutlets=1,
+            outlettype=[""],
+            patching_rect=[0, 0, 100, 22],
+            box_id="obj-4",
+            depth=0,
+            is_connected=False,
+        )
+        assert is_degenerate(inst, db) is True
+
+    def test_variable_io_unconnected_not_filtered(self, db):
+        """A variable_io object with no connections is NOT filtered
+        (can't reliably determine expected counts)."""
+        inst = BoxInstance(
+            name="trigger",
+            text="trigger b i f",
+            numinlets=1,
+            numoutlets=3,
+            outlettype=["bang", "int", "float"],
+            patching_rect=[0, 0, 80, 22],
+            box_id="obj-5",
+            depth=0,
+            is_connected=False,
+        )
+        assert is_degenerate(inst, db) is False
+
+    def test_legitimate_sinks_not_filtered(self, db):
+        """Legitimate sink objects (dac~, print, send) with 0 outlets and no
+        outgoing connections are NOT filtered when their counts match DB."""
+        # dac~ has 2 inlets and 0 outlets in the DB
+        inst = BoxInstance(
+            name="dac~",
+            text="dac~",
+            numinlets=2,
+            numoutlets=0,
+            outlettype=[],
+            patching_rect=[0, 0, 35, 22],
+            box_id="obj-6",
+            depth=0,
+            is_connected=False,
+        )
+        assert is_degenerate(inst, db) is False
+
+    def test_filter_degenerate_preserves_order(self, db):
+        """filter_degenerate returns non-degenerate instances in original order."""
+        good = BoxInstance(
+            name="print", text="print", numinlets=1, numoutlets=0,
+            outlettype=[], patching_rect=[0, 0, 33, 22], box_id="obj-1",
+            depth=0, is_connected=False,
+        )
+        bad = BoxInstance(
+            name="cycle~", text="cycle~", numinlets=0, numoutlets=0,
+            outlettype=[], patching_rect=[0, 0, 50, 22], box_id="obj-2",
+            depth=0, is_connected=False,
+        )
+        good2 = BoxInstance(
+            name="metro", text="metro 500", numinlets=2, numoutlets=1,
+            outlettype=["bang"], patching_rect=[0, 0, 68, 22], box_id="obj-3",
+            depth=0, is_connected=True,
+        )
+        result = filter_degenerate([good, bad, good2], db)
+        assert len(result) == 2
+        assert result[0].name == "print"
+        assert result[1].name == "metro"
+
+
+class TestParseFileWithFiltering:
+    """HelpPatchParser.parse_file with db parameter applies degenerate filtering."""
+
+    def test_parse_file_with_db_filters(self, db):
+        parser = HelpPatchParser()
+        # Without DB: all instances
+        all_inst = parser.parse_file(FIXTURE_PATH)
+        # With DB: filtered instances (some may be removed)
+        filtered_inst = parser.parse_file(FIXTURE_PATH, db=db)
+        assert len(filtered_inst) <= len(all_inst)
+
+    def test_parse_file_without_db_no_filtering(self):
+        parser = HelpPatchParser()
+        instances = parser.parse_file(FIXTURE_PATH)
+        assert len(instances) == 8  # All instances returned

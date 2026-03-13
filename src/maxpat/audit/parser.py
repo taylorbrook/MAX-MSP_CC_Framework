@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 from src.maxpat.audit import BoxInstance
+from src.maxpat.db_lookup import ObjectDatabase
 
 
 def parse_object_text(text: str) -> tuple[str, list[str], dict[str, str]]:
@@ -145,6 +146,64 @@ def traverse_patcher(
     return instances
 
 
+def is_degenerate(instance: BoxInstance, db: ObjectDatabase) -> bool:
+    """Check if an instance is a label/decoration, not a real working object.
+
+    A degenerate instance has zero connections AND its I/O counts don't match
+    the DB. Legitimate sink objects (print, send, dac~) with 0 outlets are kept
+    because their counts match the DB even with no outgoing connections.
+
+    Connected instances are never considered degenerate.
+
+    Args:
+        instance: The BoxInstance to check.
+        db: ObjectDatabase for looking up expected I/O counts.
+
+    Returns:
+        True if the instance is degenerate (label/decoration), False if legitimate.
+    """
+    # Connected instances are never degenerate
+    if instance.is_connected:
+        return False
+
+    # Look up the object in the DB
+    db_obj = db.lookup(instance.name)
+    if db_obj is None:
+        # Unknown object with no connections -> degenerate
+        return True
+
+    # Variable I/O objects: can't reliably determine expected counts
+    if db_obj.get("variable_io"):
+        return False
+
+    # Compare I/O counts against DB expectations
+    expected_inlets, expected_outlets = db.compute_io_counts(instance.name)
+
+    if instance.numinlets == expected_inlets and instance.numoutlets == expected_outlets:
+        # Counts match DB -> legitimate unconnected instance
+        return False
+
+    # Counts don't match AND no connections -> label/decoration
+    return True
+
+
+def filter_degenerate(
+    instances: list[BoxInstance], db: ObjectDatabase
+) -> list[BoxInstance]:
+    """Filter out degenerate instances, preserving order.
+
+    Returns only instances where ``is_degenerate`` returns False.
+
+    Args:
+        instances: List of BoxInstance objects to filter.
+        db: ObjectDatabase for degenerate checking.
+
+    Returns:
+        Filtered list with degenerate instances removed.
+    """
+    return [inst for inst in instances if not is_degenerate(inst, db)]
+
+
 class HelpPatchParser:
     """Stateless parser for MAX help patch files.
 
@@ -155,14 +214,18 @@ class HelpPatchParser:
     def __init__(self) -> None:
         """Initialize the parser. No state needed -- parser is stateless."""
 
-    def parse_file(self, path: Path) -> list[BoxInstance]:
+    def parse_file(
+        self, path: Path, db: ObjectDatabase | None = None
+    ) -> list[BoxInstance]:
         """Parse a single .maxhelp (or .maxpat) JSON file.
 
         Opens the JSON file, calls ``traverse_patcher`` on the top-level
         patcher, and sets ``source_file`` on all returned instances.
+        When ``db`` is provided, applies degenerate instance filtering.
 
         Args:
             path: Path to the .maxhelp JSON file.
+            db: Optional ObjectDatabase for degenerate filtering.
 
         Returns:
             List of BoxInstance objects found in the file.
@@ -173,6 +236,10 @@ class HelpPatchParser:
         patcher = data.get("patcher", {})
         source = str(path)
         instances = traverse_patcher(patcher, depth=0, source_file=source)
+
+        if db is not None:
+            instances = filter_degenerate(instances, db)
+
         return instances
 
     def parse_directory(self, help_dir: Path) -> dict[str, list[BoxInstance]]:
