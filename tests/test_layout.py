@@ -559,3 +559,58 @@ class TestAutoSizing:
 
         # Inner patcher rect should not change from auto-sizing
         assert inner.props["rect"] == original_rect
+
+
+# ---------------------------------------------------------------------------
+# Comment association (target_id on Box)
+# ---------------------------------------------------------------------------
+
+
+class TestCommentAssociation:
+    """Test that comments can be associated with target objects via target_id."""
+
+    def test_comment_target_id_set(self):
+        """add_comment(text, target=box) sets target_id to box.id."""
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        comment = p.add_comment("oscillator", target=osc)
+        assert comment.target_id == osc.id
+
+    def test_comment_no_target(self):
+        """add_comment(text) without target sets target_id = None."""
+        p = Patcher()
+        comment = p.add_comment("standalone note")
+        assert comment.target_id is None
+
+    def test_target_id_not_in_dict(self):
+        """target_id must NOT appear in Box.to_dict() output."""
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        comment = p.add_comment("note", target=osc)
+        d = comment.to_dict()
+        assert "target_id" not in d["box"]
+
+    def test_panel_has_target_id_none(self):
+        """Panel (Box.__new__ path) has target_id = None."""
+        p = Patcher()
+        panel = p.add_panel(0, 0, 100, 100)
+        assert panel.target_id is None
+
+    def test_step_marker_has_target_id_none(self):
+        """Step marker (Box.__new__ path) has target_id = None."""
+        p = Patcher()
+        marker = p.add_step_marker(1, 10, 10)
+        assert marker.target_id is None
+
+    def test_box_init_has_target_id_none(self):
+        """Box created via __init__ has target_id = None by default."""
+        p = Patcher()
+        box = p.add_box("cycle~", ["440"])
+        assert box.target_id is None
+
+    def test_annotation_with_target(self):
+        """add_annotation(text, target=box) sets target_id."""
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        note = p.add_annotation("main osc", target=osc)
+        assert note.target_id == osc.id

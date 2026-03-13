@@ -162,6 +162,9 @@ class Box:
         # Extra attributes (for custom box properties)
         self.extra_attrs: dict[str, Any] = {}
 
+        # Comment association: layout-time only, not serialized to .maxpat
+        self.target_id: str | None = None
+
         # Internal: track if this is a subpatcher/bpatcher with embedded patcher
         self._inner_patcher: Patcher | None = None
         self._saved_object_attributes: dict[str, Any] | None = None
@@ -297,13 +300,17 @@ class Patcher:
         self.boxes.append(box)
         return box
 
-    def add_comment(self, text: str, x: float = 0.0, y: float = 0.0) -> Box:
+    def add_comment(
+        self, text: str, x: float = 0.0, y: float = 0.0, target: Box | None = None,
+    ) -> Box:
         """Add a comment box to the patcher.
 
         Args:
             text: Comment text.
             x: Horizontal position.
             y: Vertical position.
+            target: Optional target box. If provided, the comment's target_id
+                is set to target.id for layout-time association.
 
         Returns:
             The created comment Box.
@@ -316,6 +323,8 @@ class Patcher:
         from src.maxpat.sizing import calculate_box_size
         w, h = calculate_box_size(text, "comment")
         box.patching_rect = [x, y, w, h]
+        if target is not None:
+            box.target_id = target.id
         self.boxes.append(box)
         return box
 
@@ -363,7 +372,7 @@ class Patcher:
         return box
 
     def add_annotation(
-        self, text: str, x: float = 0.0, y: float = 0.0
+        self, text: str, x: float = 0.0, y: float = 0.0, target: Box | None = None,
     ) -> Box:
         """Add an inline annotation comment (10pt italic, light gray).
 
@@ -371,11 +380,12 @@ class Patcher:
             text: Annotation text.
             x: Horizontal position.
             y: Vertical position.
+            target: Optional target box for layout-time association.
 
         Returns:
             The created styled comment Box.
         """
-        box = self.add_comment(text, x, y)
+        box = self.add_comment(text, x, y, target=target)
         box.fontsize = 10.0
         box.extra_attrs["fontface"] = FONTFACE_ITALIC
         box.extra_attrs["textcolor"] = list(AESTHETIC_PALETTE["annotation_color"])
@@ -451,6 +461,7 @@ class Patcher:
         panel.fontsize = FONT_SIZE
         panel.presentation = False
         panel.presentation_rect = None
+        panel.target_id = None
         panel._inner_patcher = None
         panel._saved_object_attributes = None
         panel._bpatcher_attrs = None
@@ -508,6 +519,7 @@ class Patcher:
         marker.fontsize = 11.0
         marker.presentation = False
         marker.presentation_rect = None
+        marker.target_id = None
         marker._inner_patcher = None
         marker._saved_object_attributes = None
         marker._bpatcher_attrs = None
@@ -646,6 +658,7 @@ class Patcher:
         parent_box.fontsize = FONT_SIZE
         parent_box.presentation = False
         parent_box.presentation_rect = None
+        parent_box.target_id = None
         parent_box.extra_attrs = {}
         parent_box._inner_patcher = inner
         parent_box._saved_object_attributes = {
@@ -707,6 +720,7 @@ class Patcher:
         bpatch_box.fontsize = FONT_SIZE
         bpatch_box.presentation = False
         bpatch_box.presentation_rect = None
+        bpatch_box.target_id = None
         bpatch_box.extra_attrs = {}
         bpatch_box._saved_object_attributes = None
 
@@ -797,6 +811,7 @@ class Patcher:
             in_box.fontsize = FONT_SIZE
             in_box.presentation = False
             in_box.presentation_rect = None
+            in_box.target_id = None
             in_box.extra_attrs = {}
             in_box._inner_patcher = None
             in_box._saved_object_attributes = None
@@ -819,6 +834,7 @@ class Patcher:
         codebox.fontsize = FONT_SIZE
         codebox.presentation = False
         codebox.presentation_rect = None
+        codebox.target_id = None
         codebox.extra_attrs = {
             "code": code,
             "fontname": FONT_NAME,
@@ -846,6 +862,7 @@ class Patcher:
             out_box.fontsize = FONT_SIZE
             out_box.presentation = False
             out_box.presentation_rect = None
+            out_box.target_id = None
             out_box.extra_attrs = {}
             out_box._inner_patcher = None
             out_box._saved_object_attributes = None
@@ -878,6 +895,7 @@ class Patcher:
         parent_box.fontsize = FONT_SIZE
         parent_box.presentation = False
         parent_box.presentation_rect = None
+        parent_box.target_id = None
         parent_box.extra_attrs = {}
         parent_box._inner_patcher = inner
         parent_box._saved_object_attributes = None
@@ -928,6 +946,7 @@ class Patcher:
         box.fontsize = FONT_SIZE
         box.presentation = False
         box.presentation_rect = None
+        box.target_id = None
         box.extra_attrs = {}
         box._inner_patcher = None
         box._saved_object_attributes = None
@@ -981,6 +1000,7 @@ class Patcher:
         box.fontsize = FONT_SIZE
         box.presentation = False
         box.presentation_rect = None
+        box.target_id = None
         box.extra_attrs = {}
         box._inner_patcher = None
         box._saved_object_attributes = None
