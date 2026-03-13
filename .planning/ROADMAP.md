@@ -81,11 +81,11 @@ Plans:
   3. Bubble comments with outlines and directional arrows appear next to annotated objects when opened in MAX
   4. Patcher background color is set on generated patches, and key architectural objects (loadbang, dac~) have distinguishing background color
   5. Numbered step markers using amber textbutton circles appear in the background layer for tutorial-style patches
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 10-01: TBD
-- [ ] 10-02: TBD
+- [ ] 10-01-PLAN.md -- Palette constants, comment tier styling (section/subsection/annotation/bubble), and patcher canvas/object background color API
+- [ ] 10-02-PLAN.md -- Panel objects with gradient fill and z-order, step marker textbutton circles, auto-sizing, and complexity heuristic
 
 ### Phase 11: Layout Refinements
 **Goal**: Object positioning produces tighter, more professional layouts with accurate box sizing, aligned cables, grid-snapped positions, and configurable spacing parameters
@@ -132,10 +132,10 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 | 7. Fix Stale Agent Documentation | v1.0 | 1/1 | Complete | 2026-03-10 |
 | 8. Help Patch Audit Pipeline | v1.1 | 4/4 | Complete | 2026-03-13 |
 | 9. Object DB Corrections | v1.1 | 0/2 | Not started | - |
-| 10. Aesthetic Foundations | v1.1 | 0/? | Not started | - |
+| 10. Aesthetic Foundations | v1.1 | 0/2 | Not started | - |
 | 11. Layout Refinements | v1.1 | 0/? | Not started | - |
 | 12. Pipeline Integration & Agent Updates | v1.1 | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-13 -- Phase 9 planned (2 plans)*
+*Last updated: 2026-03-13 -- Phase 10 planned (2 plans)*
