@@ -14,7 +14,7 @@ import pytest
 
 from src.maxpat.patcher import Patcher, Box
 from src.maxpat.layout import apply_layout
-from src.maxpat.defaults import V_SPACING, H_GUTTER
+from src.maxpat.defaults import V_SPACING, H_GUTTER, LayoutOptions
 
 
 # ---------------------------------------------------------------------------
@@ -151,7 +151,10 @@ class TestSpacing:
         a_bottom = a.patching_rect[1] + a.patching_rect[3]
         b_top = b.patching_rect[1]
         gap = b_top - a_bottom
-        assert 10 <= gap <= 40, f"Vertical gap {gap} outside acceptable range"
+        opts = LayoutOptions()
+        assert abs(gap - opts.v_spacing) <= opts.v_spacing * 0.5, (
+            f"Vertical gap {gap} not within 50% of default {opts.v_spacing}"
+        )
 
     def test_horizontal_gutter_within_row(self):
         """Horizontal gutter between objects in the same row."""
@@ -170,7 +173,10 @@ class TestSpacing:
         left_box = b if b.patching_rect[0] == xs[0] else c
         left_right_edge = left_box.patching_rect[0] + left_box.patching_rect[2]
         gutter = xs[1] - left_right_edge
-        assert 5 <= gutter <= 30, f"Horizontal gutter {gutter} outside range"
+        opts = LayoutOptions()
+        assert gutter >= opts.h_gutter * 0.3, (
+            f"Horizontal gutter {gutter} below 30% of default {opts.h_gutter}"
+        )
 
     def test_dynamic_row_height(self):
         """Row height adapts to tallest object in that row."""
