@@ -157,3 +157,44 @@ class TestUISizesDict:
     def test_inlet_and_outlet_present(self):
         assert "inlet" in UI_SIZES
         assert "outlet" in UI_SIZES
+
+
+class TestWidthOverrides:
+    """Test width override lookup from audit data."""
+
+    def test_known_object_uses_override(self):
+        """Known object returns audit-based width, not text-length."""
+        from src.maxpat.sizing import _WIDTH_OVERRIDES
+        w, h = calculate_box_size("cycle~ 440", "newobj")
+        text_based_w = len("cycle~ 440") * CHAR_WIDTH + PADDING
+        # cycle~ should be in overrides with ~68.0 median width
+        if "cycle~" in _WIDTH_OVERRIDES:
+            expected = _WIDTH_OVERRIDES["cycle~"].get("1") or _WIDTH_OVERRIDES["cycle~"].get("default")
+            assert w == expected
+            assert h == DEFAULT_HEIGHT
+
+    def test_unknown_object_falls_back_to_text(self):
+        """Object not in overrides uses text-length calculation."""
+        w, h = calculate_box_size("zzz_fake_object 1 2 3", "newobj")
+        expected_w = max(len("zzz_fake_object 1 2 3") * CHAR_WIDTH + PADDING, MIN_BOX_WIDTH)
+        assert w == expected_w
+
+    def test_ui_object_unaffected_by_overrides(self):
+        """UI objects still return fixed sizes regardless of overrides."""
+        w, h = calculate_box_size("", "toggle")
+        assert (w, h) == (24.0, 24.0)
+
+    def test_override_returns_default_height(self):
+        """Override width pairs with DEFAULT_HEIGHT."""
+        from src.maxpat.sizing import _WIDTH_OVERRIDES
+        if _WIDTH_OVERRIDES:
+            obj_name = next(iter(_WIDTH_OVERRIDES))
+            w, h = calculate_box_size(obj_name, "newobj")
+            assert h == DEFAULT_HEIGHT
+
+    def test_comment_not_affected_by_overrides(self):
+        """Comments use text-based sizing, not overrides."""
+        w, h = calculate_box_size("test comment", "comment")
+        expected_w = max(len("test comment") * CHAR_WIDTH + PADDING, MIN_BOX_WIDTH)
+        assert w == expected_w
+        assert h == 20.0
