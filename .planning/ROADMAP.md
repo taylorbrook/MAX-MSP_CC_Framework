@@ -48,11 +48,13 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
   3. The audit produces proposed overrides.json entries that preserve all existing manually corrected entries without overwriting them
   4. Per-object box width measurements are extracted from help patches and available as data for downstream layout work
   5. The 292 objects with empty inlet/outlet data in the current DB are identified, prioritized, and have proposed corrections where help patch data exists
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 08-01: TBD
-- [ ] 08-02: TBD
+- [ ] 08-01-PLAN.md -- Data models, recursive help patch parser, and degenerate instance filtering
+- [ ] 08-02-PLAN.md -- Analysis engine: outlet types, I/O counts, widths, arguments, connections
+- [ ] 08-03-PLAN.md -- Report generation, override proposals, and empty I/O coverage tracker
+- [ ] 08-04-PLAN.md -- CLI entry point and end-to-end verification against real MAX help patches
 
 ### Phase 9: Object DB Corrections
 **Goal**: The object database contains verified, help-patch-sourced corrections so that connection validation and patch generation use accurate outlet types, inlet/outlet counts, and argument formats
@@ -127,7 +129,7 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 | 5. RNBO and External Development | v1.0 | 4/4 | Complete | 2026-03-10 |
 | 6. Fix Skill Documentation Signatures | v1.0 | 1/1 | Complete | 2026-03-10 |
 | 7. Fix Stale Agent Documentation | v1.0 | 1/1 | Complete | 2026-03-10 |
-| 8. Help Patch Audit Pipeline | v1.1 | 0/? | Not started | - |
+| 8. Help Patch Audit Pipeline | v1.1 | 0/4 | Planning complete | - |
 | 9. Object DB Corrections | v1.1 | 0/? | Not started | - |
 | 10. Aesthetic Foundations | v1.1 | 0/? | Not started | - |
 | 11. Layout Refinements | v1.1 | 0/? | Not started | - |
@@ -135,4 +137,4 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-13 -- v1.1 milestone phases 8-12 added*
+*Last updated: 2026-03-13 -- Phase 8 plans created (4 plans, 4 waves)*
