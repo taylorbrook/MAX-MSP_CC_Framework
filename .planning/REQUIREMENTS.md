@@ -91,45 +91,45 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDIT-01 | — | Pending |
-| AUDIT-02 | — | Pending |
-| AUDIT-03 | — | Pending |
-| AUDIT-04 | — | Pending |
-| AUDIT-05 | — | Pending |
-| AUDIT-06 | — | Pending |
-| AUDIT-07 | — | Pending |
-| AUDIT-08 | — | Pending |
-| AUDIT-09 | — | Pending |
-| AUDIT-10 | — | Pending |
-| DBCX-01 | — | Pending |
-| DBCX-02 | — | Pending |
-| DBCX-03 | — | Pending |
-| DBCX-04 | — | Pending |
-| CMNT-01 | — | Pending |
-| CMNT-02 | — | Pending |
-| CMNT-03 | — | Pending |
-| CMNT-04 | — | Pending |
-| PANL-01 | — | Pending |
-| PANL-02 | — | Pending |
-| PANL-03 | — | Pending |
-| PANL-04 | — | Pending |
-| PANL-05 | — | Pending |
-| PTCH-01 | — | Pending |
-| PTCH-02 | — | Pending |
-| LYOT-01 | — | Pending |
-| LYOT-02 | — | Pending |
-| LYOT-03 | — | Pending |
-| LYOT-04 | — | Pending |
-| LYOT-05 | — | Pending |
-| LYOT-06 | — | Pending |
-| AGNT-01 | — | Pending |
-| AGNT-02 | — | Pending |
+| AUDIT-01 | Phase 8 | Pending |
+| AUDIT-02 | Phase 8 | Pending |
+| AUDIT-03 | Phase 8 | Pending |
+| AUDIT-04 | Phase 8 | Pending |
+| AUDIT-05 | Phase 8 | Pending |
+| AUDIT-06 | Phase 8 | Pending |
+| AUDIT-07 | Phase 8 | Pending |
+| AUDIT-08 | Phase 8 | Pending |
+| AUDIT-09 | Phase 8 | Pending |
+| AUDIT-10 | Phase 8 | Pending |
+| DBCX-01 | Phase 9 | Pending |
+| DBCX-02 | Phase 9 | Pending |
+| DBCX-03 | Phase 9 | Pending |
+| DBCX-04 | Phase 9 | Pending |
+| CMNT-01 | Phase 10 | Pending |
+| CMNT-02 | Phase 10 | Pending |
+| CMNT-03 | Phase 10 | Pending |
+| CMNT-04 | Phase 10 | Pending |
+| PANL-01 | Phase 10 | Pending |
+| PANL-02 | Phase 10 | Pending |
+| PANL-03 | Phase 10 | Pending |
+| PANL-04 | Phase 10 | Pending |
+| PANL-05 | Phase 10 | Pending |
+| PTCH-01 | Phase 10 | Pending |
+| PTCH-02 | Phase 10 | Pending |
+| LYOT-01 | Phase 11 | Pending |
+| LYOT-02 | Phase 11 | Pending |
+| LYOT-03 | Phase 11 | Pending |
+| LYOT-04 | Phase 11 | Pending |
+| LYOT-05 | Phase 11 | Pending |
+| LYOT-06 | Phase 11 | Pending |
+| AGNT-01 | Phase 12 | Pending |
+| AGNT-02 | Phase 12 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 33 total
-- Mapped to phases: 0
-- Unmapped: 33 ⚠️
+- Mapped to phases: 33
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-13*
-*Last updated: 2026-03-13 after initial definition*
+*Last updated: 2026-03-13 -- traceability updated with phase mappings*
