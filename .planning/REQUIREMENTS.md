@@ -9,8 +9,8 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 
 ### Audit Pipeline
 
-- [ ] **AUDIT-01**: Help patch parser recursively descends into subpatcher tabs to find all object instances across 973 .maxhelp files
-- [ ] **AUDIT-02**: Parser filters degenerate instances (objects with numoutlets: 0 used as labels) and extracts outlet types only from connected instances
+- [x] **AUDIT-01**: Help patch parser recursively descends into subpatcher tabs to find all object instances across 973 .maxhelp files
+- [x] **AUDIT-02**: Parser filters degenerate instances (objects with numoutlets: 0 used as labels) and extracts outlet types only from connected instances
 - [ ] **AUDIT-03**: Outlet type audit compares DB outlet signal/control types against help patch outlettype arrays and generates corrections
 - [ ] **AUDIT-04**: Inlet/outlet count validation cross-references DB counts against help patch instances, accounting for variable_io argument configurations
 - [ ] **AUDIT-05**: Per-object box width extraction captures actual patching_rect widths from help patches for accurate sizing
@@ -91,8 +91,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDIT-01 | Phase 8 | Pending |
-| AUDIT-02 | Phase 8 | Pending |
+| AUDIT-01 | Phase 8 | Complete |
+| AUDIT-02 | Phase 8 | Complete |
 | AUDIT-03 | Phase 8 | Pending |
 | AUDIT-04 | Phase 8 | Pending |
 | AUDIT-05 | Phase 8 | Pending |
