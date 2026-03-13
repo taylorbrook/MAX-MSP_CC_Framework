@@ -65,10 +65,11 @@ Plans:
   2. Objects that previously had empty inlet/outlet data now have help-patch-verified I/O definitions
   3. All 624 existing tests pass after corrections are applied (zero regressions)
   4. Corrections are organized by domain in the audit report so each domain's changes can be reviewed independently
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 09-01: TBD
+- [ ] 09-01-PLAN.md -- OverrideMerger class, unit tests, and CLI --merge flag integration
+- [ ] 09-02-PLAN.md -- Execute merge with conflict resolution, regression verification, and user approval
 
 ### Phase 10: Aesthetic Foundations
 **Goal**: Generated patches include professional visual styling -- styled section comments, background panels, bubble annotations, patcher colors, and step markers -- so patches look authored rather than machine-generated
@@ -130,11 +131,11 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 | 6. Fix Skill Documentation Signatures | v1.0 | 1/1 | Complete | 2026-03-10 |
 | 7. Fix Stale Agent Documentation | v1.0 | 1/1 | Complete | 2026-03-10 |
 | 8. Help Patch Audit Pipeline | v1.1 | 4/4 | Complete | 2026-03-13 |
-| 9. Object DB Corrections | v1.1 | 0/? | Not started | - |
+| 9. Object DB Corrections | v1.1 | 0/2 | Not started | - |
 | 10. Aesthetic Foundations | v1.1 | 0/? | Not started | - |
 | 11. Layout Refinements | v1.1 | 0/? | Not started | - |
 | 12. Pipeline Integration & Agent Updates | v1.1 | 0/? | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-13 -- Phase 8 complete (4/4 plans)*
+*Last updated: 2026-03-13 -- Phase 9 planned (2 plans)*
