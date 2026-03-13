@@ -30,7 +30,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 - Integer phases (8, 9, 10, 11, 12): Planned milestone work
 - Decimal phases (e.g., 9.1): Urgent insertions (marked with INSERTED)
 
-- [ ] **Phase 8: Help Patch Audit Pipeline** — Build offline audit tool that parses 973 .maxhelp files and extracts ground truth object metadata
+- [x] **Phase 8: Help Patch Audit Pipeline** — Build offline audit tool that parses 973 .maxhelp files and extracts ground truth object metadata (completed 2026-03-13)
 - [ ] **Phase 9: Object DB Corrections** — Review audit results and merge verified corrections into overrides.json
 - [ ] **Phase 10: Aesthetic Foundations** — Add comment styling, panels, patcher backgrounds, and visual polish to generated patches
 - [ ] **Phase 11: Layout Refinements** — Improve object positioning with better sizing, inlet alignment, grid snapping, and configurable options
@@ -51,10 +51,10 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 **Plans**: 4 plans
 
 Plans:
-- [ ] 08-01-PLAN.md -- Data models, recursive help patch parser, and degenerate instance filtering
-- [ ] 08-02-PLAN.md -- Analysis engine: outlet types, I/O counts, widths, arguments, connections
-- [ ] 08-03-PLAN.md -- Report generation, override proposals, and empty I/O coverage tracker
-- [ ] 08-04-PLAN.md -- CLI entry point and end-to-end verification against real MAX help patches
+- [x] 08-01-PLAN.md -- Data models, recursive help patch parser, and degenerate instance filtering
+- [x] 08-02-PLAN.md -- Analysis engine: outlet types, I/O counts, widths, arguments, connections
+- [x] 08-03-PLAN.md -- Report generation, override proposals, and empty I/O coverage tracker
+- [x] 08-04-PLAN.md -- CLI entry point and end-to-end verification against real MAX help patches
 
 ### Phase 9: Object DB Corrections
 **Goal**: The object database contains verified, help-patch-sourced corrections so that connection validation and patch generation use accurate outlet types, inlet/outlet counts, and argument formats
@@ -129,7 +129,7 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 | 5. RNBO and External Development | v1.0 | 4/4 | Complete | 2026-03-10 |
 | 6. Fix Skill Documentation Signatures | v1.0 | 1/1 | Complete | 2026-03-10 |
 | 7. Fix Stale Agent Documentation | v1.0 | 1/1 | Complete | 2026-03-10 |
-| 8. Help Patch Audit Pipeline | v1.1 | 3/4 | In Progress | - |
+| 8. Help Patch Audit Pipeline | v1.1 | 4/4 | Complete | 2026-03-13 |
 | 9. Object DB Corrections | v1.1 | 0/? | Not started | - |
 | 10. Aesthetic Foundations | v1.1 | 0/? | Not started | - |
 | 11. Layout Refinements | v1.1 | 0/? | Not started | - |
@@ -137,4 +137,4 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-13 -- Phase 8 plans created (4 plans, 4 waves)*
+*Last updated: 2026-03-13 -- Phase 8 complete (4/4 plans)*
