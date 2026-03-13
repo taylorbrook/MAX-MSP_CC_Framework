@@ -3,6 +3,8 @@
 All values match the MAX 9 .maxpat JSON structure verified in 02-RESEARCH.md Pattern 1.
 """
 
+from dataclasses import dataclass
+
 # Font constants (MAX 9 defaults)
 FONT_NAME = "Arial"
 FONT_SIZE = 12.0
@@ -21,6 +23,23 @@ UPWARD_BUS_THRESHOLD = 60.0   # Min upward distance to use right-edge bus routin
 BUS_MARGIN = 30.0             # Gap between rightmost object and bus start X
 BUS_SPACING = 8.0             # Spacing between parallel bus cables
 PATCHER_PADDING = 40.0        # Padding around content for auto-sized patcher rect
+
+
+@dataclass
+class LayoutOptions:
+    """Configurable layout parameters for patch generation.
+
+    Default values match existing module-level constants for backward
+    compatibility. Pass to apply_layout() to customize spacing and alignment.
+    """
+    v_spacing: float = 20.0
+    h_gutter: float = 15.0
+    patcher_padding: float = 40.0
+    grid_size: float = 15.0
+    grid_snap: bool = True
+    inlet_align: bool = True
+    comment_gap: float = 10.0
+
 
 # Subpatcher default window size
 SUBPATCHER_RECT = [100.0, 100.0, 400.0, 300.0]
