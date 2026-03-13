@@ -549,3 +549,64 @@ class TestWrite:
         content = overrides_path.read_text()
         # Check that indent is 2 spaces (not 4)
         assert '  "objects"' in content or '  "_comment"' in content
+
+
+class TestCLIMergeFlag:
+    """test_cli_merge_flag: Verify that argparse accepts --merge and that
+    the merge code path is exercised."""
+
+    def test_merge_flag_with_proposed_file(self, tmp_path, db):
+        """--merge with a valid proposed-overrides.json runs the merge code path."""
+        from src.maxpat.audit.cli import main
+
+        # Create proposed-overrides.json in the output dir
+        proposed = _make_proposed(objects={
+            "adsr~": _make_audit_entry(outlets=[_signal_outlet(0)]),
+        })
+        output_dir = tmp_path / "audit"
+        output_dir.mkdir()
+        (output_dir / "proposed-overrides.json").write_text(
+            json.dumps(proposed, indent=2) + "\n"
+        )
+
+        # Also need overrides.json at the expected location -- use the real one
+        # We test with --dry-run to avoid modifying real files
+        result = main([
+            "--merge",
+            "--output-dir", str(output_dir),
+            "--dry-run",
+        ])
+        assert result == 0
+
+    def test_merge_flag_missing_proposed_returns_1(self, tmp_path):
+        """--merge returns 1 when proposed-overrides.json is missing."""
+        from src.maxpat.audit.cli import main
+
+        result = main([
+            "--merge",
+            "--output-dir", str(tmp_path),
+            "--dry-run",
+        ])
+        assert result == 1
+
+    def test_merge_flag_does_not_require_help_dir(self, tmp_path, db):
+        """--merge skips help-dir validation (independent code path)."""
+        from src.maxpat.audit.cli import main
+
+        proposed = _make_proposed(objects={
+            "adsr~": _make_audit_entry(outlets=[_signal_outlet(0)]),
+        })
+        output_dir = tmp_path / "audit"
+        output_dir.mkdir()
+        (output_dir / "proposed-overrides.json").write_text(
+            json.dumps(proposed, indent=2) + "\n"
+        )
+
+        # Use a non-existent --help-dir but it shouldn't matter for --merge
+        result = main([
+            "--merge",
+            "--help-dir", "/nonexistent/path",
+            "--output-dir", str(output_dir),
+            "--dry-run",
+        ])
+        assert result == 0

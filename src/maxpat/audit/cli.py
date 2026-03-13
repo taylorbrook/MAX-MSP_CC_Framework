@@ -30,6 +30,107 @@ _FLAG_TO_DIMENSION = {
 }
 
 
+def _run_merge(args: argparse.Namespace) -> int:
+    """Run the merge workflow (separate from the full audit pipeline).
+
+    Reads proposed-overrides.json from the output directory, detects conflicts,
+    prints conflict summary, and merges non-conflict entries into overrides.json.
+
+    Args:
+        args: Parsed CLI arguments (needs output_dir and dry_run).
+
+    Returns:
+        0 on success, 1 on error.
+    """
+    from src.maxpat.audit.merger import OverrideMerger
+
+    proposed_path = args.output_dir / "proposed-overrides.json"
+    overrides_path = (
+        Path(__file__).resolve().parents[3]
+        / ".claude"
+        / "max-objects"
+        / "overrides.json"
+    )
+
+    # Validate inputs
+    if not proposed_path.exists():
+        print(
+            f"Error: proposed-overrides.json not found at {proposed_path}\n"
+            "Run the full audit first to generate proposed overrides.",
+            file=sys.stderr,
+        )
+        return 1
+
+    if not overrides_path.exists():
+        print(
+            f"Error: overrides.json not found at {overrides_path}",
+            file=sys.stderr,
+        )
+        return 1
+
+    db = ObjectDatabase()
+    merger = OverrideMerger(proposed_path, overrides_path, db)
+
+    # ---- Conflict summary ----
+    conflicts = merger.detect_conflicts()
+    if conflicts:
+        print(f"\nConflicts detected ({len(conflicts)} objects):")
+        for name, conflict in sorted(conflicts.items()):
+            reason = conflict.get("reason", "UNKNOWN")
+            audit_data = conflict.get("audit_proposed", {})
+            manual_data = conflict.get("existing_manual", {})
+            audit_conf = audit_data.get("_audit", {}).get("confidence", "?")
+            audit_inst = audit_data.get("_audit", {}).get("instances", "?")
+            print(f"  {name}: {reason}")
+            print(f"    Audit: confidence={audit_conf}, instances={audit_inst}")
+            if "outlets" in manual_data:
+                manual_types = [
+                    "signal" if o.get("signal") else "control"
+                    for o in manual_data["outlets"]
+                ]
+                print(f"    Manual outlets: {manual_types}")
+            if "outlets" in audit_data:
+                audit_types = [
+                    "signal" if o.get("signal") else "control"
+                    for o in audit_data["outlets"]
+                ]
+                print(f"    Audit outlets: {audit_types}")
+        print("\n  Conflicts are skipped (not auto-resolved). Review manually.")
+
+    # ---- Merge (conflicts not resolved in CLI) ----
+    merged = merger.merge(conflict_resolutions=None)
+
+    # ---- Count statistics ----
+    merged_objects = merged.get("objects", {})
+    obj_names = [k for k in merged_objects if not k.startswith("_")]
+    domain_headers = [k for k in merged_objects if k.startswith("_domain_")]
+
+    print(f"\nMerge summary:")
+    print(f"  Total entries in merged overrides: {len(obj_names)}")
+    print(f"  Conflicts skipped: {len(conflicts)}")
+    print(f"  Domain groups: {len(domain_headers)}")
+    for header_key in domain_headers:
+        domain_name = header_key.replace("_domain_", "")
+        # Count objects between this header and the next
+        keys = list(merged_objects.keys())
+        idx = keys.index(header_key)
+        count = 0
+        for k in keys[idx + 1 :]:
+            if k.startswith("_domain_"):
+                break
+            count += 1
+        print(f"    {domain_name}: {count} objects")
+
+    # ---- Write ----
+    if not args.dry_run:
+        merger.write(merged)
+        print(f"\n  Merged overrides written to: {overrides_path}")
+    else:
+        print(f"\n  Dry run -- no files written.")
+
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     """Run the full audit pipeline.
 
@@ -81,6 +182,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Filter report to argument findings only",
     )
     parser.add_argument(
+        "--merge",
+        action="store_true",
+        help="Merge proposed overrides into production overrides.json",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Run analysis but don't write output files",
@@ -92,6 +198,10 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     args = parser.parse_args(argv)
+
+    # ---- Merge mode (independent of full audit pipeline) ----
+    if args.merge:
+        return _run_merge(args)
 
     # Validate help directory
     if not args.help_dir.exists():
