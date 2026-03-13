@@ -1,0 +1,153 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 0,
+      "revision": 0
+    },
+    "boxes": [
+      {
+        "box": {
+          "id": "obj-1",
+          "maxclass": "newobj",
+          "text": "cycle~ 440",
+          "numinlets": 2,
+          "numoutlets": 1,
+          "outlettype": ["signal"],
+          "patching_rect": [100.0, 100.0, 80.0, 22.0]
+        }
+      },
+      {
+        "box": {
+          "id": "obj-2",
+          "maxclass": "newobj",
+          "text": "dac~",
+          "numinlets": 2,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [100.0, 200.0, 35.0, 22.0]
+        }
+      },
+      {
+        "box": {
+          "id": "obj-3",
+          "maxclass": "comment",
+          "text": "This is a help patch",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "patching_rect": [10.0, 10.0, 200.0, 20.0]
+        }
+      },
+      {
+        "box": {
+          "id": "obj-4",
+          "maxclass": "message",
+          "text": "start",
+          "numinlets": 2,
+          "numoutlets": 1,
+          "outlettype": [""],
+          "patching_rect": [200.0, 100.0, 50.0, 22.0]
+        }
+      },
+      {
+        "box": {
+          "id": "obj-5",
+          "maxclass": "newobj",
+          "text": "p basic",
+          "numinlets": 0,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [300.0, 50.0, 50.0, 22.0],
+          "patcher": {
+            "boxes": [
+              {
+                "box": {
+                  "id": "obj-6",
+                  "maxclass": "newobj",
+                  "text": "trigger b i",
+                  "numinlets": 1,
+                  "numoutlets": 2,
+                  "outlettype": ["bang", "int"],
+                  "patching_rect": [50.0, 50.0, 65.0, 22.0]
+                }
+              },
+              {
+                "box": {
+                  "id": "obj-7",
+                  "maxclass": "newobj",
+                  "text": "print",
+                  "numinlets": 1,
+                  "numoutlets": 0,
+                  "outlettype": [],
+                  "patching_rect": [50.0, 130.0, 33.0, 22.0]
+                }
+              },
+              {
+                "box": {
+                  "id": "obj-8",
+                  "maxclass": "newobj",
+                  "text": "p details",
+                  "numinlets": 0,
+                  "numoutlets": 0,
+                  "outlettype": [],
+                  "patching_rect": [200.0, 50.0, 60.0, 22.0],
+                  "patcher": {
+                    "boxes": [
+                      {
+                        "box": {
+                          "id": "obj-9",
+                          "maxclass": "newobj",
+                          "text": "metro 500",
+                          "numinlets": 2,
+                          "numoutlets": 1,
+                          "outlettype": ["bang"],
+                          "patching_rect": [50.0, 50.0, 68.0, 22.0]
+                        }
+                      },
+                      {
+                        "box": {
+                          "id": "obj-10",
+                          "maxclass": "newobj",
+                          "text": "counter 16",
+                          "numinlets": 5,
+                          "numoutlets": 4,
+                          "outlettype": ["int", "bang", "bang", "int"],
+                          "patching_rect": [50.0, 130.0, 75.0, 22.0]
+                        }
+                      }
+                    ],
+                    "lines": [
+                      {
+                        "patchline": {
+                          "source": ["obj-9", 0],
+                          "destination": ["obj-10", 0]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "lines": [
+              {
+                "patchline": {
+                  "source": ["obj-6", 0],
+                  "destination": ["obj-7", 0]
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": ["obj-1", 0],
+          "destination": ["obj-2", 0]
+        }
+      }
+    ]
+  }
+}
