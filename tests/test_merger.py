@@ -412,7 +412,10 @@ class TestExistingManualEntriesPreserved:
             pytest.skip("Real overrides.json not found")
 
         real_existing = json.loads(REAL_OVERRIDES_PATH.read_text())
-        existing_obj_names = set(real_existing.get("objects", {}).keys())
+        existing_obj_names = {
+            k for k in real_existing.get("objects", {}).keys()
+            if not k.startswith("_")
+        }
 
         # Create a proposed file with no conflicts touching existing entries
         proposed = _make_proposed(objects={
