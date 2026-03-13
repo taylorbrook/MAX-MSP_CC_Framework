@@ -10,15 +10,17 @@ class TestTextBasedSizing:
     """Text-based sizing for newobj, comment, and message boxes."""
 
     def test_newobj_text_width(self):
-        """Width = len(text) * CHAR_WIDTH + PADDING for newobj."""
-        w, h = calculate_box_size("cycle~ 440", "newobj")
-        expected_w = len("cycle~ 440") * CHAR_WIDTH + PADDING
+        """Width = len(text) * CHAR_WIDTH + PADDING for newobj (fallback path)."""
+        # Use an object name not in width overrides to test text-length calculation
+        w, h = calculate_box_size("zzz_testobj~ 440", "newobj")
+        expected_w = len("zzz_testobj~ 440") * CHAR_WIDTH + PADDING
         assert w == expected_w
         assert h == DEFAULT_HEIGHT
 
     def test_short_text_minimum_width(self):
         """Very short text enforces MIN_BOX_WIDTH."""
-        w, h = calculate_box_size("+", "newobj")
+        # Use an object name not in width overrides
+        w, h = calculate_box_size("z", "newobj")
         assert w == MIN_BOX_WIDTH
         assert h == DEFAULT_HEIGHT
 
@@ -29,14 +31,15 @@ class TestTextBasedSizing:
         assert h == DEFAULT_HEIGHT
 
     def test_long_text_scales(self):
-        """Longer text produces wider box."""
-        w1, _ = calculate_box_size("pack", "newobj")
-        w2, _ = calculate_box_size("pack 0 0 0 0 0 0 0 0", "newobj")
+        """Longer text produces wider box (fallback path)."""
+        # Use object names not in width overrides to test text-length scaling
+        w1, _ = calculate_box_size("zzz_short", "newobj")
+        w2, _ = calculate_box_size("zzz_short 0 0 0 0 0 0 0 0", "newobj")
         assert w2 > w1
 
     def test_trigger_text_width(self):
-        """Trigger with multiple args gets appropriate width."""
-        text = "trigger b i f s"
+        """Text-length fallback works for objects not in overrides."""
+        text = "zzz_myobj b i f s"
         w, h = calculate_box_size(text, "newobj")
         expected_w = len(text) * CHAR_WIDTH + PADDING
         assert w == expected_w

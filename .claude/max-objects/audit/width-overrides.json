@@ -1,0 +1,1541 @@
+{
+  "!-": {
+    "default": 32.5
+  },
+  "!/": {
+    "default": 38.5
+  },
+  "!=": {
+    "default": 32.5
+  },
+  "!=~": {
+    "default": 41.0
+  },
+  "%": {
+    "default": 48.0
+  },
+  "%~": {
+    "default": 66.105339
+  },
+  "&&": {
+    "default": 32.5
+  },
+  "*": {
+    "default": 32.5
+  },
+  "*~": {
+    "default": 42.0
+  },
+  "+": {
+    "default": 32.5
+  },
+  "+~": {
+    "default": 47.5
+  },
+  "-": {
+    "default": 32.5
+  },
+  "-~": {
+    "default": 45.0
+  },
+  "/": {
+    "default": 40.5
+  },
+  "/~": {
+    "default": 50.5
+  },
+  "1": {
+    "default": 35.0
+  },
+  "2": {
+    "default": 35.0
+  },
+  "<": {
+    "default": 32.5
+  },
+  "<<": {
+    "default": 36.0
+  },
+  "<=": {
+    "default": 32.5
+  },
+  "<=~": {
+    "default": 49.0
+  },
+  "<~": {
+    "default": 50.0
+  },
+  "==": {
+    "default": 32.5
+  },
+  "==~": {
+    "default": 49.0
+  },
+  ">": {
+    "default": 32.5
+  },
+  ">=": {
+    "default": 32.5
+  },
+  ">>": {
+    "default": 38.0
+  },
+  ">~": {
+    "default": 46.0
+  },
+  "Uzi": {
+    "default": 49.0
+  },
+  "abs": {
+    "default": 47.0
+  },
+  "abs~": {
+    "default": 40.0
+  },
+  "accum": {
+    "default": 73.0
+  },
+  "acosh": {
+    "default": 45.0
+  },
+  "acos~": {
+    "default": 45.0
+  },
+  "active": {
+    "default": 44.0
+  },
+  "adc~": {
+    "default": 64.0
+  },
+  "adsr~": {
+    "default": 110.0
+  },
+  "adstatus": {
+    "default": 107.0
+  },
+  "amxd~": {
+    "default": 343.0
+  },
+  "append": {
+    "default": 62.0
+  },
+  "array": {
+    "default": 57.0
+  },
+  "array.concat": {
+    "default": 79.0
+  },
+  "array.every": {
+    "default": 73.0
+  },
+  "array.expr": {
+    "default": 191.0
+  },
+  "array.fill": {
+    "default": 110.0
+  },
+  "array.index": {
+    "default": 83.0
+  },
+  "array.indexof": {
+    "default": 116.0
+  },
+  "array.map": {
+    "default": 66.0
+  },
+  "array.push": {
+    "default": 157.0
+  },
+  "array.random": {
+    "default": 125.0
+  },
+  "array.routepass": {
+    "default": 272.0
+  },
+  "array.sort": {
+    "default": 62.0
+  },
+  "array.tolist": {
+    "default": 67.0
+  },
+  "array.wrap": {
+    "default": 69.0
+  },
+  "asin~": {
+    "default": 43.0
+  },
+  "atan~": {
+    "default": 42.0
+  },
+  "atodb": {
+    "default": 45.0
+  },
+  "atodb~": {
+    "default": 52.0
+  },
+  "atoi": {
+    "default": 40.0
+  },
+  "autopattr": {
+    "default": 60.0
+  },
+  "b": {
+    "default": 53.0
+  },
+  "begin~": {
+    "default": 51.0
+  },
+  "biquad~": {
+    "default": 152.0
+  },
+  "bitand~": {
+    "default": 68.0
+  },
+  "bitnot~": {
+    "default": 52.0
+  },
+  "bitsafe~": {
+    "default": 56.0
+  },
+  "bitshift~": {
+    "default": 77.0
+  },
+  "bondo": {
+    "default": 61.5
+  },
+  "borax": {
+    "default": 147.5
+  },
+  "bucket": {
+    "default": 209.0
+  },
+  "buddy": {
+    "default": 88.0
+  },
+  "buffer~": {
+    "default": 147.0
+  },
+  "capture": {
+    "default": 90.0
+  },
+  "cartopol": {
+    "default": 52.0
+  },
+  "cartopol~": {
+    "default": 89.5
+  },
+  "cascade~": {
+    "default": 69.0
+  },
+  "cell": {
+    "default": 30.0
+  },
+  "change": {
+    "default": 51.0
+  },
+  "change~": {
+    "default": 55.0
+  },
+  "click~": {
+    "default": 41.0
+  },
+  "clip": {
+    "default": 66.0
+  },
+  "clip~": {
+    "default": 64.0
+  },
+  "clocker": {
+    "default": 112.5
+  },
+  "coll": {
+    "default": 67.0
+  },
+  "combine": {
+    "default": 234.0
+  },
+  "comb~": {
+    "default": 149.0
+  },
+  "cos": {
+    "default": 29.5
+  },
+  "cos~": {
+    "default": 39.0
+  },
+  "counter": {
+    "default": 81.5
+  },
+  "count~": {
+    "default": 108.0
+  },
+  "cpuclock": {
+    "default": 56.0
+  },
+  "cross~": {
+    "default": 124.0
+  },
+  "ctlin": {
+    "default": 59.5
+  },
+  "curve~": {
+    "default": 149.0
+  },
+  "cycle": {
+    "default": 162.0
+  },
+  "cycle~": {
+    "default": 68.0
+  },
+  "dac~": {
+    "default": 35.0
+  },
+  "dbtoa": {
+    "default": 44.0
+  },
+  "dbtoa~": {
+    "default": 52.0
+  },
+  "decide": {
+    "default": 44.0
+  },
+  "deferlow": {
+    "default": 58.0
+  },
+  "del": {
+    "default": 46.0
+  },
+  "delay": {
+    "default": 73.0
+  },
+  "delay~": {
+    "default": 99.0
+  },
+  "delta~": {
+    "default": 46.0
+  },
+  "detonate": {
+    "default": 196.0
+  },
+  "dict": {
+    "default": 96.0
+  },
+  "dict.deserialize": {
+    "default": 100.0
+  },
+  "dict.group": {
+    "default": 69.0
+  },
+  "dict.iter": {
+    "default": 55.0
+  },
+  "dict.join": {
+    "default": 280.0
+  },
+  "dict.pack": {
+    "default": 204.0
+  },
+  "dict.print": {
+    "default": 66.0
+  },
+  "dict.serialize": {
+    "default": 95.0
+  },
+  "dict.strip": {
+    "default": 138.0
+  },
+  "dict.unpack": {
+    "default": 119.5
+  },
+  "drunk": {
+    "default": 72.0
+  },
+  "dspstate~": {
+    "default": 67.0
+  },
+  "edge~": {
+    "default": 47.0
+  },
+  "expr": {
+    "default": 92.0
+  },
+  "f": {
+    "default": 29.5
+  },
+  "fftin~": {
+    "default": 93.0
+  },
+  "fftout~": {
+    "default": 116.0
+  },
+  "fft~": {
+    "default": 139.0
+  },
+  "filterdesign": {
+    "default": 151.0
+  },
+  "filterdetail": {
+    "default": 95.0
+  },
+  "float": {
+    "default": 41.0
+  },
+  "fold": {
+    "default": 52.0
+  },
+  "frameaverage~": {
+    "default": 109.0
+  },
+  "framesmooth~": {
+    "default": 110.0
+  },
+  "fromsymbol": {
+    "default": 80.0
+  },
+  "fswap": {
+    "default": 79.5
+  },
+  "ftom": {
+    "default": 37.0
+  },
+  "ftom~": {
+    "default": 40.0
+  },
+  "funbuff": {
+    "default": 51.0
+  },
+  "funnel": {
+    "default": 155.0
+  },
+  "fzero~": {
+    "default": 48.0
+  },
+  "gate": {
+    "default": 52.0
+  },
+  "gate~": {
+    "default": 163.5
+  },
+  "gen": {
+    "default": 57.25
+  },
+  "gen~": {
+    "default": 121.0
+  },
+  "getattr": {
+    "default": 107.0
+  },
+  "grab": {
+    "default": 66.0
+  },
+  "groove~": {
+    "default": 210.0
+  },
+  "history": {
+    "default": 46.5
+  },
+  "i": {
+    "default": 30.0
+  },
+  "if": {
+    "default": 173.0
+  },
+  "ifft~": {
+    "default": 103.0
+  },
+  "in": {
+    "default": 30.0
+  },
+  "index~": {
+    "default": 131.0
+  },
+  "info~": {
+    "default": 258.43748474121094
+  },
+  "int": {
+    "default": 33.25
+  },
+  "iter": {
+    "default": 27.0
+  },
+  "itoa": {
+    "default": 40.0
+  },
+  "jit.3m": {
+    "default": 62.25
+  },
+  "jit.alphablend": {
+    "default": 209.5
+  },
+  "jit.anim.drive": {
+    "default": 155.0
+  },
+  "jit.anim.node": {
+    "default": 200.5
+  },
+  "jit.argb2ayuv": {
+    "default": 86.0
+  },
+  "jit.argb2uyvy": {
+    "default": 86.0
+  },
+  "jit.avc": {
+    "default": 45.0
+  },
+  "jit.ayuv2argb": {
+    "default": 86.0
+  },
+  "jit.bfg": {
+    "default": 161.0
+  },
+  "jit.catch~": {
+    "default": 126.0
+  },
+  "jit.clip": {
+    "default": 113.0
+  },
+  "jit.conway": {
+    "default": 67.0
+  },
+  "jit.cycle": {
+    "default": 255.0
+  },
+  "jit.dimmap": {
+    "default": 137.0
+  },
+  "jit.euler2quat": {
+    "default": 111.0
+  },
+  "jit.expr": {
+    "default": 171.0
+  },
+  "jit.fill": {
+    "default": 75.5
+  },
+  "jit.gen": {
+    "default": 46.0
+  },
+  "jit.gl.asyncread": {
+    "default": 154.0
+  },
+  "jit.gl.bfg": {
+    "default": 255.0
+  },
+  "jit.gl.camera": {
+    "default": 180.0
+  },
+  "jit.gl.cubemap": {
+    "default": 248.0
+  },
+  "jit.gl.gridshape": {
+    "default": 261.0
+  },
+  "jit.gl.handle": {
+    "default": 131.0
+  },
+  "jit.gl.layer": {
+    "default": 130.0
+  },
+  "jit.gl.light": {
+    "default": 429.0
+  },
+  "jit.gl.material": {
+    "default": 100.0
+  },
+  "jit.gl.mesh": {
+    "default": 330.0
+  },
+  "jit.gl.model": {
+    "default": 240.0
+  },
+  "jit.gl.multiple": {
+    "default": 370.0
+  },
+  "jit.gl.node": {
+    "default": 194.0
+  },
+  "jit.gl.pass": {
+    "default": 260.0
+  },
+  "jit.gl.path": {
+    "default": 149.0
+  },
+  "jit.gl.physdraw": {
+    "default": 100.0
+  },
+  "jit.gl.picker": {
+    "default": 115.0
+  },
+  "jit.gl.pix": {
+    "default": 99.5
+  },
+  "jit.gl.render": {
+    "default": 136.0
+  },
+  "jit.gl.slab": {
+    "default": 239.0
+  },
+  "jit.gl.texture": {
+    "default": 183.5
+  },
+  "jit.gl.videoplane": {
+    "default": 165.0
+  },
+  "jit.grab": {
+    "default": 113.0
+  },
+  "jit.graph": {
+    "default": 137.0
+  },
+  "jit.hsl2rgb": {
+    "default": 68.0
+  },
+  "jit.iter": {
+    "default": 62.0
+  },
+  "jit.la.mult": {
+    "default": 124.0
+  },
+  "jit.lcd": {
+    "default": 134.0
+  },
+  "jit.matrix": {
+    "default": 135.0
+  },
+  "jit.matrixinfo": {
+    "default": 80.0
+  },
+  "jit.matrixset": {
+    "default": 190.0
+  },
+  "jit.mgraphics": {
+    "default": 138.0
+  },
+  "jit.mo.sin": {
+    "default": 177.0
+  },
+  "jit.movie": {
+    "default": 98.0
+  },
+  "jit.noise": {
+    "default": 123.0
+  },
+  "jit.normalize": {
+    "default": 82.0
+  },
+  "jit.op": {
+    "default": 148.0
+  },
+  "jit.p.shiva": {
+    "default": 65.0
+  },
+  "jit.p.vishnu": {
+    "default": 65.0
+  },
+  "jit.pack": {
+    "default": 61.0
+  },
+  "jit.path": {
+    "default": 126.5
+  },
+  "jit.phys.6dof": {
+    "default": 121.0
+  },
+  "jit.phys.body": {
+    "default": 144.0
+  },
+  "jit.phys.hinge": {
+    "default": 130.0
+  },
+  "jit.phys.multiple": {
+    "default": 307.0
+  },
+  "jit.phys.picker": {
+    "default": 100.0
+  },
+  "jit.print": {
+    "default": 138.0
+  },
+  "jit.qt.movie": {
+    "default": 112.0
+  },
+  "jit.quat": {
+    "default": 115.0
+  },
+  "jit.quat2euler": {
+    "default": 97.0
+  },
+  "jit.record": {
+    "default": 111.0
+  },
+  "jit.rgb2luma": {
+    "default": 80.0
+  },
+  "jit.rota": {
+    "default": 149.0
+  },
+  "jit.roy": {
+    "default": 148.0
+  },
+  "jit.scanwrap": {
+    "default": 170.5
+  },
+  "jit.split": {
+    "default": 46.0
+  },
+  "jit.str.fromsymbol": {
+    "default": 109.0
+  },
+  "jit.str.op": {
+    "default": 114.0
+  },
+  "jit.str.regexp": {
+    "default": 215.0
+  },
+  "jit.str.tosymbol": {
+    "default": 93.0
+  },
+  "jit.textfile": {
+    "default": 141.0
+  },
+  "jit.tiffany": {
+    "default": 59.0
+  },
+  "jit.uldl": {
+    "default": 144.0
+  },
+  "jit.unpack": {
+    "default": 114.0
+  },
+  "jit.uyvy2argb": {
+    "default": 86.0
+  },
+  "jit.window": {
+    "default": 124.0
+  },
+  "jit.world": {
+    "default": 117.0
+  },
+  "jit.xfade": {
+    "default": 150.0
+  },
+  "join": {
+    "default": 113.0
+  },
+  "js": {
+    "default": 135.0
+  },
+  "key": {
+    "default": 55.0
+  },
+  "keyup": {
+    "default": 59.5
+  },
+  "line": {
+    "default": 51.0
+  },
+  "line~": {
+    "default": 39.0
+  },
+  "listfunnel": {
+    "default": 67.5
+  },
+  "live.colors": {
+    "default": 62.0
+  },
+  "live.map": {
+    "default": 93.0
+  },
+  "live.miditool.in": {
+    "default": 90.0
+  },
+  "live.miditool.out": {
+    "default": 98.0
+  },
+  "live.modulate~": {
+    "default": 161.0
+  },
+  "live.object": {
+    "default": 62.0
+  },
+  "live.observer": {
+    "default": 81.0
+  },
+  "live.path": {
+    "default": 57.0
+  },
+  "live.remote~": {
+    "default": 323.25
+  },
+  "live.routing": {
+    "default": 225.66666666666674
+  },
+  "live.thisdevice": {
+    "default": 83.0
+  },
+  "loadbang": {
+    "default": 62.0
+  },
+  "loadmess": {
+    "default": 87.5
+  },
+  "lookup~": {
+    "default": 146.0
+  },
+  "lores~": {
+    "default": 144.5
+  },
+  "makenote": {
+    "default": 117.0
+  },
+  "match": {
+    "default": 84.0
+  },
+  "matrix": {
+    "default": 441.0
+  },
+  "matrix~": {
+    "default": 253.0
+  },
+  "maximum": {
+    "default": 82.0
+  },
+  "maxurl": {
+    "default": 90.5
+  },
+  "mc.*~": {
+    "default": 42.0
+  },
+  "mc.+~": {
+    "default": 66.0
+  },
+  "mc.>~": {
+    "default": 62.0
+  },
+  "mc.adsr~": {
+    "default": 178.0
+  },
+  "mc.apply~": {
+    "default": 217.0
+  },
+  "mc.assign": {
+    "default": 140.5
+  },
+  "mc.cell": {
+    "default": 100.0
+  },
+  "mc.channelcount~": {
+    "default": 114.0
+  },
+  "mc.chord~": {
+    "default": 536.0
+  },
+  "mc.combine~": {
+    "default": 174.4966278076172
+  },
+  "mc.cycle~": {
+    "default": 142.5
+  },
+  "mc.dac~": {
+    "default": 58.0
+  },
+  "mc.deinterleave~": {
+    "default": 349.5
+  },
+  "mc.dup~": {
+    "default": 70.5
+  },
+  "mc.evolve~": {
+    "default": 89.5
+  },
+  "mc.generate~": {
+    "default": 312.5
+  },
+  "mc.gen~": {
+    "default": 203.0
+  },
+  "mc.gradient~": {
+    "default": 187.5
+  },
+  "mc.interleave~": {
+    "default": 158.833344
+  },
+  "mc.line~": {
+    "default": 120.0
+  },
+  "mc.list~": {
+    "default": 90.0
+  },
+  "mc.lores~": {
+    "default": 119.0
+  },
+  "mc.makelist": {
+    "default": 104.5
+  },
+  "mc.midiplayer~": {
+    "default": 422.8214111328125
+  },
+  "mc.mixdown~": {
+    "default": 164.0
+  },
+  "mc.mtof~": {
+    "default": 60.0
+  },
+  "mc.noise~": {
+    "default": 130.0
+  },
+  "mc.noteallocator~": {
+    "default": 258.5
+  },
+  "mc.op~": {
+    "default": 52.0
+  },
+  "mc.pack~": {
+    "default": 199.0
+  },
+  "mc.pattern~": {
+    "default": 183.0
+  },
+  "mc.phasor~": {
+    "default": 168.0
+  },
+  "mc.rand~": {
+    "default": 136.0
+  },
+  "mc.range~": {
+    "default": 211.5
+  },
+  "mc.resize~": {
+    "default": 159.0
+  },
+  "mc.route": {
+    "default": 230.0
+  },
+  "mc.saw~": {
+    "default": 166.5
+  },
+  "mc.scale~": {
+    "default": 209.0
+  },
+  "mc.separate~": {
+    "default": 216.0
+  },
+  "mc.sfplay~": {
+    "default": 257.0
+  },
+  "mc.sig~": {
+    "default": 125.5
+  },
+  "mc.snapshot~": {
+    "default": 122.0
+  },
+  "mc.snowphasor~": {
+    "default": 404.0
+  },
+  "mc.stereo~": {
+    "default": 73.0
+  },
+  "mc.tapin~": {
+    "default": 98.0
+  },
+  "mc.target": {
+    "default": 90.0
+  },
+  "mc.targetlist": {
+    "default": 201.0
+  },
+  "mc.transpose~": {
+    "default": 446.0
+  },
+  "mc.tri~": {
+    "default": 147.0
+  },
+  "mc.unpack~": {
+    "default": 210.0
+  },
+  "mc.updown~": {
+    "default": 110.0
+  },
+  "mc.voiceallocator~": {
+    "default": 184.5
+  },
+  "mc.wave~": {
+    "default": 140.0
+  },
+  "mcs.gen~": {
+    "default": 131.5
+  },
+  "mcs.sig~": {
+    "default": 122.0
+  },
+  "mean": {
+    "default": 41.0
+  },
+  "metro": {
+    "default": 69.0
+  },
+  "midiflush": {
+    "default": 62.0
+  },
+  "midiformat": {
+    "default": 108.0
+  },
+  "midiin": {
+    "default": 45.0
+  },
+  "midiinfo": {
+    "default": 55.0
+  },
+  "midiout": {
+    "default": 51.0
+  },
+  "midiparse": {
+    "default": 202.0
+  },
+  "minimum": {
+    "default": 89.25
+  },
+  "minmax~": {
+    "default": 244.0
+  },
+  "mix": {
+    "default": 85.5
+  },
+  "modifiers": {
+    "default": 105.53125
+  },
+  "mousestate": {
+    "default": 76.5
+  },
+  "mpeformat": {
+    "default": 266.0
+  },
+  "mpeparse": {
+    "default": 113.5
+  },
+  "mstosamps~": {
+    "default": 87.5
+  },
+  "mtof": {
+    "default": 37.0
+  },
+  "mtof~": {
+    "default": 40.5
+  },
+  "mtr": {
+    "default": 190.0
+  },
+  "mute~": {
+    "default": 48.0
+  },
+  "noise": {
+    "default": 37.0
+  },
+  "noise~": {
+    "default": 49.0
+  },
+  "norm": {
+    "default": 36.0
+  },
+  "notein": {
+    "default": 51.0
+  },
+  "noteout": {
+    "default": 66.0
+  },
+  "nrpnout": {
+    "default": 124.0
+  },
+  "onebang": {
+    "default": 64.0
+  },
+  "onepole~": {
+    "default": 118.0
+  },
+  "opendialog": {
+    "default": 76.0
+  },
+  "oscbank~": {
+    "default": 330.0
+  },
+  "out": {
+    "default": 37.0
+  },
+  "p": {
+    "default": 86.0
+  },
+  "pack": {
+    "default": 88.0
+  },
+  "pak": {
+    "default": 113.75
+  },
+  "pan2S": {
+    "default": 46.0
+  },
+  "param": {
+    "default": 117.0
+  },
+  "param.osc": {
+    "default": 122.0
+  },
+  "past": {
+    "default": 54.0
+  },
+  "patcher": {
+    "default": 109.0
+  },
+  "patcherargs": {
+    "default": 74.5
+  },
+  "pattr": {
+    "default": 83.0
+  },
+  "pattrforward": {
+    "default": 192.0
+  },
+  "pattrhub": {
+    "default": 64.0
+  },
+  "pattrstorage": {
+    "default": 186.5
+  },
+  "pcontrol": {
+    "default": 58.0
+  },
+  "peek~": {
+    "default": 87.0
+  },
+  "pfft~": {
+    "default": 198.0
+  },
+  "pgmout": {
+    "default": 110.0
+  },
+  "phasor": {
+    "default": 60.5
+  },
+  "phasor~": {
+    "default": 72.0
+  },
+  "pink~": {
+    "default": 42.0
+  },
+  "pipe": {
+    "default": 83.0
+  },
+  "play~": {
+    "default": 91.0
+  },
+  "plugin~": {
+    "default": 54.0
+  },
+  "plugout~": {
+    "default": 90.0
+  },
+  "plugreceive~": {
+    "default": 123.0
+  },
+  "plugsend~": {
+    "default": 116.0
+  },
+  "poke~": {
+    "default": 115.5
+  },
+  "poltocar": {
+    "default": 81.0
+  },
+  "poltocar~": {
+    "default": 92.0
+  },
+  "polybuffer~": {
+    "default": 210.0
+  },
+  "polyin": {
+    "default": 73.0
+  },
+  "poly~": {
+    "default": 184.5
+  },
+  "pong": {
+    "default": 113.0
+  },
+  "pow": {
+    "default": 59.5
+  },
+  "pow~": {
+    "default": 82.0
+  },
+  "prepend": {
+    "default": 97.0
+  },
+  "print": {
+    "default": 102.0
+  },
+  "pv": {
+    "default": 56.0
+  },
+  "qlim": {
+    "default": 47.0
+  },
+  "qlist": {
+    "default": 51.0
+  },
+  "qmetro": {
+    "default": 71.0
+  },
+  "r": {
+    "default": 66.0
+  },
+  "ramp~": {
+    "default": 157.5
+  },
+  "random": {
+    "default": 74.0
+  },
+  "rand~": {
+    "default": 60.0
+  },
+  "receive": {
+    "default": 83.0
+  },
+  "receive~": {
+    "default": 94.0
+  },
+  "record~": {
+    "default": 79.0
+  },
+  "rect~": {
+    "default": 62.5
+  },
+  "regexp": {
+    "default": 160.0
+  },
+  "relativepath": {
+    "default": 80.0
+  },
+  "repl": {
+    "default": 268.0
+  },
+  "reson~": {
+    "default": 129.0
+  },
+  "retune~": {
+    "default": 78.0
+  },
+  "round": {
+    "default": 45.0
+  },
+  "round~": {
+    "default": 88.0
+  },
+  "route": {
+    "default": 101.0
+  },
+  "routepass": {
+    "default": 101.0
+  },
+  "rpnout": {
+    "default": 124.0
+  },
+  "s": {
+    "default": 69.0
+  },
+  "sah~": {
+    "default": 91.75
+  },
+  "sample": {
+    "default": 164.0
+  },
+  "sampstoms~": {
+    "default": 87.0
+  },
+  "saw~": {
+    "default": 65.0
+  },
+  "scale": {
+    "default": 111.0
+  },
+  "scale~": {
+    "default": 128.0
+  },
+  "schedule": {
+    "default": 93.0
+  },
+  "sel": {
+    "default": 54.0
+  },
+  "select": {
+    "default": 71.0
+  },
+  "selector~": {
+    "default": 160.0
+  },
+  "send": {
+    "default": 97.5
+  },
+  "send~": {
+    "default": 88.0
+  },
+  "seq": {
+    "default": 33.0
+  },
+  "seq~": {
+    "default": 51.0
+  },
+  "setclock": {
+    "default": 123.5
+  },
+  "sfizz~": {
+    "default": 164.0
+  },
+  "sfplay~": {
+    "default": 172.0
+  },
+  "sfrecord~": {
+    "default": 176.0
+  },
+  "shape~": {
+    "default": 52.0
+  },
+  "sig~": {
+    "default": 44.0
+  },
+  "sin": {
+    "default": 27.5
+  },
+  "slide~": {
+    "default": 97.0
+  },
+  "snapshot~": {
+    "default": 87.0
+  },
+  "speedlim": {
+    "default": 82.0
+  },
+  "spell": {
+    "default": 37.0
+  },
+  "split": {
+    "default": 103.5
+  },
+  "spray": {
+    "default": 187.0
+  },
+  "sprintf": {
+    "default": 123.0
+  },
+  "sqrt": {
+    "default": 63.0
+  },
+  "sqrt~": {
+    "default": 41.0
+  },
+  "stash~": {
+    "default": 352.0
+  },
+  "stepcounter": {
+    "default": 238.0
+  },
+  "stepcounter~": {
+    "default": 238.0
+  },
+  "stepdiv~": {
+    "default": 99.5
+  },
+  "string": {
+    "default": 110.0
+  },
+  "string.compare": {
+    "default": 179.0
+  },
+  "string.concat": {
+    "default": 108.0
+  },
+  "string.regexp": {
+    "default": 192.5
+  },
+  "string.sprintf": {
+    "default": 125.5
+  },
+  "string.tosymbol": {
+    "default": 96.0
+  },
+  "stripnote": {
+    "default": 62.5
+  },
+  "subdiv~": {
+    "default": 60.0
+  },
+  "substitute": {
+    "default": 117.0
+  },
+  "sustain": {
+    "default": 157.0
+  },
+  "svf~": {
+    "default": 88.0
+  },
+  "swap": {
+    "default": 80.0
+  },
+  "switch": {
+    "default": 83.0
+  },
+  "swiz": {
+    "default": 42.0
+  },
+  "t": {
+    "default": 36.0
+  },
+  "table": {
+    "default": 81.0
+  },
+  "table~": {
+    "default": 252.5
+  },
+  "tanh~": {
+    "default": 44.0
+  },
+  "tapin~": {
+    "default": 72.0
+  },
+  "tapout~": {
+    "default": 80.0
+  },
+  "text": {
+    "default": 77.0
+  },
+  "themecolor": {
+    "default": 74.0
+  },
+  "thisobject": {
+    "default": 272.0
+  },
+  "thispatcher": {
+    "default": 69.0
+  },
+  "thispoly~": {
+    "default": 137.0
+  },
+  "threadcheck": {
+    "default": 106.0
+  },
+  "thresh": {
+    "default": 57.0
+  },
+  "thru": {
+    "default": 29.0
+  },
+  "timepoint": {
+    "default": 192.0
+  },
+  "timer": {
+    "default": 82.0
+  },
+  "tosymbol": {
+    "default": 57.0
+  },
+  "translate": {
+    "default": 114.0
+  },
+  "transport": {
+    "default": 136.0
+  },
+  "trapezoid~": {
+    "default": 113.0
+  },
+  "triangle~": {
+    "default": 85.0
+  },
+  "trigger": {
+    "default": 80.5
+  },
+  "tri~": {
+    "default": 52.0
+  },
+  "typeroute~": {
+    "default": 118.5
+  },
+  "udpreceive": {
+    "default": 129.5
+  },
+  "udpsend": {
+    "default": 153.0
+  },
+  "unjoin": {
+    "default": 138.0
+  },
+  "unpack": {
+    "default": 116.0
+  },
+  "updown~": {
+    "default": 58.0
+  },
+  "uzi": {
+    "default": 62.0
+  },
+  "v": {
+    "default": 62.0
+  },
+  "v8": {
+    "default": 132.5
+  },
+  "value": {
+    "default": 81.0
+  },
+  "vec": {
+    "default": 57.0
+  },
+  "vexpr": {
+    "default": 113.0
+  },
+  "vstscan": {
+    "default": 53.0
+  },
+  "vst~": {
+    "default": 169.0
+  },
+  "wave~": {
+    "default": 118.0
+  },
+  "windowed-fft~": {
+    "default": 119.0
+  },
+  "xnoteout": {
+    "default": 229.0
+  },
+  "zerox~": {
+    "default": 50.0
+  },
+  "zigzag~": {
+    "default": 204.75
+  },
+  "zl": {
+    "default": 61.0
+  },
+  "zl.change": {
+    "default": 64.0
+  },
+  "zl.group": {
+    "default": 81.0
+  },
+  "zl.iter": {
+    "default": 49.0
+  },
+  "zl.len": {
+    "default": 41.0
+  },
+  "zl.rev": {
+    "default": 40.0
+  },
+  "zl.slice": {
+    "default": 73.666656
+  },
+  "zmap": {
+    "default": 121.0
+  },
+  "|": {
+    "default": 32.0
+  }
+}

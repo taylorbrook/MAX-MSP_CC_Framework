@@ -2,12 +2,32 @@
 
 Computes (width, height) for any MAX object box:
 - UI objects with fixed dimensions return their standard sizes.
+- Objects with audit-based width data return measured widths from help patches.
 - Text-based objects (newobj, comment, message) compute width from text length.
 
-Values sourced from 02-RESEARCH.md Example 1 and MAX 9 default behavior.
+Values sourced from 02-RESEARCH.md Example 1, audit data, and MAX 9 default behavior.
 """
 
+import json
+from pathlib import Path
+
 from src.maxpat.defaults import CHAR_WIDTH, PADDING, MIN_BOX_WIDTH, DEFAULT_HEIGHT
+
+
+def _load_width_overrides() -> dict[str, dict[str, float]]:
+    """Load width override table from audit data.
+
+    Returns dict keyed by object_name, values are dicts with
+    arg_count string keys ("0", "1", "default") mapping to widths.
+    """
+    override_path = Path(__file__).parent.parent.parent / ".claude" / "max-objects" / "audit" / "width-overrides.json"
+    if not override_path.exists():
+        return {}
+    with open(override_path) as f:
+        return json.load(f)
+
+
+_WIDTH_OVERRIDES: dict[str, dict[str, float]] = _load_width_overrides()
 
 # Fixed sizes for UI objects: maxclass -> (width, height).
 # None means the object uses text-based sizing (comment, message).
@@ -102,6 +122,17 @@ def calculate_box_size(text: str, maxclass: str) -> tuple[float, float]:
         fixed_size = UI_SIZES[maxclass]
         if fixed_size is not None:
             return fixed_size
+
+    # Width override lookup for newobj boxes
+    if maxclass == "newobj" and text:
+        parts = text.split()
+        obj_name = parts[0]
+        arg_count = len(parts) - 1
+        overrides = _WIDTH_OVERRIDES.get(obj_name)
+        if overrides:
+            width = overrides.get(str(arg_count)) or overrides.get("default")
+            if width:
+                return (width, DEFAULT_HEIGHT)
 
     # Text-based sizing: newobj, comment, message, or UI objects with None size
     width = len(text) * CHAR_WIDTH + PADDING
