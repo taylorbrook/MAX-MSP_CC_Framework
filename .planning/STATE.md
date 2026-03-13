@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Patch Quality & Aesthetics
-status: executing
-stopped_at: Completed 10-01-PLAN.md
-last_updated: "2026-03-13T22:31:38Z"
-last_activity: 2026-03-13 -- Completed 10-01 (Aesthetic Palette & Comment Tiers)
+status: completed
+stopped_at: Completed 10-02-PLAN.md
+last_updated: "2026-03-13T22:39:20.307Z"
+last_activity: 2026-03-13 -- Completed 10-02 (Panels & Step Markers)
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 7
-  percent: 87
+  completed_plans: 8
+  percent: 100
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 ## Current Position
 
 Phase: 10 of 12 (Aesthetic Foundations)
-Plan: 1 of 2 complete
-Status: In Progress
-Last activity: 2026-03-13 -- Completed 10-01 (Aesthetic Palette & Comment Tiers)
+Plan: 2 of 2 complete
+Status: Phase Complete
+Last activity: 2026-03-13 -- Completed 10-02 (Panels & Step Markers)
 
-Progress: [████████░░] 87%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [████████░░] 87%
 | Phase 09 P01 | 4min | 2 tasks | 3 files |
 | Phase 09 P02 | 5min | 2 tasks | 2 files |
 | Phase 10 P01 | 4min | 1 tasks | 4 files |
+| Phase 10 P02 | 3min | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,9 @@ Full decision log in `.planning/milestones/v1.0-ROADMAP.md`.
 - [Phase 10]: Palette values use cool/neutral blues, grays, slate tones from RESEARCH.md recommendations
 - [Phase 10]: Comment fontsize set via box.fontsize, other attrs via extra_attrs to avoid duplication in serialized JSON
 - [Phase 10]: Aesthetics helpers in separate module with TYPE_CHECKING import to avoid circular deps
+- [Phase 10]: Panels and step markers use Box.__new__(Box) to bypass DB lookup (decorative elements)
+- [Phase 10]: Z-order via boxes.insert(0) places background elements before all content objects
+- [Phase 10]: auto_size_panel returns (0,0,0,0) for empty input (safe to call without guards)
 
 ### Pending Todos
 
@@ -94,7 +98,7 @@ None.
 
 ## Session Continuity
 
-Last activity: 2026-03-13 -- Completed 10-01 (Aesthetic Palette & Comment Tiers)
-Last session: 2026-03-13T22:31:38Z
-Stopped at: Completed 10-01-PLAN.md
-Resume file: .planning/phases/10-aesthetic-foundations/10-02-PLAN.md
+Last activity: 2026-03-13 -- Completed 10-02 (Panels & Step Markers)
+Last session: 2026-03-13T22:39:20.305Z
+Stopped at: Completed 10-02-PLAN.md
+Resume file: None

@@ -36,11 +36,11 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 
 ### Panels
 
-- [ ] **PANL-01**: Panel objects created with bgfillcolor (solid color mode), rounded corners, border, and correct background layer placement
-- [ ] **PANL-02**: Panels inserted at index 0 in boxes array AND carry background: 1 and ignoreclick: 1 for correct z-order
-- [ ] **PANL-03**: Panel auto-sizing computes bounding box around positioned object groups with configurable padding
-- [ ] **PANL-04**: Gradient panel support via bgfillcolor dict with type: "gradient", color1, color2, angle, proportion (capped below 1.0)
-- [ ] **PANL-05**: Step marker numbering using textbutton circles with amber background, rounded=60, in background layer
+- [x] **PANL-01**: Panel objects created with bgfillcolor (solid color mode), rounded corners, border, and correct background layer placement
+- [x] **PANL-02**: Panels inserted at index 0 in boxes array AND carry background: 1 and ignoreclick: 1 for correct z-order
+- [x] **PANL-03**: Panel auto-sizing computes bounding box around positioned object groups with configurable padding
+- [x] **PANL-04**: Gradient panel support via bgfillcolor dict with type: "gradient", color1, color2, angle, proportion (capped below 1.0)
+- [x] **PANL-05**: Step marker numbering using textbutton circles with amber background, rounded=60, in background layer
 
 ### Patcher Styling
 
@@ -109,11 +109,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CMNT-02 | Phase 10 | Complete |
 | CMNT-03 | Phase 10 | Complete |
 | CMNT-04 | Phase 10 | Complete |
-| PANL-01 | Phase 10 | Pending |
-| PANL-02 | Phase 10 | Pending |
-| PANL-03 | Phase 10 | Pending |
-| PANL-04 | Phase 10 | Pending |
-| PANL-05 | Phase 10 | Pending |
+| PANL-01 | Phase 10 | Complete |
+| PANL-02 | Phase 10 | Complete |
+| PANL-03 | Phase 10 | Complete |
+| PANL-04 | Phase 10 | Complete |
+| PANL-05 | Phase 10 | Complete |
 | PTCH-01 | Phase 10 | Complete |
 | PTCH-02 | Phase 10 | Complete |
 | LYOT-01 | Phase 11 | Pending |

@@ -32,7 +32,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
 - [x] **Phase 8: Help Patch Audit Pipeline** — Build offline audit tool that parses 973 .maxhelp files and extracts ground truth object metadata (completed 2026-03-13)
 - [ ] **Phase 9: Object DB Corrections** — Review audit results and merge verified corrections into overrides.json
-- [ ] **Phase 10: Aesthetic Foundations** — Add comment styling, panels, patcher backgrounds, and visual polish to generated patches
+- [x] **Phase 10: Aesthetic Foundations** — Add comment styling, panels, patcher backgrounds, and visual polish to generated patches (completed 2026-03-13)
 - [ ] **Phase 11: Layout Refinements** — Improve object positioning with better sizing, inlet alignment, grid snapping, and configurable options
 - [ ] **Phase 12: Pipeline Integration & Agent Updates** — Wire aesthetics and layout into generate_patch() and update agent documentation
 
@@ -132,7 +132,7 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 | 7. Fix Stale Agent Documentation | v1.0 | 1/1 | Complete | 2026-03-10 |
 | 8. Help Patch Audit Pipeline | v1.1 | 4/4 | Complete | 2026-03-13 |
 | 9. Object DB Corrections | v1.1 | 0/2 | Not started | - |
-| 10. Aesthetic Foundations | 1/2 | In Progress|  | - |
+| 10. Aesthetic Foundations | 2/2 | Complete   | 2026-03-13 | - |
 | 11. Layout Refinements | v1.1 | 0/? | Not started | - |
 | 12. Pipeline Integration & Agent Updates | v1.1 | 0/? | Not started | - |
 
