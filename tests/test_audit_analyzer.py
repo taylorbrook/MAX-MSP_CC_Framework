@@ -221,9 +221,16 @@ class TestAnalyzeIoCounts:
     def test_variable_io_from_arguments(self):
         """Variable I/O objects use argument-computed expected counts."""
         db = make_db_mock(
-            io_counts=(3, 3),
             obj_data={"inlets": [{"id": 0}], "outlets": [{"id": 0}], "variable_io": True},
         )
+        # Trigger with args ["b", "i", "f"] -> 1 inlet, 3 outlets
+        # Default (no args) -> 1 inlet, 1 outlet
+        def compute_io_side_effect(name, args=None):
+            if args and len(args) == 3:
+                return (1, 3)
+            return (1, 1)
+
+        db.compute_io_counts.side_effect = compute_io_side_effect
         analyzer = AuditAnalyzer(db)
 
         instances = [
