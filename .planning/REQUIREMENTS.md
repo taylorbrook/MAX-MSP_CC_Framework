@@ -16,9 +16,9 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 - [x] **AUDIT-05**: Per-object box width extraction captures actual patching_rect widths from help patches for accurate sizing
 - [x] **AUDIT-06**: Argument format extraction captures canonical argument patterns from help patch newobj text fields
 - [x] **AUDIT-07**: Connection pattern extraction parses all help patch connections to build per-object outlet-to-inlet frequency tables
-- [ ] **AUDIT-08**: Audit produces human-readable diff report (audit-report.json) showing DB vs help patch discrepancies with confidence scores
-- [ ] **AUDIT-09**: Batch override generation writes proposed overrides.json entries, never overwriting the existing 16+ manually corrected entries
-- [ ] **AUDIT-10**: Coverage tracker identifies and prioritizes the 292 objects with empty inlet/outlet data in the current DB
+- [x] **AUDIT-08**: Audit produces human-readable diff report (audit-report.json) showing DB vs help patch discrepancies with confidence scores
+- [x] **AUDIT-09**: Batch override generation writes proposed overrides.json entries, never overwriting the existing 16+ manually corrected entries
+- [x] **AUDIT-10**: Coverage tracker identifies and prioritizes the 292 objects with empty inlet/outlet data in the current DB
 
 ### DB Corrections
 
@@ -98,9 +98,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUDIT-05 | Phase 8 | Complete |
 | AUDIT-06 | Phase 8 | Complete |
 | AUDIT-07 | Phase 8 | Complete |
-| AUDIT-08 | Phase 8 | Pending |
-| AUDIT-09 | Phase 8 | Pending |
-| AUDIT-10 | Phase 8 | Pending |
+| AUDIT-08 | Phase 8 | Complete |
+| AUDIT-09 | Phase 8 | Complete |
+| AUDIT-10 | Phase 8 | Complete |
 | DBCX-01 | Phase 9 | Pending |
 | DBCX-02 | Phase 9 | Pending |
 | DBCX-03 | Phase 9 | Pending |
