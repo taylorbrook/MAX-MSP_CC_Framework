@@ -22,10 +22,10 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 
 ### DB Corrections
 
-- [ ] **DBCX-01**: High-confidence outlet type corrections merged into overrides.json and picked up automatically by db_lookup.py
-- [ ] **DBCX-02**: Empty-I/O objects populated with help-patch-verified inlet/outlet data
+- [x] **DBCX-01**: High-confidence outlet type corrections merged into overrides.json and picked up automatically by db_lookup.py
+- [x] **DBCX-02**: Empty-I/O objects populated with help-patch-verified inlet/outlet data
 - [ ] **DBCX-03**: All 624 existing tests continue to pass after DB corrections (regression gate)
-- [ ] **DBCX-04**: Corrections organized by domain (max, msp, jitter, mc, gen, m4l, rnbo, packages) for reviewability
+- [x] **DBCX-04**: Corrections organized by domain (max, msp, jitter, mc, gen, m4l, rnbo, packages) for reviewability
 
 ### Comment Styling
 
@@ -101,10 +101,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AUDIT-08 | Phase 8 | Complete |
 | AUDIT-09 | Phase 8 | Complete |
 | AUDIT-10 | Phase 8 | Complete |
-| DBCX-01 | Phase 9 | Pending |
-| DBCX-02 | Phase 9 | Pending |
+| DBCX-01 | Phase 9 | Complete |
+| DBCX-02 | Phase 9 | Complete |
 | DBCX-03 | Phase 9 | Pending |
-| DBCX-04 | Phase 9 | Pending |
+| DBCX-04 | Phase 9 | Complete |
 | CMNT-01 | Phase 10 | Pending |
 | CMNT-02 | Phase 10 | Pending |
 | CMNT-03 | Phase 10 | Pending |
