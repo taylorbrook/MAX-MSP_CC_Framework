@@ -29,10 +29,10 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 
 ### Comment Styling
 
-- [ ] **CMNT-01**: Section header comments rendered with configurable fontsize (14-18pt), fontface (bold), and textcolor
-- [ ] **CMNT-02**: Bubble comment annotations with bubble outline, configurable bubbleside, and arrow pointing toward target object
-- [ ] **CMNT-03**: Hierarchical comment system with three tiers: section header (16-18pt bold colored), subsection label (12pt bold), inline annotation (12pt italic/light)
-- [ ] **CMNT-04**: Semantic color palette defines consistent colors for headers, annotations, and warnings across all generated patches
+- [x] **CMNT-01**: Section header comments rendered with configurable fontsize (14-18pt), fontface (bold), and textcolor
+- [x] **CMNT-02**: Bubble comment annotations with bubble outline, configurable bubbleside, and arrow pointing toward target object
+- [x] **CMNT-03**: Hierarchical comment system with three tiers: section header (16-18pt bold colored), subsection label (12pt bold), inline annotation (12pt italic/light)
+- [x] **CMNT-04**: Semantic color palette defines consistent colors for headers, annotations, and warnings across all generated patches
 
 ### Panels
 
@@ -44,8 +44,8 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 
 ### Patcher Styling
 
-- [ ] **PTCH-01**: Patcher-level editing_bgcolor and locked_bgcolor set via patcher props for canvas background color
-- [ ] **PTCH-02**: Object background color (bgcolor) applied to key architectural objects (loadbang, dac~, key processors) via extra_attrs
+- [x] **PTCH-01**: Patcher-level editing_bgcolor and locked_bgcolor set via patcher props for canvas background color
+- [x] **PTCH-02**: Object background color (bgcolor) applied to key architectural objects (loadbang, dac~, key processors) via extra_attrs
 
 ### Layout Refinements
 
@@ -105,17 +105,17 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DBCX-02 | Phase 9 | Complete |
 | DBCX-03 | Phase 9 | Complete |
 | DBCX-04 | Phase 9 | Complete |
-| CMNT-01 | Phase 10 | Pending |
-| CMNT-02 | Phase 10 | Pending |
-| CMNT-03 | Phase 10 | Pending |
-| CMNT-04 | Phase 10 | Pending |
+| CMNT-01 | Phase 10 | Complete |
+| CMNT-02 | Phase 10 | Complete |
+| CMNT-03 | Phase 10 | Complete |
+| CMNT-04 | Phase 10 | Complete |
 | PANL-01 | Phase 10 | Pending |
 | PANL-02 | Phase 10 | Pending |
 | PANL-03 | Phase 10 | Pending |
 | PANL-04 | Phase 10 | Pending |
 | PANL-05 | Phase 10 | Pending |
-| PTCH-01 | Phase 10 | Pending |
-| PTCH-02 | Phase 10 | Pending |
+| PTCH-01 | Phase 10 | Complete |
+| PTCH-02 | Phase 10 | Complete |
 | LYOT-01 | Phase 11 | Pending |
 | LYOT-02 | Phase 11 | Pending |
 | LYOT-03 | Phase 11 | Pending |
