@@ -12,6 +12,10 @@ from src.maxpat.project import (
     read_status,
     update_status,
     list_projects,
+    init_versions,
+    get_version,
+    bump_version,
+    list_versions,
 )
 
 
@@ -164,3 +168,124 @@ class TestListProjects:
     def test_empty_when_no_patches_dir(self, tmp_path: Path):
         projects = list_projects(tmp_path)
         assert projects == []
+
+
+class TestVersioning:
+    """Tests for version management: init_versions, get_version, bump_version, list_versions."""
+
+    def test_init_versions_creates_file(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        # create_project now auto-calls init_versions, but let's verify the file exists
+        versions_file = project_dir / "versions.json"
+        assert versions_file.is_file()
+        data = json.loads(versions_file.read_text())
+        assert len(data["versions"]) == 1
+        assert data["versions"][0]["version"] == "0.0.0"
+        assert data["versions"][0]["description"] == "Initial version"
+        assert "timestamp" in data["versions"][0]
+
+    def test_init_versions_idempotent(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        # Already initialized by create_project -- calling again should be a no-op
+        result = init_versions(project_dir)
+        assert result == "0.0.0"
+        data = json.loads((project_dir / "versions.json").read_text())
+        assert len(data["versions"]) == 1
+
+    def test_init_versions_returns_current_version(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        result = init_versions(project_dir)
+        assert result == "0.0.0"
+
+    def test_get_version_returns_current(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        assert get_version(project_dir) == "0.0.0"
+
+    def test_get_version_returns_none_no_file(self, tmp_path: Path):
+        project_dir = tmp_path / "no-project"
+        project_dir.mkdir()
+        assert get_version(project_dir) is None
+
+    def test_bump_version_patch(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        new_ver = bump_version(project_dir, bump="patch", description="Fixed a bug")
+        assert new_ver == "0.0.1"
+        assert get_version(project_dir) == "0.0.1"
+
+    def test_bump_version_minor(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        bump_version(project_dir, bump="patch", description="Fix")
+        new_ver = bump_version(project_dir, bump="minor", description="Added feature")
+        assert new_ver == "0.1.0"
+        assert get_version(project_dir) == "0.1.0"
+
+    def test_bump_version_major(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        bump_version(project_dir, bump="minor", description="Feature")
+        new_ver = bump_version(project_dir, bump="major", description="Breaking change")
+        assert new_ver == "1.0.0"
+        assert get_version(project_dir) == "1.0.0"
+
+    def test_bump_version_invalid_type_raises(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        with pytest.raises(ValueError, match="must be"):
+            bump_version(project_dir, bump="hotfix", description="Nope")
+
+    def test_bump_version_no_file_raises(self, tmp_path: Path):
+        project_dir = tmp_path / "no-project"
+        project_dir.mkdir()
+        with pytest.raises(FileNotFoundError):
+            bump_version(project_dir, bump="patch", description="Nope")
+
+    def test_bump_version_returns_new_version(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        result = bump_version(project_dir, bump="patch", description="Test")
+        assert result == "0.0.1"
+
+    def test_list_versions_returns_newest_first(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        bump_version(project_dir, bump="patch", description="First fix")
+        bump_version(project_dir, bump="minor", description="New feature")
+
+        versions = list_versions(project_dir)
+        assert len(versions) == 3
+        # Newest first
+        assert versions[0]["version"] == "0.1.0"
+        assert versions[1]["version"] == "0.0.1"
+        assert versions[2]["version"] == "0.0.0"
+
+    def test_list_versions_empty_no_file(self, tmp_path: Path):
+        project_dir = tmp_path / "no-project"
+        project_dir.mkdir()
+        assert list_versions(project_dir) == []
+
+    def test_list_versions_has_descriptions(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        bump_version(project_dir, bump="patch", description="Fixed oscillator")
+
+        versions = list_versions(project_dir)
+        assert versions[0]["description"] == "Fixed oscillator"
+        assert versions[0]["version"] == "0.0.1"
+        assert "timestamp" in versions[0]
+
+    def test_create_project_initializes_versions(self, tmp_path: Path):
+        """create_project should auto-create versions.json with 0.0.0."""
+        project_dir = create_project("auto-versioned", tmp_path)
+        assert (project_dir / "versions.json").is_file()
+        assert get_version(project_dir) == "0.0.0"
+
+    def test_bump_minor_resets_patch(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        bump_version(project_dir, bump="patch", description="p1")
+        bump_version(project_dir, bump="patch", description="p2")
+        assert get_version(project_dir) == "0.0.2"
+        new_ver = bump_version(project_dir, bump="minor", description="minor bump")
+        assert new_ver == "0.1.0"
+
+    def test_bump_major_resets_minor_and_patch(self, tmp_path: Path):
+        project_dir = create_project("my-synth", tmp_path)
+        bump_version(project_dir, bump="minor", description="m1")
+        bump_version(project_dir, bump="patch", description="p1")
+        assert get_version(project_dir) == "0.1.1"
+        new_ver = bump_version(project_dir, bump="major", description="major bump")
+        assert new_ver == "1.0.0"
