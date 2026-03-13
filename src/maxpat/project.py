@@ -75,6 +75,9 @@ def create_project(name: str, base_dir: Path) -> Path:
     )
     (project_dir / "status.md").write_text(status_content)
 
+    # Initialize version tracking at 0.0.0
+    init_versions(project_dir)
+
     return project_dir
 
 
@@ -154,6 +157,122 @@ def update_status(project_dir: Path, **kwargs: str) -> None:
 
     lines = [f"{key}: {value}" for key, value in current.items()]
     (project_dir / "status.md").write_text("\n".join(lines) + "\n")
+
+
+def init_versions(project_dir: Path) -> str:
+    """Initialize versions.json with a 0.0.0 entry if it doesn't exist.
+
+    Idempotent -- if versions.json already exists, returns the current version
+    without modifying the file.
+
+    Args:
+        project_dir: Path to the project directory.
+
+    Returns:
+        Current version string (e.g., "0.0.0").
+    """
+    versions_file = project_dir / "versions.json"
+    if versions_file.is_file():
+        data = json.loads(versions_file.read_text())
+        return data["versions"][-1]["version"]
+
+    data = {
+        "versions": [
+            {
+                "version": "0.0.0",
+                "description": "Initial version",
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+            }
+        ]
+    }
+    versions_file.write_text(json.dumps(data, indent=2) + "\n")
+    return "0.0.0"
+
+
+def get_version(project_dir: Path) -> str | None:
+    """Get the current (latest) version string for a project.
+
+    Args:
+        project_dir: Path to the project directory.
+
+    Returns:
+        Version string (e.g., "0.1.0") or None if no versions.json exists.
+    """
+    versions_file = project_dir / "versions.json"
+    if not versions_file.is_file():
+        return None
+
+    data = json.loads(versions_file.read_text())
+    return data["versions"][-1]["version"]
+
+
+def bump_version(
+    project_dir: Path, bump: str = "patch", description: str = ""
+) -> str:
+    """Increment the project version and record the change.
+
+    Args:
+        project_dir: Path to the project directory.
+        bump: One of "patch", "minor", or "major".
+        description: Human-readable description of what changed.
+
+    Returns:
+        The new version string.
+
+    Raises:
+        ValueError: If bump is not "patch", "minor", or "major".
+        FileNotFoundError: If versions.json does not exist (must init first).
+    """
+    if bump not in ("patch", "minor", "major"):
+        raise ValueError(
+            f"bump must be 'patch', 'minor', or 'major', got '{bump}'"
+        )
+
+    versions_file = project_dir / "versions.json"
+    if not versions_file.is_file():
+        raise FileNotFoundError(
+            f"No versions.json in {project_dir}. Call init_versions() first."
+        )
+
+    data = json.loads(versions_file.read_text())
+    current = data["versions"][-1]["version"]
+    parts = [int(x) for x in current.split(".")]
+
+    if bump == "major":
+        parts = [parts[0] + 1, 0, 0]
+    elif bump == "minor":
+        parts = [parts[0], parts[1] + 1, 0]
+    else:  # patch
+        parts = [parts[0], parts[1], parts[2] + 1]
+
+    new_version = ".".join(str(p) for p in parts)
+    data["versions"].append(
+        {
+            "version": new_version,
+            "description": description,
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+    )
+    versions_file.write_text(json.dumps(data, indent=2) + "\n")
+    return new_version
+
+
+def list_versions(project_dir: Path) -> list[dict]:
+    """List all version entries for a project, newest first.
+
+    Args:
+        project_dir: Path to the project directory.
+
+    Returns:
+        List of version entry dicts (version, description, timestamp),
+        ordered newest first. Empty list if no versions.json.
+    """
+    versions_file = project_dir / "versions.json"
+    if not versions_file.is_file():
+        return []
+
+    data = json.loads(versions_file.read_text())
+    return list(reversed(data["versions"]))
 
 
 def list_projects(base_dir: Path) -> list[str]:
