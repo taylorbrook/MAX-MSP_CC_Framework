@@ -614,3 +614,139 @@ class TestCommentAssociation:
         osc = p.add_box("cycle~", ["440"])
         note = p.add_annotation("main osc", target=osc)
         assert note.target_id == osc.id
+
+
+# ---------------------------------------------------------------------------
+# Inlet alignment
+# ---------------------------------------------------------------------------
+
+
+class TestInletAlignment:
+    """Test inlet-under-outlet alignment for straighter cables."""
+
+    def test_child_inlet_aligns_under_parent_outlet(self):
+        """Child's inlet X is close to parent's outlet X after layout."""
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("*~", ["0.5"])
+        p.add_connection(a, 0, b, 0)
+        apply_layout(p)
+        from src.maxpat.layout import _outlet_x, _inlet_x
+        outlet_x_pos = _outlet_x(a, 0)
+        inlet_x_pos = _inlet_x(b, 0)
+        # Within one grid step (15px) due to grid snapping
+        assert abs(outlet_x_pos - inlet_x_pos) <= 15.0
+
+    def test_multi_child_same_outlet(self):
+        """Multiple children on same outlet: all positioned, no overlap."""
+        p = Patcher()
+        a = p.add_box("trigger", ["b", "b", "b"])
+        b = p.add_box("metro", ["500"])
+        c = p.add_box("counter", ["16"])
+        d = p.add_box("print")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(a, 1, c, 0)
+        p.add_connection(a, 2, d, 0)
+        apply_layout(p)
+        # Children should not overlap
+        children = sorted([b, c, d], key=lambda x: x.patching_rect[0])
+        for i in range(len(children) - 1):
+            right = children[i].patching_rect[0] + children[i].patching_rect[2]
+            assert children[i + 1].patching_rect[0] >= right
+
+    def test_inlet_align_disabled(self):
+        """With inlet_align=False, uses center-under-center (old behavior)."""
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("*~", ["0.5"])
+        p.add_connection(a, 0, b, 0)
+        apply_layout(p, LayoutOptions(inlet_align=False, grid_snap=False))
+        # Child should be roughly centered under parent center
+        parent_cx = a.patching_rect[0] + a.patching_rect[2] * 0.5
+        child_cx = b.patching_rect[0] + b.patching_rect[2] * 0.5
+        assert abs(parent_cx - child_cx) < 5.0
+
+
+# ---------------------------------------------------------------------------
+# Grid snap
+# ---------------------------------------------------------------------------
+
+
+class TestGridSnap:
+    """Test that grid snapping rounds all positions to grid multiples."""
+
+    def test_positions_on_grid(self):
+        """After layout, all positions are multiples of 15."""
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("*~", ["0.5"])
+        c = p.add_box("ezdac~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+        apply_layout(p)
+        for box in p.boxes:
+            assert box.patching_rect[0] % 15.0 == 0.0, (
+                f"{box.name} x={box.patching_rect[0]} not on grid"
+            )
+            assert box.patching_rect[1] % 15.0 == 0.0, (
+                f"{box.name} y={box.patching_rect[1]} not on grid"
+            )
+
+    def test_grid_snap_disabled(self):
+        """With grid_snap=False, positions are not forced to grid."""
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("*~", ["0.5"])
+        p.add_connection(a, 0, b, 0)
+        apply_layout(p, LayoutOptions(grid_snap=False))
+        # Just verify no crash -- grid snap behavior is opt-out
+
+
+# ---------------------------------------------------------------------------
+# LayoutOptions integration
+# ---------------------------------------------------------------------------
+
+
+class TestLayoutOptions:
+    """Test that LayoutOptions parameters are respected."""
+
+    def test_custom_v_spacing(self):
+        """Custom v_spacing is used for vertical gaps."""
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("*~", ["0.5"])
+        p.add_connection(a, 0, b, 0)
+        apply_layout(p, LayoutOptions(v_spacing=50.0, grid_snap=False))
+        gap = b.patching_rect[1] - (a.patching_rect[1] + a.patching_rect[3])
+        assert abs(gap - 50.0) < 5.0
+
+    def test_backward_compat_no_options(self):
+        """apply_layout(patcher) with no options still works."""
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("ezdac~")
+        p.add_connection(a, 0, b, 0)
+        apply_layout(p)  # No options -- should not raise
+        assert a.patching_rect[1] < b.patching_rect[1]
+
+
+# ---------------------------------------------------------------------------
+# Comment placement (associated comments near targets)
+# ---------------------------------------------------------------------------
+
+
+class TestCommentPlacement:
+    """Test that comments with target_id are placed near their target."""
+
+    def test_associated_comment_placed_near_target(self):
+        """Comment with target_id placed to right of target at same Y."""
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        dac = p.add_box("ezdac~")
+        note = p.add_annotation("main osc", target=osc)
+        p.add_connection(osc, 0, dac, 0)
+        apply_layout(p)
+        # Comment should be to the right of osc
+        assert note.patching_rect[0] > osc.patching_rect[0] + osc.patching_rect[2] - 1
+        # Comment Y should be close to osc Y (within grid snap tolerance)
+        assert abs(note.patching_rect[1] - osc.patching_rect[1]) <= 15.0

@@ -30,6 +30,7 @@ from src.maxpat.defaults import (
     BUS_MARGIN,
     BUS_SPACING,
     PATCHER_PADDING,
+    LayoutOptions,
 )
 from src.maxpat.maxclass_map import is_ui_object
 
@@ -64,7 +65,7 @@ _COMPONENT_GAP = 40.0
 _IO_MARGIN = 7.0
 
 
-def apply_layout(patcher: Patcher) -> None:
+def apply_layout(patcher: Patcher, options: LayoutOptions | None = None) -> None:
     """Position all boxes using row-based topological layout with component grouping.
 
     Signal flow is top-to-bottom: topological depth maps to y-position.
@@ -74,7 +75,11 @@ def apply_layout(patcher: Patcher) -> None:
 
     Args:
         patcher: A Patcher instance containing boxes and lines.
+        options: Optional layout parameters. Uses LayoutOptions defaults if None.
     """
+    if options is None:
+        options = LayoutOptions()
+
     if not patcher.boxes:
         return
 
@@ -121,10 +126,11 @@ def apply_layout(patcher: Patcher) -> None:
         # Position this component starting at cursor_x
         comp_width = _position_component(
             rows, cursor_x, _START_Y, reverse_adj, patcher.boxes,
+            patcher.lines, options,
         )
 
         # Position UI controls above their targets
-        _place_ui_controls(patcher.boxes, ui_controls)
+        _place_ui_controls(patcher.boxes, ui_controls, options)
 
         # Position companion objects beside their parents
         _place_companions(patcher.boxes, companions)
@@ -142,17 +148,24 @@ def apply_layout(patcher: Patcher) -> None:
     if disconnected:
         _position_disconnected(disconnected, cursor_x, _START_Y)
 
+    # Place associated comments near their targets
+    _place_associated_comments(patcher.boxes, options.comment_gap)
+
+    # Grid snap as final pass (after all positioning, before midpoints)
+    if options.grid_snap:
+        _snap_to_grid(patcher.boxes, options.grid_size)
+
     # Generate midpoints for all cables needing segmented routing
     _generate_midpoints(patcher)
 
     # Auto-size patcher rect to fit content and bus routing
     if not patcher._is_subpatcher:
-        _auto_size_patcher_rect(patcher)
+        _auto_size_patcher_rect(patcher, options)
 
     # Recursively layout inner patchers (subpatchers, gen~, bpatchers)
     for box in patcher.boxes:
         if box._inner_patcher is not None and box._inner_patcher.boxes:
-            apply_layout(box._inner_patcher)
+            apply_layout(box._inner_patcher, options)
 
     # Apply presentation mode layout if any boxes have presentation=True
     _apply_presentation_layout(patcher.boxes)
@@ -320,13 +333,18 @@ def _position_component(
     start_y: float,
     reverse_adj: dict[str, list[str]],
     all_boxes: list[Box],
+    lines: list,
+    options: LayoutOptions,
 ) -> float:
     """Position boxes in a component as top-to-bottom rows.
 
     Each topological level is a row. Within each row (except the first),
     objects are sorted by the average x-position of their parents to
-    minimize cable crossings. Child objects are centered under their
-    parent's center-x to reduce horizontal cable distance.
+    minimize cable crossings.
+
+    When options.inlet_align is True, child objects are positioned so their
+    destination inlet X aligns under the parent's source outlet X (straighter
+    cables). Otherwise, child center-x is aligned under parent center-x.
 
     Returns the total width of the component.
     """
@@ -340,7 +358,7 @@ def _position_component(
     for i in range(1, len(rows)):
         prev_row = rows[i - 1]
         max_height = max(b.patching_rect[3] for b in prev_row)
-        row_y.append(row_y[-1] + max_height + V_SPACING)
+        row_y.append(row_y[-1] + max_height + options.v_spacing)
 
     # Position boxes row by row
     max_right = start_x
@@ -353,26 +371,32 @@ def _position_component(
             for box in row:
                 box.patching_rect[0] = x
                 box.patching_rect[1] = y
-                x += box.patching_rect[2] + H_GUTTER
+                x += box.patching_rect[2] + options.h_gutter
         else:
             # Sort by parent x to reduce crossings
             if len(row) > 1:
                 _sort_row_by_parent_x(row, reverse_adj, box_map)
 
-            # Position each box centered under its parent's center-x,
-            # then resolve overlaps by pushing right
+            # Position each box, then resolve overlaps by pushing right
             positions: list[float] = []
             for box in row:
-                target_x = _parent_center_x(box, reverse_adj, box_map)
-                # Center the box on the target x
-                ideal_x = target_x - box.patching_rect[2] * 0.5
+                if options.inlet_align:
+                    # Inlet-under-outlet alignment for straighter cables
+                    ideal_x = _target_x_for_inlet_align(
+                        box, reverse_adj, box_map, lines,
+                    )
+                else:
+                    # Legacy center-under-center
+                    target_x = _parent_center_x(box, reverse_adj, box_map)
+                    ideal_x = target_x - box.patching_rect[2] * 0.5
+
                 ideal_x = max(ideal_x, start_x)
 
                 # Prevent overlap with previous box
                 if positions:
                     prev_right = positions[-1]
-                    if ideal_x < prev_right + H_GUTTER:
-                        ideal_x = prev_right + H_GUTTER
+                    if ideal_x < prev_right + options.h_gutter:
+                        ideal_x = prev_right + options.h_gutter
 
                 box.patching_rect[0] = ideal_x
                 box.patching_rect[1] = y
@@ -385,6 +409,36 @@ def _position_component(
             max_right = row_right
 
     return max_right - start_x
+
+
+def _target_x_for_inlet_align(
+    child: Box,
+    reverse_adj: dict[str, list[str]],
+    box_map: dict[str, Box],
+    lines: list,
+) -> float:
+    """Compute ideal x for child so its inlet aligns under parent's outlet.
+
+    For each parent connection, finds the specific outlet X and inlet X,
+    then computes what child.x should be for alignment. When multiple
+    parents exist, averages the target positions.
+    """
+    targets: list[float] = []
+    for line in lines:
+        if line.dest_id == child.id:
+            parent = box_map.get(line.source_id)
+            if parent and parent.patching_rect[1] < child.patching_rect[1]:
+                outlet_x_pos = _outlet_x(parent, line.source_outlet)
+                inlet_x_pos = _inlet_x(child, line.dest_inlet)
+                inlet_offset = inlet_x_pos - child.patching_rect[0]
+                ideal_child_x = outlet_x_pos - inlet_offset
+                targets.append(ideal_child_x)
+
+    if targets:
+        return sum(targets) / len(targets)
+
+    # Fallback to center-under-parent-center
+    return _parent_center_x(child, reverse_adj, box_map) - child.patching_rect[2] * 0.5
 
 
 def _parent_center_x(
@@ -475,6 +529,7 @@ def _identify_ui_controls(
 def _place_ui_controls(
     all_boxes: list[Box],
     ui_controls: dict[str, Box],
+    options: LayoutOptions,
 ) -> None:
     """Position UI control objects above their targets.
 
@@ -491,7 +546,7 @@ def _place_ui_controls(
         target_y = target_box.patching_rect[1]
         ui_height = ui_box.patching_rect[3]
 
-        new_y = target_y - ui_height - V_SPACING * 0.5
+        new_y = target_y - ui_height - options.v_spacing * 0.5
         if new_y < 5.0:
             new_y = 5.0
 
@@ -631,6 +686,37 @@ def _position_disconnected(
         box.patching_rect[1] = cursor_y
         cursor_y += box.patching_rect[3] + disc_v_gap
         col_max_width = max(col_max_width, box.patching_rect[2])
+
+
+# ---------------------------------------------------------------------------
+# Grid snap and comment placement
+# ---------------------------------------------------------------------------
+
+
+def _snap_to_grid(boxes: list[Box], grid_size: float) -> None:
+    """Round all box positions to nearest grid multiple.
+
+    Applied as a single pass after ALL positioning is complete
+    (including companion and UI control placement).
+    """
+    for box in boxes:
+        box.patching_rect[0] = round(box.patching_rect[0] / grid_size) * grid_size
+        box.patching_rect[1] = round(box.patching_rect[1] / grid_size) * grid_size
+
+
+def _place_associated_comments(boxes: list[Box], comment_gap: float) -> None:
+    """Position comments with target_id next to their target objects.
+
+    Places the comment to the right of the target at the same Y position,
+    separated by comment_gap pixels.
+    """
+    box_map = {b.id: b for b in boxes}
+    for box in boxes:
+        if box.maxclass == "comment" and box.target_id:
+            target = box_map.get(box.target_id)
+            if target:
+                box.patching_rect[0] = target.patching_rect[0] + target.patching_rect[2] + comment_gap
+                box.patching_rect[1] = target.patching_rect[1]
 
 
 # ---------------------------------------------------------------------------
@@ -802,7 +888,7 @@ def _route_bus_cables(
 # ---------------------------------------------------------------------------
 
 
-def _auto_size_patcher_rect(patcher: Patcher) -> None:
+def _auto_size_patcher_rect(patcher: Patcher, options: LayoutOptions) -> None:
     """Set patcher rect to fit all objects and bus routing with padding.
 
     Computes the bounding box of all objects (including midpoint bus routes)
@@ -834,8 +920,8 @@ def _auto_size_patcher_rect(patcher: Patcher) -> None:
                 if my > max_bottom:
                     max_bottom = my
 
-    new_w = max_right + PATCHER_PADDING
-    new_h = max_bottom + PATCHER_PADDING
+    new_w = max_right + options.patcher_padding
+    new_h = max_bottom + options.patcher_padding
 
     # Enforce minimum size
     new_w = max(new_w, 400.0)
