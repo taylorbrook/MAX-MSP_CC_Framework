@@ -481,3 +481,393 @@ class TestEmptyIOTracker:
         entry = result["objects"]["empty_obj"]
         assert entry["proposed_inlets"] == 2
         assert entry["proposed_outlets"] == 1
+
+
+# ---------------------------------------------------------------------------
+# OverrideGenerator: Format and conflict detection tests
+# ---------------------------------------------------------------------------
+
+
+def make_mock_overrides_file(tmp_path, objects: dict | None = None) -> str:
+    """Create a temporary overrides.json file and return its path."""
+    import json
+
+    overrides = {
+        "_comment": "Test overrides",
+        "objects": objects if objects is not None else {
+            "buffer~": {
+                "inlets": [{"id": 0, "type": "anything", "signal": False, "digest": "Messages"}],
+                "outlets": [
+                    {"id": 0, "type": "", "signal": False, "digest": "Mouse pos"},
+                    {"id": 1, "type": "", "signal": False, "digest": "Bang on done"},
+                ],
+                "_note": "buffer~ outlets are control",
+            },
+        },
+        "version_map": {},
+        "variable_io_rules": {},
+    }
+    path = tmp_path / "overrides.json"
+    path.write_text(json.dumps(overrides, indent=2))
+    return str(path)
+
+
+class TestOverrideFormat:
+    """Test that generated proposed overrides match overrides.json format."""
+
+    def test_proposed_overrides_match_overrides_json_structure(self, tmp_path):
+        """Generated proposed overrides have objects dict with inlet/outlet arrays."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "test_obj": make_findings(
+                name="test_obj",
+                instance_count=10,
+                outlet_type_finding={
+                    "db_types": ["signal", "signal"],
+                    "help_types": ["signal", ""],
+                    "confidence": "HIGH",
+                    "agreement": 1.0,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 1}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        assert "objects" in proposed
+        assert "test_obj" in proposed["objects"]
+        entry = proposed["objects"]["test_obj"]
+        # Outlets array should have dicts with id, type, signal, digest keys
+        assert "outlets" in entry
+        assert len(entry["outlets"]) == 2
+        outlet = entry["outlets"][0]
+        assert "id" in outlet
+        assert "type" in outlet
+        assert "signal" in outlet
+        assert "digest" in outlet
+
+    def test_outlet_array_construction_from_help_types(self, tmp_path):
+        """Outlet arrays correctly map signal/control from help patch types."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        # help_types: ["signal", ""] means outlet 0 is signal, outlet 1 is control
+        findings = {
+            "mixed_obj": make_findings(
+                name="mixed_obj",
+                instance_count=10,
+                outlet_type_finding={
+                    "db_types": ["signal", "signal"],
+                    "help_types": ["signal", ""],
+                    "confidence": "HIGH",
+                    "agreement": 1.0,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 1}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        outlets = proposed["objects"]["mixed_obj"]["outlets"]
+        assert outlets[0]["signal"] is True
+        assert outlets[0]["type"] == "signal"
+        assert outlets[1]["signal"] is False
+        assert outlets[1]["type"] == ""
+
+
+class TestConflictDetection:
+    """Test that existing manual overrides are protected."""
+
+    def test_existing_manual_entries_flagged_as_conflict(self, tmp_path):
+        """Objects already in existing overrides.json appear in conflicts, not objects."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        # buffer~ is in existing overrides
+        overrides_path = make_mock_overrides_file(tmp_path)
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "buffer~": make_findings(
+                name="buffer~",
+                instance_count=20,
+                outlet_type_finding={
+                    "db_types": ["signal"],
+                    "help_types": [""],
+                    "confidence": "HIGH",
+                    "agreement": 1.0,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 0}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        # buffer~ should NOT be in proposed objects
+        assert "buffer~" not in proposed["objects"]
+        # buffer~ SHOULD be in conflicts
+        assert "buffer~" in proposed["conflicts"]
+
+    def test_conflict_includes_both_values(self, tmp_path):
+        """Conflict entries include both audit-proposed and existing-manual values."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path)
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "buffer~": make_findings(
+                name="buffer~",
+                instance_count=20,
+                outlet_type_finding={
+                    "db_types": ["signal"],
+                    "help_types": [""],
+                    "confidence": "HIGH",
+                    "agreement": 1.0,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 0}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        conflict = proposed["conflicts"]["buffer~"]
+        assert "audit_proposed" in conflict
+        assert "existing_manual" in conflict
+
+    def test_non_conflicting_objects_in_proposed(self, tmp_path):
+        """Objects NOT in existing overrides go into proposed objects."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={"buffer~": {"outlets": []}})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "new_obj": make_findings(
+                name="new_obj",
+                instance_count=10,
+                outlet_type_finding={
+                    "db_types": ["signal"],
+                    "help_types": [""],
+                    "confidence": "HIGH",
+                    "agreement": 1.0,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 0}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        assert "new_obj" in proposed["objects"]
+        assert "new_obj" not in proposed["conflicts"]
+
+
+class TestConfidenceThreshold:
+    """Test that only HIGH/MEDIUM confidence findings generate overrides."""
+
+    def test_low_confidence_excluded(self, tmp_path):
+        """LOW confidence findings do not generate proposed overrides."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "low_obj": make_findings(
+                name="low_obj",
+                outlet_type_finding={
+                    "db_types": ["signal"],
+                    "help_types": [""],
+                    "confidence": "LOW",
+                    "agreement": 0.6,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 0}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        assert "low_obj" not in proposed["objects"]
+
+    def test_conflict_confidence_excluded(self, tmp_path):
+        """CONFLICT confidence findings do not generate proposed overrides."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "conflict_obj": make_findings(
+                name="conflict_obj",
+                outlet_type_finding={
+                    "db_types": ["signal"],
+                    "help_types": [""],
+                    "confidence": "CONFLICT",
+                    "agreement": 0.3,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 0}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        assert "conflict_obj" not in proposed["objects"]
+
+    def test_high_confidence_included(self, tmp_path):
+        """HIGH confidence findings generate proposed overrides."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "high_obj": make_findings(
+                name="high_obj",
+                instance_count=20,
+                outlet_type_finding={
+                    "db_types": ["signal"],
+                    "help_types": [""],
+                    "confidence": "HIGH",
+                    "agreement": 1.0,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 0}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        assert "high_obj" in proposed["objects"]
+
+    def test_medium_confidence_included(self, tmp_path):
+        """MEDIUM confidence findings generate proposed overrides."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "med_obj": make_findings(
+                name="med_obj",
+                instance_count=8,
+                outlet_type_finding={
+                    "db_types": ["signal"],
+                    "help_types": [""],
+                    "confidence": "MEDIUM",
+                    "agreement": 0.8,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 0}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        assert "med_obj" in proposed["objects"]
+
+
+class TestAuditMetadata:
+    """Test that proposed overrides include _audit metadata."""
+
+    def test_proposed_entry_includes_audit_metadata(self, tmp_path):
+        """Each proposed override entry includes _audit with confidence, instances, agreement."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {
+            "test_obj": make_findings(
+                name="test_obj",
+                instance_count=15,
+                outlet_type_finding={
+                    "db_types": ["signal", "signal"],
+                    "help_types": ["signal", ""],
+                    "confidence": "HIGH",
+                    "agreement": 1.0,
+                    "discrepancy_type": "signal_control_mismatch",
+                    "discrepancies": [{"outlet_index": 1}],
+                },
+            ),
+        }
+
+        proposed = gen.generate_proposed_overrides(findings)
+        entry = proposed["objects"]["test_obj"]
+        assert "_audit" in entry
+        audit = entry["_audit"]
+        assert audit["confidence"] == "HIGH"
+        assert audit["instances"] == 15
+        assert audit["agreement"] == 1.0
+
+
+class TestEmptyIOOverrides:
+    """Test that empty I/O objects with help data generate proposed overrides."""
+
+    def test_empty_io_objects_with_help_data_generate_proposals(self, tmp_path):
+        """Empty I/O objects with has_help_data=True get proposed I/O entries."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        findings = {}  # No outlet_type_finding needed
+
+        empty_io_data = {
+            "objects": {
+                "empty_obj": {
+                    "empty_inlets": True,
+                    "empty_outlets": True,
+                    "has_help_data": True,
+                    "proposed_inlets": 2,
+                    "proposed_outlets": 1,
+                    "domain": "max",
+                },
+            },
+            "summary": {},
+        }
+
+        proposed = gen.generate_proposed_overrides(findings, empty_io_data=empty_io_data)
+        assert "empty_obj" in proposed["objects"]
+        entry = proposed["objects"]["empty_obj"]
+        assert "inlets" in entry
+        assert len(entry["inlets"]) == 2
+
+    def test_empty_io_conflict_with_existing_manual(self, tmp_path):
+        """Empty I/O objects already in manual overrides go to conflicts."""
+        from src.maxpat.audit.overrides import OverrideGenerator
+
+        overrides_path = make_mock_overrides_file(tmp_path, objects={"buffer~": {"outlets": []}})
+        db = make_db_mock_with_objects()
+        gen = OverrideGenerator(db, overrides_path=overrides_path)
+
+        empty_io_data = {
+            "objects": {
+                "buffer~": {
+                    "empty_inlets": True,
+                    "empty_outlets": True,
+                    "has_help_data": True,
+                    "proposed_inlets": 1,
+                    "proposed_outlets": 2,
+                    "domain": "msp",
+                },
+            },
+            "summary": {},
+        }
+
+        proposed = gen.generate_proposed_overrides({}, empty_io_data=empty_io_data)
+        assert "buffer~" not in proposed["objects"]
+        assert "buffer~" in proposed["conflicts"]
