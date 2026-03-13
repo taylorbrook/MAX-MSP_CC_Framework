@@ -7,7 +7,8 @@ connection patterns. Produces per-object findings with confidence scores.
 
 from __future__ import annotations
 
-from collections import Counter
+import statistics
+from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from typing import Any, Callable
 
@@ -281,3 +282,221 @@ class AuditAnalyzer:
             "variable_io": is_variable_io,
             "mismatches": mismatches,
         }
+
+    def analyze_widths(
+        self, name: str, instances: list[BoxInstance]
+    ) -> dict | None:
+        """Extract box width statistics from patching_rect data.
+
+        Collects the width component (index 2) from each instance's
+        patching_rect and computes median, min, max statistics.
+
+        Args:
+            name: Object name.
+            instances: BoxInstance list for this object.
+
+        Returns:
+            Finding dict with width statistics, or None if no width data.
+        """
+        widths: list[float] = []
+        for inst in instances:
+            rect = inst.patching_rect
+            if rect and len(rect) >= 3:
+                widths.append(rect[2])
+
+        if not widths:
+            return None
+
+        return {
+            "widths": widths,
+            "median_width": statistics.median(widths),
+            "min_width": min(widths),
+            "max_width": max(widths),
+            "instance_count": len(widths),
+        }
+
+    def analyze_arguments(
+        self, name: str, instances: list[BoxInstance]
+    ) -> dict | None:
+        """Extract argument format patterns from box text fields.
+
+        Parses each instance's text via parse_object_text, collects
+        positional argument patterns as tuples, and counts frequency.
+        Attributes (@key value pairs) are captured separately.
+
+        Args:
+            name: Object name.
+            instances: BoxInstance list for this object.
+
+        Returns:
+            Finding dict with patterns sorted by frequency, or None if
+            no instances have arguments.
+        """
+        arg_patterns: list[tuple[str, ...]] = []
+        attr_patterns: list[tuple[str, ...]] = []
+
+        for inst in instances:
+            _, args, attrs = parse_object_text(inst.text)
+            if args:
+                arg_patterns.append(tuple(args))
+            if attrs:
+                attr_patterns.append(
+                    tuple(sorted(f"{k}={v}" for k, v in attrs.items()))
+                )
+
+        if not arg_patterns and not attr_patterns:
+            return None
+
+        # Count argument pattern frequency
+        arg_counts = Counter(arg_patterns)
+        sorted_patterns = sorted(
+            arg_counts.items(), key=lambda x: x[1], reverse=True
+        )
+
+        # Count attribute pattern frequency
+        attr_counts = Counter(attr_patterns)
+        sorted_attrs = sorted(
+            attr_counts.items(), key=lambda x: x[1], reverse=True
+        )
+
+        return {
+            "patterns": [(list(pattern), count) for pattern, count in sorted_patterns],
+            "attribute_patterns": [
+                (list(pattern), count) for pattern, count in sorted_attrs
+            ],
+            "instance_count": len(instances),
+        }
+
+    def analyze_connections(
+        self,
+        name: str,
+        instances: list[BoxInstance],
+        all_instances: list[BoxInstance] | None = None,
+    ) -> dict | None:
+        """Analyze connection patterns for an object.
+
+        Builds a lookup from box_id to object_name across all_instances
+        in the same source file, then constructs outlet-to-inlet and
+        inlet-to-outlet frequency tables.
+
+        Args:
+            name: Object name.
+            instances: BoxInstance list for this object.
+            all_instances: All BoxInstance objects across all objects (for
+                resolving box IDs to names within the same source file).
+
+        Returns:
+            Finding dict with connection frequency tables, or None if no
+            connection data.
+        """
+        if all_instances is None:
+            all_instances = instances
+
+        # Build per-file box_id -> object_name lookup
+        id_to_name: dict[str, dict[str, str]] = defaultdict(dict)
+        for inst in all_instances:
+            id_to_name[inst.source_file][inst.box_id] = inst.name
+
+        # Collect outlet and inlet connections
+        outlet_connections: dict[int, list[tuple[str, int, int]]] = defaultdict(list)
+        inlet_connections: dict[int, list[tuple[str, int, int]]] = defaultdict(list)
+        total_connections = 0
+
+        for inst in instances:
+            file_lookup = id_to_name.get(inst.source_file, {})
+
+            for src_id, src_outlet, dst_id, dst_inlet in inst.connections:
+                total_connections += 1
+
+                if src_id == inst.box_id:
+                    # This instance is the source -- record outlet connection
+                    target_name = file_lookup.get(dst_id, dst_id)
+                    outlet_connections[src_outlet].append(
+                        (target_name, dst_inlet, 1)
+                    )
+                elif dst_id == inst.box_id:
+                    # This instance is the destination -- record inlet connection
+                    source_name = file_lookup.get(src_id, src_id)
+                    inlet_connections[dst_inlet].append(
+                        (source_name, src_outlet, 1)
+                    )
+
+        if total_connections == 0:
+            return None
+
+        # Aggregate counts for repeated connections
+        def aggregate_connections(
+            conn_dict: dict[int, list[tuple[str, int, int]]],
+        ) -> dict[int, list[tuple[str, int, int]]]:
+            result: dict[int, list[tuple[str, int, int]]] = {}
+            for idx, conns in conn_dict.items():
+                counter: Counter = Counter()
+                for target_name, target_port, _ in conns:
+                    counter[(target_name, target_port)] += 1
+                result[idx] = [
+                    (tn, tp, count) for (tn, tp), count in counter.most_common()
+                ]
+            return result
+
+        return {
+            "outlet_connections": aggregate_connections(dict(outlet_connections)),
+            "inlet_connections": aggregate_connections(dict(inlet_connections)),
+            "total_connections": total_connections,
+        }
+
+    def analyze_object(
+        self,
+        name: str,
+        instances: list[BoxInstance],
+        all_instances: list[BoxInstance] | None = None,
+    ) -> ObjectFindings:
+        """Run all 5 analysis dimensions for a single object.
+
+        Args:
+            name: Object name.
+            instances: BoxInstance list for this object.
+            all_instances: All BoxInstance objects across all objects
+                (for connection analysis ID resolution).
+
+        Returns:
+            ObjectFindings with all dimensions populated.
+        """
+        return ObjectFindings(
+            object_name=name,
+            instance_count=len(instances),
+            outlet_type_finding=self.analyze_outlet_types(name, instances),
+            io_count_finding=self.analyze_io_counts(name, instances),
+            width_finding=self.analyze_widths(name, instances),
+            argument_finding=self.analyze_arguments(name, instances),
+            connection_finding=self.analyze_connections(
+                name, instances, all_instances
+            ),
+        )
+
+    def analyze_all(
+        self,
+        instances_by_object: dict[str, list[BoxInstance]],
+        all_instances: list[BoxInstance] | None = None,
+    ) -> dict[str, ObjectFindings]:
+        """Run analysis across all objects.
+
+        Args:
+            instances_by_object: Dict mapping object name to BoxInstance list.
+            all_instances: All BoxInstance objects across all objects
+                (for connection analysis). If None, built from instances_by_object.
+
+        Returns:
+            Dict mapping object name to ObjectFindings.
+        """
+        if all_instances is None:
+            all_instances = []
+            for objs in instances_by_object.values():
+                all_instances.extend(objs)
+
+        results: dict[str, ObjectFindings] = {}
+        for obj_name, instances in instances_by_object.items():
+            results[obj_name] = self.analyze_object(
+                obj_name, instances, all_instances
+            )
+
+        return results
