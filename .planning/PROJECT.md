@@ -30,6 +30,13 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 
 ### Active
 
+- [ ] Comprehensive object database audit via help patches — correct outlet types, message names, argument formats, connection patterns for all ~2,015 objects
+- [ ] Patch aesthetics — panels, background colors, comment styling for professional-looking generated patches
+- [ ] Refined object positioning — layout engine improvements informed by help patch analysis and MAX UI best practices
+- [ ] Agent accuracy improvements — feed corrected object data and layout patterns back to specialist agents
+
+### Future
+
 - [ ] Template library for common MAX patterns (synthesis, sequencing, effects, control, Jitter)
 - [ ] MAX for Live integration (Live API, device types, parameter mapping)
 - [ ] Deep Jitter support (specialized agents, validation, templates for video/GL)
@@ -51,6 +58,16 @@ Tech stack: Python (generation + validation), JSON (object DB + .maxpat), C++ (M
 624 tests passing covering all 40 requirements.
 Object database: 2,015 objects across 8 domains (Max, MSP, Jitter, MC, Gen, M4L, RNBO, Packages).
 Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-scope memory.
+
+## Current Milestone: v1.1 Patch Quality & Aesthetics
+
+**Goal:** Improve the accuracy and visual quality of generated MAX patches through systematic object database auditing and aesthetic refinements.
+
+**Target features:**
+- Full help patch audit of all ~2,015 objects to correct outlet types, messages, arguments, and connection patterns
+- Patch aesthetics — panels, background colors, comment styling
+- Refined object positioning informed by help patch layouts and MAX UI best practices
+- Agent improvements informed by audit findings
 
 ## Key Decisions
 
@@ -77,4 +94,4 @@ Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-
 - **No MAX automation:** Claude cannot launch or control MAX — all validation is offline
 
 ---
-*Last updated: 2026-03-10 after v1.0 milestone*
+*Last updated: 2026-03-13 after v1.1 milestone start*
