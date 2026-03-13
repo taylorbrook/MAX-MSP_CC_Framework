@@ -13,9 +13,13 @@ import copy
 from typing import Any
 
 from src.maxpat.defaults import (
+    AESTHETIC_PALETTE,
+    BUBBLE_TOP,
     DEFAULT_PATCHER_PROPS,
     FONT_NAME,
     FONT_SIZE,
+    FONTFACE_BOLD,
+    FONTFACE_ITALIC,
     GEN_PATCHER_BGCOLOR,
     SUBPATCHER_RECT,
 )
@@ -313,6 +317,100 @@ class Patcher:
         w, h = calculate_box_size(text, "comment")
         box.patching_rect = [x, y, w, h]
         self.boxes.append(box)
+        return box
+
+    def add_section_header(
+        self, text: str, x: float = 0.0, y: float = 0.0
+    ) -> Box:
+        """Add a section header comment (16pt bold, colored text + background).
+
+        Args:
+            text: Header text.
+            x: Horizontal position.
+            y: Vertical position.
+
+        Returns:
+            The created styled comment Box.
+        """
+        box = self.add_comment(text, x, y)
+        box.fontsize = 16.0
+        box.extra_attrs["fontface"] = FONTFACE_BOLD
+        box.extra_attrs["textcolor"] = list(AESTHETIC_PALETTE["header_color"])
+        box.extra_attrs["bgcolor"] = list(AESTHETIC_PALETTE["header_bgcolor"])
+        # Recalculate size for 16pt chars (wider than default 12pt)
+        box.patching_rect[2] = len(text) * 9.5 + 20.0
+        box.patching_rect[3] = 24.0
+        return box
+
+    def add_subsection(
+        self, text: str, x: float = 0.0, y: float = 0.0
+    ) -> Box:
+        """Add a subsection label comment (12pt bold, dark gray).
+
+        Args:
+            text: Subsection text.
+            x: Horizontal position.
+            y: Vertical position.
+
+        Returns:
+            The created styled comment Box.
+        """
+        box = self.add_comment(text, x, y)
+        # fontsize stays at 12.0 (default)
+        box.extra_attrs["fontface"] = FONTFACE_BOLD
+        box.extra_attrs["textcolor"] = list(AESTHETIC_PALETTE["subsection_color"])
+        # No bgcolor for subsections
+        return box
+
+    def add_annotation(
+        self, text: str, x: float = 0.0, y: float = 0.0
+    ) -> Box:
+        """Add an inline annotation comment (10pt italic, light gray).
+
+        Args:
+            text: Annotation text.
+            x: Horizontal position.
+            y: Vertical position.
+
+        Returns:
+            The created styled comment Box.
+        """
+        box = self.add_comment(text, x, y)
+        box.fontsize = 10.0
+        box.extra_attrs["fontface"] = FONTFACE_ITALIC
+        box.extra_attrs["textcolor"] = list(AESTHETIC_PALETTE["annotation_color"])
+        # Recalculate size for 10pt chars (narrower than default 12pt)
+        box.patching_rect[2] = len(text) * 6.0 + 14.0
+        box.patching_rect[3] = 18.0
+        return box
+
+    def add_bubble(
+        self,
+        text: str,
+        x: float = 0.0,
+        y: float = 0.0,
+        bubbleside: int | None = None,
+    ) -> Box:
+        """Add a bubble comment with arrow pointer.
+
+        Args:
+            text: Comment text.
+            x: Horizontal position.
+            y: Vertical position.
+            bubbleside: Arrow direction (0=left, 1=top, 2=right, 3=bottom).
+                Defaults to BUBBLE_TOP (1).
+
+        Returns:
+            The created bubble comment Box.
+        """
+        box = self.add_comment(text, x, y)
+        box.extra_attrs["bubble"] = 1
+        box.extra_attrs["bubbleside"] = (
+            bubbleside if bubbleside is not None else BUBBLE_TOP
+        )
+        # Adjust sizing for bubble chrome
+        box.patching_rect[2] += 17.0
+        box.patching_rect[3] = 25.0
         return box
 
     def add_message(self, text: str, x: float = 0.0, y: float = 0.0) -> Box:

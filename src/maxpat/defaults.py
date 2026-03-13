@@ -72,3 +72,42 @@ DEFAULT_PATCHER_PROPS = {
     "dependency_cache": [],
     "autosave": 0,
 }
+
+# Fontface constants (bitmask encoding used in .maxpat JSON)
+FONTFACE_REGULAR = 0
+FONTFACE_BOLD = 1
+FONTFACE_ITALIC = 2
+FONTFACE_BOLD_ITALIC = 3
+
+# Bubbleside constants (comment box bubble arrow direction)
+BUBBLE_LEFT = 0     # Arrow points left, bubble on right
+BUBBLE_TOP = 1      # Arrow points up, bubble below (default)
+BUBBLE_RIGHT = 2    # Arrow points right, bubble on left
+BUBBLE_BOTTOM = 3   # Arrow points down, bubble above
+
+# Semantic color palette -- all RGBA values in [0.0, 1.0] range.
+# Cool/neutral temperature: blues, grays, slate tones matching MAX 9 UI.
+AESTHETIC_PALETTE = {
+    # Comment tiers
+    "header_color": [0.20, 0.25, 0.42, 1.0],         # deep slate blue text
+    "header_bgcolor": [0.88, 0.90, 0.95, 1.0],        # light blue-gray background
+    "subsection_color": [0.30, 0.30, 0.35, 1.0],      # dark gray
+    "annotation_color": [0.55, 0.55, 0.60, 1.0],      # light gray
+    "warning_color": [0.75, 0.22, 0.17, 1.0],         # muted red for warnings
+
+    # Panel fills
+    "panel_fill": [0.94, 0.94, 0.96, 1.0],            # very light cool gray
+    "panel_gradient_end": [0.88, 0.89, 0.92, 1.0],    # slightly darker cool gray
+
+    # Canvas
+    "canvas_bg": [0.97, 0.97, 0.98, 1.0],             # off-white with blue tint
+
+    # Step markers
+    "step_marker_bg": [0.85, 0.65, 0.13, 1.0],        # amber/gold
+    "step_marker_text": [1.0, 1.0, 1.0, 1.0],         # white
+
+    # Object emphasis (when explicitly requested)
+    "emphasis_loadbang": [0.85, 0.92, 0.85, 1.0],     # pale green
+    "emphasis_dac": [0.92, 0.85, 0.85, 1.0],          # pale red
+    "emphasis_processor": [0.85, 0.87, 0.95, 1.0],    # pale blue
+}
