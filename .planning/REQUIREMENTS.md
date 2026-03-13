@@ -11,11 +11,11 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 
 - [x] **AUDIT-01**: Help patch parser recursively descends into subpatcher tabs to find all object instances across 973 .maxhelp files
 - [x] **AUDIT-02**: Parser filters degenerate instances (objects with numoutlets: 0 used as labels) and extracts outlet types only from connected instances
-- [ ] **AUDIT-03**: Outlet type audit compares DB outlet signal/control types against help patch outlettype arrays and generates corrections
-- [ ] **AUDIT-04**: Inlet/outlet count validation cross-references DB counts against help patch instances, accounting for variable_io argument configurations
-- [ ] **AUDIT-05**: Per-object box width extraction captures actual patching_rect widths from help patches for accurate sizing
-- [ ] **AUDIT-06**: Argument format extraction captures canonical argument patterns from help patch newobj text fields
-- [ ] **AUDIT-07**: Connection pattern extraction parses all help patch connections to build per-object outlet-to-inlet frequency tables
+- [x] **AUDIT-03**: Outlet type audit compares DB outlet signal/control types against help patch outlettype arrays and generates corrections
+- [x] **AUDIT-04**: Inlet/outlet count validation cross-references DB counts against help patch instances, accounting for variable_io argument configurations
+- [x] **AUDIT-05**: Per-object box width extraction captures actual patching_rect widths from help patches for accurate sizing
+- [x] **AUDIT-06**: Argument format extraction captures canonical argument patterns from help patch newobj text fields
+- [x] **AUDIT-07**: Connection pattern extraction parses all help patch connections to build per-object outlet-to-inlet frequency tables
 - [ ] **AUDIT-08**: Audit produces human-readable diff report (audit-report.json) showing DB vs help patch discrepancies with confidence scores
 - [ ] **AUDIT-09**: Batch override generation writes proposed overrides.json entries, never overwriting the existing 16+ manually corrected entries
 - [ ] **AUDIT-10**: Coverage tracker identifies and prioritizes the 292 objects with empty inlet/outlet data in the current DB
@@ -93,11 +93,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | AUDIT-01 | Phase 8 | Complete |
 | AUDIT-02 | Phase 8 | Complete |
-| AUDIT-03 | Phase 8 | Pending |
-| AUDIT-04 | Phase 8 | Pending |
-| AUDIT-05 | Phase 8 | Pending |
-| AUDIT-06 | Phase 8 | Pending |
-| AUDIT-07 | Phase 8 | Pending |
+| AUDIT-03 | Phase 8 | Complete |
+| AUDIT-04 | Phase 8 | Complete |
+| AUDIT-05 | Phase 8 | Complete |
+| AUDIT-06 | Phase 8 | Complete |
+| AUDIT-07 | Phase 8 | Complete |
 | AUDIT-08 | Phase 8 | Pending |
 | AUDIT-09 | Phase 8 | Pending |
 | AUDIT-10 | Phase 8 | Pending |
