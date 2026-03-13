@@ -120,8 +120,8 @@ def main(argv: list[str] | None = None) -> int:
         "unique_objects": 0,
     }
 
-    # Parse all .maxhelp files
-    help_files = sorted(args.help_dir.glob("*.maxhelp"))
+    # Parse all .maxhelp files (recursive to handle subdirectory structure)
+    help_files = sorted(args.help_dir.rglob("*.maxhelp"))
     instances_by_object: dict[str, list] = {}
     all_instances: list = []
 
