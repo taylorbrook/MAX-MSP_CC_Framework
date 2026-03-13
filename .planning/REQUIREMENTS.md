@@ -53,8 +53,8 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 - [ ] **LYOT-02**: Inlet-aligned cable routing positions child objects so inlets align under parent outlet X positions, reducing diagonal cables
 - [ ] **LYOT-03**: 15px grid snapping rounds all object positions to MAX's native grid
 - [ ] **LYOT-04**: Comment association placement positions comments near their target objects with consistent offset
-- [ ] **LYOT-05**: LayoutOptions dataclass replaces module-level constants for configurable spacing, grid, and alignment parameters
-- [ ] **LYOT-06**: Layout tests refactored to relative assertions before any spacing constant changes
+- [x] **LYOT-05**: LayoutOptions dataclass replaces module-level constants for configurable spacing, grid, and alignment parameters
+- [x] **LYOT-06**: Layout tests refactored to relative assertions before any spacing constant changes
 
 ### Agent Updates
 
@@ -120,8 +120,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LYOT-02 | Phase 11 | Pending |
 | LYOT-03 | Phase 11 | Pending |
 | LYOT-04 | Phase 11 | Pending |
-| LYOT-05 | Phase 11 | Pending |
-| LYOT-06 | Phase 11 | Pending |
+| LYOT-05 | Phase 11 | Complete |
+| LYOT-06 | Phase 11 | Complete |
 | AGNT-01 | Phase 12 | Pending |
 | AGNT-02 | Phase 12 | Pending |
 
