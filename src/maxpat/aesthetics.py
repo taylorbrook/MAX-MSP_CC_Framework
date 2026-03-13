@@ -1,7 +1,8 @@
 """Aesthetic styling helpers for MAX patcher generation.
 
-Provides palette access, canvas background setting, and object background
-color helpers. All colors come from AESTHETIC_PALETTE in defaults.py.
+Provides palette access, canvas background setting, object background
+color helpers, panel auto-sizing, and patch complexity heuristics.
+All colors come from AESTHETIC_PALETTE in defaults.py.
 """
 
 from __future__ import annotations
@@ -56,3 +57,56 @@ def set_object_bgcolor(
         box.extra_attrs["bgcolor"] = list(color)
     else:
         raise ValueError("One of palette_key or color must be provided")
+
+
+def auto_size_panel(
+    boxes: list[Box],
+    padding: float = 18.0,
+) -> tuple[float, float, float, float]:
+    """Compute bounding box for a panel enclosing the given boxes.
+
+    Returns (x, y, width, height) where the panel surrounds all boxes
+    with the specified padding on every side.
+
+    Args:
+        boxes: List of Box instances to enclose. Each must have patching_rect.
+        padding: Padding in pixels added on all four sides.
+
+    Returns:
+        (x, y, width, height) tuple. Returns (0.0, 0.0, 0.0, 0.0) if
+        boxes is empty.
+    """
+    if not boxes:
+        return (0.0, 0.0, 0.0, 0.0)
+
+    min_x = min(b.patching_rect[0] for b in boxes)
+    min_y = min(b.patching_rect[1] for b in boxes)
+    max_x = max(b.patching_rect[0] + b.patching_rect[2] for b in boxes)
+    max_y = max(b.patching_rect[1] + b.patching_rect[3] for b in boxes)
+
+    return (
+        min_x - padding,
+        min_y - padding,
+        (max_x - min_x) + 2 * padding,
+        (max_y - min_y) + 2 * padding,
+    )
+
+
+def is_complex_patch(patcher: Patcher) -> bool:
+    """Heuristic to determine if a patch is visually complex.
+
+    A patch is considered complex if it has 10 or more boxes, or if any
+    box contains a subpatcher (inner patcher).
+
+    Args:
+        patcher: The Patcher instance to evaluate.
+
+    Returns:
+        True if the patch is complex, False otherwise.
+    """
+    if len(patcher.boxes) >= 10:
+        return True
+    for box in patcher.boxes:
+        if box._inner_patcher is not None:
+            return True
+    return False

@@ -413,6 +413,120 @@ class Patcher:
         box.patching_rect[3] = 25.0
         return box
 
+    def add_panel(
+        self,
+        x: float,
+        y: float,
+        width: float,
+        height: float,
+        gradient: bool = True,
+    ) -> Box:
+        """Add a panel box for visual grouping of objects.
+
+        Panels render in the background layer behind all objects. By default
+        they use a gradient fill; pass gradient=False for solid fill.
+
+        Args:
+            x: Horizontal position.
+            y: Vertical position.
+            width: Panel width.
+            height: Panel height.
+            gradient: If True (default), use gradient bgfillcolor. If False,
+                use solid bgcolor.
+
+        Returns:
+            The created panel Box (inserted at index 0 for z-order).
+        """
+        panel = Box.__new__(Box)
+        panel.name = "panel"
+        panel.args = []
+        panel.id = self._gen_id()
+        panel.maxclass = "panel"
+        panel.text = ""
+        panel.numinlets = 1
+        panel.numoutlets = 0
+        panel.outlettype = []
+        panel.patching_rect = [x, y, width, height]
+        panel.fontname = FONT_NAME
+        panel.fontsize = FONT_SIZE
+        panel.presentation = False
+        panel.presentation_rect = None
+        panel._inner_patcher = None
+        panel._saved_object_attributes = None
+        panel._bpatcher_attrs = None
+
+        panel.extra_attrs = {
+            "background": 1,
+            "ignoreclick": 1,
+            "border": 0,
+            "rounded": 7,
+            "mode": 0,
+        }
+
+        if gradient:
+            panel.extra_attrs["bgfillcolor"] = {
+                "type": "gradient",
+                "color1": list(AESTHETIC_PALETTE["panel_fill"]),
+                "color2": list(AESTHETIC_PALETTE["panel_gradient_end"]),
+                "color": list(AESTHETIC_PALETTE["panel_fill"]),
+                "angle": 270.0,
+                "proportion": 0.39,
+                "autogradient": 0,
+            }
+        else:
+            panel.extra_attrs["bgcolor"] = list(AESTHETIC_PALETTE["panel_fill"])
+
+        # Insert at index 0 for correct z-order (behind all objects)
+        self.boxes.insert(0, panel)
+        return panel
+
+    def add_step_marker(self, number: int, x: float, y: float) -> Box:
+        """Add a numbered step marker circle.
+
+        Creates a textbutton styled as a small amber circle with a white
+        bold number. Renders in the background layer.
+
+        Args:
+            number: Step number to display.
+            x: Horizontal position.
+            y: Vertical position.
+
+        Returns:
+            The created step marker Box (inserted at index 0 for z-order).
+        """
+        marker = Box.__new__(Box)
+        marker.name = "textbutton"
+        marker.args = []
+        marker.id = self._gen_id()
+        marker.maxclass = "textbutton"
+        marker.text = ""
+        marker.numinlets = 1
+        marker.numoutlets = 3
+        marker.outlettype = ["", "", "int"]
+        marker.patching_rect = [x, y, 24.0, 24.0]
+        marker.fontname = FONT_NAME
+        marker.fontsize = 11.0
+        marker.presentation = False
+        marker.presentation_rect = None
+        marker._inner_patcher = None
+        marker._saved_object_attributes = None
+        marker._bpatcher_attrs = None
+
+        marker.extra_attrs = {
+            "background": 1,
+            "ignoreclick": 1,
+            "rounded": 60.0,
+            "text": str(number),
+            "textcolor": list(AESTHETIC_PALETTE["step_marker_text"]),
+            "bgcolor": list(AESTHETIC_PALETTE["step_marker_bg"]),
+            "fontface": FONTFACE_BOLD,
+            "parameter_enable": 0,
+        }
+
+        # Insert at index 0 for background layer z-order
+        self.boxes.insert(0, marker)
+        return marker
+
     def add_message(self, text: str, x: float = 0.0, y: float = 0.0) -> Box:
         """Add a message box to the patcher.
 
