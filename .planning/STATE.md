@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Patch Quality & Aesthetics
 status: executing
-stopped_at: Completed 11-01-PLAN.md
-last_updated: "2026-03-13T23:48:47.980Z"
-last_activity: 2026-03-13 -- Completed 11-01 (LayoutOptions Dataclass)
+stopped_at: Completed 11-02-PLAN.md
+last_updated: "2026-03-13T23:49:49.892Z"
+last_activity: 2026-03-13 -- Completed 11-02 (Width Overrides)
 progress:
   total_phases: 5
   completed_phases: 3
   total_plans: 11
-  completed_plans: 9
-  percent: 82
+  completed_plans: 10
+  percent: 91
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-13)
 ## Current Position
 
 Phase: 11 of 12 (Layout Refinements)
-Plan: 1 of 3 complete
+Plan: 2 of 3 complete
 Status: In Progress
-Last activity: 2026-03-13 -- Completed 11-01 (LayoutOptions Dataclass)
+Last activity: 2026-03-13 -- Completed 11-02 (Width Overrides)
 
-Progress: [████████░░] 82%
+Progress: [█████████░] 91%
 
 ## Performance Metrics
 
@@ -55,6 +55,7 @@ Progress: [████████░░] 82%
 | Phase 10 P01 | 4min | 1 tasks | 4 files |
 | Phase 10 P02 | 3min | 1 tasks | 3 files |
 | Phase 11 P01 | 2min | 2 tasks | 2 files |
+| Phase 11 P02 | 2min | 1 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,7 @@ Full decision log in `.planning/milestones/v1.0-ROADMAP.md`.
 - [Phase 10]: Z-order via boxes.insert(0) places background elements before all content objects
 - [Phase 10]: auto_size_panel returns (0,0,0,0) for empty input (safe to call without guards)
 - [Phase 11]: LayoutOptions defaults exactly match existing module-level constants for zero behavioral change
+- [Phase 11]: Width overrides keyed by object name with per-arg-count and default fallback; only objects with >= 3 audit instances included (513 of 1022)
 
 ### Pending Todos
 
@@ -101,6 +103,6 @@ None.
 ## Session Continuity
 
 Last activity: 2026-03-13 -- Completed 10-02 (Panels & Step Markers)
-Last session: 2026-03-13T23:48:47.978Z
-Stopped at: Completed 11-01-PLAN.md
+Last session: 2026-03-13T23:49:49.890Z
+Stopped at: Completed 11-02-PLAN.md
 Resume file: None

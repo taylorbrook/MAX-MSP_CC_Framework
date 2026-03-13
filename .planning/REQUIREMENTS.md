@@ -49,7 +49,7 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 
 ### Layout Refinements
 
-- [ ] **LYOT-01**: Box width calculation improved using per-object width override table extracted from help patch measurements
+- [x] **LYOT-01**: Box width calculation improved using per-object width override table extracted from help patch measurements
 - [ ] **LYOT-02**: Inlet-aligned cable routing positions child objects so inlets align under parent outlet X positions, reducing diagonal cables
 - [ ] **LYOT-03**: 15px grid snapping rounds all object positions to MAX's native grid
 - [ ] **LYOT-04**: Comment association placement positions comments near their target objects with consistent offset
@@ -116,7 +116,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PANL-05 | Phase 10 | Complete |
 | PTCH-01 | Phase 10 | Complete |
 | PTCH-02 | Phase 10 | Complete |
-| LYOT-01 | Phase 11 | Pending |
+| LYOT-01 | Phase 11 | Complete |
 | LYOT-02 | Phase 11 | Pending |
 | LYOT-03 | Phase 11 | Pending |
 | LYOT-04 | Phase 11 | Pending |
