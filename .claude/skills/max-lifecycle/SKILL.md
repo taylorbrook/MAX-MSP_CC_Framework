@@ -27,7 +27,8 @@ Before lifecycle operations:
 ```python
 from src.maxpat.project import (
     create_project, get_active_project, set_active_project,
-    read_status, update_status, list_projects
+    read_status, update_status, list_projects,
+    init_versions, get_version, bump_version, list_versions
 )
 from src.maxpat.testing import generate_test_checklist, save_test_results
 ```
@@ -52,6 +53,12 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 - Get current active project with `get_active_project(base_dir)`
 - Validate project directory exists on switch (detect desync)
 
+### Version Tracking
+- Track project versions with `init_versions(project_dir)`, `get_version(project_dir)`, `bump_version(project_dir, bump, description)`, `list_versions(project_dir)`
+- New projects auto-initialize at 0.0.0 via `create_project()`
+- Bump after significant changes: patch for fixes, minor for new features, major for breaking changes
+- See `references/status-tracking.md` for version tracking API details
+
 ### Test Protocol Execution
 - Generate manual test checklist from patch with `generate_test_checklist(patch_dict, patch_name, patch_path="")`
 - Save test results with `save_test_results(project_dir, test_name, results_md)`
@@ -69,6 +76,7 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 - `/max:status` -- Show project overview and progress
 - `/max:switch` -- Change active project
 - `/max:test` -- Generate test checklist from generated patches
+- `/max:version` -- Show current version or bump version
 - Any command that needs to read/update project state
 
 ## When NOT to Use

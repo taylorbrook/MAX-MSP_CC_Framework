@@ -43,6 +43,41 @@ update_status(project_dir, stage="verify", progress="test checklist generated")
 # Updates stage, progress, and sets updated timestamp
 ```
 
+## Version Tracking
+
+Projects use semver-based version tracking via `versions.json`. New projects start at `0.0.0` automatically.
+
+### Bump a Version
+```python
+from src.maxpat.project import bump_version
+new_ver = bump_version(project_dir, bump="patch", description="Fixed oscillator mapping")
+# 0.0.0 -> 0.0.1
+```
+
+Bump types:
+- **patch** -- Bug fixes, small tweaks (0.0.0 -> 0.0.1)
+- **minor** -- New features, added functionality (0.0.1 -> 0.1.0, resets patch)
+- **major** -- Breaking changes, major reworks (0.1.0 -> 1.0.0, resets minor and patch)
+
+### Get Current Version
+```python
+from src.maxpat.project import get_version
+ver = get_version(project_dir)  # Returns "0.1.0" or None if not initialized
+```
+
+### List Version History
+```python
+from src.maxpat.project import list_versions
+history = list_versions(project_dir)
+# Returns list of dicts (newest first): [{"version": "0.1.0", "description": "...", "timestamp": "..."}, ...]
+```
+
+### Initialize Versions (Existing Projects)
+```python
+from src.maxpat.project import init_versions
+init_versions(project_dir)  # Creates versions.json at 0.0.0 (idempotent)
+```
+
 ## Display Format
 
 When showing status (via `/max:status`):
