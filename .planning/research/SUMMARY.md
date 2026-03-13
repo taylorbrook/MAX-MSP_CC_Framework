@@ -1,180 +1,192 @@
 # Project Research Summary
 
-**Project:** MaxSystem -- Claude Code Framework for MAX/MSP Development
-**Domain:** AI-assisted development framework for visual audio programming (MAX/MSP)
-**Researched:** 2026-03-08
+**Project:** MaxSystem v1.1 — Object DB Audit, Patch Aesthetics, Refined Positioning
+**Domain:** MAX/MSP development framework tooling
+**Researched:** 2026-03-13
 **Confidence:** HIGH
 
 ## Executive Summary
 
-MaxSystem is a Claude Code development framework -- not a MAX/MSP application -- that gives Claude the knowledge and validation infrastructure to generate MAX/MSP patches, Gen~ DSP code, RNBO~ exportable patches, Node for Max JavaScript, and C/C++ externals. The core challenge is that MAX's .maxpat file format has no official specification (confirmed by Cycling '74), the object ecosystem spans 1,900+ objects across six domains (Max, MSP, Jitter, MC, Gen~, RNBO~), and academic benchmarks show current LLMs achieve only a 0.30 pass@1 rate for MAX/MSP JSON generation. The framework's architecture is modeled after the proven Plugin Freedom System (13 agents, 27 skills, Python hooks), adapted to MAX/MSP's unique constraints: visual patch graphs stored as JSON, spatial layout that affects execution order, and strict signal/control type boundaries.
+v1.1 is a quality milestone for an existing, working MAX patch generation framework. The v1.0 system produces functionally valid patches using a custom Python stack (`patcher.py`, `layout.py`, `db_lookup.py`, `validation.py`) with 624 passing tests. The v1.1 work divides cleanly into two independent tracks: (1) correctness — audit ~973 MAX help patches to extract ground truth object metadata and fix outlet type errors in the database; and (2) aesthetics — add visual polish (panels, styled comments, background layering, color system) so generated patches look professionally authored rather than machine-generated. Both tracks operate within the existing Python stdlib-only architecture with no new dependencies.
 
-The recommended approach is Python-first for all framework infrastructure (hooks, validators, database construction, code generation utilities), leveraging py2max as a reference implementation for .maxpat format correctness and the local MAX installation's 1,924 XML reference files as the authoritative object data source. The Object Knowledge Base is the single most critical component -- every other feature depends on it, and object hallucination is the #1 reported failure mode when LLMs attempt MAX development. Build the database first from MAX's bundled refpage XML files, validate generation against it, and treat it as the hard constraint that prevents Claude from guessing or confusing MAX with Pure Data.
+The recommended approach is to treat the audit track as the higher-priority foundation. Outlet type errors are not cosmetic — they break connection validation for mixed signal/control objects like `line~`, `sfplay~`, and `curve~`. The help patch format is identical JSON to `.maxpat`, parses in 0.17s for all 973 files, and provides authoritative `outlettype` arrays. The audit produces corrections into the existing `overrides.json` mechanism, which `db_lookup.py` already deep-merges with no code changes. The aesthetics track is then a clean post-audit addition: a new `aesthetics.py` module runs after layout and before serialization, adding panels and comment styling through the existing `Box.extra_attrs` mechanism.
 
-The key risks are: (1) the undocumented .maxpat format requiring reverse-engineering and continuous validation against MAX-saved reference patches, (2) the breadth of the object ecosystem making completeness an ongoing effort rather than a one-time task, and (3) the fundamental testing gap -- Claude cannot run MAX, so validation is necessarily static and the human must remain in the audio evaluation loop. These risks are mitigated by multi-layer validation (structural, semantic, domain), contract-driven generation where every patch traces back to planning documents, and honest validation coverage reporting that explicitly states what is NOT checked.
+The key risks are concentrated in the audit track. Help patches use a tab-based structure where all object examples are buried in subpatcher tabs — a shallow parser finds nothing. Multiple instances of the same object appear with different argument configurations, making naive extraction produce wrong outlet types. And bulk writes to domain JSON files would silently corrupt 16 manually verified overrides. The aesthetics track has lower overall risk, with the main gotchas being panel z-order (panels must appear first in the `boxes` array AND carry `background: 1`) and the undocumented `bgfillcolor` dict format, which requires capping `proportion` below 1.0 and visual validation in MAX.
 
 ## Key Findings
 
 ### Recommended Stack
 
-The framework runs entirely within Claude Code's native extension system. Python 3.14+ is the primary runtime for hooks, validators, and database construction -- matching the Plugin Freedom System's architecture and providing direct access to py2max. TypeScript (Zod 4.x for schema validation, Vitest 4.x for testing) is used only where it adds clear value. SQLite stores the object database. No external services, no Docker, no web UI.
+The project's custom Python-only stack continues unchanged. Every v1.1 capability is achievable with Python stdlib (`json`, `pathlib`, `collections`, `csv`) and the existing codebase. The stack originally proposed in v1.0 (py2max, Zod, SQLite, fast-xml-parser) was never adopted and should not be introduced now. The custom Patcher/Box/Patchline model is well-tested and already supports aesthetic properties via `Box.extra_attrs`.
 
 **Core technologies:**
-- **Python 3.14+**: Hook scripts, validators, database extraction from XML, py2max integration -- proven at PFS scale, no compilation step
-- **py2max**: Reference implementation for .maxpat generation (1,157 objects, 418+ tests, 5 layout strategies) -- extracted as knowledge, not used as runtime dependency
-- **SQLite**: Object database storage (zero-config, Python stdlib, single file) -- sufficient for ~2,000 objects
-- **Claude Code Agents/Skills/Hooks**: Native extension points for domain-specialized subagents, workflow orchestration, and automated validation -- proven with PFS (11 agents, 27 skills)
-- **Min-DevKit (0.6.0)**: Primary path for C++ external development -- modern C++, CMake-based, testing framework included
-- **Zod 4.x**: TypeScript schema validation for .maxpat JSON structure (14x faster than v3) -- used for pre-generation structural validation
-- **fast-xml-parser 5.4.x**: Parse 1,924 maxref XML files during database construction -- zero dependencies, TypeScript native
+- `Python 3.14` (stdlib only) — all parsing, analysis, generation; no new dependencies warranted
+- `src/maxpat/patcher.py` — extended with `add_panel()` convenience method and aesthetic property support
+- `src/maxpat/defaults.py` — new aesthetic constants derived from empirical analysis of 973 help patches
+- `src/maxpat/layout.py` — refined with `LayoutOptions` dataclass, inlet-aligned positioning, grid snapping
+- `src/maxpat/aesthetics.py` (new) — post-layout, pre-serialization visual styling pass
+- `src/maxpat/help_audit.py` (new) — standalone offline audit tool; does not touch the generation pipeline
+- `.claude/max-objects/overrides.json` — correction target for audit results; `db_lookup.py` already loads it automatically
+
+See [STACK.md](./STACK.md) for complete stack analysis.
 
 ### Expected Features
 
-**Must have (table stakes):**
-- **T2: Object Knowledge Base** -- the absolute foundation; object hallucination is the #1 failure mode. Source from 1,924 maxref XML files at `/Applications/Max.app/`
-- **T1: Valid .maxpat JSON generation** -- patches must open in MAX without errors. Format is undocumented; must reverse-engineer from py2max and real patches
-- **T3: Connection validation** -- outlet-to-inlet index bounds, signal/control type matching. Wrong connections cause silent failures
-- **T4: Patch layout engine** -- objects positioned readably with top-to-bottom signal flow. Overlapping objects make technically valid patches unusable
-- **T5: Gen~ code generation** -- GenExpr syntax for sample-level DSP. Claude writes C-like code naturally; needs syntax validation
-- **T6: Node for Max / js code generation** -- JavaScript where Claude excels. Lowest complexity, highest natural quality
-- **T9: Structured validation pipeline** -- multi-layer: JSON structure, object existence, connection validity, domain-specific checks
+**Must have (table stakes — audit):**
+- Help patch parser with recursive subpatcher descent — without this, zero objects are audited
+- Outlet type audit and `overrides.json` correction generation — fixes the #1 source of broken connections
+- Override-aware mode — never overwrite the 16 manually corrected entries already in overrides.json
+
+**Must have (table stakes — aesthetics):**
+- Section header comments (fontsize, fontface, textcolor) — removes "wall of plain text" appearance
+- Panel objects with background layer — primary visual grouping tool in every professional MAX patch
+- Bubble comment annotations — standard MAX annotation idiom for explaining non-obvious objects
+- Background layer attribute (`background: 1` + array-first placement) — without this, panels cover objects
 
 **Should have (differentiators):**
-- **D1: Domain-specialized agents** -- patching, DSP/Gen~, RNBO~, js/Node, externals, layout. Single general agent fails at all domains
-- **D5: Generator-critic validation loops** -- DSP critic, layout critic, connection critic catch errors serial review misses
-- **D4: Persistent agent memory** -- learns user preferences and project idioms across sessions (proven in PFS)
-- **D7: MAX 9 object coverage** -- ABL devices, step sequencer objects, array/string objects. Being current when competitors are not
+- Semantic color system (palette constants for headers, annotations, warnings)
+- Hierarchical comment styling (three tiers: section header / subsection label / inline annotation)
+- Panel auto-sizing around object groups (computes bounding box, saves manual measurement)
+- Patchline color coding by signal type (audio vs. control)
+- Step marker numbering (numbered textbutton circles, amber background, `rounded=60`)
+- Grid snapping to 15px (aligns generated patches to MAX's native grid)
+- Inlet-aligned cable routing (reduces diagonal cables by aligning child inlets under parent outlets)
 
 **Defer (v2+):**
-- **D2: RNBO~ patch generation** -- strict object subset constraints, separate validation layer needed. Build after MAX patching is solid
-- **D3: C/C++ external development** -- most advanced domain; Min-DevKit/Max SDK stale per community. Defer until framework proves value
-- **D8: Skill-based project lifecycle** -- full lifecycle overhead premature before basic generation is proven
-- **MAX for Live** -- separate domain, separate API, separate testing. Only after standalone MAX works
-- **Deep Jitter support** -- validation gap wider than audio. Support in knowledge base, defer specialized agents
+- Custom MAX style definitions (fragile external dependency, pollutes user's style library)
+- Custom fonts beyond Arial (cross-platform inconsistency)
+- Hidden connections for aesthetics (debugging nightmare)
+- Aggressive color theming (conflicts with user preferences)
+- Help patch layout copying (pedagogical layouts are not general-purpose)
+
+See [FEATURES.md](./FEATURES.md) for complete feature analysis including effort estimates (~30-50h total aesthetics).
 
 ### Architecture Approach
 
-The framework lives entirely within `.claude/` and `projects/` directories. It adapts the Plugin Freedom System's agent-skill-hook-schema-critic architecture to MAX/MSP. Each MAX project gets isolated storage under `projects/[Name]/` with its own planning docs, patches, code, and test results. The data flow is: User Command -> Skill (orchestration) -> Agent (domain-specific generation) -> Validators (PostToolUse hooks) -> Critics (stage gates). The Object Database is consulted at every step -- agents read it during generation, validators cross-check against it post-generation.
+The architecture follows the existing pipeline model with two new modules inserted at the correct points. `help_audit.py` is a standalone offline tool that touches only `overrides.json` (data, not code). `aesthetics.py` is a new pipeline step between `apply_layout()` and `to_dict()`. All other files receive only additive changes: new methods, new constants, one new optional parameter. `db_lookup.py` and `hooks.py` remain entirely unchanged.
 
 **Major components:**
-1. **Object Database** (references/object-db/) -- JSON files per domain namespace with inlet/outlet types, arguments, version compatibility. Populated from MAX's 1,924 XML refpage files. The single source of truth for all object properties
-2. **Agent System** (agents/) -- 9 domain-specialized agents: patch-agent, dsp-agent, gen-agent, rnbo-agent, n4m-agent, external-agent, layout-agent, jitter-agent, validation-agent. Each loads relevant knowledge base slices
-3. **Validation Pipeline** (hooks/validators/) -- Three layers: structural (JSON validity, required fields, ID uniqueness), semantic (object existence, connection type matching, signal chain termination), domain (signal flow sense, gain staging, GenExpr syntax, RNBO compatibility)
-4. **Template Library** (templates/) -- Reusable .maxpat patterns, GenExpr code, RNBO patterns, N4M scripts, external scaffolding. Start with 10-15 high-quality templates, expand based on demand
-5. **Hook System** (hooks/) -- Python scripts wired to Claude Code lifecycle events. SessionStart loads context, PostToolUse dispatches validators, SubagentStop persists memory
+1. `help_audit.py` (new) — `HelpPatchAuditor` class parses 973 `.maxhelp` files via recursive subpatcher descent, extracts outlet types from connected instances only, compares against `ObjectDatabase`, writes proposed entries to `overrides.json` and a human-readable `audit-report.json`
+2. `aesthetics.py` (new) — `PatchStyle` dataclass with predefined styles (DEFAULT, MSP, CONTROL, INIT); `add_section_panel()` runs post-layout to size panels around positioned boxes; `style_comment()` sets font/color via `Box.extra_attrs`
+3. `layout.py` (modified) — `LayoutOptions` dataclass replaces module-level constants; `_parent_alignment_x()` uses outlet/inlet indices instead of parent center; `_snap_to_grid()` rounds positions to 15px; layout tests refactored to relative assertions before constants change
+4. `patcher.py` (modified, minor) — `add_panel()` convenience method; panels inserted at index 0 in `boxes` array for correct render order
+5. `defaults.py` (modified, minor) — aesthetic constants derived from help patch analysis (HELPFILE_COMMENT_FONTSIZE=13.0, PANEL_DEFAULT_BGCOLOR=[0.87, 0.84, 0.82, 1.0], STEP_MARKER_BGCOLOR, etc.)
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for complete component design with code sketches and the parallelization map.
 
 ### Critical Pitfalls
 
-1. **No official .maxpat specification** -- The format is reverse-engineered. Missing fields cause MAX to silently drop objects or refuse to load patches. Mitigate by building canonical templates from MAX-saved patches, using py2max as reference, and validating every generated patch against known-good structural patterns. Phase 1 must nail this.
+1. **Recursive subpatcher descent required** — Help patches store ALL example content in `showontab: 1` subpatchers. A shallow parser finds zero instances of the target object. Must recursively descend into all nested patchers. After parsing, verify found instance count > 0 or flag the file as failed.
 
-2. **maxclass confusion** -- Most objects use `maxclass: "newobj"` but ~15 types (message, comment, number, flonum, toggle, inlet, outlet, bpatcher, etc.) require distinct maxclass values with unique JSON structures. Treating everything as "newobj" produces broken UI objects and non-functional subpatchers. Mitigate with a maxclass lookup table in the object database.
+2. **Filter degenerate instances before extracting outlet types** — Help patches contain multiple instances with different argument configs AND degenerate instances (e.g., `buffer~` with `numoutlets: 0` used as a label). Extract only from instances that have connections FROM them. Track outlet types per argument configuration for variable-I/O objects.
 
-3. **Hot/cold inlet semantics** -- Only inlet 0 is "hot" (triggers computation). Connecting data only to cold inlets produces patches that do nothing. Missing `trigger` objects cause evaluation order bugs. Mitigate by marking every inlet as hot/cold in the database and requiring explicit `trigger` objects for fan-out scenarios.
+3. **Never overwrite manual overrides during bulk update** — `overrides.json` contains 16 manually corrected MSP outlet types plus the `multislider fetch` correction. These are hard-won ground truth. The audit pipeline must load `overrides.json` first and skip any object already manually corrected. All audit results go to `overrides.json` additions only; never modify domain JSON files.
 
-4. **LLMs confuse MAX/MSP with Pure Data** -- Academic research confirms this is the most common AI failure mode. PD bracket syntax, wrong object names, wrong file formats. Mitigate with the object knowledge base as a hard constraint: if an object name is not in the database, it is rejected.
+4. **Fix box width calculation before fixing cable routing** — The current formula (`len(text) * 7.0 + 16.0`) has up to 59px error. This compounds into inlet/outlet X position errors in midpoint generation. Fix sizing first (per-object override table from help patch measurements), then recalibrate routing.
 
-5. **Signal vs. control rate mismatch** -- Connecting message outlets to signal inlets (or vice versa) without conversion objects produces silence or glitchy audio. Mitigate by tagging every inlet/outlet with domain type in the database and flagging cross-domain connections without `sig~`, `line~`, or `snapshot~` intermediaries.
+5. **Panel z-order requires both `background: 1` AND array-first placement** — Use `patcher.boxes.insert(0, panel_box)` not `add_box()`. Also set `"ignoreclick": 1`. Either property alone is insufficient.
+
+6. **Refactor layout tests before changing spacing** — `test_layout.py` has pixel range assertions calibrated for `V_SPACING=20`. Refactor to relative assertions (`gap >= V_SPACING * 0.8`) first, then change constants. Reversing this order turns one improvement into a mass test failure event.
+
+See [PITFALLS.md](./PITFALLS.md) for all 16 pitfalls with evidence, consequences, and detection strategies.
 
 ## Implications for Roadmap
 
-Based on combined research, the dependency graph is clear: Object Database -> Generation -> Validation -> Agents -> Orchestration -> Expansion. Feature dependencies from FEATURES.md confirm T2 (Object KB) is the root of the entire tree.
+Based on combined research, the natural phase structure is driven by three constraints: (a) correctness before aesthetics, (b) sizing accuracy before cable routing, and (c) test stability before spacing changes.
 
-### Phase 1: Foundation and Object Database
-**Rationale:** Every other component depends on the Object Knowledge Base. Without it, Claude hallucinates objects, gets inlet/outlet counts wrong, and confuses MAX with Pure Data. The .maxpat format must also be nailed here -- get the JSON structure wrong and nothing opens in MAX. This phase addresses the 4 most critical pitfalls simultaneously.
-**Delivers:** System config detection, directory structure, core JSON schemas, Object Database populated from MAX refpage XML (prioritize ~100 most-used MSP/Max objects), basic settings.json with hook skeleton, canonical .maxpat templates saved from MAX itself.
-**Addresses:** T2 (Object Knowledge Base), foundation for T1 (.maxpat generation)
-**Avoids:** Pitfalls 1 (no spec), 2 (maxclass confusion), 4 (hot/cold inlets), 5 (PD confusion), 11 (DB incompleteness)
+### Phase 1: Help Patch Audit Pipeline
 
-### Phase 2: Patch Generation Core
-**Rationale:** With the Object DB in place, build the generation engine and validation pipeline. These are tightly coupled -- generation consults the DB, validation checks against it. Layout is included here because unreadable patches are effectively broken even when structurally valid. This phase produces the first end-to-end working output: a .maxpat file that opens correctly in MAX.
-**Delivers:** patch-agent, layout engine (grid/columnar with MAX conventions), structural validator, object validator, connection validator, PostToolUse hook wiring.
-**Addresses:** T1 (valid .maxpat generation), T3 (connection validation), T4 (patch layout), T9 (validation pipeline basics)
-**Avoids:** Pitfalls 3 (connection false positives), 8 (terrible layout), 10 (rate mismatch), 13 (execution order), 14 (subpatcher breakage)
+**Rationale:** Correctness work first. Outlet type errors produce broken patches — aesthetics do not. The audit is a standalone tool with zero risk to the existing generation pipeline. Building it also produces the per-object width measurements needed in Phase 4 as a byproduct.
+**Delivers:** `src/maxpat/help_audit.py`, `audit-report.json`, proposed `overrides.json` entries for human review, per-object actual box width data extracted from help patches
+**Addresses:** Outlet type audit, inlet/outlet count validation, argument format extraction, coverage mapping for 292 empty-I/O objects
+**Avoids:** Pitfalls 1 (degenerate instances), 2 (override merge order), 3 (tab structure), 9 (maxclass mapping), 11 (stale version data), 14 (priority targeting), 15 (operator coverage gaps)
 
-### Phase 3: Gen~/DSP and Code Generation
-**Rationale:** Gen~ is the primary DSP code entry point and Claude writes C-like code naturally. Node for Max / js is Claude's strongest subsystem (native JavaScript). These code generation domains are high-value, moderate-complexity additions once the patching foundation works. Includes DSP-specific agent and GenExpr syntax validation.
-**Delivers:** gen-agent with GenExpr generation + validation, dsp-agent for MSP signal chains, n4m-agent for JavaScript, GenExpr syntax validator, JS validator, initial template library (10-15 core patterns), Gen~ code templates.
-**Addresses:** T5 (Gen~ code generation), T6 (Node/js code generation), T7 (template library - initial), D7 (MAX 9 objects - version tagging in DB)
-**Avoids:** Pitfalls 6 (GenExpr scope errors), 12 (N4M file naming), 17 (overambitious templates), 19 (Gen~ execution order)
+### Phase 2: Object DB Corrections
 
-### Phase 4: Orchestration and Agent Infrastructure
-**Rationale:** With core generation, code domains, and validation working, add the orchestration layer that ties everything together: multi-project isolation, persistent agent memory, generator-critic loops, and skill-based workflows. These are force multipliers on existing capabilities, not new generation domains.
-**Delivers:** Multi-project isolation, persistent agent memory with write-back, generator-critic validation loops (DSP critic, layout critic, connection critic), patch-workflow skill, slash commands (/patch, /gen, /project), specialized agent refinements.
-**Addresses:** T8 (multi-project isolation), D1 (domain-specialized agents - refinement), D4 (persistent memory), D5 (generator-critic loops), D6 (intelligent object selection), D8 (skill-based lifecycle)
-**Avoids:** Pitfall 18 (validation without feedback - critic loops add second opinion layer)
+**Rationale:** Data task, not code task. Run the Phase 1 pipeline, review the diff report, merge approved high-confidence corrections into `overrides.json`. The 16 manually corrected entries and the existing 624-test suite serve as a regression gate. Prioritize the 292 objects with empty inlets or outlets — these are guaranteed improvements with no conflict risk.
+**Delivers:** Expanded `overrides.json` with help-patch-verified outlet types; `db_lookup.py` picks up all corrections automatically (no code changes)
+**Avoids:** Pitfall 2 (never modify domain JSON files), Pitfall 14 (prioritize empty-I/O objects first)
 
-### Phase 5: RNBO and External Development
-**Rationale:** These are the highest-complexity, highest-value expansion domains. RNBO enables VST3/AU/Web export from generated patches -- massive value but requires its own object whitelist and validation layer. External development (C/C++ with Min-DevKit) is the most advanced MAX development task. Both require the full foundation to be solid.
-**Delivers:** rnbo-agent with export-aware generation, RNBO object whitelist + validator, external-agent with Min-DevKit scaffolding, CMake template generation, build system validation, RNBO/external templates.
-**Addresses:** D2 (RNBO~ generation), D3 (C/C++ external development)
-**Avoids:** Pitfalls 7 (RNBO object subset), 9 (SDK build fragility)
+### Phase 3: Aesthetic Foundations
 
-### Phase 6: Expansion and Polish
-**Rationale:** After the core framework is proven, expand coverage: full object database (all 1,900+ objects), Jitter support, MC multichannel, advanced layout algorithms, help patch generation. These are incremental improvements driven by user demand.
-**Delivers:** Full Object DB coverage, Jitter agent + objects, MC domain support, advanced layout (Sugiyama-style), help-patch generation, diagnostic mode for generated patches.
-**Addresses:** Remaining D7 (full MAX 9 coverage), Jitter support, MC support
-**Avoids:** Pitfall 20 (MC channel count limitations)
+**Rationale:** Can run in parallel with Phase 2 since these touch entirely different files. Comment styling and the background layer attribute are low-risk additions via `Box.extra_attrs`. Panel support requires `add_panel()` and correct array ordering but does not affect any existing code paths. Validate `bgfillcolor` dict format by opening test patches in MAX — this cannot be verified offline.
+**Delivers:** `src/maxpat/aesthetics.py`, `add_panel()` on Patcher, aesthetic constants in `defaults.py`, styled section header comments, panel objects with correct z-order, patcher background color support, bubble comment annotations
+**Addresses:** All FEATURES.md table stakes aesthetics; must-have differentiators (semantic colors, hierarchical comments, step markers)
+**Avoids:** Pitfalls 5 (bgfillcolor dict format), 6 (panel z-order), 7 (comment property names differ from other boxes), 12 (presentation mode conflicts), 13 (style system conflicts — do not use patcher `style` property in v1.1)
+
+### Phase 4: Layout Refinements
+
+**Rationale:** Can also run in parallel with Phase 2. But layout tests MUST be refactored to relative assertions before changing any spacing constants — this is a hard prerequisite step within the phase. Fix sizing accuracy (per-object override table using Phase 1 width measurements) before fixing cable routing, since routing errors compound from sizing errors.
+**Delivers:** `LayoutOptions` dataclass, inlet-aligned cable positioning, 15px grid snapping, comment association placement, improved box sizing with per-object override table, recalibrated midpoint routing
+**Addresses:** FEATURES.md differentiators (grid alignment, inlet alignment, panel auto-sizing integration)
+**Avoids:** Pitfalls 4 (width calculation error), 8 (brittle tests — refactor first), 10 (compound routing error from width error)
+
+### Phase 5: Pipeline Integration and Agent Updates
+
+**Rationale:** Integrates Phase 3 and Phase 4 into the main `generate_patch()` pipeline. Aesthetics are opt-in via parameter to prevent regressions for existing callers. Aesthetic validation issues are info-level only — never blocking. Update agent SKILL.md files with corrected object patterns and new aesthetic capabilities after both the DB corrections (Phase 2) and pipeline (this phase) are complete.
+**Delivers:** Updated `generate_patch(aesthetics=True)` in `__init__.py`; aesthetic validation as info-level in `validation.py`; updated agent documentation reflecting corrected outlet types and aesthetic capabilities
+**Implements:** Full pipeline: Patcher → `apply_layout()` → `apply_aesthetics()` → `to_dict()` → `validate_patch()`
 
 ### Phase Ordering Rationale
 
-- **Object DB first** because the dependency graph from FEATURES.md shows T2 is the root node for T1, T3, T5, T6, T9, D1, D2, D6, and D7. Nothing works correctly without it.
-- **Generation + Validation together** because they form a tight feedback loop: generation consults the DB, validation checks against it, and both need to be in place before the first usable output.
-- **Code generation before orchestration** because Gen~/js generation adds high-value output types with moderate complexity, while orchestration is a multiplier on existing capabilities (not useful until there are capabilities to multiply).
-- **RNBO and externals last** because they are the most complex domains with the most constraints, and both require the full validation pipeline to catch their unique failure modes.
-- **This ordering avoids the overambition pitfall** (Pitfall 17) by delivering working output early (Phase 2) and expanding based on proven foundation.
+- Phases 1 and 2 sequence together: audit pipeline must run before corrections can be reviewed.
+- Phases 3 and 4 can run in parallel with Phase 2 — they operate on different files with no shared state.
+- Phase 5 depends on both Phase 3 and Phase 4 being complete but does not require Phase 2 (DB corrections are data-level, not pipeline-level).
+- Overall dependency structure: `1 → 2 → (5 depends on 2 for agent docs)`, `3 → 5`, `4 → 5`.
+- Do not let aesthetics work block on DB corrections. The two tracks are independent.
 
 ### Research Flags
 
-Phases likely needing deeper research during planning:
-- **Phase 1:** Needs `/gsd:research-phase` for .maxpat format edge cases (subpatcher nesting, bpatcher references, presentation mode JSON structure). The format is undocumented and py2max covers the common cases but not all edge cases.
-- **Phase 3:** Needs `/gsd:research-phase` for GenExpr syntax specifics (scope rules, History behavior in functions, buffer access operators). No parser exists; must build custom validation.
-- **Phase 5 (RNBO):** Needs `/gsd:research-phase` for RNBO object subset enumeration. The exact list of supported objects is not machine-readable and changes between MAX versions.
-- **Phase 5 (Externals):** Needs `/gsd:research-phase` for Min-DevKit/Max SDK current state. Community reports them as "rather stale" -- need to verify what works on current macOS/Apple Silicon.
+Phases with well-documented patterns (skip additional research):
+- **Phase 2:** Pure data review task. Diff report from Phase 1 provides everything needed for decisions.
+- **Phase 3:** All aesthetic properties are fully verified from official docs and real `.maxpat` file analysis. Panel format, comment styling, and bgfillcolor structure are documented in FEATURES.md with validated JSON examples.
+- **Phase 5:** Pipeline integration is a straightforward parameter addition and documentation update.
 
-Phases with standard patterns (skip research-phase):
-- **Phase 2:** Well-documented patterns. Layout algorithms (grid, columnar) are straightforward. Validation layers follow established static analysis patterns. PFS provides proven hook wiring patterns.
-- **Phase 4:** Direct port from Plugin Freedom System. Agent memory, project isolation, skill lifecycle, and critic patterns are all proven at PFS scale with 11 agents and 27 skills.
+Phases that may benefit from targeted investigation during planning:
+- **Phase 1:** The help patch coverage mapping for operators and MC objects (Pitfall 15) needs concrete resolution before building the coverage tracker. Low risk — scoping work, not architectural.
+- **Phase 4:** The proportional character width table for sizing accuracy benefits from Phase 1 data. Extract actual widths during Phase 1 as a byproduct to avoid a second pass through help patches.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | Python + Claude Code extensions proven by PFS. py2max verified locally. All tools version-checked. Local MAX installation confirmed with 1,924 refpage XML files. |
-| Features | MEDIUM | No precedent for this exact product category. Feature priorities derived from community failure reports and PFS analogy. Table stakes are clear; differentiator value is projected, not proven. |
-| Architecture | HIGH | Direct adaptation of PFS architecture (13 agents, 27 skills, Python hooks) which is production-proven. MAX-specific adaptations (Object DB, layout engine, .maxpat pipeline) are well-reasoned from reverse-engineering. |
-| Pitfalls | HIGH | Verified across academic research (LLM benchmarks), Cycling '74 forums, official documentation, SDK references, and community tools. Multiple independent sources confirm the same failure modes. |
+| Stack | HIGH | Verified against existing codebase. All recommendations extend what already works. No new dependencies. |
+| Features | HIGH (audit) / MEDIUM (aesthetics) | Audit features verified against actual `.maxhelp` JSON. Aesthetic properties verified from official docs and real `.maxpat` files; "what looks professional" retains a subjective component. |
+| Architecture | HIGH | All recommendations based on direct codebase analysis. Integration points (`Box.extra_attrs`, `patcher.props`, `overrides.json` merge) are confirmed working patterns. |
+| Pitfalls | HIGH (parsing + DB) / MEDIUM (bgfillcolor) | Parsing and DB pitfalls verified against actual help patches and source code. The `bgfillcolor` dict format is reverse-engineered — no official schema exists. |
 
-**Overall confidence:** HIGH -- The architecture is proven (PFS), the pitfalls are well-documented, and the stack is verified locally. The primary uncertainty is in feature prioritization (MEDIUM) because no comparable product exists to validate against.
+**Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **Object Database completeness timeline:** Starting with ~100 objects is sufficient for Phase 1-2, but the path to full 1,900+ coverage needs a concrete extraction pipeline. Plan for incremental expansion with priority based on user requests.
-- **.maxpat edge cases:** Subpatcher nesting depth, bpatcher with args, poly~ voice management, and presentation mode JSON structures need empirical testing against MAX-saved patches. Cannot be fully resolved from documentation alone.
-- **GenExpr parser:** No existing parser or formal grammar for GenExpr. Must build custom tokenizer/validator. Scope and complexity unknown until Phase 3 research.
-- **RNBO object whitelist:** The exact set of RNBO-compatible objects is not published as a machine-readable list. Must extract from RNBO documentation and refpage files, then validate empirically.
-- **Validation false positive/negative rates:** The multi-layer validation system's accuracy can only be measured against real-world usage. Plan to track and tune during Phase 2.
-- **MAX 8 vs MAX 9 behavioral differences:** Threading changes, new objects, and API differences between versions need systematic cataloging. The object database version-tagging approach handles this in theory but needs validation.
+- **Proportional character width table:** Sizing error analysis (Pitfall 4) has measurements for 6 objects. A fuller table requires help patch analysis. Build width extraction into the Phase 1 audit tool as a byproduct. Interim fix: operator override table (short objects like `+`, `-` get minimum ~90px).
+- **bgfillcolor rendering validation:** Cannot be verified offline. Visual validation of generated panels must be done by opening test patches in MAX 9. Plan for a "panel gallery" test patch as a Phase 3 deliverable.
+- **Help patch coverage for 738 un-covered objects:** Operators, MC wrappers, and Gen internals share help files. Accept ~56% direct coverage (934/1,672 objects) as sufficient for v1.1 and document the remainder as known gaps tracked in `audit-report.json`.
+- **bgfillcolor behavior across MAX versions:** Some help patches were saved in older MAX versions. All visual validation should target MAX 9, not inferred from MAX 8 documentation alone.
 
 ## Sources
 
 ### Primary (HIGH confidence)
-- [Cycling '74 Official Documentation](https://docs.cycling74.com/) -- object references, GenExpr syntax, Node for Max API, RNBO documentation
-- [Max SDK GitHub](https://github.com/Cycling74/max-sdk) -- v8.2.0, CMake build system, Apple Silicon support
-- [Min-DevKit GitHub](https://github.com/Cycling74/min-devkit) -- v0.6.0, modern C++ external development
-- [Claude Code Extension Documentation](https://code.claude.com/docs/en/) -- hooks, skills, agents, plugins
-- Local MAX Installation at `/Applications/Max.app/` -- 1,924 maxref XML files verified on machine
-- Plugin Freedom System at `/Users/taylorbrook/Dev/VST-development/` -- proven architecture (13 agents, 27 skills)
+- `/Applications/Max.app/Contents/Resources/C74/help/` — 973 .maxhelp files; `trigger.maxhelp`, `buffer~.maxhelp`, `attrui.maxhelp` analyzed directly
+- `/Users/taylorbrook/Dev/MAX/src/maxpat/` — entire codebase read; all integration points confirmed
+- [Color and the Max User Interface (Max 8)](https://docs.cycling74.com/max8/vignettes/max_colors) — patcher-level color properties
+- [Panel Reference (Max 8)](https://docs.cycling74.com/max8/refpages/panel) — panel object attributes
+- [Comment Reference (Max 8)](https://docs.cycling74.com/max8/refpages/comment) — comment styling attributes
+- [Common Box Attributes (Max 5+)](https://docs.cycling74.com/max5/refpages/max-ref/jbox.html) — universal box properties
+- [Foreground and Background Layers (Max 7)](https://docs.cycling74.com/max7/vignettes/background) — layer system
 
 ### Secondary (MEDIUM confidence)
-- [py2max](https://github.com/shakfu/py2max) -- .maxpat format reference, 1,157 object MaxRef DB, 418+ tests
-- [Benchmarking LLM Code Generation for Audio Programming](https://arxiv.org/html/2409.00856v1) -- 0.30 pass@1 for MaxMSP JSON, documents LLM failure modes
-- [Cycling '74 Forums](https://cycling74.com/forums/) -- community consensus on AI+MAX ("non-functional mess"), .maxpat format (no official spec), best practices
-- [MaxMSP-MCP-Server](https://github.com/tiianhk/MaxMSP-MCP-Server) -- MCP bridge approach (evaluated and rejected as anti-feature)
+- [HfMT-ZM4/WFS-Server](https://github.com/HfMT-ZM4/WFS-Server/blob/master/wfs.gui.cpu.maxpat) — bgfillcolor gradient dict structure verified from real .maxpat
+- [Vimeo/vimeo-maxmsp](https://github.com/vimeo/vimeo-maxmsp/blob/master/n4m-vimeo/player.maxpat) — styled comments and gradient messages
+- [Scripting Panel Gradients (Forum)](https://cycling74.com/forums/scripting-panel-gradients) — proportion limit gotcha, pt1/pt2 vs angle conflict
+- [Tips on structuring/laying out patches (Forum)](https://cycling74.com/forums/tips-on-structuringlaying-out-patches) — layout conventions
+- [Panel bgfillcolor attributes (Forum)](https://cycling74.com/forums/panel-bgfillcolor-attributes-how-to-specify-as-3-floats) — proportion capping requirement
 
-### Tertiary (LOW confidence)
-- [maxobjects.com](http://www.maxobjects.com/) -- community object database, useful for coverage gap identification but not authoritative
-- [MaxPyLang](https://github.com/Barnard-PL-Labs/MaxPyLang) -- alternative Python patch generation, minimal documentation
+### Tertiary (project memory, LOW confidence without fresh verification)
+- `feedback_msp_outlet_types.md` — 16 corrected MSP objects; confirms audit priority
+- `feedback_layout_spacing.md` — V_SPACING=20, H_GUTTER=15 tight spacing requirements
+- `feedback_multislider_fetch.md` — confirms fetch/fetchindex and outlet 1 issue
 
 ---
-*Research completed: 2026-03-08*
+*Research completed: 2026-03-13*
 *Ready for roadmap: yes*

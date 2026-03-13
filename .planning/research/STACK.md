@@ -1,369 +1,236 @@
-# Technology Stack
+# Technology Stack: v1.1 Patch Quality & Aesthetics
 
-**Project:** MaxSystem -- Claude Code Framework for MAX/MSP Development
-**Researched:** 2026-03-08
+**Project:** MaxSystem v1.1 -- Object DB Audit, Patch Aesthetics, Refined Positioning
+**Researched:** 2026-03-13
 **Overall Confidence:** HIGH
 
 ## Executive Summary
 
-MaxSystem is a Claude Code development framework, not a MAX/MSP application. The framework infrastructure (agents, skills, hooks, validators, templates, object database) runs entirely within the Claude Code ecosystem using its native extension points: skills (`.claude/skills/`), agents (`.claude/agents/`), hooks (`.claude/hooks/`), and scripts (`.claude/scripts/`). The primary runtime for validation scripts, database construction, and code generation utilities is **Python 3**, matching the Plugin Freedom System's proven architecture and leveraging the existing `py2max` library for .maxpat generation/validation. TypeScript is used only where it provides clear advantages (Zod schemas for .maxpat JSON validation, Node for Max code generation testing).
+The v1.1 milestone requires three capabilities: (1) parsing ~973 MAX help patches to extract ground truth object data (outlet types, inlet counts, argument formats, connection patterns), (2) generating patches with visual polish (panels, background colors, comment styling), and (3) enriching the layout engine with aesthetic defaults.
 
-The .maxpat format is an undocumented JSON format -- Cycling '74 has never published a specification. However, the structure is reverse-engineerable and well-understood through py2max (1,157 documented objects, 418+ tests) and direct examination of the 1,175+ maxref XML files bundled with the local MAX installation at `/Applications/Max.app/Contents/Resources/C74/docs/refpages/`.
+**No new dependencies are needed.** All three capabilities are achievable with Python stdlib (`json`, `pathlib`, `os`, `collections`, `csv`) and the existing project codebase. The .maxhelp files are standard JSON (same format as .maxpat), parsable in 0.17s for all 973 files including deep recursive traversal of 53,178 boxes and 31,476 connections. The aesthetic properties (panel objects, comment bubble styling, background layering, font overrides) are simple JSON key/value pairs in the existing box dict structure, requiring only additions to `patcher.py`, `defaults.py`, and `layout.py`.
 
-## Recommended Stack
+The v1.0 STACK.md recommended py2max, Zod, fast-xml-parser, Vitest, and SQLite. In practice, the project built a custom Python stack (`patcher.py`, `layout.py`, `db_lookup.py`, `validation.py`) without py2max or Zod. For v1.1, continue with the same custom Python-only approach. Do NOT introduce new libraries.
 
-### Framework Infrastructure (Claude Code Extension System)
+## Recommended Stack Additions (v1.1)
 
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Claude Code Skills | Current | Slash commands for patch generation, project lifecycle | Native Claude Code extension point; skills = `/slash-commands` with SKILL.md frontmatter, supporting files, and subagent delegation | HIGH |
-| Claude Code Agents | Current | Specialized subagents (DSP, patching, Gen~, RNBO~, externals, UI) | Native `.claude/agents/*.md` files with system prompts, tool restrictions, and model selection; proven in Plugin Freedom System with 11 agents | HIGH |
-| Claude Code Hooks | Current | Pre/post validation, agent memory, session management | 16 hook events (PreToolUse, PostToolUse, Stop, SessionStart, SubagentStop, etc.); hooks receive JSON on stdin, return decisions on stdout | HIGH |
-| Python 3.14+ | 3.14.2 (local) | Hook scripts, validators, database construction, extraction | Matches Plugin Freedom System architecture; direct access to py2max; XML parsing for maxref extraction; no compilation step | HIGH |
-| CLAUDE.md | Current | Framework knowledge base, object reference summaries, conventions | Persistent context loaded every session; tiered (global, project, nested) | HIGH |
+### Help Patch Parsing & Audit Tools
 
-### .maxpat JSON Generation and Validation
+| Technology | Version | Purpose | Why |
+|------------|---------|---------|-----|
+| Python `json` (stdlib) | 3.14 | Parse .maxhelp JSON files | Already used throughout project. Parses all 973 help patches in 0.17s including recursive subpatcher traversal. .maxhelp files are identical JSON format to .maxpat. No external parser needed. |
+| Python `pathlib` (stdlib) | 3.14 | File discovery and path handling | Walk `/Applications/Max.app/Contents/Resources/C74/help/{max,msp,jitter,m4l}/` directories. Already used in `db_lookup.py`. |
+| Python `collections` (stdlib) | 3.14 | Data aggregation (Counter, defaultdict) | Aggregate outlet types, argument patterns, connection patterns across 53,178 boxes. Already used in `layout.py` and `validation.py`. |
+| Python `csv` (stdlib) | 3.14 | Audit report generation | Optional. Generate diff reports (DB vs help patch ground truth) as CSV for review. |
 
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| py2max | Latest (pip) | .maxpat file generation and manipulation | Purpose-built Python library for offline .maxpat generation; Patcher/Box/Patchline classes mapping 1:1 to JSON format; 5 layout strategies; round-trip JSON support; 1,157 documented objects in MaxRef database; 418+ tests | HIGH |
-| Zod | 4.3.x | .maxpat JSON schema validation (TypeScript layer) | 14x faster string parsing vs Zod 3; TypeScript-first with static type inference; can define strict schemas for patcher structure, box definitions, patchline connections; used for pre-generation validation of patch structure | MEDIUM |
-| fast-xml-parser | 5.4.x | Parse maxref XML files during database construction | Zero dependencies; TypeScript native; 3,800+ ops/s; parses `<c74object>` XML with inlets, outlets, arguments, attributes, messages into JSON for object database | HIGH |
-| Custom JSON Schema | N/A | .maxpat format specification (reverse-engineered) | No official spec exists; must define from examination of real .maxpat files; key structure: `{ patcher: { fileversion, appversion, rect, boxes: [{ box: { id, maxclass, numinlets, numoutlets, outlettype, patching_rect, text } }], lines: [{ patchline: { source: [id, outlet], destination: [id, inlet] } }] } }` | HIGH |
-
-### Object Database Construction
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Python 3 + fast-xml-parser | See above | Extract structured data from 1,175+ maxref XML files | XML files at `/Applications/Max.app/Contents/Resources/C74/docs/refpages/{max-ref,msp-ref,jit-ref,m4l-ref}/` plus Gen (189 files) and RNBO (560 files); c74object XML schema includes: name, module, category, digest, inletlist, outletlist, objarglist, attributelist, messagelist, seealsolist | HIGH |
-| SQLite | 3.x (stdlib) | Object database storage | Zero-config; Python stdlib; fast queries; single-file DB; can bundle with framework; queryable for inlet/outlet counts, argument types, categories, version compatibility | HIGH |
-| JSON export | N/A | Portable object reference for CLAUDE.md injection | Export SQLite data as JSON for embedding in agent context; tiered: summary (names + categories), detail (inlets/outlets/args), full (everything including messages and attributes) | HIGH |
-
-### MAX External Development Support
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Min-DevKit | 0.6.0 | C++ external development (recommended path) | Modern C++; CMake-based; includes testing framework, automatic documentation generation, package creation scripts; Apple Silicon support since v0.6.0; templates for common external types | HIGH |
-| Max SDK | 8.2.0 | C external development (fallback/advanced) | Traditional C API; more low-level control; same CMake build system since 8.2; Apple Silicon support; use when Min-DevKit abstractions are insufficient or mixing C/C++ | MEDIUM |
-| CMake | 3.19+ | Build system for externals | Required by both Min-DevKit and Max SDK; generates Xcode projects on macOS; framework generates CMakeLists.txt templates | HIGH |
-
-**Recommendation: Min-DevKit as primary, Max SDK as fallback.** Min-DevKit provides modern C++ with built-in testing, documentation generation, and package scaffolding. The two share unified base headers since SDK 8.2. Use Max SDK directly only when needing C-only interfaces or low-level API access not exposed by Min-DevKit.
-
-### Gen~/RNBO~/Node for Max Code Generation
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| GenExpr (custom parser) | N/A | Gen~ codebox code generation and validation | GenExpr is C/JavaScript-like syntax with `inN`/`outN` keywords, `History`, `Data`, `Buffer`, `Param` declarations; no external parser exists -- must build custom tokenizer/validator for syntax checking | MEDIUM |
-| RNBO object subset | MAX 9.x | RNBO patch generation | RNBO uses a subset of Max objects in `rnbo~` subpatchers; stored as `.rbnopat` (same JSON format as .maxpat); py2max supports .rbnopat generation; Gen can be embedded within RNBO | HIGH |
-| Node.js | 24.x (local) | Node for Max code generation and testing | N4M scripts use `require("max-api")` for Max communication; framework generates testable JavaScript with `max-api` calls stubbed for offline testing; `node.script` object hosts in MAX | HIGH |
-| max-api (npm) | Latest | Node for Max API stubs for testing | `maxAPI.addHandler()`, `maxAPI.outlet()`, `maxAPI.getDict()`, `maxAPI.post()` -- framework creates mock/stub versions for offline test execution | MEDIUM |
-
-### Testing and Validation
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| Python unittest/pytest | stdlib / latest | Hook validators, database tests, .maxpat structure validation | Matches Plugin Freedom System pattern; validators run as hook scripts via `python3 script.py`; direct integration with py2max test infrastructure | HIGH |
-| Vitest | 4.0.x | TypeScript schema tests, Node for Max code tests | 17M weekly downloads; first-class ESM + TypeScript support; fast execution; use for Zod schema validation tests and N4M generated code tests | MEDIUM |
-| Custom validators (Python) | N/A | Multi-layer patch validation | Pre-generation: object existence check, inlet/outlet compatibility; Post-generation: JSON structure, connection validity, layout sanity; Domain-specific: DSP signal flow, Gen~ syntax, RNBO object subset | HIGH |
-
-### Patch Layout Engine
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| py2max layout strategies | Latest | Object positioning algorithms | 5 built-in strategies: grid, flow, columnar, matrix, horizontal/vertical; framework extends with domain-aware layout (DSP chains top-to-bottom, control left-to-right, UI objects in presentation view) | HIGH |
-| Custom layout rules (Python) | N/A | MAX-idiomatic positioning | `patching_rect: [x, y, width, height]` per box; grid-snap to 5px or 15px; avoid overlaps; route patch cords to minimize crossings; group related objects; standard object sizes per maxclass | HIGH |
-
-## Alternatives Considered
-
-| Category | Recommended | Alternative | Why Not |
-|----------|-------------|-------------|---------|
-| Framework language | Python 3 (hooks/validators) | TypeScript/Node.js for everything | Plugin Freedom System proves Python hooks work; py2max is Python; XML parsing trivial in Python; no compilation step; TypeScript adds build complexity for hook scripts |
-| .maxpat generation | py2max (Python) | Custom TypeScript .maxpat builder | py2max has 418+ tests, 1,157 documented objects, 5 layout strategies, round-trip support; building equivalent in TypeScript is months of work for no benefit |
-| Schema validation | Zod 4.x | Ajv (JSON Schema) | Zod provides TypeScript type inference; more ergonomic API; 14x performance improvement in v4; JSON Schema import support if needed later |
-| Schema validation | Zod 4.x | TypeBox | TypeBox is faster and JSON-Schema-native, but Zod has larger ecosystem, better documentation, and we need TypeScript types more than JSON Schema output |
-| XML parsing | fast-xml-parser | xml2js | xml2js is callback-based, slower, heavier; fast-xml-parser is zero-dependency, TypeScript-native, actively maintained |
-| External SDK | Min-DevKit primary | Max SDK only | Min-DevKit provides testing framework, auto-docs, modern C++; Max SDK alone requires more boilerplate; both use same base headers since 8.2 |
-| Object database | SQLite | PostgreSQL, MongoDB | Overkill for a local framework; SQLite is zero-config, single-file, Python stdlib, fast enough for 2,000 objects |
-| Testing | Vitest | Jest | Vitest is faster, ESM-native, 17M weekly downloads; Jest is legacy; Vitest 4.0 is the 2026 standard |
-| Layout engine | py2max + custom | D3.js force-directed | Overkill; MAX patches use grid-based layouts, not force-directed graphs; simple algorithms sufficient |
-| Hook scripts | Python | Bash | Python provides structured JSON parsing, error handling, file I/O; bash scripts become unmanageable at Plugin Freedom System scale |
-
-## Stack Architecture Diagram
-
+**Key finding:** The help patch directory structure is:
 ```
-Claude Code Session
-|
-+-- CLAUDE.md (framework knowledge, object summaries, conventions)
-|
-+-- .claude/agents/ (domain-specialized subagents)
-|   +-- patching-agent.md      (general MAX patching)
-|   +-- dsp-agent.md           (MSP/audio/Gen~)
-|   +-- rnbo-agent.md          (RNBO~ export patches)
-|   +-- n4m-agent.md           (Node for Max / js)
-|   +-- externals-agent.md     (C/C++ external development)
-|   +-- ui-agent.md            (UI objects, presentation view)
-|   +-- validation-agent.md    (multi-layer critic)
-|
-+-- .claude/skills/ (slash commands for workflow)
-|   +-- patch-generate/        (create .maxpat from description)
-|   +-- gen-codebox/            (generate Gen~ code)
-|   +-- rnbo-export/            (generate RNBO~ patches)
-|   +-- n4m-script/             (generate Node for Max JS)
-|   +-- external-scaffold/      (scaffold Min-DevKit project)
-|   +-- object-lookup/          (query object database)
-|   +-- patch-validate/         (run validation suite)
-|   +-- project-init/           (initialize MAX project)
-|
-+-- .claude/hooks/ (automated validation)
-|   +-- PostToolUse.py          (validate written .maxpat files)
-|   +-- Stop.py                 (end-of-turn validation summary)
-|   +-- SessionStart.py         (load project context)
-|   +-- validators/
-|       +-- validate-patch-structure.py
-|       +-- validate-connections.py
-|       +-- validate-objects.py
-|       +-- validate-gen-syntax.py
-|       +-- validate-layout.py
-|
-+-- .claude/scripts/ (utilities)
-|   +-- extract-maxref.py       (build object DB from XML)
-|   +-- generate-patch.py       (py2max wrapper)
-|   +-- validate-maxpat.py      (standalone validator)
-|
-+-- db/
-|   +-- objects.sqlite          (object database)
-|   +-- objects-summary.json    (for CLAUDE.md injection)
-|   +-- objects-detail.json     (full reference data)
-|
-+-- templates/
-|   +-- patches/                (template .maxpat files)
-|   +-- gen/                    (Gen~ codebox templates)
-|   +-- rnbo/                   (RNBO~ patch templates)
-|   +-- n4m/                    (Node for Max script templates)
-|   +-- externals/              (Min-DevKit project templates)
+/Applications/Max.app/Contents/Resources/C74/help/
+  max/     (Max control objects)
+  msp/     (MSP audio objects)
+  jitter/  (Jitter video objects)
+  m4l/     (Max for Live objects)
+  resources/
 ```
 
-## Key Technology Details
+Help files use `.maxhelp` extension but are identical JSON format to `.maxpat`. 973 help patches cover 934 of our 1,672 DB objects. The remaining 738 are mostly operator variants (`+`, `-`, `*~`, etc.), MC wrappers (`mc.cycle~`), and Gen internals that share help files with their base objects.
 
-### .maxpat JSON Format (Reverse-Engineered)
+### Aesthetic Patch Generation
 
-The .maxpat format is undocumented by Cycling '74. Based on examination of installed MAX patches:
+| Technology | Version | Purpose | Why |
+|------------|---------|---------|-----|
+| Existing `patcher.py` | Current | Extended Box model with aesthetic properties | Add `bgcolor`, `textcolor`, `bubble`, `bubbleside`, `style`, `fontface`, `background`, `rounded`, `border`, `bordercolor` to `extra_attrs` or as first-class Box properties. Panel objects already work as boxes with `maxclass="panel"`. |
+| Existing `defaults.py` | Current | Aesthetic default constants | Add constants for help-file-standard styling: comment font size (13.0), bubble default (True for annotations), helpfile_label style, panel default colors, textbutton step-marker styling. |
+| Existing `layout.py` | Current | Panel positioning and background layering | Panels are background decorative objects. Add panel support to layout engine: panels need `background: 1` to draw behind other objects, and `ignoreclick: 1` to not intercept mouse events. |
 
-```json
-{
-  "patcher": {
-    "fileversion": 1,
-    "appversion": { "major": 9, "minor": 0, "revision": 0, "architecture": "x64", "modernui": 1 },
-    "rect": [x, y, width, height],
-    "default_fontsize": 12.0,
-    "default_fontname": "Arial",
-    "gridsize": [15.0, 15.0],
-    "boxes": [
-      {
-        "box": {
-          "id": "obj-1",
-          "maxclass": "newobj|message|comment|number|flonum|toggle|button|...",
-          "numinlets": N,
-          "numoutlets": N,
-          "outlettype": ["signal", "", "bang", ...],
-          "patching_rect": [x, y, width, height],
-          "text": "cycle~ 440"
-        }
-      }
-    ],
-    "lines": [
-      {
-        "patchline": {
-          "source": ["obj-1", 0],
-          "destination": ["obj-2", 0],
-          "disabled": 0,
-          "hidden": 0
-        }
-      }
-    ]
-  }
-}
+**No new files needed** for aesthetics -- the existing Box/Patcher model already supports arbitrary JSON properties via `extra_attrs`. The work is adding convenience methods and defaults, not new infrastructure.
+
+### What Specifically Needs to Change
+
+#### `patcher.py` -- New Methods
+
+```python
+# Add panel support (background rectangle)
+def add_panel(self, x, y, width, height, bgcolor=None, border=0, rounded=0) -> Box
+
+# Add styled comment (help-file quality)
+def add_styled_comment(self, text, x, y, style="helpfile_label", bubble=False, bubbleside=0) -> Box
 ```
 
-### maxref XML Schema (Object Database Source)
+#### `defaults.py` -- New Constants
 
-1,175 core objects + 189 Gen objects + 560 RNBO objects available at:
-- `/Applications/Max.app/Contents/Resources/C74/docs/refpages/{max-ref,msp-ref,jit-ref,m4l-ref}/`
-- `/Applications/Max.app/Contents/Resources/C74/packages/Gen/docs/refpages/`
-- `/Applications/Max.app/Contents/Resources/C74/packages/RNBO/docs/refpages/`
+```python
+# Aesthetic constants from help patch analysis (973 patches analyzed)
+HELPFILE_COMMENT_FONTSIZE = 13.0     # 2,329 bubble comments + 885 non-bubble = 13pt standard
+HELPFILE_LABEL_STYLE = "helpfile_label"  # 739 uses in help patches
+BUBBLE_DEFAULT_SIDE = 0              # 0=left (default), 2=right, 3=bottom
 
-XML structure per object:
-```xml
-<c74object name="cycle~" module="msp" category="MSP Synthesis">
-  <digest>Sinusoidal oscillator</digest>
-  <description>...</description>
-  <metadatalist>
-    <metadata name="tag">MSP</metadata>
-  </metadatalist>
-  <inletlist>
-    <inlet id="0" type="signal/float">
-      <digest>Frequency</digest>
-    </inlet>
-  </inletlist>
-  <outletlist>
-    <outlet id="0" type="signal">
-      <digest>Output</digest>
-    </outlet>
-  </outletlist>
-  <objarglist>
-    <objarg name="frequency" optional="1" type="number" units="hz">
-      <digest>Oscillator frequency</digest>
-    </objarg>
-  </objarglist>
-  <attributelist>...</attributelist>
-  <methodlist>...</methodlist>
-  <seealsolist>...</seealsolist>
-</c74object>
+# Panel defaults (from 159 panels across help patches)
+PANEL_DEFAULT_BGCOLOR = [0.866667, 0.839216, 0.815686, 1.0]  # Warm tan, most common (24x)
+PANEL_DEFAULT_MODE = 0               # Solid fill (140x) vs gradient (19x)
+PANEL_DEFAULT_BORDER = 1             # Thin border (39x at 1, 50x at 2)
+PANEL_DEFAULT_ROUNDED = 0            # Sharp corners (68x at 0)
+PANEL_DEFAULT_PROPORTION = 0.39      # Standard proportion (99x)
+
+# Textbutton step markers (from help patch convention: 565 with background=1)
+STEP_MARKER_BGCOLOR = [0.9, 0.65, 0.05, 1.0]   # Orange/amber
+STEP_MARKER_TEXTCOLOR = [0.34902, 0.34902, 0.34902, 1.0]  # Dark gray
+STEP_MARKER_ROUNDED = 60.0           # Circular appearance
+STEP_MARKER_FONTNAME = "Arial Bold"
 ```
 
-### GenExpr Language (Gen~ Codebox)
+#### `layout.py` -- Panel and Background Awareness
 
-GenExpr is used in `gen~`, `gen`, `jit.gen`, `jit.pix`, `jit.gl.pix` codeboxes. Key syntax:
-- C/JavaScript-like expression syntax
-- `inN` / `outN` keywords for inlet/outlet binding (1-indexed)
-- `in` and `out` shorthand for `in1` and `out1`
-- `History` for single-sample delay (state)
-- `Data` and `Buffer` for named data access
-- `Param` for exposing parameters to parent patcher
-- `Require` for importing GenExpr libraries
-- All Gen operators available as functions: `cycle`, `phasor`, `noise`, `clip`, `scale`, `mix`, etc.
-- Semicolons required for multi-statement expressions
-- No official parser/validator exists -- must build custom
+Background objects (`background: 1`) must be positioned BEFORE regular objects in the boxes array (MAX renders in array order, background objects go to back layer). The layout engine needs to:
+1. Sort boxes so `background=1` objects come first in the array
+2. Skip panel/background objects during topological layout (they are decorative)
+3. Size panels to encompass their associated object groups
 
-### Node for Max (max-api)
+#### `db_lookup.py` -- No Changes
 
-```javascript
-const maxAPI = require("max-api");
+The database structure is fine. Audit results flow into `overrides.json` (existing correction mechanism). The audit tool is a standalone script, not a modification to the runtime lookup.
 
-// Message handlers
-maxAPI.addHandler("bang", () => { ... });
-maxAPI.addHandler("myMessage", (arg1, arg2) => { ... });
-maxAPI.addHandlers({ bang: () => {}, list: (...args) => {} });
+## Audit Tool Architecture
 
-// Output to Max
-maxAPI.outlet(value);
-maxAPI.outletBang();
+The audit tool is a new standalone script (`scripts/audit_help_patches.py`) that:
 
-// Dictionary access
-const dict = await maxAPI.getDict("myDict");
-await maxAPI.setDict("myDict", { key: "value" });
-await maxAPI.updateDict("myDict", { key: "newValue" });
+1. **Walks** all 973 .maxhelp files
+2. **Extracts** per-object: outlet types, inlet count, outlet count, argument patterns, connection patterns
+3. **Compares** against the object database (`db_lookup.py`)
+4. **Generates** a diff report and optionally updates `overrides.json`
 
-// Logging
-maxAPI.post("message to Max console");
-```
+**Performance:** Full recursive parse of all help patches takes 0.17s. Comparison against 1,672 DB objects adds negligible overhead. Total audit runtime will be under 1 second.
 
-### Claude Code Hook Events (Used by Framework)
+**Data extraction from help patches (verified):**
+- `outlettype` array: Available on every box. Ground truth for signal vs control outlet classification. Found 1,007 unique objects with outlet types, including 10 mixed signal/control objects (e.g., `line~` = `["signal", "bang"]`, `zigzag~` = `["signal", "signal", "", "bang"]`).
+- `numinlets` / `numoutlets`: Available on every box. Reflects actual argument-dependent counts.
+- `text` field: Contains object name and arguments (e.g., `"cycle~ 440."`, `"t b i f"`).
+- Connection patterns: Source/destination with outlet/inlet indices. Validates which outlets connect to which types of inlets.
 
-| Hook Event | Framework Use | Script |
-|------------|---------------|--------|
-| `SessionStart` | Load project context, inject object DB summary into CLAUDE.md | `SessionStart.py` |
-| `PreToolUse` (matcher: `Write`) | Pre-validate .maxpat before writing | `validate-patch-structure.py` |
-| `PostToolUse` (matcher: `Write\|Edit`) | Validate written .maxpat files, check connections, verify objects exist in DB | `PostToolUse.py` |
-| `Stop` | End-of-turn validation summary, update agent memory | `Stop.py` |
-| `SubagentStop` | Merge subagent findings, write back memory | `SubagentStop.py` |
-| `PreCompact` | Save critical context before compaction | `PreCompact.py` |
-
-## Installation
-
-### Python Dependencies
-
-```bash
-# Core .maxpat generation
-pip install py2max
-
-# Additional utilities (all stdlib or minimal)
-# - sqlite3 (stdlib)
-# - json (stdlib)
-# - xml.etree.ElementTree (stdlib -- alternative to fast-xml-parser for Python-only path)
-# - pathlib (stdlib)
-```
-
-### Node.js Dependencies (for TypeScript validation layer and N4M testing)
-
-```bash
-# Schema validation
-npm install zod@^4.3
-
-# XML parsing (for TypeScript-side object DB tools if needed)
-npm install fast-xml-parser@^5.4
-
-# Testing
-npm install -D vitest@^4.0
-npm install -D typescript@^5.9
-
-# Node for Max API stubs (for offline testing of generated N4M scripts)
-npm install -D max-api
-```
-
-### MAX SDK / External Development (Per-Project)
-
-```bash
-# Min-DevKit (clone into project packages directory)
-git clone --recursive https://github.com/Cycling74/min-devkit.git
-
-# Max SDK (alternative, for C externals)
-git clone --recursive https://github.com/Cycling74/max-sdk.git
-
-# CMake (required for both)
-brew install cmake  # 3.19+ required
-```
-
-## Version Compatibility Matrix
-
-| Component | Minimum | Recommended | Notes |
-|-----------|---------|-------------|-------|
-| MAX/MSP | 8.0 | 9.x | Object DB tracks version-specific availability |
-| Python | 3.10 | 3.14+ | f-strings, match statements, stdlib improvements |
-| Node.js | 20.x | 24.x | N4M uses Node 20+ in MAX 9 |
-| TypeScript | 5.5 | 5.9+ | Required by Zod 4.x |
-| CMake | 3.19 | 3.28+ | Required by Min-DevKit and Max SDK |
-| Xcode | 14 | 16+ | Required for macOS external compilation |
-
-## What NOT to Use
+## What NOT to Add
 
 | Technology | Why Not |
 |------------|---------|
-| `xml2js` | Legacy callback-based XML parser; slower than fast-xml-parser; no TypeScript types |
-| `Jest` | Legacy testing framework; slower than Vitest; no native ESM support |
-| `Zod 3.x` | Superseded by Zod 4.x with 14x performance improvement; use v4 |
-| PostgreSQL/MongoDB | Massive overkill for a local object database of ~2,000 entries |
-| D3.js/Graphviz for layout | MAX patches use grid-based layouts, not graph visualizations |
-| Docker | Unnecessary complexity; framework runs in local Claude Code sessions |
-| electron/web UI | Framework is Claude Code-native; no web interface needed |
-| Pure TypeScript hooks | Plugin Freedom System proves Python hooks work well at scale; py2max is Python; XML parsing trivial in Python |
-| `node-gyp` | Use CMake for external compilation; both SDKs are CMake-based |
-| PureData format conversion | Out of scope; .maxpat is the only target format |
+| py2max | Project already has its own Patcher/Box/Patchline model. py2max would be a parallel system with different conventions. The custom stack is well-tested (624 tests) and exactly fits the project's needs. |
+| Zod / TypeScript validation | Originally planned in v1.0 STACK.md but never adopted. Python validation pipeline works well. Adding TypeScript for aesthetics would introduce unnecessary build complexity. |
+| SQLite for audit results | Overkill. Audit results go directly into `overrides.json` (existing mechanism). A JSON diff report is sufficient. |
+| Pillow / image processing | Not needed. Panel colors and box styling are pure JSON properties, not image manipulation. |
+| NetworkX / graph libraries | The existing layout engine has its own graph algorithms (BFS, topological sort). No external graph library needed for panel grouping. |
+| Configuration files (YAML/TOML) | Aesthetic defaults should be Python constants in `defaults.py`, not external config files. Keeps the single-file pattern established by the project. |
+| fast-xml-parser | Originally planned for maxref XML parsing. Already done in v1.0 extraction. Help patches are JSON, not XML. |
+| Template engines (Jinja2, Mako) | Aesthetic patches are generated programmatically via Python. Template engines add dependency for no benefit. |
+
+## Existing Stack Unchanged
+
+These v1.0 technologies remain exactly as-is for v1.1:
+
+| Technology | Status | Notes |
+|------------|--------|-------|
+| Python 3.14 | Keep | Runtime for all scripts, tests, generation |
+| pytest | Keep | Test framework for audit tool tests and aesthetic tests |
+| `json` (stdlib) | Keep | .maxpat and .maxhelp parsing |
+| Custom Patcher/Box/Patchline | Keep | Core generation model, extended with aesthetic properties |
+| `validation.py` pipeline | Keep | 4-layer validation, may add aesthetic validation rules |
+| `overrides.json` | Keep | Correction mechanism, audit tool writes results here |
+| `db_lookup.py` ObjectDatabase | Keep | Runtime object lookup, no structural changes |
+
+## Integration Points
+
+### Help Patch Audit -> overrides.json
+
+```
+scripts/audit_help_patches.py
+  reads: /Applications/Max.app/.../help/**/*.maxhelp
+  reads: .claude/max-objects/*/objects.json
+  writes: .claude/max-objects/overrides.json (updates)
+  writes: scripts/audit_report.json (diff report)
+```
+
+### Aesthetic Generation -> Existing Pipeline
+
+```
+src/maxpat/patcher.py (add_panel, add_styled_comment)
+  uses: src/maxpat/defaults.py (new aesthetic constants)
+
+src/maxpat/layout.py (background-aware positioning)
+  reads: box.extra_attrs["background"] to determine layering
+
+src/maxpat/validation.py (optional aesthetic rules)
+  checks: panel objects have background=1
+  checks: styled comments have valid bubbleside values
+```
+
+### Help Patch Path Discovery
+
+```python
+# Standard path on macOS (verified on this machine)
+HELP_BASE = Path("/Applications/Max.app/Contents/Resources/C74/help")
+HELP_DIRS = ["max", "msp", "jitter", "m4l"]
+# Pattern: {HELP_BASE}/{domain}/{object_name}.maxhelp
+```
+
+## File Size and Performance
+
+| Metric | Value |
+|--------|-------|
+| Help patches total | 973 files, 57 MB |
+| Average help patch | 62 KB |
+| Largest help patch | 1.5 MB |
+| Parse time (all, recursive) | 0.17s |
+| Total boxes (deep) | 53,178 |
+| Total connections (deep) | 31,476 |
+| Unique objects in help patches | 1,156 |
+| DB objects with help coverage | 934 / 1,672 (56%) |
+
+## Aesthetic Property Reference
+
+Properties verified across 973 help patches. These are the JSON keys that produce visual styling in MAX:
+
+### Comment Styling
+| Property | Type | Common Values | Frequency |
+|----------|------|---------------|-----------|
+| `fontsize` | float | 13.0 (help standard) | 9,076 uses |
+| `fontname` | string | "Arial" | 8,959 uses |
+| `bubble` | int (0/1) | 1 (annotation style) | 4,953 uses |
+| `bubbleside` | int | 0=left, 2=right, 3=bottom | 1,124 uses |
+| `style` | string | "helpfile_label" | 2,923 uses |
+| `textjustification` | int | 0=left, 1=center, 2=right | 393 uses |
+| `fontface` | int | 0=regular, 1=bold, 2=italic | varies |
+
+### Panel (Background Rectangle)
+| Property | Type | Common Values | Frequency |
+|----------|------|---------------|-----------|
+| `bgcolor` | [r,g,b,a] | [0.87, 0.84, 0.82, 1.0] (warm tan) | 100 uses |
+| `mode` | int | 0=solid fill, 1=gradient | 159 total |
+| `border` | int | 1 or 2 | 92 uses |
+| `bordercolor` | [r,g,b,a] | [0,0,0,1] (black) | 71 uses |
+| `rounded` | float | 0 (sharp), 4, 15 | 81 uses |
+| `background` | int (0/1) | 1 (draw behind) | 27 uses |
+| `angle` | float | 0.0 or 270.0 (gradient) | 117 uses |
+| `proportion` | float | 0.39 | 99 uses |
+
+### Background Layering
+| Property | Type | Effect | Frequency |
+|----------|------|--------|-----------|
+| `background` | int (0/1) | Draw behind other objects | 1,096 total |
+| `ignoreclick` | int (0/1) | Don't intercept mouse events | 4,939 total |
+
+Objects with `background: 1` are drawn on the back layer. Combined with `ignoreclick: 1`, they become purely decorative. Most common on textbutton (step markers: 954), jit.pwindow (92), and panel (27).
 
 ## Sources
 
-### Official Documentation
-- [Max SDK GitHub](https://github.com/Cycling74/max-sdk) -- v8.2.0, CMake-based, Apple Silicon support
-- [Min-DevKit GitHub](https://github.com/Cycling74/min-devkit) -- v0.6.0, modern C++ external development
-- [py2max GitHub](https://github.com/shakfu/py2max) -- Python library for .maxpat generation
-- [Claude Code Hooks Reference](https://code.claude.com/docs/en/hooks) -- 16 hook events, command/HTTP/prompt types
-- [Claude Code Skills Documentation](https://code.claude.com/docs/en/skills) -- Skill creation, frontmatter, subagent delegation
-- [Claude Code Plugins Documentation](https://code.claude.com/docs/en/plugins) -- Plugin structure, manifest, distribution
-- [GenExpr Documentation (Max 8)](https://docs.cycling74.com/max8/vignettes/gen_genexpr) -- GenExpr syntax reference
-- [Gen Overview](https://docs.cycling74.com/userguide/gen/_gen_overview/) -- Gen variants, codebox, operators
-- [RNBO Documentation](https://docs.cycling74.com/userguide/rnbo/) -- RNBO patching, export targets
-- [Node for Max API](https://docs.cycling74.com/nodeformax/api/module-max-api.html) -- max-api methods and types
-- [Max 9 Release Notes](https://cycling74.com/releases/max/9.0.0) -- MAX 9 features including codebox variants
+### Verified on Machine (HIGH confidence)
+- Help patch directory: `/Applications/Max.app/Contents/Resources/C74/help/` -- 973 .maxhelp files confirmed
+- .maxhelp format: JSON, identical to .maxpat -- verified by parsing all 973 files with `json.load()`
+- Aesthetic properties: Extracted from recursive analysis of 53,178 boxes across all help patches
+- Panel patterns: 159 panel objects analyzed across 50 help patches
+- Comment styling: 12,075 comment objects analyzed, top patterns documented
+- Parsing performance: Benchmarked at 0.17s for full recursive parse of all help patches
 
-### Community / Ecosystem
-- [Cycling '74 Forum: .maxpat JSON format](https://cycling74.com/forums/specification-for-maxpat-json-format) -- No official spec exists
-- [Cycling '74 Forum: Min-DevKit purpose](https://cycling74.com/forums/what-is-the-purpose-of-the-min-devkit) -- Min vs SDK comparison
-- [maxobjects.com](http://www.maxobjects.com/) -- Community object database
-- [Zod v4 Release Notes](https://zod.dev/v4) -- Performance improvements, Zod Mini
-- [Vitest 4.0 Announcement](https://vitest.dev/blog/vitest-4) -- Stable browser mode, visual regression
-- [fast-xml-parser npm](https://www.npmjs.com/package/fast-xml-parser) -- v5.4.x, TypeScript, zero-dependency
-
-### Local Resources (Verified on Machine)
-- MAX Installation: `/Applications/Max.app/` -- confirmed present
-- maxref XML files: 1,175 core + 189 Gen + 560 RNBO = 1,924 total object reference files
-- Plugin Freedom System: `/Users/taylorbrook/Dev/VST-development/.claude/` -- 11 agents, 27 skills, Python hooks architecture
+### Existing Codebase (HIGH confidence)
+- `src/maxpat/patcher.py` -- Box model already supports `extra_attrs` for arbitrary properties
+- `src/maxpat/defaults.py` -- Centralized constants, easy to extend
+- `src/maxpat/layout.py` -- Component-based layout, ready for panel awareness
+- `src/maxpat/db_lookup.py` -- ObjectDatabase loads and applies overrides.json
+- `src/maxpat/validation.py` -- 4-layer pipeline, extensible for aesthetic rules
+- `.claude/max-objects/overrides.json` -- Existing correction mechanism for DB entries

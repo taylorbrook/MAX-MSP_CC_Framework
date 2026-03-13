@@ -1,203 +1,140 @@
-# Domain Pitfalls
+# Domain Pitfalls: v1.1 Patch Quality & Aesthetics
 
-**Domain:** AI-assisted MAX/MSP development framework (Claude Code)
-**Researched:** 2026-03-08
-**Confidence:** HIGH (verified across multiple sources: academic research, Cycling '74 forums, official docs, SDK references, community tools)
+**Domain:** Adding help patch auditing, database bulk updates, patch aesthetics, and layout refinement to existing MAX/MSP development framework
+**Researched:** 2026-03-13
+**Confidence:** HIGH for help patch parsing and DB pitfalls (verified against actual MAX installation and codebase), MEDIUM for aesthetic properties (reverse-engineered, no official spec), HIGH for layout pitfalls (verified against actual MAX help patch widths vs. calculated widths)
 
 ---
 
 ## Critical Pitfalls
 
-Mistakes that cause rewrites, broken patches, or fundamental architectural failures.
+Mistakes that corrupt the object database, break existing patch generation, or produce invalid patches.
 
 ---
 
-### Pitfall 1: No Official .maxpat JSON Specification
+### Pitfall 1: Help Patch Outlet Types Are Authoritative -- But Only for Connected Instances
 
-**What goes wrong:** The framework builds a patch generator against a reverse-engineered understanding of the .maxpat format, misses required fields, generates subtly invalid JSON, and patches silently fail to load or exhibit bizarre behavior in MAX.
+**What goes wrong:** The help patch audit extracts `outlettype` from the first `buffer~` instance found and uses it as ground truth, but help patches contain multiple instances with different argument configurations that change outlet count and type, plus degenerate instances used as labels.
 
-**Why it happens:** Cycling '74 has never published an official .maxpat specification. The format is inferred from saved patches, community reverse-engineering, and libraries like py2max. Every field's semantics -- required vs. optional, default values, interaction effects -- is learned empirically.
+**Why it happens:** Many MSP objects have variable outlet counts depending on arguments. For example, `sfplay~` with 2 channels has outlets `["signal", "signal", "bang"]` while `sfplay~` with 1 channel has `["signal", "bang"]`. Help patches often contain both configurations in different subpatcher tabs.
+
+**Evidence from this project:** Analysis of `buffer~.maxhelp` found 7 instances across subpatchers. Most had `outlettype: ["float", "bang"]` with `numoutlets: 2`, but one instance had `numoutlets: 0` (used as a label/comment with text `"buffer~  has its own sample rate..."`). Blindly first-matching or averaging would include the degenerate case.
 
 **Consequences:**
-- Patches open with missing objects or broken connections
-- MAX silently drops malformed boxes rather than reporting errors
-- Version-specific fields (e.g., `appversion` structure differences between MAX 8 and 9) cause silent failures
-- Subpatcher nesting and bpatcher references break in non-obvious ways
+- Outlet type arrays become wrong for specific argument configurations
+- The override system (`overrides.json`) may get clobbered with incorrect "audited" data
+- Validation strips valid connections by misidentifying outlet types
+- The exact MSP outlet type bug that already happened (all outlets marked `signal` when many are `control`) gets reintroduced from a different source
 
 **Prevention:**
-- Build a canonical .maxpat template library by saving minimal patches from MAX itself (not hand-crafting JSON)
-- Use py2max's battle-tested class hierarchy (Patcher, Box, Patchline) as a reference implementation -- it handles round-trip parsing
-- Validate every generated patch against MAX-saved reference patches using structural diffing
-- Track critical required fields: `fileversion` (integer, typically 1), `appversion` (object with major/minor/revision/architecture), `rect` (array of 4 numbers: [x, y, width, height]), `boxes` (array), `lines` (array)
-- Always include `numinlets`, `numoutlets`, and `outlettype` arrays on every box -- MAX infers these but will misbehave if they conflict with the object's actual behavior
+- When auditing help patches, filter out degenerate instances (`numoutlets=0`, objects used as labels/comments with no connections)
+- Prefer instances that have connections FROM them (demonstrating actual outlet usage) -- the `buffer~` instance at `outlettype: ["float", "bang"]` with connections `outlet 1 -> button inlet 0` and `outlet 0 -> flonum inlet 0` is the gold-standard source
+- Track outlet types per argument configuration, not just per object name
+- For variable-outlet objects (`sfplay~`, `groove~`, `vst~`), record the base/default outlet types and document how arguments change them
+- Never overwrite existing `overrides.json` entries without human review -- the 16 manually corrected MSP objects represent hard-won ground truth
 
-**Detection:** Patches that open in MAX but have missing objects, phantom connections, or objects in wrong positions. Test by opening generated patches in MAX and comparing object count against expected.
+**Detection:** After bulk update, diff `overrides.json` against pre-update version. Any change to manually corrected entries is suspicious. Run the existing 624 test suite -- any regression in connection validation tests signals corrupted outlet type data.
 
-**Which phase should address it:** Phase 1 (Foundation) -- this is the absolute bedrock. Get the format wrong and nothing works.
+**Phase:** Help patch audit phase. Must be addressed before any bulk writes to the DB.
 
 ---
 
-### Pitfall 2: The maxclass vs. text Confusion
+### Pitfall 2: Bulk Database Update Breaks the Override Merge Order
 
-**What goes wrong:** The framework treats all MAX objects as `maxclass: "newobj"` with different `text` values, failing to handle the ~15 distinct maxclass types that require completely different JSON structures.
+**What goes wrong:** Bulk-updating `msp/objects.json` with help-patch-extracted outlet types overwrites the base data, making `overrides.json` corrections either redundant or conflicting.
 
-**Why it happens:** Most MAX objects (cycle~, +, metro, etc.) are indeed `maxclass: "newobj"` with the object name in the `text` field. But UI objects, comments, messages, subpatchers, and special objects each have their own maxclass value with unique required properties.
+**Why it happens:** The current `db_lookup.py` loads domain JSON files first, then deep-merges `overrides.json` on top (lines 66-81). This works because `overrides.json` is the authoritative layer -- it always wins. But if the help patch audit updates `msp/objects.json` with new outlet data, three failure modes emerge:
+
+1. **Override becomes stale:** The base data now agrees with the override, making the override appear redundant. Someone removes the override. Later, the base data gets re-extracted from XML (which has the original bug) and the override is gone.
+2. **Override conflicts with new base:** The help patch audit extracts `outlettype: ["signal", "bang"]` for `line~`, which contradicts the override that says `outlets: [{signal: true}, {signal: false}]`. The override format uses `outlets` array with `signal` boolean, while `outlettype` is a flat string array. The merge does not reconcile these different representations.
+3. **Load order sensitivity:** RNBO objects load before MSP objects (see `DOMAIN_LOAD_ORDER` in `db_lookup.py`). If an RNBO variant of `cycle~` has different outlet types than the MSP variant, updating MSP data can mask the RNBO definition depending on load order.
 
 **Consequences:**
-- UI objects (number boxes, sliders, dials) render as broken text boxes
-- Message boxes don't function (they need `maxclass: "message"`, not `maxclass: "newobj"` with text "message")
-- Comments don't display (need `maxclass: "comment"`)
-- Subpatchers fail to load (need `maxclass: "newobj"` but with a nested `patcher` object inside the box)
-- inlet/outlet objects in subpatchers need `maxclass: "inlet"` / `maxclass: "outlet"`, not newobj
+- 16 manually verified MSP outlet corrections silently lost
+- `multislider` `fetch` correction (already in overrides) overwritten
+- RNBO-specific outlet types (e.g., RNBO `cycle~` has 2 outlets vs. MSP `cycle~` with 1) clobbered by MSP data
+- Connection validation regression across multiple existing patches
 
 **Prevention:**
-- Maintain a maxclass lookup table. Known distinct maxclass values include: `newobj`, `message`, `comment`, `number`, `flonum`, `toggle`, `button`, `slider`, `dial`, `kslider`, `multislider`, `inlet`, `outlet`, `bpatcher`, `panel`, `live.dial`, `live.slider`, `live.toggle`, `live.menu`, `live.text`, `live.numbox`, `live.tab`, `ezdac~`, `ezadc~`, `scope~`, `spectroscope~`, `meter~`, `gain~`, `function`, `attrui`
-- Each maxclass type must have a known set of required and optional properties
-- The object knowledge base must map object names to their correct maxclass
+- Never bulk-write to domain JSON files if the data conflicts with `overrides.json`
+- Audit script must load `overrides.json` first and skip any object that has manual overrides
+- Implement a "dry run" mode for DB updates that shows a diff before writing
+- Add a `source` field to extracted data: `"source": "help_patch"` vs `"source": "xml_refpage"` vs `"source": "manual_override"` -- manual always wins
+- Keep the override system as the authoritative layer -- help patch data goes into base files, corrections stay in overrides
 
-**Detection:** Validate that every box in generated JSON has a recognized maxclass value and includes required properties for that maxclass type.
+**Detection:** Run `python -m pytest tests/` after every bulk update. Specifically, connection validation tests that verify `buffer~` outlet 1 connects to control inlets. If this test breaks, the override merge is corrupted.
 
-**Which phase should address it:** Phase 1 (Foundation) -- part of the core object knowledge base.
+**Phase:** Must be designed before the audit runs. The audit pipeline needs an "override-aware" mode from the start.
 
 ---
 
-### Pitfall 3: Patchline Connection Validation False Positives
+### Pitfall 3: Help Patch Tab Structure Hides All Content in Subpatchers
 
-**What goes wrong:** The validator reports connections as valid when they will actually produce errors at runtime, or rejects connections that would work fine. The gap between structural validity and behavioral validity is wide.
+**What goes wrong:** The help patch parser only reads top-level boxes and misses the actual example content, which is buried inside subpatcher tabs.
 
-**Why it happens:** MAX allows many structurally valid connections that are semantically wrong. A message box outlet can connect to almost any inlet -- MAX cannot know what message will emerge until runtime. Conversely, signal (audio) connections are type-checked but only when DSP is running.
+**Why it happens:** MAX help patches use a tab-based structure where the visible content is inside subpatchers with `showontab: 1`. The top-level patcher contains only infrastructure boxes.
+
+**Evidence:** Analysis of `trigger.maxhelp` confirms: top-level has 6 boxes (3 subpatchers, a jsui, a message, a js helpstarter). The actual example objects with connections are inside:
+- `p basic`: 20 boxes (the primary examples)
+- `p examples`: 27 boxes (advanced examples)
+- `p ?`: 0 boxes (empty "see also" tab)
+
+A parser that only reads top-level boxes finds zero instances of `trigger`.
 
 **Consequences:**
-- Framework generates patches that pass validation but crash or produce silence when audio is turned on
-- "Object doesn't understand [message]" errors flood the MAX console at runtime
-- Signal/message type mismatches go undetected (connecting a message outlet to a signal inlet)
-- False confidence in patch correctness
+- Audit reports "object not found in its own help patch" for 100% of objects
+- Outlet types extracted from zero connections
+- Entire audit produces no useful data
 
 **Prevention:**
-- Implement multi-layer validation:
-  1. **Structural:** Does the connection reference valid box IDs and valid inlet/outlet indices?
-  2. **Type compatibility:** Is this a signal-to-signal or message-to-message connection? Signal outlets (from tilde~ objects) should connect to signal inlets.
-  3. **Semantic plausibility:** Does this connection make functional sense? (e.g., a bang to a signal inlet is almost always wrong)
-- Track outlet types in the object database: each outlet should be tagged as `signal`, `message`, `multichannelsignal`, or `jit_matrix`
-- Track inlet types with the same taxonomy
-- Accept that perfect validation is impossible without running MAX -- be explicit about what the validator can and cannot check
+- The help patch parser must recursively descend into all subpatchers
+- Identify tab subpatchers by checking `showontab: 1` in the inner patcher properties
+- For each subpatcher tab, collect all box instances and connection data
+- Be aware that some help patches nest subpatchers inside subpatcher tabs (3+ levels deep)
+- Handle the `p ?` tab gracefully -- it may have 0 boxes
 
-**Detection:** Count "object doesn't understand" errors and signal mismatch warnings when patches are opened in MAX. Track false positive and false negative rates over time.
+**Detection:** After parsing, verify that at least one instance of the named object was found. If zero instances found, the parser failed to descend into tabs.
 
-**Which phase should address it:** Phase 2 (Validation) -- requires the object knowledge base from Phase 1 to be in place first.
+**Phase:** First step of the help patch audit pipeline. Must work before any data extraction.
 
 ---
 
-### Pitfall 4: Hot Inlet / Cold Inlet Semantics Ignored
+### Pitfall 4: Box Width Calculation Is Inaccurate by -59px to +50px
 
-**What goes wrong:** Generated patches connect objects in ways that look correct topologically but violate MAX's hot/cold inlet conventions, producing patches that do nothing or produce wrong results.
+**What goes wrong:** Generated patches have boxes that are too wide or too narrow, causing overlapping objects, excessive spacing, or patch cords that connect at wrong visual positions.
 
-**Why it happens:** In MAX, only the leftmost inlet (inlet 0) is "hot" -- receiving a message there triggers computation and output. All other inlets are "cold" -- they store values but don't trigger output. An LLM generating patches naturally connects things in whatever order seems logical, without understanding this fundamental convention.
+**Why it happens:** The current sizing formula (`len(text) * 7.0 + 16.0`) uses a fixed character width of 7px for Arial 12pt. But MAX uses proportional font metrics, not monospaced. Analysis of actual box widths from `trigger.maxhelp` reveals significant errors:
 
-**Consequences:**
-- Patches where data flows in but nothing comes out (everything goes to cold inlets)
-- Missing `trigger` or `t` objects that should force right-to-left evaluation order
-- Race conditions where cold inlets haven't been set before hot inlets fire
-- Patches that work intermittently depending on timing
+| Object text | Actual (MAX) | Calculated | Error |
+|---|---|---|---|
+| `js helpstarter.js trigger` | 132.0 | 191.0 | **-59px** (way too wide) |
+| `+` | 89.5 | 40.0 | **+50px** (way too narrow) |
+| `t b i` | 32.5 | 51.0 | -18px |
+| `accum 0.` | 91.5 | 72.0 | +20px |
+| `print 5` | 48.0 | 65.0 | -17px |
+| `p basic` | 50.0 | 65.0 | -15px |
 
-**Prevention:**
-- The object knowledge base must mark every inlet as hot or cold for every object
-- Pattern templates must include `trigger` (or `t`) objects wherever multiple outlets need to feed into an object's inlets in a specific order
-- Connection generation should default to connecting to hot inlets first, then cold inlets, with explicit `trigger` objects managing evaluation order
-- Generate right-to-left, bottom-to-top ordering in patch layout to match MAX's execution model
-
-**Detection:** Static analysis: any object with only cold-inlet connections and no bang/trigger to its hot inlet is suspicious. Flag patches where objects have populated cold inlets but nothing connected to inlet 0.
-
-**Which phase should address it:** Phase 1 (Foundation) -- this is core MAX semantics that must be baked into every template and generation pattern.
-
----
-
-### Pitfall 5: LLMs Confuse MAX/MSP with Pure Data
-
-**What goes wrong:** Claude generates Pure Data syntax, object names, or connection patterns instead of valid MAX/MSP constructs.
-
-**Why it happens:** Research confirms this is the most common AI failure mode with MAX (see: "Benchmarking LLM Code Generation for Audio Programming with Visual Dataflow Languages," 2024). MAX and Pure Data share a common ancestor and many similar concepts, but use different file formats, different object names, and different conventions. LLM training data contains significantly more PD content than MAX content, creating a strong bias toward PD syntax.
+Key findings:
+- Short object names get a minimum width from MAX that is larger than `MIN_BOX_WIDTH=40` (the `+` object is 89.5px for a single character)
+- Long text gets narrower than calculated because most characters are narrower than 7px average
+- The current `MIN_BOX_WIDTH=40` is too small -- MAX enforces at least ~50px for most objects
 
 **Consequences:**
-- Generated patches contain PD objects (`[osc~ 440]` with brackets instead of MAX's cycle~ 440)
-- Connection syntax uses PD format instead of MAX JSON
-- Object names are wrong (PD's `[dac~]` vs MAX's `ezdac~` or `dac~` which are different objects)
-- Entire generated patches are useless
+- Objects overlap when boxes are calculated too narrow
+- Excessive horizontal spread when boxes are calculated too wide
+- Inlet/outlet X positions calculated from wrong box widths cause cable routing to miss connection points
+- The layout engine's parent-center-x alignment becomes inaccurate, increasing cable crossings
 
 **Prevention:**
-- The framework must aggressively constrain Claude's generation to MAX-specific patterns:
-  - All object names must be validated against the MAX object database
-  - Never allow bracket-syntax object references
-  - Provide MAX-specific system prompts that explicitly warn against PD confusion
-  - Include reference examples of correct MAX JSON format in every generation context
-- The object knowledge base serves as a hard constraint -- if an object name isn't in the database, it's rejected
-- Skills and templates should provide MAX-native examples, never abstract descriptions
+- Extract actual box widths from help patches as ground truth for a per-object width lookup table (at least for the 50 most common objects)
+- Use a proportional character width approach instead of fixed 7px: narrow chars (`i`, `l`, `1`, `.`) at ~4px, wide chars (`m`, `w`) at ~10px, typical at ~6-7px
+- Increase `MIN_BOX_WIDTH` to at least 50px (many MAX objects enforce a wider minimum)
+- For arithmetic operators (`+`, `-`, `*`, `/`) that MAX renders extra-wide, maintain a small override table
+- Consider extracting widths empirically from a corpus of help patches
 
-**Detection:** Grep generated output for PD-specific syntax: square brackets around object names, `.pd` file extensions, PD-specific objects (e.g., `adc~` vs MAX's `ezadc~`, `throw~`/`catch~` semantics differences).
+**Detection:** Compare calculated widths against actual widths from help patches for the top 50 most-used objects. Currently P95 error is ~50px, target should be under 10px.
 
-**Which phase should address it:** Phase 1 (Foundation) -- the object knowledge base is the primary defense.
-
----
-
-### Pitfall 6: Gen~ Code Generation Scope and Compilation Errors
-
-**What goes wrong:** Generated GenExpr code fails to compile inside gen~, or compiles but behaves incorrectly due to misunderstood scope rules, operator semantics, or gen~-specific constraints.
-
-**Why it happens:** GenExpr looks like a simple C-like language but has critical differences:
-- Variables are local-to-scope by default (no declaration keyword needed, but this means accidental shadowing)
-- `history` objects in subroutines cannot be written to if they're globally defined
-- `sample` and `nearest` operators validate that their first argument is a Gen patcher input -- this is checked at compile time and errors are thrown
-- Parameter declarations must appear at the top of codebox text, before any other declarations
-- The `in` and `out` keywords (equivalent to `in1`/`out1`) determine inlet/outlet count automatically
-
-**Consequences:**
-- GenExpr that looks syntactically valid but fails compilation with cryptic errors
-- History objects silently ignored inside functions (no write, no error in some cases)
-- Wrong number of inlets/outlets because `in`/`out` keywords weren't used correctly
-- Buffer access errors because `sample`/`nearest`/`peek`/`poke` have special first-argument requirements
-
-**Prevention:**
-- Build a GenExpr validator that checks:
-  - All `Param` declarations appear before other code
-  - `history` objects are not written inside subroutines/functions unless locally declared
-  - `in`/`out` keywords map to expected inlet/outlet counts
-  - `sample`/`nearest`/`peek`/`poke` first arguments reference valid buffer/data names
-- Provide GenExpr templates for common patterns (oscillators, filters, delays, envelopes)
-- Test GenExpr generation against known-good reference implementations
-
-**Detection:** GenExpr compilation errors surface immediately in MAX's console. Track compilation success rate as a framework quality metric.
-
-**Which phase should address it:** Phase 3 (Gen~/Code) -- after foundation and validation are solid.
-
----
-
-### Pitfall 7: RNBO Object Subset Assumption
-
-**What goes wrong:** The framework generates RNBO patches using standard MAX objects that don't exist in RNBO, producing patches that fail to compile or export.
-
-**Why it happens:** RNBO supports a strict subset of MAX objects with significant semantic differences. Developers assume "if it works in MAX, it works in RNBO" -- this is categorically false.
-
-**Consequences:**
-- RNBO compilation failures from unsupported objects
-- Silent behavior differences (RNBO has no integers -- everything is 64-bit float)
-- Symbol-based logic breaks completely (RNBO has no symbol type at all)
-- MC~ objects unsupported
-- Jitter objects unsupported
-- `zl.` family renamed to `list.` family
-- `send~/receive~` behavior isolated per rnbo~ instance (no cross-instance communication)
-- Event-based gen (without tilde) not supported
-- Message objects lose `$`, `;`, and `,` functionality
-
-**Prevention:**
-- Maintain a separate RNBO object whitelist distinct from the MAX object database
-- RNBO agent/skill must validate against this whitelist before generation
-- Flag any use of symbols, integers-as-integers, MC~ objects, or Jitter objects
-- Warn about behavioral differences: parameters in gen~ are NOT exposed by default (need `@exposeparams 1`), audio processing is always on, send~/receive~ is instance-isolated
-- Template library needs RNBO-specific variants of common patterns
-
-**Detection:** RNBO compilation errors. Pre-generation object name checking against RNBO whitelist.
-
-**Which phase should address it:** Phase 3 (RNBO/Gen~) -- dedicated RNBO support with its own validation layer.
+**Phase:** Layout refinement phase. Can be done incrementally -- start with the override table for the worst offenders.
 
 ---
 
@@ -205,176 +142,215 @@ Mistakes that cause rewrites, broken patches, or fundamental architectural failu
 
 ---
 
-### Pitfall 8: Patch Layout That Looks Terrible
+### Pitfall 5: The "bgfillcolor" Dict Has Undocumented and Version-Varying Structure
 
-**What goes wrong:** Generated patches are technically valid but objects are overlapping, connections cross everywhere, and the patch is unreadable when opened in MAX.
+**What goes wrong:** Generated patches include `bgfillcolor` properties that render incorrectly or are silently ignored because the dict structure is incomplete or wrong.
 
-**Why it happens:** MAX patches are visual programs. Layout is not just aesthetic -- it communicates signal flow, grouping, and intent. Programmatic generation tends to produce grid-aligned or random layouts that ignore MAX conventions: top-to-bottom flow for signal chains, left-to-right for parallel paths, grouped related objects, comment annotations.
+**Why it happens:** The `bgfillcolor` property is a nested dict with format that differs between solid color and gradient modes. Cycling '74 has never documented the exact JSON schema. Evidence from help patches and community forums shows:
 
-**Prevention:**
-- Implement a layout engine that follows MAX conventions:
-  - Signal flow goes top-to-bottom (sources above, destinations below)
-  - Related objects grouped with visual proximity
-  - Adequate spacing (minimum ~20px vertical, ~15px horizontal between objects)
-  - Standard object widths based on text content (approximately 7px per character + padding)
-  - `patching_rect` format is `[x, y, width, height]` where origin (0,0) is top-left
-  - Comments placed above or beside the objects they describe
-  - Avoid crossing patch cords where possible
-- Use hierarchical layout algorithms (modified Sugiyama/layered graph drawing)
-- Consider encapsulation: large patches should use subpatchers to keep each level readable
+**Solid color mode (panel in attrui.maxhelp):**
+```json
+{
+  "mode": 0,
+  "angle": 270.0,
+  "proportion": 0.39
+}
+```
 
-**Detection:** Visual inspection in MAX. Automated metrics: count crossing connections, measure object overlap area, check minimum spacing constraints.
+**Gradient mode (panel in attrui.maxhelp):**
+```json
+{
+  "mode": 1,
+  "angle": 270.0,
+  "proportion": 0.39,
+  "grad1": [0.96, 0.83, 0.16, 1.0],
+  "grad2": [0.76, 0.59, 0.10, 1.0],
+  "bordercolor": [0.90, 0.80, 0.39, 1.0]
+}
+```
 
-**Which phase should address it:** Phase 2 (Layout/Validation) -- after objects and connections are correct, make them readable.
-
----
-
-### Pitfall 9: External SDK Build System Fragility
-
-**What goes wrong:** The framework generates C/C++ external code that compiles on the developer's machine but fails elsewhere, or builds successfully but the external doesn't load in MAX.
-
-**Why it happens:** Multiple compounding issues:
-- Max SDK and Min-DevKit are "rather stale" (community assessment, 2025) with features lagging behind MAX 8.6+
-- Mixing Max SDK (C) and Min-DevKit (C++) requires undocumented setup -- namespace prefixing (`c74::max`), manual include path configuration
-- Apple Silicon requires universal binary builds (`-DC74_BUILD_FAT=ON`) or ad-hoc code signing (`codesign --force --deep -s -`)
-- Min-DevKit has limited support for dictionaries, notifications, and UI objects
-- The SDK compiles successfully but the external appears "non-functional" in MAX (a documented issue)
-
-**Prevention:**
-- Default to Min-DevKit for new externals (modern C++, CMake-based, better DX) but document its limitations
-- Provide pre-configured CMakeLists.txt templates with:
-  - `CMAKE_OSX_ARCHITECTURES "x86_64;arm64"` (or `C74_BUILD_FAT=ON`)
-  - Correct include paths for both SDK and Min-API
-  - Ad-hoc codesigning post-build step for Apple Silicon
-- Test build system on both Intel and Apple Silicon Macs
-- Never mix Max SDK and Min-DevKit in the same project unless absolutely necessary
-- Provide clear error messages when builds succeed but externals don't load (usually architecture mismatch or codesigning)
-
-**Detection:** External loads in MAX without errors. Test with `loadbang` + `print` pattern to verify the external is actually executing.
-
-**Which phase should address it:** Phase 4 (Externals) -- dedicated phase with its own build system validation.
-
----
-
-### Pitfall 10: Audio Rate vs. Control Rate Mismatch
-
-**What goes wrong:** Generated patches mix audio-rate (signal) and control-rate (message) connections incorrectly, producing patches that are silent, glitchy, or have enormous latency.
-
-**Why it happens:** MAX has three distinct data domains with different timing characteristics:
-- **Messages** (gray patch cords): Control rate, scheduled by the MAX scheduler, millisecond resolution at best
-- **Signals** (yellow patch cords): Audio rate, sample-accurate, processed in vectors
-- **Jitter matrices** (green patch cords): Frame rate, processed per-frame
-
-An LLM generating patches doesn't inherently understand these distinctions. Connecting a message outlet to a signal inlet doesn't error -- MAX silently converts -- but the timing behavior changes dramatically.
-
-**Prevention:**
-- Object database must tag every inlet and outlet with its domain type: `message`, `signal`, `multichannelsignal`, `jit_matrix`
-- Validation should warn when crossing domains without explicit conversion objects:
-  - Message to signal: should use `sig~` or `line~` (with slewing to avoid clicks)
-  - Signal to message: should use `snapshot~` (with appropriate interval)
-- Template patterns should always use `line~` for parameter smoothing when controlling audio-rate parameters from messages
-- Flag direct number/message connections to signal inlets as potential timing issues
-
-**Detection:** Look for gray-to-yellow patch cord transitions without intermediary conversion objects.
-
-**Which phase should address it:** Phase 1 (Foundation) -- domain tagging in the object database, Phase 2 (Validation) -- cross-domain connection warnings.
-
----
-
-### Pitfall 11: Object Database Incompleteness and Staleness
-
-**What goes wrong:** The object knowledge base is missing objects, has wrong inlet/outlet counts, or doesn't track version-specific availability, causing generated patches to reference non-existent objects or connect to wrong inlets.
-
-**Why it happens:** MAX has 1000+ built-in objects across Max, MSP, Jitter, MC, and RNBO domains, plus thousands of third-party externals. Object behavior changes between versions. There is no single comprehensive machine-readable source -- extraction requires combining MAX's built-in refpages, the maxobjects.com database, and empirical testing.
+**Known gotchas (verified via Cycling '74 forums):**
+- `proportion` value of exactly `1.0` causes visual glitch ("jumps in the middle again") -- must cap at `0.9999`
+- `pt1`/`pt2` coordinates override `angle` -- setting `pt1`/`pt2` makes subsequent `angle` messages non-functional
+- The `bgfillcolor` dict "only stores attributes that deviate from defaults" -- generating the full dict with all fields may produce unexpected results
+- Setting `bgfillcolor` as a flat list `[r, g, b]` forces single-color mode, destroying any gradient configuration
 
 **Consequences:**
-- "Object not found" errors in generated patches
-- Wrong inlet/outlet indices causing misconnections
-- Missing arguments causing objects to use unexpected defaults
-- Version-incompatible objects (e.g., MC~ objects in MAX 7 patches, v8 object in MAX 8)
+- Panels with no visible gradient despite gradient being specified
+- Colors appearing different than intended
+- MAX 8 patches loading with wrong colors when opened in MAX 9 or vice versa
 
 **Prevention:**
-- Build the object database from multiple sources:
-  1. MAX's own refpages (authoritative for object existence and argument format)
-  2. Empirical extraction: script MAX to instantiate each object and report inlet/outlet count/type
-  3. Community databases (maxobjects.com) for coverage gaps
-- Track MAX version compatibility per object
-- Design the database for incremental updates -- new objects can be added without rebuilding
-- Implement a "unknown object" path: if an object isn't in the database, generate it with explicit `numinlets`/`numoutlets` from the user's specification and flag it for manual verification
+- Always use gradient mode (`mode: 1`) when specifying panel backgrounds with gradients
+- Cap `proportion` to `[0.0, 0.9999]` range
+- Do not mix `angle` with `pt1`/`pt2` -- use one or the other
+- Extract known-good panel configurations from MAX help patches as templates
+- Test generated aesthetic properties by opening in MAX and visually inspecting
 
-**Detection:** Track "object not found" rate in MAX console when opening generated patches.
+**Detection:** Visual inspection only -- there is no offline way to verify color rendering. Add a "panel gallery" test patch for manual review.
 
-**Which phase should address it:** Phase 1 (Foundation) -- the object database is the single most critical component.
+**Phase:** Aesthetic implementation phase. Must handle before adding panel/background support to the generator.
 
 ---
 
-### Pitfall 12: Node for Max File Naming and Module Conflicts
+### Pitfall 6: Panel Z-Order and the "background" Property
 
-**What goes wrong:** Generated Node for Max scripts use generic filenames, fail to find dependencies, or conflict with other scripts in MAX's search path.
+**What goes wrong:** Panels intended as visual backgrounds appear in front of objects, obscuring them.
 
-**Why it happens:** MAX uses a flat search path system. If two Node for Max scripts are both named `index.js`, MAX may load the wrong one. Additionally:
-- Node for Max runs in a separate process (all interaction is asynchronous, breaking MAX's call chain)
-- The `require` system must be used instead of ES module `import` in MAX 8 (though MAX 9 with v8 supports ES6+)
-- npm packages with native dependencies can fail with node-gyp errors
-- No Chrome inspector debugging support
+**Why it happens:** In MAX, panels have a `background` property (integer: 0 or 1). When `background: 1`, the panel renders behind all other objects. When `background: 0` (default), the panel renders in its normal layer position, determined by creation order in the `boxes` array.
 
-**Prevention:**
-- Always namespace Node for Max files: `projectname.scriptname.js` pattern
-- Document the async boundary clearly -- Node for Max scripts cannot participate in MAX's synchronous message flow
-- Provide templates that handle the `max-api` require pattern correctly
-- Test npm dependencies on both Intel and Apple Silicon before including them in templates
-- For MAX 9, use the v8 object where possible (ES6+ support, better performance)
-- For MAX 8 compatibility, stick to ES5 / require syntax
-
-**Detection:** "Script not found" errors, wrong script loaded (verify by printing a unique identifier at load), async timing issues.
-
-**Which phase should address it:** Phase 3 (Code Generation) -- alongside js/v8 code generation.
-
----
-
-### Pitfall 13: Execution Order Depends on Visual Position
-
-**What goes wrong:** Generated patches have correct topology but wrong visual positioning, causing MAX's right-to-left, bottom-to-top execution order to produce incorrect results.
-
-**Why it happens:** When an object has multiple outlets connected to different downstream objects, MAX evaluates those connections right-to-left based on the visual position of the destination objects. This means the physical layout of objects affects program behavior -- a property unique to visual programming languages and completely foreign to text-based code generation.
+**Evidence:** The actual MAX JSON from `attrui.maxhelp` confirms: `"background": 1` is set on panels used as section backgrounds. Without this property, the panel renders ON TOP of objects added before it in the boxes array.
 
 **Consequences:**
-- Patches that produce correct results on one screen resolution but wrong results on another (if objects get repositioned)
-- Subtle timing bugs that only manifest with specific data
-- Patches that work in the generator's test layout but break when the user rearranges objects
+- Panels cover objects, making the patch unusable
+- Users have to manually send panels to background in MAX
+- Professional appearance ruined
 
 **Prevention:**
-- Always use explicit `trigger` (`t`) objects to control evaluation order rather than relying on visual position
-- Layout engine should position objects in right-to-left order matching intended evaluation order
-- Never generate patches that depend on implicit position-based ordering
-- Template patterns should include `trigger` objects by default for any fan-out scenario
-- Document this behavior in agent knowledge so Claude never generates position-dependent patches
+- Always set `"background": 1` on panels used as section/group backgrounds
+- Place panel boxes at the BEGINNING of the `boxes` array (first items render first)
+- Use both approaches together: `background: 1` AND early array position
+- Also set `"ignoreclick": 1` on background panels so they do not interfere with clicking objects
+- Document that panel `patching_rect` must fully encompass the objects it backgrounds -- leave 10-15px margin on all sides
 
-**Detection:** Any object with multiple outlets connected to siblings at the same depth level without a `trigger` object is suspicious.
+**Detection:** Open the generated patch in MAX. If panels obscure objects, the z-ordering is wrong.
 
-**Which phase should address it:** Phase 1 (Foundation) -- bake `trigger` usage into all templates from the start.
+**Phase:** Aesthetic implementation, specifically panel support.
 
 ---
 
-### Pitfall 14: Subpatcher and Abstraction Reference Breakage
+### Pitfall 7: Aesthetic Properties on Comment Boxes Use Different Property Names
 
-**What goes wrong:** Generated patches reference abstractions (external .maxpat files) or bpatchers that don't exist in MAX's search path, or subpatcher nesting creates incorrect inlet/outlet routing.
+**What goes wrong:** Comment styling (font, color, background) applied using the same properties as other boxes renders differently or is ignored.
 
-**Why it happens:** Subpatchers are nested inline in the JSON (a `patcher` object inside a `box` with `maxclass: "newobj"` and text starting with `p `). Abstractions reference external files by name. Bpatchers reference external files via the `name` attribute. All three have different JSON structures and behaviors:
-- Subpatcher inlets/outlets must have `inlet`/`outlet` objects inside the nested patcher
-- Abstraction inlets/outlets are defined by the referenced file
-- Bpatcher exposes the referenced patch's presentation view
+**Why it happens:** Comment boxes (`maxclass: "comment"`) in MAX have a distinct rendering path. Key differences:
+- Comments use `clearcolor` (not `bgcolor`) for their background -- this is a patcher-level style property
+- Comments support `textcolor` but the property name in JSON is `textcolor` (not `fontcolor` or `color`)
+- Comments do not support `bgfillcolor` gradients
+- The `fontface` property uses integer codes: 0=regular, 1=bold, 2=italic, 3=bold+italic
+- Comment box height does not auto-adjust to font size in the JSON -- changing `fontsize` requires manual update of `patching_rect[3]`
+
+The current `sizing.py` uses `COMMENT_HEIGHT = 20.0` as a fixed value regardless of font size.
+
+**Consequences:**
+- Comments with larger fonts get clipped vertically
+- Background color applied via `bgcolor` has no visible effect on comments
+- Styled comments look correct in JSON but wrong in MAX
 
 **Prevention:**
-- Generate subpatchers inline (safest -- no external file dependencies)
-- When generating abstractions, generate both the referencing patch and the referenced .maxpat file
-- Validate that subpatcher inlet/outlet objects match the connections from the parent patcher
-- Track inlet/outlet ordering carefully: inlet/outlet order in a subpatcher is determined by their left-to-right position, not creation order
-- Signal inlets/outlets in subpatchers require the corresponding `inlet~`/`outlet~` objects (not `inlet`/`outlet`)
+- Maintain separate style property maps for comments vs. other box types
+- Comment height should be calculated from font size: approximately `fontsize * 1.5 + 4` pixels
+- Use `textcolor` (not `color`) for comment text color
+- Test comment rendering in MAX with different font sizes
 
-**Detection:** "Patcher not found" errors when opening patches. Broken connections to subpatcher inlets.
+**Detection:** Open a test patch with styled comments in MAX. If text is clipped or background is invisible, the properties are wrong.
 
-**Which phase should address it:** Phase 2 (Validation/Templates) -- after core object generation is solid.
+**Phase:** Aesthetic implementation, specifically comment styling.
+
+---
+
+### Pitfall 8: Layout Test Assertions Break on Any Spacing Change
+
+**What goes wrong:** Refinements to the layout algorithm cause many existing tests to fail because they assert specific pixel positions or narrow ranges.
+
+**Why it happens:** The current test suite (`test_layout.py`) has assertions like:
+- `assert 10 <= gap <= 40` (vertical gap range)
+- `assert 5 <= gutter <= 30` (horizontal gutter range)
+- `assert abs(actual_gap - expected_gap) < 5.0`
+
+These ranges were calibrated for `V_SPACING=20` and `H_GUTTER=15`. Changing these constants or changing box sizing shifts every position.
+
+**Evidence:** When `V_SPACING` was changed from 100 to 20 (documented in `feedback_layout_spacing.md`), the spacing tests had to be updated. Any further refinement will require another round.
+
+**Consequences:**
+- Developers avoid layout improvements because they trigger mass test breakage
+- Tests get widened to pass (making them useless for regression detection)
+- Actual layout quality regressions go undetected
+
+**Prevention:**
+- Refactor layout tests to test relative properties (A is above B, B is above C, no overlap) rather than absolute pixel ranges
+- Keep a small set of "golden" test patches for intentional regression detection
+- Derive spacing assertions from the constants themselves: `gap >= V_SPACING * 0.8` and `gap <= V_SPACING * 1.5`
+- Add visual regression tests: generate a patch, serialize to JSON, compare against a known-good JSON fixture
+- When changing layout constants, restructure tests FIRST, then change constants
+
+**Detection:** Run `pytest tests/test_layout.py -v` after any layout change. If more than 3 tests fail from a single constant change, the tests are too brittle.
+
+**Phase:** Before layout refinement starts. Restructure tests first, then refine layout.
+
+---
+
+### Pitfall 9: Help Patch maxclass-to-Name Mapping Goes Wrong Direction
+
+**What goes wrong:** The help patch parser cannot match objects in help patches to objects in the database because help patches use maxclass values while the database keys by object name.
+
+**Why it happens:** In help patches, UI objects appear with their maxclass as the key (e.g., `"maxclass": "number"` for number boxes, `"maxclass": "flonum"` for float number boxes). The `maxclass_map.py` module resolves name-to-maxclass, but the audit needs maxclass-to-name (the reverse direction).
+
+Additionally, for `maxclass: "newobj"`, the object name is the first token of the `text` field. For UI objects, the maxclass IS the name. The parser must handle both cases consistently.
+
+**Prevention:**
+- Build a reverse maxclass-to-name lookup from `maxclass_map.py`
+- For `maxclass: "newobj"`, extract the name from `text` (first space-delimited token) -- this matches `_extract_object_name` in `validation.py`
+- For UI objects (non-newobj maxclass), the maxclass IS the object name
+- Handle `aliases.json` reverse mapping for aliased names
+
+**Detection:** Track "object found in help patch but not in DB" rate. If it exceeds 5%, the name resolution is broken.
+
+**Phase:** Help patch audit pipeline design.
+
+---
+
+### Pitfall 10: Inlet/Outlet X-Position Calculation Compounds Box Width Error
+
+**What goes wrong:** Midpoint generation and cable routing calculates inlet/outlet X positions from box width, but box width is inaccurate (Pitfall 4), causing cable routing to target wrong coordinates.
+
+**Why it happens:** The `_outlet_x` and `_inlet_x` functions in `layout.py` compute outlet position as:
+```python
+usable = w - 2 * _IO_MARGIN  # _IO_MARGIN = 7.0
+spacing = usable / (n - 1)
+return x + _IO_MARGIN + outlet_idx * spacing
+```
+
+A 50px width error on the source box shifts the outlet X position by up to 43px (for a 2-outlet box). The midpoint generation then creates L-shaped cable segments at wrong positions.
+
+**Consequences:**
+- Cables visually miss their connection points (cosmetic -- MAX ignores midpoints for actual connections)
+- Bus routing places the bus X too far right (based on rightmost object edge, which is wrong)
+- Companion positioning (meter~ beside gain~) has wrong gap
+
+**Prevention:**
+- Fix box width calculation first (Pitfall 4) before refining midpoint generation
+- After improving sizing, recalibrate midpoint thresholds (`HORIZONTAL_THRESHOLD`, `BUS_MARGIN`)
+- Increase `HORIZONTAL_THRESHOLD` from 20px to 30px to account for sizing error margin
+
+**Detection:** Open generated patches in MAX. If cables have visible kinks at wrong positions, the midpoint calculation uses wrong widths.
+
+**Phase:** Layout refinement, after box sizing is improved. Order matters: fix sizing, then fix routing.
+
+---
+
+### Pitfall 11: Help Patch Objects May Have Stale Data from Older MAX Versions
+
+**What goes wrong:** The audit extracts box properties that are stale because the help patch was saved with an older MAX version.
+
+**Why it happens:** MAX saves the current state of an object's I/O configuration into the `.maxhelp` JSON at save time. If a help patch was created in MAX 7 and the object gained a new outlet in MAX 8, the saved `numoutlets` is stale until re-saved. The `appversion` field in each help patch records which MAX version saved it.
+
+**Evidence:** The extraction log shows 133 objects with empty inlets and 159 with empty outlets in the XML refpages. Help patches may have similar gaps.
+
+**Consequences:**
+- Extracted data disagrees with XML refpage data
+- Stale help patches produce wrong outlet counts
+- The audit finds "corrections" that are regressions
+
+**Prevention:**
+- Cross-reference help patch data with XML refpage data -- they should agree on I/O count
+- If they disagree, prefer the help patch (reflects runtime behavior) but flag discrepancy for review
+- Check `appversion` in each help patch to identify potentially stale data
+- For the 133+159 objects with empty I/O in XML, the help patch is the ONLY source of truth
+
+**Detection:** Generate a discrepancy report: objects where help patch I/O count differs from XML refpage I/O count. Review each manually.
+
+**Phase:** Help patch audit pipeline.
 
 ---
 
@@ -382,134 +358,141 @@ An LLM generating patches doesn't inherently understand these distinctions. Conn
 
 ---
 
-### Pitfall 15: Floating Point vs. Integer Truncation
+### Pitfall 12: Presentation Mode Properties Interfere with Patching Mode
 
-**What goes wrong:** Generated patches use integer-only objects (like `+` with integer arguments) where floating-point is needed, causing silent truncation.
-
-**Prevention:** Always use floating-point arguments in arithmetic objects when precision matters. Use `+ 0.` instead of `+ 0` to force float mode. Document this in templates.
-
-**Which phase should address it:** Phase 1 (Templates) -- include float-aware defaults.
-
----
-
-### Pitfall 16: MAX 8 vs. MAX 9 Threading Changes
-
-**What goes wrong:** Patches that work in MAX 8 behave differently in MAX 9 due to inlet threading changes.
-
-**Prevention:** Track MAX version in project configuration. Use `deferlow` for thread-sensitive operations. Test generated patches in both versions where possible. Default to MAX 9-safe patterns.
-
-**Which phase should address it:** Phase 1 (Foundation) -- version awareness in the object database.
-
----
-
-### Pitfall 17: Overambitious Template Complexity
-
-**What goes wrong:** Template library tries to cover every synthesis technique and effect type, resulting in hundreds of templates that are individually undertested and collectively unmaintainable.
-
-**Prevention:** Start with 10-15 high-quality, thoroughly tested templates covering the most common patterns:
-1. Simple oscillator with gain control
-2. Subtractive synth voice (osc~ + filter~ + adsr~)
-3. FM synthesis pair
-4. Delay effect with feedback
-5. MIDI note input to poly~ voice
-6. Audio file playback (buffer~ + groove~)
-7. LFO modulation routing
-8. Envelope follower
-9. Basic mixer (gain~ + meter~)
-10. Gen~ codebox template (in/out with basic DSP)
-
-Add templates only when a pattern is requested more than once.
-
-**Which phase should address it:** Phase 2 (Templates) -- resist the urge to build all templates upfront.
-
----
-
-### Pitfall 18: Validation Without Runtime Feedback Loop
-
-**What goes wrong:** The validation system becomes a false oracle -- developers trust it absolutely, skip manual testing, and ship broken patches.
+**What goes wrong:** Adding `presentation: 1` and `presentation_rect` to objects for aesthetic layout changes behavior when toggling between patching and presentation mode.
 
 **Prevention:**
-- Every validation result must clearly state what was checked and what was NOT checked
-- Maintain a "validation coverage" metric: structural checks (HIGH coverage), type compatibility (MEDIUM coverage), semantic correctness (LOW coverage -- requires MAX runtime)
-- Design the workflow to make manual testing in MAX fast and systematic:
-  - Generate test protocols alongside patches
-  - Include `print` objects at key signal points for debugging
-  - Provide a "diagnostic mode" that adds monitoring objects to generated patches
+- Only set `presentation: 1` on objects intended for the presentation view
+- `presentation_rect` is independent of `patching_rect` -- always set both
+- The `openinpresentation` patcher property determines which mode opens first -- set intentionally
+- Do not set `presentation: 1` on non-UI objects unless they serve a presentation purpose
 
-**Which phase should address it:** Phase 2 (Validation) -- build honest validation from the start.
+**Phase:** Aesthetic implementation.
 
 ---
 
-### Pitfall 19: Gen~ Execution Order in Patch vs. Codebox Mode
+### Pitfall 13: Style System Conflicts with Per-Object Properties
 
-**What goes wrong:** Gen~ patches using visual operators have implicit execution order (poke before peek) that causes feedback issues, while the same logic in codebox mode gives explicit control.
+**What goes wrong:** Setting the `style` patcher property changes all object colors to a theme, overriding per-object color settings.
 
 **Prevention:**
-- Prefer codebox for any Gen~ logic involving read/write ordering (buffer access, delay lines)
-- In patch mode, be explicit about execution order using gen~ signal flow
-- Document that poke/peek ordering matters and can cause single-sample feedback differences
-- History and Delay objects have scope limitations inside functions -- always test
+- If using patcher-level `style`, do not also set per-object color properties (they get overridden)
+- If using per-object colors, leave `style` as `""` (empty string, the default)
+- Safe approach for v1.1: do not use the `style` system. Apply aesthetics through explicit per-object and per-patcher properties only.
 
-**Which phase should address it:** Phase 3 (Gen~/Code) -- Gen~ generation patterns.
+**Phase:** Aesthetic implementation.
 
 ---
 
-### Pitfall 20: MC Multichannel Dynamic Channel Count Limitations
+### Pitfall 14: The 292 Empty-I/O Objects Are the Highest Value Audit Targets
 
-**What goes wrong:** Generated MC patches try to dynamically change channel counts at runtime, causing silent failures or audio restarts.
+**What goes wrong:** The audit focuses on objects that already have correct data while ignoring the 292 objects (133 empty inlets + 159 empty outlets) that need it most.
 
 **Prevention:**
-- MC channel counts via the `chans` attribute cannot change while audio is running without a full DSP restart
-- `mc.send~` and `mc.receive~` require explicit channel count arguments (not dynamic)
-- Maximum channel count is 1024 (hard limit)
-- MC objects only work in MAX 8+ (backward compatibility break)
-- Set channel counts at patch load time, not dynamically
+- Prioritize auditing objects with empty inlets or empty outlets
+- These are guaranteed to benefit from help patch data extraction
+- Track coverage: X of 133 empty-inlet objects now have inlet data, X of 159 empty-outlet objects now have outlet data
 
-**Which phase should address it:** Phase 3 or Phase 4 -- MC support is specialized.
+**Phase:** Help patch audit prioritization.
+
+---
+
+### Pitfall 15: Help Patch Coverage Gaps for Operators and MC Objects
+
+**What goes wrong:** Operator objects (`+`, `-`, `*~`) and MC objects (`mc.cycle~`, `mc.gain~`) share help files or have no dedicated help files, making them unauditable.
+
+**Prevention:**
+- Map operator help files to their variants (e.g., `plus.maxhelp` should audit `+`)
+- Map MC objects to base counterparts (`mc.cycle~` inherits outlet types from `cycle~`)
+- For MSP operators, infer outlet types from the operator family (all MSP operators `+~`, `-~`, `*~`, `/~` have `["signal"]` outlets)
+- Document unaudited objects and track as known gaps
+
+**Phase:** Help patch audit, coverage mapping.
+
+---
+
+### Pitfall 16: Recursive Subpatcher Layout Can Be Slow
+
+**What goes wrong:** The layout engine calls `apply_layout` recursively for every inner patcher (layout.py line 153-155). With deeply nested subpatchers, this becomes slow.
+
+**Prevention:**
+- Add a depth limit (e.g., max 10 levels of recursion)
+- For bpatchers, do not layout the inner patcher (it may be a shared file)
+- The current implementation already skips subpatchers with no boxes
+
+**Phase:** Layout refinement, if nested patches become an issue.
 
 ---
 
 ## Phase-Specific Warnings
 
 | Phase Topic | Likely Pitfall | Mitigation |
-|-------------|---------------|------------|
-| Foundation / Object Database | Incomplete object coverage, wrong inlet/outlet counts | Extract from MAX refpages + empirical testing, iterative updates |
-| Foundation / .maxpat Format | Missing required JSON fields, silent load failures | Template-from-MAX approach, structural diffing against known-good patches |
-| Foundation / Core Semantics | Hot/cold inlet violations, PD confusion, execution order | Bake MAX conventions into every template, constrain object names to database |
-| Validation Layer | False positive/negative rates, overconfidence | Honest coverage reporting, multi-layer validation, always state what ISN'T checked |
-| Layout Engine | Unreadable patches, position-dependent execution bugs | Sugiyama-style layout, explicit trigger objects, follow MAX visual conventions |
-| Gen~/RNBO Code Generation | GenExpr scope errors, RNBO object subset violations | GenExpr syntax validator, RNBO object whitelist, separate validation layers |
-| External SDK | Build failures on Apple Silicon, mixed SDK issues | Min-DevKit default, pre-configured CMake templates, codesigning automation |
-| Node for Max / js | File naming conflicts, async boundary confusion, ES version mismatch | Namespace files, document async boundary, version-aware templates |
-| Template Library | Overscoping, undertesting | Start with 10-15 core templates, expand based on demand |
-| Manual Testing Gap | False oracle problem, skipping MAX runtime verification | Honest validation coverage metrics, generated test protocols, diagnostic mode |
+|---|---|---|
+| Help patch parsing | Tab structure hides all content in subpatchers (P3) | Recursive descent parser, verify found count > 0 |
+| Help patch parsing | Multiple instances with different configs (P1) | Filter by has-connections, track per-argument configs |
+| Help patch parsing | maxclass-to-name mismatch (P9) | Reverse lookup from maxclass_map.py + aliases.json |
+| Help patch parsing | Stale data from old MAX versions (P11) | Cross-reference with XML, check appversion |
+| DB bulk update | Override merge order broken (P2) | Override-aware audit, never overwrite manual corrections |
+| DB bulk update | 292 empty-I/O objects highest priority (P14) | Prioritize empty objects, track coverage metrics |
+| Aesthetic: panels | Z-order and background property (P6) | Always `background: 1`, panel first in boxes array |
+| Aesthetic: bgfillcolor | Undocumented dict structure (P5) | Extract from MAX, cap proportion at 0.9999, test visually |
+| Aesthetic: comments | Different property names than other boxes (P7) | Separate style map, height from fontsize |
+| Aesthetic: style | System conflicts with per-object (P13) | Do not use patcher `style` property in v1.1 |
+| Layout: sizing | 50px+ width error (P4) | Per-object width lookup, proportional char widths |
+| Layout: routing | Compounded width error in cables (P10) | Fix sizing before fixing routing |
+| Layout: tests | Brittle pixel assertions (P8) | Refactor to relative assertions before refining layout |
+
+---
+
+## Integration Risk Matrix
+
+Changes to the existing v1.0 system and their risk of breaking it.
+
+| Change | Risk | What Breaks | Prevention |
+|---|---|---|---|
+| Writing to `msp/objects.json` | **CRITICAL** | 16 manual outlet type overrides, connection validation | Override-aware writes, dry-run mode, test suite gate |
+| Adding `bgcolor`/`bgfillcolor` to `Box.to_dict()` | MODERATE | All existing test fixtures, JSON comparison tests | Add via `extra_attrs`, not core dict |
+| Changing `V_SPACING` or `H_GUTTER` | MODERATE | 6+ layout tests with pixel range assertions | Refactor tests first |
+| Changing `calculate_box_size()` | **CRITICAL** | Every layout test, every generated patch width | Keep old formula as fallback, add override table alongside |
+| Adding `background` property to panel | LOW | Nothing -- additive change | Ensure default is `1` for background panels |
+| Modifying `_generate_midpoints()` | MODERATE | 5 midpoint tests with exact coordinate assertions | Test properties (count, direction) not exact values |
+| Changing `overrides.json` structure | **CRITICAL** | `db_lookup.py` merge logic, all 624 tests | Do not change structure -- only add entries |
 
 ---
 
 ## Sources
 
-### Academic Research
-- [Benchmarking LLM Code Generation for Audio Programming with Visual Dataflow Languages](https://arxiv.org/html/2409.00856v1) -- 600 generations tested, pass@1 of 0.30 for MaxMSP JSON, documents LLM failure modes
+### Project Evidence (verified against actual codebase)
+- `/Users/taylorbrook/Dev/MAX/.claude/max-objects/overrides.json` -- 16 manually corrected MSP outlet types, multislider correction
+- `/Users/taylorbrook/Dev/MAX/.claude/max-objects/extraction-log.json` -- 133 empty inlets, 159 empty outlets, 2,015 total objects
+- `/Users/taylorbrook/Dev/MAX/src/maxpat/layout.py` -- layout engine with `_outlet_x`/`_inlet_x` calculations, companion placement
+- `/Users/taylorbrook/Dev/MAX/src/maxpat/sizing.py` -- `CHAR_WIDTH=7.0`, `MIN_BOX_WIDTH=40.0`, `COMMENT_HEIGHT=20.0`
+- `/Users/taylorbrook/Dev/MAX/src/maxpat/db_lookup.py` -- `DOMAIN_LOAD_ORDER`, override merge logic (lines 66-81)
+- `/Users/taylorbrook/Dev/MAX/src/maxpat/defaults.py` -- `V_SPACING=20`, `H_GUTTER=15`
+- `/Users/taylorbrook/Dev/MAX/tests/test_layout.py` -- spacing range assertions calibrated for current constants
 
-### Cycling '74 Official
-- [.maxpat format specification discussion](https://cycling74.com/forums/specification-for-maxpat-json-format) -- confirms no official spec exists
-- [RNBO Key Differences](https://rnbo.cycling74.com/learn/key-differences) -- RNBO subset limitations
-- [GenExpr Documentation](https://docs.cycling74.com/userguide/gen/gen_genexpr/) -- GenExpr syntax and constraints
-- [Max 8.2 SDK Overview](https://cycling74.com/articles/the-max-8-2-sdk-an-overview) -- CMake build system, Apple Silicon support
-- [Node for Max JavaScript Differences](https://docs.cycling74.com/max8/vignettes/04_n4m_jsdifferences) -- js vs Node for Max limitations
-- [Message Order and Debugging](https://docs.cycling74.com/max8/tutorials/basicchapter05) -- right-to-left execution, depth-first traversal
-- [Error Messages Reference](https://docs.cycling74.com/max8/vignettes/error_messages) -- connection type mismatches
-- [Max 9.0.0 Release Notes](https://cycling74.com/releases/max/9.0.0) -- v8 engine, threading changes
-- [MC Documentation](https://docs.cycling74.com/max8/vignettes/mc_topic) -- multichannel limitations
+### MAX Installation Evidence (verified against local MAX 9)
+- `/Applications/Max.app/Contents/Resources/C74/help/` -- 2,096 help patches across 5 directories (max: 472, msp: 261, jitter: 203, m4l: 32, packages: 1,128)
+- `trigger.maxhelp` -- tab structure with `showontab: 1` subpatchers, top level has 6 boxes, content in `p basic` (20 boxes) and `p examples` (27 boxes)
+- `buffer~.maxhelp` -- 7 instances, ground truth `outlettype: ["float", "bang"]`, one degenerate instance with `numoutlets: 0`
+- `attrui.maxhelp` -- panel with `background: 1`, `mode: 1`, `grad1`/`grad2`/`proportion`/`angle`/`bordercolor`
 
-### Community / Tools
-- [py2max](https://github.com/shakfu/py2max) -- reference implementation for .maxpat generation
-- [MaxMSP-MCP-Server](https://github.com/tiianhk/MaxMSP-MCP-Server) -- MCP server approach to LLM+MAX integration
-- [Max SDK GitHub](https://github.com/Cycling74/max-sdk) -- SDK build issues
-- [Min-DevKit GitHub](https://github.com/Cycling74/min-devkit) -- Min-DevKit limitations
-- [MAX/MSP LLM Forum Discussion](https://cycling74.com/forums/max-and-large-language-models-generative-ai-gpt-etc) -- community experience with AI patch generation
-- [MAX/MSP Gotchas (ModWiggler)](https://modwiggler.com/forum/viewtopic.php?t=169681) -- community-reported quirks
+### Width Analysis (measured from trigger.maxhelp vs. calculated)
+- `js helpstarter.js trigger`: actual=132px, calc=191px, error=-59px
+- `+`: actual=89.5px, calc=40px, error=+50px
+- `t b i`: actual=32.5px, calc=51px, error=-18px
+- `accum 0.`: actual=91.5px, calc=72px, error=+20px
+- `print 5`: actual=48px, calc=65px, error=-17px
 
-### SDK Documentation
-- [Max SDK Inlets and Outlets](https://sdk.cdn.cycling74.com/max-sdk-8.0.3/chapter_inout.html) -- typed outlets, inlet creation
-- [Max SDK MC API](https://sdk.cdn.cycling74.com/max-sdk-8.2.0/chapter_mc.html) -- MC backward compatibility
+### Community Sources
+- [Panel bgfillcolor attributes](https://cycling74.com/forums/panel-bgfillcolor-attributes-how-to-specify-as-3-floats) -- proportion limit gotcha
+- [Scripting Panel Gradients](https://cycling74.com/forums/scripting-panel-gradients) -- pt1/pt2 vs angle conflict, dict opacity
+- [Color and the Max User Interface (MAX 8)](https://docs.cycling74.com/max8/vignettes/max_colors) -- style color property names (13 properties)
+- [Patcher-level Formatting (MAX 8)](https://docs.cycling74.com/max8/vignettes/format_palette_patcher_level) -- style system interactions
+
+### Project Memory Files (known issues from v1.0)
+- `feedback_msp_outlet_types.md` -- MSP outlet type extraction bug, 16 corrections applied
+- `feedback_bpatcher_args.md` -- #N compound string substitution failure mode
+- `feedback_layout_spacing.md` -- tight spacing requirements (V_SPACING=20, H_GUTTER=15)
+- `feedback_multislider_fetch.md` -- fetch vs fetchindex, outlet 1 not outlet 0

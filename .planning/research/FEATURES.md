@@ -1,211 +1,435 @@
-# Feature Research
+# Feature Landscape: v1.1 Patch Quality & Aesthetics
 
-**Domain:** Claude Code development framework for MAX/MSP patch and code generation
-**Researched:** 2026-03-08
-**Confidence:** MEDIUM (no precedent exists for this exact product category; analogous systems inform but don't validate)
+**Domain:** Object database auditing, patch aesthetics, refined positioning
+**Researched:** 2026-03-13
+**Confidence:** HIGH for .maxpat JSON format capabilities (verified against real patches and official docs); MEDIUM for "what looks professional" (subjective, but consistent patterns emerge from help patches and community)
 
-## Feature Landscape
+---
 
-### Table Stakes (Users Expect These)
+## Part A: Database Auditing Features
 
-Without these, the framework produces output that doesn't work when opened in MAX, or requires so much manual fixing that Claude adds no value over manual patching.
+### Table Stakes (Audit)
 
-| # | Feature | Why Expected | Complexity | Notes |
-|---|---------|--------------|------------|-------|
-| T1 | Valid .maxpat JSON generation | Patches must open in MAX without errors. The .maxpat format has no official spec -- structure must be reverse-engineered from real patches. Incorrect JSON = MAX refuses to open. This is the absolute minimum bar. | HIGH | No official spec from Cycling '74. py2max (418+ tests, 1157 objects) is the best reference for format correctness. Must handle: patcher wrapper, boxes array with maxclass/numinlets/numoutlets/patching_rect, lines array with patchline source/destination pairs, nested subpatchers. Format validation is non-trivial -- MAX silently ignores some malformations but crashes on others. |
-| T2 | MAX object knowledge base | Claude must know what objects exist, their inlet/outlet counts, accepted arguments, and message types. Without this, Claude hallucinates objects (community reports this as the #1 failure mode for LLMs + MAX). | HIGH | py2max's MaxRef database covers 1,157 objects. Cycling '74 docs cover all objects but in HTML reference format, not structured data. Need: object name, maxclass, numinlets, numoutlets, arguments (required + optional), accepted messages per inlet, output types per outlet, domain (Max/MSP/Jitter/MC). Must track MAX 8 vs MAX 9 differences (new ABL objects, 40+ array objects, 30+ string objects in MAX 9). |
-| T3 | Connection validation | Patchlines must connect valid outlet indices to valid inlet indices. Signal (audio) outlets must connect to signal inlets. Control outlets should not connect to signal-only inlets. Wrong connections = silent failures or crashes in MAX. | MEDIUM | Rules: outlet index < numoutlets, inlet index < numinlets. Signal connections (tilde objects) vs control connections follow different rules. MC connections add another layer. Connection validation prevents the most common category of broken patches. |
-| T4 | Patch layout engine | Objects must be positioned with readable spatial arrangement when opened in MAX. Overlapping objects, crossed patch cords, and random placement make patches unusable even if technically valid. | MEDIUM | py2max offers 5 layout strategies (grid, flow, columnar, matrix, horizontal/vertical) and 3 layout engines (WebCola, ELK, Dagre). MAX convention: signal flow goes top-to-bottom, control flow left-to-right. Objects should be spaced ~80-120px vertically, ~150-200px horizontally. Patch cords should not cross when avoidable. Subpatchers should encapsulate complexity. |
-| T5 | Gen~ code generation | Gen~ is the primary DSP code entry point. GenExpr is a C/JS-like language for sample-level DSP. Claude can write GenExpr naturally since it resembles C. Must generate syntactically valid GenExpr with correct in/out keywords. | MEDIUM | GenExpr: typeless, locally-scoped variables, C-style operators (no ++), in1/in2/out1/out2 keywords for I/O, Param declarations for parameters, require() for file includes. gen~ codebox objects embed GenExpr directly in patches. Also need .gendsp file generation for standalone Gen~ patchers. |
-| T6 | Node for Max / js code generation | JavaScript is where Claude excels naturally. Node for Max (node.script) runs full Node.js with npm access. The js object runs V8 JavaScript with direct MAX API access. Both are heavily used in modern MAX development. | LOW | Node for Max: async, ES2022+, npm packages, but no direct patcher scripting. js object: synchronous, direct patcher API access, Jitter API, Live API. MAX 9.1 expanded V8 with XMLHttpRequest, SQLite, SnapshotAPI. Claude generates JavaScript natively -- this is the easiest subsystem. |
-| T7 | Template library for common patterns | Expert users need starting points for synthesis, sequencing, effects, control, and Jitter patches. Templates encode best practices (trigger for ordering, poly~ for voices, abstraction for reuse) that prevent common mistakes. | MEDIUM | Critical templates: subtractive synth, FM synth, delay effect, reverb, step sequencer, MIDI input/output, OSC communication, audio I/O routing, basic Jitter video pipeline, MC multichannel setup. Templates should be composable -- a synth template can be dropped into a sequencer template. |
-| T8 | Multi-project isolation | Each MAX project needs its own context, history, and state. A granular synth project should not contaminate a step sequencer project. The Plugin Freedom System proved this is essential for framework usability. | LOW | Follows PFS pattern: per-project directories, per-project STATUS.md, project-scoped agent memory. Projects are independent MAX packages or standalone patches. Low complexity because PFS already established the pattern. |
-| T9 | Structured patch validation pipeline | Multi-layer validation before the user opens the patch in MAX. Pre-generation (does the plan make sense?), post-generation (is the JSON valid? are objects real? do connections work?), domain-specific (is signal flow correct? are DSP rates consistent?). | MEDIUM | Layer 1: JSON schema validation. Layer 2: Object existence check against knowledge base. Layer 3: Connection validity (index bounds, signal/control type matching). Layer 4: Domain-specific (MSP signal flow, Jitter matrix dimensions, MC channel counts). Catches errors Claude cannot test since it cannot run MAX. |
+| Feature | Why Expected | Complexity | Notes |
+|---------|--------------|------------|-------|
+| Help patch parser | Foundation for all other v1.1 work. Extracts ground truth outlet types, inlet counts, argument formats from 973 .maxhelp files | Low | .maxhelp = JSON, same as .maxpat. Python stdlib `json.load()`. Full recursive parse in 0.17s. |
+| Outlet type audit & correction | The #1 source of broken connections in generated patches. DB has wrong outlet types for mixed signal/control objects (line~, play~, sfplay~, curve~, etc.) | Medium | Compare DB `outlets[].signal` against help patch `outlettype[]`. Generate overrides.json updates. Already found 10+ mixed-outlet objects needing correction. |
+| Inlet/outlet count validation | Variable I/O objects (trigger, pack, route, etc.) need argument-dependent count verification | Low | Help patches show actual counts for specific argument configurations. Cross-reference with existing `variable_io_rules`. |
 
-### Differentiators (Competitive Advantage)
+### Differentiators (Audit)
 
-These features are what make MaxSystem exceptional compared to asking a raw LLM to generate MAX patches (which community consensus says produces "non-functional mess" -- Cycling '74 forums, 2025-2026).
+| Feature | Value Proposition | Complexity | Notes |
+|---------|-------------------|------------|-------|
+| Argument format extraction | Help patches show canonical argument usage (e.g., "cycle~ 440.", "trigger b i f", "route foo bar"). Capture and store. | Medium | Parse `text` field of every `newobj` box. Build argument pattern database per object. |
+| Connection pattern extraction | Which outlets typically connect to which inlet types. Informs intelligent wiring suggestions. | Medium | Parse all 31,476 connections. Build per-object connection frequency table. |
+| Audit diff report | Human-readable report of DB vs help patch discrepancies. Enables targeted manual review. | Low | JSON or CSV output showing: object name, property, DB value, help value, confidence. |
+| Batch override generation | Automatically generate overrides.json entries from audit findings, with confidence filtering. | Medium | High-confidence corrections (outlet types from help patches) auto-apply. Low-confidence (ambiguous argument patterns) flagged for review. |
 
-| # | Feature | Value Proposition | Complexity | Notes |
-|---|---------|-------------------|------------|-------|
-| D1 | Domain-specialized agents | Different MAX development tasks require different expertise: patching (spatial layout + object selection), DSP/Gen~ (sample-level audio math), RNBO~ (exportable subset constraints), js/Node (JavaScript + MAX API), externals (C/C++ + Max SDK). A single general agent fails at all of them. Specialized agents with domain contracts produce expert-quality output in each area. | HIGH | Modeled after PFS: 11+ agents with JSON Schema contracts. Proposed agents: patch-agent (layout + object selection + connections), dsp-agent (Gen~ code + MSP signal chains), rnbo-agent (exportable patch constraints + code export), js-agent (Node for Max + js/V8 code), external-agent (C/C++ with Min-DevKit or Max SDK), ui-agent (Presentation Mode layouts), critic agents (validation per domain). Each agent loads relevant slice of object knowledge base. |
-| D2 | RNBO~ patch generation with export awareness | RNBO patches look like MAX patches but have strict constraints (no arbitrary Max objects, only RNBO-compatible subset). RNBO exports to VST3/AU plugins, Web Audio, Raspberry Pi, and C++ -- massive value if patches export correctly. No existing tool validates RNBO constraints at generation time. | HIGH | RNBO supports gen~ fully, but only a subset of Max objects. Must maintain RNBO-compatible object list separately from full MAX object DB. Key differences from Max: different message handling, no arbitrary JavaScript, restricted object set. Export targets: audio plugins (VST3/AU), web (JavaScript/Web Audio), hardware (Raspberry Pi), C++ source. Validate export compatibility before user attempts export in MAX. |
-| D3 | C/C++ external development support | Building MAX externals is the most advanced MAX development task. Min-DevKit (modern C++) and Max SDK (C) both available. Claude can generate C/C++ code, CMake configs, and build scripts. No existing AI tool supports this workflow. | HIGH | Min-DevKit: modern C++, CMake-based, recommended by Cycling '74. Max SDK: C, lower-level, more control. Both are "rather stale" per community (waiting for Max 8.6+ API access). Need: project scaffolding, inlet/outlet setup, message handling, DSP processing methods, build system. PFS's CMake and C++ expertise transfers directly. |
-| D4 | Persistent agent memory with write-back | Agents learn the user's preferences, common patterns, and project-specific idioms across sessions. PFS proved this works: 4 agents with seed patterns, 10KB cap, deduplication, write-back via SubagentStop. Applied to MAX: "user prefers poly~ over multiple instances," "project uses OSC port 8000," "always include loadbang for initialization." | MEDIUM | Direct port from PFS v1.4. Agent memory files in .claude/agent-memory/. Write-back on session completion. Deduplication via key phrases. 10KB cap per agent. Seed patterns for MAX-specific knowledge. Accumulates across projects when patterns are universal (MAX conventions) vs project-scoped (specific object preferences). |
-| D5 | Generator-critic validation loops | After generating a patch, specialized critics review it before the user sees it. DSP critic checks signal flow and rate consistency. Layout critic checks readability. Object critic validates against knowledge base. Multiple critics catch errors a single pass misses. PFS proved this pattern catches issues serial review misses. | MEDIUM | PFS pattern: generator produces, critics review, generator revises. For MAX: DSP critic (signal flow, audio rate consistency, feedback loops), structure critic (subpatcher encapsulation, abstraction opportunities, naming conventions), connection critic (signal/control type matching, ordering issues). Critics are read-only -- they analyze but don't modify. |
-| D6 | Intelligent object selection with context | Given a task description, recommend the right MAX objects. Not just "use cycle~ for a sine wave" but "use poly~ with 8 voices because this is a synth, use mc.cycle~ if targeting multichannel, use gen~ codebox if you need waveshaping." Context-aware selection based on project requirements and performance implications. | MEDIUM | Requires structured object knowledge beyond inlet/outlet counts: performance characteristics, common use patterns, idiomatic alternatives, version-specific availability. Build recommendation engine on top of T2 knowledge base. Example: "For filtering" -> recommend biquad~ (efficient, standard), svf~ (multimode), onepole~ (simple lowpass), filtercoeff~ + cascade~ (precision), gen~ codebox (custom). |
-| D7 | MAX 9 object coverage including ABL objects | MAX 9 (Oct 2024) and 9.1 (Oct 2025) added significant new objects: ABL audio devices (autofilter, compressor, drum buss), new DSP components (meldfilter, meldosc, pitchestimator), 40+ array objects, 30+ string objects, step sequencer objects (stepfun~, stepdiv~, stepcounter~), text.codebox. Being current with MAX 9 when other tools are not is a real advantage. | MEDIUM | Must version-tag objects in knowledge base. New MAX 9 objects that matter: ABL devices (high-quality audio processing with custom inputs), step sequencer objects (previously required complex patching), text.codebox (code-first object creation), array/string objects (previously required js for basic data manipulation). Users stuck on MAX 8 need compatibility warnings. |
-| D8 | Skill-based project lifecycle | Skills for each phase of MAX project development: ideation (what to build), research (what objects/patterns to use), planning (patch architecture), execution (generation), verification (validation). Scoped per project. Proven pattern from PFS with 27 skills across the full plugin lifecycle. | MEDIUM | Direct adaptation from PFS. MAX-specific skills: patch-ideation (creative brief for MAX projects), object-research (find right objects for the task), patch-planning (architecture decomposition into subpatchers/abstractions), patch-generation (create .maxpat files), patch-verification (run validation pipeline), patch-iteration (incorporate user feedback from testing in MAX). |
+---
 
-### Anti-Features (Commonly Requested, Often Problematic)
+## Part B: Patch Aesthetics Features
 
-Features that seem good but create problems. These are deliberate exclusions.
+### Context
 
-| # | Feature | Why Requested | Why Problematic | Alternative |
-|---|---------|---------------|-----------------|-------------|
-| A1 | Real-time MAX control via OSC/MCP | "Let Claude control MAX directly!" -- MCP servers for MAX exist (tiianhk/MaxMSP-MCP-Server). Seems like the ultimate integration: Claude generates, MAX runs, Claude hears results. | Claude cannot process audio. Real-time control adds massive complexity (network protocol, state synchronization, error recovery). The MCP server requires MAX 9 + V8 + Python + running MAX instance. Creates fragile dependency on MAX being open and configured. Testing gap remains -- Claude still cannot evaluate whether audio sounds correct. | Offline generation with structured manual testing protocol. Claude generates .maxpat, user opens in MAX, user reports results via structured form (works/doesn't work/sounds wrong + description), Claude iterates. Keep the human in the audio evaluation loop where they belong. |
-| A2 | Patch-from-screenshot / visual understanding | "Claude should look at my patch screenshot and understand it." Multimodal LLMs can read images. Seems natural for a visual patching tool. | MAX patches are dense visual graphs. Object text is small. Patch cords overlap. Subpatcher contents are hidden. Screenshot analysis gives Claude a fuzzy approximation of what it could read precisely from the .maxpat JSON. JSON is the source of truth -- screenshots are lossy representations. Investing in screenshot understanding competes with investing in JSON understanding. | Read the .maxpat file directly. Claude can parse JSON precisely. For user communication about visual layout issues, ask the user to describe what they see or provide specific object names. |
-| A3 | Automatic patch complexity management | "Claude should automatically decide when to use subpatchers vs inline objects." Seems like good engineering practice. | Encapsulation decisions are architectural choices that depend on the user's mental model, project scope, and personal preferences. Automated decisions here override the expert user's judgment. Some users prefer flat patches for debugging. Others prefer deep nesting for organization. The framework should suggest but not enforce. | Provide encapsulation recommendations via critic feedback. "This section could be a subpatcher" as a suggestion, not an automatic action. Let templates demonstrate good encapsulation patterns. |
-| A4 | Full Jitter/GL as primary focus | "Support video/GL generation equally with audio." Jitter is a major MAX domain with complex 3D graphics, shader programming, and matrix operations. | Jitter patches involve textures, shaders, GL rendering contexts, and real-time video -- all impossible to validate without MAX running. The testing gap is even wider than audio. Jitter expertise is more niche than MSP. Trying to be equally good at everything dilutes quality everywhere. | Support Jitter objects in the knowledge base. Generate basic Jitter patches (video player, effects chain). But do not invest equally in Jitter-specific validation, agents, or templates. MSP/audio is primary. Expand Jitter support based on user demand. |
-| A5 | MAX for Live integration | "Generate patches that work in Ableton Live." MAX for Live is a huge use case. Adds Live API access, device types, parameter mapping. | Separate domain with its own constraints: Live API, device types (audio effect, instrument, MIDI effect), parameter mapping to Ableton, M4L-specific objects (live.*, pluggo~). Doubles the object knowledge base scope. Testing requires Ableton Live + MAX for Live license. Conflating MAX standalone and M4L development creates confusion. | Defer entirely to a future milestone. The core framework must work for standalone MAX first. M4L support can be added as a layer on top once the foundation is solid. The object knowledge base can be extended to include live.* objects later. |
-| A6 | py2max/MaxPyLang as runtime dependency | "Use py2max as the patch generation engine." py2max has 1157 objects, layout engines, validation, SVG preview. Seems like free infrastructure. | Creates Python dependency in a Claude Code framework that should generate .maxpat JSON directly. py2max is a third-party library with its own update cycle. Claude can generate JSON natively -- adding Python as an intermediary adds complexity without proportional value. py2max's object database is valuable as a reference, but its runtime is unnecessary. | Extract knowledge from py2max (object database, format patterns, layout algorithms) as reference material for building MaxSystem's own generation. Use py2max as a validation cross-reference, not a runtime dependency. Study its 418+ tests for edge cases. |
-| A7 | Agent teams for patch generation | "Parallelize generation -- one agent does DSP, another does UI, a third does control logic." Seems like it would speed up complex patch creation. | Patch generation modifies a single .maxpat file. Parallel agents editing the same JSON create merge conflicts. PFS learned this: "Agent teams for implementation stages... two teammates editing PluginProcessor.cpp leads to overwrites." Patch generation is inherently serial -- objects must be placed, then connected, in order. | Use agent teams for read-only work: parallel research (what objects to use for this task), parallel review (DSP critic + layout critic + connection critic). Keep generation serial with a single patch-agent that consults specialist agents via subagent calls. |
+The v1.0 framework generates valid .maxpat JSON with a column-based layout engine (V_SPACING=20, H_GUTTER=15), font defaults (Arial 12pt), and basic presentation mode support. Currently all comments are unstyled plain text, no panels exist, no background layering is used, and all patchlines are default colored. This section documents what .maxpat JSON properties exist for visual styling, which should be implemented, and what professional MAX patches look like.
+
+### Table Stakes (Aesthetics)
+
+Features that make generated patches look intentional rather than machine-generated. Missing these means users immediately see "a robot made this."
+
+| Feature | Why Expected | Complexity | Dependencies |
+|---------|--------------|------------|--------------|
+| Section header comments | Every professional MAX patch uses styled comments to label functional sections ("OSCILLATOR", "FILTER", "OUTPUT"). The framework currently emits plain `comment` objects with no visual differentiation from inline notes. Without headers, patches are walls of undifferentiated objects. | LOW (~3h) | Existing `add_comment()` in Patcher. Extend Box serialization to include `fontsize`, `fontface`, `textcolor`. |
+| Panel objects for visual grouping | Panels are the primary visual organization tool in MAX. They create colored rectangular backgrounds behind groups of related objects. Every Cycling '74 help patch uses panels to delineate sections (159 panels across 50 help patches). Without panels, even well-laid-out patches look unstructured. | LOW-MED (~6h) | New `add_panel()` method in Patcher. Panel is already in the DB (maxclass "panel"). Must serialize `bgfillcolor`, `rounded`, `border`, `bordercolor`, `shape`. Must handle background layer placement. |
+| Comment bubble annotations | Bubble comments (speech-bubble style with arrows pointing to objects) are MAX's standard annotation idiom. Help patches use them to explain what each object does (12,075 comments analyzed in help patches). More visually distinct than plain comments. | LOW (~3h) | Extend `add_comment()` or add `add_bubble_comment()`. Serialize bubble properties on comment boxes. |
+| Background layer for decorative objects | Panels and section headers belong in the background layer so they do not interfere with object selection in edit mode. Universal in professional patches -- decorative objects go to background, functional objects stay in foreground. Without this, panels block object selection. | LOW (~1h) | Add `"background": 1` to Box serialization for panel and header comment objects. Single boolean attribute. |
+| Patcher background color | The patcher-level `editing_bgcolor` and `locked_bgcolor` properties set the canvas color. Professional patches use subtle tinted backgrounds to differentiate windows and establish visual tone. | LOW (~1h) | Add RGBA arrays to patcher props dict. |
+
+### Differentiators (Aesthetics)
+
+Features that make generated patches look notably better than what most humans produce.
+
+| Feature | Value Proposition | Complexity | Dependencies |
+|---------|-------------------|------------|--------------|
+| Semantic color system | Consistent, readable color scheme: section headers in one color (muted blue), inline annotations in another (dark gray), warnings in a third (amber). Professional patches use color to encode meaning. Machine-generated patches can enforce this consistency perfectly every time. | LOW (~2h) | Define palette constants. Apply via `textcolor` on comment boxes. No new serialization needed. |
+| Hierarchical comment styling | Three tiers: (1) Section headers -- 16-18pt, bold, colored; (2) Subsection labels -- 12pt, bold; (3) Inline annotations -- 12pt, italic or light color. Creates visual hierarchy communicating patch structure at a glance. | LOW (~3h) | Add helper methods: `add_section_header()`, `add_label()`, `add_annotation()`. |
+| Step marker numbering | Numbered textbutton circles (1, 2, 3...) as instruction markers for guided patches. 565 uses found in help patches. | LOW (~2h) | Textbutton with specific styling: `rounded=60` (circle), `bgcolor=[0.9, 0.65, 0.05, 1.0]` (amber), `background=1`. |
+| Panel auto-sizing around object groups | Compute bounding box around related objects and generate a panel that fits snugly with padding. Tedious to do manually -- a generator does it perfectly every time. | MEDIUM (~8h) | Layout engine integration: after positioning, identify logical groups, compute bounds, create panel boxes. Panels must use `"background": 1` for correct layering. |
+| Patchline color coding | Color cables by signal type: audio in one color, control in another. MAX supports per-patchline `"color"` in the patchline dict. Professional touch that few patches implement consistently because it is tedious manually. | LOW (~3h) | Add optional `color` param to Patchline. Determine signal type from source `outlettype` (already tracked). |
+| Object background color for key objects | Highlight critical objects (loadbang, dac~, key processors) with subtle background colors. MAX supports `bgcolor` on newobj boxes. Draws attention to architectural anchor points. | LOW (~2h) | Add `bgcolor` via `extra_attrs`. Define highlight rules. |
+| Gradient panels for sections | Panel `bgfillcolor` supports gradient fills via dictionary with `type`, `color1`, `color2`, `angle`, `proportion`. Gradients add depth and visual polish. | LOW-MED (~4h) | Requires bgfillcolor dictionary generation (structure verified from real .maxpat files). |
+
+### Anti-Features (Aesthetics)
+
+| Anti-Feature | Why Avoid | What to Do Instead |
+|--------------|-----------|-------------------|
+| Custom MAX style definitions | MAX's style system stores styles in `~/Documents/Max 8/Styles/`. Generating custom styles pollutes the user's style library and creates external dependencies. Styles like "helpfile_label" are defined internally by MAX, not in .maxpat files. | Use inline attributes (`bgcolor`, `textcolor`, `fontface`) directly on objects. Leave `"style": ""` empty. Inline styling is self-contained. |
+| Custom fonts (non-Arial) | MAX defaults to Arial/Helvetica. Unusual fonts cause layout shifts when patches open on systems without those fonts. MAX silently substitutes. | Stick with Arial. Vary weight (`fontface`: 0=regular, 1=bold, 2=italic, 3=bold-italic) and size for hierarchy, not font family. |
+| Aggressive color theming | Dark themes, neon accents, high-saturation colors impair readability. MAX's default light theme is designed for long sessions. Aggressive themes conflict with user's own style preferences. | Subtle, muted colors. Panels at 10-20% tint. Never override user's patcher background unless explicitly requested. |
+| Hidden connections for aesthetics | `"hidden": 1` on patchlines makes cables invisible. Looks "clean" but is a debugging nightmare violating MAX's visual programming paradigm. | Use `send~/receive~` for long-distance connections. Use midpoints for routing. Never hide connections users need to trace. |
+| Per-object style dictionaries | Applying named styles to individual objects via `"style"` attribute. Creates dependency on external style definitions that may not exist on other systems. | Set properties directly on the box dict. No external dependencies. |
+| Help patch layout copying | Help patches are hand-tuned for pedagogical purposes, not general use. Exact layout copying would look odd for non-tutorial patches. | Extract statistical patterns (spacing, grouping) from help patches, not exact positions. |
+| Overly dense panel backgrounds | Covering entire patcher in panels. Looks overdesigned, removes visual breathing room. | 3-5 major section panels maximum. Leave space between sections. The canvas is a valid visual element. |
+
+---
+
+## .maxpat JSON Format Reference
+
+### Comment Box Styling Properties
+
+All properties set directly in the box dict alongside `maxclass`, `id`, etc.
+
+```json
+{
+  "box": {
+    "maxclass": "comment",
+    "id": "obj-1",
+    "numinlets": 1,
+    "numoutlets": 0,
+    "patching_rect": [30.0, 10.0, 200.0, 24.0],
+    "text": "OSCILLATOR SECTION",
+    "fontname": "Arial",
+    "fontsize": 16.0,
+    "fontface": 1,
+    "textcolor": [0.2, 0.4, 0.7, 1.0],
+    "bgcolor": [0.0, 0.0, 0.0, 0.0],
+    "textjustification": 0,
+    "underline": 0,
+    "background": 1
+  }
+}
+```
+
+| Property | Type | Values | Purpose |
+|----------|------|--------|---------|
+| `fontname` | string | `"Arial"` | Font family (stick with Arial) |
+| `fontsize` | float | 10.0-24.0 | Point size |
+| `fontface` | int | 0=regular, 1=bold, 2=italic, 3=bold-italic | Text weight/style |
+| `textcolor` | [R,G,B,A] | 0.0-1.0 floats | Text color |
+| `bgcolor` | [R,G,B,A] | 0.0-1.0 floats | Comment background (usually transparent) |
+| `textjustification` | int | 0=left, 1=center, 2=right | Text alignment |
+| `underline` | int | 0 or 1 | Underline text |
+| `background` | int | 0=foreground, 1=background | Layer placement |
+
+**Confidence:** HIGH -- verified against official Cycling '74 docs (comment reference Max 8) and real .maxpat files.
+
+### Bubble Comment Properties
+
+```json
+{
+  "box": {
+    "maxclass": "comment",
+    "text": "frequency in Hz",
+    "fontname": "Arial",
+    "fontsize": 12.0,
+    "bubble": 1,
+    "bubbleside": 2,
+    "bubblepoint": 0.5,
+    "bubble_bgcolor": [1.0, 1.0, 0.85, 1.0],
+    "bubble_outlinecolor": [0.6, 0.6, 0.6, 1.0],
+    "bubbletextmargin": 5,
+    "bubbleusescolors": 1
+  }
+}
+```
+
+| Property | Type | Values | Purpose |
+|----------|------|--------|---------|
+| `bubble` | int | 0 or 1 | Enable bubble outline |
+| `bubbleside` | int | 0=top, 1=left, 2=bottom, 3=right | Arrow origin direction |
+| `bubblepoint` | float | 0.0-1.0 | Arrow position along edge |
+| `bubble_bgcolor` | [R,G,B,A] | 0.0-1.0 floats | Bubble background |
+| `bubble_outlinecolor` | [R,G,B,A] | 0.0-1.0 floats | Bubble border color |
+| `bubbletextmargin` | int | pixels | Padding inside bubble |
+| `bubbleusescolors` | int | 0 or 1 | Enable custom bubble colors |
+
+**Confidence:** HIGH -- verified from Max 8 comment reference documentation.
+
+### Panel Object Properties
+
+```json
+{
+  "box": {
+    "maxclass": "panel",
+    "id": "obj-bg-1",
+    "numinlets": 1,
+    "numoutlets": 0,
+    "patching_rect": [20.0, 25.0, 300.0, 200.0],
+    "bgfillcolor": {
+      "type": "color",
+      "color": [0.9, 0.92, 0.95, 0.5],
+      "color1": [0.9, 0.92, 0.95, 1.0],
+      "color2": [0.85, 0.87, 0.9, 1.0],
+      "angle": 270.0,
+      "proportion": 0.39,
+      "autogradient": 0
+    },
+    "rounded": 8,
+    "border": 1,
+    "bordercolor": [0.7, 0.72, 0.75, 1.0],
+    "shadow": 0,
+    "shape": 0,
+    "background": 1,
+    "ignoreclick": 1
+  }
+}
+```
+
+| Property | Type | Values | Purpose |
+|----------|------|--------|---------|
+| `bgfillcolor` | dict | see formats below | Fill color or gradient |
+| `rounded` | int | pixels | Corner radius (0=sharp, 8=subtle rounding) |
+| `border` | int | pixels | Border width (0=none, 1=standard) |
+| `bordercolor` | [R,G,B,A] | 0.0-1.0 floats | Border color |
+| `shadow` | int | pixels | Shadow depth (+raised, -recessed, 0=none) |
+| `shape` | int | 0=rect, 1=circle, 2=triangle, 3=arrow | Panel shape |
+| `background` | int | 0 or 1 | Background layer (always 1 for decorative panels) |
+| `ignoreclick` | int | 0 or 1 | Pass mouse clicks through (always 1 for bg panels) |
+
+**bgfillcolor dictionary -- solid color:**
+```json
+{
+  "type": "color",
+  "color": [R, G, B, A],
+  "color1": [R, G, B, A],
+  "color2": [R, G, B, A],
+  "angle": 270.0,
+  "proportion": 0.39,
+  "autogradient": 0
+}
+```
+
+**bgfillcolor dictionary -- gradient:**
+```json
+{
+  "type": "gradient",
+  "color1": [R, G, B, A],
+  "color2": [R, G, B, A],
+  "color": [R, G, B, A],
+  "angle": 270.0,
+  "proportion": 0.39
+}
+```
+
+- `color` -- primary/solid fill color
+- `color1` -- gradient start color
+- `color2` -- gradient end color
+- `angle` -- gradient direction in degrees (270.0 = top-to-bottom)
+- `proportion` -- blend midpoint position (0.0-1.0, typical: 0.39)
+- `autogradient` -- (0 or 1) auto-generate gradient from `color`
+
+**Confidence:** HIGH -- extracted and verified from real .maxpat files (HfMT-ZM4/WFS-Server, Vimeo/vimeo-maxmsp repositories).
+
+### Patcher-Level Color Properties
+
+Set in the patcher dict (same level as `boxes`, `lines`).
+
+```json
+{
+  "patcher": {
+    "editing_bgcolor": [0.95, 0.95, 0.95, 1.0],
+    "locked_bgcolor": [0.95, 0.95, 0.95, 1.0],
+    "patchlinecolor": [0.45, 0.45, 0.45, 1.0],
+    ...other patcher props...
+  }
+}
+```
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| `editing_bgcolor` | [R,G,B,A] | Patcher background when unlocked (edit mode) |
+| `locked_bgcolor` | [R,G,B,A] | Patcher background when locked (performance mode) |
+| `patchlinecolor` | [R,G,B,A] | Default cable color for all patchlines |
+| `accentcolor` | [R,G,B,A] | Object accent color ("off" state indicator) |
+| `elementcolor` | [R,G,B,A] | Object element/backdrop color |
+| `textcolor` | [R,G,B,A] | Comment text color (patcher-wide default) |
+| `textcolor_inverse` | [R,G,B,A] | Object box text color (patcher-wide default) |
+| `clearcolor` | [R,G,B,A] | Comment background color (patcher-wide default) |
+| `color` | [R,G,B,A] | Object value indicator color |
+| `selectioncolor` | [R,G,B,A] | Selection highlight color |
+| `stripecolor` | [R,G,B,A] | Background stripe color |
+
+**Confidence:** MEDIUM -- property names verified from official docs. Exact MAX defaults not confirmed (MAX only stores these when they differ from built-in defaults, so inspecting .maxpat files only shows custom values).
+
+### Patchline Color Properties
+
+```json
+{
+  "patchline": {
+    "source": ["obj-1", 0],
+    "destination": ["obj-2", 0],
+    "order": 0,
+    "color": [0.4, 0.6, 0.8, 1.0],
+    "midpoints": [100.0, 50.0, 200.0, 50.0]
+  }
+}
+```
+
+| Property | Type | Purpose |
+|----------|------|---------|
+| `color` | [R,G,B,A] | Per-cable color override |
+| `hidden` | int (0/1) | Hide cable when patcher is locked |
+| `midpoints` | [x1,y1,...] | Segmented routing waypoints (already implemented) |
+
+**Confidence:** MEDIUM -- `color` on individual patchlines verified from community sources and real patches.
+
+### Common Box Attributes (All Object Types)
+
+These apply to ANY box -- newobj, UI objects, comments, panels.
+
+| Property | Type | Values | Purpose |
+|----------|------|--------|---------|
+| `background` | int | 0 or 1 | Background layer placement |
+| `hidden` | int | 0 or 1 | Hidden when patcher is locked |
+| `ignoreclick` | int | 0 or 1 | Ignore mouse clicks in locked mode |
+| `hint` | string | text | Tooltip popup on hover in locked mode |
+| `annotation` | string | text | Clue bar text on hover |
+| `varname` | string | identifier | Scripting name for thispatcher access |
+| `color` | [R,G,B,A] | 0.0-1.0 | Box outline color |
+
+**Confidence:** HIGH -- from official Common Box Attributes documentation (verified current through Max 8/9).
+
+---
+
+## Professional MAX Patch Visual Patterns
+
+Based on analysis of Cycling '74 help patches, community examples, and forum discussions.
+
+### Pattern 1: Section Panels with Headers
+A colored panel behind a group of objects, with a bold section header comment at the top. Panel is in background layer with `ignoreclick: 1`. Header is 14-18pt bold. Functional objects float on top in the foreground layer. Panels sized in multiples of 50px for grid alignment. Alpha values at 0.3-0.7 for subtle tinting.
+
+### Pattern 2: Bubble Annotations on Key Objects
+Speech-bubble comments pointing at non-obvious objects explaining their function. `bubbleside` typically 1 (left) or 3 (right) depending on available space. Used sparingly -- 3-5 per patch section, not on every object. Help patches use `bubbleside: 2` (bottom) for comments above objects.
+
+### Pattern 3: Top-Level Minimal, Subpatchers Dense
+Top-level patcher shows 5-10 objects maximum: subpatchers, bpatchers, dac~, adc~, and high-level controls. All complexity inside named subpatchers. Top level is a "map" of the project.
+
+### Pattern 4: Color-Coded Functional Zones
+Audio processing in one zone, control/MIDI in another, UI in a third. Zones demarcated by panels with different tint colors. Within zones, consistent spacing.
+
+### Pattern 5: Foreground/Background Separation
+All panels and decorative comments in background layer. All functional objects in foreground. Background locked to prevent accidental selection. Universal in professional patches.
+
+### Pattern 6: Grid Alignment
+Objects snapped to 15px grid (MAX default). Vertical alignment of connected chains. Horizontal alignment of objects at the same processing stage. The grid creates consistent spacing without being visible.
+
+### Pattern 7: Color-Coded Send/Receive
+When using send/receive or send~/receive~ for wireless connections, color both the send and receive objects with matching colors to make the invisible link visually trackable. Use `color` attribute on the box outline.
+
+### Pattern 8: Numbered Step Markers
+Help patches use numbered textbutton circles (amber background, white text, rounded=60) to guide users through a patch. Numbers appear in the background layer and show the recommended exploration order.
+
+---
 
 ## Feature Dependencies
 
 ```
-T2 (Object Knowledge Base)
-    |
-    +---> T1 (Valid .maxpat generation) -- needs object DB for numinlets/numoutlets/maxclass
-    +---> T3 (Connection validation) -- needs object DB for inlet/outlet types
-    +---> T5 (Gen~ code generation) -- needs gen~ operator knowledge
-    +---> T6 (Node/js code generation) -- needs MAX API knowledge
-    +---> T9 (Validation pipeline) -- uses object DB for existence checks
-    +---> D1 (Specialized agents) -- each agent loads relevant KB slice
-    +---> D2 (RNBO generation) -- needs RNBO-compatible object subset
-    +---> D6 (Intelligent object selection) -- recommendation engine over KB
-    +---> D7 (MAX 9 coverage) -- extends KB with version tagging
+Part A (Audit):
+  Help patch parser -> Outlet type audit -> Batch override generation
+  Help patch parser -> Inlet/outlet count validation -> Batch override generation
+  Help patch parser -> Argument format extraction
+  Help patch parser -> Connection pattern extraction
 
-T1 (Valid .maxpat generation)
-    |
-    +---> T4 (Patch layout engine) -- layout operates on valid patch structure
-    +---> T7 (Template library) -- templates are valid .maxpat files
-    +---> T9 (Validation pipeline) -- validates generated patches
-
-T4 (Patch layout engine)
-    |
-    +---> T7 (Template library) -- templates need good layout
-    +---> D5 (Generator-critic loops) -- layout critic needs layout engine
-
-T8 (Multi-project isolation)
-    |
-    +---> D4 (Persistent agent memory) -- memory scoped to projects
-    +---> D8 (Skill-based lifecycle) -- lifecycle scoped to projects
-
-T9 (Validation pipeline)
-    |
-    +---> D5 (Generator-critic loops) -- critics invoke validators
-
-D1 (Specialized agents)
-    |
-    +---> D3 (External development) -- external-agent is one specialist
-    +---> D5 (Generator-critic loops) -- critic agents are specialists
-    +---> D8 (Skill-based lifecycle) -- skills orchestrate agents
+Part B (Aesthetics):
+  T5 Patcher bgcolor         -- standalone
+  T1 Section header comments -- extends add_comment()
+    +-> D1 Semantic color system   -- needs T1 color infrastructure
+    +-> D3 Hierarchical comments   -- needs T1 font properties
+  T3 Bubble comments         -- extends add_comment()
+  T4 Background layer        -- simple attribute, enables T2
+    +-> T2 Panel objects     -- needs T4 for correct layering
+          +-> D2 Panel auto-sizing    -- needs T2 + layout engine
+          +-> D6 Gradient panels      -- needs T2 + bgfillcolor dict
+          +-> D7 Panel shapes         -- needs T2
+  D4 Patchline color coding  -- extends Patchline (independent)
+  D5 Object background color -- extends Box.extra_attrs (independent)
+  Step marker numbering      -- needs Panel support for background property
 ```
 
-### Dependency Notes
+## MVP Recommendation
 
-- **T2 is the foundation of everything.** Without the object knowledge base, nothing else works correctly. Object hallucination is the #1 failure mode reported by the community. This must be built first and thoroughly.
-- **T1 depends on T2** because generating valid .maxpat JSON requires knowing each object's maxclass, numinlets, numoutlets, and valid arguments. You cannot generate a box without knowing its properties.
-- **T4 (layout) and T7 (templates) depend on T1** because layout operates on structurally valid patches and templates are valid patches.
-- **D1 (agents) depends on T2** because each agent needs domain-specific knowledge. The DSP agent needs MSP objects, the RNBO agent needs the RNBO-compatible subset, the Jitter agent needs jit.* objects.
-- **D2 (RNBO) requires its own object subset** derived from T2. RNBO supports gen~ fully but only a restricted set of Max objects. Generating a patch with unsupported objects means export fails.
-- **D5 (critic loops) requires T9 (validation)** because critics invoke the validation pipeline and report results to the generator for revision.
-- **T8 (multi-project) enables D4 (memory) and D8 (lifecycle)** because agent memory and project lifecycle phases must be scoped to individual projects.
+**Phase 1 -- Audit Foundation + Comment Styling (ship first, highest ROI):**
+1. Help patch parser + outlet type audit + override generation
+2. Section header comments with fontsize/fontface/textcolor
+3. Bubble comment annotations
+4. Semantic color system (palette constants)
+5. Hierarchical comment styling (header/label/annotation tiers)
 
-## MVP Definition
+**Rationale:** The audit fixes broken patches (correctness). Comments are the highest-leverage aesthetic improvement: minimal code changes (extend `add_comment()` and Box serialization), no layout engine modifications, and immediately make patches look professional. The Box model already has `extra_attrs` that can carry all comment properties.
 
-### Launch With (v1)
+**Phase 2 -- Panels and Background Layer:**
+6. Background layer attribute on Box
+7. Panel objects (add_panel method with bgfillcolor, rounded, border)
+8. Patcher background color
+9. Panel auto-sizing around object groups
+10. Step marker numbering
 
-Minimum viable framework -- enough to generate patches that actually work in MAX.
+**Rationale:** Panels are the second-highest-impact visual feature but need more integration: new `add_panel()`, background layer support, and ideally layout engine coordination to compute bounding boxes. Panel sizing depends on knowing where objects are positioned (after layout runs).
 
-- [ ] **T2: Object knowledge base** -- the absolute foundation; without accurate object data, everything else produces garbage. Source from py2max's MaxRef (1,157 objects), Cycling '74 docs, and manual curation. Prioritize MSP audio objects first.
-- [ ] **T1: Valid .maxpat JSON generation** -- produce files MAX opens without errors. Must handle patcher wrapper, boxes, patchlines, nested subpatchers, and attributes.
-- [ ] **T3: Connection validation** -- verify outlet-to-inlet index bounds and signal/control type matching before the user opens the patch.
-- [ ] **T4: Patch layout engine** -- objects positioned readably with top-to-bottom signal flow. Start with grid/columnar layout. Does not need to be beautiful, just usable.
-- [ ] **T5: Gen~ code generation** -- GenExpr syntax validation, codebox integration, .gendsp file output. Claude writes GenExpr naturally since it resembles C.
-- [ ] **T6: Node/js code generation** -- JavaScript generation for node.script and js objects. Claude's strongest subsystem -- leverage it.
-- [ ] **T9: Validation pipeline (basic)** -- JSON validity, object existence check, connection bounds check. Minimum 3 layers.
+**Phase 3 -- Polish:**
+11. Patchline color coding by signal type
+12. Object background color for key objects
+13. Gradient panels
+14. Panel shape variations
 
-### Add After Validation (v1.x)
+**Rationale:** Refinements that add polish. None are required for a professional-looking patch. Worth doing but only after the foundation is solid.
 
-Features to add once core generation produces working patches consistently.
+**Defer entirely:**
+- Custom MAX style definitions (fragile, external dependency)
+- Custom fonts (cross-platform inconsistency)
+- Hidden connections (debugging nightmare)
+- Aggressive theming (conflicts with user preferences)
+- Help patch layout copying (pedagogical layouts are not general-purpose)
 
-- [ ] **T7: Template library** -- add once the generation engine is stable enough to produce reliable template content. Trigger: user successfully opens 5+ generated patches without JSON errors.
-- [ ] **T8: Multi-project isolation** -- add when users start building multiple MAX projects with the framework. Trigger: second project request.
-- [ ] **D1: Specialized agents** -- add domain agents as the single-agent approach hits quality ceilings in specific domains. Trigger: Gen~ output quality is good but patch layout quality suffers (or vice versa).
-- [ ] **D4: Persistent agent memory** -- add when users report Claude forgetting project preferences across sessions. Trigger: repeated correction of the same preferences.
-- [ ] **D5: Generator-critic loops** -- add when validation catches errors that should have been prevented at generation time. Trigger: >30% of generated patches need post-generation fixes.
-- [ ] **D6: Intelligent object selection** -- add when object choice quality becomes a bottleneck. Trigger: user frequently overrides Claude's object choices.
-- [ ] **D7: MAX 9 object coverage** -- add version-tagged objects when MAX 9 users request new objects. Trigger: user asks for ABL/step/array objects.
+---
 
-### Future Consideration (v2+)
+## Complexity Assessment
 
-Features to defer until the framework is proven.
+| Feature | Est. Effort | Risk | Notes |
+|---------|-------------|------|-------|
+| T1 Section headers | 2-4h | LOW | Extend add_comment with font/color params |
+| T2 Panel objects | 4-8h | LOW | New add_panel method, bgfillcolor dict |
+| T3 Bubble comments | 2-3h | LOW | Extra attrs on comment boxes |
+| T4 Background layer | 1h | LOW | Single boolean on box dict |
+| T5 Patcher bgcolor | 1h | LOW | Two RGBA arrays in patcher props |
+| D1 Semantic colors | 2-3h | LOW | Define palette constants |
+| D2 Panel auto-sizing | 6-10h | MEDIUM | Layout engine integration, group detection |
+| D3 Hierarchical comments | 2-3h | LOW | Three helper methods with preset styles |
+| D4 Patchline colors | 2-3h | LOW | Color param on Patchline, type detection |
+| D5 Object bgcolor | 1-2h | LOW | Extra attrs with highlight rules |
+| D6 Gradient panels | 3-5h | LOW | bgfillcolor dict generation |
+| D7 Panel shapes | 1-2h | LOW | Pass-through attrs |
+| Step markers | 2-3h | LOW | Textbutton with preset styling |
 
-- [ ] **D2: RNBO patch generation** -- complex domain with its own constraints; defer until MAX patching is solid. The RNBO-compatible subset is a strict filter on the full object DB -- needs the DB to be comprehensive first.
-- [ ] **D3: C/C++ external development** -- most advanced domain; requires Min-DevKit/Max SDK research, build system setup, and platform-specific compilation. Defer until the framework proves value for patching.
-- [ ] **D8: Skill-based project lifecycle** -- full lifecycle management is overhead for a framework that hasn't proven basic generation. Add when users want structured multi-session projects.
-- [ ] **MAX for Live support** -- separate domain, separate API, separate testing requirements. Only after standalone MAX is solid.
-- [ ] **Jitter deep support** -- validation gap is wider than audio. Support basic Jitter in v1 knowledge base but defer specialized agents/templates/critics.
+**Total aesthetics effort:** ~30-50 hours. Comment styling (T1+T3+D1+D3) is ~8-13h. Panels (T2+T4+D2) is ~11-19h.
 
-## Feature Prioritization Matrix
-
-| Feature | User Value | Implementation Cost | Priority | Phase |
-|---------|------------|---------------------|----------|-------|
-| T2: Object knowledge base | HIGH | HIGH | P1 | 1 |
-| T1: Valid .maxpat generation | HIGH | HIGH | P1 | 1 |
-| T3: Connection validation | HIGH | MEDIUM | P1 | 1 |
-| T4: Patch layout engine | HIGH | MEDIUM | P1 | 1 |
-| T5: Gen~ code generation | HIGH | MEDIUM | P1 | 1 |
-| T6: Node/js code generation | MEDIUM | LOW | P1 | 1 |
-| T9: Validation pipeline | HIGH | MEDIUM | P1 | 1 |
-| T7: Template library | MEDIUM | MEDIUM | P2 | 2 |
-| T8: Multi-project isolation | MEDIUM | LOW | P2 | 2 |
-| D1: Specialized agents | HIGH | HIGH | P2 | 2-3 |
-| D4: Persistent memory | MEDIUM | MEDIUM | P2 | 2 |
-| D5: Generator-critic loops | HIGH | MEDIUM | P2 | 2 |
-| D6: Object selection engine | MEDIUM | MEDIUM | P2 | 3 |
-| D7: MAX 9 objects | MEDIUM | MEDIUM | P2 | 2 |
-| D2: RNBO generation | HIGH | HIGH | P3 | 3 |
-| D3: External development | HIGH | HIGH | P3 | 4 |
-| D8: Skill-based lifecycle | MEDIUM | MEDIUM | P3 | 3 |
-
-**Priority key:**
-- P1: Must have for launch -- framework is useless without these
-- P2: Should have -- adds significant value, build after core works
-- P3: Future -- high value but high cost, defer until foundation is proven
-
-## Competitor Feature Analysis
-
-| Feature | py2max | MaxPyLang | MaxMSP-MCP-Server | Max Patch Pal (GPT) | MaxSystem (Our Plan) |
-|---------|--------|-----------|-------------------|---------------------|---------------------|
-| Patch generation | Python API for .maxpat creation | Python API, simpler than py2max | Requires running MAX | Chat-based suggestions, no file output | Direct .maxpat JSON generation via Claude |
-| Object database | MaxRef: 1,157 objects | Minimal | Reads from MAX docs | Training data only (hallucination-prone) | Comprehensive KB from multiple sources |
-| Layout | 5 strategies, 3 engines | Basic placement | N/A (MAX handles layout) | N/A | Convention-based layout engine |
-| Validation | Connection validation, tests | Basic | Runtime validation via MAX | None | Multi-layer offline validation pipeline |
-| Gen~ support | Can embed gen~ objects | Unknown | Can interact with gen~ in MAX | Can suggest GenExpr | GenExpr generation + syntax validation |
-| RNBO support | .rnbopat file support | Unknown | Unknown | None | RNBO-aware generation with export validation |
-| External dev | None | None | None | None | Min-DevKit/Max SDK scaffolding + code gen |
-| AI integration | None (pure Python) | "Vibecoding" prompt examples | MCP bridge to Claude/Cursor | ChatGPT wrapper | Native Claude Code framework with agents |
-| Offline operation | Yes | Yes | No (requires MAX) | N/A (cloud) | Yes -- no MAX dependency for generation |
-| Learning/memory | None | None | None | None (stateless) | Persistent agent memory across sessions |
-
-**Key insight:** py2max is the closest comparable tool but operates in a fundamentally different paradigm (Python scripting vs AI-assisted development). MaxSystem's value is not in replacing py2max but in giving Claude the knowledge and validation infrastructure to generate MAX patches that actually work -- something the community consensus says current LLMs cannot do.
+---
 
 ## Sources
 
-### Authoritative (HIGH confidence)
-- [Cycling '74 Official Documentation -- Objects](https://docs.cycling74.com/userguide/objects/) -- object reference, inlet/outlet behavior
-- [Cycling '74 GenExpr Documentation](https://docs.cycling74.com/max8/vignettes/gen_genexpr) -- GenExpr language syntax and semantics
-- [Cycling '74 Node for Max API](https://docs.cycling74.com/nodeformax/api/) -- Node for Max capabilities and limitations
-- [Cycling '74 RNBO](https://rnbo.cycling74.com/) -- RNBO export targets and gen~ integration
-- [Cycling '74 Max 9 Release Notes](https://cycling74.com/releases/max/9.1.0) -- new objects and API changes
-- [Cycling '74 Min-DevKit](https://github.com/Cycling74/min-devkit) -- C++ external development
+### Official Cycling '74 Documentation
+- [Color and the Max User Interface (Max 8)](https://docs.cycling74.com/max8/vignettes/max_colors) -- core color property reference
+- [Panel Reference (Max 8)](https://docs.cycling74.com/max8/refpages/panel) -- panel object attributes
+- [Comment Reference (Max 8)](https://docs.cycling74.com/max8/refpages/comment) -- comment styling attributes
+- [Patcher-level Formatting (Max 8)](https://docs.cycling74.com/max8/vignettes/format_palette_patcher_level) -- patcher-wide style properties
+- [Styles (Max 8)](https://docs.cycling74.com/max8/vignettes/styles) -- style system overview
+- [Foreground and Background Layers (Max 7)](https://docs.cycling74.com/max7/vignettes/background) -- layer system
+- [Common Box Attributes (Max 5+)](https://docs.cycling74.com/max5/refpages/max-ref/jbox.html) -- universal box properties
+- [Patching Guide](https://docs.cycling74.com/userguide/patching/) -- layout, alignment, grid tools
 
-### Verified (MEDIUM confidence)
-- [py2max GitHub](https://github.com/shakfu/py2max) -- .maxpat format reference, 1,157 object MaxRef DB, 5 layout strategies, 418+ tests
-- [MaxPyLang GitHub](https://github.com/Barnard-PL-Labs/MaxPyLang) -- alternative Python patch generation, vibecoding integration
-- [MaxMSP-MCP-Server](https://github.com/tiianhk/MaxMSP-MCP-Server) -- MCP bridge for MAX/AI integration
-- [Cycling '74 Forums: Vibe Coding with MAX](https://cycling74.com/forums/advice-required-for-vibe-coding-with-max-ai-llm-coding-assistants) -- community experience with AI + MAX (consensus: "non-functional mess" without specialized knowledge)
-- [Cycling '74 Forums: .maxpat Format](https://cycling74.com/forums/specification-for-maxpat-json-format) -- confirmation that no official spec exists
-- [Cycling '74 Forums: Best Practices](https://cycling74.com/forums/best-practices-in-max) -- trigger for ordering, poly~ usage, abstraction patterns
-- [Plugin Freedom System](file:///Users/taylorbrook/Dev/VST-development/) -- 13 agents, 27 skills, multi-layer validation, persistent memory, proven architecture
+### Community Sources
+- [Scripting Panel Gradients (Forum)](https://cycling74.com/forums/scripting-panel-gradients) -- bgfillcolor dictionary format
+- [Tips on structuring/laying out patches (Forum)](https://cycling74.com/forums/tips-on-structuringlaying-out-patches) -- layout best practices, color coding conventions
+- [Freshening Up, Part 2 (Tutorial)](https://cycling74.com/articles/freshening-up-part-2) -- presentation mode and panel design
+- [Tips for Better GUI Design (Forum)](https://cycling74.com/forums/tips-for-better-gui-design) -- UI best practices
+- [Managing Complex Patches (Article)](https://cycling74.com/articles/managing-complex-patches-in-max) -- organizational patterns
+- [How to set patcher colors (Forum)](https://cycling74.com/forums/how-to-set-patcher-colors) -- editing_bgcolor/locked_bgcolor usage
+- [How to make a panel the background (Forum)](https://cycling74.com/forums/how-to-make-a-panel-the-background-of-a-patch) -- background layer workflow
 
-### Analogous Systems (MEDIUM confidence)
-- [Unity MCP](https://github.com/CoplayDev/unity-mcp) -- MCP bridge pattern for visual editors (Unity + Claude/Cursor)
-- [AgentCoder](https://arxiv.org/html/2312.13010v3) -- multi-agent code generation with programmer/tester/executor agents
+### Real .maxpat Files Analyzed
+- [HfMT-ZM4/WFS-Server](https://github.com/HfMT-ZM4/WFS-Server/blob/master/wfs.gui.cpu.maxpat) -- bgfillcolor gradient dict structure verified
+- [Vimeo/vimeo-maxmsp](https://github.com/vimeo/vimeo-maxmsp/blob/master/n4m-vimeo/player.maxpat) -- styled comments and gradient messages verified
+- Internal project patches: slot.maxpat, performancepatchtest.maxpat -- baseline for current output quality
 
----
-*Feature research for: Claude Code development framework for MAX/MSP*
-*Researched: 2026-03-08*
+### Reference Libraries
+- [py2max](https://github.com/shakfu/py2max) -- Python .maxpat generation, format reference
