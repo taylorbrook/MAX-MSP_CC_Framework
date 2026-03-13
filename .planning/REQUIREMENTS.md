@@ -50,9 +50,9 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 ### Layout Refinements
 
 - [x] **LYOT-01**: Box width calculation improved using per-object width override table extracted from help patch measurements
-- [ ] **LYOT-02**: Inlet-aligned cable routing positions child objects so inlets align under parent outlet X positions, reducing diagonal cables
-- [ ] **LYOT-03**: 15px grid snapping rounds all object positions to MAX's native grid
-- [ ] **LYOT-04**: Comment association placement positions comments near their target objects with consistent offset
+- [x] **LYOT-02**: Inlet-aligned cable routing positions child objects so inlets align under parent outlet X positions, reducing diagonal cables
+- [x] **LYOT-03**: 15px grid snapping rounds all object positions to MAX's native grid
+- [x] **LYOT-04**: Comment association placement positions comments near their target objects with consistent offset
 - [x] **LYOT-05**: LayoutOptions dataclass replaces module-level constants for configurable spacing, grid, and alignment parameters
 - [x] **LYOT-06**: Layout tests refactored to relative assertions before any spacing constant changes
 
@@ -117,9 +117,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PTCH-01 | Phase 10 | Complete |
 | PTCH-02 | Phase 10 | Complete |
 | LYOT-01 | Phase 11 | Complete |
-| LYOT-02 | Phase 11 | Pending |
-| LYOT-03 | Phase 11 | Pending |
-| LYOT-04 | Phase 11 | Pending |
+| LYOT-02 | Phase 11 | Complete |
+| LYOT-03 | Phase 11 | Complete |
+| LYOT-04 | Phase 11 | Complete |
 | LYOT-05 | Phase 11 | Complete |
 | LYOT-06 | Phase 11 | Complete |
 | AGNT-01 | Phase 12 | Pending |
