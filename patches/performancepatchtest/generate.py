@@ -72,6 +72,32 @@ def make_sfplay_stereo(patcher, x=0.0, y=0.0):
     return box
 
 
+def make_gen_compressor(patcher):
+    """Create a gen~ compressor box referencing comp-engine.gendsp."""
+    box = Box.__new__(Box)
+    box_id = patcher._gen_id()
+    box.name = "gen~"
+    box.args = []
+    box.id = box_id
+    box.maxclass = "newobj"
+    box.text = "gen~ @gen comp-engine.gendsp"
+    box.numinlets = 1
+    box.numoutlets = 1
+    box.outlettype = ["signal"]
+    w, h = calculate_box_size("gen~ @gen comp-engine.gendsp", "newobj")
+    box.patching_rect = [0, 0, w, h]
+    box.fontname = FONT_NAME
+    box.fontsize = FONT_SIZE
+    box.presentation = False
+    box.presentation_rect = None
+    box.extra_attrs = {}
+    box._inner_patcher = None
+    box._saved_object_attributes = None
+    box._bpatcher_attrs = None
+    patcher.boxes.append(box)
+    return box
+
+
 def smooth_receive(patcher, bus_name, ramp_ms="50"):
     """Create: receive <bus> → message '$1 <ramp>' → line~ — returns line~ box."""
     rcv = patcher.add_box("receive", [bus_name])
@@ -122,17 +148,17 @@ svf_lo = ip.add_box("svf~", ["300", "0.5"])
 ip.add_connection(casc, 0, svf_lo, 0)
 
 # Low band → compress
-comp_lo = ip.add_box("omx.comp~")
+comp_lo = make_gen_compressor(ip)
 ip.add_connection(svf_lo, 0, comp_lo, 0)       # LP (outlet 0)
 
 # Mid / high split at 3000 Hz
 svf_hi = ip.add_box("svf~", ["3000", "0.5"])
 ip.add_connection(svf_lo, 1, svf_hi, 0)        # HP of low crossover (outlet 1)
 
-comp_mid = ip.add_box("omx.comp~")
+comp_mid = make_gen_compressor(ip)
 ip.add_connection(svf_hi, 0, comp_mid, 0)       # LP of high crossover → mid
 
-comp_hi = ip.add_box("omx.comp~")
+comp_hi = make_gen_compressor(ip)
 ip.add_connection(svf_hi, 1, comp_hi, 0)        # HP of high crossover → high
 
 # Sum bands

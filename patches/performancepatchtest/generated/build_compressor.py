@@ -124,9 +124,9 @@ def build_comp_band():
         "presentation_rect": [5, 164, 140, 16],
     }})
 
-    lines.append(line("obj-1", 0, "obj-2", 0))    # inlet → omx.comp~
-    lines.append(line("obj-2", 0, "obj-3", 0))    # omx.comp~ → outlet
-    lines.append(line("obj-2", 0, "obj-4", 0))    # omx.comp~ → meter~
+    lines.append(line("obj-1", 0, "obj-2", 0))    # inlet → gen~ compressor
+    lines.append(line("obj-2", 0, "obj-3", 0))    # gen~ compressor → outlet
+    lines.append(line("obj-2", 0, "obj-4", 0))    # gen~ compressor → meter~
 
     # ── Band label ──
     boxes.append(comment_box("obj-10", [200, 30, 100, 20], "#1", [5, 2, 140, 16]))
@@ -221,7 +221,7 @@ def build_comp_band():
         boxes.append(box(prep_id, "newobj", 1, 1, [""],
                           [px, py_base + 95, 110, 22], f"prepend {msg}"))
 
-        # Connections: dial → scale → prepend → omx.comp~
+        # Connections: dial → scale → prepend → gen~ compressor
         #                              scale → flonum (readout)
         lines.append(line(dial_id, 0, scale_id, 0))
         lines.append(line(scale_id, 0, prep_id, 0))
