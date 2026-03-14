@@ -1,0 +1,6902 @@
+{
+  "_comment": "Auto-generated proposed overrides from help patch audit. Review before merging.",
+  "_audit_date": "2026-03-13T14:55:45.608353+00:00",
+  "objects": {
+    "!": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "!-": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 35,
+        "agreement": 0.9714285714285714,
+        "source": "io_count_finding"
+      }
+    },
+    "*": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 307,
+        "agreement": 0.8892508143322475,
+        "source": "io_count_finding"
+      }
+    },
+    "+": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 370,
+        "agreement": 0.981081081081081,
+        "source": "io_count_finding"
+      }
+    },
+    "-": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 178,
+        "agreement": 0.9943820224719101,
+        "source": "io_count_finding"
+      }
+    },
+    "/": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 88,
+        "agreement": 0.9659090909090909,
+        "source": "io_count_finding"
+      }
+    },
+    "1": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 9,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "2": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 7,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "2d.wave~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "==": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 13,
+        "agreement": 0.9230769230769231,
+        "source": "io_count_finding"
+      }
+    },
+    ">": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 21,
+        "agreement": 0.9047619047619048,
+        "source": "io_count_finding"
+      }
+    },
+    ">p": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "?": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "Bucket": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "M4L.api.ObserveTransport": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "M4L.api.ToggleTransport": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "Uzi": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 13,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "active": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 5,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "adc~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 5,
+        "agreement": 0.8,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "adstatus": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 21,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "amxd~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 6,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "array.at": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.flatten": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.foreach": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.frombuffer": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.iter": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.max": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.mean": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.median": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.min": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.mode": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.reverse": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.stddev": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.tobuffer": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "array.wrap": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 16,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "bangbang": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "bondo": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 4,
+        "agreement": 0.75,
+        "source": "io_count_finding"
+      }
+    },
+    "bool": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "buffer": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": []
+    },
+    "cell": {
+      "inlets": [],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "change": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 39,
+        "agreement": 0.9743589743589743,
+        "source": "io_count_finding"
+      }
+    },
+    "channels": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "concat": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "constant": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "dac~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 17,
+        "agreement": 0.9411764705882353,
+        "source": "io_count_finding"
+      }
+    },
+    "dcblock": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "decode": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "del": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 10,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "delta": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "dim": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "dspstate~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 17,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "dsptime~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "fffb~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 3,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 4,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 5,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 6,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 7,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "fixnan": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "fold": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "fract": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "fswap": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 4,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "ftom": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 9,
+        "agreement": 0.8888888888888888,
+        "source": "io_count_finding"
+      }
+    },
+    "history": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 6,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "hsl2rgb": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "hypot": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "if": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HELP_PATCH",
+        "source": "empty_io_coverage"
+      }
+    },
+    "in": {
+      "inlets": [],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 90,
+        "agreement": 0.9888888888888889,
+        "source": "io_count_finding"
+      }
+    },
+    "int": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 20,
+        "agreement": 0.95,
+        "source": "io_count_finding"
+      }
+    },
+    "isnan": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "jit.*": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.bang": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.dx.grab": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.dx.videoout": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.framecount": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.fx.rota": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.gl.layer": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 15,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.gl.movie": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.gl.pbr": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 6,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 7,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.gl.pix": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 4,
+        "agreement": 0.75,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.gl.polymovie": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.glue": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.graph": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 5,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.mo.join": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.mo.sin": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.movie": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 15,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.peek~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "jit.phys.multiple": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 4,
+        "agreement": 0.75,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.plot": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.poke~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "jit.qt.movie": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.record": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.release~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "jit.scissors": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 6,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.time": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.time.perlin": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.time.saw": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "jit.time.sin": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "js": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 951,
+        "agreement": 0.9957939011566772,
+        "source": "io_count_finding"
+      }
+    },
+    "jstrigger": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HELP_PATCH",
+        "source": "empty_io_coverage"
+      }
+    },
+    "latch": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "limi~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "linedrive": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "list.group": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "live.miditool.out": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 8,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "live.modulate~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 9,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "live.object": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 9,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "live.observer": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 4,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "live.path": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 11,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "live.remote~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 4,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "makenote": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 43,
+        "agreement": 0.9302325581395349,
+        "source": "io_count_finding"
+      }
+    },
+    "mappings": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "max": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "maxurl": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 8,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.adsr~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 8,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.amxd~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.bands~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.capture~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.edge~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.fffb~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 3,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 4,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 5,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 6,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 7,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.gen": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.groove~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.line~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 9,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.noteallocator~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 6,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mc.peakamp~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.play~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.poly~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.receive~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.selector~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.send~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.sfplay~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 9,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mc.snapshot~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 25,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.spike~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.sum~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.tapin~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mc.tapout~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.targetlist": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 8,
+        "agreement": 0.75,
+        "source": "io_count_finding"
+      }
+    },
+    "mc.train~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mc.voiceallocator~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 8,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mc.vst~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 6,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 7,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 8,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mcp.record~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mcs.amxd~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mcs.loudness~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mcs.play~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mcs.poly~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HELP_PATCH",
+        "source": "empty_io_coverage"
+      }
+    },
+    "mcs.sfizz~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "mcs.tapout~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "mcs.vst~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 6,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "menubar": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "midiformat": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 6,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 20,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "min": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mix": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mousestate": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 4,
+        "agreement": 0.75,
+        "source": "io_count_finding"
+      }
+    },
+    "mstosamps": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "mtof": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 32,
+        "agreement": 0.9375,
+        "source": "io_count_finding"
+      }
+    },
+    "mute~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 4,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "noise": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 5,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "norm": {
+      "inlets": [],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 4,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "notein": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 44,
+        "agreement": 0.9772727272727273,
+        "source": "io_count_finding"
+      }
+    },
+    "or": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "pan2": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "pan2S": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "param": {
+      "inlets": [],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 21,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "patcher": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HELP_PATCH",
+        "source": "empty_io_coverage"
+      }
+    },
+    "pcontrol_ExamplePatch": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "pfft~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HELP_PATCH",
+        "source": "empty_io_coverage"
+      }
+    },
+    "phasewrap": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "phasor": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 6,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "pi": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "pipe": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 12,
+        "agreement": 0.75,
+        "source": "io_count_finding"
+      }
+    },
+    "pitchshift~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "poke": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "poly~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HELP_PATCH",
+        "source": "empty_io_coverage"
+      }
+    },
+    "pong": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 6,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "poobah": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "print": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 616,
+        "agreement": 0.974025974025974,
+        "source": "io_count_finding"
+      }
+    },
+    "r": {
+      "inlets": [],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 109,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "radians": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "receive": {
+      "inlets": [],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 9,
+        "agreement": 0.7777777777777778,
+        "source": "io_count_finding"
+      }
+    },
+    "rgb2hsl": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "router": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "sah": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "samplerate": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "sampstoms": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "scale": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 41,
+        "agreement": 0.8780487804878049,
+        "source": "io_count_finding"
+      }
+    },
+    "select": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 30,
+        "agreement": 0.8,
+        "source": "io_count_finding"
+      }
+    },
+    "selector": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "sfinfo~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "sfizz~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 2,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 3,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 4,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 5,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 6,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 7,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 7,
+        "agreement": 0.8571428571428571,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "sflist~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "sfrecord~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 3,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "sin": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "MEDIUM",
+        "instances": 12,
+        "agreement": 0.9166666666666666,
+        "source": "io_count_finding"
+      }
+    },
+    "string.bytes": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "string.frombytes": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "string.fromutf8": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "string.length": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "string.reverse": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "string.tosymbol": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 7,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "string.trim": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "string.trimend": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "swiz": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 11,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "sync~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "tapin~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 14,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "thru": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 7,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "train": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "transratio": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "triangle": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "trunc": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "udpsend": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 8,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "urn-jb": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "v": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 11,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "vec": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 11,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "windowed-fft~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 6,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    },
+    "wrap": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 2,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      }
+    },
+    "xbendout2": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      }
+    },
+    "yafr2": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "outlet_type_finding"
+      },
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ]
+    }
+  },
+  "conflicts": {
+    "coll": {
+      "audit_proposed": {
+        "inlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          }
+        ],
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 2,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 3,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          }
+        ],
+        "_audit": {
+          "confidence": "HIGH",
+          "instances": 42,
+          "agreement": 1.0,
+          "source": "io_count_finding"
+        }
+      },
+      "existing_manual": {
+        "inlets": [
+          {
+            "id": 0,
+            "type": "anything",
+            "signal": false,
+            "digest": "Messages and data",
+            "hot": true
+          },
+          {
+            "id": 1,
+            "type": "int",
+            "signal": false,
+            "digest": "Index",
+            "hot": true
+          }
+        ],
+        "_note": "coll has two hot inlets (exception to cold-inlet convention)"
+      },
+      "reason": "CONFLICT_WITH_MANUAL"
+    },
+    "curve~": {
+      "audit_proposed": {
+        "inlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          },
+          {
+            "id": 2,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          }
+        ],
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          }
+        ],
+        "_audit": {
+          "confidence": "MEDIUM",
+          "instances": 5,
+          "agreement": 0.8,
+          "source": "io_count_finding"
+        }
+      },
+      "existing_manual": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "signal",
+            "signal": true,
+            "digest": "Signal output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "bang when curve reaches destination"
+          }
+        ],
+        "_note": "Outlet 0 is signal, outlet 1 is control bang."
+      },
+      "reason": "CONFLICT_WITH_MANUAL"
+    },
+    "info~": {
+      "audit_proposed": {
+        "inlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          }
+        ],
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 2,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 3,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 4,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 5,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 6,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 7,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 8,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 9,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          }
+        ],
+        "_audit": {
+          "confidence": "HIGH",
+          "instances": 6,
+          "agreement": 1.0,
+          "source": "io_count_finding"
+        }
+      },
+      "existing_manual": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Sample frames (int)"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Number of channels (int)"
+          },
+          {
+            "id": 2,
+            "type": "",
+            "signal": false,
+            "digest": "Sample rate (float)"
+          },
+          {
+            "id": 3,
+            "type": "",
+            "signal": false,
+            "digest": "Length in ms (float)"
+          },
+          {
+            "id": 4,
+            "type": "",
+            "signal": false,
+            "digest": "State (modified flag)"
+          }
+        ],
+        "_note": "info~ outlets are control (numbers), not signal."
+      },
+      "reason": "CONFLICT_WITH_MANUAL"
+    },
+    "line~": {
+      "audit_proposed": {
+        "inlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          }
+        ],
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          }
+        ],
+        "_audit": {
+          "confidence": "MEDIUM",
+          "instances": 64,
+          "agreement": 0.96875,
+          "source": "io_count_finding"
+        }
+      },
+      "existing_manual": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "signal",
+            "signal": true,
+            "digest": "Signal output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "bang when line reaches destination"
+          }
+        ],
+        "_note": "Outlet 0 is signal, outlet 1 is control bang."
+      },
+      "reason": "CONFLICT_WITH_MANUAL"
+    },
+    "stash~": {
+      "audit_proposed": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "signal",
+            "signal": true,
+            "digest": "Signal output"
+          },
+          {
+            "id": 1,
+            "type": "signal",
+            "signal": true,
+            "digest": "Signal output"
+          }
+        ],
+        "_audit": {
+          "confidence": "HIGH",
+          "instances": 5,
+          "agreement": 1.0,
+          "source": "outlet_type_finding"
+        }
+      },
+      "existing_manual": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "signal",
+            "signal": true,
+            "digest": "Signal output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Index (int)"
+          }
+        ],
+        "_note": "Outlet 0 is signal, outlet 1 is control."
+      },
+      "reason": "CONFLICT_WITH_MANUAL"
+    },
+    "stretch~": {
+      "audit_proposed": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          }
+        ],
+        "_audit": {
+          "confidence": "HIGH",
+          "instances": 2,
+          "agreement": 1.0,
+          "source": "outlet_type_finding"
+        }
+      },
+      "existing_manual": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "signal",
+            "signal": true,
+            "digest": "Audio output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "bang when done"
+          }
+        ],
+        "_note": "Outlet 0 is signal, outlet 1 is control bang."
+      },
+      "reason": "CONFLICT_WITH_MANUAL"
+    },
+    "thispoly~": {
+      "audit_proposed": {
+        "inlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          }
+        ],
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 2,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          }
+        ],
+        "_audit": {
+          "confidence": "HIGH",
+          "instances": 3,
+          "agreement": 1.0,
+          "source": "io_count_finding"
+        }
+      },
+      "existing_manual": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Instance index of patcher (int)"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Mute flag 0/1 for instance (int)"
+          }
+        ],
+        "_note": "Both outlets are control."
+      },
+      "reason": "CONFLICT_WITH_MANUAL"
+    },
+    "vst~": {
+      "audit_proposed": {
+        "inlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": ""
+          }
+        ],
+        "outlets": [
+          {
+            "id": 0,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 1,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 2,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 3,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 4,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 5,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 6,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          },
+          {
+            "id": 7,
+            "type": "",
+            "signal": false,
+            "digest": "Control output"
+          }
+        ],
+        "_audit": {
+          "confidence": "HIGH",
+          "instances": 11,
+          "agreement": 1.0,
+          "source": "io_count_finding"
+        }
+      },
+      "existing_manual": {
+        "outlets": [
+          {
+            "id": 0,
+            "type": "signal",
+            "signal": true,
+            "digest": "Audio output left"
+          },
+          {
+            "id": 1,
+            "type": "signal",
+            "signal": true,
+            "digest": "Audio output right"
+          },
+          {
+            "id": 2,
+            "type": "",
+            "signal": false,
+            "digest": "Dump output"
+          },
+          {
+            "id": 3,
+            "type": "",
+            "signal": false,
+            "digest": "Parameter index and value when changed"
+          }
+        ],
+        "_note": "Outlets 0-1 are signal, outlets 2-3 are control."
+      },
+      "reason": "CONFLICT_WITH_MANUAL"
+    }
+  }
+}

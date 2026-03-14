@@ -26,68 +26,6 @@
             },
             {
                 "box": {
-                    "id": "obj-2",
-                    "maxclass": "toggle",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "int" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 30.0, 45.0, 24.0, 24.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-3",
-                    "maxclass": "newobj",
-                    "numinlets": 3,
-                    "numoutlets": 3,
-                    "outlettype": [ "bang", "bang", "" ],
-                    "patching_rect": [ 30.0, 80.0, 50.0, 22.0 ],
-                    "text": "sel 0 1"
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-4",
-                    "maxclass": "message",
-                    "numinlets": 2,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "patching_rect": [ 30.0, 110.0, 35.0, 22.0 ],
-                    "text": "stop"
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-5",
-                    "maxclass": "message",
-                    "numinlets": 2,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "patching_rect": [ 80.0, 110.0, 80.0, 22.0 ],
-                    "text": "startwindow"
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-6",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 60.0, 47.0, 80.0, 20.0 ],
-                    "text": "Audio On/Off"
-                }
-            },
-            {
-                "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "id": "obj-7",
@@ -451,13 +389,6 @@
             },
             {
                 "patchline": {
-                    "destination": [ "obj-3", 0 ],
-                    "midpoints": [ 39.5, 72.0, 39.5, 72.0 ],
-                    "source": [ "obj-2", 0 ]
-                }
-            },
-            {
-                "patchline": {
                     "destination": [ "obj-23", 0 ],
                     "midpoints": [ 549.5, 285.0, 359.5, 285.0 ],
                     "source": [ "obj-20", 0 ]
@@ -510,34 +441,6 @@
                     "destination": [ "obj-27", 0 ],
                     "midpoints": [ 359.5, 531.0, 359.5, 531.0 ],
                     "source": [ "obj-26", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-4", 0 ],
-                    "midpoints": [ 39.5, 105.0, 39.5, 105.0 ],
-                    "source": [ "obj-3", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-5", 0 ],
-                    "midpoints": [ 55.0, 105.0, 89.5, 105.0 ],
-                    "source": [ "obj-3", 1 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-27", 0 ],
-                    "midpoints": [ 39.5, 144.0, 186.0, 144.0, 186.0, 546.0, 359.5, 546.0 ],
-                    "source": [ "obj-4", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-27", 0 ],
-                    "midpoints": [ 89.5, 144.0, 186.0, 144.0, 186.0, 546.0, 359.5, 546.0 ],
-                    "source": [ "obj-5", 0 ]
                 }
             },
             {

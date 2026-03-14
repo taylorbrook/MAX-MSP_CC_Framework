@@ -30,9 +30,11 @@ Apply modifications to existing generated patches or code without regenerating f
 
 7. **Write output** -- save modified files back to the project's `generated/` directory.
 
-8. **Write-back memory** -- store any new patterns from the modification.
+8. **Bump version** -- after a successful write, call `bump_version(project_dir, "patch", description)` where `description` is a short summary of the change (e.g., "add LFO to filter cutoff"). This auto-increments the patch version in `versions.json`. If the change is significant (new feature, major rework), use `"minor"` or `"major"` instead of `"patch"`.
 
-9. **Update progress** -- increment progress via `update_status()`.
+9. **Write-back memory** -- store any new patterns from the modification.
+
+10. **Update progress** -- increment progress via `update_status()`.
 
 ## Skills Referenced
 
@@ -44,7 +46,7 @@ Apply modifications to existing generated patches or code without regenerating f
 ## Python Modules
 
 ```python
-from src.maxpat.project import get_active_project, update_status
+from src.maxpat.project import get_active_project, update_status, bump_version
 from src.maxpat.critics import review_patch, CriticResult
 from src.maxpat.memory import MemoryStore
 ```

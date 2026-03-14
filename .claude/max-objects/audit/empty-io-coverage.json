@@ -1,0 +1,1555 @@
+{
+  "objects": {
+    "Jitter GL Object (OB3D) Messages": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Jitter",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "Jitter Matrix Operators": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Jitter",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "MC Wrapper Features": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "PI_OVER_2~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "PI_OVER_4~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "Parameter Properties": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "M4L",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "Snapshot Messages": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "active": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "adstatus": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": 2,
+      "proposed_outlets": 2
+    },
+    "begin~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "bendout": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "bgcolor": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "bpatcher": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "buffer": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 0,
+      "proposed_outlets": 2
+    },
+    "bufferop~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "capture~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "cell": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 0,
+      "proposed_outlets": 1
+    },
+    "channels": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "circle": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "codebox": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "codebox~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "comment": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "concat": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 2,
+      "proposed_outlets": 1
+    },
+    "cone": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "constant": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "crash": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "cross": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "ctlout": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "currentsampletime~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "currenttime~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "cylinder": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "dac~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": 2,
+      "proposed_outlets": 0
+    },
+    "data": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "degtorad": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "degtorad~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "dict.print": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "dict.view": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "dim": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "dot": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "dsp": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "elapsed": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "expr~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "ezdac~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "e~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "faceforward": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "fftfullspect": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "ffthop": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "fftinfo": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "fftoffset": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "fftout~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "fftsize": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "forward": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "funnel": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "granulator~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "halfpi": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "halfpi~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "hint": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "history": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "hsl2rgb": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "if": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "inport": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "interp~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "invpi": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "invpi~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jbox": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jit.bang": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Packages",
+      "proposed_inlets": 1,
+      "proposed_outlets": 2
+    },
+    "jit.framecount": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Packages",
+      "proposed_inlets": 1,
+      "proposed_outlets": 2
+    },
+    "jit.graph": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Jitter",
+      "proposed_inlets": 1,
+      "proposed_outlets": 2
+    },
+    "jit.line": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jit.mo.field": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jit.mo.fieldmask": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jit.mo.func": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jit.mo.join": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Packages",
+      "proposed_inlets": 3,
+      "proposed_outlets": 2
+    },
+    "jit.mo.time": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jit.obref": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Jitter",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jit.plot": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Jitter",
+      "proposed_inlets": 1,
+      "proposed_outlets": 2
+    },
+    "jit_kernel": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "jstrigger": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 1,
+      "proposed_outlets": 3
+    },
+    "key": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "keyup": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "length": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "linedrive": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 2,
+      "proposed_outlets": 1
+    },
+    "live.adsrui": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "live.adsr~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "live.comment": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "M4L",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "live.line": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "M4L",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "live.miditool.out": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "M4L",
+      "proposed_inlets": 1,
+      "proposed_outlets": 0
+    },
+    "live.object": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "M4L",
+      "proposed_inlets": 2,
+      "proposed_outlets": 1
+    },
+    "live.observer": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "M4L",
+      "proposed_inlets": 2,
+      "proposed_outlets": 2
+    },
+    "live.param~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "M4L",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "live.path": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "M4L",
+      "proposed_inlets": 1,
+      "proposed_outlets": 3
+    },
+    "live.push": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "M4L",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "live.remote~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "M4L",
+      "proposed_inlets": 2,
+      "proposed_outlets": 1
+    },
+    "live.scope~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "ln10": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "ln10~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "ln2": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "ln2~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "log10e": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "log10e~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "log2e": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "log2e~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mappings": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 1,
+      "proposed_outlets": 0
+    },
+    "max": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 2,
+      "proposed_outlets": 1
+    },
+    "mc.bands~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MC",
+      "proposed_inlets": 5,
+      "proposed_outlets": 3
+    },
+    "mc.dac~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MC",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mc.ezdac~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "MC",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mc.out~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MC",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mc.pfft~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "MC",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mc.poly~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MC",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "mc.s~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "MC",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mc_channel": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mc_channelcount": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mcs.poly~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "midiformat": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 7,
+      "proposed_outlets": 2
+    },
+    "midiout": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mira.frame": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mira.motion": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mira.multitouch": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Packages",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mxj": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "mxj~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "nearestpix": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "noise": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "norm": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 0,
+      "proposed_outlets": 1
+    },
+    "normalize": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "noteout": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "onecopy": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "onoff~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "osc.codebox": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "out": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "outlet": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "outport": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "out~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "pan": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "panel": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "pan~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "patcher": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "pfft~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": 2,
+      "proposed_outlets": 1
+    },
+    "pgmout": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "phi": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "phi~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "pi": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "pi~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "plane": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "plugsend~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "polymidiin": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "polyout": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "poly~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "presetbang": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "print": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 1,
+      "proposed_outlets": 0
+    },
+    "project": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "qconj": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "qmul": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "qrot": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "radtodeg": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "radtodeg~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "read": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "reflect": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "refract": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "rgb2hsl": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "rotor": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "samplecount~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "samplepix": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "samplerate": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "samplerate~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "scope~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "send": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "send~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "snorm": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "sphere": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "splat~": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "sqrt1_2": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "sqrt1_2~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "sqrt2": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "sqrt2~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "standalone": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "swiz": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 1,
+      "proposed_outlets": 1
+    },
+    "tabcontroller": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "torus": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "touchout": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "twopi": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "twopi~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "udpsend": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": 1,
+      "proposed_outlets": 0
+    },
+    "universal": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Max",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "vec": {
+      "empty_inlets": false,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "Gen",
+      "proposed_inlets": 3,
+      "proposed_outlets": 1
+    },
+    "vectorsize": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "vectorsize~": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "voice": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "voicecount": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "windowed-fft~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": true,
+      "domain": "MSP",
+      "proposed_inlets": 2,
+      "proposed_outlets": 2
+    },
+    "write": {
+      "empty_inlets": true,
+      "empty_outlets": false,
+      "has_help_data": false,
+      "domain": "Gen",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "xfade": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    },
+    "xfade~": {
+      "empty_inlets": true,
+      "empty_outlets": true,
+      "has_help_data": false,
+      "domain": "RNBO",
+      "proposed_inlets": null,
+      "proposed_outlets": null
+    }
+  },
+  "summary": {
+    "total_empty_inlet": 118,
+    "total_empty_outlet": 129,
+    "total_unique": 193,
+    "covered_by_help": 72,
+    "not_covered": 121
+  }
+}

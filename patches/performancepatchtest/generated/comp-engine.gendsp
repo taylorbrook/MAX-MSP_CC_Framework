@@ -1,0 +1,63 @@
+{
+    "patcher": {
+        "fileversion": 1,
+        "appversion": {
+            "major": 9,
+            "minor": 1,
+            "revision": 2,
+            "architecture": "x64",
+            "modernui": 1
+        },
+        "classnamespace": "dsp.gen",
+        "rect": [100, 100, 650, 500],
+        "boxes": [
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "text": "in 1",
+                    "id": "obj-in1",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [""],
+                    "patching_rect": [280, 14, 30, 22]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "codebox",
+                    "id": "obj-code",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [""],
+                    "patching_rect": [30, 50, 580, 380],
+                    "code": "// Feed-forward compressor with peak detection\n// Params set via messages from parent patch\n\nParam range(0);         // threshold in dB (-60 to 0)\nParam ratio(1);         // compression ratio (1-20)\nParam smoothGain(0);    // makeup gain in dB (-12 to 12)\nParam attack(10);       // attack time in ms (0.1-100)\nParam release(100);     // release time in ms (10-1000)\n\nHistory env(0);         // envelope follower state\n\nx = in1;\nsr = samplerate;\n\n// Peak level detection -> dB\nlevel = abs(x);\nlevel_db = 20 * log10(max(level, 0.000001));\n\n// Gain computer: how much to reduce above threshold\nover = max(level_db - range, 0);\ngr_db = over * (1 - 1 / max(ratio, 1.001));\n\n// Envelope follower (one-pole, separate attack/release)\natt_coeff = exp(-1 / (max(attack, 0.01) * 0.001 * sr));\nrel_coeff = exp(-1 / (max(release, 0.01) * 0.001 * sr));\ncoeff = (gr_db > env) ? att_coeff : rel_coeff;\nenv = gr_db + coeff * (env - gr_db);\n\n// Apply gain reduction + makeup gain\nlinear_gain = pow(10, (-env + smoothGain) / 20);\n\nout1 = x * linear_gain;"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "text": "out 1",
+                    "id": "obj-out1",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [280, 450, 34, 22]
+                }
+            }
+        ],
+        "lines": [
+            {
+                "patchline": {
+                    "source": ["obj-in1", 0],
+                    "destination": ["obj-code", 0]
+                }
+            },
+            {
+                "patchline": {
+                    "source": ["obj-code", 0],
+                    "destination": ["obj-out1", 0]
+                }
+            }
+        ]
+    }
+}

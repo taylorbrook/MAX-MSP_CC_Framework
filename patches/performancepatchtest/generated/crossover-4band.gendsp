@@ -1,0 +1,190 @@
+{
+    "patcher": {
+        "fileversion": 1,
+        "appversion": {
+            "major": 9,
+            "minor": 1,
+            "revision": 2,
+            "architecture": "x64",
+            "modernui": 1
+        },
+        "classnamespace": "dsp.gen",
+        "rect": [
+            100,
+            100,
+            850,
+            650
+        ],
+        "boxes": [
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "text": "in 1",
+                    "id": "obj-in1",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        380,
+                        14,
+                        30,
+                        22
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "codebox",
+                    "id": "obj-code",
+                    "numinlets": 1,
+                    "numoutlets": 4,
+                    "outlettype": [
+                        "",
+                        "",
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        30,
+                        50,
+                        780,
+                        520
+                    ],
+                    "code": "// Linkwitz-Riley 4th-order (LR4) 4-band crossover\n// Crossover points: 200 Hz, 1000 Hz, 5000 Hz\n// Each split = matched LP+HP Butterworth cascaded 2x\n// LP + HP sum flat at unity gain\n\n// Biquad state: 12 filters (4 per split, 3 splits)\n// Split 1 (200 Hz) LP cascade\nHistory s1lp1x1(0);\nHistory s1lp1x2(0);\nHistory s1lp1y1(0);\nHistory s1lp1y2(0);\nHistory s1lp2x1(0);\nHistory s1lp2x2(0);\nHistory s1lp2y1(0);\nHistory s1lp2y2(0);\n// Split 1 (200 Hz) HP cascade\nHistory s1hp1x1(0);\nHistory s1hp1x2(0);\nHistory s1hp1y1(0);\nHistory s1hp1y2(0);\nHistory s1hp2x1(0);\nHistory s1hp2x2(0);\nHistory s1hp2y1(0);\nHistory s1hp2y2(0);\n// Split 2 (1 kHz) LP cascade\nHistory s2lp1x1(0);\nHistory s2lp1x2(0);\nHistory s2lp1y1(0);\nHistory s2lp1y2(0);\nHistory s2lp2x1(0);\nHistory s2lp2x2(0);\nHistory s2lp2y1(0);\nHistory s2lp2y2(0);\n// Split 2 (1 kHz) HP cascade\nHistory s2hp1x1(0);\nHistory s2hp1x2(0);\nHistory s2hp1y1(0);\nHistory s2hp1y2(0);\nHistory s2hp2x1(0);\nHistory s2hp2x2(0);\nHistory s2hp2y1(0);\nHistory s2hp2y2(0);\n// Split 3 (5 kHz) LP cascade\nHistory s3lp1x1(0);\nHistory s3lp1x2(0);\nHistory s3lp1y1(0);\nHistory s3lp1y2(0);\nHistory s3lp2x1(0);\nHistory s3lp2x2(0);\nHistory s3lp2y1(0);\nHistory s3lp2y2(0);\n// Split 3 (5 kHz) HP cascade\nHistory s3hp1x1(0);\nHistory s3hp1x2(0);\nHistory s3hp1y1(0);\nHistory s3hp1y2(0);\nHistory s3hp2x1(0);\nHistory s3hp2x2(0);\nHistory s3hp2y1(0);\nHistory s3hp2y2(0);\n\nx = in1;\nsr = samplerate;\npi = 3.14159265358979;\nsqrt2 = 1.41421356237310;\n\n// === Butterworth 2nd-order coefficients ===\n// LP: b0=K^2*norm, b1=2*b0, b2=b0\n// HP: b0=norm, b1=-2*norm, b2=norm\n// Shared: a1=2*(K^2-1)*norm, a2=(1-sqrt2*K+K^2)*norm\n\n// --- 200 Hz ---\nK1 = tan(pi * 200 / sr);\nK1sq = K1 * K1;\nnorm1 = 1 / (1 + sqrt2 * K1 + K1sq);\nlp1b0 = K1sq * norm1;\nlp1b1 = 2 * lp1b0;\nhp1b0 = norm1;\nhp1b1 = -2 * norm1;\na11 = 2 * (K1sq - 1) * norm1;\na21 = (1 - sqrt2 * K1 + K1sq) * norm1;\n\n// --- 1000 Hz ---\nK2 = tan(pi * 1000 / sr);\nK2sq = K2 * K2;\nnorm2 = 1 / (1 + sqrt2 * K2 + K2sq);\nlp2b0 = K2sq * norm2;\nlp2b1 = 2 * lp2b0;\nhp2b0 = norm2;\nhp2b1 = -2 * norm2;\na12 = 2 * (K2sq - 1) * norm2;\na22 = (1 - sqrt2 * K2 + K2sq) * norm2;\n\n// --- 5000 Hz ---\nK3 = tan(pi * 5000 / sr);\nK3sq = K3 * K3;\nnorm3 = 1 / (1 + sqrt2 * K3 + K3sq);\nlp3b0 = K3sq * norm3;\nlp3b1 = 2 * lp3b0;\nhp3b0 = norm3;\nhp3b1 = -2 * norm3;\na13 = 2 * (K3sq - 1) * norm3;\na23 = (1 - sqrt2 * K3 + K3sq) * norm3;\n\n// === Split 1: 200 Hz ===\n\n// LP stage 1\ny = lp1b0 * x + lp1b1 * s1lp1x1 + lp1b0 * s1lp1x2 - a11 * s1lp1y1 - a21 * s1lp1y2;\ns1lp1x2 = s1lp1x1; s1lp1x1 = x;\ns1lp1y2 = s1lp1y1; s1lp1y1 = y;\nlp1s1 = y;\n\n// LP stage 2\ny = lp1b0 * lp1s1 + lp1b1 * s1lp2x1 + lp1b0 * s1lp2x2 - a11 * s1lp2y1 - a21 * s1lp2y2;\ns1lp2x2 = s1lp2x1; s1lp2x1 = lp1s1;\ns1lp2y2 = s1lp2y1; s1lp2y1 = y;\nlow = y;\n\n// HP stage 1\ny = hp1b0 * x + hp1b1 * s1hp1x1 + hp1b0 * s1hp1x2 - a11 * s1hp1y1 - a21 * s1hp1y2;\ns1hp1x2 = s1hp1x1; s1hp1x1 = x;\ns1hp1y2 = s1hp1y1; s1hp1y1 = y;\nhp1s1 = y;\n\n// HP stage 2\ny = hp1b0 * hp1s1 + hp1b1 * s1hp2x1 + hp1b0 * s1hp2x2 - a11 * s1hp2y1 - a21 * s1hp2y2;\ns1hp2x2 = s1hp2x1; s1hp2x1 = hp1s1;\ns1hp2y2 = s1hp2y1; s1hp2y1 = y;\nmid_hi = y;\n\n// === Split 2: 1 kHz (input: mid_hi) ===\n\n// LP stage 1\ny = lp2b0 * mid_hi + lp2b1 * s2lp1x1 + lp2b0 * s2lp1x2 - a12 * s2lp1y1 - a22 * s2lp1y2;\ns2lp1x2 = s2lp1x1; s2lp1x1 = mid_hi;\ns2lp1y2 = s2lp1y1; s2lp1y1 = y;\nlp2s1 = y;\n\n// LP stage 2\ny = lp2b0 * lp2s1 + lp2b1 * s2lp2x1 + lp2b0 * s2lp2x2 - a12 * s2lp2y1 - a22 * s2lp2y2;\ns2lp2x2 = s2lp2x1; s2lp2x1 = lp2s1;\ns2lp2y2 = s2lp2y1; s2lp2y1 = y;\nlomid = y;\n\n// HP stage 1\ny = hp2b0 * mid_hi + hp2b1 * s2hp1x1 + hp2b0 * s2hp1x2 - a12 * s2hp1y1 - a22 * s2hp1y2;\ns2hp1x2 = s2hp1x1; s2hp1x1 = mid_hi;\ns2hp1y2 = s2hp1y1; s2hp1y1 = y;\nhp2s1 = y;\n\n// HP stage 2\ny = hp2b0 * hp2s1 + hp2b1 * s2hp2x1 + hp2b0 * s2hp2x2 - a12 * s2hp2y1 - a22 * s2hp2y2;\ns2hp2x2 = s2hp2x1; s2hp2x1 = hp2s1;\ns2hp2y2 = s2hp2y1; s2hp2y1 = y;\nhi = y;\n\n// === Split 3: 5 kHz (input: hi) ===\n\n// LP stage 1\ny = lp3b0 * hi + lp3b1 * s3lp1x1 + lp3b0 * s3lp1x2 - a13 * s3lp1y1 - a23 * s3lp1y2;\ns3lp1x2 = s3lp1x1; s3lp1x1 = hi;\ns3lp1y2 = s3lp1y1; s3lp1y1 = y;\nlp3s1 = y;\n\n// LP stage 2\ny = lp3b0 * lp3s1 + lp3b1 * s3lp2x1 + lp3b0 * s3lp2x2 - a13 * s3lp2y1 - a23 * s3lp2y2;\ns3lp2x2 = s3lp2x1; s3lp2x1 = lp3s1;\ns3lp2y2 = s3lp2y1; s3lp2y1 = y;\nhimid = y;\n\n// HP stage 1\ny = hp3b0 * hi + hp3b1 * s3hp1x1 + hp3b0 * s3hp1x2 - a13 * s3hp1y1 - a23 * s3hp1y2;\ns3hp1x2 = s3hp1x1; s3hp1x1 = hi;\ns3hp1y2 = s3hp1y1; s3hp1y1 = y;\nhp3s1 = y;\n\n// HP stage 2\ny = hp3b0 * hp3s1 + hp3b1 * s3hp2x1 + hp3b0 * s3hp2x2 - a13 * s3hp2y1 - a23 * s3hp2y2;\ns3hp2x2 = s3hp2x1; s3hp2x1 = hp3s1;\ns3hp2y2 = s3hp2y1; s3hp2y1 = y;\nhigh = y;\n\n// Outputs: Low (<200), Lo-Mid (200-1k), Hi-Mid (1k-5k), High (>5k)\nout1 = low;\nout2 = lomid;\nout3 = himid;\nout4 = high;"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "text": "out 1",
+                    "id": "obj-out1",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        50,
+                        590,
+                        34,
+                        22
+                    ],
+                    "comment": "Low < 200Hz"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "text": "out 2",
+                    "id": "obj-out2",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        250,
+                        590,
+                        34,
+                        22
+                    ],
+                    "comment": "Lo-Mid 200-1kHz"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "text": "out 3",
+                    "id": "obj-out3",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        450,
+                        590,
+                        34,
+                        22
+                    ],
+                    "comment": "Hi-Mid 1k-5kHz"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "text": "out 4",
+                    "id": "obj-out4",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        650,
+                        590,
+                        34,
+                        22
+                    ],
+                    "comment": "High > 5kHz"
+                }
+            }
+        ],
+        "lines": [
+            {
+                "patchline": {
+                    "source": [
+                        "obj-in1",
+                        0
+                    ],
+                    "destination": [
+                        "obj-code",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-code",
+                        0
+                    ],
+                    "destination": [
+                        "obj-out1",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-code",
+                        1
+                    ],
+                    "destination": [
+                        "obj-out2",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-code",
+                        2
+                    ],
+                    "destination": [
+                        "obj-out3",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-code",
+                        3
+                    ],
+                    "destination": [
+                        "obj-out4",
+                        0
+                    ]
+                }
+            }
+        ]
+    }
+}
