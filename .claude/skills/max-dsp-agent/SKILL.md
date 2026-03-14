@@ -49,7 +49,7 @@ Before any generation:
 - Oscillators: cycle~, saw~, rect~, noise~, phasor~, pink~, rand~
 - Filters: biquad~, onepole~, reson~, svf~, cascade~, lores~, cross~
 - Delays: tapin~/tapout~, delay~ (gen~), allpass~, comb~
-- Dynamics: compressor~, limiter~, gate~, omx.comp~, omx.peaklim~
+- Dynamics: limi~ (peak limiter), gate~, deltaclip~ (slew limiter), gen~ (custom compressor/limiter via GenExpr)
 - Effects: reverb~, chorus~, flanger~, phaser~
 - Gain: *~ for level control, line~ for smooth transitions, dbtoa/atodb for dB conversion
 - Monitoring: meter~, levelmeter~, scope~, spectroscope~, snapshot~

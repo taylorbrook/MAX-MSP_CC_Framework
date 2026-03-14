@@ -274,7 +274,7 @@ Objects currently listed in DSP agent SKILL.md "Signal Chain Construction":
 Oscillators: cycle~, saw~, rect~, noise~, phasor~, pink~, rand~
 Filters: biquad~, onepole~, reson~, svf~, cascade~, lores~, cross~
 Delays: tapin~/tapout~, delay~, allpass~, comb~
-Dynamics: compressor~, limiter~, gate~, omx.comp~, omx.peaklim~
+Dynamics: limi~ (peak limiter), gate~, deltaclip~ (slew limiter), gen~ (custom compressor/limiter via GenExpr)
 Effects: reverb~, chorus~, flanger~, phaser~
 Gain: *~, line~, dbtoa/atodb
 Monitoring: meter~, levelmeter~, scope~, spectroscope~, snapshot~
