@@ -138,9 +138,9 @@ MAX-MSP_CC_Framework/
 └── CLAUDE.md               # Framework rules (enforced automatically)
 ```
 
-## Development with GSD
+## Development with GSD (to build on the system, not required for building MAX patches)
 
-This project uses the [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) planning framework for structured development with Claude Code. GSD provides milestone planning, phased execution, and verification workflows. It is recommended for those who want to iterate on the framework itself (agents, validation pipeline, object database) — you do not need GSD to create MAX patches.
+This project uses the [Get Shit Done (GSD)](https://github.com/gsd-build/get-shit-done) planning framework for structured development with Claude Code. GSD provides milestone planning, phased execution, and verification workflows. It is recommended for those who want to iterate on the framework itself (agents, validation pipeline, object database) — you do not need GSD to create MAX patches, but it you plan on iterating on the system itself, I suggest using GSD.
 
 ### Available GSD commands
 
