@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -293,3 +294,124 @@ def list_projects(base_dir: Path) -> list[str]:
         for d in patches_dir.iterdir()
         if d.is_dir() and not d.name.startswith(".")
     )
+
+
+# File extensions to include in examples/ copies
+_EXAMPLE_EXTENSIONS = {".maxpat", ".gendsp", ".js"}
+
+
+def _read_project_description(project_dir: Path) -> str:
+    """Extract the first non-empty, non-heading line from context.md.
+
+    Args:
+        project_dir: Path to the project directory.
+
+    Returns:
+        Description string, or "No description" if none found.
+    """
+    context_file = project_dir / "context.md"
+    if not context_file.is_file():
+        return "No description"
+
+    for line in context_file.read_text().splitlines():
+        stripped = line.strip()
+        if stripped and not stripped.startswith("#"):
+            return stripped
+
+    return "No description"
+
+
+def build_examples_catalog(base_dir: Path) -> Path:
+    """Build an examples/ directory and PATCHES.md catalog from generated patches.
+
+    For each project in patches/:
+    1. Copies .maxpat, .gendsp, and .js files from generated/ to examples/{name}/
+    2. Generates PATCHES.md with a summary table and per-project detail sections
+
+    The function is idempotent -- it cleans and rebuilds examples/ on each call.
+
+    Args:
+        base_dir: Root directory containing the patches/ folder.
+
+    Returns:
+        Path to the generated PATCHES.md file.
+    """
+    examples_dir = base_dir / "examples"
+    projects = list_projects(base_dir)
+
+    # Collect project info
+    project_data: list[dict] = []
+    for name in projects:
+        project_dir = base_dir / "patches" / name
+        generated_dir = project_dir / "generated"
+
+        if not generated_dir.is_dir():
+            continue
+
+        # Find eligible files
+        files = sorted(
+            f.name
+            for f in generated_dir.iterdir()
+            if f.is_file() and f.suffix in _EXAMPLE_EXTENSIONS
+        )
+
+        if not files:
+            continue
+
+        version = get_version(project_dir) or "unknown"
+        description = _read_project_description(project_dir)
+
+        project_data.append({
+            "name": name,
+            "version": version,
+            "description": description,
+            "files": files,
+            "generated_dir": generated_dir,
+        })
+
+    # Copy files to examples/
+    for proj in project_data:
+        dest_dir = examples_dir / proj["name"]
+
+        # Clean existing directory for idempotent rebuild
+        if dest_dir.exists():
+            shutil.rmtree(dest_dir)
+
+        dest_dir.mkdir(parents=True)
+
+        for fname in proj["files"]:
+            shutil.copy2(proj["generated_dir"] / fname, dest_dir / fname)
+
+    # Generate PATCHES.md
+    lines: list[str] = []
+    lines.append("# Patch Catalog")
+    lines.append("")
+    lines.append("Generated patch examples from the MAX project.")
+    lines.append("")
+
+    # Summary table
+    lines.append("| Project | Version | Description |")
+    lines.append("|---------|---------|-------------|")
+    for proj in project_data:
+        link = f"[{proj['name']}](examples/{proj['name']}/)"
+        lines.append(f"| {link} | {proj['version']} | {proj['description']} |")
+    lines.append("")
+
+    # Per-project detail sections
+    for proj in project_data:
+        lines.append(f"## {proj['name']}")
+        lines.append("")
+        lines.append(f"**Version:** {proj['version']}")
+        lines.append(f"**Description:** {proj['description']}")
+        lines.append("")
+        lines.append("Files:")
+        for fname in proj["files"]:
+            lines.append(f"- {fname}")
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+
+    patches_md = base_dir / "PATCHES.md"
+    patches_md.write_text("\n".join(lines))
+
+    return patches_md
