@@ -28,12 +28,16 @@ def test_public_api_importable():
         PatchValidationError,
         ObjectDatabase,
         LayoutOptions,
+        auto_size_panel,
+        is_complex_patch,
     )
     # Sanity check types
     assert callable(generate_patch)
     assert callable(write_patch)
     assert callable(validate_file)
     assert LayoutOptions is not None
+    assert callable(auto_size_panel)
+    assert callable(is_complex_patch)
 
 
 # ---------------------------------------------------------------------------

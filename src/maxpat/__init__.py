@@ -17,7 +17,7 @@ from src.maxpat.validation import (
     ValidationResult,
 )
 from src.maxpat.layout import apply_layout
-from src.maxpat.aesthetics import set_canvas_background, set_object_bgcolor
+from src.maxpat.aesthetics import set_canvas_background, set_object_bgcolor, auto_size_panel, is_complex_patch
 from src.maxpat.defaults import LayoutOptions
 from src.maxpat.hooks import (
     write_patch,
@@ -182,4 +182,9 @@ __all__ = [
     "BuildResult",
     # Layout
     "LayoutOptions",
+    # Aesthetics
+    "set_canvas_background",
+    "set_object_bgcolor",
+    "auto_size_panel",
+    "is_complex_patch",
 ]
