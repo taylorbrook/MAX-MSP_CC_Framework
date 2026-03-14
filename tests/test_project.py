@@ -16,6 +16,7 @@ from src.maxpat.project import (
     get_version,
     bump_version,
     list_versions,
+    build_examples_catalog,
 )
 
 
@@ -289,3 +290,139 @@ class TestVersioning:
         assert get_version(project_dir) == "0.1.1"
         new_ver = bump_version(project_dir, bump="major", description="major bump")
         assert new_ver == "1.0.0"
+
+
+def _setup_test_project(tmp_path: Path, name: str, files: dict[str, str],
+                         context_md: str = "# test\n\nA test project.\n",
+                         version: str = "0.0.0") -> Path:
+    """Helper to create a minimal project structure for catalog tests."""
+    project_dir = tmp_path / "patches" / name
+    generated_dir = project_dir / "generated"
+    generated_dir.mkdir(parents=True)
+
+    # Write generated files
+    for fname, content in files.items():
+        (generated_dir / fname).write_text(content)
+
+    # Write context.md
+    (project_dir / "context.md").write_text(context_md)
+
+    # Write versions.json
+    versions_data = {
+        "versions": [
+            {"version": version, "description": "Initial", "timestamp": "2026-01-01T00:00:00Z"}
+        ]
+    }
+    (project_dir / "versions.json").write_text(json.dumps(versions_data, indent=2))
+
+    return project_dir
+
+
+class TestBuildExamplesCatalog:
+    """Tests for build_examples_catalog function."""
+
+    def test_creates_examples_directories(self, tmp_path: Path):
+        """Test 1: build_examples_catalog() creates examples/{project}/ directories."""
+        _setup_test_project(tmp_path, "alpha", {"patch.maxpat": '{"patcher": {}}'})
+        _setup_test_project(tmp_path, "beta", {"synth.maxpat": '{"patcher": {}}'})
+
+        build_examples_catalog(tmp_path)
+
+        assert (tmp_path / "examples" / "alpha").is_dir()
+        assert (tmp_path / "examples" / "beta").is_dir()
+
+    def test_only_copies_patch_files(self, tmp_path: Path):
+        """Test 2: Only .maxpat, .gendsp, and .js files are copied."""
+        _setup_test_project(tmp_path, "myproj", {
+            "main.maxpat": '{"patcher": {}}',
+            "engine.gendsp": '{"patcher": {}}',
+            "helper.js": 'var x = 1;',
+            "build.py": 'print("hello")',
+            "notes.txt": 'some notes',
+            "data.json": '{}',
+        })
+
+        build_examples_catalog(tmp_path)
+
+        examples_dir = tmp_path / "examples" / "myproj"
+        copied_files = sorted(f.name for f in examples_dir.iterdir())
+        assert copied_files == ["engine.gendsp", "helper.js", "main.maxpat"]
+
+    def test_copied_files_are_identical(self, tmp_path: Path):
+        """Test 3: Copied files are byte-identical to originals."""
+        content = '{"patcher": {"boxes": []}}'
+        _setup_test_project(tmp_path, "myproj", {"main.maxpat": content})
+
+        build_examples_catalog(tmp_path)
+
+        source = tmp_path / "patches" / "myproj" / "generated" / "main.maxpat"
+        dest = tmp_path / "examples" / "myproj" / "main.maxpat"
+        assert source.read_bytes() == dest.read_bytes()
+
+    def test_patches_md_created_with_project_info(self, tmp_path: Path):
+        """Test 4: PATCHES.md is created with project names, versions, descriptions, and file lists."""
+        _setup_test_project(tmp_path, "alpha", {"patch.maxpat": '{}'},
+                           context_md="# alpha\n\nMy alpha project.\n", version="1.2.3")
+
+        result = build_examples_catalog(tmp_path)
+
+        assert result == tmp_path / "PATCHES.md"
+        assert result.is_file()
+        content = result.read_text()
+        assert "alpha" in content
+        assert "1.2.3" in content
+        assert "My alpha project." in content
+        assert "patch.maxpat" in content
+
+    def test_patches_md_has_table_row_per_project(self, tmp_path: Path):
+        """Test 5: PATCHES.md contains a table row for each project with version."""
+        _setup_test_project(tmp_path, "alpha", {"a.maxpat": '{}'},
+                           context_md="# alpha\n\nAlpha desc.\n", version="0.1.0")
+        _setup_test_project(tmp_path, "beta", {"b.maxpat": '{}'},
+                           context_md="# beta\n\nBeta desc.\n", version="0.2.0")
+
+        build_examples_catalog(tmp_path)
+
+        content = (tmp_path / "PATCHES.md").read_text()
+        # Check table header
+        assert "| Project | Version | Description |" in content
+        # Check table rows contain project info
+        assert "alpha" in content
+        assert "0.1.0" in content
+        assert "beta" in content
+        assert "0.2.0" in content
+
+    def test_idempotent_rebuild(self, tmp_path: Path):
+        """Test 6: Running build_examples_catalog() twice is idempotent."""
+        _setup_test_project(tmp_path, "myproj", {"main.maxpat": '{"data": 1}'})
+
+        build_examples_catalog(tmp_path)
+        first_content = (tmp_path / "PATCHES.md").read_text()
+        first_files = sorted(f.name for f in (tmp_path / "examples" / "myproj").iterdir())
+
+        build_examples_catalog(tmp_path)
+        second_content = (tmp_path / "PATCHES.md").read_text()
+        second_files = sorted(f.name for f in (tmp_path / "examples" / "myproj").iterdir())
+
+        assert first_content == second_content
+        assert first_files == second_files
+
+    def test_description_from_context_md(self, tmp_path: Path):
+        """Test 7: Project description is extracted from first non-empty, non-heading line of context.md."""
+        _setup_test_project(tmp_path, "myproj", {"main.maxpat": '{}'},
+                           context_md="# myproj\n\nThis is the real description.\n\n## Details\nMore stuff.\n")
+
+        build_examples_catalog(tmp_path)
+
+        content = (tmp_path / "PATCHES.md").read_text()
+        assert "This is the real description." in content
+
+    def test_description_fallback_no_context(self, tmp_path: Path):
+        """Description defaults to 'No description' when context.md has only headings."""
+        _setup_test_project(tmp_path, "myproj", {"main.maxpat": '{}'},
+                           context_md="# myproj\n\n## Section\n\n### Subsection\n")
+
+        build_examples_catalog(tmp_path)
+
+        content = (tmp_path / "PATCHES.md").read_text()
+        assert "No description" in content
