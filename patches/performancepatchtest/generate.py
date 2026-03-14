@@ -32,6 +32,7 @@ sys.path.insert(0, ".")
 
 from pathlib import Path
 from src.maxpat import Patcher, write_patch
+from src.maxpat.incremental import merge_and_write
 from src.maxpat.patcher import Box
 from src.maxpat.db_lookup import ObjectDatabase
 from src.maxpat.sizing import calculate_box_size
@@ -72,19 +73,19 @@ def make_sfplay_stereo(patcher, x=0.0, y=0.0):
     return box
 
 
-def make_gen_compressor(patcher):
-    """Create a gen~ compressor box referencing comp-engine.gendsp."""
+def make_gen_crossover(patcher):
+    """Create a gen~ 4-band crossover box referencing crossover-4band.gendsp."""
     box = Box.__new__(Box)
     box_id = patcher._gen_id()
     box.name = "gen~"
     box.args = []
     box.id = box_id
     box.maxclass = "newobj"
-    box.text = "gen~ @gen comp-engine.gendsp"
+    box.text = "gen~ @gen crossover-4band.gendsp"
     box.numinlets = 1
-    box.numoutlets = 1
-    box.outlettype = ["signal"]
-    w, h = calculate_box_size("gen~ @gen comp-engine.gendsp", "newobj")
+    box.numoutlets = 4
+    box.outlettype = ["signal", "signal", "signal", "signal"]
+    w, h = calculate_box_size("gen~ @gen crossover-4band.gendsp", "newobj")
     box.patching_rect = [0, 0, w, h]
     box.fontname = FONT_NAME
     box.fontsize = FONT_SIZE
@@ -129,55 +130,103 @@ main.add_connection(adc, 0, snd_live, 0)
 # ===========================================================================
 # p input-processing  (EQ → 3-band multiband compressor)
 # ===========================================================================
-ip_box, ip = main.add_subpatcher("input-processing", inlets=0, outlets=0, x=30, y=150)
+ip_box, ip = main.add_subpatcher("input-processing", inlets=1, outlets=0, x=30, y=150)
 
 rcv_live = ip.add_box("receive~", ["live-input"])
 
-# -- Parametric EQ: filtergraph~ → cascade~ --
-ip.add_comment("--- PARAMETRIC EQ ---")
+# -- 5-Band Parametric EQ: filtergraph~ → cascade~ --
+ip.add_comment("--- 5-BAND PARAMETRIC EQ ---")
+
 fg = ip.add_box("filtergraph~")
+fg.extra_attrs["nfilters"] = 5
+fg.extra_attrs["numdisplay"] = 1
+fg.patching_rect[2] = 360.0
+fg.patching_rect[3] = 140.0
+
 casc = ip.add_box("cascade~")
 ip.add_connection(rcv_live, 0, casc, 0)       # audio → cascade~ inlet 0
-ip.add_connection(fg, 0, casc, 1)              # coefficients → cascade~ inlet 1 (cold)
+ip.add_connection(fg, 0, casc, 1)              # coefficients → cascade~ inlet 1
 
-# -- 3-Band Multiband Compressor --
-ip.add_comment("--- 3-BAND MULTIBAND COMPRESSOR ---")
+# -- Band Type Selectors --
+ip.add_comment("--- BAND TYPE SELECTORS ---")
 
-# Low / mid+high split at 300 Hz
-svf_lo = ip.add_box("svf~", ["300", "0.5"])
-ip.add_connection(casc, 0, svf_lo, 0)
+eq_type_items = ["lowpass", ",", "highpass", ",", "bandpass", ",", "bandstop", ",",
+                 "peaknotch", ",", "lowshelf", ",", "highshelf"]
+# Default type indices: lowshelf=5, peaknotch=4, highshelf=6
+eq_defaults = [5, 4, 4, 4, 6]
 
-# Low band → compress
-comp_lo = make_gen_compressor(ip)
-ip.add_connection(svf_lo, 0, comp_lo, 0)       # LP (outlet 0)
+lb_eq = ip.add_box("loadbang")
+trig_eq = ip.add_box("trigger", ["b"] * 5)
+ip.add_connection(lb_eq, 0, trig_eq, 0)
 
-# Mid / high split at 3000 Hz
-svf_hi = ip.add_box("svf~", ["3000", "0.5"])
-ip.add_connection(svf_lo, 1, svf_hi, 0)        # HP of low crossover (outlet 1)
+for i in range(5):
+    band_num = i + 1
+    ip.add_comment(f"Band {band_num}")
 
-comp_mid = make_gen_compressor(ip)
-ip.add_connection(svf_hi, 0, comp_mid, 0)       # LP of high crossover → mid
+    menu = ip.add_box("umenu")
+    menu.extra_attrs["items"] = eq_type_items
 
-comp_hi = make_gen_compressor(ip)
-ip.add_connection(svf_hi, 1, comp_hi, 0)        # HP of high crossover → high
+    # umenu text outlet → format as type message → filtergraph~
+    type_msg = ip.add_message(f"$1 {band_num}")
+    ip.add_connection(menu, 1, type_msg, 0)
+    ip.add_connection(type_msg, 0, fg, 0)
 
-# Sum bands
+    # loadbang → trigger → default selection → umenu
+    init_msg = ip.add_message(str(eq_defaults[i]))
+    ip.add_connection(trig_eq, 4 - i, init_msg, 0)
+    ip.add_connection(init_msg, 0, menu, 0)
+
+# -- 4-Band Multiband Compressor --
+ip.add_comment("--- 4-BAND MULTIBAND COMPRESSOR ---")
+
+# 4-band crossover via gen~
+xover = make_gen_crossover(ip)
+ip.add_connection(casc, 0, xover, 0)
+
+# 4 comp-band bpatchers: Low, Lo-Mid, Hi-Mid, High
+band_names = ["Low", "Lo-Mid", "Hi-Mid", "High"]
+comp_bands = []
+for i, bname in enumerate(band_names):
+    bp = ip.add_bpatcher(
+        filename="comp-band.maxpat",
+        args=[bname],
+        numinlets=1,
+        numoutlets=1,
+    )
+    bp.outlettype = ["signal"]
+    ip.add_connection(xover, i, bp, 0)
+    comp_bands.append(bp)
+
+# Sum 4 compressed bands
 sum1 = ip.add_box("+~")
-ip.add_connection(comp_lo, 0, sum1, 0)
-ip.add_connection(comp_mid, 0, sum1, 1)
+ip.add_connection(comp_bands[0], 0, sum1, 0)
+ip.add_connection(comp_bands[1], 0, sum1, 1)
 sum2 = ip.add_box("+~")
-ip.add_connection(sum1, 0, sum2, 0)
-ip.add_connection(comp_hi, 0, sum2, 1)
+ip.add_connection(comp_bands[2], 0, sum2, 0)
+ip.add_connection(comp_bands[3], 0, sum2, 1)
+sum3 = ip.add_box("+~")
+ip.add_connection(sum1, 0, sum3, 0)
+ip.add_connection(sum2, 0, sum3, 1)
+
+# Compressor state management
+ip.add_box("autopattr", ["@autoname", "1"])
+pattr = ip.add_box("pattrstorage", ["comp-state", "@greedy", "1", "@autorestore", "1", "@savemode", "3"])
+cb = ip.add_box("closebang")
+store_msg = ip.add_message("store 1")
+ip.add_connection(cb, 0, store_msg, 0)
+ip.add_connection(store_msg, 0, pattr, 0)
+lm = ip.add_box("loadmess", ["1"])
+ip.add_connection(lm, 0, pattr, 0)
 
 # Output processed signal
 snd_proc = ip.add_box("send~", ["proc-out"])
-ip.add_connection(sum2, 0, snd_proc, 0)
+ip.add_connection(sum3, 0, snd_proc, 0)
 
 
 # ===========================================================================
 # p cue-system  (coll-based cue list + MIDI trigger)
 # ===========================================================================
-cue_box, cue = main.add_subpatcher("cue-system", inlets=0, outlets=0, x=200, y=150)
+cue_box, cue = main.add_subpatcher("cue-system", inlets=1, outlets=0, x=200, y=150)
 
 # -- MIDI Trigger --
 cue.add_comment("--- MIDI TRIGGER (note 64 = next cue) ---")
@@ -230,7 +279,7 @@ for i, sname in enumerate(send_names):
 # ===========================================================================
 # p feedback-delay
 # ===========================================================================
-dly_box, dly = main.add_subpatcher("feedback-delay", inlets=0, outlets=0, x=400, y=150)
+dly_box, dly = main.add_subpatcher("feedback-delay", inlets=1, outlets=0, x=400, y=150)
 dly.add_comment("--- FEEDBACK DELAY ---")
 
 rcv_proc_d = dly.add_box("receive~", ["proc-out"])
@@ -270,7 +319,7 @@ dly.add_connection(tapout, 0, snd_delay_ret, 0)
 # ===========================================================================
 # p distortion
 # ===========================================================================
-dist_box, dist = main.add_subpatcher("distortion", inlets=0, outlets=0, x=550, y=150)
+dist_box, dist = main.add_subpatcher("distortion", inlets=1, outlets=0, x=550, y=150)
 dist.add_comment("--- DISTORTION (overdrive~) ---")
 
 rcv_proc_dist = dist.add_box("receive~", ["proc-out"])
@@ -297,7 +346,7 @@ dist.add_connection(od, 0, snd_dist_ret, 0)
 # ===========================================================================
 # p detune  (frequency shifter)
 # ===========================================================================
-det_box, det = main.add_subpatcher("detune", inlets=0, outlets=0, x=700, y=150)
+det_box, det = main.add_subpatcher("detune", inlets=1, outlets=0, x=700, y=150)
 det.add_comment("--- DETUNE (freqshift~) ---")
 
 rcv_proc_det = det.add_box("receive~", ["proc-out"])
@@ -324,7 +373,7 @@ det.add_connection(fshift, 0, snd_det_ret, 0)
 # ===========================================================================
 # p soundfile-player  (3× stereo sfplay~ → mono sum)
 # ===========================================================================
-sfp_box, sfp = main.add_subpatcher("soundfile-player", inlets=0, outlets=0, x=30, y=250)
+sfp_box, sfp = main.add_subpatcher("soundfile-player", inlets=1, outlets=0, x=30, y=250)
 sfp.add_comment("--- 3x STEREO SOUNDFILE PLAYER ---")
 
 mono_outs = []
@@ -371,10 +420,43 @@ snd_sfplay = sfp.add_box("send~", ["sfplay-ret"])
 sfp.add_connection(sum_p2, 0, snd_sfplay, 0)
 
 
+# Track presentation objects — we'll set their rects AFTER apply_layout
+pres_objects = []  # list of (kind, index, box)
+
+# ===========================================================================
+# SUBPATCHER OPEN BUTTONS  (textbutton → message "open" → pcontrol → subpatcher)
+# ===========================================================================
+main.add_comment("--- SUBPATCHER BUTTONS ---", x=30, y=270)
+
+subpatcher_buttons = [
+    ("Input",      ip_box),
+    ("Cues",       cue_box),
+    ("Delay",      dly_box),
+    ("Distortion", dist_box),
+    ("Detune",     det_box),
+    ("Soundfiles", sfp_box),
+]
+
+for i, (label, sp_box) in enumerate(subpatcher_buttons):
+    bx = 30 + i * 100
+    tb = main.add_box("textbutton", x=bx, y=290)
+    tb.extra_attrs["text"] = label
+    tb.presentation = True
+
+    open_msg = main.add_message("open", x=bx, y=320)
+    pc = main.add_box("pcontrol", x=bx + 50, y=320)
+
+    main.add_connection(tb, 0, open_msg, 0)
+    main.add_connection(open_msg, 0, pc, 0)
+    main.add_connection(pc, 0, sp_box, 0)
+
+    pres_objects.append(("sp_btn", i, tb))
+
+
 # ===========================================================================
 # MIXER  (in main patcher for presentation mode visibility)
 # ===========================================================================
-main.add_comment("========== MIXER ==========", x=30, y=330)
+main.add_comment("========== MIXER ==========", x=30, y=370)
 
 # ---- Channel data: (bus_name, label) ----
 channels = [
@@ -384,9 +466,6 @@ channels = [
     ("detune-ret", "DETUNE"),
     ("sfplay-ret", "FILES"),
 ]
-
-# Track presentation objects — we'll set their rects AFTER apply_layout
-pres_objects = []  # list of (box, [x, y, w, h])
 
 gain_boxes = []
 for i, (bus, label) in enumerate(channels):
@@ -490,9 +569,13 @@ LABEL_H = 22        # label height
 PAD_X = 20          # left padding
 PAD_Y = 10          # top padding
 TITLE_H = 25        # title bar height
+BTN_W = 85          # subpatcher button width
+BTN_H = 22          # subpatcher button height
+BTN_SPACING = 95    # subpatcher button spacing
 LABEL_Y = PAD_Y + TITLE_H
 FADER_Y = LABEL_Y + LABEL_H + 5
-CUE_Y = FADER_Y + FADER_H + 15
+BTN_Y = FADER_Y + FADER_H + 15
+CUE_Y = BTN_Y + BTN_H + 10
 
 for kind, idx, box in pres_objects:
     strip_x = PAD_X + idx * STRIP_W
@@ -503,6 +586,8 @@ for kind, idx, box in pres_objects:
         box.presentation_rect = [strip_x + FADER_W + 4, FADER_Y, METER_W, METER_H]
     elif kind == "label":
         box.presentation_rect = [strip_x, LABEL_Y, STRIP_W - 10, LABEL_H]
+    elif kind == "sp_btn":
+        box.presentation_rect = [PAD_X + idx * BTN_SPACING, BTN_Y, BTN_W, BTN_H]
     elif kind == "cue_lbl":
         box.presentation_rect = [PAD_X, CUE_Y, 45, 24]
     elif kind == "cue_num":
@@ -516,8 +601,8 @@ for kind, idx, box in pres_objects:
 
 
 # ===========================================================================
-# Write
+# Write (incremental: preserves user-added objects across regeneration)
 # ===========================================================================
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-write_patch(main, OUTPUT)
+merge_and_write(main, OUTPUT)
 print(f"SUCCESS: {OUTPUT}")
