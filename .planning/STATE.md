@@ -105,8 +105,8 @@ None.
 
 ### Quick Tasks Completed
 
-| # | Description | Date | Commit | Directory |
-|---|-------------|------|--------|-----------|
+| # | Description | Date | Commit | Status | Directory |
+|---|-------------|------|--------|--------|-----------|
 | 1 | Make system always use MAX 9 and skip MAX 8 version question in new project flow | 2026-03-11 | fc019de | [1-make-system-always-use-max-9-and-skip-ma](./quick/1-make-system-always-use-max-9-and-skip-ma/) |
 | 2 | Review effectiveness of the 10-agent system with per-agent assessments and prioritized recommendations | 2026-03-12 | ddf703b | [2-review-the-effectiveness-of-the-agents](./quick/2-review-the-effectiveness-of-the-agents/) |
 | 3 | Fix API signature documentation mismatches across 5 agent SKILL.md and reference files | 2026-03-12 | 74e6c77 | [3-fix-api-signature-documentation-mismatch](./quick/3-fix-api-signature-documentation-mismatch/) |
@@ -117,7 +117,7 @@ None.
 | 8 | Update README with v1.1 milestone info and GSD workflow section | 2026-03-14 | 360fd45 | [8-update-the-readme-with-info-from-last-mi](./quick/8-update-the-readme-with-info-from-last-mi/) |
 | 9 | Return default background color to standard MAX 9 dark grey | 2026-03-14 | 624fa83 | [9-return-the-default-background-color-to-t](./quick/9-return-the-default-background-color-to-t/) |
 | 10 | Remove omx object references and replace with gen~ compressors | 2026-03-14 | 337aa11 | [10-avoid-using-the-omx-objects-instead-you-](./quick/10-avoid-using-the-omx-objects-instead-you-/) |
-| 11 | Implement incremental patching with manifest-tracked merge_and_write | 2026-03-14 | 7caba99 | [11-implement-incremental-patching-in-the-pa](./quick/11-implement-incremental-patching-in-the-pa/) |
+| 11 | Implement incremental patching with manifest-tracked merge_and_write | 2026-03-14 | 7caba99 | Verified | [11-implement-incremental-patching-in-the-pa](./quick/11-implement-incremental-patching-in-the-pa/) |
 
 ## Session Continuity
 
