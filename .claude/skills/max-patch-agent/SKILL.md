@@ -77,7 +77,7 @@ Before any generation:
 ### Aesthetic Capabilities
 
 **Auto-applied by generate_patch() -- no manual calls needed:**
-- Canvas background color (off-white with blue tint) applied automatically
+- Canvas background color (standard MAX 9 dark grey) applied automatically
 - `dac~` and `loadbang` objects highlighted with subtle background colors
 - Existing user-set bgcolor is never overwritten
 
