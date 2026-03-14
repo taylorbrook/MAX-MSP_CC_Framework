@@ -119,7 +119,7 @@ AESTHETIC_PALETTE = {
     "panel_gradient_end": [0.88, 0.89, 0.92, 1.0],    # slightly darker cool gray
 
     # Canvas
-    "canvas_bg": [0.97, 0.97, 0.98, 1.0],             # off-white with blue tint
+    "canvas_bg": [0.333, 0.333, 0.333, 1.0],           # standard MAX 9 dark grey
 
     # Step markers
     "step_marker_bg": [0.85, 0.65, 0.13, 1.0],        # amber/gold
