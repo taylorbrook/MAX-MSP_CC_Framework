@@ -99,9 +99,15 @@ Before any generation:
 - `auto_size_panel(boxes, padding=18)` -- compute panel rect to enclose a group of boxes
 - `is_complex_patch(patcher)` -- heuristic: True if 10+ boxes or has subpatchers
 
-**Layout options:**
+**Layout options (`from src.maxpat import LayoutOptions`):**
 - `generate_patch(patcher, layout_options=LayoutOptions(...))` -- customize layout
-- Key fields: `v_spacing` (vertical gap), `h_gutter` (horizontal gap), `grid_snap` (15px grid), `inlet_align` (cable straightening), `comment_gap` (annotation offset)
+- `v_spacing` (default 20.0) -- vertical gap between rows in pixels
+- `h_gutter` (default 15.0) -- horizontal gap between sibling objects
+- `patcher_padding` (default 40.0) -- padding around content for auto-sized patcher rect
+- `grid_size` (default 15.0) -- grid cell size in pixels (when grid_snap enabled)
+- `grid_snap` (default True) -- snap box positions to grid_size grid
+- `inlet_align` (default True) -- adjust child x-position to straighten cables to parent inlets
+- `comment_gap` (default 10.0) -- horizontal offset for associated comment placement
 
 ## Output Protocol
 
