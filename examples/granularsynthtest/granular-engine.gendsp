@@ -1,0 +1,162 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 0,
+      "revision": 0,
+      "architecture": "x64",
+      "modernui": 1
+    },
+    "classnamespace": "box",
+    "rect": [
+      100.0,
+      100.0,
+      700.0,
+      650.0
+    ],
+    "bglocked": 0,
+    "openinpresentation": 0,
+    "default_fontsize": 12.0,
+    "default_fontface": 0,
+    "default_fontname": "Arial",
+    "gridonopen": 1,
+    "gridsize": [
+      15.0,
+      15.0
+    ],
+    "gridsnaponopen": 1,
+    "objectsnaponopen": 1,
+    "statusbarvisible": 2,
+    "toolbarvisible": 1,
+    "lefttoolbarpinned": 0,
+    "toptoolbarpinned": 0,
+    "righttoolbarpinned": 0,
+    "bottomtoolbarpinned": 0,
+    "toolbars_unpinned_last_save": 0,
+    "tallnewobj": 0,
+    "boxanimatetime": 200,
+    "enablehscroll": 1,
+    "enablevscroll": 1,
+    "devicewidth": 0.0,
+    "description": "",
+    "digest": "",
+    "tags": "",
+    "style": "",
+    "subpatcher_template": "",
+    "assistshowspatchername": 0,
+    "boxes": [
+      {
+        "box": {
+          "maxclass": "codebox",
+          "id": "obj-1",
+          "code": "// Granular Synthesis Engine\n// 8 voices, phasor-driven scheduling, stereo output\n// grain_size = envelope duration only\n// density = trigger rate only\n// pitch = buffer read speed only\n\nParam grain_size(100, min=10, max=500);\nParam density(10, min=1, max=100);\nParam position(0.5, min=0, max=1);\nParam pitch(1, min=0.25, max=4);\nParam pos_jitter(0.1, min=0, max=1);\nParam pitch_jitter(0, min=0, max=1);\nParam size_jitter(0, min=0, max=1);\nParam pan_spread(0.5, min=0, max=1);\nParam env_shape(0, min=0, max=1);\n\nBuffer buf(\"granular_buf\");\n\nData voice_phase(8);\nData voice_counter(8);\nData voice_rand_pos(8);\nData voice_rand_pitch(8);\nData voice_rand_size(8);\nData voice_rand_pan(8);\nData voice_init(1);\n\n// Initialize staggered phases (once)\nif (peek(voice_init, 0, 0) < 0.5) {\n    for (i = 0; i < 8; i += 1) {\n        poke(voice_phase, i / 8, i, 0);\n    }\n    poke(voice_init, 1, 0, 0);\n}\n\n// Scheduling frequency: density grains/sec across 8 voices\nsched_freq = density / 8;\nphase_inc = sched_freq / samplerate;\nbuf_frames = dim(buf);\n\nsum_l = 0;\nsum_r = 0;\n\nfor (v = 0; v < 8; v += 1) {\n    // Scheduling phasor (determines when this voice triggers)\n    cur_phase = peek(voice_phase, v, 0);\n    new_phase = cur_phase + phase_inc;\n\n    onset = 0;\n    if (new_phase >= 1) {\n        new_phase = new_phase - floor(new_phase);\n        onset = 1;\n    }\n    poke(voice_phase, new_phase, v, 0);\n\n    // Per-voice sample counter (reset on onset, increment otherwise)\n    counter = peek(voice_counter, v, 0);\n    if (onset) {\n        counter = 0;\n    } else {\n        counter = counter + 1;\n    }\n    poke(voice_counter, counter, v, 0);\n\n    if (onset) {\n        poke(voice_rand_pos, noise(), v, 0);\n        poke(voice_rand_pitch, noise(), v, 0);\n        poke(voice_rand_size, noise(), v, 0);\n        poke(voice_rand_pan, noise(), v, 0);\n    }\n\n    rpos = peek(voice_rand_pos, v, 0);\n    rpitch = peek(voice_rand_pitch, v, 0);\n    rsize = peek(voice_rand_size, v, 0);\n    rpan = peek(voice_rand_pan, v, 0);\n\n    v_pitch = pitch * (1 + rpitch * pitch_jitter);\n    v_size = grain_size * (1 + rsize * size_jitter);\n    v_size_samps = max(v_size * samplerate / 1000, 64);\n\n    // Clamp start position so grain never reads past buffer end\n    grain_read_length = v_size_samps * v_pitch;\n    max_pos = clamp(buf_frames - grain_read_length, 0, buf_frames) / max(buf_frames, 1);\n    v_pos = clamp(position + rpos * pos_jitter, 0, max_pos);\n\n    // Grain phase: 0->1 over grain_size_ms (independent of density)\n    grain_phase = counter / v_size_samps;\n\n    // Grain is active only while phase < 1\n    active = grain_phase < 1;\n\n    // Envelope (gated by active)\n    env_hann = 0.5 - 0.5 * cos(grain_phase * TWOPI);\n    env_tri = triangle(grain_phase, 0.5);\n    env = mix(env_hann, env_tri, env_shape) * active;\n\n    // Buffer read: pitch controls speed (samples per output sample)\n    read_start = v_pos * buf_frames;\n    read_pos = read_start + counter * v_pitch;\n    read_pos = clamp(read_pos, 0, max(buf_frames - 1, 0));\n\n    samp = peek(buf, read_pos, 0);\n    voice_audio = samp * env;\n\n    pan_val = clamp(0.5 + rpan * pan_spread * 0.5, 0, 1);\n    pan_l = sqrt(1 - pan_val);\n    pan_r = sqrt(pan_val);\n\n    sum_l += voice_audio * pan_l;\n    sum_r += voice_audio * pan_r;\n}\n\ngain = 1.0 / sqrt(8);\nout1 = sum_l * gain;\nout2 = sum_r * gain;",
+          "numinlets": 0,
+          "numoutlets": 2,
+          "outlettype": [
+            "",
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            60.0,
+            500.0,
+            450.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "in 1",
+          "id": "obj-2",
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            20.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 1",
+          "id": "obj-3",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            50.0,
+            550.0,
+            35.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 2",
+          "id": "obj-4",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            150.0,
+            550.0,
+            35.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": [
+            "obj-1",
+            0
+          ],
+          "destination": [
+            "obj-3",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-1",
+            1
+          ],
+          "destination": [
+            "obj-4",
+            0
+          ]
+        }
+      }
+    ],
+    "dependency_cache": [],
+    "autosave": 0,
+    "bgcolor": [
+      0.9,
+      0.9,
+      0.9,
+      1.0
+    ]
+  }
+}
