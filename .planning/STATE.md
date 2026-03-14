@@ -113,10 +113,11 @@ None.
 | 6 | Document LayoutOptions in SKILL.md files and re-export aesthetics helpers | 2026-03-14 | 059ccb4 | [6-document-layout-options-in-skill-md-file](./quick/6-document-layout-options-in-skill-md-file/) |
 | 7 | Add generated patches to examples/ directory with PATCHES.md catalog | 2026-03-14 | db041bc | [7-add-generated-patches-to-example-project](./quick/7-add-generated-patches-to-example-project/) |
 | 8 | Update README with v1.1 milestone info and GSD workflow section | 2026-03-14 | 360fd45 | [8-update-the-readme-with-info-from-last-mi](./quick/8-update-the-readme-with-info-from-last-mi/) |
+| 9 | Return default background color to standard MAX 9 dark grey | 2026-03-14 | 624fa83 | [9-return-the-default-background-color-to-t](./quick/9-return-the-default-background-color-to-t/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-14 -- Completed Quick Task 8 (Update README with v1.1 info and GSD section)
-Last session: 2026-03-14T05:15:00Z
-Stopped at: Completed quick-8-PLAN.md
+Last activity: 2026-03-14 -- Completed Quick Task 9 (Return default background color to MAX 9 dark grey)
+Last session: 2026-03-14T15:07:00Z
+Stopped at: Completed quick-9-PLAN.md
 Resume file: None
