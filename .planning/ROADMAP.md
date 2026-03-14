@@ -114,8 +114,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 12-01-PLAN.md -- Auto-styling in generate_patch(), LayoutOptions parameter and public API export
-- [ ] 12-02-PLAN.md -- Aesthetic capabilities documentation in all 6 agent SKILL.md files
+- [x] 12-01-PLAN.md -- Auto-styling in generate_patch(), LayoutOptions parameter and public API export
+- [x] 12-02-PLAN.md -- Aesthetic capabilities documentation in all 6 agent SKILL.md files
 
 ## Progress
 

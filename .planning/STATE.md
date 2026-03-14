@@ -57,6 +57,7 @@ Progress: [██████████] 100%
 | Phase 11 P01 | 2min | 2 tasks | 2 files |
 | Phase 11 P02 | 2min | 1 tasks | 3 files |
 | Phase 11 P03 | 5min | 2 tasks | 3 files |
+| Phase 12 P01 | 3min | 2 tasks | 4 files |
 | Phase 12 P02 | 3min | 2 tasks | 1 files |
 
 ## Accumulated Context
@@ -86,6 +87,9 @@ Full decision log in `.planning/milestones/v1.0-ROADMAP.md`.
 - [Phase 11]: Inlet alignment averages target positions when child has multiple parents for balanced placement
 - [Phase 11]: Grid snap applied as final pass after all positioning but before midpoint generation
 - [Phase 11]: Comment association (target_id) is layout-time only, never serialized to .maxpat JSON
+- [Phase 12]: Auto-styling runs before layout in pipeline: _apply_auto_styling() -> apply_layout() -> to_dict() -> validate
+- [Phase 12]: Only dac~/ezdac~/loadbang auto-highlighted; emphasis_processor left for manual agent use
+- [Phase 12]: User-set bgcolor preserved via 'bgcolor not in box.extra_attrs' guard
 - [Phase 12]: SKILL.md aesthetic sections bundled with 12-01 implementation; 12-02 added test assertions only
 - [Phase 12]: DSP agent curated object lists verified against audit corrections -- no changes needed, DB layer handles transparently
 
@@ -109,7 +113,7 @@ None.
 
 ## Session Continuity
 
-Last activity: 2026-03-13 -- Completed 12-02 (Agent SKILL.md Aesthetic Capabilities)
-Last session: 2026-03-14T03:11:11.441Z
-Stopped at: Completed 12-02-PLAN.md
+Last activity: 2026-03-14 -- Completed 12-01 (Pipeline Integration)
+Last session: 2026-03-14T03:10:19Z
+Stopped at: Completed 12-01-PLAN.md
 Resume file: None
