@@ -14,6 +14,8 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 - **RNBO export support** — generate export-ready patches for VST3/AU plugins, Web Audio, and C++ embedded targets
 - **Node for Max & js scripting** — generate JavaScript for both V8 `js` objects and Node.js `node.script`
 - **C++ external development** — scaffold, generate, and build Min-DevKit externals with help patches
+- **Help patch audit pipeline** — offline tool that parses 973 .maxhelp files to extract ground truth object metadata and automatically correct database entries
+- **Professional patch aesthetics** — styled section comments, background panels, patcher colors, grid-snapped layout, and inlet-aligned cables for polished output
 - **Persistent memory system** — learns patterns across sessions (global and per-project scopes)
 - **Project lifecycle management** — structured workflow from ideation through build and verification
 
@@ -91,7 +93,7 @@ Loads your existing patch, applies changes, and re-validates — preserving posi
 
 ## Example Projects
 
-The `patches/` directory includes complete example projects you can open in MAX 9:
+The `examples/` directory includes complete example projects you can open in MAX 9 (see [PATCHES.md](PATCHES.md) for the full catalog):
 
 | Project | Description | Domains |
 |---------|-------------|---------|
@@ -99,6 +101,7 @@ The `patches/` directory includes complete example projects you can open in MAX 
 | **FDNVerb** | Feedback delay network reverb with 8 delay lines, Hadamard matrix, decay/diffusion/damping/freeze controls | Gen~ |
 | **granularsynthtest** | Granular synthesizer with Gen~ DSP engine and MC multichannel output for flexible speaker arrays | Gen~, MC |
 | **performancepatchtest** | Live performance cue system with multiband compression, feedback delay, distortion, and soundfile playback | MSP, routing |
+| **scala-synth** | 16-voice polyphonic additive synthesizer with Scala (.scl) file support for microtonal playback | Gen~, poly~ |
 
 Each project contains a `context.md` with the full design conversation and a `generated/` directory with the output files.
 
@@ -110,7 +113,7 @@ The framework has three core layers:
 
 **Agent System** — A router analyzes your task description and dispatches to one or more specialist agents (DSP, patch, RNBO, js, UI, externals). For multi-domain tasks (e.g., "synth with knobs"), a lead agent generates the core patch and secondary agents contribute their domain.
 
-**Validation Pipeline** — Every generated patch passes through structure validation, connection bounds checking, and domain-specific critics (DSP signal flow, RNBO compatibility, C++ code review). Blockers trigger automatic revision before output is written.
+**Validation Pipeline** — Every generated patch passes through structure validation, connection bounds checking, and domain-specific critics (DSP signal flow, RNBO compatibility, C++ code review). Blockers trigger automatic revision before output is written. Aesthetic styling (panels, comments, patcher colors) is applied automatically during generation.
 
 For full technical documentation — agent internals, validation details, object database schema, memory system, and architecture — see [TECHNICAL.md](TECHNICAL.md).
 
@@ -123,7 +126,8 @@ MAX-MSP_CC_Framework/
 │   ├── skills/             # Agent definitions (10 specialist agents)
 │   └── commands/           # Slash command definitions
 ├── src/maxpat/             # Python generation and validation engine
-├── tests/                  # Test suite (626 tests)
+├── tests/                  # Test suite (888 tests)
+├── examples/               # Example patches with catalog (PATCHES.md)
 ├── patches/                # Your projects live here
 │   ├── .active-project.json
 │   └── {project-name}/
@@ -133,6 +137,30 @@ MAX-MSP_CC_Framework/
 │       └── test-results/   # Manual test records
 └── CLAUDE.md               # Framework rules (enforced automatically)
 ```
+
+## Development with GSD
+
+This project uses the [GSD planning framework](https://github.com/taylorbrook/get-shit-done) for structured development with Claude Code. GSD provides milestone planning, phased execution, and verification workflows.
+
+### Available GSD commands
+
+| Command | Description |
+|---------|-------------|
+| `/gsd:discuss-phase` | Discuss and scope a phase before planning |
+| `/gsd:plan-phase` | Create executable plans with dependency analysis |
+| `/gsd:execute-phase` | Run plans with automated verification |
+| `/gsd:verify-phase` | Check phase completion against requirements |
+
+### Project planning state
+
+Planning artifacts live in `.planning/`:
+
+- `ROADMAP.md` -- milestone and phase definitions
+- `STATE.md` -- current position, decisions, blockers
+- `PROJECT.md` -- project identity and technical context
+- `phases/` -- per-phase plans, summaries, and verification results
+
+The project shipped v1.0 (MVP) on 2026-03-10 with 21 plans across 7 phases. v1.1 (Patch Quality and Aesthetics) added 13 plans across 5 phases, improving database accuracy, visual polish, and layout quality.
 
 ## License
 
