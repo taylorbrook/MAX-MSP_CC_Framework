@@ -60,6 +60,7 @@ from src.maxpat.externals import (
     generate_help_patch,
 )
 from src.maxpat.ext_validation import validate_mxo, BuildResult
+from src.maxpat.incremental import Manifest, merge_and_write
 
 
 _AUTO_HIGHLIGHT = {
@@ -187,4 +188,7 @@ __all__ = [
     "set_object_bgcolor",
     "auto_size_panel",
     "is_complex_patch",
+    # Incremental patching
+    "Manifest",
+    "merge_and_write",
 ]

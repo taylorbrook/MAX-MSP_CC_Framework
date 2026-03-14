@@ -1009,6 +1009,118 @@ class Patcher:
         self.boxes.append(box)
         return (box, code)
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any], db: "ObjectDatabase | None" = None) -> "Patcher":
+        """Reconstruct a Patcher from a raw .maxpat JSON dict.
+
+        Takes the full {"patcher": {...}} structure and rebuilds a Patcher
+        with boxes and lines populated from the JSON. Boxes are created via
+        Box.__new__(Box) to bypass DB validation (we are loading, not creating).
+
+        Args:
+            data: A raw .maxpat dict with top-level "patcher" key.
+            db: Optional ObjectDatabase instance.
+
+        Returns:
+            Reconstructed Patcher instance.
+        """
+        patcher_data = data.get("patcher", data)
+
+        p = cls.__new__(cls)
+        p.db = db if db is not None else ObjectDatabase()
+        p.boxes = []
+        p.lines = []
+        p._is_subpatcher = False
+
+        # Rebuild props from all non-boxes/lines keys
+        p.props = {}
+        for key, val in patcher_data.items():
+            if key not in ("boxes", "lines"):
+                p.props[key] = copy.deepcopy(val)
+
+        # Rebuild boxes
+        max_id_num = 0
+        for box_entry in patcher_data.get("boxes", []):
+            box_data = box_entry.get("box", {})
+
+            box = Box.__new__(Box)
+            box.id = box_data.get("id", "obj-0")
+            box.maxclass = box_data.get("maxclass", "newobj")
+            box.text = box_data.get("text", "")
+            box.numinlets = box_data.get("numinlets", 1)
+            box.numoutlets = box_data.get("numoutlets", 0)
+            box.outlettype = box_data.get("outlettype", [])
+            box.patching_rect = box_data.get("patching_rect", [0.0, 0.0, 60.0, 22.0])
+            box.fontname = box_data.get("fontname", FONT_NAME)
+            box.fontsize = box_data.get("fontsize", FONT_SIZE)
+
+            # Derive name from text field or maxclass
+            if box.text and box.maxclass == "newobj":
+                box.name = box.text.split()[0] if box.text else ""
+                parts = box.text.split()
+                box.args = parts[1:] if len(parts) > 1 else []
+            elif box.maxclass in ("comment", "message"):
+                box.name = box.maxclass
+                box.args = []
+            else:
+                box.name = box.maxclass
+                box.args = []
+
+            # Presentation
+            box.presentation = bool(box_data.get("presentation", 0))
+            pres_rect = box_data.get("presentation_rect")
+            box.presentation_rect = list(pres_rect) if pres_rect else None
+
+            # Internal fields
+            box.target_id = None
+            box._inner_patcher = None
+            box._saved_object_attributes = box_data.get("saved_object_attributes")
+            box._bpatcher_attrs = None
+
+            # Reconstruct inner patcher if present
+            if "patcher" in box_data:
+                box._inner_patcher = Patcher.from_dict({"patcher": box_data["patcher"]}, db=p.db)
+
+            # Extra attrs: everything not already handled
+            _handled_keys = {
+                "id", "maxclass", "text", "numinlets", "numoutlets",
+                "outlettype", "patching_rect", "fontname", "fontsize",
+                "presentation", "presentation_rect", "patcher",
+                "saved_object_attributes", "parameter_enable",
+            }
+            box.extra_attrs = {
+                k: v for k, v in box_data.items() if k not in _handled_keys
+            }
+
+            p.boxes.append(box)
+
+            # Track max ID number
+            try:
+                id_num = int(box.id.split("-")[-1])
+                if id_num > max_id_num:
+                    max_id_num = id_num
+            except (ValueError, IndexError):
+                pass
+
+        # Rebuild lines
+        for line_entry in patcher_data.get("lines", []):
+            line_data = line_entry.get("patchline", {})
+            src = line_data.get("source", ["", 0])
+            dst = line_data.get("destination", ["", 0])
+            pl = Patchline(
+                source_id=src[0],
+                source_outlet=src[1],
+                dest_id=dst[0],
+                dest_inlet=dst[1],
+                order=line_data.get("order", 0),
+                hidden=bool(line_data.get("hidden", 0)),
+                midpoints=line_data.get("midpoints"),
+            )
+            p.lines.append(pl)
+
+        p._next_id = max_id_num + 1
+        return p
+
     def to_dict(self) -> dict[str, Any]:
         """Serialize to complete .maxpat JSON structure.
 
