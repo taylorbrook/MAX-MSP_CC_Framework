@@ -248,19 +248,19 @@ class TestGendsp:
 # ---------------------------------------------------------------------------
 
 class TestMaxclassFix:
-    """Tests for gen~ maxclass resolution fix."""
+    """Tests for gen~ maxclass resolution -- gen~ uses newobj like other non-UI objects."""
 
     def test_resolve_maxclass_gen(self):
-        """resolve_maxclass('gen~') returns 'gen~' (not 'newobj')."""
+        """resolve_maxclass('gen~') returns 'newobj' (gen~ is not a UI maxclass)."""
         from src.maxpat.maxclass_map import resolve_maxclass
 
-        assert resolve_maxclass("gen~") == "gen~"
+        assert resolve_maxclass("gen~") == "newobj"
 
-    def test_gen_in_ui_maxclasses(self):
-        """gen~ is in the UI_MAXCLASSES set."""
+    def test_gen_not_in_ui_maxclasses(self):
+        """gen~ is NOT in the UI_MAXCLASSES set (it uses newobj with text)."""
         from src.maxpat.maxclass_map import UI_MAXCLASSES
 
-        assert "gen~" in UI_MAXCLASSES
+        assert "gen~" not in UI_MAXCLASSES
 
 
 # ---------------------------------------------------------------------------
@@ -271,7 +271,7 @@ class TestGenBox:
     """Tests for gen~ codebox embedding in Patcher (CODE-02)."""
 
     def test_add_gen_creates_box(self):
-        """add_gen returns (Box, Patcher) tuple, outer box maxclass is 'gen~'."""
+        """add_gen returns (Box, Patcher) tuple, outer box maxclass is 'newobj'."""
         from src.maxpat.patcher import Patcher, Box
 
         p = Patcher()
@@ -280,7 +280,8 @@ class TestGenBox:
 
         assert isinstance(box, Box)
         assert isinstance(inner, Patcher)
-        assert box.maxclass == "gen~"
+        assert box.maxclass == "newobj"
+        assert box.text == "gen~"
 
     def test_add_gen_outer_box_io(self):
         """Outer gen~ box has correct numinlets, numoutlets, outlettype."""
@@ -361,7 +362,8 @@ class TestGenBox:
         box, inner = p.add_gen(code, num_inputs=1, num_outputs=1)
 
         d = box.to_dict()
-        assert d["box"]["maxclass"] == "gen~"
+        assert d["box"]["maxclass"] == "newobj"
+        assert d["box"]["text"] == "gen~"
         assert "patcher" in d["box"]
         assert "boxes" in d["box"]["patcher"]
         assert "lines" in d["box"]["patcher"]
@@ -402,10 +404,10 @@ class TestGenBox:
         patch_dict, results = generate_patch(p)
 
         assert "patcher" in patch_dict
-        # Find the gen~ box in serialized output
+        # Find the gen~ box in serialized output (uses newobj maxclass)
         gen_boxes = [
             b for b in patch_dict["patcher"]["boxes"]
-            if b["box"]["maxclass"] == "gen~"
+            if b["box"].get("text", "") == "gen~"
         ]
         assert len(gen_boxes) == 1
         assert "patcher" in gen_boxes[0]["box"]

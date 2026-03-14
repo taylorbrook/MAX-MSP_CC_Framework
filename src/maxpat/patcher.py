@@ -878,14 +878,14 @@ class Patcher:
         for i, out_box in enumerate(out_boxes):
             inner.add_connection(codebox, i, out_box, 0)
 
-        # Create the parent gen~ box
-        w, h = calculate_box_size("gen~", "gen~")
+        # Create the parent gen~ box (uses maxclass="newobj" like all non-UI objects)
+        w, h = calculate_box_size("gen~", "newobj")
 
         parent_box = Box.__new__(Box)
         parent_box.name = "gen~"
         parent_box.args = []
         parent_box.id = box_id
-        parent_box.maxclass = "gen~"
+        parent_box.maxclass = "newobj"
         parent_box.text = "gen~"
         parent_box.numinlets = num_inputs
         parent_box.numoutlets = num_outputs

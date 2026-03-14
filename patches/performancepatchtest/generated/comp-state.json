@@ -1,0 +1,53 @@
+{
+    "pattrstorage": {
+        "name": "comp-state",
+        "slots": {
+            "1": {
+                "id": 1,
+                "data": {
+                    "filtergraph~": [ 1, 0, 5, 1, 0, 0, 40.0, 1.0, 2.5 ],
+                    "comp-band::atk": [ 13 ],
+                    "comp-band::gain": [ 64 ],
+                    "comp-band::number": [ 103.54330708661418 ],
+                    "comp-band::number[1]": [ 10.325984251968505 ],
+                    "comp-band::number[2]": [ 0.09448818897637778 ],
+                    "comp-band::number[3]": [ 1.7480314960629921 ],
+                    "comp-band::number[4]": [ -1.4173228346456668 ],
+                    "comp-band::ratio": [ 5 ],
+                    "comp-band::rel": [ 12 ],
+                    "comp-band::thresh": [ 124 ],
+                    "comp-band[1]::atk": [ 13 ],
+                    "comp-band[1]::gain": [ 64 ],
+                    "comp-band[1]::number": [ 103.54330708661418 ],
+                    "comp-band[1]::number[1]": [ 10.325984251968505 ],
+                    "comp-band[1]::number[2]": [ 0.09448818897637778 ],
+                    "comp-band[1]::number[3]": [ 1.1496062992125984 ],
+                    "comp-band[1]::number[4]": [ -4.251968503937007 ],
+                    "comp-band[1]::ratio": [ 1 ],
+                    "comp-band[1]::rel": [ 12 ],
+                    "comp-band[1]::thresh": [ 118 ],
+                    "comp-band[2]::atk": [ 13 ],
+                    "comp-band[2]::gain": [ 64 ],
+                    "comp-band[2]::number": [ 103.54330708661418 ],
+                    "comp-band[2]::number[1]": [ 10.325984251968505 ],
+                    "comp-band[2]::number[2]": [ 0.09448818897637778 ],
+                    "comp-band[2]::number[3]": [ 2.9448818897637796 ],
+                    "comp-band[2]::number[4]": [ -3.307086614173229 ],
+                    "comp-band[2]::ratio": [ 13 ],
+                    "comp-band[2]::rel": [ 12 ],
+                    "comp-band[2]::thresh": [ 120 ],
+                    "comp-band[3]::atk": [ 13 ],
+                    "comp-band[3]::gain": [ 64 ],
+                    "comp-band[3]::number": [ 103.54330708661418 ],
+                    "comp-band[3]::number[1]": [ 10.325984251968505 ],
+                    "comp-band[3]::number[2]": [ 0.09448818897637778 ],
+                    "comp-band[3]::number[3]": [ 2.047244094488189 ],
+                    "comp-band[3]::number[4]": [ -10.393700787401576 ],
+                    "comp-band[3]::ratio": [ 7 ],
+                    "comp-band[3]::rel": [ 12 ],
+                    "comp-band[3]::thresh": [ 105 ]
+                }
+            }
+        }
+    }
+}

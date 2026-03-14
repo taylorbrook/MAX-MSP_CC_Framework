@@ -27,21 +27,20 @@ UI_MAXCLASSES: frozenset[str] = frozenset({
     # Specialized UI
     "pictctrl", "pictslider", "incdec",
     "swatch", "colorpicker", "chooser", "listbox",
-    "attrui", "preset", "matrixctrl", "nodes",
+    "attrui", "preset", "matrixctrl", "nodes", "function",
     # Special display
     "jsui", "fpic", "lcd", "hint",
     "dropfile", "ubutton", "playbar",
     # Patcher structure
     "inlet", "outlet", "patcher", "bpatcher",
-    # MSP UI
+    # MSP UI (only objects that use their own name as maxclass in .maxpat)
     "meter~", "levelmeter~", "spectroscope~", "scope~",
     "number~", "gain~", "ezdac~", "ezadc~",
-    # Gen~ (uses own maxclass, not "newobj")
-    "gen~",
     # Max for Live UI
     "live.dial", "live.slider", "live.numbox",
     "live.toggle", "live.button", "live.text",
     "live.menu", "live.tab", "live.meter~", "live.gain~",
+    "live.scope~",
 })
 
 
