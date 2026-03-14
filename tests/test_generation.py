@@ -591,6 +591,132 @@ class TestRegression:
 
 
 # ---------------------------------------------------------------------------
+# Auto-Styling Tests
+# ---------------------------------------------------------------------------
+
+class TestAutoStyling:
+    """Test auto-styling applied by generate_patch()."""
+
+    def test_generate_patch_applies_canvas_bg(self):
+        """generate_patch() auto-applies canvas background color."""
+        from src.maxpat import Patcher, generate_patch
+        from src.maxpat.defaults import AESTHETIC_PALETTE
+
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        gain = p.add_box("*~", ["0.5"])
+        dac = p.add_box("ezdac~")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, dac, 0)
+        p.add_connection(gain, 0, dac, 1)
+
+        d, _ = generate_patch(p)
+
+        assert d["patcher"]["editing_bgcolor"] == AESTHETIC_PALETTE["canvas_bg"]
+        assert "locked_bgcolor" in d["patcher"]
+
+    def test_generate_patch_highlights_dac(self):
+        """generate_patch() auto-highlights ezdac~ with emphasis_dac palette color."""
+        from src.maxpat import Patcher, generate_patch
+        from src.maxpat.defaults import AESTHETIC_PALETTE
+
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        gain = p.add_box("*~", ["0.5"])
+        dac = p.add_box("ezdac~")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, dac, 0)
+        p.add_connection(gain, 0, dac, 1)
+
+        d, _ = generate_patch(p)
+
+        # Find the ezdac~ box
+        dac_box = None
+        for b in d["patcher"]["boxes"]:
+            if b["box"]["maxclass"] == "ezdac~":
+                dac_box = b["box"]
+                break
+
+        assert dac_box is not None, "ezdac~ box not found"
+        assert "bgcolor" in dac_box, "ezdac~ should have bgcolor set"
+        assert dac_box["bgcolor"] == AESTHETIC_PALETTE["emphasis_dac"]
+
+    def test_generate_patch_highlights_loadbang(self):
+        """generate_patch() auto-highlights loadbang with emphasis_loadbang palette color."""
+        from src.maxpat import Patcher, generate_patch
+        from src.maxpat.defaults import AESTHETIC_PALETTE
+
+        p = Patcher()
+        lb = p.add_box("loadbang")
+        toggle = p.add_box("toggle")
+        p.add_connection(lb, 0, toggle, 0)
+
+        d, _ = generate_patch(p)
+
+        # Find the loadbang box -- it's a newobj with text "loadbang"
+        lb_box = None
+        for b in d["patcher"]["boxes"]:
+            box = b["box"]
+            if box.get("text", "").startswith("loadbang"):
+                lb_box = box
+                break
+
+        assert lb_box is not None, "loadbang box not found"
+        assert "bgcolor" in lb_box, "loadbang should have bgcolor set"
+        assert lb_box["bgcolor"] == AESTHETIC_PALETTE["emphasis_loadbang"]
+
+    def test_generate_patch_no_overwrite_existing_bgcolor(self):
+        """generate_patch() does NOT overwrite user-set bgcolor on boxes."""
+        from src.maxpat import Patcher, generate_patch
+
+        p = Patcher()
+        dac = p.add_box("ezdac~")
+        # Manually set a custom bgcolor before generation
+        dac.extra_attrs["bgcolor"] = [1.0, 0.0, 0.0, 1.0]
+
+        d, _ = generate_patch(p)
+
+        # Find the ezdac~ box
+        dac_box = None
+        for b in d["patcher"]["boxes"]:
+            if b["box"]["maxclass"] == "ezdac~":
+                dac_box = b["box"]
+                break
+
+        assert dac_box is not None
+        # Should still have the user-set red color, not the palette color
+        assert dac_box["bgcolor"] == [1.0, 0.0, 0.0, 1.0]
+
+    def test_generate_patch_with_layout_options(self):
+        """generate_patch() accepts layout_options parameter."""
+        from src.maxpat import Patcher, generate_patch
+        from src.maxpat.defaults import LayoutOptions
+
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        gain = p.add_box("*~", ["0.5"])
+        dac = p.add_box("ezdac~")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, dac, 0)
+        p.add_connection(gain, 0, dac, 1)
+
+        # Should work without error
+        d, results = generate_patch(p, layout_options=LayoutOptions(v_spacing=50))
+
+        assert isinstance(d, dict)
+        assert "patcher" in d
+
+    def test_layout_options_importable(self):
+        """LayoutOptions is importable from src.maxpat (public API)."""
+        from src.maxpat import LayoutOptions
+
+        assert LayoutOptions is not None
+        # Can instantiate with defaults
+        opts = LayoutOptions()
+        assert opts.v_spacing == 20.0
+
+
+# ---------------------------------------------------------------------------
 # Helper
 # ---------------------------------------------------------------------------
 
