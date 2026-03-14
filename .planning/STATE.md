@@ -114,10 +114,11 @@ None.
 | 7 | Add generated patches to examples/ directory with PATCHES.md catalog | 2026-03-14 | db041bc | [7-add-generated-patches-to-example-project](./quick/7-add-generated-patches-to-example-project/) |
 | 8 | Update README with v1.1 milestone info and GSD workflow section | 2026-03-14 | 360fd45 | [8-update-the-readme-with-info-from-last-mi](./quick/8-update-the-readme-with-info-from-last-mi/) |
 | 9 | Return default background color to standard MAX 9 dark grey | 2026-03-14 | 624fa83 | [9-return-the-default-background-color-to-t](./quick/9-return-the-default-background-color-to-t/) |
+| 10 | Remove omx object references and replace with gen~ compressors | 2026-03-14 | 337aa11 | [10-avoid-using-the-omx-objects-instead-you-](./quick/10-avoid-using-the-omx-objects-instead-you-/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-14 -- Completed Quick Task 9 (Return default background color to MAX 9 dark grey)
-Last session: 2026-03-14T15:07:00Z
-Stopped at: Completed quick-9-PLAN.md
+Last activity: 2026-03-14 -- Completed Quick Task 10 (Remove omx objects, replace with gen~ compressors)
+Last session: 2026-03-14T15:40:00Z
+Stopped at: Completed quick-10-PLAN.md
 Resume file: None
