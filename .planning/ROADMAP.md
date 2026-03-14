@@ -99,9 +99,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 11-01-PLAN.md -- LayoutOptions dataclass and test assertion refactoring for resilient spacing tests
-- [ ] 11-02-PLAN.md -- Width override table from audit data and sizing.py integration
-- [ ] 11-03-PLAN.md -- Inlet alignment, grid snapping, comment association, and LayoutOptions integration into layout engine
+- [x] 11-01-PLAN.md -- LayoutOptions dataclass and test assertion refactoring for resilient spacing tests
+- [x] 11-02-PLAN.md -- Width override table from audit data and sizing.py integration
+- [x] 11-03-PLAN.md -- Inlet alignment, grid snapping, comment association, and LayoutOptions integration into layout engine
 
 ### Phase 12: Pipeline Integration & Agent Updates
 **Goal**: Aesthetic styling and layout improvements are wired into the main patch generation pipeline so users get polished patches by default, and agent documentation reflects all corrected object data and new capabilities
@@ -111,10 +111,11 @@ Plans:
   1. generate_patch() produces patches with aesthetic styling applied (panels, styled comments, patcher colors) without requiring manual post-processing
   2. Agent SKILL.md files reference corrected outlet types and connection patterns from audit findings, so agents generate valid connections for previously-broken objects
   3. Agent documentation describes aesthetic capabilities (comment styling, panels, layout options) so agents can use them when generating patches
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 12-01: TBD
+- [ ] 12-01-PLAN.md -- Auto-styling in generate_patch(), LayoutOptions parameter and public API export
+- [ ] 12-02-PLAN.md -- Aesthetic capabilities documentation in all 6 agent SKILL.md files
 
 ## Progress
 
@@ -134,9 +135,9 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 | 8. Help Patch Audit Pipeline | v1.1 | 4/4 | Complete | 2026-03-13 |
 | 9. Object DB Corrections | v1.1 | 0/2 | Not started | - |
 | 10. Aesthetic Foundations | v1.1 | 2/2 | Complete | 2026-03-13 |
-| 11. Layout Refinements | 3/3 | Complete    | 2026-03-14 | - |
-| 12. Pipeline Integration & Agent Updates | v1.1 | 0/? | Not started | - |
+| 11. Layout Refinements | v1.1 | 3/3 | Complete | 2026-03-13 |
+| 12. Pipeline Integration & Agent Updates | v1.1 | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-13 -- Phase 11 planned (3 plans)*
+*Last updated: 2026-03-14 -- Phase 12 planned (2 plans)*
