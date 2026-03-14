@@ -27,11 +27,13 @@ def test_public_api_importable():
         PatchGenerationError,
         PatchValidationError,
         ObjectDatabase,
+        LayoutOptions,
     )
     # Sanity check types
     assert callable(generate_patch)
     assert callable(write_patch)
     assert callable(validate_file)
+    assert LayoutOptions is not None
 
 
 # ---------------------------------------------------------------------------
@@ -277,3 +279,71 @@ def test_validate_file_invalid_json(tmp_path):
     assert len(results) > 0
     assert any(r.level == "error" for r in results)
     assert any("json" in r.message.lower() or "json" in r.layer.lower() for r in results)
+
+
+# ---------------------------------------------------------------------------
+# write_patch layout_options forwarding
+# ---------------------------------------------------------------------------
+
+def test_write_patch_forwards_layout_options(tmp_path):
+    """write_patch with layout_options writes file without error."""
+    from src.maxpat import Patcher, write_patch
+    from src.maxpat.defaults import LayoutOptions
+
+    p = Patcher()
+    osc = p.add_box("cycle~", ["440"])
+    gain = p.add_box("*~", ["0.5"])
+    dac = p.add_box("ezdac~")
+    p.add_connection(osc, 0, gain, 0)
+    p.add_connection(gain, 0, dac, 0)
+    p.add_connection(gain, 0, dac, 1)
+
+    out_path = tmp_path / "layout_opts.maxpat"
+    results = write_patch(p, out_path, layout_options=LayoutOptions(v_spacing=50))
+
+    assert out_path.exists()
+    # Verify valid JSON was written
+    data = json.loads(out_path.read_text())
+    assert "patcher" in data
+    assert isinstance(results, list)
+
+
+def test_write_patch_validate_false_with_layout_options(tmp_path):
+    """write_patch with validate=False and layout_options still writes file."""
+    from src.maxpat import Patcher, write_patch
+    from src.maxpat.defaults import LayoutOptions
+
+    p = Patcher()
+    osc = p.add_box("cycle~", ["440"])
+    dac = p.add_box("ezdac~")
+    p.add_connection(osc, 0, dac, 0)
+
+    out_path = tmp_path / "no_validate.maxpat"
+    results = write_patch(
+        p, out_path, validate=False, layout_options=LayoutOptions(v_spacing=50),
+    )
+
+    assert out_path.exists()
+    assert results == []
+    # Verify valid JSON was written
+    data = json.loads(out_path.read_text())
+    assert "patcher" in data
+
+
+def test_write_patch_backward_compat(tmp_path):
+    """write_patch without layout_options still works as before."""
+    from src.maxpat import Patcher, write_patch
+
+    p = Patcher()
+    osc = p.add_box("cycle~", ["440"])
+    gain = p.add_box("*~", ["0.5"])
+    dac = p.add_box("ezdac~")
+    p.add_connection(osc, 0, gain, 0)
+    p.add_connection(gain, 0, dac, 0)
+    p.add_connection(gain, 0, dac, 1)
+
+    out_path = tmp_path / "backward_compat.maxpat"
+    results = write_patch(p, out_path)
+
+    assert out_path.exists()
+    assert isinstance(results, list)
