@@ -22,6 +22,7 @@ from src.maxpat.validation import validate_patch, has_blocking_errors, Validatio
 
 if TYPE_CHECKING:
     from src.maxpat.patcher import Patcher
+    from src.maxpat.defaults import LayoutOptions
 
 
 class PatchGenerationError(Exception):
@@ -36,6 +37,7 @@ def write_patch(
     patcher: Patcher,
     path: str | Path,
     validate: bool = True,
+    layout_options: "LayoutOptions | None" = None,
 ) -> list[ValidationResult]:
     """Generate, validate, and write a .maxpat file to disk.
 
@@ -50,6 +52,8 @@ def write_patch(
         patcher: A Patcher instance containing boxes and connections.
         path: Output file path for the .maxpat file.
         validate: If False, skip validation entirely. Default True.
+        layout_options: Optional LayoutOptions to customize spacing,
+            grid snapping, and alignment. Forwarded to apply_layout().
 
     Returns:
         List of ValidationResult from validation (empty if validate=False).
@@ -66,14 +70,14 @@ def write_patch(
     if not validate:
         # Skip validation: just serialize and write
         from src.maxpat.layout import apply_layout
-        apply_layout(patcher)
+        apply_layout(patcher, layout_options)
         patch_dict = patcher.to_dict()
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(patch_dict, indent=2))
         return []
 
     # Generate with layout + validation
-    patch_dict, results = generate_patch(patcher)
+    patch_dict, results = generate_patch(patcher, layout_options=layout_options)
 
     # Block on unfixable errors
     if has_blocking_errors(results):
