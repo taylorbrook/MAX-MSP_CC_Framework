@@ -31,7 +31,7 @@
                         457.0,
                         20.0
                     ],
-                    "text": "--- MIDI INPUT: notein -> pack -> prepend note -> poly~ ---"
+                    "text": "--- MIDI INPUT: notein -> pack -> prepend midinote -> poly~ ---"
                 }
             },
             {
@@ -93,7 +93,7 @@
                         128.0,
                         22.0
                     ],
-                    "text": "prepend note"
+                    "text": "prepend midinote"
                 }
             },
             {
@@ -222,7 +222,7 @@
                         121.0,
                         22.0
                     ],
-                    "text": "note 60 100"
+                    "text": "midinote 60 100"
                 }
             },
             {
@@ -242,7 +242,7 @@
                         107.0,
                         22.0
                     ],
-                    "text": "note 60 0"
+                    "text": "midinote 60 0"
                 }
             },
             {

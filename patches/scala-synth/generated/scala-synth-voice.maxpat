@@ -482,7 +482,7 @@
             51.0,
             22.0
           ],
-          "text": "adsr~",
+          "text": "adsr~ 80 470 0.7 590",
           "fontname": "Arial",
           "fontsize": 12.0
         }
