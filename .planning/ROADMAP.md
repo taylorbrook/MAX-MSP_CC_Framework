@@ -34,7 +34,7 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 - [ ] **Phase 9: Object DB Corrections** — Review audit results and merge verified corrections into overrides.json
 - [x] **Phase 10: Aesthetic Foundations** — Add comment styling, panels, patcher backgrounds, and visual polish to generated patches (completed 2026-03-13)
 - [x] **Phase 11: Layout Refinements** — Improve object positioning with better sizing, inlet alignment, grid snapping, and configurable options (completed 2026-03-13)
-- [ ] **Phase 12: Pipeline Integration & Agent Updates** — Wire aesthetics and layout into generate_patch() and update agent documentation
+- [x] **Phase 12: Pipeline Integration & Agent Updates** — Wire aesthetics and layout into generate_patch() and update agent documentation (completed 2026-03-14)
 
 ## Phase Details
 
@@ -136,7 +136,7 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 | 9. Object DB Corrections | v1.1 | 0/2 | Not started | - |
 | 10. Aesthetic Foundations | v1.1 | 2/2 | Complete | 2026-03-13 |
 | 11. Layout Refinements | v1.1 | 3/3 | Complete | 2026-03-13 |
-| 12. Pipeline Integration & Agent Updates | v1.1 | 0/2 | Not started | - |
+| 12. Pipeline Integration & Agent Updates | 2/2 | Complete   | 2026-03-14 | - |
 
 ---
 *Roadmap created: 2026-03-08*

@@ -58,8 +58,8 @@ Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap
 
 ### Agent Updates
 
-- [ ] **AGNT-01**: Agent SKILL.md files updated with corrected outlet types and connection patterns from audit findings
-- [ ] **AGNT-02**: Agent docs updated with aesthetic capabilities (comment styling, panels, layout options)
+- [x] **AGNT-01**: Agent SKILL.md files updated with corrected outlet types and connection patterns from audit findings
+- [x] **AGNT-02**: Agent docs updated with aesthetic capabilities (comment styling, panels, layout options)
 
 ## Future Requirements
 
@@ -122,8 +122,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LYOT-04 | Phase 11 | Complete |
 | LYOT-05 | Phase 11 | Complete |
 | LYOT-06 | Phase 11 | Complete |
-| AGNT-01 | Phase 12 | Pending |
-| AGNT-02 | Phase 12 | Pending |
+| AGNT-01 | Phase 12 | Complete |
+| AGNT-02 | Phase 12 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 33 total

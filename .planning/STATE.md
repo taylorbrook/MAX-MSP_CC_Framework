@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Patch Quality & Aesthetics
 status: completed
-stopped_at: Phase 12 context gathered
-last_updated: "2026-03-14T02:47:29.009Z"
+stopped_at: Completed 12-02-PLAN.md
+last_updated: "2026-03-14T03:11:11.443Z"
 last_activity: 2026-03-13 -- Completed 11-03 (Layout Integration)
 progress:
   total_phases: 5
-  completed_phases: 4
-  total_plans: 11
-  completed_plans: 11
+  completed_phases: 5
+  total_plans: 13
+  completed_plans: 13
   percent: 100
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-13)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Phase 11 -- Layout Refinements
+**Current focus:** Phase 12 -- Pipeline Integration & Agent Updates (COMPLETE)
 
 ## Current Position
 
-Phase: 11 of 12 (Layout Refinements)
-Plan: 3 of 3 complete
+Phase: 12 of 12 (Pipeline Integration & Agent Updates)
+Plan: 2 of 2 complete
 Status: Complete
-Last activity: 2026-03-13 -- Completed 11-03 (Layout Integration)
+Last activity: 2026-03-13 -- Completed 12-02 (Agent SKILL.md Aesthetic Capabilities)
 
 Progress: [██████████] 100%
 
@@ -57,6 +57,7 @@ Progress: [██████████] 100%
 | Phase 11 P01 | 2min | 2 tasks | 2 files |
 | Phase 11 P02 | 2min | 1 tasks | 3 files |
 | Phase 11 P03 | 5min | 2 tasks | 3 files |
+| Phase 12 P02 | 3min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,8 @@ Full decision log in `.planning/milestones/v1.0-ROADMAP.md`.
 - [Phase 11]: Inlet alignment averages target positions when child has multiple parents for balanced placement
 - [Phase 11]: Grid snap applied as final pass after all positioning but before midpoint generation
 - [Phase 11]: Comment association (target_id) is layout-time only, never serialized to .maxpat JSON
+- [Phase 12]: SKILL.md aesthetic sections bundled with 12-01 implementation; 12-02 added test assertions only
+- [Phase 12]: DSP agent curated object lists verified against audit corrections -- no changes needed, DB layer handles transparently
 
 ### Pending Todos
 
@@ -106,7 +109,7 @@ None.
 
 ## Session Continuity
 
-Last activity: 2026-03-13 -- Completed 10-02 (Panels & Step Markers)
-Last session: 2026-03-14T02:47:29.004Z
-Stopped at: Phase 12 context gathered
-Resume file: .planning/phases/12-pipeline-integration-agent-updates/12-CONTEXT.md
+Last activity: 2026-03-13 -- Completed 12-02 (Agent SKILL.md Aesthetic Capabilities)
+Last session: 2026-03-14T03:11:11.441Z
+Stopped at: Completed 12-02-PLAN.md
+Resume file: None
