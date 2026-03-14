@@ -17,6 +17,8 @@ from src.maxpat.validation import (
     ValidationResult,
 )
 from src.maxpat.layout import apply_layout
+from src.maxpat.aesthetics import set_canvas_background, set_object_bgcolor
+from src.maxpat.defaults import LayoutOptions
 from src.maxpat.hooks import (
     write_patch,
     write_gendsp,
@@ -60,17 +62,44 @@ from src.maxpat.externals import (
 from src.maxpat.ext_validation import validate_mxo, BuildResult
 
 
-def generate_patch(patcher: Patcher) -> tuple[dict, list[ValidationResult]]:
+_AUTO_HIGHLIGHT = {
+    "dac~": "emphasis_dac",
+    "ezdac~": "emphasis_dac",
+    "loadbang": "emphasis_loadbang",
+}
+
+
+def _apply_auto_styling(patcher: Patcher) -> None:
+    """Apply default aesthetic styling to a patcher.
+
+    Sets the canvas background color and highlights special objects
+    (dac~, ezdac~, loadbang) with subtle palette colors. Skips boxes
+    that already have a user-set bgcolor.
+    """
+    set_canvas_background(patcher)
+    for box in patcher.boxes:
+        palette_key = _AUTO_HIGHLIGHT.get(box.name)
+        if palette_key and "bgcolor" not in box.extra_attrs:
+            set_object_bgcolor(box, palette_key=palette_key)
+
+
+def generate_patch(
+    patcher: Patcher,
+    layout_options: LayoutOptions | None = None,
+) -> tuple[dict, list[ValidationResult]]:
     """Generate a complete, laid-out, validated .maxpat dict from a Patcher.
 
     This is the core generation function. It:
-    1. Applies column-based layout to position all boxes.
-    2. Serializes the Patcher to a .maxpat dict.
-    3. Runs the four-layer validation pipeline.
-    4. Raises PatchGenerationError if unfixable structural errors exist.
+    1. Applies auto-styling (canvas background, object highlights).
+    2. Applies column-based layout to position all boxes.
+    3. Serializes the Patcher to a .maxpat dict.
+    4. Runs the four-layer validation pipeline.
+    5. Raises PatchGenerationError if unfixable structural errors exist.
 
     Args:
         patcher: A Patcher instance containing boxes and connections.
+        layout_options: Optional LayoutOptions to customize spacing,
+            grid snapping, and alignment. Defaults to None (use defaults).
 
     Returns:
         (patch_dict, results) tuple where:
@@ -80,16 +109,19 @@ def generate_patch(patcher: Patcher) -> tuple[dict, list[ValidationResult]]:
     Raises:
         PatchGenerationError: If has_blocking_errors is True.
     """
-    # Step 1: Apply layout
-    apply_layout(patcher)
+    # Step 1: Apply auto-styling
+    _apply_auto_styling(patcher)
 
-    # Step 2: Serialize to dict
+    # Step 2: Apply layout
+    apply_layout(patcher, layout_options)
+
+    # Step 3: Serialize to dict
     patch_dict = patcher.to_dict()
 
-    # Step 3: Validate
+    # Step 4: Validate
     results = validate_patch(patch_dict, db=patcher.db)
 
-    # Step 4: Block on unfixable errors
+    # Step 5: Block on unfixable errors
     if has_blocking_errors(results):
         error_msgs = [r.message for r in results if r.level == "error" and not r.auto_fixed]
         raise PatchGenerationError(
@@ -148,4 +180,6 @@ __all__ = [
     "generate_help_patch",
     "validate_mxo",
     "BuildResult",
+    # Layout
+    "LayoutOptions",
 ]

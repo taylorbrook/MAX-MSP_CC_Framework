@@ -43,7 +43,7 @@ Before any generation:
 - `Patcher.add_box(box)` -- add box to patch
 - `Patcher.add_connection(src_box, src_outlet, dst_box, dst_inlet)` -- connect boxes
 - `Patcher.add_subpatcher(name)` -- add a subpatcher
-- `generate_patch(patcher)` -- layout + serialize + validate
+- `generate_patch(patcher, layout_options=None)` -- layout + serialize + validate
 - `write_patch(patcher, path, validate=True)` -- write .maxpat with validation hooks
 - `Patcher.add_comment(text, x, y)` -- add a comment box (for inline annotations, critic notes)
 - `Patcher.add_message(text, x, y)` -- add a message box (for triggering messages, storing values)
@@ -73,6 +73,31 @@ Before any generation:
 - Named send/receive for long-distance connections
 - Subpatcher organization for complex logic
 - Comment objects on non-obvious connections
+
+### Aesthetic Capabilities
+
+**Auto-applied by generate_patch() -- no manual calls needed:**
+- Canvas background color (off-white with blue tint) applied automatically
+- `dac~` and `loadbang` objects highlighted with subtle background colors
+- Existing user-set bgcolor is never overwritten
+
+**Patcher methods for explicit styling:**
+- `add_section_header(text)` -- 16pt bold colored header with background (for patch sections)
+- `add_subsection(text)` -- 12pt bold dark gray label (for subsection grouping)
+- `add_annotation(text, target=box)` -- 10pt italic light gray note (for inline documentation)
+- `add_bubble(text, bubbleside=1)` -- comment with arrow pointer (for callout notes)
+- `add_panel(x, y, w, h, gradient=True)` -- background panel for visual grouping
+- `add_step_marker(number, x, y)` -- numbered amber circle (for step-by-step patches)
+
+**Aesthetics helpers (from `src.maxpat.aesthetics`):**
+- `set_canvas_background(patcher, color=None)` -- override default canvas color
+- `set_object_bgcolor(box, palette_key=None, color=None)` -- highlight specific objects
+- `auto_size_panel(boxes, padding=18)` -- compute panel rect to enclose a group of boxes
+- `is_complex_patch(patcher)` -- heuristic: True if 10+ boxes or has subpatchers
+
+**Layout options:**
+- `generate_patch(patcher, layout_options=LayoutOptions(...))` -- customize layout
+- Key fields: `v_spacing` (vertical gap), `h_gutter` (horizontal gap), `grid_snap` (15px grid), `inlet_align` (cable straightening), `comment_gap` (annotation offset)
 
 ## Output Protocol
 
