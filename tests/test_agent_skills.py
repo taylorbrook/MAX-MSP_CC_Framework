@@ -509,3 +509,48 @@ def test_rnbo_validate_scope_documented() -> None:
             )
             return
     pytest.fail("Could not find validate_rnbo_patch description line in RNBO SKILL.md")
+
+
+# ── Test: Aesthetic capabilities in all 6 specialist agents ──────
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_has_aesthetic_capabilities(agent_name: str) -> None:
+    """Each specialist agent SKILL.md must have an Aesthetic Capabilities section."""
+    content = _read_skill(agent_name)
+    assert "Aesthetic Capabilities" in content, (
+        f"{agent_name}/SKILL.md missing 'Aesthetic Capabilities' section"
+    )
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_references_patcher_styling_methods(agent_name: str) -> None:
+    """Each specialist agent must reference Patcher aesthetic methods."""
+    content = _read_skill(agent_name)
+    assert "add_section_header" in content, (
+        f"{agent_name}/SKILL.md missing add_section_header reference"
+    )
+    assert "add_panel" in content, (
+        f"{agent_name}/SKILL.md missing add_panel reference"
+    )
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_references_aesthetics_helpers(agent_name: str) -> None:
+    """Each specialist agent must reference aesthetics.py helpers."""
+    content = _read_skill(agent_name)
+    assert "set_canvas_background" in content, (
+        f"{agent_name}/SKILL.md missing set_canvas_background reference"
+    )
+    assert "set_object_bgcolor" in content, (
+        f"{agent_name}/SKILL.md missing set_object_bgcolor reference"
+    )
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_references_layout_options(agent_name: str) -> None:
+    """Each specialist agent must reference LayoutOptions for layout configuration."""
+    content = _read_skill(agent_name)
+    assert "LayoutOptions" in content, (
+        f"{agent_name}/SKILL.md missing LayoutOptions reference"
+    )
