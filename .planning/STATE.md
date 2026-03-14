@@ -93,6 +93,8 @@ Full decision log in `.planning/milestones/v1.0-ROADMAP.md`.
 - [Phase 12]: SKILL.md aesthetic sections bundled with 12-01 implementation; 12-02 added test assertions only
 - [Phase 12]: DSP agent curated object lists verified against audit corrections -- no changes needed, DB layer handles transparently
 
+- [Phase quick]: Incremental patching uses manifest JSON sidecar to track generator-owned objects; box IDs are stable identity keys; merge preserves user-added objects
+
 ### Pending Todos
 
 None.
@@ -115,10 +117,11 @@ None.
 | 8 | Update README with v1.1 milestone info and GSD workflow section | 2026-03-14 | 360fd45 | [8-update-the-readme-with-info-from-last-mi](./quick/8-update-the-readme-with-info-from-last-mi/) |
 | 9 | Return default background color to standard MAX 9 dark grey | 2026-03-14 | 624fa83 | [9-return-the-default-background-color-to-t](./quick/9-return-the-default-background-color-to-t/) |
 | 10 | Remove omx object references and replace with gen~ compressors | 2026-03-14 | 337aa11 | [10-avoid-using-the-omx-objects-instead-you-](./quick/10-avoid-using-the-omx-objects-instead-you-/) |
+| 11 | Implement incremental patching with manifest-tracked merge_and_write | 2026-03-14 | 7caba99 | [11-implement-incremental-patching-in-the-pa](./quick/11-implement-incremental-patching-in-the-pa/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-14 -- Completed Quick Task 10 (Remove omx objects, replace with gen~ compressors)
-Last session: 2026-03-14T15:40:00Z
-Stopped at: Completed quick-10-PLAN.md
+Last activity: 2026-03-14 -- Completed Quick Task 11 (Incremental patching with manifest sidecar)
+Last session: 2026-03-14T18:21:46Z
+Stopped at: Completed quick-11-PLAN.md
 Resume file: None
