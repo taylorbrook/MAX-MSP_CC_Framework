@@ -231,11 +231,11 @@ def test_build_no_generate_py() -> None:
     )
 
 
-def test_build_references_write_patch() -> None:
-    """max-build.md must reference write_patch for output."""
+def test_build_references_save_patch_roundtrip() -> None:
+    """max-build.md must reference save_patch_roundtrip for output."""
     content = _read_command("max-build")
-    assert "write_patch" in content, (
-        "max-build.md should reference write_patch"
+    assert "save_patch_roundtrip" in content, (
+        "max-build.md should reference save_patch_roundtrip"
     )
 
 

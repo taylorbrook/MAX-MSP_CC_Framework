@@ -387,15 +387,14 @@ def test_patch_agent_uses_add_connection() -> None:
     )
 
 
-def test_patch_agent_write_patch_signature() -> None:
-    """max-patch-agent SKILL.md must use write_patch(patcher, ...) not
-    write_patch(patch_dict, ...)."""
+def test_patch_agent_save_patch_roundtrip_signature() -> None:
+    """max-patch-agent SKILL.md must use save_patch_roundtrip for output."""
     content = _read_skill("max-patch-agent")
-    assert "write_patch(patcher" in content, (
-        "max-patch-agent SKILL.md should reference write_patch(patcher, ...)"
+    assert "save_patch_roundtrip" in content, (
+        "max-patch-agent SKILL.md should reference save_patch_roundtrip"
     )
-    assert "write_patch(patch_dict" not in content, (
-        "max-patch-agent SKILL.md should NOT reference write_patch(patch_dict)"
+    assert "write_patch" not in content, (
+        "max-patch-agent SKILL.md should NOT reference write_patch (v1.x API)"
     )
 
 
