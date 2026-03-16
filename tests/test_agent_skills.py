@@ -554,3 +554,67 @@ def test_specialist_references_layout_options(agent_name: str) -> None:
     assert "LayoutOptions" in content, (
         f"{agent_name}/SKILL.md missing LayoutOptions reference"
     )
+
+
+# ── Test: Editing API references in all 6 specialist agents ──────
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_has_editing_section(agent_name: str) -> None:
+    """Each specialist agent SKILL.md must have an Editing Existing Patches section."""
+    content = _read_skill(agent_name)
+    assert "Editing Existing Patches" in content or "Editing Functions" in content, (
+        f"{agent_name}/SKILL.md missing 'Editing Existing Patches' or 'Editing Functions' section"
+    )
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_references_read_patch(agent_name: str) -> None:
+    """Each specialist agent SKILL.md must reference read_patch."""
+    content = _read_skill(agent_name)
+    assert "read_patch" in content, (
+        f"{agent_name}/SKILL.md missing read_patch reference"
+    )
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_references_find_box(agent_name: str) -> None:
+    """Each specialist agent SKILL.md must reference find_box."""
+    content = _read_skill(agent_name)
+    assert "find_box" in content, (
+        f"{agent_name}/SKILL.md missing find_box reference"
+    )
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_references_modify_box(agent_name: str) -> None:
+    """Each specialist agent SKILL.md must reference modify_box."""
+    content = _read_skill(agent_name)
+    assert "modify_box" in content, (
+        f"{agent_name}/SKILL.md missing modify_box reference"
+    )
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_references_save_roundtrip(agent_name: str) -> None:
+    """Each specialist agent SKILL.md must reference save_patch_roundtrip."""
+    content = _read_skill(agent_name)
+    assert "save_patch_roundtrip" in content, (
+        f"{agent_name}/SKILL.md missing save_patch_roundtrip reference"
+    )
+
+
+def test_lifecycle_references_empty_maxpat() -> None:
+    """Lifecycle SKILL.md must reference maxpat in project creation context."""
+    content = _read_skill("max-lifecycle")
+    assert "maxpat" in content, (
+        "max-lifecycle/SKILL.md missing maxpat reference in project creation"
+    )
+
+
+def test_critic_references_edit_workflow() -> None:
+    """Critic SKILL.md must reference save_patch_roundtrip for edit path."""
+    content = _read_skill("max-critic")
+    assert "save_patch_roundtrip" in content, (
+        "max-critic/SKILL.md missing save_patch_roundtrip reference for edit workflow"
+    )
