@@ -10,6 +10,7 @@ All JSON output follows the .maxpat format verified in 02-RESEARCH.md.
 from __future__ import annotations
 
 import copy
+from dataclasses import dataclass, field
 from typing import Any
 
 from src.maxpat.defaults import (
@@ -98,6 +99,19 @@ class Patchline:
                 d["color"] = self.color
             d.update(self.extra_attrs)
             return {"patchline": d}
+
+
+@dataclass
+class EditResult:
+    """Result of an edit operation with orphaned connection tracking.
+
+    Returned by modify_box() and replace_box() to provide the caller with
+    the edited/created box and any connections that were orphaned during
+    the operation (e.g., due to I/O count shrink or object replacement).
+    """
+    box: Box
+    orphaned: list[dict] = field(default_factory=list)
+    # Each orphaned entry: {"source_id", "source_outlet", "dest_id", "dest_inlet"}
 
 
 class Box:
@@ -760,6 +774,105 @@ class Patcher:
             f"Connection not found: {src_box.id}[{src_outlet}] -> "
             f"{dst_box.id}[{dst_inlet}]"
         )
+
+    def modify_box(
+        self,
+        box: Box,
+        *,
+        args: list[str] | None = None,
+        position: list[float] | None = None,
+        color: list[float] | None = None,
+        extra_attrs: dict | None = None,
+    ) -> EditResult:
+        """Modify a box's attributes in-place.
+
+        Changes args (with I/O recomputation for variable_io), position,
+        color, or extra_attrs. When I/O count shrinks, orphaned connections
+        are auto-removed and returned in the result.
+
+        Args:
+            box: The box to modify (must be in this patcher).
+            args: New arguments (triggers I/O recomputation for variable_io).
+            position: New [x, y] position.
+            color: New box color [r, g, b, a] -- sets extra_attrs["bgcolor"].
+            extra_attrs: Dict of additional attributes to set/update.
+
+        Returns:
+            EditResult with the modified box and any orphaned connections.
+
+        Raises:
+            ValueError: If box is not in this patcher.
+        """
+        if box not in self.boxes:
+            raise ValueError(
+                f"Box {box.id} not found in this patcher"
+            )
+
+        orphaned: list[dict] = []
+
+        if args is not None:
+            # Update args and text
+            box.args = list(args)
+            parts = [box.name] + list(args)
+            box.text = " ".join(parts).strip()
+
+            # Recompute I/O counts via database
+            if self.db:
+                box.numinlets, box.numoutlets = self.db.compute_io_counts(
+                    box.name, args
+                )
+                box.outlettype = self.db.get_outlet_types(box.name, args)
+
+            # Recalculate box size
+            w, h = calculate_box_size(box.text, box.maxclass)
+            box.patching_rect[2] = w
+            box.patching_rect[3] = h
+
+            # Orphan connections to removed outlets/inlets
+            surviving = []
+            for pl in self.lines:
+                orphan = False
+                if pl.source_id == box.id and pl.source_outlet >= box.numoutlets:
+                    orphan = True
+                if pl.dest_id == box.id and pl.dest_inlet >= box.numinlets:
+                    orphan = True
+                if orphan:
+                    orphaned.append({
+                        "source_id": pl.source_id,
+                        "source_outlet": pl.source_outlet,
+                        "dest_id": pl.dest_id,
+                        "dest_inlet": pl.dest_inlet,
+                    })
+                else:
+                    surviving.append(pl)
+            self.lines = surviving
+
+            # Sync _raw dict
+            if box._raw is not None:
+                box._raw["text"] = box.text
+                box._raw["numinlets"] = box.numinlets
+                box._raw["numoutlets"] = box.numoutlets
+                if "outlettype" in box._raw:
+                    box._raw["outlettype"] = box.outlettype
+                box._raw["patching_rect"] = box.patching_rect
+
+        if position is not None:
+            box.patching_rect[0] = position[0]
+            box.patching_rect[1] = position[1]
+            if box._raw is not None:
+                box._raw["patching_rect"] = box.patching_rect
+
+        if color is not None:
+            box.extra_attrs["bgcolor"] = color
+            if box._raw is not None:
+                box._raw["bgcolor"] = color
+
+        if extra_attrs is not None:
+            box.extra_attrs.update(extra_attrs)
+            if box._raw is not None:
+                box._raw.update(extra_attrs)
+
+        return EditResult(box=box, orphaned=orphaned)
 
     # ------------------------------------------------------------------
     # Search / query

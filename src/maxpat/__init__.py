@@ -10,7 +10,7 @@ The generation pipeline is: Patcher -> layout -> validation -> .maxpat JSON.
 
 from __future__ import annotations
 
-from src.maxpat.patcher import Patcher, Box, Patchline
+from src.maxpat.patcher import Patcher, Box, Patchline, EditResult
 from src.maxpat.validation import (
     validate_patch,
     has_blocking_errors,
@@ -141,6 +141,7 @@ __all__ = [
     "Patcher",
     "Box",
     "Patchline",
+    "EditResult",
     # Generation
     "generate_patch",
     # File I/O
