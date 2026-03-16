@@ -53,12 +53,6 @@ _PROJECT_PATCHES = [
     "granularsynthtest/generated/granularsynthtest.maxpat",
 ]
 
-# rhythmic-sampler already passes round-trip (per research)
-_PASSING_PATCHES = {
-    "rhythmic-sampler/generated/rhythmic-sampler.maxpat",
-}
-
-
 # ---------------------------------------------------------------------------
 # TestPatchlineAttrs -- RW-06: Patchline color and extra attrs
 # ---------------------------------------------------------------------------
@@ -143,25 +137,12 @@ class TestRoundTripIdentity:
     @pytest.mark.parametrize("relpath", _PROJECT_PATCHES)
     def test_round_trip_identity(self, relpath):
         """Round-trip produces identical output for {relpath}."""
-        if relpath in _PASSING_PATCHES:
-            # This one should pass already
-            original = _load_project_patch(relpath)
-            p = Patcher.from_dict(original)
-            result = p.to_dict()
-            assert result == original, (
-                f"Round-trip mismatch for {relpath} (expected to pass)."
-            )
-        else:
-            # These are expected to fail until Plans 02/03 fix the bugs
-            original = _load_project_patch(relpath)
-            p = Patcher.from_dict(original)
-            result = p.to_dict()
-            if result != original:
-                pytest.xfail(
-                    f"Round-trip mismatch for {relpath} -- "
-                    f"expected to fail pending Plan 02/03 fixes"
-                )
-            # If it accidentally passes, that's fine -- let it pass
+        original = _load_project_patch(relpath)
+        p = Patcher.from_dict(original)
+        result = p.to_dict()
+        assert result == original, (
+            f"Round-trip mismatch for {relpath}."
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -657,3 +638,176 @@ class TestStructuralErrors:
         """from_dict with 'boxes' that is not a list raises TypeError."""
         with pytest.raises(TypeError, match="boxes"):
             Patcher.from_dict({"patcher": {"boxes": "not_a_list"}})
+
+
+# ---------------------------------------------------------------------------
+# TestEdgeCases -- Plan 03: Additional edge-case coverage
+# ---------------------------------------------------------------------------
+
+
+class TestEdgeCases:
+    """Edge-case round-trip tests for unknown externals, empty patchers, nesting."""
+
+    def test_round_trip_with_unknown_external(self):
+        """Synthetic .maxpat with unknown maxclass and various keys round-trips."""
+        data = {
+            "patcher": {
+                "fileversion": 1,
+                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                "classnamespace": "box",
+                "rect": [100.0, 100.0, 640.0, 480.0],
+                "boxes": [
+                    {
+                        "box": {
+                            "maxclass": "com.acme.widget~",
+                            "id": "obj-1",
+                            "numinlets": 3,
+                            "numoutlets": 2,
+                            "outlettype": ["signal", ""],
+                            "patching_rect": [100.0, 200.0, 120.0, 22.0],
+                            "text": "com.acme.widget~ 440",
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                            "vendor_param": "foo",
+                            "vendor_list": [1, 2, 3],
+                            "vendor_nested": {"a": 1, "b": [4, 5]},
+                        }
+                    }
+                ],
+                "lines": [],
+            }
+        }
+        p = Patcher.from_dict(data)
+        result = p.to_dict()
+        assert result == data
+
+    def test_round_trip_empty_patcher(self):
+        """Empty patcher (zero boxes, zero lines) round-trips identically."""
+        data = {
+            "patcher": {
+                "fileversion": 1,
+                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                "classnamespace": "box",
+                "rect": [100.0, 100.0, 640.0, 480.0],
+                "boxes": [],
+                "lines": [],
+            }
+        }
+        p = Patcher.from_dict(data)
+        result = p.to_dict()
+        assert result == data
+
+    def test_round_trip_deeply_nested_subpatchers(self):
+        """3-level nested subpatcher round-trips with correct key ordering."""
+        data = {
+            "patcher": {
+                "fileversion": 1,
+                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                "classnamespace": "box",
+                "rect": [100.0, 100.0, 640.0, 480.0],
+                "boxes": [
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "p level1",
+                            "id": "obj-1",
+                            "numinlets": 1,
+                            "numoutlets": 1,
+                            "outlettype": [""],
+                            "patching_rect": [100.0, 100.0, 80.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                            "patcher": {
+                                "fileversion": 1,
+                                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                                "rect": [200.0, 200.0, 400.0, 300.0],
+                                "boxes": [
+                                    {
+                                        "box": {
+                                            "maxclass": "newobj",
+                                            "text": "p level2",
+                                            "id": "obj-1",
+                                            "numinlets": 1,
+                                            "numoutlets": 1,
+                                            "outlettype": [""],
+                                            "patching_rect": [50.0, 50.0, 80.0, 22.0],
+                                            "fontname": "Arial",
+                                            "fontsize": 12.0,
+                                            "patcher": {
+                                                "fileversion": 1,
+                                                "appversion": {
+                                                    "major": 9,
+                                                    "minor": 0,
+                                                    "revision": 0,
+                                                },
+                                                "rect": [300.0, 300.0, 300.0, 200.0],
+                                                "boxes": [
+                                                    {
+                                                        "box": {
+                                                            "maxclass": "newobj",
+                                                            "text": "print level3",
+                                                            "id": "obj-1",
+                                                            "numinlets": 1,
+                                                            "numoutlets": 0,
+                                                            "outlettype": [],
+                                                            "patching_rect": [
+                                                                50.0,
+                                                                50.0,
+                                                                80.0,
+                                                                22.0,
+                                                            ],
+                                                            "fontname": "Arial",
+                                                            "fontsize": 12.0,
+                                                        }
+                                                    }
+                                                ],
+                                                "lines": [],
+                                            },
+                                        }
+                                    }
+                                ],
+                                "lines": [],
+                            },
+                        }
+                    }
+                ],
+                "lines": [],
+            }
+        }
+        p = Patcher.from_dict(data)
+        result = p.to_dict()
+        assert result == data
+
+    def test_creation_path_unchanged(self):
+        """Programmatic Box/Patcher creation still produces expected format."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        dac = p.add_box("dac~")
+        p.add_connection(osc, 0, dac, 0)
+
+        d = p.to_dict()
+
+        # Verify structural keys exist
+        assert "patcher" in d
+        patcher = d["patcher"]
+        assert "boxes" in patcher
+        assert "lines" in patcher
+        assert len(patcher["boxes"]) == 2
+        assert len(patcher["lines"]) == 1
+
+        # Verify box format
+        box0 = patcher["boxes"][0]["box"]
+        assert box0["maxclass"] == "newobj"
+        assert box0["text"] == "cycle~ 440"
+        assert "id" in box0
+        assert "numinlets" in box0
+        assert "numoutlets" in box0
+        assert "outlettype" in box0
+        assert "patching_rect" in box0
+
+        # Verify line format
+        line0 = patcher["lines"][0]["patchline"]
+        assert "source" in line0
+        assert "destination" in line0
+        assert line0["source"][0] == osc.id
+        assert line0["destination"][0] == dac.id
