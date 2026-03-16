@@ -43,7 +43,7 @@ Before any generation:
 - **Midpoint generation:** backward-direction cables (source outlet right of destination inlet) automatically get L-shaped midpoints for clean segmented routing
 - **Disconnected objects** (bpatchers with send~/receive~, presentation-only comments) are placed to the right of all connected components
 - **Recursive:** `apply_layout` automatically positions objects inside subpatchers, gen~ patchers, and embedded bpatchers -- no manual subpatcher layout needed
-- **Presentation_rect is preserved:** If you set `presentation_rect` on a box BEFORE `apply_layout` runs (or before `write_patch`/`generate_patch` is called), the layout engine will NOT overwrite it. Only boxes with `presentation=True` but NO `presentation_rect` get the fallback 4-per-row grid layout
+- **Presentation_rect is preserved:** If you set `presentation_rect` on a box BEFORE `apply_layout` runs, the layout engine will NOT overwrite it. Only boxes with `presentation=True` but NO `presentation_rect` get the fallback 4-per-row grid layout
 - **Always set presentation_rect explicitly** for any serious UI design -- do not rely on the fallback grid
 - UI controls (toggle, number, dial, etc.) extracted from row assignment, repositioned above their first connected target
 
@@ -80,9 +80,8 @@ Before any generation:
 
 ### Aesthetic Capabilities
 
-**Auto-applied by generate_patch() -- no manual calls needed:**
-- Canvas background color (standard MAX 9 dark grey) applied automatically
-- `dac~` and `loadbang` objects highlighted with subtle background colors
+**Aesthetic auto-styling (call explicitly for new patches):**
+- `from src.maxpat import _apply_auto_styling; _apply_auto_styling(patcher)` -- sets canvas background, highlights dac~/loadbang
 - Existing user-set bgcolor is never overwritten
 
 **Patcher methods for explicit styling:**
@@ -100,7 +99,7 @@ Before any generation:
 - `is_complex_patch(patcher)` -- heuristic: True if 10+ boxes or has subpatchers
 
 **Layout options (`from src.maxpat import LayoutOptions`):**
-- `generate_patch(patcher, layout_options=LayoutOptions(...))` -- customize layout
+- `apply_layout(patcher, layout_options=LayoutOptions(...))` -- customize layout
 - `v_spacing` (default 20.0) -- vertical gap between rows in pixels
 - `h_gutter` (default 15.0) -- horizontal gap between sibling objects
 - `patcher_padding` (default 40.0) -- padding around content for auto-sized patcher rect

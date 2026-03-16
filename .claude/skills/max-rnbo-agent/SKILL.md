@@ -25,9 +25,8 @@ Generate RNBO patches for VST3/AU plugin, Web Audio, and C++ embedded export tar
 
 ### Aesthetic Capabilities
 
-**Auto-applied by generate_patch() -- no manual calls needed:**
-- Canvas background color (standard MAX 9 dark grey) applied automatically
-- `dac~` and `loadbang` objects highlighted with subtle background colors
+**Aesthetic auto-styling (call explicitly for new patches):**
+- `from src.maxpat import _apply_auto_styling; _apply_auto_styling(patcher)` -- sets canvas background, highlights dac~/loadbang
 - Existing user-set bgcolor is never overwritten
 
 **Patcher methods for explicit styling:**
@@ -45,7 +44,7 @@ Generate RNBO patches for VST3/AU plugin, Web Audio, and C++ embedded export tar
 - `is_complex_patch(patcher)` -- heuristic: True if 10+ boxes or has subpatchers
 
 **Layout options (`from src.maxpat import LayoutOptions`):**
-- `generate_patch(patcher, layout_options=LayoutOptions(...))` -- customize layout
+- `apply_layout(patcher, layout_options=LayoutOptions(...))` -- customize layout
 - `v_spacing` (default 20.0) -- vertical gap between rows in pixels
 - `h_gutter` (default 15.0) -- horizontal gap between sibling objects
 - `patcher_padding` (default 40.0) -- padding around content for auto-sized patcher rect
@@ -75,7 +74,7 @@ from src.maxpat.rnbo_validation import (
     RNBO_TARGET_CONSTRAINTS,
 )
 from src.maxpat.critics import review_patch
-from src.maxpat.hooks import write_patch
+from src.maxpat.hooks import save_patch_roundtrip
 ```
 
 ### Key Functions
@@ -117,7 +116,7 @@ from src.maxpat.hooks import write_patch
 2. **Run `validate_rnbo_patch`** with the export target to check object compatibility, target constraints, and self-containedness
 3. **Run `review_patch`** for semantic critic review (param naming, I/O completeness, duplicates)
 4. **Fix any blockers** found by validation or critic
-5. **Generate wrapper .maxpat** via `write_patch` for the final output
+5. **Save wrapper .maxpat** via `save_patch_roundtrip(patch_dict, path)` for the final output
 
 ## Output Protocol (Edited Patches)
 

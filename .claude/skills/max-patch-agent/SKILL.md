@@ -43,8 +43,10 @@ Before any generation:
 - `Patcher.add_box(box)` -- add box to patch
 - `Patcher.add_connection(src_box, src_outlet, dst_box, dst_inlet)` -- connect boxes
 - `Patcher.add_subpatcher(name)` -- add a subpatcher
-- `generate_patch(patcher, layout_options=None)` -- layout + serialize + validate (accepts LayoutOptions)
-- `write_patch(patcher, path, validate=True)` -- write .maxpat with validation hooks
+- `_apply_auto_styling(patcher)` -- apply canvas background and object highlights
+- `apply_layout(patcher, layout_options=None)` -- column-based layout positioning (accepts LayoutOptions)
+- `validate_patch(patcher.to_dict(), db=patcher.db)` -- run four-layer validation pipeline
+- `save_patch_roundtrip(patcher.to_dict(), path)` -- write .maxpat to disk
 - `Patcher.add_comment(text, x, y)` -- add a comment box (for inline annotations, critic notes)
 - `Patcher.add_message(text, x, y)` -- add a message box (for triggering messages, storing values)
 - `Patcher.add_node_script(filename, code=None, num_outlets=2, x, y)` -- add a node.script box for Node for Max (returns tuple of Box and code string)
@@ -76,9 +78,8 @@ Before any generation:
 
 ### Aesthetic Capabilities
 
-**Auto-applied by generate_patch() -- no manual calls needed:**
-- Canvas background color (standard MAX 9 dark grey) applied automatically
-- `dac~` and `loadbang` objects highlighted with subtle background colors
+**Aesthetic auto-styling (call explicitly for new patches):**
+- `from src.maxpat import _apply_auto_styling; _apply_auto_styling(patcher)` -- sets canvas background, highlights dac~/loadbang
 - Existing user-set bgcolor is never overwritten
 
 **Patcher methods for explicit styling:**
@@ -96,7 +97,7 @@ Before any generation:
 - `is_complex_patch(patcher)` -- heuristic: True if 10+ boxes or has subpatchers
 
 **Layout options (`from src.maxpat import LayoutOptions`):**
-- `generate_patch(patcher, layout_options=LayoutOptions(...))` -- customize layout
+- `apply_layout(patcher, layout_options=LayoutOptions(...))` -- customize layout
 - `v_spacing` (default 20.0) -- vertical gap between rows in pixels
 - `h_gutter` (default 15.0) -- horizontal gap between sibling objects
 - `patcher_padding` (default 40.0) -- padding around content for auto-sized patcher rect
@@ -132,10 +133,11 @@ Before any generation:
 ## Output Protocol (New Patches)
 
 1. Create Patcher and build patch structure
-2. Apply layout via `generate_patch()` pipeline
-3. Return `(patch_dict, results)` tuple for critic review
-4. Apply revisions if critic requests them
-5. Write final output via `write_patch()` to project's `generated/` directory
+2. Apply styling and layout: `_apply_auto_styling(patcher)`, `apply_layout(patcher)`
+3. Serialize and validate: `patch_dict = patcher.to_dict()`, `results = validate_patch(patch_dict, db=patcher.db)`
+4. Return `(patch_dict, results)` tuple for critic review
+5. Apply revisions if critic requests them
+6. Write final output via `save_patch_roundtrip(patch_dict, path)` to project's `generated/` directory
 
 ## Output Protocol (Edited Patches)
 

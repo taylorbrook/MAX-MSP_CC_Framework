@@ -36,7 +36,7 @@ Generate MAX/MSP patches, Gen~ code, JavaScript, or other artifacts by routing t
    - max-rnbo-agent (RNBO export, target validation, param mapping)
    - max-ext-agent (C++ externals, Min-DevKit scaffolding, build)
 
-   Each specialist creates a `Patcher` instance, builds the patch structure using `add_box()` and `add_connection()`, then calls `generate_patch(patcher)` to apply layout and validation.
+   Each specialist creates a `Patcher` instance, builds the patch structure using `add_box()` and `add_connection()`, then applies styling, layout, and validation via `_apply_auto_styling(patcher)`, `apply_layout(patcher)`, `validate_patch(patcher.to_dict())`.
 
 7. **Critic loop** -- run the max-critic skill on generated output:
    - Invoke `review_patch(patch_dict, code_context)` from `src.maxpat.critics`
@@ -44,7 +44,7 @@ Generate MAX/MSP patches, Gen~ code, JavaScript, or other artifacts by routing t
    - If clean or warnings-only: approve output with inline annotations
    - Loop continues until clean (no hard round limit)
 
-8. **Write output** -- save generated files via `write_patch(patcher, path)` to the project's `generated/` directory. No intermediary Python scripts are created at any point.
+8. **Write output** -- save generated files via `save_patch_roundtrip(patcher.to_dict(), path)` to the project's `generated/` directory. No intermediary Python scripts are created at any point.
 
 9. **Write-back memory** -- use the max-memory-agent to store notable patterns learned during generation.
 
@@ -60,7 +60,7 @@ Generate MAX/MSP patches, Gen~ code, JavaScript, or other artifacts by routing t
 ## Python Modules
 
 ```python
-from src.maxpat import Patcher, Box, generate_patch, write_patch, LayoutOptions
+from src.maxpat import Patcher, Box, _apply_auto_styling, apply_layout, validate_patch, save_patch_roundtrip, LayoutOptions
 from src.maxpat.project import get_active_project, read_status, update_status
 from src.maxpat.critics import review_patch, CriticResult
 from src.maxpat.memory import MemoryStore, MemoryEntry

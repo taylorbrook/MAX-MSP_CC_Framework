@@ -72,7 +72,7 @@ updated: 2026-03-10T15:30:00Z
 Project-specific patterns in structured markdown sections. Managed by the memory agent.
 
 ### generated/
-All output from specialist agents. Files written via `write_patch()`, `write_gendsp()`, `write_js()` hooks which trigger validation on write.
+All output from specialist agents. Files written via `save_patch_roundtrip()`, `write_gendsp()`, `write_js()` hooks which trigger validation on write.
 
 ### test-results/
 Manual test results from `/max:test` runs. Each file is a completed checklist with Pass/Fail markings.

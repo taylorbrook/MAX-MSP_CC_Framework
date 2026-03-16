@@ -64,9 +64,8 @@ Before any generation:
 
 ### Aesthetic Capabilities
 
-**Auto-applied by generate_patch() -- no manual calls needed:**
-- Canvas background color (standard MAX 9 dark grey) applied automatically
-- `dac~` and `loadbang` objects highlighted with subtle background colors
+**Aesthetic auto-styling (call explicitly for new patches):**
+- `from src.maxpat import _apply_auto_styling; _apply_auto_styling(patcher)` -- sets canvas background, highlights dac~/loadbang
 - Existing user-set bgcolor is never overwritten
 
 **Patcher methods for explicit styling:**
@@ -84,7 +83,7 @@ Before any generation:
 - `is_complex_patch(patcher)` -- heuristic: True if 10+ boxes or has subpatchers
 
 **Layout options (`from src.maxpat import LayoutOptions`):**
-- `generate_patch(patcher, layout_options=LayoutOptions(...))` -- customize layout
+- `apply_layout(patcher, layout_options=LayoutOptions(...))` -- customize layout
 - `v_spacing` (default 20.0) -- vertical gap between rows in pixels
 - `h_gutter` (default 15.0) -- horizontal gap between sibling objects
 - `patcher_padding` (default 40.0) -- padding around content for auto-sized patcher rect

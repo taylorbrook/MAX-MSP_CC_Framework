@@ -70,9 +70,8 @@ Before any generation:
 
 ### Aesthetic Capabilities
 
-**Auto-applied by generate_patch() -- no manual calls needed:**
-- Canvas background color (standard MAX 9 dark grey) applied automatically
-- `dac~` and `loadbang` objects highlighted with subtle background colors
+**Aesthetic auto-styling (call explicitly for new patches):**
+- `from src.maxpat import _apply_auto_styling; _apply_auto_styling(patcher)` -- sets canvas background, highlights dac~/loadbang
 - Existing user-set bgcolor is never overwritten
 
 **Patcher methods for explicit styling:**
@@ -90,7 +89,7 @@ Before any generation:
 - `is_complex_patch(patcher)` -- heuristic: True if 10+ boxes or has subpatchers
 
 **Layout options (`from src.maxpat import LayoutOptions`):**
-- `generate_patch(patcher, layout_options=LayoutOptions(...))` -- customize layout
+- `apply_layout(patcher, layout_options=LayoutOptions(...))` -- customize layout
 - `v_spacing` (default 20.0) -- vertical gap between rows in pixels
 - `h_gutter` (default 15.0) -- horizontal gap between sibling objects
 - `patcher_padding` (default 40.0) -- padding around content for auto-sized patcher rect
@@ -127,11 +126,11 @@ Before any generation:
 
 1. Generate GenExpr code and/or MSP signal chain
 2. If GenExpr: validate with `validate_genexpr()` from `src.maxpat.code_validation`
-3. If .maxpat with signal objects: generate via `generate_patch()` pipeline
+3. If .maxpat with signal objects: apply `_apply_auto_styling(patcher)`, `apply_layout(patcher)`, serialize via `patcher.to_dict()`, validate via `validate_patch()`
 4. If standalone .gendsp: generate via `generate_gendsp()`
 5. Return output for critic review (DSP critic checks signal flow, gen~ I/O matching)
 6. Apply revisions if critic requests them
-7. Write final output via `write_patch()` or `write_gendsp()` to project's `generated/` directory
+7. Write final output via `save_patch_roundtrip(patch_dict, path)` or `write_gendsp()` to project's `generated/` directory
 
 ## Output Protocol (Edited Patches)
 
