@@ -15,6 +15,7 @@ from pathlib import Path
 sys.path.insert(0, '/Users/taylorbrook/Dev/MAX')
 
 from src.maxpat import Patcher, ObjectDatabase, write_patch, write_js
+from src.maxpat.incremental import merge_and_write
 from src.maxpat.patcher import Box
 from src.maxpat.sizing import calculate_box_size
 from src.maxpat.defaults import FONT_NAME, FONT_SIZE
@@ -45,6 +46,7 @@ def manual_box(patcher, name, text, numinlets, numoutlets, outlettype, x=0, y=0)
     box._inner_patcher = None
     box._saved_object_attributes = None
     box._bpatcher_attrs = None
+    box._raw = None
     patcher.boxes.append(box)
     return box
 
@@ -70,6 +72,7 @@ def debug_meter(patcher, x=0, y=0):
     box._inner_patcher = None
     box._saved_object_attributes = None
     box._bpatcher_attrs = None
+    box._raw = None
     patcher.boxes.append(box)
     return box
 
@@ -95,6 +98,7 @@ def debug_number_tilde(patcher, x=0, y=0):
     box._inner_patcher = None
     box._saved_object_attributes = None
     box._bpatcher_attrs = None
+    box._raw = None
     patcher.boxes.append(box)
     return box
 
@@ -120,6 +124,7 @@ def debug_ezdac(patcher, x=0, y=0):
     box._inner_patcher = None
     box._saved_object_attributes = None
     box._bpatcher_attrs = None
+    box._raw = None
     patcher.boxes.append(box)
     return box
 
@@ -1063,14 +1068,14 @@ if __name__ == "__main__":
     # Build and write voice patch
     print("  Building scala-synth-voice.maxpat...")
     voice = build_voice()
-    results = write_patch(voice, BASE / 'scala-synth-voice.maxpat')
+    results = merge_and_write(voice, BASE / 'scala-synth-voice.maxpat')
     for r in results:
         print(f"    {r}")
 
     # Build and write main patch
     print("  Building scala-synth.maxpat...")
     main = build_main()
-    results = write_patch(main, BASE / 'scala-synth.maxpat')
+    results = merge_and_write(main, BASE / 'scala-synth.maxpat')
     for r in results:
         print(f"    {r}")
 

@@ -238,6 +238,7 @@ def add_rnbo(
         in_box._inner_patcher = None
         in_box._saved_object_attributes = None
         in_box._bpatcher_attrs = None
+        in_box._raw = None
         inner.boxes.append(in_box)
 
     # Add out~ objects (audio outputs)
@@ -260,6 +261,7 @@ def add_rnbo(
         out_box._inner_patcher = None
         out_box._saved_object_attributes = None
         out_box._bpatcher_attrs = None
+        out_box._raw = None
         inner.boxes.append(out_box)
 
     # Add param objects
@@ -296,6 +298,7 @@ def add_rnbo(
         param_box._inner_patcher = None
         param_box._saved_object_attributes = None
         param_box._bpatcher_attrs = None
+        param_box._raw = None
         inner.boxes.append(param_box)
 
     # Add inport (message input)
@@ -317,6 +320,7 @@ def add_rnbo(
     inport_box._inner_patcher = None
     inport_box._saved_object_attributes = None
     inport_box._bpatcher_attrs = None
+    inport_box._raw = None
     inner.boxes.append(inport_box)
 
     # Add outport (message output)
@@ -338,6 +342,7 @@ def add_rnbo(
     outport_box._inner_patcher = None
     outport_box._saved_object_attributes = None
     outport_box._bpatcher_attrs = None
+    outport_box._raw = None
     inner.boxes.append(outport_box)
 
     # Add user-specified objects (validated above)
@@ -371,6 +376,7 @@ def add_rnbo(
         user_box._inner_patcher = None
         user_box._saved_object_attributes = None
         user_box._bpatcher_attrs = None
+        user_box._raw = None
         inner.boxes.append(user_box)
 
     # Create the parent rnbo~ box via Box.__new__ (structural container)
@@ -394,6 +400,7 @@ def add_rnbo(
     parent_box._inner_patcher = inner
     parent_box._saved_object_attributes = None
     parent_box._bpatcher_attrs = None
+    parent_box._raw = None
 
     patcher.boxes.append(parent_box)
     return (parent_box, inner)

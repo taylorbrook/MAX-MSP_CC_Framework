@@ -69,6 +69,7 @@ def make_sfplay_stereo(patcher, x=0.0, y=0.0):
     box._inner_patcher = None
     box._saved_object_attributes = None
     box._bpatcher_attrs = None
+    box._raw = None
     patcher.boxes.append(box)
     return box
 
@@ -95,6 +96,7 @@ def make_gen_crossover(patcher):
     box._inner_patcher = None
     box._saved_object_attributes = None
     box._bpatcher_attrs = None
+    box._raw = None
     patcher.boxes.append(box)
     return box
 
@@ -131,56 +133,84 @@ main.add_connection(adc, 0, snd_live, 0)
 # p input-processing  (EQ → 3-band multiband compressor)
 # ===========================================================================
 ip_box, ip = main.add_subpatcher("input-processing", inlets=1, outlets=0, x=30, y=150)
+ip.props["rect"] = [85, 104, 1100, 750]
+ip._skip_auto_layout = True   # explicit positions below
 
-rcv_live = ip.add_box("receive~", ["live-input"])
+rcv_live = ip.add_box("receive~", ["live-input"], x=30, y=30)
 
 # -- 5-Band Parametric EQ: filtergraph~ → cascade~ --
-ip.add_comment("--- 5-BAND PARAMETRIC EQ ---")
+ip.add_comment("--- 5-BAND PARAMETRIC EQ ---", x=30, y=55)
 
-fg = ip.add_box("filtergraph~")
+# Band type selectors laid out horizontally above filtergraph~
+EQ_X0 = 30       # left edge for band columns
+EQ_COL_W = 155   # width per band column (umenus are ~120px for "peaknotch")
+EQ_Y_LBL = 75    # band label row
+EQ_Y_INIT = 95   # init message row (from loadbang → trigger)
+EQ_Y_MENU = 118  # umenu row
+EQ_Y_MSG = 148   # type message row ($1 N → filtergraph~)
+FG_Y = 185       # filtergraph~ top
+CASC_Y = FG_Y + 155  # cascade~ below filtergraph~
+
+fg = ip.add_box("filtergraph~", x=EQ_X0, y=FG_Y)
 fg.extra_attrs["nfilters"] = 5
 fg.extra_attrs["numdisplay"] = 1
-fg.patching_rect[2] = 360.0
+# Default 5-band EQ: lowshelf, peaknotch×3, highshelf (all flat/0dB gain)
+# setfilter format per filter: [index, type, mode, order, flag, freq, gain, Q, pad×6]
+# Types: 5=peaknotch, 6=lowshelf, 7=highshelf
+fg.extra_attrs["setfilter"] = [
+    0, 6, 1, 0, 0, 100.0, 1.0, 0.707, 0, 0, 0, 0, 0, 0,   # Band 1: lowshelf 100Hz
+    1, 5, 1, 0, 0, 500.0, 1.0, 1.0, 0, 0, 0, 0, 0, 0,      # Band 2: peaknotch 500Hz
+    2, 5, 1, 0, 0, 1500.0, 1.0, 1.0, 0, 0, 0, 0, 0, 0,     # Band 3: peaknotch 1500Hz
+    3, 5, 1, 0, 0, 4000.0, 1.0, 1.0, 0, 0, 0, 0, 0, 0,     # Band 4: peaknotch 4000Hz
+    4, 7, 1, 0, 0, 8000.0, 1.0, 0.707, 0, 0, 0, 0, 0, 0,   # Band 5: highshelf 8000Hz
+]
+fg.patching_rect[2] = EQ_COL_W * 5
 fg.patching_rect[3] = 140.0
 
-casc = ip.add_box("cascade~")
+casc = ip.add_box("cascade~", x=EQ_X0, y=CASC_Y)
 ip.add_connection(rcv_live, 0, casc, 0)       # audio → cascade~ inlet 0
 ip.add_connection(fg, 0, casc, 1)              # coefficients → cascade~ inlet 1
 
 # -- Band Type Selectors --
-ip.add_comment("--- BAND TYPE SELECTORS ---")
+ip.add_comment("--- BAND TYPE SELECTORS ---", x=EQ_X0, y=EQ_Y_LBL - 15)
 
 eq_type_items = ["lowpass", ",", "highpass", ",", "bandpass", ",", "bandstop", ",",
                  "peaknotch", ",", "lowshelf", ",", "highshelf"]
 # Default type indices: lowshelf=5, peaknotch=4, highshelf=6
 eq_defaults = [5, 4, 4, 4, 6]
 
-lb_eq = ip.add_box("loadbang")
-trig_eq = ip.add_box("trigger", ["b"] * 5)
+lb_eq = ip.add_box("loadbang", x=EQ_X0 + EQ_COL_W * 5 + 30, y=EQ_Y_LBL)
+trig_eq = ip.add_box("trigger", ["b"] * 5, x=EQ_X0 + EQ_COL_W * 5 + 30, y=EQ_Y_INIT)
 ip.add_connection(lb_eq, 0, trig_eq, 0)
 
 for i in range(5):
     band_num = i + 1
-    ip.add_comment(f"Band {band_num}")
+    bx = EQ_X0 + i * EQ_COL_W
 
-    menu = ip.add_box("umenu")
+    menu = ip.add_box("umenu", x=bx, y=EQ_Y_MENU)
+    menu.patching_rect[2] = 130.0   # wide enough for "peaknotch"
     menu.extra_attrs["items"] = eq_type_items
+    ip.add_comment(f"Band {band_num}", x=bx, y=EQ_Y_LBL)
 
     # umenu text outlet → format as type message → filtergraph~
-    type_msg = ip.add_message(f"$1 {band_num}")
+    type_msg = ip.add_message(f"$1 {band_num}", x=bx, y=EQ_Y_MSG)
     ip.add_connection(menu, 1, type_msg, 0)
     ip.add_connection(type_msg, 0, fg, 0)
 
     # loadbang → trigger → default selection → umenu
-    init_msg = ip.add_message(str(eq_defaults[i]))
+    init_msg = ip.add_message(str(eq_defaults[i]), x=bx + 80, y=EQ_Y_INIT)
     ip.add_connection(trig_eq, 4 - i, init_msg, 0)
     ip.add_connection(init_msg, 0, menu, 0)
 
 # -- 4-Band Multiband Compressor --
-ip.add_comment("--- 4-BAND MULTIBAND COMPRESSOR ---")
+COMP_Y0 = CASC_Y + 40  # below cascade~
+COMP_COL_W = 210        # bpatcher width + gap
+ip.add_comment("--- 4-BAND MULTIBAND COMPRESSOR ---", x=EQ_X0, y=COMP_Y0 - 20)
 
 # 4-band crossover via gen~
 xover = make_gen_crossover(ip)
+xover.patching_rect[0] = EQ_X0 + 60
+xover.patching_rect[1] = COMP_Y0
 ip.add_connection(casc, 0, xover, 0)
 
 # 4 comp-band bpatchers: Low, Lo-Mid, Hi-Mid, High
@@ -192,34 +222,39 @@ for i, bname in enumerate(band_names):
         args=[bname],
         numinlets=1,
         numoutlets=1,
+        x=EQ_X0 + i * COMP_COL_W,
+        y=COMP_Y0 + 35,
     )
     bp.outlettype = ["signal"]
     ip.add_connection(xover, i, bp, 0)
     comp_bands.append(bp)
 
 # Sum 4 compressed bands
-sum1 = ip.add_box("+~")
+SUM_Y = COMP_Y0 + 155
+sum1 = ip.add_box("+~", x=EQ_X0 + 100, y=SUM_Y)
 ip.add_connection(comp_bands[0], 0, sum1, 0)
 ip.add_connection(comp_bands[1], 0, sum1, 1)
-sum2 = ip.add_box("+~")
+sum2 = ip.add_box("+~", x=EQ_X0 + COMP_COL_W * 2 + 100, y=SUM_Y)
 ip.add_connection(comp_bands[2], 0, sum2, 0)
 ip.add_connection(comp_bands[3], 0, sum2, 1)
-sum3 = ip.add_box("+~")
+sum3 = ip.add_box("+~", x=EQ_X0 + COMP_COL_W + 100, y=SUM_Y + 35)
 ip.add_connection(sum1, 0, sum3, 0)
 ip.add_connection(sum2, 0, sum3, 1)
 
 # Compressor state management
-ip.add_box("autopattr", ["@autoname", "1"])
-pattr = ip.add_box("pattrstorage", ["comp-state", "@greedy", "1", "@autorestore", "1", "@savemode", "3"])
-cb = ip.add_box("closebang")
-store_msg = ip.add_message("store 1")
+STATE_X = EQ_X0 + COMP_COL_W * 4 + 30
+ip.add_box("autopattr", ["@autoname", "1"], x=STATE_X, y=COMP_Y0)
+pattr = ip.add_box("pattrstorage", ["comp-state", "@greedy", "1", "@autorestore", "1", "@savemode", "3"],
+                    x=STATE_X, y=COMP_Y0 + 40)
+cb = ip.add_box("closebang", x=STATE_X + 200, y=COMP_Y0)
+store_msg = ip.add_message("store 1", x=STATE_X + 200, y=COMP_Y0 + 25)
 ip.add_connection(cb, 0, store_msg, 0)
 ip.add_connection(store_msg, 0, pattr, 0)
-lm = ip.add_box("loadmess", ["1"])
+lm = ip.add_box("loadmess", ["1"], x=STATE_X, y=COMP_Y0 - 25)
 ip.add_connection(lm, 0, pattr, 0)
 
 # Output processed signal
-snd_proc = ip.add_box("send~", ["proc-out"])
+snd_proc = ip.add_box("send~", ["proc-out"], x=EQ_X0 + COMP_COL_W + 80, y=SUM_Y + 70)
 ip.add_connection(sum3, 0, snd_proc, 0)
 
 
@@ -483,6 +518,7 @@ for i, (bus, label) in enumerate(channels):
     # Channel label
     lbl = main.add_comment(label, x=cx, y=345)
     lbl.presentation = True
+    lbl.extra_attrs["textcolor"] = [0.9, 0.9, 0.9, 1.0]
 
     # Presentation rects computed below after layout
     pres_objects.append(("gain", i, g))
@@ -515,6 +551,7 @@ meter_master.presentation = True
 
 master_lbl = main.add_comment("MASTER", x=350, y=555)
 master_lbl.presentation = True
+master_lbl.extra_attrs["textcolor"] = [0.9, 0.9, 0.9, 1.0]
 
 pres_objects.append(("gain", 5, gain_master))
 pres_objects.append(("meter", 5, meter_master))
@@ -540,11 +577,16 @@ snd_next_main = main.add_box("send", ["next-cue"], x=700, y=440)
 main.add_connection(next_btn, 0, snd_next_main, 0)
 
 cue_lbl = main.add_comment("CUE:", x=600, y=355)
+cue_lbl.extra_attrs["textcolor"] = [0.9, 0.9, 0.9, 1.0]
 next_lbl = main.add_comment("NEXT", x=700, y=385)
-pres_title = main.add_comment("PERFORMANCE PATCH")
+next_lbl.extra_attrs["textcolor"] = [0.9, 0.9, 0.9, 1.0]
+pres_title = main.add_section_header("Performance Patch Template")
+pres_title.extra_attrs["textcolor"] = [1.0, 1.0, 1.0, 1.0]       # white text
+pres_title.extra_attrs["bgcolor"] = [0.18, 0.22, 0.32, 1.0]      # dark slate blue
+pres_title.presentation = True
 
 # Mark as presentation but don't set rects yet
-for obj in [cue_lbl, cue_display, next_lbl, next_btn, pres_title]:
+for obj in [cue_lbl, cue_display, next_lbl, next_btn]:
     obj.presentation = True
 
 pres_objects.append(("cue_lbl", 0, cue_lbl))
@@ -566,16 +608,25 @@ FADER_H = 150       # gain~ fader height
 METER_W = 22        # meter~ width
 METER_H = 150       # meter~ height
 LABEL_H = 22        # label height
-PAD_X = 20          # left padding
+PAD_X = 15          # left padding
 PAD_Y = 10          # top padding
-TITLE_H = 25        # title bar height
+TITLE_H = 30        # title bar height
 BTN_W = 85          # subpatcher button width
 BTN_H = 22          # subpatcher button height
 BTN_SPACING = 95    # subpatcher button spacing
-LABEL_Y = PAD_Y + TITLE_H
+PRES_W = PAD_X + 6 * STRIP_W + PAD_X   # total presentation width
+
+LABEL_Y = PAD_Y + TITLE_H + 5
 FADER_Y = LABEL_Y + LABEL_H + 5
 BTN_Y = FADER_Y + FADER_H + 15
 CUE_Y = BTN_Y + BTN_H + 10
+PRES_H = CUE_Y + 32 + PAD_Y            # total presentation height
+
+# -- Decorative panel behind everything --
+bg_panel = main.add_panel(x=0, y=0, width=100, height=100, gradient=False)
+bg_panel.extra_attrs["bgcolor"] = [0.24, 0.26, 0.30, 1.0]   # medium-dark gray
+bg_panel.presentation = True
+bg_panel.presentation_rect = [0, 0, PRES_W, PRES_H]
 
 for kind, idx, box in pres_objects:
     strip_x = PAD_X + idx * STRIP_W
@@ -597,7 +648,7 @@ for kind, idx, box in pres_objects:
     elif kind == "next_btn":
         box.presentation_rect = [PAD_X + 185, CUE_Y, 28, 28]
     elif kind == "title":
-        box.presentation_rect = [PAD_X + 230, CUE_Y, 200, 22]
+        box.presentation_rect = [PAD_X, PAD_Y, PRES_W - 2 * PAD_X, TITLE_H]
 
 
 # ===========================================================================

@@ -300,6 +300,7 @@ def _make_box_at(x: float, y: float, w: float = 80.0, h: float = 22.0) -> Box:
     b._inner_patcher = None
     b._saved_object_attributes = None
     b._bpatcher_attrs = None
+    b._raw = None
     return b
 
 

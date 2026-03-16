@@ -1132,9 +1132,10 @@ class Patcher:
         # Rebuild props preserving key order (include boxes/lines placeholders)
         p.props = {}
         for key, val in patcher_data.items():
-            if key in ("boxes", "lines"):
-                # Store placeholder to preserve key position
-                p.props[key] = []
+            if key == "boxes":
+                p.props["boxes"] = None  # placeholder -- actual data in p.boxes
+            elif key == "lines":
+                p.props["lines"] = None  # placeholder -- actual data in p.lines
             else:
                 p.props[key] = copy.deepcopy(val)
 

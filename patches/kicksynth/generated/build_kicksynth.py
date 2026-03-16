@@ -8,6 +8,7 @@ import sys
 sys.path.insert(0, '.')
 
 from src.maxpat import Patcher, write_patch, ObjectDatabase
+from src.maxpat.incremental import merge_and_write
 from src.maxpat.patcher import Box
 from src.maxpat.defaults import FONT_NAME, FONT_SIZE, FONTFACE_BOLD
 
@@ -501,6 +502,7 @@ scope.extra_attrs = {"parameter_enable": 0, "calccount": 128}
 scope._inner_patcher = None
 scope._saved_object_attributes = None
 scope._bpatcher_attrs = None
+scope._raw = None
 p.boxes.append(scope)
 p.add_connection(gain_obj, 0, scope, 0)
 
@@ -533,7 +535,7 @@ set_pres(title, 10, 5, 150, 22)
 # ============================================================
 # GENERATE
 # ============================================================
-results = write_patch(p, "patches/kicksynth/generated/kicksynth.maxpat")
+results = merge_and_write(p, "patches/kicksynth/generated/kicksynth.maxpat")
 
 warnings = [r for r in results if r.level == "warning"]
 errors = [r for r in results if r.level == "error"]

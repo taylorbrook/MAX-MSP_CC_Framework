@@ -163,6 +163,7 @@ def _create_external_box(
     ext_box._inner_patcher = None
     ext_box._saved_object_attributes = None
     ext_box._bpatcher_attrs = None
+    ext_box._raw = None
 
     p.boxes.append(ext_box)
     return ext_box
