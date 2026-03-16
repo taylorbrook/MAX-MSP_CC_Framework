@@ -82,6 +82,160 @@ def load_existing_patch(path: Path) -> dict | None:
     return json.loads(path.read_text())
 
 
+# Keys that the generator owns (structural). User changes to these are
+# overwritten on regeneration; everything else the user owns.
+_GENERATOR_OWNED_KEYS = frozenset({
+    "text", "maxclass", "numinlets", "numoutlets", "outlettype",
+    "fontname", "fontsize",
+})
+
+# Extra-attr keys that are structural (generator owns even inside extra_attrs)
+_STRUCTURAL_EXTRA_KEYS = frozenset({
+    "code",   # gen~ codebox source
+    "args",   # bpatcher arguments
+})
+
+
+def _merge_box_attrs(
+    existing_box_dict: dict[str, Any],
+    generator_box_dict: dict[str, Any],
+) -> dict[str, Any]:
+    """Merge generator structural attrs onto an existing box, preserving user attrs.
+
+    The ownership model:
+    - Generator owns: text, maxclass, numinlets, numoutlets, outlettype, fontname, fontsize
+    - User owns: patching_rect, presentation, presentation_rect, and any visual extra attrs
+    - Subpatcher content (``patcher`` key) is merged recursively.
+
+    Args:
+        existing_box_dict: The ``box`` dict from the on-disk .maxpat (inside {"box": ...}).
+        generator_box_dict: The ``box`` dict from the generator's ``Box.to_dict()["box"]``.
+
+    Returns:
+        Merged box dict that preserves user presentation attrs and updates structural keys.
+    """
+    import copy
+
+    # Start with a copy of existing (preserves user attrs like patching_rect, bgcolor, etc.)
+    merged = copy.deepcopy(existing_box_dict)
+
+    # Overwrite generator-owned structural keys
+    for key in _GENERATOR_OWNED_KEYS:
+        if key in generator_box_dict:
+            merged[key] = copy.deepcopy(generator_box_dict[key])
+
+    # For non-structural keys in the generator dict that are NOT already in existing,
+    # add them (new keys introduced by the generator). But if the key exists in
+    # the existing dict, the user's value wins -- UNLESS it's a structural extra key.
+    for key, val in generator_box_dict.items():
+        if key in _GENERATOR_OWNED_KEYS:
+            continue  # Already handled above
+        if key == "patcher":
+            continue  # Handled below (recursive merge)
+        if key == "id":
+            continue  # ID is identity, always the same
+        if key in _STRUCTURAL_EXTRA_KEYS:
+            # Structural extras: generator always wins
+            merged[key] = copy.deepcopy(val)
+        elif key not in existing_box_dict:
+            # New key from generator, user hasn't set it
+            merged[key] = copy.deepcopy(val)
+        # else: key exists in both, user's value wins (already in merged)
+
+    # Recursive subpatcher merge
+    if "patcher" in generator_box_dict and "patcher" in existing_box_dict:
+        merged["patcher"] = _merge_inner_patcher(
+            existing_box_dict["patcher"],
+            generator_box_dict["patcher"],
+        )
+    elif "patcher" in generator_box_dict:
+        # Generator added a subpatcher, existing didn't have one
+        merged["patcher"] = copy.deepcopy(generator_box_dict["patcher"])
+    # else: existing has patcher but generator doesn't -- keep existing (user's)
+
+    return merged
+
+
+def _merge_inner_patcher(
+    existing_inner: dict[str, Any],
+    generator_inner: dict[str, Any],
+) -> dict[str, Any]:
+    """Recursively merge inner patcher content, preserving user-added inner objects.
+
+    Uses the generator's inner box IDs as the "known set" (since Manifest only
+    tracks top-level IDs). Everything else in the existing inner patcher is
+    treated as user-added.
+
+    Args:
+        existing_inner: The ``patcher`` dict from the existing on-disk box.
+        generator_inner: The ``patcher`` dict from the generator's box.
+
+    Returns:
+        Merged inner patcher dict.
+    """
+    import copy
+
+    # Build generator inner box ID set
+    gen_inner_boxes = generator_inner.get("boxes", [])
+    gen_inner_ids = {b.get("box", {}).get("id") for b in gen_inner_boxes}
+
+    # Build lookup for existing inner boxes
+    existing_inner_boxes = existing_inner.get("boxes", [])
+    existing_box_map = {b.get("box", {}).get("id"): b for b in existing_inner_boxes}
+
+    # Keep user-added inner boxes (ID not in generator's set)
+    user_inner_boxes = [
+        b for b in existing_inner_boxes
+        if b.get("box", {}).get("id") not in gen_inner_ids
+    ]
+
+    # Merge generator inner boxes with existing versions
+    merged_inner_boxes = list(user_inner_boxes)
+    for gen_box_entry in gen_inner_boxes:
+        gen_id = gen_box_entry.get("box", {}).get("id")
+        if gen_id in existing_box_map:
+            # Attribute-level merge for existing generator inner boxes
+            merged_box = _merge_box_attrs(
+                existing_box_map[gen_id]["box"],
+                gen_box_entry["box"],
+            )
+            merged_inner_boxes.append({"box": merged_box})
+        else:
+            # New inner box from generator
+            merged_inner_boxes.append(copy.deepcopy(gen_box_entry))
+
+    # Merge inner connections: keep user connections, replace generator connections
+    gen_inner_lines = generator_inner.get("lines", [])
+    gen_inner_conn_set = set()
+    for line_entry in gen_inner_lines:
+        ld = line_entry.get("patchline", {})
+        src = ld.get("source", ["", 0])
+        dst = ld.get("destination", ["", 0])
+        gen_inner_conn_set.add((src[0], src[1], dst[0], dst[1]))
+
+    existing_inner_lines = existing_inner.get("lines", [])
+    # Keep lines that are NOT in the generator's connection set (user connections)
+    # But we don't have an old manifest for inner patchers, so we treat all
+    # generator connections as authoritative and keep anything else from existing
+    user_inner_lines = []
+    for line_entry in existing_inner_lines:
+        ld = line_entry.get("patchline", {})
+        src = ld.get("source", ["", 0])
+        dst = ld.get("destination", ["", 0])
+        conn_tuple = (src[0], src[1], dst[0], dst[1])
+        if conn_tuple not in gen_inner_conn_set:
+            user_inner_lines.append(line_entry)
+
+    merged_inner_lines = user_inner_lines + copy.deepcopy(gen_inner_lines)
+
+    # Build merged inner patcher: start with existing props, update structural ones
+    merged = copy.deepcopy(existing_inner)
+    merged["boxes"] = merged_inner_boxes
+    merged["lines"] = merged_inner_lines
+
+    return merged
+
+
 def merge_and_write(
     patcher: "Patcher",
     path: str | Path,
@@ -155,20 +309,34 @@ def merge_and_write(
         if b.get("box", {}).get("id") not in old_manifest_ids
     ]
 
-    # New patcher provides all generator-owned boxes (replaces old + adds new)
-    # Apply layout to the patcher first so positions are computed.
-    # Match write_patch behavior: only apply auto-styling when validating.
-    from src.maxpat.layout import apply_layout
+    # Build lookup of existing on-disk boxes for attribute-level merge
+    existing_box_map = {
+        b.get("box", {}).get("id"): b for b in existing_boxes
+    }
 
+    # Auto-styling only (non-positional); skip layout on merge -- existing
+    # file already has positions which the attribute merge will preserve.
     if validate:
         from src.maxpat import _apply_auto_styling
         _apply_auto_styling(patcher)
 
-    apply_layout(patcher, layout_options)
+    # Serialize generator boxes, then attribute-merge with existing versions
+    generator_boxes = []
+    for box in patcher.boxes:
+        gen_dict = box.to_dict()  # {"box": {...}}
+        box_id = gen_dict["box"]["id"]
+        if box_id in existing_box_map:
+            # Attribute-level merge: user presentation attrs preserved
+            merged_box = _merge_box_attrs(
+                existing_box_map[box_id]["box"],
+                gen_dict["box"],
+            )
+            generator_boxes.append({"box": merged_box})
+        else:
+            # New box from generator -- use as-is
+            generator_boxes.append(gen_dict)
 
-    generator_boxes = [box.to_dict() for box in patcher.boxes]
-
-    # Merged boxes: user boxes + generator boxes
+    # Merged boxes: user boxes + generator boxes (with merged attrs)
     merged_boxes = user_boxes + generator_boxes
 
     # --- Merge connections ---
@@ -182,6 +350,10 @@ def merge_and_write(
         if conn_tuple not in old_manifest_conns:
             user_lines.append(line_entry)
 
+    # Clear midpoints from generator lines -- they would be stale since
+    # positions are preserved from the existing file, not freshly laid out.
+    for line in patcher.lines:
+        line.midpoints = None
     generator_lines = [line.to_dict() for line in patcher.lines]
 
     merged_lines = user_lines + generator_lines
