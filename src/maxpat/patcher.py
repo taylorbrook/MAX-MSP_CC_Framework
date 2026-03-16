@@ -29,6 +29,93 @@ from src.maxpat.defaults import (
 
 # Collision detection padding (px) around boxes for readability
 COLLISION_PAD = 5.0
+
+# ---------------------------------------------------------------------------
+# Section signature mapping: object name -> section label
+# Used by _name_section() for auto-naming connected components.
+# ---------------------------------------------------------------------------
+SECTION_SIGNATURES: dict[str, str] = {
+    # Audio sources (priority: high)
+    "cycle~": "Oscillator",
+    "saw~": "Oscillator",
+    "rect~": "Oscillator",
+    "tri~": "Oscillator",
+    "phasor~": "Oscillator",
+    "noise~": "Noise Generator",
+    "sfplay~": "Sample Player",
+    "play~": "Sample Player",
+    "groove~": "Sample Player",
+    "buffer~": "Buffer",
+    # Processing (priority: medium)
+    "svf~": "Filter",
+    "biquad~": "Filter",
+    "onepole~": "Filter",
+    "reson~": "Filter",
+    "filtergraph~": "Filter",
+    "lores~": "Filter",
+    # Dynamics / envelope
+    "adsr~": "Envelope",
+    "function": "Envelope",
+    "line~": "Envelope/Ramp",
+    # Effects
+    "tapin~": "Delay",
+    "tapout~": "Delay",
+    "freqshift~": "Frequency Shifter",
+    "pitchshift~": "Pitch Shifter",
+    "reverb~": "Reverb",
+    # Output (priority: low)
+    "dac~": "Audio Output",
+    "ezdac~": "Audio Output",
+    "adc~": "Audio Input",
+    "ezadc~": "Audio Input",
+    # MIDI
+    "notein": "MIDI Input",
+    "noteout": "MIDI Output",
+    "ctlin": "MIDI Control",
+    "makenote": "MIDI Note Builder",
+    # Mixing
+    "gain~": "Gain/Mixer",
+    "*~": "Gain/Mixer",
+    # Gen
+    "gen~": "Gen~ DSP",
+    # Control
+    "metro": "Clock/Sequencer",
+    "counter": "Counter/Sequencer",
+    "loadbang": "Initialization",
+    # Jitter
+    "jit.gl.render": "OpenGL Render",
+    "jit.matrix": "Matrix Processing",
+}
+
+# Priority ordering for section naming: higher number = higher priority.
+# When multiple signature objects appear in a section, prefer the one with
+# the highest priority to name the section.
+_SECTION_NAME_PRIORITY: dict[str, int] = {
+    "Oscillator": 90,
+    "Noise Generator": 85,
+    "Sample Player": 85,
+    "Gen~ DSP": 80,
+    "Filter": 70,
+    "Envelope": 65,
+    "Envelope/Ramp": 60,
+    "Delay": 60,
+    "Frequency Shifter": 60,
+    "Pitch Shifter": 60,
+    "Reverb": 60,
+    "Gain/Mixer": 50,
+    "Buffer": 40,
+    "MIDI Input": 75,
+    "MIDI Output": 55,
+    "MIDI Control": 70,
+    "MIDI Note Builder": 65,
+    "Clock/Sequencer": 70,
+    "Counter/Sequencer": 65,
+    "Initialization": 30,
+    "Audio Output": 20,
+    "Audio Input": 80,
+    "OpenGL Render": 75,
+    "Matrix Processing": 70,
+}
 from src.maxpat.maxclass_map import resolve_maxclass, is_ui_object, UI_MAXCLASSES
 from src.maxpat.sizing import calculate_box_size
 from src.maxpat.db_lookup import ObjectDatabase
@@ -2127,3 +2214,190 @@ class Patcher:
         # Sort largest first
         components.sort(key=lambda c: len(c), reverse=True)
         return components
+
+    # ------------------------------------------------------------------
+    # Patch analysis
+    # ------------------------------------------------------------------
+
+    def _classify_domain(self, box: Box) -> str:
+        """Classify a box's domain using DB lookup with heuristic fallback.
+
+        Returns one of: "Max", "MSP", "Jitter", "MC", "M4L", "Gen",
+        "Packages", "RNBO", or "External/Unknown".
+        """
+        # Try DB lookup first
+        if self.db:
+            obj_data = self.db.lookup(box.name)
+            if obj_data and "domain" in obj_data:
+                return obj_data["domain"]
+
+        # Heuristic fallback for unknown objects
+        # Check prefixes BEFORE tilde suffix -- mc.foo~ is MC, not MSP
+        name = box.name
+        if name.startswith("jit."):
+            return "Jitter"
+        if name.startswith("mc."):
+            return "MC"
+        if name.startswith("live."):
+            return "M4L"
+        if name.endswith("~"):
+            return "MSP"
+        # Check maxclass for UI objects
+        if box.maxclass in UI_MAXCLASSES and box.maxclass not in (
+            "newobj", "comment", "message",
+        ):
+            return "Max"
+        return "External/Unknown"
+
+    def _resolve_send_receive_pairs(
+        self,
+    ) -> dict[str, tuple[list[str], list[str]]]:
+        """Build mapping: channel_name -> (sender_box_ids, receiver_box_ids).
+
+        Scans self.boxes for send~/receive~ (and aliases s~/r~, send/receive,
+        s/r). Boxes with empty args are skipped.
+        """
+        pairs: dict[str, tuple[list[str], list[str]]] = {}
+        send_names = {"send~", "send", "s~", "s"}
+        recv_names = {"receive~", "receive", "r~", "r"}
+        for box in self.boxes:
+            if box.name in send_names and box.args:
+                channel = box.args[0]
+                pairs.setdefault(channel, ([], []))
+                pairs[channel][0].append(box.id)
+            elif box.name in recv_names and box.args:
+                channel = box.args[0]
+                pairs.setdefault(channel, ([], []))
+                pairs[channel][1].append(box.id)
+        return pairs
+
+    def _merge_components_by_send_receive(
+        self,
+        components: list[list[Box]],
+    ) -> list[list[Box]]:
+        """Merge connected components linked by send~/receive~ name pairs.
+
+        Uses union-find to merge components that share a send/receive channel.
+        Returns merged components sorted largest-first.
+        """
+        if not components:
+            return []
+
+        # Build box_id -> component_index mapping
+        box_to_comp: dict[str, int] = {}
+        for i, comp in enumerate(components):
+            for box in comp:
+                box_to_comp[box.id] = i
+
+        # Union-find
+        parent = list(range(len(components)))
+
+        def find(x: int) -> int:
+            while parent[x] != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        def union(a: int, b: int) -> None:
+            ra, rb = find(a), find(b)
+            if ra != rb:
+                parent[rb] = ra
+
+        # Find send/receive pairs and union their components
+        pairs = self._resolve_send_receive_pairs()
+        for _channel, (senders, receivers) in pairs.items():
+            comp_indices: set[int] = set()
+            for box_id in senders + receivers:
+                if box_id in box_to_comp:
+                    comp_indices.add(box_to_comp[box_id])
+            indices = list(comp_indices)
+            for i in range(1, len(indices)):
+                union(indices[0], indices[i])
+
+        # Rebuild merged components
+        merged: dict[int, list[Box]] = {}
+        for i, comp in enumerate(components):
+            root = find(i)
+            merged.setdefault(root, []).extend(comp)
+
+        result = list(merged.values())
+        result.sort(key=lambda c: len(c), reverse=True)
+        return result
+
+    def _name_section(
+        self,
+        boxes: list[Box],
+        section_num: int = 0,
+    ) -> str:
+        """Auto-name a section from its signature objects.
+
+        Uses SECTION_SIGNATURES to find labels, picks the highest-priority
+        label when multiple signatures are found. Falls back to
+        "Section {section_num}" when no signatures match.
+
+        Args:
+            boxes: The boxes in the section.
+            section_num: Fallback section number (used if no signature found).
+
+        Returns:
+            The section name string.
+        """
+        best_name: str | None = None
+        best_priority = -1
+        for box in boxes:
+            label = SECTION_SIGNATURES.get(box.name)
+            if label:
+                priority = _SECTION_NAME_PRIORITY.get(label, 0)
+                if priority > best_priority:
+                    best_priority = priority
+                    best_name = label
+        if best_name:
+            return best_name
+        return f"Section {section_num}"
+
+    def _analyze_sections(self) -> str:
+        """Detect functional sections via connected components + send/receive merging.
+
+        Filters out single-element groups consisting of only a comment or panel.
+        Merges components linked by send~/receive~ or send/receive name pairs.
+        Auto-names each section from signature objects.
+
+        Returns:
+            Markdown string with "## Sections" header.
+        """
+        components = self.connected_components()
+
+        # Filter out comment/panel-only single-element groups
+        filtered: list[list[Box]] = []
+        for comp in components:
+            if len(comp) == 1 and comp[0].maxclass in ("comment", "panel"):
+                continue
+            filtered.append(comp)
+
+        # Merge via send/receive pairs
+        merged = self._merge_components_by_send_receive(filtered)
+
+        lines = ["## Sections", ""]
+        if not merged:
+            lines.append("(no sections detected)")
+            return "\n".join(lines)
+
+        section_counter = 1
+        for comp in merged:
+            name = self._name_section(comp, section_num=section_counter)
+            if name.startswith("Section "):
+                section_counter += 1
+            obj_count = len(comp)
+            # Build 1-line description from key objects (top 3 unique names)
+            unique_names: list[str] = []
+            seen: set[str] = set()
+            for box in comp:
+                if box.name not in seen and box.maxclass != "comment":
+                    seen.add(box.name)
+                    unique_names.append(box.name)
+                    if len(unique_names) >= 3:
+                        break
+            desc = ", ".join(unique_names)
+            lines.append(f"- **{name}** ({obj_count} objects) -- {desc}")
+
+        return "\n".join(lines)
