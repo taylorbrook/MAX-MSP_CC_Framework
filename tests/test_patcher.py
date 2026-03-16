@@ -1702,9 +1702,135 @@ class TestUpstream:
 
 class TestSignalPath:
     """ED-04: signal-only path tracing."""
-    pass
+
+    def test_linear_audio_chain(self):
+        """cycle~->*~->dac~ returns full ordered path through the box."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        gain = p.add_box("*~", args=["0.5"])
+        out = p.add_box("dac~")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, out, 0)
+        result = p.signal_path(gain)
+        # upstream reversed + [gain] + downstream
+        assert result == [osc, gain, out]
+
+    def test_mixed_signal_control_returns_only_tilde(self):
+        """Non-~ boxes are excluded from signal path."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        gain = p.add_box("*~", args=["0.5"])
+        out = p.add_box("dac~")
+        slider = p.add_box("slider")
+        prnt = p.add_box("print")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(slider, 0, gain, 1)
+        p.add_connection(gain, 0, out, 0)
+        p.add_connection(gain, 0, prnt, 0)  # control connection from ~ to non-~
+        result = p.signal_path(gain)
+        assert osc in result
+        assert gain in result
+        assert out in result
+        assert slider not in result
+        assert prnt not in result
+
+    def test_single_tilde_object_no_connections(self):
+        """Single ~ object with no connections returns just itself."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        result = p.signal_path(osc)
+        assert result == [osc]
+
+    def test_non_tilde_box_returns_upstream_and_downstream_signal(self):
+        """Non-~ box in signal_path returns only the ~ upstream/downstream."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        gain = p.add_box("*~", args=["0.5"])
+        out = p.add_box("dac~")
+        prnt = p.add_box("print")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, out, 0)
+        p.add_connection(osc, 0, prnt, 0)
+        # print is not ~, so signal_path(print) returns just the signal parts
+        result = p.signal_path(prnt)
+        assert prnt not in result  # non-~ box itself excluded
+        # No signal-only upstream or downstream from print
+        assert result == []
+
+    def test_valueerror_on_missing_box(self):
+        """Raises ValueError if box is not in patcher."""
+        p = Patcher()
+        p.add_box("cycle~", args=["440"])
+        other_p = Patcher()
+        foreign = other_p.add_box("dac~")
+        with pytest.raises(ValueError, match="not in this patcher"):
+            p.signal_path(foreign)
 
 
 class TestConnectedComponents:
     """ED-04: connected component detection."""
-    pass
+
+    def test_two_separate_groups(self):
+        """Two disconnected groups detected as separate components."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("dac~")
+        p.add_connection(a, 0, b, 0)
+        c = p.add_box("toggle")
+        d = p.add_box("print")
+        p.add_connection(c, 0, d, 0)
+        result = p.connected_components()
+        assert len(result) == 2
+        # Each group has 2 boxes
+        sizes = sorted([len(g) for g in result])
+        assert sizes == [2, 2]
+
+    def test_single_connected_patch(self):
+        """Fully connected patch returns one component."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("*~", args=["0.5"])
+        c = p.add_box("dac~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+        result = p.connected_components()
+        assert len(result) == 1
+        assert len(result[0]) == 3
+
+    def test_disconnected_objects_as_single_groups(self):
+        """Disconnected objects (no connections) returned as single-element groups."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("toggle")
+        # No connections -- both are isolated
+        result = p.connected_components()
+        assert len(result) == 2
+        sizes = sorted([len(g) for g in result])
+        assert sizes == [1, 1]
+
+    def test_empty_patcher_returns_empty_list(self):
+        """Empty patcher has no components."""
+        p = Patcher()
+        result = p.connected_components()
+        assert result == []
+
+    def test_components_sorted_largest_first(self):
+        """Components are sorted by size, largest first."""
+        p = Patcher()
+        # Group 1: 3 boxes
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("*~", args=["0.5"])
+        c = p.add_box("dac~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+        # Group 2: 2 boxes
+        d = p.add_box("toggle")
+        e = p.add_box("print")
+        p.add_connection(d, 0, e, 0)
+        # Group 3: 1 isolated box
+        p.add_box("button")
+        result = p.connected_components()
+        assert len(result) == 3
+        assert len(result[0]) == 3  # largest first
+        assert len(result[1]) == 2
+        assert len(result[2]) == 1

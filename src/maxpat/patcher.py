@@ -2036,3 +2036,94 @@ class Patcher:
                     if key not in visited:
                         visited.add(key)
                         result.append(inner_box)
+
+    def signal_path(self, box: Box) -> list[Box]:
+        """Return the full signal chain passing through *box* (~ objects only).
+
+        Combines upstream signal sources (reversed) + box + downstream signal
+        sinks. Only includes boxes whose name ends with ``~``.
+
+        Args:
+            box: The box to trace the signal path through.
+
+        Returns:
+            Ordered list of ~ boxes from source to sink.
+
+        Raises:
+            ValueError: If *box* is not in this patcher.
+        """
+        if box not in self.boxes:
+            raise ValueError(
+                f"Box '{box.id}' ({box.name}) is not in this patcher"
+            )
+        upstream_signal = self.upstream(box, signal_only=True)
+        downstream_signal = self.downstream(box, signal_only=True)
+        # Reverse upstream so sources come first
+        upstream_signal = list(reversed(upstream_signal))
+        is_signal = box.name.endswith("~")
+        if is_signal:
+            return upstream_signal + [box] + downstream_signal
+        else:
+            return upstream_signal + downstream_signal
+
+    def connected_components(self) -> list[list[Box]]:
+        """Return groups of interconnected boxes.
+
+        Uses undirected BFS. Disconnected objects (no connections) are
+        returned as single-element groups. Components are sorted by size
+        (largest first).
+
+        Returns:
+            List of Box lists, each list is a connected component.
+        """
+        if not self.boxes:
+            return []
+
+        # Build undirected adjacency from lines
+        undirected: dict[str, set[str]] = {}
+        box_map: dict[str, Box] = {b.id: b for b in self.boxes}
+
+        for line in self.lines:
+            src = line.source_id
+            dst = line.dest_id
+            if src in box_map and dst in box_map:
+                undirected.setdefault(src, set()).add(dst)
+                undirected.setdefault(dst, set()).add(src)
+
+        visited: set[str] = set()
+        components: list[list[Box]] = []
+
+        for box in self.boxes:
+            if box.id in visited:
+                continue
+            visited.add(box.id)
+
+            if box.id not in undirected:
+                # Disconnected box -> single-element group
+                components.append([box])
+                continue
+
+            # BFS to find connected component
+            component: list[Box] = [box]
+            queue: deque[str] = deque()
+            for neighbor in undirected.get(box.id, set()):
+                if neighbor not in visited:
+                    queue.append(neighbor)
+
+            while queue:
+                node_id = queue.popleft()
+                if node_id in visited:
+                    continue
+                visited.add(node_id)
+                node_box = box_map.get(node_id)
+                if node_box is not None:
+                    component.append(node_box)
+                for neighbor in undirected.get(node_id, set()):
+                    if neighbor not in visited:
+                        queue.append(neighbor)
+
+            components.append(component)
+
+        # Sort largest first
+        components.sort(key=lambda c: len(c), reverse=True)
+        return components
