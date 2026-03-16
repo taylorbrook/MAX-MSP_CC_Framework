@@ -874,6 +874,58 @@ class Patcher:
 
         return EditResult(box=box, orphaned=orphaned)
 
+    def replace_box(
+        self,
+        old_box: Box,
+        new_name: str,
+        *,
+        args: list[str] | None = None,
+    ) -> EditResult:
+        """Replace a box with a new object of a different type.
+
+        Creates a new box at the old box's position, removes the old box,
+        and returns ALL old connections as orphaned (no auto-remap per
+        CONTEXT.md locked decision). The caller handles rewiring.
+
+        Args:
+            old_box: The box to replace (must be in this patcher).
+            new_name: Name of the replacement object (e.g., "saw~").
+            args: Optional arguments for the new object.
+
+        Returns:
+            EditResult with the new box and all old connections as orphaned.
+
+        Raises:
+            ValueError: If old_box is not in this patcher.
+        """
+        if old_box not in self.boxes:
+            raise ValueError(
+                f"Box {old_box.id} not found in this patcher"
+            )
+
+        # Capture ALL connections to/from old box as orphaned dicts
+        orphaned: list[dict] = []
+        for pl in self.lines:
+            if pl.source_id == old_box.id or pl.dest_id == old_box.id:
+                orphaned.append({
+                    "source_id": pl.source_id,
+                    "source_outlet": pl.source_outlet,
+                    "dest_id": pl.dest_id,
+                    "dest_inlet": pl.dest_inlet,
+                })
+
+        # Record old position
+        old_x = old_box.patching_rect[0]
+        old_y = old_box.patching_rect[1]
+
+        # Remove old box and its patchlines
+        self.remove_box(old_box)
+
+        # Create replacement box at old position
+        new_box = self.add_box(new_name, args=args, x=old_x, y=old_y)
+
+        return EditResult(box=new_box, orphaned=orphaned)
+
     # ------------------------------------------------------------------
     # Search / query
     # ------------------------------------------------------------------
