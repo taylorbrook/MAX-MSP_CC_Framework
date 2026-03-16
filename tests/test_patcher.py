@@ -541,3 +541,222 @@ class TestEndToEndSerialization:
 
         assert len(reparsed["patcher"]["boxes"]) == 6
         assert len(reparsed["patcher"]["lines"]) == 2
+
+
+class TestFindBox:
+    """find_box() returns first matching Box or None."""
+
+    def test_find_by_id(self):
+        """find_box(id=...) returns box with exact ID match."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        result = p.find_box(id=b1.id)
+        assert result is b1
+
+    def test_find_by_id_not_found(self):
+        """find_box(id=...) returns None when ID not found."""
+        p = Patcher()
+        p.add_box("cycle~")
+        result = p.find_box(id="obj-999")
+        assert result is None
+
+    def test_find_by_name(self):
+        """find_box(name=...) returns first box with matching name."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        result = p.find_box(name="cycle~")
+        assert result is b1
+
+    def test_find_by_name_alias_forward(self):
+        """find_box(name='t') also finds boxes named 'trigger' via alias."""
+        p = Patcher()
+        b1 = p.add_box("trigger", args=["b", "i"])
+        result = p.find_box(name="t")
+        assert result is b1
+
+    def test_find_by_name_alias_reverse(self):
+        """find_box(name='trigger') finds boxes named 't' via reverse alias."""
+        p = Patcher()
+        b1 = p.add_box("t", args=["b", "i"])
+        result = p.find_box(name="trigger")
+        assert result is b1
+
+    def test_find_by_maxclass(self):
+        """find_box(maxclass=...) returns first box with matching maxclass."""
+        p = Patcher()
+        b1 = p.add_box("toggle")
+        b2 = p.add_box("cycle~")
+        result = p.find_box(maxclass="toggle")
+        assert result is b1
+
+    def test_find_by_text_substring(self):
+        """find_box(text=...) returns first box whose text contains substring."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("cycle~", args=["880"])
+        result = p.find_box(text="cycle~ 440")
+        assert result is b1
+
+    def test_find_combined_criteria(self):
+        """find_box(maxclass=..., text=...) combines criteria with AND."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        result = p.find_box(maxclass="newobj", text="dac~")
+        assert result is b2
+
+    def test_find_no_match_returns_none(self):
+        """find_box() returns None when no box matches."""
+        p = Patcher()
+        p.add_box("cycle~")
+        result = p.find_box(name="ezdac~")
+        assert result is None
+
+    def test_find_recursive(self):
+        """find_box(recursive=True) searches into subpatchers."""
+        p = Patcher()
+        p.add_box("cycle~")
+        _, inner = p.add_subpatcher("sub", inlets=1, outlets=1)
+        inner_box = inner.add_box("noise~")
+        result = p.find_box(name="noise~", recursive=True)
+        assert result is inner_box
+
+    def test_find_recursive_prefers_parent(self):
+        """find_box(recursive=True) returns parent match before inner match."""
+        p = Patcher()
+        parent_box = p.add_box("cycle~")
+        _, inner = p.add_subpatcher("sub", inlets=1, outlets=1)
+        inner.add_box("cycle~")
+        result = p.find_box(name="cycle~", recursive=True)
+        assert result is parent_box
+
+    def test_find_no_db_works_for_non_alias_criteria(self):
+        """find_box works when db is None for non-alias criteria."""
+        p = Patcher()
+        p.db = None
+        b1 = p.add_box.__wrapped__(p, "cycle~") if hasattr(p.add_box, '__wrapped__') else None
+        # Build a box manually to avoid DB dependency
+        box = Box.__new__(Box)
+        box.id = "obj-1"
+        box.name = "cycle~"
+        box.maxclass = "newobj"
+        box.text = "cycle~ 440"
+        box.args = ["440"]
+        box.numinlets = 2
+        box.numoutlets = 1
+        box.outlettype = ["signal"]
+        box.patching_rect = [0, 0, 60, 22]
+        box.fontname = "Arial"
+        box.fontsize = 12.0
+        box.presentation = False
+        box.presentation_rect = None
+        box.target_id = None
+        box.extra_attrs = {}
+        box._inner_patcher = None
+        box._saved_object_attributes = None
+        box._bpatcher_attrs = None
+        box._raw = None
+        p.boxes.append(box)
+        result = p.find_box(id="obj-1")
+        assert result is box
+
+    def test_find_no_db_name_exact_match_only(self):
+        """find_box(name=...) with db=None falls back to exact name match."""
+        p = Patcher()
+        p.db = None
+        box = Box.__new__(Box)
+        box.id = "obj-1"
+        box.name = "trigger"
+        box.maxclass = "newobj"
+        box.text = "trigger b i"
+        box.args = ["b", "i"]
+        box.numinlets = 1
+        box.numoutlets = 2
+        box.outlettype = ["", ""]
+        box.patching_rect = [0, 0, 60, 22]
+        box.fontname = "Arial"
+        box.fontsize = 12.0
+        box.presentation = False
+        box.presentation_rect = None
+        box.target_id = None
+        box.extra_attrs = {}
+        box._inner_patcher = None
+        box._saved_object_attributes = None
+        box._bpatcher_attrs = None
+        box._raw = None
+        p.boxes.append(box)
+        # "t" should NOT match "trigger" when db is None (no alias resolution)
+        result = p.find_box(name="t")
+        assert result is None
+        # But exact match should work
+        result = p.find_box(name="trigger")
+        assert result is box
+
+
+class TestFindBoxes:
+    """find_boxes() returns list of all matching boxes."""
+
+    def test_find_all_by_name(self):
+        """find_boxes(name=...) returns all boxes with matching name."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("cycle~", args=["880"])
+        b3 = p.add_box("ezdac~")
+        results = p.find_boxes(name="cycle~")
+        assert results == [b1, b2]
+
+    def test_find_boxes_no_match_returns_empty(self):
+        """find_boxes() returns empty list when no match."""
+        p = Patcher()
+        p.add_box("cycle~")
+        results = p.find_boxes(name="noise~")
+        assert results == []
+
+    def test_find_boxes_recursive(self):
+        """find_boxes(recursive=True) finds boxes inside subpatchers."""
+        p = Patcher()
+        p.add_box("cycle~")
+        _, inner = p.add_subpatcher("sub", inlets=1, outlets=1)
+        inner.add_box("cycle~")
+        results = p.find_boxes(name="cycle~", recursive=True)
+        assert len(results) == 2
+
+    def test_find_boxes_recursive_finds_inlet(self):
+        """find_boxes(name='inlet', recursive=True) finds inlet boxes inside subpatchers."""
+        p = Patcher()
+        _, inner = p.add_subpatcher("sub", inlets=2, outlets=1)
+        results = p.find_boxes(name="inlet", recursive=True)
+        assert len(results) == 2
+
+    def test_find_boxes_no_parent_duplicates(self):
+        """find_boxes(recursive=True) does not duplicate parent boxes."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+        _, inner = p.add_subpatcher("sub", inlets=1, outlets=1)
+        inner.add_box("cycle~")
+        results = p.find_boxes(name="cycle~", recursive=True)
+        # Should have exactly 2 (one parent, one inner) -- no duplicates
+        assert len(results) == 2
+        assert b1 in results
+
+    def test_find_boxes_combined_criteria(self):
+        """find_boxes with multiple criteria combines as AND."""
+        p = Patcher()
+        p.add_box("cycle~", args=["440"])
+        p.add_box("cycle~", args=["880"])
+        p.add_box("ezdac~")
+        results = p.find_boxes(maxclass="newobj", text="440")
+        assert len(results) == 1
+
+    def test_find_boxes_alias_resolution(self):
+        """find_boxes(name='t') finds both 't' and 'trigger' boxes."""
+        p = Patcher()
+        b1 = p.add_box("t", args=["b", "i"])
+        b2 = p.add_box("trigger", args=["b", "f"])
+        b3 = p.add_box("cycle~")
+        results = p.find_boxes(name="t")
+        assert len(results) == 2
+        assert b1 in results
+        assert b2 in results
