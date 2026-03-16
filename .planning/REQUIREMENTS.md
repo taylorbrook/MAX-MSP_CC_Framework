@@ -27,9 +27,9 @@ Requirements for v2.0 Direct .maxpat Editing milestone. Each maps to roadmap pha
 
 ### Patch Analysis & Onboarding
 
-- [ ] **AN-01**: Patch analyzer produces structured summary — object inventory by domain, signal flow chains, control flow paths, subpatcher map, parameter list, complexity metrics
-- [ ] **AN-02**: /max-onboard command analyzes an existing .maxpat file from any source, builds understanding of its structure, and produces a human-readable summary
-- [ ] **AN-03**: Patch analyzer identifies functional sections by connected components and spatial proximity — grouping objects into logical units
+- [x] **AN-01**: Patch analyzer produces structured summary — object inventory by domain, signal flow chains, control flow paths, subpatcher map, parameter list, complexity metrics
+- [x] **AN-02**: /max-onboard command analyzes an existing .maxpat file from any source, builds understanding of its structure, and produces a human-readable summary
+- [x] **AN-03**: Patch analyzer identifies functional sections by connected components and spatial proximity — grouping objects into logical units
 
 ### Agent & Command Migration
 
@@ -97,9 +97,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | ED-03 | Phase 15 | Complete |
 | ED-04 | Phase 15 | Complete |
 | ED-05 | Phase 15 | Complete |
-| AN-01 | Phase 16 | Pending |
-| AN-02 | Phase 16 | Pending |
-| AN-03 | Phase 16 | Pending |
+| AN-01 | Phase 16 | Complete |
+| AN-02 | Phase 16 | Complete |
+| AN-03 | Phase 16 | Complete |
 | MG-01 | Phase 17 | Pending |
 | MG-02 | Phase 17 | Pending |
 | MG-03 | Phase 17 | Pending |

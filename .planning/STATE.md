@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: executing
-stopped_at: Phase 16 context gathered
-last_updated: "2026-03-16T19:52:45.006Z"
-last_activity: 2026-03-16 -- Plan 15-02 complete (auto-positioning, insert_into_connection)
+stopped_at: Plan 16-01 complete (patch analysis)
+last_updated: "2026-03-16T20:23:37Z"
+last_activity: 2026-03-16 -- Plan 16-01 complete (Patcher.analyze() with all 7 facets)
 progress:
   total_phases: 11
-  completed_phases: 8
-  total_plans: 21
-  completed_plans: 21
-  percent: 95
+  completed_phases: 9
+  total_plans: 22
+  completed_plans: 22
+  percent: 96
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v2.0 Phase 15 in progress -- Intelligent Editing (Plan 1 of 3 done)
+**Current focus:** v2.0 Phase 16 complete -- Patch Analysis
 
 ## Current Position
 
-Phase: 15 of 18 (Intelligent Editing)
-Plan: 2 of 3
-Status: In Progress
-Last activity: 2026-03-16 -- Plan 15-02 complete (auto-positioning, insert_into_connection)
+Phase: 16 of 18 (Patch Analysis)
+Plan: 1 of 1
+Status: Complete
+Last activity: 2026-03-16 -- Plan 16-01 complete (Patcher.analyze() with all 7 facets)
 
-Progress: [██████████] 95%
+Progress: [██████████] 96%
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Progress: [██████████] 95%
 
 *Updated after each plan completion*
 | Phase 15 P03 | 5min | 2 tasks | 2 files |
+| Phase 16 P01 | 6min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -84,6 +85,10 @@ Recent decisions for v2.0:
 - [Phase 15-03]: connected_components returns disconnected boxes as single-element groups (not separate list)
 - [Phase 15-03]: Subpatcher crossing adds all inlet/outlet objects to result for full visibility
 - [Phase 15-03]: _build_adj sorts adjacency by outlet/inlet index for left-to-right traversal order
+- [Phase 16-01]: Prefix heuristics checked before tilde suffix (mc.foo~ is MC, not MSP)
+- [Phase 16-01]: Section naming uses priority-based selection when multiple signatures found
+- [Phase 16-01]: Signal chain wireless connections shown as "...-> receive~ name (wireless)" notation
+- [Phase 16-01]: Control flow traces only notable origins (loadbang, metro, MIDI) -- not all control paths
 
 ### Pending Todos
 
@@ -98,6 +103,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T19:52:45.004Z
-Stopped at: Phase 16 context gathered
-Resume file: .planning/phases/16-patch-analysis/16-CONTEXT.md
+Last session: 2026-03-16T20:23:37Z
+Stopped at: Plan 16-01 complete (patch analysis)
+Resume file: .planning/phases/16-patch-analysis/16-01-SUMMARY.md
