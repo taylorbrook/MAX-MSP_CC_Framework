@@ -1,192 +1,203 @@
 # Project Research Summary
 
-**Project:** MaxSystem v1.1 — Object DB Audit, Patch Aesthetics, Refined Positioning
-**Domain:** MAX/MSP development framework tooling
-**Researched:** 2026-03-13
+**Project:** MaxSystem v2.0 -- Patcher Library Refactor to Read-Write Editor
+**Domain:** .maxpat file direct reading, surgical editing, and patch analysis
+**Researched:** 2026-03-15
 **Confidence:** HIGH
 
 ## Executive Summary
 
-v1.1 is a quality milestone for an existing, working MAX patch generation framework. The v1.0 system produces functionally valid patches using a custom Python stack (`patcher.py`, `layout.py`, `db_lookup.py`, `validation.py`) with 624 passing tests. The v1.1 work divides cleanly into two independent tracks: (1) correctness — audit ~973 MAX help patches to extract ground truth object metadata and fix outlet type errors in the database; and (2) aesthetics — add visual polish (panels, styled comments, background layering, color system) so generated patches look professionally authored rather than machine-generated. Both tracks operate within the existing Python stdlib-only architecture with no new dependencies.
+The v2.0 milestone replaces the current write-only Python generation pipeline with a direct read-write editing model where the .maxpat file is the single source of truth. Research confirms this is both feasible and well-scoped: the existing codebase already contains 90% of what is needed. `Patcher.from_dict()` loads .maxpat JSON into structured Box/Patchline objects, the layout engine builds topology graphs, and the validation pipeline checks correctness. The critical missing pieces are (1) hardened round-trip fidelity for `from_dict()`/`to_dict()`, (2) surgical mutation methods on Patcher (remove, replace, rewire), (3) a query/search API, and (4) a patch analysis module for understanding unknown patches. No external dependencies are needed -- the entire v2.0 runs on Python 3.14 stdlib plus the existing codebase.
 
-The recommended approach is to treat the audit track as the higher-priority foundation. Outlet type errors are not cosmetic — they break connection validation for mixed signal/control objects like `line~`, `sfplay~`, and `curve~`. The help patch format is identical JSON to `.maxpat`, parses in 0.17s for all 973 files, and provides authoritative `outlettype` arrays. The audit produces corrections into the existing `overrides.json` mechanism, which `db_lookup.py` already deep-merges with no code changes. The aesthetics track is then a clean post-audit addition: a new `aesthetics.py` module runs after layout and before serialization, adding panels and comment styling through the existing `Box.extra_attrs` mechanism.
+The recommended approach is a strict load-edit-save cycle: read the .maxpat from disk into a Patcher, make targeted modifications via new edit methods, validate the changes, and write the full JSON back. This eliminates the `generate.py` scripts, the `.manifest.json` sidecar files, and the manifest-based merge system (`incremental.py`) that created the dual-source-of-truth problem v1.x suffered from. The .maxpat file becomes the only authoritative artifact. Agents call Patcher methods directly instead of generating intermediate Python scripts.
 
-The key risks are concentrated in the audit track. Help patches use a tab-based structure where all object examples are buried in subpatcher tabs — a shallow parser finds nothing. Multiple instances of the same object appear with different argument configurations, making naive extraction produce wrong outlet types. And bulk writes to domain JSON files would silently corrupt 16 manually verified overrides. The aesthetics track has lower overall risk, with the main gotchas being panel z-order (panels must appear first in the `boxes` array AND carry `background: 1`) and the undocumented `bgfillcolor` dict format, which requires capping `proportion` below 1.0 and visual validation in MAX.
+The primary risk is round-trip data loss: loading a user's .maxpat and writing it back must not silently drop attributes that MAX or the user added. The current `from_dict()`/`to_dict()` cycle has verified bugs (patchline `color` attribute dropped, bpatcher attributes mishandled, `parameter_enable` conditionally lost). These must be fixed and tested against real MAX-saved patches before any edit functionality is built on top. The secondary risk is the migration period where some patches still use `generate.py` while others use direct editing -- this requires a clear per-project mode marker and fail-fast detection to prevent competing edit paths.
 
 ## Key Findings
 
 ### Recommended Stack
 
-The project's custom Python-only stack continues unchanged. Every v1.1 capability is achievable with Python stdlib (`json`, `pathlib`, `collections`, `csv`) and the existing codebase. The stack originally proposed in v1.0 (py2max, Zod, SQLite, fast-xml-parser) was never adopted and should not be introduced now. The custom Patcher/Box/Patchline model is well-tested and already supports aesthetic properties via `Box.extra_attrs`.
+No new external dependencies. Every library evaluated (py2max, jsonpatch, deepdiff, NetworkX) was rejected because the existing codebase already provides equivalent or better functionality. py2max lacks object validation and uses incompatible naming conventions. JSON Patch (RFC 6902) operates on brittle array-index paths wrong for .maxpat's ID-based structure. DeepDiff is overkill for comparing objects with known structure. NetworkX would add a 10MB dependency to replace ~100 lines of existing graph code.
 
-**Core technologies:**
-- `Python 3.14` (stdlib only) — all parsing, analysis, generation; no new dependencies warranted
-- `src/maxpat/patcher.py` — extended with `add_panel()` convenience method and aesthetic property support
-- `src/maxpat/defaults.py` — new aesthetic constants derived from empirical analysis of 973 help patches
-- `src/maxpat/layout.py` — refined with `LayoutOptions` dataclass, inlet-aligned positioning, grid snapping
-- `src/maxpat/aesthetics.py` (new) — post-layout, pre-serialization visual styling pass
-- `src/maxpat/help_audit.py` (new) — standalone offline audit tool; does not touch the generation pipeline
-- `.claude/max-objects/overrides.json` — correction target for audit results; `db_lookup.py` already loads it automatically
+**Core technologies (all existing):**
+- **Python 3.14 stdlib (json, pathlib, collections):** .maxpat parsing, serialization, graph algorithms -- already working
+- **Patcher/Box/Patchline data model (patcher.py):** 1:1 mapping to .maxpat JSON structure -- extend with mutation methods
+- **ObjectDatabase (db_lookup.py):** 2,015-object knowledge base for creation-time validation -- unchanged
+- **4-layer validation pipeline (validation.py):** Already operates on dicts -- adapt for edit-time incremental checks
+- **Layout engine graph utilities (layout.py):** BFS, topological sort, component detection -- extract to shared topology module
 
-See [STACK.md](./STACK.md) for complete stack analysis.
+**New modules to create (all in-house, no deps):**
+- **query.py:** PatchQuery class for find/traverse/analyze operations on loaded patches
+- **topology.py:** Extracted graph utilities shared between layout and query modules
+- **analysis.py:** Patch summarization for /max-onboard command
+
+**Modules to remove:**
+- **incremental.py:** Manifest-based merge replaced by load-edit-save cycle
+- **generate.py scripts per patch:** Agents edit .maxpat directly
+- **versions.json / .manifest.json sidecars:** Version tracking via git, not custom files
+
+See [STACK.md](./STACK.md) for full analysis including detailed rejection rationale for every external library considered.
 
 ### Expected Features
 
-**Must have (table stakes — audit):**
-- Help patch parser with recursive subpatcher descent — without this, zero objects are audited
-- Outlet type audit and `overrides.json` correction generation — fixes the #1 source of broken connections
-- Override-aware mode — never overwrite the 16 manually corrected entries already in overrides.json
-
-**Must have (table stakes — aesthetics):**
-- Section header comments (fontsize, fontface, textcolor) — removes "wall of plain text" appearance
-- Panel objects with background layer — primary visual grouping tool in every professional MAX patch
-- Bubble comment annotations — standard MAX annotation idiom for explaining non-obvious objects
-- Background layer attribute (`background: 1` + array-first placement) — without this, panels cover objects
+**Must have (table stakes):**
+- **TS-1: Load any .maxpat into structured objects** -- foundation of everything; enhance `from_dict()` for full-fidelity loading
+- **TS-2: Write back with minimal diff** -- byte-identical round-trip for unchanged portions; key ordering and numeric precision preservation
+- **TS-3: Add object to existing patch** -- existing `add_box()` should work once `from_dict()` properly initializes `_next_id`
+- **TS-4: Remove object** -- new `remove_box()` with cascade connection removal
+- **TS-5: Rewire connections** -- new `remove_connection()`, `find_connections()` methods
+- **TS-6: Preserve all user state on edit** -- never recompute positions, strip attributes, or reorder existing boxes
+- **TS-7: Find objects by name/ID/type/text** -- query methods enabling all editing operations
 
 **Should have (differentiators):**
-- Semantic color system (palette constants for headers, annotations, warnings)
-- Hierarchical comment styling (three tiers: section header / subsection label / inline annotation)
-- Panel auto-sizing around object groups (computes bounding box, saves manual measurement)
-- Patchline color coding by signal type (audio vs. control)
-- Step marker numbering (numbered textbutton circles, amber background, `rounded=60`)
-- Grid snapping to 15px (aligns generated patches to MAX's native grid)
-- Inlet-aligned cable routing (reduces diagonal cables by aligning child inlets under parent outlets)
+- **D-1: Modify object attributes in-place** -- change arguments/position/color without delete-recreate
+- **D-7: Insert object into existing connection** -- the most common surgical edit ("insert gain~ between osc and dac")
+- **D-5: Replace/swap object** -- preserve position and compatible connections
+- **D-2: Graph queries (upstream/downstream/path)** -- understand signal flow for intelligent editing
+- **D-4: Intelligent auto-positioning** -- place new objects sensibly near related content
+- **D-3: Patch summary/understanding** -- core of /max-onboard; object inventory, signal chains, parameters
+- **D-6: Batch operations with transactions** -- checkpoint/rollback for multi-step edits
 
 **Defer (v2+):**
-- Custom MAX style definitions (fragile external dependency, pollutes user's style library)
-- Custom fonts beyond Arial (cross-platform inconsistency)
-- Hidden connections for aesthetics (debugging nightmare)
-- Aggressive color theming (conflicts with user preferences)
-- Help patch layout copying (pedagogical layouts are not general-purpose)
+- **D-8: Subpatcher extraction/inlining** -- high complexity (inlet/outlet mapping), lower frequency of use
 
-See [FEATURES.md](./FEATURES.md) for complete feature analysis including effort estimates (~30-50h total aesthetics).
+See [FEATURES.md](./FEATURES.md) for complete feature analysis with complexity estimates, dependency graph, and prior art comparison.
 
 ### Architecture Approach
 
-The architecture follows the existing pipeline model with two new modules inserted at the correct points. `help_audit.py` is a standalone offline tool that touches only `overrides.json` (data, not code). `aesthetics.py` is a new pipeline step between `apply_layout()` and `to_dict()`. All other files receive only additive changes: new methods, new constants, one new optional parameter. `db_lookup.py` and `hooks.py` remain entirely unchanged.
+The v2.0 architecture follows a strict read-modify-write cycle centered on the .maxpat file as single source of truth. Components are cleanly separated: PatchReader (`from_dict`) handles loading, PatchEditor (new Patcher methods) handles mutation, PatchWriter (`write_patch_direct`) handles serialization without layout interference, and PatchAnalyzer (new module) handles read-only inspection. Only 3 of 10 slash commands need rewriting (build, iterate, new); the rest already operate on .maxpat files or are pipeline-independent.
 
 **Major components:**
-1. `help_audit.py` (new) — `HelpPatchAuditor` class parses 973 `.maxhelp` files via recursive subpatcher descent, extracts outlet types from connected instances only, compares against `ObjectDatabase`, writes proposed entries to `overrides.json` and a human-readable `audit-report.json`
-2. `aesthetics.py` (new) — `PatchStyle` dataclass with predefined styles (DEFAULT, MSP, CONTROL, INIT); `add_section_panel()` runs post-layout to size panels around positioned boxes; `style_comment()` sets font/color via `Box.extra_attrs`
-3. `layout.py` (modified) — `LayoutOptions` dataclass replaces module-level constants; `_parent_alignment_x()` uses outlet/inlet indices instead of parent center; `_snap_to_grid()` rounds positions to 15px; layout tests refactored to relative assertions before constants change
-4. `patcher.py` (modified, minor) — `add_panel()` convenience method; panels inserted at index 0 in `boxes` array for correct render order
-5. `defaults.py` (modified, minor) — aesthetic constants derived from help patch analysis (HELPFILE_COMMENT_FONTSIZE=13.0, PANEL_DEFAULT_BGCOLOR=[0.87, 0.84, 0.82, 1.0], STEP_MARKER_BGCOLOR, etc.)
+1. **Enhanced `Patcher.from_dict()`** -- full-fidelity loading with optional DB enrichment, permissive of unknown objects
+2. **PatchEditor methods on Patcher** -- `remove_box()`, `replace_box()`, `disconnect()`, `rewire()`, `move_box()`, `set_attr()`, `auto_position_near()`
+3. **PatchAnalyzer (analyzer.py)** -- inventory, signal chain tracing, parameter identification, purpose classification
+4. **Direct write path (write_patch_direct)** -- serializes without layout, preserves all loaded state
+5. **PatchQuery (query.py)** -- find by name/ID/type, upstream/downstream traversal, connected components
 
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for complete component design with code sketches and the parallelization map.
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for complete data flow diagrams (v1.x vs v2.0), anti-patterns to avoid, and suggested build order.
 
 ### Critical Pitfalls
 
-1. **Recursive subpatcher descent required** — Help patches store ALL example content in `showontab: 1` subpatchers. A shallow parser finds zero instances of the target object. Must recursively descend into all nested patchers. After parsing, verify found instance count > 0 or flag the file as failed.
+1. **Round-trip data loss in from_dict/to_dict** -- Verified bugs: Patchline drops `color` attribute, bpatcher attrs mishandled, `parameter_enable` conditionally lost. **Prevention:** Add `extra_attrs` to Patchline, treat ALL unknown keys as preservable, write round-trip diff tests before any API changes.
 
-2. **Filter degenerate instances before extracting outlet types** — Help patches contain multiple instances with different argument configs AND degenerate instances (e.g., `buffer~` with `numoutlets: 0` used as a label). Extract only from instances that have connections FROM them. Track outlet types per argument configuration for variable-I/O objects.
+2. **Dual source of truth during migration** -- If some patches use `generate.py` while others use direct editing, agents can overwrite changes via the wrong pipeline. **Prevention:** Add per-project `editing_mode` marker, fail-fast if direct-edit is attempted on a generated patch or vice versa, migrate patches atomically.
 
-3. **Never overwrite manual overrides during bulk update** — `overrides.json` contains 16 manually corrected MSP outlet types plus the `multislider fetch` correction. These are hard-won ground truth. The audit pipeline must load `overrides.json` first and skip any object already manually corrected. All audit results go to `overrides.json` additions only; never modify domain JSON files.
+3. **ID collision when adding objects to loaded patches** -- Subpatcher IDs are scoped per patcher level; non-standard ID formats can break `_next_id` calculation. **Prevention:** Track all used IDs in a set, verify new IDs don't collide, handle non-numeric ID formats gracefully.
 
-4. **Fix box width calculation before fixing cable routing** — The current formula (`len(text) * 7.0 + 16.0`) has up to 59px error. This compounds into inlet/outlet X position errors in midpoint generation. Fix sizing first (per-object override table from help patch measurements), then recalibrate routing.
+4. **Breaking 283 patcher-related tests** -- Tests assume write-only API; adding read-write changes output shapes. **Prevention:** Expand-then-contract pattern (add new capabilities before removing old ones), categorize tests, keep CI green throughout.
 
-5. **Panel z-order requires both `background: 1` AND array-first placement** — Use `patcher.boxes.insert(0, panel_box)` not `add_box()`. Also set `"ignoreclick": 1`. Either property alone is insufficient.
+5. **Layout engine interference on direct edits** -- Current `write_patch()` always calls `apply_layout()`, which would destroy user positioning. **Prevention:** New `write_patch_direct()` never auto-layouts; layout only runs on new objects or explicit request.
 
-6. **Refactor layout tests before changing spacing** — `test_layout.py` has pixel range assertions calibrated for `V_SPACING=20`. Refactor to relative assertions (`gap >= V_SPACING * 0.8`) first, then change constants. Reversing this order turns one improvement into a mass test failure event.
-
-See [PITFALLS.md](./PITFALLS.md) for all 16 pitfalls with evidence, consequences, and detection strategies.
+See [PITFALLS.md](./PITFALLS.md) for all 11 pitfalls with evidence, consequences, phase-specific warnings, and detection strategies.
 
 ## Implications for Roadmap
 
-Based on combined research, the natural phase structure is driven by three constraints: (a) correctness before aesthetics, (b) sizing accuracy before cable routing, and (c) test stability before spacing changes.
+Based on research, suggested phase structure:
 
-### Phase 1: Help Patch Audit Pipeline
+### Phase 1: Round-Trip Foundation
+**Rationale:** Everything builds on loading and saving .maxpat files without data loss. Research identified 3 verified round-trip bugs that must be fixed before any editing code is written. This is the highest-risk phase -- if round-trip fidelity fails, the entire v2.0 approach fails.
+**Delivers:** A hardened `from_dict()`/`to_dict()` cycle that passes round-trip diff tests against all existing project .maxpat files and MAX-saved patches. `extra_attrs` on Patchline. bpatcher attr reconstruction. ID collision prevention.
+**Addresses:** TS-1 (Load), TS-2 (Write Back), TS-6 (Preserve State)
+**Avoids:** Pitfall 1 (round-trip data loss), Pitfall 3 (ID collision), Pitfall 7 (JSON key ordering)
+**Scope:** Modify `patcher.py` only. No new modules. No agent changes. All 913 existing tests must stay green.
 
-**Rationale:** Correctness work first. Outlet type errors produce broken patches — aesthetics do not. The audit is a standalone tool with zero risk to the existing generation pipeline. Building it also produces the per-object width measurements needed in Phase 4 as a byproduct.
-**Delivers:** `src/maxpat/help_audit.py`, `audit-report.json`, proposed `overrides.json` entries for human review, per-object actual box width data extracted from help patches
-**Addresses:** Outlet type audit, inlet/outlet count validation, argument format extraction, coverage mapping for 292 empty-I/O objects
-**Avoids:** Pitfalls 1 (degenerate instances), 2 (override merge order), 3 (tab structure), 9 (maxclass mapping), 11 (stale version data), 14 (priority targeting), 15 (operator coverage gaps)
+### Phase 2: Search and Query
+**Rationale:** Every editing operation starts with finding the target. Search methods are a prerequisite for remove, replace, and rewire operations. Extract topology utilities from `layout.py` into shared module.
+**Delivers:** `find_box()`, `find_boxes()`, `find_connections_from/to()` on Patcher. `read_patch()` convenience function in hooks.py. Shared `topology.py` module.
+**Addresses:** TS-7 (Find Objects), D-2 (Graph Queries) foundation
+**Avoids:** Pitfall 6 (over-engineering) -- keep queries simple, don't build full graph analysis yet
+**Scope:** New `query.py` and `topology.py` modules. Extend `hooks.py`. No agent changes yet.
 
-### Phase 2: Object DB Corrections
+### Phase 3: Surgical Edit Operations
+**Rationale:** With load and search working, add the mutation methods that replace the generation pipeline. These are the core operations agents will use.
+**Delivers:** `remove_box()`, `disconnect()`, `rewire()`, `replace_box()`, `move_box()`, `set_attr()`, `auto_position_near()`, `insert_into_connection()`. New `write_patch_direct()` in hooks.py.
+**Addresses:** TS-3 (Add Object), TS-4 (Remove Object), TS-5 (Rewire), D-1 (Modify Attrs), D-5 (Replace/Swap), D-7 (Insert Into Connection), D-4 (Auto-Position)
+**Avoids:** Pitfall 11 (layout interference) -- `write_patch_direct()` never auto-layouts
+**Scope:** Extend `patcher.py` with edit methods. New write path in `hooks.py`. No agent changes yet.
 
-**Rationale:** Data task, not code task. Run the Phase 1 pipeline, review the diff report, merge approved high-confidence corrections into `overrides.json`. The 16 manually corrected entries and the existing 624-test suite serve as a regression gate. Prioritize the 292 objects with empty inlets or outlets — these are guaranteed improvements with no conflict risk.
-**Delivers:** Expanded `overrides.json` with help-patch-verified outlet types; `db_lookup.py` picks up all corrections automatically (no code changes)
-**Avoids:** Pitfall 2 (never modify domain JSON files), Pitfall 14 (prioritize empty-I/O objects first)
+### Phase 4: Patch Analysis
+**Rationale:** With read and edit working, add the understanding layer that powers /max-onboard. This is the differentiator that makes agents intelligent editors rather than blind mutation tools.
+**Delivers:** `analyzer.py` with object inventory, signal chain tracing, parameter identification, purpose classification, health check. /max-onboard output format.
+**Addresses:** D-3 (Patch Summary), D-6 (Transactions -- checkpoint/rollback for complex edits)
+**Scope:** New `analyzer.py` module. Graph query enhancements. No agent changes yet.
 
-### Phase 3: Aesthetic Foundations
+### Phase 5: Agent and Command Migration
+**Rationale:** All infrastructure is tested and working. Now rewire the agent workflows and slash commands to use read-edit-write instead of generate-merge-write. This is the phase where the user-facing behavior changes.
+**Delivers:** Rewritten `/max-build`, `/max-iterate`, `/max-new` commands. New `/max-onboard` command. Updated SKILL.md files for all 6 agents. Per-project `editing_mode` marker.
+**Addresses:** Agent integration, command rewrites
+**Avoids:** Pitfall 2 (dual source of truth), Pitfall 8 (stale agent skills) -- batch-update all skills and commands together
+**Scope:** Command and skill file rewrites. Public API updates in `__init__.py`. Integration tests.
 
-**Rationale:** Can run in parallel with Phase 2 since these touch entirely different files. Comment styling and the background layer attribute are low-risk additions via `Box.extra_attrs`. Panel support requires `add_panel()` and correct array ordering but does not affect any existing code paths. Validate `bgfillcolor` dict format by opening test patches in MAX — this cannot be verified offline.
-**Delivers:** `src/maxpat/aesthetics.py`, `add_panel()` on Patcher, aesthetic constants in `defaults.py`, styled section header comments, panel objects with correct z-order, patcher background color support, bubble comment annotations
-**Addresses:** All FEATURES.md table stakes aesthetics; must-have differentiators (semantic colors, hierarchical comments, step markers)
-**Avoids:** Pitfalls 5 (bgfillcolor dict format), 6 (panel z-order), 7 (comment property names differ from other boxes), 12 (presentation mode conflicts), 13 (style system conflicts — do not use patcher `style` property in v1.1)
-
-### Phase 4: Layout Refinements
-
-**Rationale:** Can also run in parallel with Phase 2. But layout tests MUST be refactored to relative assertions before changing any spacing constants — this is a hard prerequisite step within the phase. Fix sizing accuracy (per-object override table using Phase 1 width measurements) before fixing cable routing, since routing errors compound from sizing errors.
-**Delivers:** `LayoutOptions` dataclass, inlet-aligned cable positioning, 15px grid snapping, comment association placement, improved box sizing with per-object override table, recalibrated midpoint routing
-**Addresses:** FEATURES.md differentiators (grid alignment, inlet alignment, panel auto-sizing integration)
-**Avoids:** Pitfalls 4 (width calculation error), 8 (brittle tests — refactor first), 10 (compound routing error from width error)
-
-### Phase 5: Pipeline Integration and Agent Updates
-
-**Rationale:** Integrates Phase 3 and Phase 4 into the main `generate_patch()` pipeline. Aesthetics are opt-in via parameter to prevent regressions for existing callers. Aesthetic validation issues are info-level only — never blocking. Update agent SKILL.md files with corrected object patterns and new aesthetic capabilities after both the DB corrections (Phase 2) and pipeline (this phase) are complete.
-**Delivers:** Updated `generate_patch(aesthetics=True)` in `__init__.py`; aesthetic validation as info-level in `validation.py`; updated agent documentation reflecting corrected outlet types and aesthetic capabilities
-**Implements:** Full pipeline: Patcher → `apply_layout()` → `apply_aesthetics()` → `to_dict()` → `validate_patch()`
+### Phase 6: v1.x Cleanup
+**Rationale:** After all commands work via direct editing, remove the generation pipeline artifacts. This must come last because existing generate.py scripts must keep working until commands are migrated.
+**Delivers:** Removal of `incremental.py`, `Manifest` class, `merge_and_write()`. Deletion of `generate.py`/`build_*.py` scripts and `.manifest.json` files per patch. Updated tests replacing the 23 incremental merge tests.
+**Addresses:** AF-4 (no manifest sidecars), AF-6 (no generate.py compatibility)
+**Avoids:** Pitfall 4 (test breakage) -- only remove after new tests cover the same scenarios, Pitfall 9 (manifest leftovers)
+**Scope:** Delete dead code and files. Update test suite. Final CI verification.
 
 ### Phase Ordering Rationale
 
-- Phases 1 and 2 sequence together: audit pipeline must run before corrections can be reviewed.
-- Phases 3 and 4 can run in parallel with Phase 2 — they operate on different files with no shared state.
-- Phase 5 depends on both Phase 3 and Phase 4 being complete but does not require Phase 2 (DB corrections are data-level, not pipeline-level).
-- Overall dependency structure: `1 → 2 → (5 depends on 2 for agent docs)`, `3 → 5`, `4 → 5`.
-- Do not let aesthetics work block on DB corrections. The two tracks are independent.
+- **Phases 1-3 are a strict dependency chain:** You cannot edit what you cannot find, and you cannot find what you cannot load. Each phase builds directly on the previous.
+- **Phase 4 (Analysis) is semi-independent** but benefits from the graph queries in Phase 2 and the edit methods in Phase 3 (for the health check integration). Could theoretically start after Phase 2.
+- **Phase 5 must come after Phases 1-4** because agent commands must use tested, working infrastructure. Updating agent skills against unstable APIs wastes effort.
+- **Phase 6 must come last** because the expand-then-contract pattern requires the old pipeline to keep working until the new one is proven. Premature removal breaks existing workflows.
+- **The biggest pitfall (round-trip data loss) is addressed first** because it is the foundation of trust. A single dropped attribute in Phase 1 would invalidate all subsequent phases.
 
 ### Research Flags
 
-Phases with well-documented patterns (skip additional research):
-- **Phase 2:** Pure data review task. Diff report from Phase 1 provides everything needed for decisions.
-- **Phase 3:** All aesthetic properties are fully verified from official docs and real `.maxpat` file analysis. Panel format, comment styling, and bgfillcolor structure are documented in FEATURES.md with validated JSON examples.
-- **Phase 5:** Pipeline integration is a straightforward parameter addition and documentation update.
+Phases likely needing deeper research during planning:
+- **Phase 1 (Round-Trip Foundation):** Needs investigation of MAX-saved .maxpat files to discover all metadata keys that must be preserved. No official .maxpat spec exists. Create test fixtures by opening generated patches in MAX, editing, and saving.
+- **Phase 4 (Patch Analysis):** Heuristic quality for purpose classification and signal flow description is uncertain. The "identify what this patch does" problem is inherently fuzzy. May need iterative refinement based on real patches.
 
-Phases that may benefit from targeted investigation during planning:
-- **Phase 1:** The help patch coverage mapping for operators and MC objects (Pitfall 15) needs concrete resolution before building the coverage tracker. Low risk — scoping work, not architectural.
-- **Phase 4:** The proportional character width table for sizing accuracy benefits from Phase 1 data. Extract actual widths during Phase 1 as a byproduct to avoid a second pass through help patches.
+Phases with standard patterns (skip research-phase):
+- **Phase 2 (Search and Query):** Well-documented graph traversal patterns. py2max and MAX's JS API provide clear prior art for the query interface.
+- **Phase 3 (Surgical Edit Operations):** Standard mutable collection operations. The edit API design is well-understood from ARCHITECTURE.md analysis.
+- **Phase 5 (Agent Migration):** Prompt engineering and command rewriting. The new workflow is simple (read-edit-write) and the command structure already exists.
+- **Phase 6 (Cleanup):** Straightforward deletion. No design decisions needed.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | Verified against existing codebase. All recommendations extend what already works. No new dependencies. |
-| Features | HIGH (audit) / MEDIUM (aesthetics) | Audit features verified against actual `.maxhelp` JSON. Aesthetic properties verified from official docs and real `.maxpat` files; "what looks professional" retains a subjective component. |
-| Architecture | HIGH | All recommendations based on direct codebase analysis. Integration points (`Box.extra_attrs`, `patcher.props`, `overrides.json` merge) are confirmed working patterns. |
-| Pitfalls | HIGH (parsing + DB) / MEDIUM (bgfillcolor) | Parsing and DB pitfalls verified against actual help patches and source code. The `bgfillcolor` dict format is reverse-engineered — no official schema exists. |
+| Stack | HIGH | All decisions based on direct codebase comparison. Zero new dependencies needed. Every rejected library has a clear rationale. |
+| Features | HIGH | Table stakes verified against existing codebase gaps. Dependency tree is clear. Complexity estimates grounded in existing code. |
+| Architecture | HIGH | All components are custom Python with no external dependencies to verify. Build order validated against dependency analysis. |
+| Pitfalls | HIGH (code-level), MEDIUM (MAX metadata) | Round-trip bugs confirmed by code reading. MAX-internal metadata behavior is partially unknown due to no official .maxpat specification. |
 
 **Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **Proportional character width table:** Sizing error analysis (Pitfall 4) has measurements for 6 objects. A fuller table requires help patch analysis. Build width extraction into the Phase 1 audit tool as a byproduct. Interim fix: operator override table (short objects like `+`, `-` get minimum ~90px).
-- **bgfillcolor rendering validation:** Cannot be verified offline. Visual validation of generated panels must be done by opening test patches in MAX 9. Plan for a "panel gallery" test patch as a Phase 3 deliverable.
-- **Help patch coverage for 738 un-covered objects:** Operators, MC wrappers, and Gen internals share help files. Accept ~56% direct coverage (934/1,672 objects) as sufficient for v1.1 and document the remainder as known gaps tracked in `audit-report.json`.
-- **bgfillcolor behavior across MAX versions:** Some help patches were saved in older MAX versions. All visual validation should target MAX 9, not inferred from MAX 8 documentation alone.
+- **No official .maxpat specification:** MAX's JSON format is undocumented. All knowledge comes from reverse engineering examples. New MAX versions could add keys that break assumptions. **Mitigation:** The "preserve all unknown keys" strategy handles this defensively. Create MAX-saved test fixtures to discover undocumented keys.
+- **Zero existing tests for `Patcher.from_dict()`:** The read path has no test coverage despite being the foundation of v2.0. **Mitigation:** Phase 1 must begin by writing round-trip tests before modifying any code.
+- **Patch analysis heuristics are unvalidated:** The purpose classification and signal flow description features (Phase 4) are inherently heuristic. Quality depends on pattern matching against real-world patches. **Mitigation:** Start with simple, conservative heuristics. Iterate based on /max-onboard usage on real patches.
+- **Agent context window limits:** A 1000-box patch serialized to Python method calls is enormous. The analyzer must provide compact summaries that agents can work from without seeing every box. **Mitigation:** Design analyzer output for agent consumption from the start.
 
 ## Sources
 
 ### Primary (HIGH confidence)
-- `/Applications/Max.app/Contents/Resources/C74/help/` — 973 .maxhelp files; `trigger.maxhelp`, `buffer~.maxhelp`, `attrui.maxhelp` analyzed directly
-- `/Users/taylorbrook/Dev/MAX/src/maxpat/` — entire codebase read; all integration points confirmed
-- [Color and the Max User Interface (Max 8)](https://docs.cycling74.com/max8/vignettes/max_colors) — patcher-level color properties
-- [Panel Reference (Max 8)](https://docs.cycling74.com/max8/refpages/panel) — panel object attributes
-- [Comment Reference (Max 8)](https://docs.cycling74.com/max8/refpages/comment) — comment styling attributes
-- [Common Box Attributes (Max 5+)](https://docs.cycling74.com/max5/refpages/max-ref/jbox.html) — universal box properties
-- [Foreground and Background Layers (Max 7)](https://docs.cycling74.com/max7/vignettes/background) — layer system
+- Direct codebase analysis: `src/maxpat/patcher.py` (1134 lines, `from_dict()` at L1012-1122, `to_dict()`, Box/Patchline classes)
+- Direct codebase analysis: `src/maxpat/incremental.py` (476 lines, manifest system, merge logic)
+- Direct codebase analysis: `src/maxpat/layout.py` (970 lines, graph algorithms, topological sort)
+- Direct codebase analysis: `src/maxpat/validation.py` (669 lines, 4-layer pipeline)
+- Direct codebase analysis: `src/maxpat/hooks.py` (269 lines, write_patch, validate_file)
+- Direct codebase analysis: `.claude/commands/max-*.md` (10 command files)
+- Real .maxpat file analysis: kicksynth (5,950 lines), performancepatchtest, scala-synth, minitaur
+- Verified: Patchline.to_dict() drops `color` attribute (data loss bug)
+- Verified: 913 existing tests, 283 patcher-related, 0 for from_dict()
+- Project memory: `feedback_iterate_via_generator.md`, `project_incremental_patching.md`
 
 ### Secondary (MEDIUM confidence)
-- [HfMT-ZM4/WFS-Server](https://github.com/HfMT-ZM4/WFS-Server/blob/master/wfs.gui.cpu.maxpat) — bgfillcolor gradient dict structure verified from real .maxpat
-- [Vimeo/vimeo-maxmsp](https://github.com/vimeo/vimeo-maxmsp/blob/master/n4m-vimeo/player.maxpat) — styled comments and gradient messages
-- [Scripting Panel Gradients (Forum)](https://cycling74.com/forums/scripting-panel-gradients) — proportion limit gotcha, pt1/pt2 vs angle conflict
-- [Tips on structuring/laying out patches (Forum)](https://cycling74.com/forums/tips-on-structuringlaying-out-patches) — layout conventions
-- [Panel bgfillcolor attributes (Forum)](https://cycling74.com/forums/panel-bgfillcolor-attributes-how-to-specify-as-3-floats) — proportion capping requirement
+- [py2max GitHub](https://github.com/shakfu/py2max) -- round-trip editing reference, API patterns
+- [Cycling '74 Patcher JS API](https://docs.cycling74.com/apiref/js/patcher/) -- apply/applydeep patterns, connect/disconnect API
+- [Cycling '74 .maxpat format forum discussion](https://cycling74.com/forums/specification-for-maxpat-json-format) -- confirms no official spec
+- [jsonpatch on PyPI](https://pypi.org/project/jsonpatch/) -- v1.33, RFC 6902; rejected for array-index-based paths
+- [deepdiff on PyPI](https://pypi.org/project/deepdiff/) -- v8.6.1; rejected, overkill for known structure
+- [NetworkX on PyPI](https://pypi.org/project/networkx/) -- v3.6.1; rejected, 10MB for ~100 lines of existing code
 
-### Tertiary (project memory, LOW confidence without fresh verification)
-- `feedback_msp_outlet_types.md` — 16 corrected MSP objects; confirms audit priority
-- `feedback_layout_spacing.md` — V_SPACING=20, H_GUTTER=15 tight spacing requirements
-- `feedback_multislider_fetch.md` — confirms fetch/fetchindex and outlet 1 issue
+### Tertiary (LOW confidence)
+- MAX-internal metadata behavior (editing_bgcolor, saved_attribute_attributes, dependency_cache) -- inferred from .maxpat file inspection, no documentation exists
 
 ---
-*Research completed: 2026-03-13*
+*Research completed: 2026-03-15*
 *Ready for roadmap: yes*

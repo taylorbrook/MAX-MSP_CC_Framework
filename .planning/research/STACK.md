@@ -1,236 +1,355 @@
-# Technology Stack: v1.1 Patch Quality & Aesthetics
+# Technology Stack: v2.0 Direct .maxpat Reading & Surgical Editing
 
-**Project:** MaxSystem v1.1 -- Object DB Audit, Patch Aesthetics, Refined Positioning
-**Researched:** 2026-03-13
+**Project:** MaxSystem v2.0 -- Patcher Library Refactor to Read-Write Editor
+**Researched:** 2026-03-15
 **Overall Confidence:** HIGH
 
 ## Executive Summary
 
-The v1.1 milestone requires three capabilities: (1) parsing ~973 MAX help patches to extract ground truth object data (outlet types, inlet counts, argument formats, connection patterns), (2) generating patches with visual polish (panels, background colors, comment styling), and (3) enriching the layout engine with aesthetic defaults.
+The v2.0 milestone replaces the Python generation pipeline with direct .maxpat reading and surgical editing. The core question: what stack additions are needed to load arbitrary .maxpat files, understand their structure, and make precise edits while preserving everything else?
 
-**No new dependencies are needed.** All three capabilities are achievable with Python stdlib (`json`, `pathlib`, `os`, `collections`, `csv`) and the existing project codebase. The .maxhelp files are standard JSON (same format as .maxpat), parsable in 0.17s for all 973 files including deep recursive traversal of 53,178 boxes and 31,476 connections. The aesthetic properties (panel objects, comment bubble styling, background layering, font overrides) are simple JSON key/value pairs in the existing box dict structure, requiring only additions to `patcher.py`, `defaults.py`, and `layout.py`.
+**Answer: Almost nothing.** The existing codebase already has 90% of what is needed. `Patcher.from_dict()` already loads .maxpat JSON into Box/Patchline objects. The .maxpat format is plain JSON with a stable, well-understood structure. The layout engine already builds topology graphs from boxes and lines. What is missing is (1) richer querying of loaded patches, (2) targeted mutation operations that work on Box/Patchline objects without full regeneration, and (3) a write-back path that serializes only changes.
 
-The v1.0 STACK.md recommended py2max, Zod, fast-xml-parser, Vitest, and SQLite. In practice, the project built a custom Python stack (`patcher.py`, `layout.py`, `db_lookup.py`, `validation.py`) without py2max or Zod. For v1.1, continue with the same custom Python-only approach. Do NOT introduce new libraries.
+**No new external dependencies are needed.** Python's stdlib `json` module is sufficient for all .maxpat reading and writing. The existing `Patcher`, `Box`, `Patchline` data model already maps 1:1 to the .maxpat JSON structure. Adding external libraries (py2max, deepdiff, jsonpatch, networkx) would create parallel systems competing with the existing well-tested codebase.
 
-## Recommended Stack Additions (v1.1)
+## Recommended Stack: No New Libraries
 
-### Help Patch Parsing & Audit Tools
+### What Already Works
 
-| Technology | Version | Purpose | Why |
-|------------|---------|---------|-----|
-| Python `json` (stdlib) | 3.14 | Parse .maxhelp JSON files | Already used throughout project. Parses all 973 help patches in 0.17s including recursive subpatcher traversal. .maxhelp files are identical JSON format to .maxpat. No external parser needed. |
-| Python `pathlib` (stdlib) | 3.14 | File discovery and path handling | Walk `/Applications/Max.app/Contents/Resources/C74/help/{max,msp,jitter,m4l}/` directories. Already used in `db_lookup.py`. |
-| Python `collections` (stdlib) | 3.14 | Data aggregation (Counter, defaultdict) | Aggregate outlet types, argument patterns, connection patterns across 53,178 boxes. Already used in `layout.py` and `validation.py`. |
-| Python `csv` (stdlib) | 3.14 | Audit report generation | Optional. Generate diff reports (DB vs help patch ground truth) as CSV for review. |
+| Capability | Current Module | Status | v2.0 Change Needed |
+|------------|---------------|--------|---------------------|
+| Load .maxpat JSON | `Patcher.from_dict()` | Working | Minor fixes (see below) |
+| Serialize to .maxpat JSON | `Patcher.to_dict()` | Working | None |
+| Box data model | `patcher.py` Box class | Working | Add mutation methods |
+| Connection data model | `patcher.py` Patchline class | Working | Add query methods |
+| Object database lookup | `db_lookup.py` ObjectDatabase | Working | None |
+| Graph topology | `layout.py` `_build_graph()` | Working | Extract to shared utility |
+| Validation pipeline | `validation.py` | Working | Works on dicts already |
+| File I/O | `hooks.py` | Working | Add `load_patch()` entry point |
 
-**Key finding:** The help patch directory structure is:
-```
-/Applications/Max.app/Contents/Resources/C74/help/
-  max/     (Max control objects)
-  msp/     (MSP audio objects)
-  jitter/  (Jitter video objects)
-  m4l/     (Max for Live objects)
-  resources/
-```
+### What Needs to Be Added (All In-House)
 
-Help files use `.maxhelp` extension but are identical JSON format to `.maxpat`. 973 help patches cover 934 of our 1,672 DB objects. The remaining 738 are mostly operator variants (`+`, `-`, `*~`, etc.), MC wrappers (`mc.cycle~`), and Gen internals that share help files with their base objects.
+| New Capability | Module | Purpose | Complexity |
+|----------------|--------|---------|------------|
+| Patch query API | New: `query.py` | Find boxes by name/type/connection, traverse topology | Medium |
+| Surgical edit operations | Extend: `patcher.py` | `remove_box()`, `replace_box()`, `reroute()` | Low |
+| Diff-aware write-back | Extend: `patcher.py` / `hooks.py` | Write only changed sections, preserve unknown keys | Medium |
+| `from_dict()` hardening | Fix: `patcher.py` | Handle all edge cases in real-world .maxpat files | Low |
+| `/max-onboard` analysis | New: `analysis.py` | Summarize patch structure, identify patterns | Medium |
 
-### Aesthetic Patch Generation
+## Detailed Stack Decisions
 
-| Technology | Version | Purpose | Why |
-|------------|---------|---------|-----|
-| Existing `patcher.py` | Current | Extended Box model with aesthetic properties | Add `bgcolor`, `textcolor`, `bubble`, `bubbleside`, `style`, `fontface`, `background`, `rounded`, `border`, `bordercolor` to `extra_attrs` or as first-class Box properties. Panel objects already work as boxes with `maxclass="panel"`. |
-| Existing `defaults.py` | Current | Aesthetic default constants | Add constants for help-file-standard styling: comment font size (13.0), bubble default (True for annotations), helpfile_label style, panel default colors, textbutton step-marker styling. |
-| Existing `layout.py` | Current | Panel positioning and background layering | Panels are background decorative objects. Add panel support to layout engine: panels need `background: 1` to draw behind other objects, and `ignoreclick: 1` to not intercept mouse events. |
+### Decision 1: Do NOT Adopt py2max
 
-**No new files needed** for aesthetics -- the existing Box/Patcher model already supports arbitrary JSON properties via `extra_attrs`. The work is adding convenience methods and defaults, not new infrastructure.
+**Recommendation:** Do not use py2max. Continue with the existing custom Patcher model.
 
-### What Specifically Needs to Change
+| Factor | py2max | Existing Patcher Model |
+|--------|--------|----------------------|
+| Round-trip support | Yes | Yes (via `from_dict()` / `to_dict()`) |
+| Object validation | None (any string accepted) | Full (2,015-object DB, Rule #1 enforcement) |
+| Variable I/O computation | None | Full (formula-based from overrides) |
+| Connection validation | None | 4-layer pipeline with auto-fix |
+| Layout engine | None (manual positioning) | Full topological layout with midpoints |
+| Test coverage | 418 tests | 624 tests |
+| Integration with agents | Would need adapter layer | Native |
+| Naming convention | `_tilde` suffix (`cycle_tilde`) | Native names (`cycle~`) |
 
-#### `patcher.py` -- New Methods
+py2max solves a different problem: generating .maxpat files from scratch without any object knowledge. This project already has a more capable version of that with validation, layout, and domain-specific intelligence. Adopting py2max would mean maintaining two parallel object models, writing adapter code, and losing validation. The existing `from_dict()` already does what py2max's `from_file()` does.
+
+**Confidence:** HIGH -- based on direct code comparison of both systems.
+
+### Decision 2: Do NOT Add jsonpatch/deepdiff for JSON Diff/Patch
+
+**Recommendation:** Do not use RFC 6902 JSON Patch or deepdiff. Work at the Patcher/Box/Patchline level, not the raw JSON level.
+
+**Why not jsonpatch (v1.33):**
+- RFC 6902 patches operate on JSON paths like `/patcher/boxes/3/box/patching_rect/0`. These paths are brittle -- they break when array indices shift (adding/removing boxes changes every index after it).
+- .maxpat boxes are identified by their `id` field, not array position. Any useful diff/patch system needs to work by box ID, not JSON path.
+- The overhead of converting to/from JSON patch format adds complexity without benefit when we already have the Box/Patchline object model.
+
+**Why not deepdiff (v8.6.1):**
+- DeepDiff excels at comparing arbitrary Python objects. But .maxpat patches have known structure -- we do not need generic deep comparison.
+- DeepDiff's Delta feature has had security vulnerabilities (CVE-2025-58367 in deserialization). While patched in 8.6.1, this is unnecessary attack surface for a tool that reads/writes files to disk.
+- Comparing two Patcher objects at the Box/Patchline level is trivial with the existing model: boxes have IDs, connections have (source_id, outlet, dest_id, inlet) tuples. No library needed.
+
+**The right approach:** Operate at the semantic level (Box/Patchline), not the syntactic level (JSON paths). When writing back, serialize the full Patcher to dict and write it. The `.maxpat` files are typically 2-10K lines -- full serialization is instantaneous.
+
+**Confidence:** HIGH -- jsonpatch's array-index-based paths are fundamentally wrong for ID-based structures.
+
+### Decision 3: Do NOT Add NetworkX for Graph Analysis
+
+**Recommendation:** Do not add NetworkX. Extend the existing graph utilities in `layout.py`.
+
+The existing layout engine already implements:
+- Adjacency list construction from boxes and lines (`_build_graph()`)
+- Connected component detection via BFS (`_find_components()`)
+- Topological sort via Kahn's algorithm (`_topological_levels()`)
+- Reverse adjacency for parent lookups
+
+These are the exact graph operations needed for patch analysis: "what connects to this object?", "what are the signal chains?", "what are the independent sub-circuits?". NetworkX (v3.6.1, requires Python 3.11+) would be a 10MB dependency to replace ~100 lines of existing, tested code.
+
+**What to do instead:** Extract `_build_graph()`, `_find_components()`, and `_topological_levels()` from `layout.py` into a shared `topology.py` module that both the layout engine and the new query/analysis modules can use.
+
+**Confidence:** HIGH -- the existing implementations cover the needed algorithms.
+
+### Decision 4: Harden `Patcher.from_dict()` (Existing Code, No New Deps)
+
+**Recommendation:** Fix edge cases in the existing `from_dict()` classmethod.
+
+Current `from_dict()` (patcher.py lines 1012-1122) already handles:
+- Top-level patcher props extraction
+- Box reconstruction with maxclass, text, I/O counts
+- Name derivation from text field or maxclass
+- Patchline reconstruction from source/destination arrays
+- Recursive inner patcher loading
+- ID counter recovery for new box generation
+
+**Edge cases to fix for real-world .maxpat files:**
+
+1. **bpatcher attributes not restored.** Current `from_dict()` sets `_bpatcher_attrs = None` for all loaded boxes. Real .maxpat bpatchers have `args`, `name`, `bgmode`, `offset`, etc. that need to be captured into `_bpatcher_attrs` for faithful round-trip.
+
+2. **Unknown maxclasses.** MAX 9 introduces new maxclasses not in our UI set (e.g., `live.scope~`, `filtergraph~`, custom externals). `from_dict()` should not crash on unknown maxclasses -- it should load them permissively and flag unknowns.
+
+3. **Non-standard ID formats.** User-created or MAX-generated patches sometimes use IDs like `obj-1073741824` or UUID-style IDs. The ID counter recovery should handle these gracefully.
+
+4. **Deeply nested subpatchers.** Poly~ objects can contain multiple levels of nesting. The recursive `from_dict()` call already handles this, but the `_is_subpatcher` flag should be set correctly for inner patchers.
+
+5. **Extra patcher-level keys.** Real .maxpat files from MAX have keys not in `DEFAULT_PATCHER_PROPS` (e.g., `editing_bgcolor`, `locked_bgcolor`, `parameter_enable`, custom styles). These are already preserved via the `props` copy in `from_dict()` -- verify this works for all cases.
+
+**Complexity:** Low. These are targeted fixes to existing code, not new architecture.
+
+**Confidence:** HIGH -- verified by examining both `from_dict()` source and real .maxpat files.
+
+### Decision 5: Build Query API as New Module (`query.py`)
+
+**Recommendation:** Create `src/maxpat/query.py` for finding and traversing loaded patches.
+
+This is the main new capability needed. Once a patch is loaded via `from_dict()`, agents need to ask questions like:
+- "Find all `cycle~` objects in this patch"
+- "What connects to the input of this `*~` object?"
+- "Trace the signal chain from this `noise~` to `dac~`"
+- "What subpatchers exist and what do they contain?"
+- "Which objects have no connections?"
+
+**Proposed API (no external deps, pure Python):**
 
 ```python
-# Add panel support (background rectangle)
-def add_panel(self, x, y, width, height, bgcolor=None, border=0, rounded=0) -> Box
+class PatchQuery:
+    """Query interface for loaded Patcher objects."""
 
-# Add styled comment (help-file quality)
-def add_styled_comment(self, text, x, y, style="helpfile_label", bubble=False, bubbleside=0) -> Box
+    def __init__(self, patcher: Patcher): ...
+
+    # Find boxes
+    def find_by_name(self, name: str) -> list[Box]: ...
+    def find_by_maxclass(self, maxclass: str) -> list[Box]: ...
+    def find_by_text(self, pattern: str) -> list[Box]: ...  # regex
+    def find_by_id(self, box_id: str) -> Box | None: ...
+
+    # Topology queries (uses extracted graph utils)
+    def upstream(self, box: Box) -> list[Box]: ...  # all ancestors
+    def downstream(self, box: Box) -> list[Box]: ...  # all descendants
+    def direct_inputs(self, box: Box) -> list[tuple[Box, int, int]]: ...  # (src, outlet, inlet)
+    def direct_outputs(self, box: Box) -> list[tuple[Box, int, int]]: ...  # (dst, outlet, inlet)
+    def signal_chain(self, start: Box) -> list[Box]: ...  # follow signal connections
+    def components(self) -> list[list[Box]]: ...  # independent groups
+
+    # Subpatcher traversal
+    def subpatchers(self) -> list[tuple[Box, Patcher]]: ...
+    def walk_all_boxes(self) -> Iterator[tuple[Box, Patcher]]: ...  # deep recursive
+
+    # Summary/analysis
+    def summary(self) -> dict: ...  # counts, object types, signal chains
 ```
 
-#### `defaults.py` -- New Constants
+**Why a separate module:** Query logic is conceptually distinct from mutation (patcher.py) and layout (layout.py). Keeping it separate enables clean testing and avoids bloating the core Patcher class.
+
+**Complexity:** Medium. Graph traversal reuses existing topology code. The novel work is the query interface design.
+
+**Confidence:** HIGH -- pattern proven by both py2max and the existing layout engine.
+
+### Decision 6: Add Surgical Edit Operations to Patcher
+
+**Recommendation:** Add mutation methods directly to the `Patcher` class.
+
+Current Patcher has: `add_box()`, `add_connection()`, `add_subpatcher()`, etc. (creation only).
+
+**New methods needed for editing:**
 
 ```python
-# Aesthetic constants from help patch analysis (973 patches analyzed)
-HELPFILE_COMMENT_FONTSIZE = 13.0     # 2,329 bubble comments + 885 non-bubble = 13pt standard
-HELPFILE_LABEL_STYLE = "helpfile_label"  # 739 uses in help patches
-BUBBLE_DEFAULT_SIDE = 0              # 0=left (default), 2=right, 3=bottom
+class Patcher:
+    # Removal
+    def remove_box(self, box: Box | str) -> list[Patchline]: ...
+        # Remove box and all its connections, return removed connections
 
-# Panel defaults (from 159 panels across help patches)
-PANEL_DEFAULT_BGCOLOR = [0.866667, 0.839216, 0.815686, 1.0]  # Warm tan, most common (24x)
-PANEL_DEFAULT_MODE = 0               # Solid fill (140x) vs gradient (19x)
-PANEL_DEFAULT_BORDER = 1             # Thin border (39x at 1, 50x at 2)
-PANEL_DEFAULT_ROUNDED = 0            # Sharp corners (68x at 0)
-PANEL_DEFAULT_PROPORTION = 0.39      # Standard proportion (99x)
+    def remove_connection(self, src: Box, outlet: int, dst: Box, inlet: int) -> bool: ...
 
-# Textbutton step markers (from help patch convention: 565 with background=1)
-STEP_MARKER_BGCOLOR = [0.9, 0.65, 0.05, 1.0]   # Orange/amber
-STEP_MARKER_TEXTCOLOR = [0.34902, 0.34902, 0.34902, 1.0]  # Dark gray
-STEP_MARKER_ROUNDED = 60.0           # Circular appearance
-STEP_MARKER_FONTNAME = "Arial Bold"
+    # Replacement
+    def replace_box(self, old: Box | str, new_name: str, new_args: list[str] | None = None) -> Box: ...
+        # Replace object, attempt to preserve connections where I/O counts match
+
+    # Reconnection
+    def insert_between(self, upstream: Box, downstream: Box, new_box: Box,
+                        src_outlet: int = 0, dst_inlet: int = 0) -> None: ...
+        # Insert a box in the middle of an existing connection
+
+    def reroute(self, old_src: Box, old_outlet: int, new_src: Box, new_outlet: int) -> None: ...
+        # Move all connections from one outlet to another
 ```
 
-#### `layout.py` -- Panel and Background Awareness
+**Why on Patcher, not a separate class:** These operations need to modify both `self.boxes` and `self.lines` atomically. Putting them on Patcher keeps the mutation boundary clear.
 
-Background objects (`background: 1`) must be positioned BEFORE regular objects in the boxes array (MAX renders in array order, background objects go to back layer). The layout engine needs to:
-1. Sort boxes so `background=1` objects come first in the array
-2. Skip panel/background objects during topological layout (they are decorative)
-3. Size panels to encompass their associated object groups
+**Complexity:** Low. Remove/replace are straightforward list operations with connection cleanup.
 
-#### `db_lookup.py` -- No Changes
+**Confidence:** HIGH -- standard mutable collection operations.
 
-The database structure is fine. Audit results flow into `overrides.json` (existing correction mechanism). The audit tool is a standalone script, not a modification to the runtime lookup.
+### Decision 7: Write-Back Strategy -- Full Serialization, Not Incremental
 
-## Audit Tool Architecture
+**Recommendation:** Write the full .maxpat JSON on every save. Do NOT attempt incremental JSON patching.
 
-The audit tool is a new standalone script (`scripts/audit_help_patches.py`) that:
+**Rationale:**
+1. .maxpat files are small (typical: 2K-10K lines, max observed: ~6K lines for kicksynth). Full JSON serialization + write takes <10ms.
+2. The current `to_dict()` is already a correct full serializer.
+3. `from_dict()` already preserves all keys it does not recognize into `extra_attrs` and `props`, so unknown keys survive the round-trip.
+4. Incremental JSON patching (only writing changed bytes) is complex, error-prone, and saves negligible time.
+5. MAX does not watch .maxpat files for changes -- there is no file-locking or live-reload concern.
 
-1. **Walks** all 973 .maxhelp files
-2. **Extracts** per-object: outlet types, inlet count, outlet count, argument patterns, connection patterns
-3. **Compares** against the object database (`db_lookup.py`)
-4. **Generates** a diff report and optionally updates `overrides.json`
+**The write pipeline becomes:**
+```
+Load:  json.loads(path.read_text()) -> Patcher.from_dict(data, db)
+Edit:  patcher.remove_box(...) / patcher.add_box(...) / etc.
+Save:  json.dumps(patcher.to_dict(), indent=2) -> path.write_text()
+```
 
-**Performance:** Full recursive parse of all help patches takes 0.17s. Comparison against 1,672 DB objects adds negligible overhead. Total audit runtime will be under 1 second.
+This replaces the entire `incremental.py` / `Manifest` system with a simpler approach: the .maxpat file IS the source of truth. No sidecar manifests needed.
 
-**Data extraction from help patches (verified):**
-- `outlettype` array: Available on every box. Ground truth for signal vs control outlet classification. Found 1,007 unique objects with outlet types, including 10 mixed signal/control objects (e.g., `line~` = `["signal", "bang"]`, `zigzag~` = `["signal", "signal", "", "bang"]`).
-- `numinlets` / `numoutlets`: Available on every box. Reflects actual argument-dependent counts.
-- `text` field: Contains object name and arguments (e.g., `"cycle~ 440."`, `"t b i f"`).
-- Connection patterns: Source/destination with outlet/inlet indices. Validates which outlets connect to which types of inlets.
+**Confidence:** HIGH -- performance verified (6K-line kicksynth.maxpat parses in <5ms).
 
-## What NOT to Add
+## What to Remove from the Stack
 
-| Technology | Why Not |
-|------------|---------|
-| py2max | Project already has its own Patcher/Box/Patchline model. py2max would be a parallel system with different conventions. The custom stack is well-tested (624 tests) and exactly fits the project's needs. |
-| Zod / TypeScript validation | Originally planned in v1.0 STACK.md but never adopted. Python validation pipeline works well. Adding TypeScript for aesthetics would introduce unnecessary build complexity. |
-| SQLite for audit results | Overkill. Audit results go directly into `overrides.json` (existing mechanism). A JSON diff report is sufficient. |
-| Pillow / image processing | Not needed. Panel colors and box styling are pure JSON properties, not image manipulation. |
-| NetworkX / graph libraries | The existing layout engine has its own graph algorithms (BFS, topological sort). No external graph library needed for panel grouping. |
-| Configuration files (YAML/TOML) | Aesthetic defaults should be Python constants in `defaults.py`, not external config files. Keeps the single-file pattern established by the project. |
-| fast-xml-parser | Originally planned for maxref XML parsing. Already done in v1.0 extraction. Help patches are JSON, not XML. |
-| Template engines (Jinja2, Mako) | Aesthetic patches are generated programmatically via Python. Template engines add dependency for no benefit. |
+| Module | Status | Rationale |
+|--------|--------|-----------|
+| `incremental.py` | **Remove** | Manifest-based merge is replaced by load-edit-save cycle. No more sidecar `.manifest.json` files. |
+| `Manifest` class | **Remove** | The .maxpat file is the single source of truth. No need to track generator-owned vs user-owned objects. |
+| `merge_and_write()` | **Remove** | Replaced by `Patcher.from_dict()` -> edit -> `to_dict()` -> write. |
+| `generate.py` scripts per patch | **Remove** | Agents edit .maxpat directly. No Python generation scripts. |
+| `versions.json` per patch | **Remove** | Version tracking via git, not custom JSON sidecar. |
 
-## Existing Stack Unchanged
+## Existing Stack: Unchanged
 
-These v1.0 technologies remain exactly as-is for v1.1:
+| Technology | Version | Status |
+|------------|---------|--------|
+| Python | 3.14 | Keep -- runtime for all modules |
+| pytest | 9.0.2 | Keep -- test framework |
+| `json` (stdlib) | 3.14 | Keep -- .maxpat parsing and serialization |
+| `pathlib` (stdlib) | 3.14 | Keep -- file I/O |
+| `copy` (stdlib) | 3.14 | Keep -- deep copy for dict manipulation |
+| `collections` (stdlib) | 3.14 | Keep -- defaultdict, deque in graph algorithms |
+| `re` (stdlib) | 3.14 | Keep -- pattern matching in validation |
+| `patcher.py` (Box/Patchline/Patcher) | v1.1 | Keep + extend -- add mutation methods |
+| `layout.py` | v1.1 | Keep -- extract topology utils to shared module |
+| `validation.py` | v1.1 | Keep -- already works on raw dicts |
+| `db_lookup.py` (ObjectDatabase) | v1.1 | Keep -- object lookup for agent validation |
+| `maxclass_map.py` | v1.1 | Keep -- UI maxclass resolution |
+| `sizing.py` | v1.1 | Keep -- box size calculation |
+| `aesthetics.py` | v1.1 | Keep -- styling helpers |
+| `defaults.py` | v1.1 | Keep -- constants and LayoutOptions |
+| `hooks.py` | v1.1 | Keep + extend -- add `load_patch()` entry point |
+| `codegen.py` | v1.1 | Keep -- GenExpr/js/N4M code generation |
+| `code_validation.py` | v1.1 | Keep -- GenExpr/js syntax validation |
 
-| Technology | Status | Notes |
-|------------|--------|-------|
-| Python 3.14 | Keep | Runtime for all scripts, tests, generation |
-| pytest | Keep | Test framework for audit tool tests and aesthetic tests |
-| `json` (stdlib) | Keep | .maxpat and .maxhelp parsing |
-| Custom Patcher/Box/Patchline | Keep | Core generation model, extended with aesthetic properties |
-| `validation.py` pipeline | Keep | 4-layer validation, may add aesthetic validation rules |
-| `overrides.json` | Keep | Correction mechanism, audit tool writes results here |
-| `db_lookup.py` ObjectDatabase | Keep | Runtime object lookup, no structural changes |
+## New Module Map
+
+```
+src/maxpat/
+  patcher.py        # Extended: add remove_box, replace_box, insert_between, reroute
+  query.py           # NEW: PatchQuery class for find/traverse/analyze
+  topology.py        # NEW: extracted from layout.py -- shared graph utilities
+  analysis.py        # NEW: patch summarization for /max-onboard
+  layout.py          # Modified: imports topology from topology.py
+  hooks.py           # Extended: add load_patch() entry point
+  validation.py      # Unchanged
+  db_lookup.py       # Unchanged
+  maxclass_map.py    # Unchanged
+  sizing.py          # Unchanged
+  aesthetics.py      # Unchanged
+  defaults.py        # Unchanged
+  codegen.py         # Unchanged
+  code_validation.py # Unchanged
+  incremental.py     # REMOVED (replaced by load-edit-save cycle)
+```
 
 ## Integration Points
 
-### Help Patch Audit -> overrides.json
-
+### Load Path (New)
 ```
-scripts/audit_help_patches.py
-  reads: /Applications/Max.app/.../help/**/*.maxhelp
-  reads: .claude/max-objects/*/objects.json
-  writes: .claude/max-objects/overrides.json (updates)
-  writes: scripts/audit_report.json (diff report)
+hooks.py:load_patch(path)
+  -> json.loads(path.read_text())
+  -> Patcher.from_dict(data, db=ObjectDatabase())
+  -> Returns: Patcher instance with all boxes/lines/props populated
 ```
 
-### Aesthetic Generation -> Existing Pipeline
-
+### Query Path (New)
 ```
-src/maxpat/patcher.py (add_panel, add_styled_comment)
-  uses: src/maxpat/defaults.py (new aesthetic constants)
-
-src/maxpat/layout.py (background-aware positioning)
-  reads: box.extra_attrs["background"] to determine layering
-
-src/maxpat/validation.py (optional aesthetic rules)
-  checks: panel objects have background=1
-  checks: styled comments have valid bubbleside values
+query.py:PatchQuery(patcher)
+  -> topology.py:build_graph(patcher.boxes, patcher.lines)
+  -> Returns: query object with find/traverse/analyze methods
 ```
 
-### Help Patch Path Discovery
+### Edit Path (Extended)
+```
+patcher.py:Patcher.remove_box(box)
+  -> Removes box from self.boxes
+  -> Removes all connections involving box from self.lines
+  -> Returns: removed connections (for undo)
 
-```python
-# Standard path on macOS (verified on this machine)
-HELP_BASE = Path("/Applications/Max.app/Contents/Resources/C74/help")
-HELP_DIRS = ["max", "msp", "jitter", "m4l"]
-# Pattern: {HELP_BASE}/{domain}/{object_name}.maxhelp
+patcher.py:Patcher.replace_box(old, new_name, new_args)
+  -> Creates new Box with DB validation
+  -> Attempts to preserve compatible connections
+  -> Returns: new Box
 ```
 
-## File Size and Performance
+### Save Path (Simplified)
+```
+hooks.py:save_patch(patcher, path)
+  -> patcher.to_dict()
+  -> json.dumps(result, indent=2)
+  -> path.write_text(json_str)
+  -> Optional: validate before write
+```
 
-| Metric | Value |
-|--------|-------|
-| Help patches total | 973 files, 57 MB |
-| Average help patch | 62 KB |
-| Largest help patch | 1.5 MB |
-| Parse time (all, recursive) | 0.17s |
-| Total boxes (deep) | 53,178 |
-| Total connections (deep) | 31,476 |
-| Unique objects in help patches | 1,156 |
-| DB objects with help coverage | 934 / 1,672 (56%) |
+### Agent Integration
+```
+Agent receives: path to .maxpat file
+Agent calls:    load_patch(path) -> patcher
+Agent queries:  PatchQuery(patcher).find_by_name("cycle~")
+Agent edits:    patcher.remove_box(old); patcher.add_box("saw~", ["440"])
+Agent saves:    save_patch(patcher, path)
+Agent validates: validate_patch(patcher)
+```
 
-## Aesthetic Property Reference
+## Installation
 
-Properties verified across 973 help patches. These are the JSON keys that produce visual styling in MAX:
-
-### Comment Styling
-| Property | Type | Common Values | Frequency |
-|----------|------|---------------|-----------|
-| `fontsize` | float | 13.0 (help standard) | 9,076 uses |
-| `fontname` | string | "Arial" | 8,959 uses |
-| `bubble` | int (0/1) | 1 (annotation style) | 4,953 uses |
-| `bubbleside` | int | 0=left, 2=right, 3=bottom | 1,124 uses |
-| `style` | string | "helpfile_label" | 2,923 uses |
-| `textjustification` | int | 0=left, 1=center, 2=right | 393 uses |
-| `fontface` | int | 0=regular, 1=bold, 2=italic | varies |
-
-### Panel (Background Rectangle)
-| Property | Type | Common Values | Frequency |
-|----------|------|---------------|-----------|
-| `bgcolor` | [r,g,b,a] | [0.87, 0.84, 0.82, 1.0] (warm tan) | 100 uses |
-| `mode` | int | 0=solid fill, 1=gradient | 159 total |
-| `border` | int | 1 or 2 | 92 uses |
-| `bordercolor` | [r,g,b,a] | [0,0,0,1] (black) | 71 uses |
-| `rounded` | float | 0 (sharp), 4, 15 | 81 uses |
-| `background` | int (0/1) | 1 (draw behind) | 27 uses |
-| `angle` | float | 0.0 or 270.0 (gradient) | 117 uses |
-| `proportion` | float | 0.39 | 99 uses |
-
-### Background Layering
-| Property | Type | Effect | Frequency |
-|----------|------|--------|-----------|
-| `background` | int (0/1) | Draw behind other objects | 1,096 total |
-| `ignoreclick` | int (0/1) | Don't intercept mouse events | 4,939 total |
-
-Objects with `background: 1` are drawn on the back layer. Combined with `ignoreclick: 1`, they become purely decorative. Most common on textbutton (step markers: 954), jit.pwindow (92), and panel (27).
+```bash
+# No new packages to install. Zero new dependencies.
+# The entire v2.0 stack runs on Python 3.14 stdlib + existing codebase.
+```
 
 ## Sources
 
-### Verified on Machine (HIGH confidence)
-- Help patch directory: `/Applications/Max.app/Contents/Resources/C74/help/` -- 973 .maxhelp files confirmed
-- .maxhelp format: JSON, identical to .maxpat -- verified by parsing all 973 files with `json.load()`
-- Aesthetic properties: Extracted from recursive analysis of 53,178 boxes across all help patches
-- Panel patterns: 159 panel objects analyzed across 50 help patches
-- Comment styling: 12,075 comment objects analyzed, top patterns documented
-- Parsing performance: Benchmarked at 0.17s for full recursive parse of all help patches
+### Codebase Analysis (HIGH confidence)
+- `src/maxpat/patcher.py` -- Examined `from_dict()` (lines 1012-1122), `to_dict()`, Box class
+- `src/maxpat/layout.py` -- Examined `_build_graph()`, `_find_components()`, `_topological_levels()`
+- `src/maxpat/incremental.py` -- Examined full merge logic, manifest system
+- `src/maxpat/validation.py` -- Examined 4-layer pipeline, dict-based operation
+- `src/maxpat/hooks.py` -- Examined `write_patch()`, `validate_file()`
+- `src/maxpat/db_lookup.py` -- Examined ObjectDatabase, `lookup()`, `compute_io_counts()`
+- Real .maxpat files -- kicksynth.maxpat (5,950 lines), multiple patches examined
 
-### Existing Codebase (HIGH confidence)
-- `src/maxpat/patcher.py` -- Box model already supports `extra_attrs` for arbitrary properties
-- `src/maxpat/defaults.py` -- Centralized constants, easy to extend
-- `src/maxpat/layout.py` -- Component-based layout, ready for panel awareness
-- `src/maxpat/db_lookup.py` -- ObjectDatabase loads and applies overrides.json
-- `src/maxpat/validation.py` -- 4-layer pipeline, extensible for aesthetic rules
-- `.claude/max-objects/overrides.json` -- Existing correction mechanism for DB entries
+### External Library Research (HIGH confidence)
+- [py2max on GitHub](https://github.com/shakfu/py2max) -- v0.2.x, pure Python, round-trip support but no object validation. Confirmed incompatible naming convention (`_tilde` suffix).
+- [jsonpatch on PyPI](https://pypi.org/project/jsonpatch/) -- v1.33, RFC 6902 implementation. Confirmed array-index-based paths are wrong for .maxpat's ID-based structure.
+- [python-json-patch docs](https://python-json-patch.readthedocs.io/en/latest/mod-jsonpatch.html) -- Full API reviewed: `make_patch()`, `JsonPatch.from_diff()`, `apply()`. Operations are add/remove/replace/copy/move/test.
+- [deepdiff on PyPI](https://pypi.org/project/deepdiff/) -- v8.6.1, generic deep comparison with Delta feature. CVE-2025-58367 security vulnerability in deserialization (patched in 8.6.1). Overkill for known-structure .maxpat comparison.
+- [jsonpointer docs](https://python-json-pointer.readthedocs.io/en/latest/tutorial.html) -- v3.0.0, RFC 6901 pointer resolution. Same array-index problem as jsonpatch.
+- [NetworkX on PyPI](https://pypi.org/project/networkx/) -- v3.6.1, requires Python 3.11+. 10MB dependency to replace ~100 lines of existing graph code.
+- [Cycling '74 .maxpat format discussion](https://cycling74.com/forums/specification-for-maxpat-json-format) -- No official spec exists. Format is reverse-engineered from examples.

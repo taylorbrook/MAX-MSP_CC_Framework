@@ -1,435 +1,379 @@
-# Feature Landscape: v1.1 Patch Quality & Aesthetics
+# Feature Landscape: v2.0 Direct .maxpat Reading & Editing
 
-**Domain:** Object database auditing, patch aesthetics, refined positioning
-**Researched:** 2026-03-13
-**Confidence:** HIGH for .maxpat JSON format capabilities (verified against real patches and official docs); MEDIUM for "what looks professional" (subjective, but consistent patterns emerge from help patches and community)
-
----
-
-## Part A: Database Auditing Features
-
-### Table Stakes (Audit)
-
-| Feature | Why Expected | Complexity | Notes |
-|---------|--------------|------------|-------|
-| Help patch parser | Foundation for all other v1.1 work. Extracts ground truth outlet types, inlet counts, argument formats from 973 .maxhelp files | Low | .maxhelp = JSON, same as .maxpat. Python stdlib `json.load()`. Full recursive parse in 0.17s. |
-| Outlet type audit & correction | The #1 source of broken connections in generated patches. DB has wrong outlet types for mixed signal/control objects (line~, play~, sfplay~, curve~, etc.) | Medium | Compare DB `outlets[].signal` against help patch `outlettype[]`. Generate overrides.json updates. Already found 10+ mixed-outlet objects needing correction. |
-| Inlet/outlet count validation | Variable I/O objects (trigger, pack, route, etc.) need argument-dependent count verification | Low | Help patches show actual counts for specific argument configurations. Cross-reference with existing `variable_io_rules`. |
-
-### Differentiators (Audit)
-
-| Feature | Value Proposition | Complexity | Notes |
-|---------|-------------------|------------|-------|
-| Argument format extraction | Help patches show canonical argument usage (e.g., "cycle~ 440.", "trigger b i f", "route foo bar"). Capture and store. | Medium | Parse `text` field of every `newobj` box. Build argument pattern database per object. |
-| Connection pattern extraction | Which outlets typically connect to which inlet types. Informs intelligent wiring suggestions. | Medium | Parse all 31,476 connections. Build per-object connection frequency table. |
-| Audit diff report | Human-readable report of DB vs help patch discrepancies. Enables targeted manual review. | Low | JSON or CSV output showing: object name, property, DB value, help value, confidence. |
-| Batch override generation | Automatically generate overrides.json entries from audit findings, with confidence filtering. | Medium | High-confidence corrections (outlet types from help patches) auto-apply. Low-confidence (ambiguous argument patterns) flagged for review. |
+**Domain:** Patch file reading, surgical editing, state preservation, and patch analysis
+**Researched:** 2026-03-15
+**Confidence:** HIGH for .maxpat JSON format behavior (verified against codebase + real patches); HIGH for editing operations (well-understood JSON manipulation); MEDIUM for analysis/understanding features (pattern recognition heuristics, no formal specification)
 
 ---
 
-## Part B: Patch Aesthetics Features
+## Context: What Exists vs What Is Needed
 
-### Context
+The v1.x system has a **write-only pipeline**: `Patcher.add_box()` builds objects in memory, `apply_layout()` positions them, `to_dict()` serializes to JSON, `write_patch()` writes to disk. A `Patcher.from_dict()` reader exists (added for incremental merge in v1.x) but only populates enough fields for merge logic -- it does not reconstruct a fully editable Patcher with DB validation, I/O counts, or graph-aware operations.
 
-The v1.0 framework generates valid .maxpat JSON with a column-based layout engine (V_SPACING=20, H_GUTTER=15), font defaults (Arial 12pt), and basic presentation mode support. Currently all comments are unstyled plain text, no panels exist, no background layering is used, and all patchlines are default colored. This section documents what .maxpat JSON properties exist for visual styling, which should be implemented, and what professional MAX patches look like.
+The incremental merge system (`incremental.py`) works but is the wrong abstraction: it assumes a `generate.py` script is the source of truth, with a sidecar manifest tracking "generator-owned" vs "user-owned" objects. The v2.0 goal eliminates this distinction -- the `.maxpat` file IS the single source of truth, and Claude reads it, understands it, and edits it directly.
 
-### Table Stakes (Aesthetics)
+**What this research covers:** The specific features needed for reading, editing, preserving, and analyzing .maxpat files. NOT the infrastructure refactoring (covered in ARCHITECTURE.md) or technology choices (covered in STACK.md).
 
-Features that make generated patches look intentional rather than machine-generated. Missing these means users immediately see "a robot made this."
+---
 
-| Feature | Why Expected | Complexity | Dependencies |
-|---------|--------------|------------|--------------|
-| Section header comments | Every professional MAX patch uses styled comments to label functional sections ("OSCILLATOR", "FILTER", "OUTPUT"). The framework currently emits plain `comment` objects with no visual differentiation from inline notes. Without headers, patches are walls of undifferentiated objects. | LOW (~3h) | Existing `add_comment()` in Patcher. Extend Box serialization to include `fontsize`, `fontface`, `textcolor`. |
-| Panel objects for visual grouping | Panels are the primary visual organization tool in MAX. They create colored rectangular backgrounds behind groups of related objects. Every Cycling '74 help patch uses panels to delineate sections (159 panels across 50 help patches). Without panels, even well-laid-out patches look unstructured. | LOW-MED (~6h) | New `add_panel()` method in Patcher. Panel is already in the DB (maxclass "panel"). Must serialize `bgfillcolor`, `rounded`, `border`, `bordercolor`, `shape`. Must handle background layer placement. |
-| Comment bubble annotations | Bubble comments (speech-bubble style with arrows pointing to objects) are MAX's standard annotation idiom. Help patches use them to explain what each object does (12,075 comments analyzed in help patches). More visually distinct than plain comments. | LOW (~3h) | Extend `add_comment()` or add `add_bubble_comment()`. Serialize bubble properties on comment boxes. |
-| Background layer for decorative objects | Panels and section headers belong in the background layer so they do not interfere with object selection in edit mode. Universal in professional patches -- decorative objects go to background, functional objects stay in foreground. Without this, panels block object selection. | LOW (~1h) | Add `"background": 1` to Box serialization for panel and header comment objects. Single boolean attribute. |
-| Patcher background color | The patcher-level `editing_bgcolor` and `locked_bgcolor` properties set the canvas color. Professional patches use subtle tinted backgrounds to differentiate windows and establish visual tone. | LOW (~1h) | Add RGBA arrays to patcher props dict. |
+## Table Stakes
 
-### Differentiators (Aesthetics)
+Features that must work for the v2.0 milestone to be considered complete. Missing any of these means the direct-editing workflow is broken.
 
-Features that make generated patches look notably better than what most humans produce.
+### TS-1: Load Any .maxpat into Structured Objects
 
-| Feature | Value Proposition | Complexity | Dependencies |
-|---------|-------------------|------------|--------------|
-| Semantic color system | Consistent, readable color scheme: section headers in one color (muted blue), inline annotations in another (dark gray), warnings in a third (amber). Professional patches use color to encode meaning. Machine-generated patches can enforce this consistency perfectly every time. | LOW (~2h) | Define palette constants. Apply via `textcolor` on comment boxes. No new serialization needed. |
-| Hierarchical comment styling | Three tiers: (1) Section headers -- 16-18pt, bold, colored; (2) Subsection labels -- 12pt, bold; (3) Inline annotations -- 12pt, italic or light color. Creates visual hierarchy communicating patch structure at a glance. | LOW (~3h) | Add helper methods: `add_section_header()`, `add_label()`, `add_annotation()`. |
-| Step marker numbering | Numbered textbutton circles (1, 2, 3...) as instruction markers for guided patches. 565 uses found in help patches. | LOW (~2h) | Textbutton with specific styling: `rounded=60` (circle), `bgcolor=[0.9, 0.65, 0.05, 1.0]` (amber), `background=1`. |
-| Panel auto-sizing around object groups | Compute bounding box around related objects and generate a panel that fits snugly with padding. Tedious to do manually -- a generator does it perfectly every time. | MEDIUM (~8h) | Layout engine integration: after positioning, identify logical groups, compute bounds, create panel boxes. Panels must use `"background": 1` for correct layering. |
-| Patchline color coding | Color cables by signal type: audio in one color, control in another. MAX supports per-patchline `"color"` in the patchline dict. Professional touch that few patches implement consistently because it is tedious manually. | LOW (~3h) | Add optional `color` param to Patchline. Determine signal type from source `outlettype` (already tracked). |
-| Object background color for key objects | Highlight critical objects (loadbang, dac~, key processors) with subtle background colors. MAX supports `bgcolor` on newobj boxes. Draws attention to architectural anchor points. | LOW (~2h) | Add `bgcolor` via `extra_attrs`. Define highlight rules. |
-| Gradient panels for sections | Panel `bgfillcolor` supports gradient fills via dictionary with `type`, `color1`, `color2`, `angle`, `proportion`. Gradients add depth and visual polish. | LOW-MED (~4h) | Requires bgfillcolor dictionary generation (structure verified from real .maxpat files). |
+| Aspect | Detail |
+|--------|--------|
+| **Why expected** | Foundation of everything. Cannot edit what you cannot read. Every agent, skill, and hook needs to load a .maxpat and work with structured Python objects, not raw JSON dicts. |
+| **What it does** | Read a .maxpat file from disk, parse the JSON, and reconstruct a `Patcher` instance with fully populated `Box` and `Patchline` objects. Every box must have: `id`, `name`, `maxclass`, `text`, `args`, `numinlets`, `numoutlets`, `outlettype`, `patching_rect`, font info, presentation state, extra_attrs, and inner patchers (recursive). |
+| **Complexity** | MEDIUM |
+| **Dependencies** | Existing `Patcher.from_dict()` provides 70% of this. Needs: proper name/args parsing from text field, bpatcher attribute reconstruction, recursive inner patcher loading, ID counter sync, and consistent handling of all maxclass types. |
+| **Existing foundation** | `from_dict()` at patcher.py:1012-1122 already handles boxes, lines, inner patchers, extra_attrs. Gaps: does not set `_bpatcher_attrs` on load (only checks `patcher` key), does not validate against DB on load (by design -- but edit operations will need DB access). |
+| **Key behaviors** | Must handle: standard newobj boxes, UI objects (maxclass != "newobj"), comment/message boxes, bpatcher (file ref + embedded), subpatcher (p name), gen~ (with codebox), node.script, js, panel, and any unknown maxclass gracefully. Must preserve every JSON key, even ones the library does not understand (future-proofing). |
 
-### Anti-Features (Aesthetics)
+### TS-2: Write Back with Minimal Diff
+
+| Aspect | Detail |
+|--------|--------|
+| **Why expected** | If load-then-save produces a different file than the original, the tool is not trustworthy. Users must be able to `git diff` after a Claude edit and see ONLY the intended changes, not reformatting noise. |
+| **What it does** | Serialize a loaded-and-edited Patcher back to .maxpat JSON that is byte-for-byte identical to the original for unchanged portions. Edited boxes show only changed keys. No reordering of boxes or lines unless explicitly requested. |
+| **Complexity** | HIGH |
+| **Dependencies** | Requires careful JSON serialization. The current `to_dict()` method reconstructs from Python objects, losing key ordering and inserting defaults. Needs ordered dict handling and a "write only what was there plus changes" strategy. |
+| **Existing foundation** | `from_dict()` stores all non-handled keys in `extra_attrs` and `props`. `to_dict()` inserts font keys, parameter_enable, etc. that may not have been in the original. The incremental merge (`_merge_box_attrs`) already has the concept of "generator-owned" vs "user-owned" keys -- this needs to evolve into "original value" vs "edited value". |
+| **Key behaviors** | Preserve: key ordering within box dicts, numeric precision (don't turn `45.0` into `45`), string escaping, array formatting. Box array ordering must match the original (z-order matters for panels/background objects). Line array ordering should be preserved. New boxes get appended. Removed boxes are excised. |
+
+### TS-3: Add Object to Existing Patch
+
+| Aspect | Detail |
+|--------|--------|
+| **Why expected** | The most basic editing operation. "Add a cycle~ here" must work without rebuilding the entire patch. |
+| **What it does** | Create a new Box in a loaded Patcher. The box gets a unique ID (higher than any existing ID), is validated against the ObjectDatabase, gets correct I/O counts and outlet types, and is positioned at a specified location (or auto-positioned intelligently). |
+| **Complexity** | LOW |
+| **Dependencies** | Existing `Patcher.add_box()` does this for new patchers. Needs to work when called on a loaded patcher where `_next_id` is synced to existing IDs. `from_dict()` already syncs `_next_id` (line 1121). |
+| **Existing foundation** | `add_box()`, `add_comment()`, `add_message()`, `add_subpatcher()`, `add_bpatcher()`, `add_gen()`, `add_node_script()`, `add_js()` -- all exist and work. The main gap is that these methods were designed for construction, not insertion into an existing loaded patch. They should work as-is once `from_dict()` properly initializes the Patcher. |
+| **Key behaviors** | New boxes must not collide IDs with existing boxes. Position can be explicit (x, y) or "near this other box". DB validation still applies (Rule #1). Must not disturb existing boxes or connections. |
+
+### TS-4: Remove Object from Existing Patch
+
+| Aspect | Detail |
+|--------|--------|
+| **Why expected** | Second most basic edit. "Remove this loadbang" or "delete the meter~" must be clean -- removing the box AND all connections to/from it. |
+| **What it does** | Given a box ID or reference, remove it from `patcher.boxes` and remove all `Patchline`s where it appears as source or destination. If the box has an inner patcher, that is removed too. |
+| **Complexity** | LOW |
+| **Dependencies** | None beyond the loaded Patcher model. |
+| **Existing foundation** | No `remove_box()` method exists. The incremental merge handles removal at the JSON dict level (filtering by manifest IDs). Needs a proper method on Patcher. |
+| **Key behaviors** | Remove box from boxes list. Remove all lines where `source_id == box.id` or `dest_id == box.id`. Return the removed connections (caller may want to rewire). Raise if ID not found. |
+
+### TS-5: Rewire Connections (Add/Remove Patchlines)
+
+| Aspect | Detail |
+|--------|--------|
+| **Why expected** | Editing connections is the core of patch editing. "Connect the output of this filter to the dac~" or "disconnect the noise~ from the mixer". |
+| **What it does** | Add new connections between existing boxes (with index bounds checking). Remove specific connections. Optionally: rewire (remove old, add new in one operation). |
+| **Complexity** | LOW |
+| **Dependencies** | Existing `add_connection()` does creation. Needs `remove_connection()` and `rewire()`. |
+| **Existing foundation** | `add_connection()` exists (patcher.py:564). Connection validation exists in validation.py Layer 3 (bounds checking, signal type checking). No `remove_connection()` or `find_connections()` methods exist. |
+| **Key behaviors** | `add_connection(src, outlet, dst, inlet)` -- already works. `remove_connection(src, outlet, dst, inlet)` -- find and remove matching Patchline. `find_connections(box_id)` -- return all connections to/from a box. Bounds checking on add (outlet index < numoutlets, inlet index < numinlets). |
+
+### TS-6: Preserve All User State on Edit
+
+| Aspect | Detail |
+|--------|--------|
+| **Why expected** | The entire motivation for v2.0. The v1.x pipeline destroys user customizations (positions, colors, presentation rects, varnames, scripting names) on regeneration. If v2.0 does the same thing, it has failed. |
+| **What it does** | When editing a patch (adding/removing/modifying objects), ALL properties of untouched objects remain exactly as they were. This includes: `patching_rect` (positions), `presentation_rect`, colors (`bgcolor`, `textcolor`, `bgfillcolor`), font overrides, `varname`, `scripting_name`, custom attributes, hidden state, lock state, and any unknown keys. |
+| **Complexity** | MEDIUM (mostly an architecture concern -- the read-modify-write cycle must be pristine) |
+| **Dependencies** | TS-1 (complete loading) and TS-2 (minimal diff writing). |
+| **Existing foundation** | `from_dict()` already preserves unknown keys in `extra_attrs` and patcher-level props. The incremental merge has an ownership model for this. The new system is simpler: load everything, edit what you want, save everything back. No ownership tracking needed because there is no "generator" vs "user" distinction. |
+| **Key behaviors** | Never recompute `patching_rect` for existing boxes (no auto-layout on loaded boxes). Never strip unknown attributes. Never reorder boxes or lines. Never change patcher-level props (rect, bgcolor, openinpresentation) unless explicitly asked. |
+
+### TS-7: Find Objects by Name/ID/Type/Text
+
+| Aspect | Detail |
+|--------|--------|
+| **Why expected** | Every editing operation starts with finding the target. "Find the dac~" or "find all cycle~ objects" or "find box obj-15". Without search, the agent has to iterate manually. |
+| **What it does** | Query methods on Patcher: `find_by_id(id)`, `find_by_name(name)` (object name like "cycle~"), `find_by_maxclass(maxclass)`, `find_by_text(text_substring)`. All return Box references (or lists). |
+| **Complexity** | LOW |
+| **Dependencies** | TS-1 (loaded Patcher with populated Box objects). |
+| **Existing foundation** | No search methods exist. The `from_dict()` loader populates `box.name`, `box.maxclass`, `box.text`, `box.id` -- all searchable. py2max has `find_by_id()`, `find_by_text()`, `find_by_type()` as prior art. |
+| **Key behaviors** | `find_by_id("obj-5")` returns single Box or None. `find_by_name("cycle~")` returns list of matching Boxes. `find_by_maxclass("comment")` returns list. `find_by_text("440")` returns boxes where text contains substring. Should search recursively into inner patchers with an optional flag. |
+
+---
+
+## Differentiators
+
+Features that make the v2.0 system notably more useful than basic load/edit/save. Not required for MVP but provide significant value.
+
+### D-1: Modify Object Attributes In-Place
+
+| Aspect | Detail |
+|--------|--------|
+| **Value proposition** | Change an object's arguments, position, color, or any property without removing and re-adding it. "Change the cycle~ frequency from 440 to 880" should modify `box.text` and `box.args`, not delete and recreate. |
+| **Complexity** | LOW-MEDIUM |
+| **Dependencies** | TS-1, TS-7. |
+| **Notes** | Changing `text` and `args` is simple string manipulation. Changing arguments that affect I/O counts (e.g., changing `trigger b i` to `trigger b i f`) requires recomputing `numinlets`/`numoutlets` and potentially invalidating connections. Need a `modify_args()` method that recomputes I/O and warns about broken connections. Position changes are trivial (`box.patching_rect = [x, y, w, h]`). Attribute changes go through `box.extra_attrs`. |
+
+### D-2: Graph Queries (Upstream/Downstream/Path)
+
+| Aspect | Detail |
+|--------|--------|
+| **Value proposition** | Understanding signal flow is critical for intelligent editing. "What feeds into this dac~?" or "Trace the signal path from MIDI input to audio output." The current layout engine already builds adjacency graphs (`_build_graph` in layout.py) -- expose this as a query API. |
+| **Complexity** | MEDIUM |
+| **Dependencies** | TS-1, TS-5. |
+| **Notes** | Build directed graph from Patchline list. Provide: `upstream(box_id)` -- all boxes that feed into this box (BFS backward). `downstream(box_id)` -- all boxes fed by this box (BFS forward). `signal_path(src_id, dst_id)` -- find path(s) between two boxes. `signal_chain(box_id)` -- the complete chain from source to sink containing this box. `connected_component(box_id)` -- all boxes in the same connected component. Separate signal (audio) graph from control (message) graph based on outlettype. |
+
+### D-3: Patch Summary / Understanding
+
+| Aspect | Detail |
+|--------|--------|
+| **Value proposition** | When Claude opens an unknown .maxpat (from a user or third party), it needs to quickly understand what the patch does. A structured summary enables intelligent editing suggestions. This is the core of /max-onboard. |
+| **Complexity** | MEDIUM-HIGH |
+| **Dependencies** | TS-1, D-2. |
+| **Notes** | Analyze a loaded patch and produce: (1) Object inventory -- count by type, domain breakdown (MSP vs Max vs Jitter). (2) Signal flow summary -- identify audio chains from sources to sinks. (3) Control flow summary -- identify MIDI/control paths. (4) Subpatcher map -- list all subpatchers/bpatchers and their purpose (from text/comments). (5) Functional sections -- group objects into logical sections by connected components and spatial proximity. (6) Parameter list -- find all named parameters (varname, scripting_name, param objects). (7) Complexity metrics -- object count, connection count, nesting depth, domain mix. |
+
+### D-4: Intelligent Auto-Positioning for New Objects
+
+| Aspect | Detail |
+|--------|--------|
+| **Value proposition** | When adding an object to an existing patch, auto-position it sensibly: below its upstream source, above its downstream target, near related objects. The current layout engine (`apply_layout`) is designed for full-patch layout of new patches -- it would destroy existing positions if applied to a loaded patch. Need a targeted "place this new box" algorithm. |
+| **Complexity** | MEDIUM |
+| **Dependencies** | TS-3, D-2. |
+| **Notes** | Strategy: (1) If connected upstream, place below the source (source_y + source_h + v_spacing), aligned to the source's outlet X. (2) If connected downstream, place above the target. (3) If both, place between them. (4) If neither (disconnected), place in the nearest empty space. (5) Check for overlaps with existing boxes and shift if needed. This is a local placement algorithm, not a full relayout. The full `apply_layout()` should NEVER run on a loaded patch unless explicitly requested. |
+
+### D-5: Replace Object (Swap)
+
+| Aspect | Detail |
+|--------|--------|
+| **Value proposition** | "Replace this onepole~ with a biquad~" is a common edit. Needs to: remove old box, add new box at same position, reconnect as many connections as possible (matching inlet/outlet indices where compatible). |
+| **Complexity** | MEDIUM |
+| **Dependencies** | TS-3, TS-4, TS-5, D-1. |
+| **Notes** | Algorithm: (1) Record old box's position, connections (with indices), and presentation state. (2) Create new box with new name/args at old position. (3) For each old connection, attempt to recreate with new box if the index is within bounds. (4) Report which connections could not be remapped (old box had 3 outlets, new has 2 -- outlet 2 connections are lost). This is extremely useful for the agent workflow where Claude suggests "swap X for Y". |
+
+### D-6: Batch Operations with Transaction Semantics
+
+| Aspect | Detail |
+|--------|--------|
+| **Value proposition** | Complex edits involve multiple coordinated changes: "Insert a gain~ between the oscillator and the dac~" requires adding a box AND rewiring two connections. If the rewire fails, the add should be rolled back. |
+| **Complexity** | MEDIUM |
+| **Dependencies** | All TS features. |
+| **Notes** | Implement as a snapshot/restore pattern: `patcher.checkpoint()` saves current state, `patcher.rollback()` restores it, `patcher.commit()` discards the checkpoint. Internally, checkpoint saves a deep copy of boxes and lines lists. Not a full undo system -- just one level for atomic multi-step operations. |
+
+### D-7: Insert Object Into Existing Connection
+
+| Aspect | Detail |
+|--------|--------|
+| **Value proposition** | The single most common surgical edit: "Insert a *~ 0.5 between the cycle~ and the dac~." Requires: identify the connection, remove it, add new box, connect source->new->destination. |
+| **Complexity** | LOW-MEDIUM |
+| **Dependencies** | TS-3, TS-4, TS-5, D-4. |
+| **Notes** | `insert_into_connection(patchline, new_box, inlet=0, outlet=0)`: removes the original connection, connects original source -> new_box inlet, connects new_box outlet -> original destination. Position new_box between source and destination (midpoint Y, aligned X). This is such a common operation it deserves a dedicated method. |
+
+### D-8: Subpatcher Extraction / Inlining
+
+| Aspect | Detail |
+|--------|--------|
+| **Value proposition** | "Move these 5 objects into a subpatcher" or "Inline this subpatcher's contents." Organizational refactoring that experienced MAX users do regularly. |
+| **Complexity** | HIGH |
+| **Dependencies** | TS-3, TS-4, TS-5, D-2. |
+| **Notes** | Extract: select objects by ID list, identify connections that cross the boundary (these become inlet/outlet objects in the subpatcher), move objects into inner patcher, replace with subpatcher box, rewire boundary connections through inlets/outlets. Inline: reverse -- copy inner patcher objects to parent, reconnect, remove subpatcher box. Both are complex because they must handle the inlet/outlet mapping correctly and preserve connection semantics. Defer to later phase if needed. |
+
+---
+
+## Anti-Features
+
+Features to explicitly NOT build. Each was considered and rejected for specific reasons.
+
+### AF-1: Full Auto-Layout on Loaded Patches
 
 | Anti-Feature | Why Avoid | What to Do Instead |
 |--------------|-----------|-------------------|
-| Custom MAX style definitions | MAX's style system stores styles in `~/Documents/Max 8/Styles/`. Generating custom styles pollutes the user's style library and creates external dependencies. Styles like "helpfile_label" are defined internally by MAX, not in .maxpat files. | Use inline attributes (`bgcolor`, `textcolor`, `fontface`) directly on objects. Leave `"style": ""` empty. Inline styling is self-contained. |
-| Custom fonts (non-Arial) | MAX defaults to Arial/Helvetica. Unusual fonts cause layout shifts when patches open on systems without those fonts. MAX silently substitutes. | Stick with Arial. Vary weight (`fontface`: 0=regular, 1=bold, 2=italic, 3=bold-italic) and size for hierarchy, not font family. |
-| Aggressive color theming | Dark themes, neon accents, high-saturation colors impair readability. MAX's default light theme is designed for long sessions. Aggressive themes conflict with user's own style preferences. | Subtle, muted colors. Panels at 10-20% tint. Never override user's patcher background unless explicitly requested. |
-| Hidden connections for aesthetics | `"hidden": 1` on patchlines makes cables invisible. Looks "clean" but is a debugging nightmare violating MAX's visual programming paradigm. | Use `send~/receive~` for long-distance connections. Use midpoints for routing. Never hide connections users need to trace. |
-| Per-object style dictionaries | Applying named styles to individual objects via `"style"` attribute. Creates dependency on external style definitions that may not exist on other systems. | Set properties directly on the box dict. No external dependencies. |
-| Help patch layout copying | Help patches are hand-tuned for pedagogical purposes, not general use. Exact layout copying would look odd for non-tutorial patches. | Extract statistical patterns (spacing, grouping) from help patches, not exact positions. |
-| Overly dense panel backgrounds | Covering entire patcher in panels. Looks overdesigned, removes visual breathing room. | 3-5 major section panels maximum. Leave space between sections. The canvas is a valid visual element. |
+| Running `apply_layout()` on a loaded patch | Destroys all user positioning. The layout engine assumes it is laying out a fresh patch from scratch. Applying it to a loaded patch with carefully arranged objects would reposition everything, breaking the user's visual organization. This is the exact problem v2.0 is solving. | Only auto-position NEW objects (D-4). Provide an explicit `relayout()` command for when the user wants a fresh layout (opt-in, not default). |
 
----
+### AF-2: Real-Time MAX Integration (OSC/MCP Control)
 
-## .maxpat JSON Format Reference
+| Anti-Feature | Why Avoid | What to Do Instead |
+|--------------|-----------|-------------------|
+| Controlling MAX in real-time via OSC or MCP | PROJECT.md explicitly lists this as out of scope. Creates fragile dependency on MAX running. Claude cannot test audio output. | Keep the offline editing model. Claude edits .maxpat files, user opens them in MAX. The .maxpat file is the communication channel. |
 
-### Comment Box Styling Properties
+### AF-3: Patch Screenshot Analysis
 
-All properties set directly in the box dict alongside `maxclass`, `id`, etc.
+| Anti-Feature | Why Avoid | What to Do Instead |
+|--------------|-----------|-------------------|
+| Analyzing screenshot images of patches to understand them | PROJECT.md explicitly lists this as out of scope. OCR on visual patches is unreliable. .maxpat JSON contains all information needed. | Use /max-onboard to analyze .maxpat JSON directly (D-3). JSON is the source of truth, not pixels. |
 
-```json
-{
-  "box": {
-    "maxclass": "comment",
-    "id": "obj-1",
-    "numinlets": 1,
-    "numoutlets": 0,
-    "patching_rect": [30.0, 10.0, 200.0, 24.0],
-    "text": "OSCILLATOR SECTION",
-    "fontname": "Arial",
-    "fontsize": 16.0,
-    "fontface": 1,
-    "textcolor": [0.2, 0.4, 0.7, 1.0],
-    "bgcolor": [0.0, 0.0, 0.0, 0.0],
-    "textjustification": 0,
-    "underline": 0,
-    "background": 1
-  }
-}
-```
+### AF-4: Manifest/Sidecar Files for Ownership Tracking
 
-| Property | Type | Values | Purpose |
-|----------|------|--------|---------|
-| `fontname` | string | `"Arial"` | Font family (stick with Arial) |
-| `fontsize` | float | 10.0-24.0 | Point size |
-| `fontface` | int | 0=regular, 1=bold, 2=italic, 3=bold-italic | Text weight/style |
-| `textcolor` | [R,G,B,A] | 0.0-1.0 floats | Text color |
-| `bgcolor` | [R,G,B,A] | 0.0-1.0 floats | Comment background (usually transparent) |
-| `textjustification` | int | 0=left, 1=center, 2=right | Text alignment |
-| `underline` | int | 0 or 1 | Underline text |
-| `background` | int | 0=foreground, 1=background | Layer placement |
+| Anti-Feature | Why Avoid | What to Do Instead |
+|--------------|-----------|-------------------|
+| Continuing the `.manifest.json` sidecar system | The manifest exists because the generate.py pipeline needed to know what it "owns" vs what the user added. With direct editing, there is no generator vs user distinction. Every object in the .maxpat is equally editable. The manifest adds complexity and a second file to track. | Remove the manifest system entirely. The .maxpat file is the single source of truth. Track edits through git history if provenance matters. |
 
-**Confidence:** HIGH -- verified against official Cycling '74 docs (comment reference Max 8) and real .maxpat files.
+### AF-5: Automatic DB Validation on Load
 
-### Bubble Comment Properties
+| Anti-Feature | Why Avoid | What to Do Instead |
+|--------------|-----------|-------------------|
+| Rejecting or flagging unknown objects when loading a .maxpat | Users may have objects from packages, externals, or MAX versions not in our 2,015-object database. A loader that rejects unknown objects is hostile. Loading must be permissive. | Load everything without validation. Validate only on explicit request or when adding NEW objects. The DB is for creation-time safety (Rule #1), not for gatekeeping loaded files. Unknown objects get best-effort Box reconstruction with the data present in the JSON. |
 
-```json
-{
-  "box": {
-    "maxclass": "comment",
-    "text": "frequency in Hz",
-    "fontname": "Arial",
-    "fontsize": 12.0,
-    "bubble": 1,
-    "bubbleside": 2,
-    "bubblepoint": 0.5,
-    "bubble_bgcolor": [1.0, 1.0, 0.85, 1.0],
-    "bubble_outlinecolor": [0.6, 0.6, 0.6, 1.0],
-    "bubbletextmargin": 5,
-    "bubbleusescolors": 1
-  }
-}
-```
+### AF-6: Python Generation Script (.generate.py) Compatibility
 
-| Property | Type | Values | Purpose |
-|----------|------|--------|---------|
-| `bubble` | int | 0 or 1 | Enable bubble outline |
-| `bubbleside` | int | 0=top, 1=left, 2=bottom, 3=right | Arrow origin direction |
-| `bubblepoint` | float | 0.0-1.0 | Arrow position along edge |
-| `bubble_bgcolor` | [R,G,B,A] | 0.0-1.0 floats | Bubble background |
-| `bubble_outlinecolor` | [R,G,B,A] | 0.0-1.0 floats | Bubble border color |
-| `bubbletextmargin` | int | pixels | Padding inside bubble |
-| `bubbleusescolors` | int | 0 or 1 | Enable custom bubble colors |
-
-**Confidence:** HIGH -- verified from Max 8 comment reference documentation.
-
-### Panel Object Properties
-
-```json
-{
-  "box": {
-    "maxclass": "panel",
-    "id": "obj-bg-1",
-    "numinlets": 1,
-    "numoutlets": 0,
-    "patching_rect": [20.0, 25.0, 300.0, 200.0],
-    "bgfillcolor": {
-      "type": "color",
-      "color": [0.9, 0.92, 0.95, 0.5],
-      "color1": [0.9, 0.92, 0.95, 1.0],
-      "color2": [0.85, 0.87, 0.9, 1.0],
-      "angle": 270.0,
-      "proportion": 0.39,
-      "autogradient": 0
-    },
-    "rounded": 8,
-    "border": 1,
-    "bordercolor": [0.7, 0.72, 0.75, 1.0],
-    "shadow": 0,
-    "shape": 0,
-    "background": 1,
-    "ignoreclick": 1
-  }
-}
-```
-
-| Property | Type | Values | Purpose |
-|----------|------|--------|---------|
-| `bgfillcolor` | dict | see formats below | Fill color or gradient |
-| `rounded` | int | pixels | Corner radius (0=sharp, 8=subtle rounding) |
-| `border` | int | pixels | Border width (0=none, 1=standard) |
-| `bordercolor` | [R,G,B,A] | 0.0-1.0 floats | Border color |
-| `shadow` | int | pixels | Shadow depth (+raised, -recessed, 0=none) |
-| `shape` | int | 0=rect, 1=circle, 2=triangle, 3=arrow | Panel shape |
-| `background` | int | 0 or 1 | Background layer (always 1 for decorative panels) |
-| `ignoreclick` | int | 0 or 1 | Pass mouse clicks through (always 1 for bg panels) |
-
-**bgfillcolor dictionary -- solid color:**
-```json
-{
-  "type": "color",
-  "color": [R, G, B, A],
-  "color1": [R, G, B, A],
-  "color2": [R, G, B, A],
-  "angle": 270.0,
-  "proportion": 0.39,
-  "autogradient": 0
-}
-```
-
-**bgfillcolor dictionary -- gradient:**
-```json
-{
-  "type": "gradient",
-  "color1": [R, G, B, A],
-  "color2": [R, G, B, A],
-  "color": [R, G, B, A],
-  "angle": 270.0,
-  "proportion": 0.39
-}
-```
-
-- `color` -- primary/solid fill color
-- `color1` -- gradient start color
-- `color2` -- gradient end color
-- `angle` -- gradient direction in degrees (270.0 = top-to-bottom)
-- `proportion` -- blend midpoint position (0.0-1.0, typical: 0.39)
-- `autogradient` -- (0 or 1) auto-generate gradient from `color`
-
-**Confidence:** HIGH -- extracted and verified from real .maxpat files (HfMT-ZM4/WFS-Server, Vimeo/vimeo-maxmsp repositories).
-
-### Patcher-Level Color Properties
-
-Set in the patcher dict (same level as `boxes`, `lines`).
-
-```json
-{
-  "patcher": {
-    "editing_bgcolor": [0.95, 0.95, 0.95, 1.0],
-    "locked_bgcolor": [0.95, 0.95, 0.95, 1.0],
-    "patchlinecolor": [0.45, 0.45, 0.45, 1.0],
-    ...other patcher props...
-  }
-}
-```
-
-| Property | Type | Purpose |
-|----------|------|---------|
-| `editing_bgcolor` | [R,G,B,A] | Patcher background when unlocked (edit mode) |
-| `locked_bgcolor` | [R,G,B,A] | Patcher background when locked (performance mode) |
-| `patchlinecolor` | [R,G,B,A] | Default cable color for all patchlines |
-| `accentcolor` | [R,G,B,A] | Object accent color ("off" state indicator) |
-| `elementcolor` | [R,G,B,A] | Object element/backdrop color |
-| `textcolor` | [R,G,B,A] | Comment text color (patcher-wide default) |
-| `textcolor_inverse` | [R,G,B,A] | Object box text color (patcher-wide default) |
-| `clearcolor` | [R,G,B,A] | Comment background color (patcher-wide default) |
-| `color` | [R,G,B,A] | Object value indicator color |
-| `selectioncolor` | [R,G,B,A] | Selection highlight color |
-| `stripecolor` | [R,G,B,A] | Background stripe color |
-
-**Confidence:** MEDIUM -- property names verified from official docs. Exact MAX defaults not confirmed (MAX only stores these when they differ from built-in defaults, so inspecting .maxpat files only shows custom values).
-
-### Patchline Color Properties
-
-```json
-{
-  "patchline": {
-    "source": ["obj-1", 0],
-    "destination": ["obj-2", 0],
-    "order": 0,
-    "color": [0.4, 0.6, 0.8, 1.0],
-    "midpoints": [100.0, 50.0, 200.0, 50.0]
-  }
-}
-```
-
-| Property | Type | Purpose |
-|----------|------|---------|
-| `color` | [R,G,B,A] | Per-cable color override |
-| `hidden` | int (0/1) | Hide cable when patcher is locked |
-| `midpoints` | [x1,y1,...] | Segmented routing waypoints (already implemented) |
-
-**Confidence:** MEDIUM -- `color` on individual patchlines verified from community sources and real patches.
-
-### Common Box Attributes (All Object Types)
-
-These apply to ANY box -- newobj, UI objects, comments, panels.
-
-| Property | Type | Values | Purpose |
-|----------|------|--------|---------|
-| `background` | int | 0 or 1 | Background layer placement |
-| `hidden` | int | 0 or 1 | Hidden when patcher is locked |
-| `ignoreclick` | int | 0 or 1 | Ignore mouse clicks in locked mode |
-| `hint` | string | text | Tooltip popup on hover in locked mode |
-| `annotation` | string | text | Clue bar text on hover |
-| `varname` | string | identifier | Scripting name for thispatcher access |
-| `color` | [R,G,B,A] | 0.0-1.0 | Box outline color |
-
-**Confidence:** HIGH -- from official Common Box Attributes documentation (verified current through Max 8/9).
-
----
-
-## Professional MAX Patch Visual Patterns
-
-Based on analysis of Cycling '74 help patches, community examples, and forum discussions.
-
-### Pattern 1: Section Panels with Headers
-A colored panel behind a group of objects, with a bold section header comment at the top. Panel is in background layer with `ignoreclick: 1`. Header is 14-18pt bold. Functional objects float on top in the foreground layer. Panels sized in multiples of 50px for grid alignment. Alpha values at 0.3-0.7 for subtle tinting.
-
-### Pattern 2: Bubble Annotations on Key Objects
-Speech-bubble comments pointing at non-obvious objects explaining their function. `bubbleside` typically 1 (left) or 3 (right) depending on available space. Used sparingly -- 3-5 per patch section, not on every object. Help patches use `bubbleside: 2` (bottom) for comments above objects.
-
-### Pattern 3: Top-Level Minimal, Subpatchers Dense
-Top-level patcher shows 5-10 objects maximum: subpatchers, bpatchers, dac~, adc~, and high-level controls. All complexity inside named subpatchers. Top level is a "map" of the project.
-
-### Pattern 4: Color-Coded Functional Zones
-Audio processing in one zone, control/MIDI in another, UI in a third. Zones demarcated by panels with different tint colors. Within zones, consistent spacing.
-
-### Pattern 5: Foreground/Background Separation
-All panels and decorative comments in background layer. All functional objects in foreground. Background locked to prevent accidental selection. Universal in professional patches.
-
-### Pattern 6: Grid Alignment
-Objects snapped to 15px grid (MAX default). Vertical alignment of connected chains. Horizontal alignment of objects at the same processing stage. The grid creates consistent spacing without being visible.
-
-### Pattern 7: Color-Coded Send/Receive
-When using send/receive or send~/receive~ for wireless connections, color both the send and receive objects with matching colors to make the invisible link visually trackable. Use `color` attribute on the box outline.
-
-### Pattern 8: Numbered Step Markers
-Help patches use numbered textbutton circles (amber background, white text, rounded=60) to guide users through a patch. Numbers appear in the background layer and show the recommended exploration order.
+| Anti-Feature | Why Avoid | What to Do Instead |
+|--------------|-----------|-------------------|
+| Maintaining backward compatibility with the generate.py workflow | The entire point of v2.0 is to eliminate this pipeline. Keeping it working means maintaining two editing paths, which is the dual-source-of-truth problem we are solving. | Migrate existing patches to standalone .maxpat files. Remove generate.py scripts and manifests. Preserve the scripts in git history for reference. |
 
 ---
 
 ## Feature Dependencies
 
 ```
-Part A (Audit):
-  Help patch parser -> Outlet type audit -> Batch override generation
-  Help patch parser -> Inlet/outlet count validation -> Batch override generation
-  Help patch parser -> Argument format extraction
-  Help patch parser -> Connection pattern extraction
+TS-1 (Load) --> TS-2 (Write Back)
+TS-1 (Load) --> TS-3 (Add Object)
+TS-1 (Load) --> TS-4 (Remove Object)
+TS-1 (Load) --> TS-5 (Rewire)
+TS-1 (Load) --> TS-6 (Preserve State)
+TS-1 (Load) --> TS-7 (Find Objects)
 
-Part B (Aesthetics):
-  T5 Patcher bgcolor         -- standalone
-  T1 Section header comments -- extends add_comment()
-    +-> D1 Semantic color system   -- needs T1 color infrastructure
-    +-> D3 Hierarchical comments   -- needs T1 font properties
-  T3 Bubble comments         -- extends add_comment()
-  T4 Background layer        -- simple attribute, enables T2
-    +-> T2 Panel objects     -- needs T4 for correct layering
-          +-> D2 Panel auto-sizing    -- needs T2 + layout engine
-          +-> D6 Gradient panels      -- needs T2 + bgfillcolor dict
-          +-> D7 Panel shapes         -- needs T2
-  D4 Patchline color coding  -- extends Patchline (independent)
-  D5 Object background color -- extends Box.extra_attrs (independent)
-  Step marker numbering      -- needs Panel support for background property
+TS-3 + TS-4 + TS-5 --> D-1 (Modify Attrs)
+TS-1 + TS-5 --> D-2 (Graph Queries)
+TS-1 + D-2 --> D-3 (Patch Summary)
+TS-3 + D-2 --> D-4 (Auto-Position)
+TS-3 + TS-4 + TS-5 + D-1 --> D-5 (Replace/Swap)
+All TS --> D-6 (Transactions)
+TS-3 + TS-5 + D-4 --> D-7 (Insert Into Connection)
+TS-3 + TS-4 + TS-5 + D-2 --> D-8 (Subpatcher Extract/Inline)
 ```
 
-## MVP Recommendation
-
-**Phase 1 -- Audit Foundation + Comment Styling (ship first, highest ROI):**
-1. Help patch parser + outlet type audit + override generation
-2. Section header comments with fontsize/fontface/textcolor
-3. Bubble comment annotations
-4. Semantic color system (palette constants)
-5. Hierarchical comment styling (header/label/annotation tiers)
-
-**Rationale:** The audit fixes broken patches (correctness). Comments are the highest-leverage aesthetic improvement: minimal code changes (extend `add_comment()` and Box serialization), no layout engine modifications, and immediately make patches look professional. The Box model already has `extra_attrs` that can carry all comment properties.
-
-**Phase 2 -- Panels and Background Layer:**
-6. Background layer attribute on Box
-7. Panel objects (add_panel method with bgfillcolor, rounded, border)
-8. Patcher background color
-9. Panel auto-sizing around object groups
-10. Step marker numbering
-
-**Rationale:** Panels are the second-highest-impact visual feature but need more integration: new `add_panel()`, background layer support, and ideally layout engine coordination to compute bounding boxes. Panel sizing depends on knowing where objects are positioned (after layout runs).
-
-**Phase 3 -- Polish:**
-11. Patchline color coding by signal type
-12. Object background color for key objects
-13. Gradient panels
-14. Panel shape variations
-
-**Rationale:** Refinements that add polish. None are required for a professional-looking patch. Worth doing but only after the foundation is solid.
-
-**Defer entirely:**
-- Custom MAX style definitions (fragile, external dependency)
-- Custom fonts (cross-platform inconsistency)
-- Hidden connections (debugging nightmare)
-- Aggressive theming (conflicts with user preferences)
-- Help patch layout copying (pedagogical layouts are not general-purpose)
+The dependency tree is rooted at TS-1 (Load). Everything else builds on having a fully loaded, structured Patcher model.
 
 ---
 
-## Complexity Assessment
+## MVP Recommendation
 
-| Feature | Est. Effort | Risk | Notes |
-|---------|-------------|------|-------|
-| T1 Section headers | 2-4h | LOW | Extend add_comment with font/color params |
-| T2 Panel objects | 4-8h | LOW | New add_panel method, bgfillcolor dict |
-| T3 Bubble comments | 2-3h | LOW | Extra attrs on comment boxes |
-| T4 Background layer | 1h | LOW | Single boolean on box dict |
-| T5 Patcher bgcolor | 1h | LOW | Two RGBA arrays in patcher props |
-| D1 Semantic colors | 2-3h | LOW | Define palette constants |
-| D2 Panel auto-sizing | 6-10h | MEDIUM | Layout engine integration, group detection |
-| D3 Hierarchical comments | 2-3h | LOW | Three helper methods with preset styles |
-| D4 Patchline colors | 2-3h | LOW | Color param on Patchline, type detection |
-| D5 Object bgcolor | 1-2h | LOW | Extra attrs with highlight rules |
-| D6 Gradient panels | 3-5h | LOW | bgfillcolor dict generation |
-| D7 Panel shapes | 1-2h | LOW | Pass-through attrs |
-| Step markers | 2-3h | LOW | Textbutton with preset styling |
+### Phase 1: Core Read-Write (all Table Stakes)
 
-**Total aesthetics effort:** ~30-50 hours. Comment styling (T1+T3+D1+D3) is ~8-13h. Panels (T2+T4+D2) is ~11-19h.
+Build in this order:
+
+1. **TS-1: Load .maxpat** -- Foundation. Enhance `from_dict()` to produce fully populated Patcher.
+2. **TS-7: Find Objects** -- Needed by everything else. Simple query methods.
+3. **TS-3: Add Object** -- Verify existing `add_box()` works on loaded patchers.
+4. **TS-4: Remove Object** -- New `remove_box()` method.
+5. **TS-5: Rewire Connections** -- New `remove_connection()`, `find_connections()`.
+6. **TS-6: Preserve State** -- Mostly an architecture test: load, edit, save, diff. No code beyond ensuring TS-1 and TS-2 are correct.
+7. **TS-2: Write Back with Minimal Diff** -- JSON serialization refinements. Test by round-tripping real patches.
+
+### Phase 2: Intelligent Editing (priority differentiators)
+
+1. **D-1: Modify Attributes** -- Simple, high value.
+2. **D-7: Insert Into Connection** -- The most common surgical edit.
+3. **D-5: Replace/Swap Object** -- High-value compound operation.
+4. **D-2: Graph Queries** -- Foundation for understanding.
+5. **D-4: Auto-Position New Objects** -- Quality of life for the agent.
+
+### Phase 3: Understanding & Analysis
+
+1. **D-3: Patch Summary** -- Core of /max-onboard.
+2. **D-6: Transactions** -- Safety net for complex edits.
+
+### Defer
+
+- **D-8: Subpatcher Extract/Inline** -- High complexity, lower frequency of use. Can be added later when the core editing workflow is proven.
+
+---
+
+## Complexity Estimates
+
+| Feature | Complexity | Estimated Effort | Risk |
+|---------|-----------|-----------------|------|
+| TS-1: Load .maxpat | MEDIUM | 4-6h | Low -- from_dict() is 70% done |
+| TS-2: Write Minimal Diff | HIGH | 6-10h | Medium -- JSON key ordering is fiddly |
+| TS-3: Add Object | LOW | 1-2h | Low -- existing add_box() should work |
+| TS-4: Remove Object | LOW | 2-3h | Low -- straightforward list operations |
+| TS-5: Rewire | LOW | 2-3h | Low -- straightforward |
+| TS-6: Preserve State | MEDIUM | 3-5h (testing) | Medium -- subtle serialization issues |
+| TS-7: Find Objects | LOW | 2-3h | Low -- simple filtering |
+| D-1: Modify Attrs | LOW-MED | 3-4h | Low -- but I/O recomputation adds edge cases |
+| D-2: Graph Queries | MEDIUM | 4-6h | Low -- algorithms exist in layout.py |
+| D-3: Patch Summary | MED-HIGH | 6-10h | Medium -- heuristic quality varies |
+| D-4: Auto-Position | MEDIUM | 4-6h | Medium -- edge cases with overlaps |
+| D-5: Replace/Swap | MEDIUM | 4-5h | Low -- compound of simpler operations |
+| D-6: Transactions | MEDIUM | 3-4h | Low -- deep copy is sufficient |
+| D-7: Insert Into Connection | LOW-MED | 3-4h | Low -- well-defined algorithm |
+| D-8: Subpatcher Extract | HIGH | 8-12h | High -- inlet/outlet mapping is complex |
+
+---
+
+## Integration with Existing System
+
+### What Changes
+
+| Component | Current Role | New Role |
+|-----------|-------------|----------|
+| `patcher.py` Patcher class | Write-only builder | Read-write editor (add find/remove/modify methods) |
+| `patcher.py` Box class | Write-only data holder | Read-write data holder (add attribute modification) |
+| `patcher.py` from_dict() | Minimal loader for merge | Full-fidelity loader |
+| `incremental.py` | Manifest-based merge | REMOVED (replaced by direct editing) |
+| `layout.py` apply_layout() | Always runs on write | Only runs on NEW patches or explicit request |
+| `validation.py` | Validates generated output | Validates edits (on demand, not on load) |
+| `hooks.py` write_patch() | Generate + validate + write | Load + edit + validate + write (or just write) |
+| `__init__.py` public API | generate_patch() central | edit_patch() / save_patch() central |
+| Agent skills | Call generate.py scripts | Read .maxpat, make edits, write .maxpat |
+
+### What Stays the Same
+
+| Component | Why Unchanged |
+|-----------|--------------|
+| `db_lookup.py` ObjectDatabase | Still needed for creation-time validation (Rule #1) |
+| `sizing.py` calculate_box_size() | Still needed for new objects |
+| `maxclass_map.py` resolve_maxclass() | Still needed for new objects |
+| `defaults.py` constants | Still needed for defaults |
+| `aesthetics.py` styling helpers | Still needed for styling new objects |
+| `validation.py` pipeline | Still needed (on demand) |
+| `critics/` domain critics | Still needed for semantic review |
+| `.claude/max-objects/` database | Core knowledge base unchanged |
+
+---
+
+## Prior Art Comparison
+
+### py2max (shakfu/py2max)
+
+py2max is the closest existing tool. It provides:
+- `Patcher.from_file()` for loading .maxpat files
+- `find_by_id()`, `find_by_text()`, `find_by_type()` for searching
+- `save_as()` for writing back
+- `MaxRefDB` with 1,157 objects in SQLite
+
+**Our advantages over py2max:**
+- 2,015-object database (vs 1,157) with overrides, aliases, relationships
+- 4-layer validation pipeline (py2max has basic connection validation)
+- Domain-specific critics (DSP, structure, RNBO, externals)
+- Layout engine (py2max has basic layout)
+- Content-aware box sizing from audit data
+- Aesthetic styling system (panels, comments, backgrounds)
+- Agent integration (py2max is a standalone library)
+
+**What we should learn from py2max:**
+- The `find_by_*` API pattern -- clean and intuitive
+- Round-trip file handling approach
+- Permissive loading (don't reject unknown objects)
+
+### Cycling '74 JS API (Patcher object)
+
+MAX's built-in JS API provides:
+- `firstobject` + `apply()` for iteration
+- `getnamed()` for finding by varname
+- `getlogical()` for conditional search
+- `connect()` / `disconnect()` for wiring
+- `newdefault()` for positioned creation
+- `applydeep()` for recursive traversal
+
+**What we should learn from the JS API:**
+- The `apply/applydeep` pattern for recursive operations
+- Separate `connect`/`disconnect` (not combined "rewire")
+- The `getlogical(testFn)` pattern -- filter by predicate
 
 ---
 
 ## Sources
 
-### Official Cycling '74 Documentation
-- [Color and the Max User Interface (Max 8)](https://docs.cycling74.com/max8/vignettes/max_colors) -- core color property reference
-- [Panel Reference (Max 8)](https://docs.cycling74.com/max8/refpages/panel) -- panel object attributes
-- [Comment Reference (Max 8)](https://docs.cycling74.com/max8/refpages/comment) -- comment styling attributes
-- [Patcher-level Formatting (Max 8)](https://docs.cycling74.com/max8/vignettes/format_palette_patcher_level) -- patcher-wide style properties
-- [Styles (Max 8)](https://docs.cycling74.com/max8/vignettes/styles) -- style system overview
-- [Foreground and Background Layers (Max 7)](https://docs.cycling74.com/max7/vignettes/background) -- layer system
-- [Common Box Attributes (Max 5+)](https://docs.cycling74.com/max5/refpages/max-ref/jbox.html) -- universal box properties
-- [Patching Guide](https://docs.cycling74.com/userguide/patching/) -- layout, alignment, grid tools
-
-### Community Sources
-- [Scripting Panel Gradients (Forum)](https://cycling74.com/forums/scripting-panel-gradients) -- bgfillcolor dictionary format
-- [Tips on structuring/laying out patches (Forum)](https://cycling74.com/forums/tips-on-structuringlaying-out-patches) -- layout best practices, color coding conventions
-- [Freshening Up, Part 2 (Tutorial)](https://cycling74.com/articles/freshening-up-part-2) -- presentation mode and panel design
-- [Tips for Better GUI Design (Forum)](https://cycling74.com/forums/tips-for-better-gui-design) -- UI best practices
-- [Managing Complex Patches (Article)](https://cycling74.com/articles/managing-complex-patches-in-max) -- organizational patterns
-- [How to set patcher colors (Forum)](https://cycling74.com/forums/how-to-set-patcher-colors) -- editing_bgcolor/locked_bgcolor usage
-- [How to make a panel the background (Forum)](https://cycling74.com/forums/how-to-make-a-panel-the-background-of-a-patch) -- background layer workflow
-
-### Real .maxpat Files Analyzed
-- [HfMT-ZM4/WFS-Server](https://github.com/HfMT-ZM4/WFS-Server/blob/master/wfs.gui.cpu.maxpat) -- bgfillcolor gradient dict structure verified
-- [Vimeo/vimeo-maxmsp](https://github.com/vimeo/vimeo-maxmsp/blob/master/n4m-vimeo/player.maxpat) -- styled comments and gradient messages verified
-- Internal project patches: slot.maxpat, performancepatchtest.maxpat -- baseline for current output quality
-
-### Reference Libraries
-- [py2max](https://github.com/shakfu/py2max) -- Python .maxpat generation, format reference
+- [py2max GitHub repository](https://github.com/shakfu/py2max) -- Python library for .maxpat generation and round-trip editing
+- [Cycling '74 Patcher JS API](https://docs.cycling74.com/apiref/js/patcher/) -- Official MAX JS API for patcher manipulation
+- [Cycling '74 .maxpat format discussion](https://cycling74.com/forums/specification-for-maxpat-json-format) -- No official spec exists; format is undocumented but stable JSON
+- Codebase analysis: `src/maxpat/patcher.py`, `src/maxpat/incremental.py`, `src/maxpat/layout.py`, `src/maxpat/validation.py`, `src/maxpat/hooks.py`
+- Real .maxpat analysis: `tests/fixtures/expected/simple_synth.maxpat`, `patches/kicksynth/generated/kicksynth.maxpat`

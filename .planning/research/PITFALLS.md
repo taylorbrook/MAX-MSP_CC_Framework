@@ -1,498 +1,301 @@
-# Domain Pitfalls: v1.1 Patch Quality & Aesthetics
+# Domain Pitfalls: v2.0 Direct .maxpat Editing
 
-**Domain:** Adding help patch auditing, database bulk updates, patch aesthetics, and layout refinement to existing MAX/MSP development framework
-**Researched:** 2026-03-13
-**Confidence:** HIGH for help patch parsing and DB pitfalls (verified against actual MAX installation and codebase), MEDIUM for aesthetic properties (reverse-engineered, no official spec), HIGH for layout pitfalls (verified against actual MAX help patch widths vs. calculated widths)
-
----
+**Domain:** Refactoring from Python generation pipeline to direct .maxpat reading/editing
+**Researched:** 2026-03-15
+**Confidence:** HIGH for round-trip data loss and ID scoping (verified against actual codebase and .maxpat files), HIGH for test migration (verified against 913 existing tests), MEDIUM for MAX-internal metadata handling (no official .maxpat spec exists)
 
 ## Critical Pitfalls
 
-Mistakes that corrupt the object database, break existing patch generation, or produce invalid patches.
+Mistakes that cause rewrites, data loss, or major regressions.
 
----
+### Pitfall 1: Round-Trip Data Loss in from_dict/to_dict
 
-### Pitfall 1: Help Patch Outlet Types Are Authoritative -- But Only for Connected Instances
+**What goes wrong:** Loading a .maxpat with `Patcher.from_dict()` and writing it back with `to_dict()` silently drops attributes that MAX or the user added. Verified bugs in the current codebase:
 
-**What goes wrong:** The help patch audit extracts `outlettype` from the first `buffer~` instance found and uses it as ground truth, but help patches contain multiple instances with different argument configurations that change outlet count and type, plus degenerate instances used as labels.
+1. **Patchline extra attributes lost.** `Patchline.to_dict()` only serializes `source`, `destination`, `order`, `hidden`, and `midpoints`. MAX adds `color` (per-cable coloring) and potentially other attributes to patchlines. These are silently dropped during round-trip. The `Patchline.__init__` has no `extra_attrs` mechanism.
 
-**Why it happens:** Many MSP objects have variable outlet counts depending on arguments. For example, `sfplay~` with 2 channels has outlets `["signal", "signal", "bang"]` while `sfplay~` with 1 channel has `["signal", "bang"]`. Help patches often contain both configurations in different subpatcher tabs.
+2. **parameter_enable handled but conditionally re-emitted.** `from_dict()` lists `parameter_enable` in `_handled_keys`, stripping it from `extra_attrs`. But `Box.to_dict()` only emits `parameter_enable` for certain maxclass branches (UI objects that aren't `newobj`/`comment`/`message`). For edge cases where a newobj-based box has `parameter_enable`, it could be lost.
 
-**Evidence from this project:** Analysis of `buffer~.maxhelp` found 7 instances across subpatchers. Most had `outlettype: ["float", "bang"]` with `numoutlets: 2`, but one instance had `numoutlets: 0` (used as a label/comment with text `"buffer~  has its own sample rate..."`). Blindly first-matching or averaging would include the degenerate case.
+3. **bpatcher attributes not reconstructed.** `from_dict()` doesn't set `box._bpatcher_attrs` for loaded bpatcher boxes. The bpatcher-specific keys (`args`, `bgmode`, `border`, `clickthrough`, `enablehscroll`, `enablevscroll`, `lockeddragscroll`, `offset`, `viewvisibility`, `name`) end up in `extra_attrs` instead of `_bpatcher_attrs`. This means `Box.to_dict()` emits them via `extra_attrs` rather than the dedicated `_bpatcher_attrs` path, which works but is structurally inconsistent and could cause issues if code checks `_bpatcher_attrs is not None`.
 
-**Consequences:**
-- Outlet type arrays become wrong for specific argument configurations
-- The override system (`overrides.json`) may get clobbered with incorrect "audited" data
-- Validation strips valid connections by misidentifying outlet types
-- The exact MSP outlet type bug that already happened (all outlets marked `signal` when many are `control`) gets reintroduced from a different source
+**Why it happens:** The current `from_dict()` was built as a minimal read path for `merge_and_write()`. It reconstructs enough structure to identify boxes by ID, but never aimed for lossless round-trip fidelity. The write path (`to_dict()`) was designed for generation, not for re-serializing loaded data.
+
+**Consequences:** Silent data corruption when loading a user's patch, editing it, and writing it back. The user opens their patch in MAX and discovers cable colors are gone, parameter mappings are broken, or bpatcher references behave differently. Worst case: the patch loads in MAX but sounds or behaves differently because a parameter_enable flag was dropped, causing gain~ to lose its parameter mapping.
 
 **Prevention:**
-- When auditing help patches, filter out degenerate instances (`numoutlets=0`, objects used as labels/comments with no connections)
-- Prefer instances that have connections FROM them (demonstrating actual outlet usage) -- the `buffer~` instance at `outlettype: ["float", "bang"]` with connections `outlet 1 -> button inlet 0` and `outlet 0 -> flonum inlet 0` is the gold-standard source
-- Track outlet types per argument configuration, not just per object name
-- For variable-outlet objects (`sfplay~`, `groove~`, `vst~`), record the base/default outlet types and document how arguments change them
-- Never overwrite existing `overrides.json` entries without human review -- the 16 manually corrected MSP objects represent hard-won ground truth
+- Add comprehensive round-trip tests before any refactoring: load real .maxpat files (including MAX-saved ones with extra metadata), round-trip through from_dict/to_dict, and diff the JSON
+- Add `extra_attrs` dict to `Patchline` class, same pattern as `Box`
+- Make `from_dict()` treat ALL unknown keys as extra_attrs (for both Box and Patchline)
+- Make `to_dict()` emit all extra_attrs without filtering
+- Golden rule: **if a key exists in the input JSON, it must exist in the output JSON**
 
-**Detection:** After bulk update, diff `overrides.json` against pre-update version. Any change to manually corrected entries is suspicious. Run the existing 624 test suite -- any regression in connection validation tests signals corrupted outlet type data.
+**Detection:** Round-trip diff tests. Load a .maxpat, serialize back, compare JSON structure key-by-key. Any key present in original but absent in output is a bug.
 
-**Phase:** Help patch audit phase. Must be addressed before any bulk writes to the DB.
+**Phase:** Must be fixed in Phase 1 (Patcher library refactoring) before any direct editing code is written.
 
----
+### Pitfall 2: Dual Source of Truth During Migration
 
-### Pitfall 2: Bulk Database Update Breaks the Override Merge Order
+**What goes wrong:** During the transition period, some patches still use `generate.py` while others use direct editing. An agent or skill file references the old `generate_patch()` / `write_patch()` / `merge_and_write()` pipeline for a patch that has been migrated to direct editing, or vice versa. The result: competing modifications where the generation pipeline overwrites direct edits, or direct edits are made to a patch that's still being regenerated.
 
-**What goes wrong:** Bulk-updating `msp/objects.json` with help-patch-extracted outlet types overwrites the base data, making `overrides.json` corrections either redundant or conflicting.
+This exact problem already happened in the project's history (documented in memory: `feedback_iterate_via_generator.md`): "subpatcher open buttons and comp-band bpatchers were lost" because changes were made directly to the .maxpat instead of through generate.py.
 
-**Why it happens:** The current `db_lookup.py` loads domain JSON files first, then deep-merges `overrides.json` on top (lines 66-81). This works because `overrides.json` is the authoritative layer -- it always wins. But if the help patch audit updates `msp/objects.json` with new outlet data, three failure modes emerge:
+**Why it happens:** The project has 6 agent SKILL.md files, 10 slash commands, and multiple generate.py scripts across patches. All of them reference the generation pipeline API. During a phased migration, some will be updated and some won't, creating an inconsistent state where the system doesn't know whether a given patch is "generated" or "directly edited."
 
-1. **Override becomes stale:** The base data now agrees with the override, making the override appear redundant. Someone removes the override. Later, the base data gets re-extracted from XML (which has the original bug) and the override is gone.
-2. **Override conflicts with new base:** The help patch audit extracts `outlettype: ["signal", "bang"]` for `line~`, which contradicts the override that says `outlets: [{signal: true}, {signal: false}]`. The override format uses `outlets` array with `signal` boolean, while `outlettype` is a flat string array. The merge does not reconcile these different representations.
-3. **Load order sensitivity:** RNBO objects load before MSP objects (see `DOMAIN_LOAD_ORDER` in `db_lookup.py`). If an RNBO variant of `cycle~` has different outlet types than the MSP variant, updating MSP data can mask the RNBO definition depending on load order.
-
-**Consequences:**
-- 16 manually verified MSP outlet corrections silently lost
-- `multislider` `fetch` correction (already in overrides) overwritten
-- RNBO-specific outlet types (e.g., RNBO `cycle~` has 2 outlets vs. MSP `cycle~` with 1) clobbered by MSP data
-- Connection validation regression across multiple existing patches
+**Consequences:** User loses manual work when an agent runs a stale generate.py. Or: an agent tries to directly edit a patch that's still managed by a generation script, and the next regeneration wipes the edit. The user experience is unpredictable -- sometimes changes stick, sometimes they vanish.
 
 **Prevention:**
-- Never bulk-write to domain JSON files if the data conflicts with `overrides.json`
-- Audit script must load `overrides.json` first and skip any object that has manual overrides
-- Implement a "dry run" mode for DB updates that shows a diff before writing
-- Add a `source` field to extracted data: `"source": "help_patch"` vs `"source": "xml_refpage"` vs `"source": "manual_override"` -- manual always wins
-- Keep the override system as the authoritative layer -- help patch data goes into base files, corrections stay in overrides
+- Add a clear marker to each patch project directory: either a `generate.py` exists (old pipeline) or it doesn't (new direct-edit mode)
+- Detect and fail-fast: if a direct-edit operation is attempted on a patch with a `generate.py`, warn the user
+- Migrate patches atomically: remove `generate.py` + manifest at the same time as switching the agent workflow
+- Update all 6 SKILL.md files simultaneously, not incrementally
+- Add a "mode" field to `.active-project.json` or equivalent: `"editing_mode": "direct"` vs `"editing_mode": "generated"`
 
-**Detection:** Run `python -m pytest tests/` after every bulk update. Specifically, connection validation tests that verify `buffer~` outlet 1 connects to control inlets. If this test breaks, the override merge is corrupted.
+**Detection:** Pre-edit check: does this patch directory contain a `generate.py`? If yes, refuse direct edits. If no, refuse generation-pipeline operations.
 
-**Phase:** Must be designed before the audit runs. The audit pipeline needs an "override-aware" mode from the start.
+**Phase:** Must be addressed in Phase 2 (agent/skill migration) with a clear migration gate.
 
----
+### Pitfall 3: ID Collision When Adding Objects to Existing Patches
 
-### Pitfall 3: Help Patch Tab Structure Hides All Content in Subpatchers
+**What goes wrong:** Adding new objects to a loaded patch creates box IDs that collide with existing ones. The current `Patcher._gen_id()` generates sequential IDs (`obj-1`, `obj-2`, ...). When loading an existing patch, `from_dict()` sets `_next_id` to `max_id_num + 1`, which works IF all existing IDs follow the `obj-N` pattern. But:
 
-**What goes wrong:** The help patch parser only reads top-level boxes and misses the actual example content, which is buried inside subpatcher tabs.
+1. **MAX can renumber IDs when saving.** If a user opens and saves a patch in MAX, MAX may renumber some box IDs, potentially creating gaps or non-sequential numbers.
 
-**Why it happens:** MAX help patches use a tab-based structure where the visible content is inside subpatchers with `showontab: 1`. The top-level patcher contains only infrastructure boxes.
+2. **Subpatcher IDs are scoped per patcher level** (verified: subpatcher inner objects reuse `obj-1`, `obj-2`, etc., independent of parent). The current `from_dict()` tracks only top-level max ID. Adding objects to an inner patcher loaded via `from_dict()` could collide if the inner `_next_id` isn't set correctly.
 
-**Evidence:** Analysis of `trigger.maxhelp` confirms: top-level has 6 boxes (3 subpatchers, a jsui, a message, a js helpstarter). The actual example objects with connections are inside:
-- `p basic`: 20 boxes (the primary examples)
-- `p examples`: 27 boxes (advanced examples)
-- `p ?`: 0 boxes (empty "see also" tab)
+3. **User-created IDs might not follow `obj-N` pattern.** If a user creates objects via MAX's scripting interface or a third-party tool, IDs could be arbitrary strings. The `int(box.id.split("-")[-1])` extraction in `from_dict()` would silently fail and not advance `_next_id` past these.
 
-A parser that only reads top-level boxes finds zero instances of `trigger`.
+**Why it happens:** The ID generation system was designed for write-only workflows where the generator controls all IDs from scratch. It doesn't account for the read-then-modify workflow where IDs come from an external source.
 
-**Consequences:**
-- Audit reports "object not found in its own help patch" for 100% of objects
-- Outlet types extracted from zero connections
-- Entire audit produces no useful data
+**Consequences:** Duplicate IDs within a patcher level. MAX may fail to load the patch, or worse, load it but route connections incorrectly (connecting to the wrong box because two boxes share an ID).
 
 **Prevention:**
-- The help patch parser must recursively descend into all subpatchers
-- Identify tab subpatchers by checking `showontab: 1` in the inner patcher properties
-- For each subpatcher tab, collect all box instances and connection data
-- Be aware that some help patches nest subpatchers inside subpatcher tabs (3+ levels deep)
-- Handle the `p ?` tab gracefully -- it may have 0 boxes
+- After `from_dict()`, scan ALL box IDs (including nested subpatchers) and set `_next_id` to one past the global maximum
+- Handle non-numeric IDs: track all existing ID strings in a set, generate IDs that don't collide
+- When adding objects to a loaded patcher, verify the new ID doesn't exist in the current box list
+- Add a `_used_ids: set[str]` field to Patcher that gets populated during `from_dict()` and checked during `_gen_id()`
+- Test: load a patch with gaps in ID sequence, add objects, verify no collisions
 
-**Detection:** After parsing, verify that at least one instance of the named object was found. If zero instances found, the parser failed to descend into tabs.
+**Detection:** Validation check after any add_box call on a loaded patcher: assert no two boxes share an ID at the same patcher level.
 
-**Phase:** First step of the help patch audit pipeline. Must work before any data extraction.
+**Phase:** Must be fixed in Phase 1 alongside from_dict improvements.
 
----
+### Pitfall 4: Breaking 283 Patcher-Related Tests During Migration
 
-### Pitfall 4: Box Width Calculation Is Inaccurate by -59px to +50px
+**What goes wrong:** The existing 913 tests (283 in patcher-related files) all assume the write-only API. Changing `Patcher`, `Box`, or `Patchline` classes to support read-write operations risks breaking these tests in subtle ways:
 
-**What goes wrong:** Generated patches have boxes that are too wide or too narrow, causing overlapping objects, excessive spacing, or patch cords that connect at wrong visual positions.
+1. **Tests that check exact `to_dict()` output** will break if new fields are added to support round-trip fidelity (e.g., adding `extra_attrs` to Patchline changes its serialization).
 
-**Why it happens:** The current sizing formula (`len(text) * 7.0 + 16.0`) uses a fixed character width of 7px for Arial 12pt. But MAX uses proportional font metrics, not monospaced. Analysis of actual box widths from `trigger.maxhelp` reveals significant errors:
+2. **Tests that rely on deterministic IDs** (`obj-1`, `obj-2`) will break if ID generation logic changes to accommodate loaded patches.
 
-| Object text | Actual (MAX) | Calculated | Error |
-|---|---|---|---|
-| `js helpstarter.js trigger` | 132.0 | 191.0 | **-59px** (way too wide) |
-| `+` | 89.5 | 40.0 | **+50px** (way too narrow) |
-| `t b i` | 32.5 | 51.0 | -18px |
-| `accum 0.` | 91.5 | 72.0 | +20px |
-| `print 5` | 48.0 | 65.0 | -17px |
-| `p basic` | 50.0 | 65.0 | -15px |
+3. **Tests that use `Box.__new__(Box)` bypass** (structural objects like subpatchers, gen~ codebox) -- there are at least 8 such patterns in the generation scripts. These manually set all fields. If new fields are added to Box (like `_used_ids`), these bypasses won't set them, causing AttributeError.
 
-Key findings:
-- Short object names get a minimum width from MAX that is larger than `MIN_BOX_WIDTH=40` (the `+` object is 89.5px for a single character)
-- Long text gets narrower than calculated because most characters are narrower than 7px average
-- The current `MIN_BOX_WIDTH=40` is too small -- MAX enforces at least ~50px for most objects
+4. **Tests in `test_incremental.py`** (23 tests) test the manifest-based merge workflow. If the migration removes manifests, all these tests become invalid.
 
-**Consequences:**
-- Objects overlap when boxes are calculated too narrow
-- Excessive horizontal spread when boxes are calculated too wide
-- Inlet/outlet X positions calculated from wrong box widths cause cable routing to miss connection points
-- The layout engine's parent-center-x alignment becomes inaccurate, increasing cable crossings
+**Why it happens:** Write-only tests assert specific output shapes. Making the system read-write changes what constitutes valid output (more keys preserved, different serialization paths).
+
+**Consequences:** Test suite goes red, blocking CI. Team spends time updating tests instead of building features. Risk of "fixing" tests by weakening assertions rather than fixing actual bugs.
 
 **Prevention:**
-- Extract actual box widths from help patches as ground truth for a per-object width lookup table (at least for the 50 most common objects)
-- Use a proportional character width approach instead of fixed 7px: narrow chars (`i`, `l`, `1`, `.`) at ~4px, wide chars (`m`, `w`) at ~10px, typical at ~6-7px
-- Increase `MIN_BOX_WIDTH` to at least 50px (many MAX objects enforce a wider minimum)
-- For arithmetic operators (`+`, `-`, `*`, `/`) that MAX renders extra-wide, maintain a small override table
-- Consider extracting widths empirically from a corpus of help patches
+- Run test suite BEFORE starting any refactoring, save as baseline
+- Categorize tests: (a) structural tests that should survive unchanged, (b) output-shape tests that need updating, (c) generation-pipeline tests that should be replaced
+- Use the "expand, then contract" pattern: add new read-write capabilities without removing old ones first, then deprecate old paths after new ones are tested
+- Add new tests for the read path BEFORE modifying existing code
+- For `Box.__new__(Box)` bypasses: add a `Box._init_defaults()` classmethod that sets all required fields, then use it in both `__init__` and bypass patterns
+- Keep `test_incremental.py` tests passing until manifests are explicitly removed; don't break them as a side effect
 
-**Detection:** Compare calculated widths against actual widths from help patches for the top 50 most-used objects. Currently P95 error is ~50px, target should be under 10px.
+**Detection:** CI must stay green throughout migration. Any test breakage is a signal to pause and fix before continuing.
 
-**Phase:** Layout refinement phase. Can be done incrementally -- start with the override table for the worst offenders.
-
----
+**Phase:** Addressed throughout all phases -- each phase must maintain green CI.
 
 ## Moderate Pitfalls
 
----
+### Pitfall 5: Losing MAX-Internal Metadata That Affects Behavior
 
-### Pitfall 5: The "bgfillcolor" Dict Has Undocumented and Version-Varying Structure
+**What goes wrong:** MAX adds metadata to .maxpat files that affects runtime behavior but isn't part of the "user-visible" patch structure. Examples found in real patches:
 
-**What goes wrong:** Generated patches include `bgfillcolor` properties that render incorrectly or are silently ignored because the dict structure is incomplete or wrong.
+- `editing_bgcolor` / `locked_bgcolor`: Canvas colors for edit vs locked mode (affects visual appearance)
+- `saved_attribute_attributes`: Parameter mapping data (affects DAW integration, M4L parameter exposure)
+- `dependency_cache`: MAX's record of required externals (affects loading in standalone builds)
+- `varname`: Scripting name for pattr/autopattr (affects state saving)
+- `parameter_mappable`: Whether a parameter can be mapped to MIDI/automation
+- `saved_object_attributes` on subpatcher boxes: `globalpatchername`, `description`, etc.
 
-**Why it happens:** The `bgfillcolor` property is a nested dict with format that differs between solid color and gradient modes. Cycling '74 has never documented the exact JSON schema. Evidence from help patches and community forums shows:
-
-**Solid color mode (panel in attrui.maxhelp):**
-```json
-{
-  "mode": 0,
-  "angle": 270.0,
-  "proportion": 0.39
-}
-```
-
-**Gradient mode (panel in attrui.maxhelp):**
-```json
-{
-  "mode": 1,
-  "angle": 270.0,
-  "proportion": 0.39,
-  "grad1": [0.96, 0.83, 0.16, 1.0],
-  "grad2": [0.76, 0.59, 0.10, 1.0],
-  "bordercolor": [0.90, 0.80, 0.39, 1.0]
-}
-```
-
-**Known gotchas (verified via Cycling '74 forums):**
-- `proportion` value of exactly `1.0` causes visual glitch ("jumps in the middle again") -- must cap at `0.9999`
-- `pt1`/`pt2` coordinates override `angle` -- setting `pt1`/`pt2` makes subsequent `angle` messages non-functional
-- The `bgfillcolor` dict "only stores attributes that deviate from defaults" -- generating the full dict with all fields may produce unexpected results
-- Setting `bgfillcolor` as a flat list `[r, g, b]` forces single-color mode, destroying any gradient configuration
-
-**Consequences:**
-- Panels with no visible gradient despite gradient being specified
-- Colors appearing different than intended
-- MAX 8 patches loading with wrong colors when opened in MAX 9 or vice versa
+**Why it happens:** The .maxpat format has no official specification (confirmed by Cycling '74 forum posts). MAX adds keys silently based on user actions (naming an object, enabling parameter mode, etc.). Without documentation, there's no way to enumerate all possible keys.
 
 **Prevention:**
-- Always use gradient mode (`mode: 1`) when specifying panel backgrounds with gradients
-- Cap `proportion` to `[0.0, 0.9999]` range
-- Do not mix `angle` with `pt1`/`pt2` -- use one or the other
-- Extract known-good panel configurations from MAX help patches as templates
-- Test generated aesthetic properties by opening in MAX and visually inspecting
+- Adopt a whitelist-inversion strategy: instead of listing known keys and dropping the rest, preserve ALL keys and only specifically handle the ones you need to modify
+- The `extra_attrs` pattern on Box already does this correctly -- extend it to Patchline and to patcher-level props
+- Never delete a key from loaded JSON unless explicitly instructed by the user
+- Test with patches that have been opened and saved by MAX (not just generator-produced patches)
 
-**Detection:** Visual inspection only -- there is no offline way to verify color rendering. Add a "panel gallery" test patch for manual review.
+**Detection:** Create a "MAX-saved patch" test fixture: take a generated patch, open it in MAX, move some objects, save it, then use the MAX-saved version as a round-trip test fixture. Any key loss between original and round-tripped version is a bug.
 
-**Phase:** Aesthetic implementation phase. Must handle before adding panel/background support to the generator.
+**Phase:** Phase 1 (Patcher library refactoring).
 
----
+### Pitfall 6: Over-Engineering the Read Path
 
-### Pitfall 6: Panel Z-Order and the "background" Property
+**What goes wrong:** Building a full "patch understanding" system when all that's needed is surgical editing. Examples of over-engineering:
 
-**What goes wrong:** Panels intended as visual backgrounds appear in front of objects, obscuring them.
+1. **Building a complete object graph from loaded patches.** The direct-edit workflow only needs to find objects by ID or text, modify attributes, and add/remove objects. Building adjacency graphs, topological sorts, or signal flow analysis of LOADED patches is unnecessary -- the layout engine already handles that for NEW patches.
 
-**Why it happens:** In MAX, panels have a `background` property (integer: 0 or 1). When `background: 1`, the panel renders behind all other objects. When `background: 0` (default), the panel renders in its normal layer position, determined by creation order in the `boxes` array.
+2. **Validating loaded patches against the object database.** Loaded patches may contain objects from packages, third-party externals, or MAX versions newer than the database covers. Validating loaded patches would produce false-positive errors. Validation should only apply to objects the tool adds, not to objects that already exist and work.
 
-**Evidence:** The actual MAX JSON from `attrui.maxhelp` confirms: `"background": 1` is set on panels used as section backgrounds. Without this property, the panel renders ON TOP of objects added before it in the boxes array.
+3. **Rebuilding Box objects with full DB lookup from loaded data.** The current `from_dict()` uses `Box.__new__()` to bypass DB validation, which is correct. Over-engineering would be to validate every loaded object against the DB and reject patches with unknown objects.
 
-**Consequences:**
-- Panels cover objects, making the patch unusable
-- Users have to manually send panels to background in MAX
-- Professional appearance ruined
+**Why it happens:** The generation pipeline has a thorough validation system (4-layer pipeline, 913 tests). There's a natural temptation to apply the same rigor to the read path. But the read path's contract is different: the patch already works in MAX, the tool just needs to make targeted modifications without breaking it.
 
 **Prevention:**
-- Always set `"background": 1` on panels used as section/group backgrounds
-- Place panel boxes at the BEGINNING of the `boxes` array (first items render first)
-- Use both approaches together: `background: 1` AND early array position
-- Also set `"ignoreclick": 1` on background panels so they do not interfere with clicking objects
-- Document that panel `patching_rect` must fully encompass the objects it backgrounds -- leave 10-15px margin on all sides
+- Define the read path's contract clearly: "preserve everything, modify only what's explicitly requested"
+- Validation applies to ADDED objects only, not loaded ones
+- Layout applies to ADDED objects only (or explicitly requested re-layout)
+- Keep `from_dict()` as a thin JSON-to-objects mapper, not a patch analyzer
+- The existing `Box.__new__()` bypass pattern for loaded objects is correct -- don't replace it with DB-validated construction
 
-**Detection:** Open the generated patch in MAX. If panels obscure objects, the z-ordering is wrong.
+**Detection:** Code review question: "Does this read-path code need to understand the patch's semantics, or just its structure?" If the answer is semantics, it's probably over-engineering.
 
-**Phase:** Aesthetic implementation, specifically panel support.
+**Phase:** Phase 1 design decision, enforced throughout.
 
----
+### Pitfall 7: JSON Key Ordering Sensitivity
 
-### Pitfall 7: Aesthetic Properties on Comment Boxes Use Different Property Names
+**What goes wrong:** When writing .maxpat files, the key ordering in JSON matters for readability and diff-friendliness, but may also matter for MAX in edge cases. Observed patterns:
 
-**What goes wrong:** Comment styling (font, color, background) applied using the same properties as other boxes renders differently or is ignored.
+1. **MAX expects `boxes` before `lines`** in the patcher dict. The current `DEFAULT_PATCHER_PROPS` enforces this order.
+2. **Box keys follow a conventional order** in MAX-saved files: `maxclass`, `text`, `id`, `numinlets`, `numoutlets`, `outlettype`, `patching_rect`, then extras. Python dicts preserve insertion order (3.7+), but loading then re-serializing may reorder keys.
+3. **Patchline keys**: MAX writes `source` before `destination`. Reordering these shouldn't break MAX but creates noisy diffs.
+4. **After round-tripping through from_dict/to_dict**, the key order may change from what MAX saved, creating unnecessary diffs when the user saves again in MAX.
 
-**Why it happens:** Comment boxes (`maxclass: "comment"`) in MAX have a distinct rendering path. Key differences:
-- Comments use `clearcolor` (not `bgcolor`) for their background -- this is a patcher-level style property
-- Comments support `textcolor` but the property name in JSON is `textcolor` (not `fontcolor` or `color`)
-- Comments do not support `bgfillcolor` gradients
-- The `fontface` property uses integer codes: 0=regular, 1=bold, 2=italic, 3=bold+italic
-- Comment box height does not auto-adjust to font size in the JSON -- changing `fontsize` requires manual update of `patching_rect[3]`
-
-The current `sizing.py` uses `COMMENT_HEIGHT = 20.0` as a fixed value regardless of font size.
-
-**Consequences:**
-- Comments with larger fonts get clipped vertically
-- Background color applied via `bgcolor` has no visible effect on comments
-- Styled comments look correct in JSON but wrong in MAX
+**Why it happens:** JSON spec doesn't guarantee key ordering, but .maxpat files have a conventional order that MAX follows. Python dicts preserve insertion order, but `from_dict()` reconstructs dicts in code-order rather than preserving original ordering.
 
 **Prevention:**
-- Maintain separate style property maps for comments vs. other box types
-- Comment height should be calculated from font size: approximately `fontsize * 1.5 + 4` pixels
-- Use `textcolor` (not `color`) for comment text color
-- Test comment rendering in MAX with different font sizes
+- For patcher-level keys: use `OrderedDict` or careful insertion ordering that matches `DEFAULT_PATCHER_PROPS`
+- For box-level keys: preserve the original key order from the loaded JSON (store ordered dict or maintain insertion order)
+- The existing `merge_and_write()` already handles patcher-level key ordering via `DEFAULT_PATCHER_PROPS` -- the direct-edit path should use the same approach
+- For diff-friendliness: write JSON with `indent=2` and `sort_keys=False` (already done)
 
-**Detection:** Open a test patch with styled comments in MAX. If text is clipped or background is invisible, the properties are wrong.
+**Detection:** Diff test: load a MAX-saved .maxpat, write it back without modifications, diff. Ideally zero structural changes (only whitespace differences are acceptable).
 
-**Phase:** Aesthetic implementation, specifically comment styling.
+**Phase:** Phase 1, but lower priority than data loss bugs.
 
----
+### Pitfall 8: Stale Agent Skills and Slash Commands
 
-### Pitfall 8: Layout Test Assertions Break on Any Spacing Change
+**What goes wrong:** The 6 agent SKILL.md files and slash commands reference the generation-pipeline API extensively:
+- `max-patch-agent/SKILL.md`: References `Patcher()`, `Box()`, `generate_patch()`, `write_patch()`, `merge_and_write()`, layout options, aesthetic helpers
+- `max-dsp-agent/SKILL.md`: References `build_genexpr()`, `generate_gendsp()`, `write_gendsp()`, `Patcher.add_gen()`
+- All agents reference the "Output Protocol" of create-generate-validate-write workflow
 
-**What goes wrong:** Refinements to the layout algorithm cause many existing tests to fail because they assert specific pixel positions or narrow ranges.
+If these SKILL files aren't updated atomically, agents will use the old API on patches that have been migrated to direct editing, or try to use new API on patches still using the generation pipeline.
 
-**Why it happens:** The current test suite (`test_layout.py`) has assertions like:
-- `assert 10 <= gap <= 40` (vertical gap range)
-- `assert 5 <= gutter <= 30` (horizontal gutter range)
-- `assert abs(actual_gap - expected_gap) < 5.0`
-
-These ranges were calibrated for `V_SPACING=20` and `H_GUTTER=15`. Changing these constants or changing box sizing shifts every position.
-
-**Evidence:** When `V_SPACING` was changed from 100 to 20 (documented in `feedback_layout_spacing.md`), the spacing tests had to be updated. Any further refinement will require another round.
-
-**Consequences:**
-- Developers avoid layout improvements because they trigger mass test breakage
-- Tests get widened to pass (making them useless for regression detection)
-- Actual layout quality regressions go undetected
+**Why it happens:** SKILL files are documentation, not code. They don't break CI when they're wrong -- they cause agents to generate incorrect code at runtime. The failure mode is "agent writes a generate.py for a patch that no longer uses one."
 
 **Prevention:**
-- Refactor layout tests to test relative properties (A is above B, B is above C, no overlap) rather than absolute pixel ranges
-- Keep a small set of "golden" test patches for intentional regression detection
-- Derive spacing assertions from the constants themselves: `gap >= V_SPACING * 0.8` and `gap <= V_SPACING * 1.5`
-- Add visual regression tests: generate a patch, serialize to JSON, compare against a known-good JSON fixture
-- When changing layout constants, restructure tests FIRST, then change constants
+- Update all SKILL files in a single commit/phase, not incrementally
+- Add a "v2.0 API" section to each SKILL file that covers the new read-edit-write workflow
+- Remove references to `generate.py`, `merge_and_write()`, and `Manifest` when those concepts are retired
+- Test agent SKILL files: the existing `test_agent_skills.py` tests could be extended to verify API references are valid
 
-**Detection:** Run `pytest tests/test_layout.py -v` after any layout change. If more than 3 tests fail from a single constant change, the tests are too brittle.
+**Detection:** Grep SKILL files for deprecated API references after each phase.
 
-**Phase:** Before layout refinement starts. Restructure tests first, then refine layout.
-
----
-
-### Pitfall 9: Help Patch maxclass-to-Name Mapping Goes Wrong Direction
-
-**What goes wrong:** The help patch parser cannot match objects in help patches to objects in the database because help patches use maxclass values while the database keys by object name.
-
-**Why it happens:** In help patches, UI objects appear with their maxclass as the key (e.g., `"maxclass": "number"` for number boxes, `"maxclass": "flonum"` for float number boxes). The `maxclass_map.py` module resolves name-to-maxclass, but the audit needs maxclass-to-name (the reverse direction).
-
-Additionally, for `maxclass: "newobj"`, the object name is the first token of the `text` field. For UI objects, the maxclass IS the name. The parser must handle both cases consistently.
-
-**Prevention:**
-- Build a reverse maxclass-to-name lookup from `maxclass_map.py`
-- For `maxclass: "newobj"`, extract the name from `text` (first space-delimited token) -- this matches `_extract_object_name` in `validation.py`
-- For UI objects (non-newobj maxclass), the maxclass IS the object name
-- Handle `aliases.json` reverse mapping for aliased names
-
-**Detection:** Track "object found in help patch but not in DB" rate. If it exceeds 5%, the name resolution is broken.
-
-**Phase:** Help patch audit pipeline design.
-
----
-
-### Pitfall 10: Inlet/Outlet X-Position Calculation Compounds Box Width Error
-
-**What goes wrong:** Midpoint generation and cable routing calculates inlet/outlet X positions from box width, but box width is inaccurate (Pitfall 4), causing cable routing to target wrong coordinates.
-
-**Why it happens:** The `_outlet_x` and `_inlet_x` functions in `layout.py` compute outlet position as:
-```python
-usable = w - 2 * _IO_MARGIN  # _IO_MARGIN = 7.0
-spacing = usable / (n - 1)
-return x + _IO_MARGIN + outlet_idx * spacing
-```
-
-A 50px width error on the source box shifts the outlet X position by up to 43px (for a 2-outlet box). The midpoint generation then creates L-shaped cable segments at wrong positions.
-
-**Consequences:**
-- Cables visually miss their connection points (cosmetic -- MAX ignores midpoints for actual connections)
-- Bus routing places the bus X too far right (based on rightmost object edge, which is wrong)
-- Companion positioning (meter~ beside gain~) has wrong gap
-
-**Prevention:**
-- Fix box width calculation first (Pitfall 4) before refining midpoint generation
-- After improving sizing, recalibrate midpoint thresholds (`HORIZONTAL_THRESHOLD`, `BUS_MARGIN`)
-- Increase `HORIZONTAL_THRESHOLD` from 20px to 30px to account for sizing error margin
-
-**Detection:** Open generated patches in MAX. If cables have visible kinks at wrong positions, the midpoint calculation uses wrong widths.
-
-**Phase:** Layout refinement, after box sizing is improved. Order matters: fix sizing, then fix routing.
-
----
-
-### Pitfall 11: Help Patch Objects May Have Stale Data from Older MAX Versions
-
-**What goes wrong:** The audit extracts box properties that are stale because the help patch was saved with an older MAX version.
-
-**Why it happens:** MAX saves the current state of an object's I/O configuration into the `.maxhelp` JSON at save time. If a help patch was created in MAX 7 and the object gained a new outlet in MAX 8, the saved `numoutlets` is stale until re-saved. The `appversion` field in each help patch records which MAX version saved it.
-
-**Evidence:** The extraction log shows 133 objects with empty inlets and 159 with empty outlets in the XML refpages. Help patches may have similar gaps.
-
-**Consequences:**
-- Extracted data disagrees with XML refpage data
-- Stale help patches produce wrong outlet counts
-- The audit finds "corrections" that are regressions
-
-**Prevention:**
-- Cross-reference help patch data with XML refpage data -- they should agree on I/O count
-- If they disagree, prefer the help patch (reflects runtime behavior) but flag discrepancy for review
-- Check `appversion` in each help patch to identify potentially stale data
-- For the 133+159 objects with empty I/O in XML, the help patch is the ONLY source of truth
-
-**Detection:** Generate a discrepancy report: objects where help patch I/O count differs from XML refpage I/O count. Review each manually.
-
-**Phase:** Help patch audit pipeline.
-
----
+**Phase:** Phase 2 (agent/skill migration), done as a batch update.
 
 ## Minor Pitfalls
 
----
+### Pitfall 9: Manifest Sidecar Files Left Behind
 
-### Pitfall 12: Presentation Mode Properties Interfere with Patching Mode
-
-**What goes wrong:** Adding `presentation: 1` and `presentation_rect` to objects for aesthetic layout changes behavior when toggling between patching and presentation mode.
-
-**Prevention:**
-- Only set `presentation: 1` on objects intended for the presentation view
-- `presentation_rect` is independent of `patching_rect` -- always set both
-- The `openinpresentation` patcher property determines which mode opens first -- set intentionally
-- Do not set `presentation: 1` on non-UI objects unless they serve a presentation purpose
-
-**Phase:** Aesthetic implementation.
-
----
-
-### Pitfall 13: Style System Conflicts with Per-Object Properties
-
-**What goes wrong:** Setting the `style` patcher property changes all object colors to a theme, overriding per-object color settings.
+**What goes wrong:** When migrating from the generation pipeline to direct editing, `.manifest.json` sidecar files from the old system remain on disk. These are confusing artifacts that:
+- Suggest the patch is still using the generation pipeline
+- Could be accidentally read by old code paths, causing unexpected merge behavior
+- Clutter the project directory
 
 **Prevention:**
-- If using patcher-level `style`, do not also set per-object color properties (they get overridden)
-- If using per-object colors, leave `style` as `""` (empty string, the default)
-- Safe approach for v1.1: do not use the `style` system. Apply aesthetics through explicit per-object and per-patcher properties only.
+- Add a cleanup step to the migration process: delete `.manifest.json` files when converting a patch to direct-edit mode
+- Add a warning if a `.manifest.json` is found alongside a patch that's in direct-edit mode
 
-**Phase:** Aesthetic implementation.
+**Phase:** Phase 3 (existing project cleanup).
 
----
+### Pitfall 10: Patcher.from_dict() Doesn't Handle MAX 8 vs MAX 9 Differences
 
-### Pitfall 14: The 292 Empty-I/O Objects Are the Highest Value Audit Targets
-
-**What goes wrong:** The audit focuses on objects that already have correct data while ignoring the 292 objects (133 empty inlets + 159 empty outlets) that need it most.
+**What goes wrong:** The current `from_dict()` doesn't check `appversion`. A MAX 8 patch has `"major": 8` and may use different default properties or box formats. If someone loads a MAX 8 patch and the tool assumes MAX 9 conventions, subtle differences could cause issues.
 
 **Prevention:**
-- Prioritize auditing objects with empty inlets or empty outlets
-- These are guaranteed to benefit from help patch data extraction
-- Track coverage: X of 133 empty-inlet objects now have inlet data, X of 159 empty-outlet objects now have outlet data
+- Check `appversion.major` during `from_dict()` and log a warning if it's not 9
+- Don't reject MAX 8 patches, but flag them for the user's awareness
+- The tool already targets MAX 9 (documented in CLAUDE.md), so this is a documentation/warning issue, not a blocking one
 
-**Phase:** Help patch audit prioritization.
+**Phase:** Phase 1, low priority.
 
----
+### Pitfall 11: Layout Engine Interference on Direct Edits
 
-### Pitfall 15: Help Patch Coverage Gaps for Operators and MC Objects
+**What goes wrong:** The current `write_patch()` function always calls `apply_layout()` before writing. For direct edits, this would reposition ALL objects in the patch, destroying the user's carefully arranged layout.
 
-**What goes wrong:** Operator objects (`+`, `-`, `*~`) and MC objects (`mc.cycle~`, `mc.gain~`) share help files or have no dedicated help files, making them unauditable.
-
-**Prevention:**
-- Map operator help files to their variants (e.g., `plus.maxhelp` should audit `+`)
-- Map MC objects to base counterparts (`mc.cycle~` inherits outlet types from `cycle~`)
-- For MSP operators, infer outlet types from the operator family (all MSP operators `+~`, `-~`, `*~`, `/~` have `["signal"]` outlets)
-- Document unaudited objects and track as known gaps
-
-**Phase:** Help patch audit, coverage mapping.
-
----
-
-### Pitfall 16: Recursive Subpatcher Layout Can Be Slow
-
-**What goes wrong:** The layout engine calls `apply_layout` recursively for every inner patcher (layout.py line 153-155). With deeply nested subpatchers, this becomes slow.
+The `merge_and_write()` function already handles this correctly by skipping layout on merge runs. But if the migration introduces a new write path that doesn't have this protection, layouts could be destroyed.
 
 **Prevention:**
-- Add a depth limit (e.g., max 10 levels of recursion)
-- For bpatchers, do not layout the inner patcher (it may be a shared file)
-- The current implementation already skips subpatchers with no boxes
+- The new direct-edit write path must NEVER call `apply_layout()` by default
+- Layout should only run when explicitly requested (e.g., for newly added objects)
+- Consider a `layout_new_only()` function that positions only objects without existing positions (patching_rect at 0,0)
+- Test: load a patch, add one object, write back -- verify all existing object positions are unchanged
 
-**Phase:** Layout refinement, if nested patches become an issue.
+**Detection:** Position-preservation test: load a patch with known positions, add an object, save, verify original positions unchanged.
 
----
+**Phase:** Phase 1 (write path design).
 
 ## Phase-Specific Warnings
 
 | Phase Topic | Likely Pitfall | Mitigation |
-|---|---|---|
-| Help patch parsing | Tab structure hides all content in subpatchers (P3) | Recursive descent parser, verify found count > 0 |
-| Help patch parsing | Multiple instances with different configs (P1) | Filter by has-connections, track per-argument configs |
-| Help patch parsing | maxclass-to-name mismatch (P9) | Reverse lookup from maxclass_map.py + aliases.json |
-| Help patch parsing | Stale data from old MAX versions (P11) | Cross-reference with XML, check appversion |
-| DB bulk update | Override merge order broken (P2) | Override-aware audit, never overwrite manual corrections |
-| DB bulk update | 292 empty-I/O objects highest priority (P14) | Prioritize empty objects, track coverage metrics |
-| Aesthetic: panels | Z-order and background property (P6) | Always `background: 1`, panel first in boxes array |
-| Aesthetic: bgfillcolor | Undocumented dict structure (P5) | Extract from MAX, cap proportion at 0.9999, test visually |
-| Aesthetic: comments | Different property names than other boxes (P7) | Separate style map, height from fontsize |
-| Aesthetic: style | System conflicts with per-object (P13) | Do not use patcher `style` property in v1.1 |
-| Layout: sizing | 50px+ width error (P4) | Per-object width lookup, proportional char widths |
-| Layout: routing | Compounded width error in cables (P10) | Fix sizing before fixing routing |
-| Layout: tests | Brittle pixel assertions (P8) | Refactor to relative assertions before refining layout |
+|-------------|---------------|------------|
+| Phase 1: Patcher library refactoring | Round-trip data loss (Pitfall 1) | Round-trip diff tests before any API changes |
+| Phase 1: Patcher library refactoring | ID collision (Pitfall 3) | Used-ID tracking set, scoped per patcher level |
+| Phase 1: Patcher library refactoring | Over-engineering read path (Pitfall 6) | Clear contract: preserve all, modify only requested |
+| Phase 2: Agent/skill migration | Dual source of truth (Pitfall 2) | Editing-mode marker per project, fail-fast detection |
+| Phase 2: Agent/skill migration | Stale SKILL files (Pitfall 8) | Batch update all 6 SKILLs + slash commands together |
+| Phase 3: Project cleanup | Manifest leftovers (Pitfall 9) | Automated cleanup of .manifest.json files |
+| All phases | Test breakage (Pitfall 4) | CI stays green, expand-then-contract pattern |
+| All phases | Layout interference (Pitfall 11) | Never auto-layout loaded patches |
 
----
+## Integration Pitfalls Between Old and New Approaches
 
-## Integration Risk Matrix
+### The Manifest Problem
 
-Changes to the existing v1.0 system and their risk of breaking it.
+The manifest system (`Manifest` class, `.manifest.json` sidecars) is the bridge between old and new. During migration:
 
-| Change | Risk | What Breaks | Prevention |
-|---|---|---|---|
-| Writing to `msp/objects.json` | **CRITICAL** | 16 manual outlet type overrides, connection validation | Override-aware writes, dry-run mode, test suite gate |
-| Adding `bgcolor`/`bgfillcolor` to `Box.to_dict()` | MODERATE | All existing test fixtures, JSON comparison tests | Add via `extra_attrs`, not core dict |
-| Changing `V_SPACING` or `H_GUTTER` | MODERATE | 6+ layout tests with pixel range assertions | Refactor tests first |
-| Changing `calculate_box_size()` | **CRITICAL** | Every layout test, every generated patch width | Keep old formula as fallback, add override table alongside |
-| Adding `background` property to panel | LOW | Nothing -- additive change | Ensure default is `1` for background panels |
-| Modifying `_generate_midpoints()` | MODERATE | 5 midpoint tests with exact coordinate assertions | Test properties (count, direction) not exact values |
-| Changing `overrides.json` structure | **CRITICAL** | `db_lookup.py` merge logic, all 624 tests | Do not change structure -- only add entries |
+1. **Old patches with manifests** should continue to work with `merge_and_write()` until they're migrated
+2. **New direct-edit patches** should not create manifests
+3. **The transition point** is when a patch's `generate.py` is deleted and its manifest is removed
+4. **Risk:** Code that checks for manifest existence to decide behavior. If the manifest is deleted but the code still expects it, the patch falls into a "fresh write" code path and gets fully regenerated, losing user changes.
 
----
+### The generate.py Dependency Chain
+
+Each `generate.py` imports from `src.maxpat`:
+```python
+from src.maxpat import Patcher, write_patch
+from src.maxpat.incremental import merge_and_write
+```
+
+If Phase 1 changes the Patcher API in a breaking way, ALL existing `generate.py` scripts break simultaneously. Since there are 7 generation scripts across 5 patch projects, this is a blast radius problem.
+
+**Mitigation:** Phase 1 must be additive-only. Add new methods (`load()`, `edit()`, `save()`) without removing existing ones. Existing `generate.py` scripts should keep working until they're explicitly retired in Phase 3.
+
+### Validation Pipeline Assumptions
+
+The 4-layer validation pipeline (`validation.py`) assumes it's validating a freshly-generated patch:
+- Layer 2 (objects): Checks all objects against ObjectDatabase. This will fail on loaded patches containing third-party objects.
+- Layer 3 (connections): Checks inlet/outlet bounds. This will fail on loaded objects whose I/O counts differ from the database (due to variable_io, packages, or DB inaccuracies).
+- Layer 4 (domain): Checks gain staging, unterminated chains. This will produce warnings for patterns the user intentionally chose.
+
+**Mitigation:** Validation on direct-edit operations should only validate the DIFF -- objects and connections that were added or modified, not the entire loaded patch.
 
 ## Sources
 
-### Project Evidence (verified against actual codebase)
-- `/Users/taylorbrook/Dev/MAX/.claude/max-objects/overrides.json` -- 16 manually corrected MSP outlet types, multislider correction
-- `/Users/taylorbrook/Dev/MAX/.claude/max-objects/extraction-log.json` -- 133 empty inlets, 159 empty outlets, 2,015 total objects
-- `/Users/taylorbrook/Dev/MAX/src/maxpat/layout.py` -- layout engine with `_outlet_x`/`_inlet_x` calculations, companion placement
-- `/Users/taylorbrook/Dev/MAX/src/maxpat/sizing.py` -- `CHAR_WIDTH=7.0`, `MIN_BOX_WIDTH=40.0`, `COMMENT_HEIGHT=20.0`
-- `/Users/taylorbrook/Dev/MAX/src/maxpat/db_lookup.py` -- `DOMAIN_LOAD_ORDER`, override merge logic (lines 66-81)
-- `/Users/taylorbrook/Dev/MAX/src/maxpat/defaults.py` -- `V_SPACING=20`, `H_GUTTER=15`
-- `/Users/taylorbrook/Dev/MAX/tests/test_layout.py` -- spacing range assertions calibrated for current constants
-
-### MAX Installation Evidence (verified against local MAX 9)
-- `/Applications/Max.app/Contents/Resources/C74/help/` -- 2,096 help patches across 5 directories (max: 472, msp: 261, jitter: 203, m4l: 32, packages: 1,128)
-- `trigger.maxhelp` -- tab structure with `showontab: 1` subpatchers, top level has 6 boxes, content in `p basic` (20 boxes) and `p examples` (27 boxes)
-- `buffer~.maxhelp` -- 7 instances, ground truth `outlettype: ["float", "bang"]`, one degenerate instance with `numoutlets: 0`
-- `attrui.maxhelp` -- panel with `background: 1`, `mode: 1`, `grad1`/`grad2`/`proportion`/`angle`/`bordercolor`
-
-### Width Analysis (measured from trigger.maxhelp vs. calculated)
-- `js helpstarter.js trigger`: actual=132px, calc=191px, error=-59px
-- `+`: actual=89.5px, calc=40px, error=+50px
-- `t b i`: actual=32.5px, calc=51px, error=-18px
-- `accum 0.`: actual=91.5px, calc=72px, error=+20px
-- `print 5`: actual=48px, calc=65px, error=-17px
-
-### Community Sources
-- [Panel bgfillcolor attributes](https://cycling74.com/forums/panel-bgfillcolor-attributes-how-to-specify-as-3-floats) -- proportion limit gotcha
-- [Scripting Panel Gradients](https://cycling74.com/forums/scripting-panel-gradients) -- pt1/pt2 vs angle conflict, dict opacity
-- [Color and the Max User Interface (MAX 8)](https://docs.cycling74.com/max8/vignettes/max_colors) -- style color property names (13 properties)
-- [Patcher-level Formatting (MAX 8)](https://docs.cycling74.com/max8/vignettes/format_palette_patcher_level) -- style system interactions
-
-### Project Memory Files (known issues from v1.0)
-- `feedback_msp_outlet_types.md` -- MSP outlet type extraction bug, 16 corrections applied
-- `feedback_bpatcher_args.md` -- #N compound string substitution failure mode
-- `feedback_layout_spacing.md` -- tight spacing requirements (V_SPACING=20, H_GUTTER=15)
-- `feedback_multislider_fetch.md` -- fetch vs fetchindex, outlet 1 not outlet 0
+- Codebase analysis: `src/maxpat/patcher.py` (Patcher.from_dict round-trip testing)
+- Codebase analysis: `src/maxpat/incremental.py` (merge logic, manifest system)
+- Codebase analysis: `tests/test_incremental.py` (23 existing merge tests)
+- Codebase analysis: `patches/performancepatchtest/generated/performancepatchtest.maxpat` (real .maxpat structure)
+- Project memory: `feedback_iterate_via_generator.md` (historical data loss from dual source of truth)
+- Project memory: `project_incremental_patching.md` (incremental patching architecture)
+- [Cycling '74 forum: Specification for .maxpat JSON format?](https://cycling74.com/forums/specification-for-maxpat-json-format) -- confirms no official spec
+- [py2max: Python library for .maxpat generation](https://github.com/shakfu/py2max) -- round-trip editing reference
+- [Cycling '74 docs: Saving State with pattr](https://docs.cycling74.com/userguide/pattr/) -- state vs structure distinction
+- Verified: Box IDs are scoped per patcher level (not globally unique) -- subpatchers reuse obj-1, obj-2 independently
+- Verified: Patchline.to_dict() drops `color` attribute (data loss bug)
+- Verified: from_dict() `_handled_keys` can silently swallow attributes
+- Verified: 913 existing tests, 283 in patcher-related files, 0 tests for Patcher.from_dict()
