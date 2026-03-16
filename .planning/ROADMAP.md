@@ -145,9 +145,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 13-01-PLAN.md -- Round-trip test suite, fixtures, and Patchline model fix (color, extra_attrs, _raw)
-- [ ] 13-02-PLAN.md -- Box _raw dict preservation and Patcher key-order fix
-- [ ] 13-03-PLAN.md -- Golden file integration tests passing for all 10 project .maxpat files
+- [x] 13-01-PLAN.md -- Round-trip test suite, fixtures, and Patchline model fix (color, extra_attrs, _raw)
+- [x] 13-02-PLAN.md -- Box _raw dict preservation and Patcher key-order fix
+- [x] 13-03-PLAN.md -- Golden file integration tests passing for all 10 project .maxpat files
 
 ### Phase 14: Search and Mutation Primitives
 **Goal**: Users can find objects in loaded patches and make basic structural edits (add, remove, connect) without disturbing existing content
@@ -159,7 +159,11 @@ Plans:
   3. User can remove an object from a loaded patch and all connected patchlines are automatically cleaned up -- no dangling connections remain
   4. User can add and remove connections between existing objects with inlet/outlet bounds checking that prevents invalid wiring
   5. A read_patch() convenience function loads a .maxpat from disk into a Patcher ready for querying and editing
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 14-01-PLAN.md -- Search methods (find_box, find_boxes) with alias resolution and recursive subpatcher search, plus read_patch() convenience function
+- [ ] 14-02-PLAN.md -- Mutation methods (remove_box, remove_connection), bounds checking and duplicate prevention in add_connection, mutation-safe round-trip tests
 
 ### Phase 15: Intelligent Editing
 **Goal**: Users can make sophisticated patch edits -- modify attributes in-place, insert objects into signal chains, swap objects, trace signal paths, and get smart auto-positioning
@@ -228,8 +232,8 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 10. Aesthetic Foundations | v1.1 | 2/2 | Complete | 2026-03-13 |
 | 11. Layout Refinements | v1.1 | 3/3 | Complete | 2026-03-13 |
 | 12. Pipeline Integration & Agent Updates | v1.1 | 2/2 | Complete | 2026-03-14 |
-| 13. Round-Trip Foundation | 3/3 | Complete    | 2026-03-16 | - |
-| 14. Search and Mutation Primitives | v2.0 | 0/0 | Not started | - |
+| 13. Round-Trip Foundation | v2.0 | 3/3 | Complete | 2026-03-16 |
+| 14. Search and Mutation Primitives | v2.0 | 0/2 | Not started | - |
 | 15. Intelligent Editing | v2.0 | 0/0 | Not started | - |
 | 16. Patch Analysis | v2.0 | 0/0 | Not started | - |
 | 17. Agent and Command Migration | v2.0 | 0/0 | Not started | - |
@@ -237,4 +241,4 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-15 -- Phase 13 plans created (3 plans in 3 waves)*
+*Last updated: 2026-03-16 -- Phase 14 plans created (2 plans in 2 waves)*
