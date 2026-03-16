@@ -10,7 +10,7 @@ All JSON output follows the .maxpat format verified in 02-RESEARCH.md.
 from __future__ import annotations
 
 import copy
-from collections import deque
+from collections import Counter, deque
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -2401,3 +2401,319 @@ class Patcher:
             lines.append(f"- **{name}** ({obj_count} objects) -- {desc}")
 
         return "\n".join(lines)
+
+    # -- Complexity metrics ---------------------------------------------------
+
+    def _count_recursive(self) -> tuple[int, int, int]:
+        """Recursively count objects, connections, and max nesting depth.
+
+        Returns:
+            (total_objects, total_connections, max_depth)
+        """
+        total_objs = len(self.boxes)
+        total_conns = len(self.lines)
+        max_depth = 0
+        for box in self.boxes:
+            if box._inner_patcher is not None:
+                sub_objs, sub_conns, sub_depth = box._inner_patcher._count_recursive()
+                total_objs += sub_objs
+                total_conns += sub_conns
+                max_depth = max(max_depth, sub_depth + 1)
+        return total_objs, total_conns, max_depth
+
+    def _analyze_complexity(self) -> str:
+        """Compute complexity metrics for the patch.
+
+        Includes top-level counts, recursive totals, unique object types,
+        and domain breakdown percentages.
+
+        Returns:
+            Markdown string with "## Overview" header.
+        """
+        top_objects = len(self.boxes)
+        top_connections = len(self.lines)
+        total_objects, total_connections, max_depth = self._count_recursive()
+        unique_names = len({b.name for b in self.boxes})
+
+        # Domain breakdown
+        domain_counts: dict[str, int] = {}
+        for box in self.boxes:
+            domain = self._classify_domain(box)
+            domain_counts[domain] = domain_counts.get(domain, 0) + 1
+
+        lines = ["## Overview", ""]
+        lines.append(f"- **Objects:** {top_objects} (top level), {total_objects} (recursive total)")
+        lines.append(f"- **Connections:** {top_connections} (top level), {total_connections} (recursive total)")
+        lines.append(f"- **Max nesting depth:** {max_depth}")
+        lines.append(f"- **Unique object types:** {unique_names}")
+
+        if domain_counts and top_objects > 0:
+            parts = []
+            for domain, count in sorted(domain_counts.items(), key=lambda x: -x[1]):
+                pct = round(100 * count / top_objects)
+                parts.append(f"{domain} {pct}%")
+            lines.append(f"- **Domain breakdown:** {', '.join(parts)}")
+
+        return "\n".join(lines)
+
+    # -- Object inventory -----------------------------------------------------
+
+    def _analyze_inventory(self) -> str:
+        """Group top-level boxes by domain with counts and key objects.
+
+        Returns:
+            Markdown string with "## Object Inventory" header and table.
+        """
+        domain_boxes: dict[str, list[str]] = {}
+        for box in self.boxes:
+            domain = self._classify_domain(box)
+            domain_boxes.setdefault(domain, []).append(box.name)
+
+        lines = ["## Object Inventory", ""]
+        if not domain_boxes:
+            lines.append("(no objects)")
+            return "\n".join(lines)
+
+        lines.append("| Domain | Count | Key Objects |")
+        lines.append("|--------|-------|-------------|")
+        for domain, names in sorted(domain_boxes.items(), key=lambda x: -len(x[1])):
+            count = len(names)
+            top_objs = Counter(names).most_common(5)
+            key_str = ", ".join(f"{n}({c})" if c > 1 else n for n, c in top_objs)
+            lines.append(f"| {domain} | {count} | {key_str} |")
+
+        return "\n".join(lines)
+
+    # -- Signal chain tracing -------------------------------------------------
+
+    def _analyze_signal_chains(self) -> str:
+        """Trace signal chains from audio sources and render as trees.
+
+        Finds signal chain roots (~ objects with no signal inputs), builds
+        trees via DFS, and integrates send~/receive~ wireless connections.
+
+        Returns:
+            Markdown string with "## Signal Flow" header.
+        """
+        forward, reverse, box_map = self._build_adj(signal_only=True)
+
+        # Find signal chain roots: ~ objects with no signal-rate inputs
+        roots: list[str] = []
+        for box in self.boxes:
+            if not box.name.endswith("~"):
+                continue
+            if box.id not in reverse:
+                roots.append(box.id)
+
+        if not roots:
+            return "## Signal Flow\n\n(no signal objects detected)"
+
+        # Build send~/receive~ mapping for wireless connections
+        sr_pairs = self._resolve_send_receive_pairs()
+        # Map send~ box_id -> channel name for wireless annotation
+        send_channels: dict[str, str] = {}
+        recv_channels: dict[str, list[str]] = {}  # channel -> receiver box_ids
+        for channel, (senders, receivers) in sr_pairs.items():
+            for sid in senders:
+                send_channels[sid] = channel
+            recv_channels[channel] = receivers
+
+        lines = ["## Signal Flow", ""]
+        visited_global: set[str] = set()
+
+        def render_tree(box_id: str, indent: int, visited: set[str]) -> None:
+            box = box_map.get(box_id)
+            if box is None:
+                return
+            prefix = "  " * indent + ("-> " if indent > 0 else "")
+            label = box.text if box.text else box.name
+            lines.append(f"{prefix}{label}")
+            visited.add(box_id)
+            visited_global.add(box_id)
+
+            # Check if this is a send~ -- show wireless continuation
+            if box_id in send_channels:
+                channel = send_channels[box_id]
+                for recv_id in recv_channels.get(channel, []):
+                    recv_box = box_map.get(recv_id)
+                    if recv_box and recv_id not in visited:
+                        wireless_label = f"...-> receive~ {channel} (wireless)"
+                        lines.append("  " * (indent + 1) + wireless_label)
+                        visited.add(recv_id)
+                        visited_global.add(recv_id)
+                        # Continue tree from receive~'s downstream
+                        for neighbor_id, _ in forward.get(recv_id, []):
+                            if neighbor_id not in visited:
+                                render_tree(neighbor_id, indent + 2, visited)
+                return
+
+            # Normal downstream children
+            for neighbor_id, _ in forward.get(box_id, []):
+                if neighbor_id not in visited:
+                    render_tree(neighbor_id, indent + 1, visited)
+
+        for root_id in roots:
+            if root_id not in visited_global:
+                render_tree(root_id, 0, set())
+                lines.append("")
+
+        return "\n".join(lines).rstrip()
+
+    # -- Control flow paths ---------------------------------------------------
+
+    def _analyze_control_paths(self) -> str:
+        """Show notable control flow origins and their downstream chains.
+
+        Traces from loadbang, notein, ctlin, midiin, metro, counter objects.
+        Shows first 3-5 downstream objects per origin.
+
+        Returns:
+            Markdown string with "## Control Flow" header.
+        """
+        notable_origins = {"loadbang", "notein", "ctlin", "midiin", "metro", "counter"}
+        forward, _reverse, box_map = self._build_adj(signal_only=False)
+
+        origins: list[Box] = []
+        for box in self.boxes:
+            if box.name in notable_origins:
+                origins.append(box)
+
+        if not origins:
+            return "## Control Flow\n\n(no notable control sources detected)"
+
+        lines = ["## Control Flow", ""]
+        for origin in origins:
+            # BFS to get first few downstream objects
+            chain: list[str] = []
+            visited: set[str] = {origin.id}
+            queue: deque[str] = deque()
+            for neighbor_id, _ in forward.get(origin.id, []):
+                if neighbor_id not in visited:
+                    queue.append(neighbor_id)
+            while queue and len(chain) < 5:
+                nid = queue.popleft()
+                if nid in visited:
+                    continue
+                visited.add(nid)
+                nbox = box_map.get(nid)
+                if nbox:
+                    chain.append(nbox.name)
+                    for next_id, _ in forward.get(nid, []):
+                        if next_id not in visited:
+                            queue.append(next_id)
+
+            chain_str = " -> ".join(chain)
+            if len(chain) >= 5:
+                chain_str += " -> ..."
+            origin_label = origin.text if origin.text else origin.name
+            lines.append(f"- **{origin_label}** -> {chain_str}")
+
+        return "\n".join(lines)
+
+    # -- Subpatcher hierarchy -------------------------------------------------
+
+    def _hierarchy_lines(self, depth: int = 0) -> list[str]:
+        """Build indented hierarchy of subpatchers (recursive helper).
+
+        Args:
+            depth: Current indentation depth.
+
+        Returns:
+            List of formatted lines.
+        """
+        lines: list[str] = []
+        for box in self.boxes:
+            if box._inner_patcher is not None:
+                indent = "  " * depth
+                sub_name = box.args[0] if box.args else box.name
+                inner_count = len(box._inner_patcher.boxes)
+                lines.append(f"{indent}- **{sub_name}** ({inner_count} objects)")
+                lines.extend(box._inner_patcher._hierarchy_lines(depth + 1))
+        return lines
+
+    def _analyze_hierarchy(self) -> str:
+        """List subpatcher tree with indentation and object counts.
+
+        Returns:
+            Markdown string with "## Subpatchers" header.
+        """
+        hier_lines = self._hierarchy_lines()
+        lines = ["## Subpatchers", ""]
+        if hier_lines:
+            lines.extend(hier_lines)
+        else:
+            lines.append("(none)")
+        return "\n".join(lines)
+
+    # -- Parameters / UI Controls ---------------------------------------------
+
+    def _analyze_parameters(self) -> str:
+        """List UI controls and parameter objects.
+
+        Detects objects by maxclass against a known set of UI control types.
+        Uses varname from extra_attrs as label when available.
+
+        Returns:
+            Markdown string with "## Parameters / UI Controls" header.
+        """
+        ui_controls = {
+            "slider", "dial", "rslider", "multislider",
+            "number", "flonum", "toggle", "button",
+            "kslider", "nslider", "umenu", "textbutton",
+            "tab", "gain~", "live.dial", "live.slider",
+            "live.numbox", "live.toggle", "live.button",
+            "live.menu", "live.tab", "live.gain~",
+        }
+        params: list[str] = []
+        for box in self.boxes:
+            if box.maxclass in ui_controls:
+                varname = box.extra_attrs.get("varname", "")
+                label = varname if varname else box.maxclass
+                params.append(f"- {label} ({box.maxclass})")
+
+        lines = ["## Parameters / UI Controls", ""]
+        if params:
+            lines.extend(params)
+        else:
+            lines.append("(none detected)")
+        return "\n".join(lines)
+
+    # -- Public analyze method ------------------------------------------------
+
+    def analyze(self) -> str:
+        """Produce structured Markdown summary of patch contents.
+
+        Computes all analysis facets and assembles them into a single
+        Markdown string covering: complexity overview, object inventory,
+        functional sections, signal flow chains, control flow paths,
+        subpatcher hierarchy, and parameters.
+
+        Returns:
+            Complete Markdown analysis string.
+        """
+        complexity = self._analyze_complexity()
+        inventory = self._analyze_inventory()
+        sections = self._analyze_sections()
+        signal_chains = self._analyze_signal_chains()
+        control_paths = self._analyze_control_paths()
+        hierarchy = self._analyze_hierarchy()
+        parameters = self._analyze_parameters()
+
+        parts = [
+            "# Patch Analysis",
+            "",
+            complexity,
+            "",
+            inventory,
+            "",
+            sections,
+            "",
+            signal_chains,
+            "",
+            control_paths,
+            "",
+            hierarchy,
+            "",
+            parameters,
+        ]
+        return "\n".join(parts)
