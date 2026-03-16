@@ -14,7 +14,7 @@ Requirements for v2.0 Direct .maxpat Editing milestone. Each maps to roadmap pha
 - [ ] **RW-03**: User can add objects to a loaded patch with unique IDs, correct I/O counts, and DB validation — existing objects undisturbed
 - [ ] **RW-04**: User can remove objects from a loaded patch — box and all connected patchlines removed cleanly
 - [ ] **RW-05**: User can add and remove connections between existing objects with inlet/outlet bounds checking
-- [ ] **RW-06**: All user state preserved on edit — positions, colors, presentation rects, varnames, scripting names, custom attrs, unknown keys survive load-edit-save cycle
+- [x] **RW-06**: All user state preserved on edit — positions, colors, presentation rects, varnames, scripting names, custom attrs, unknown keys survive load-edit-save cycle
 - [ ] **RW-07**: User can find objects by ID, name, maxclass, or text substring — with optional recursive search into subpatchers
 
 ### Intelligent Editing
@@ -87,7 +87,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | RW-01 | Phase 13 | Pending |
 | RW-02 | Phase 13 | Pending |
-| RW-06 | Phase 13 | Pending |
+| RW-06 | Phase 13 | Complete |
 | RW-03 | Phase 14 | Pending |
 | RW-04 | Phase 14 | Pending |
 | RW-05 | Phase 14 | Pending |
