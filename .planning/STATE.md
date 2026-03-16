@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: executing
-stopped_at: Phase 14 context gathered
-last_updated: "2026-03-16T15:56:39.252Z"
-last_activity: 2026-03-16 -- Plan 13-02 complete (Box _raw dict preservation + key-order)
+stopped_at: Plan 14-01 complete
+last_updated: "2026-03-16T16:22:00Z"
+last_activity: 2026-03-16 -- Plan 14-01 complete (find_box/find_boxes + read_patch)
 progress:
   total_phases: 11
   completed_phases: 6
-  total_plans: 16
-  completed_plans: 16
-  percent: 15
+  total_plans: 18
+  completed_plans: 17
+  percent: 17
 ---
 
 # Project State
@@ -21,32 +21,32 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v2.0 Phase 13 -- Round-Trip Foundation (Plans 01-02 complete, Plan 03 next)
+**Current focus:** v2.0 Phase 14 -- Search and Mutation Primitives (Plan 01 complete, Plan 02 next)
 
 ## Current Position
 
-Phase: 13 of 18 (Round-Trip Foundation)
-Plan: 3 of 3
+Phase: 14 of 18 (Search and Mutation Primitives)
+Plan: 1 of 2
 Status: Executing
-Last activity: 2026-03-16 -- Plan 13-02 complete (Box _raw dict preservation + key-order)
+Last activity: 2026-03-16 -- Plan 14-01 complete (find_box/find_boxes + read_patch)
 
 Progress: [##░░░░░░░░] 15%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2 (v2.0) / 34 (lifetime)
-- Average duration: 5.5min (v2.0)
-- Total execution time: 11min (v2.0)
+- Total plans completed: 3 (v2.0) / 35 (lifetime)
+- Average duration: 5min (v2.0)
+- Total execution time: 15min (v2.0)
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 13 | 2 | 11min | 5.5min |
+| 14 | 1 | 4min | 4min |
 
 *Updated after each plan completion*
-| Phase 13 P03 | 4min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -55,6 +55,9 @@ Progress: [##░░░░░░░░] 15%
 Decisions archived in PROJECT.md Key Decisions table.
 
 Recent decisions for v2.0:
+- [14-01]: find_box short-circuits on first match; find_boxes collects all -- separate methods for ergonomics
+- [14-01]: Alias resolution is bidirectional (t <-> trigger) via canonical form comparison
+- [14-01]: read_patch delegates structural validation to from_dict() -- no extra strictness
 - [13-02]: Box._raw excludes nested patcher key (inner patcher reconstructed from _inner_patcher to avoid stale data)
 - [13-02]: outlettype only emitted in round-trip path if present in original _raw dict
 - [13-02]: parameter_enable removed from _handled_keys -- preserved automatically via _raw
@@ -80,6 +83,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T15:56:39.246Z
-Stopped at: Phase 14 context gathered
-Resume file: .planning/phases/14-search-and-mutation-primitives/14-CONTEXT.md
+Last session: 2026-03-16T16:22:00Z
+Stopped at: Plan 14-01 complete
+Resume file: .planning/phases/14-search-and-mutation-primitives/14-01-SUMMARY.md
