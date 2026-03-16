@@ -862,7 +862,7 @@ class TestFileLevelRoundTrip:
 
         # Read back and compare
         roundtrip_text = out_path.read_text()
-        assert roundtrip_text == original_text + "\n" or roundtrip_text == original_text, (
+        assert roundtrip_text == original_text, (
             "File-level round-trip produced different output for MAX-saved file"
         )
 
@@ -887,7 +887,7 @@ class TestFileLevelRoundTrip:
 
         # Read back and compare
         roundtrip_text = out_path.read_text()
-        assert roundtrip_text == original_text + "\n" or roundtrip_text == original_text, (
+        assert roundtrip_text == original_text, (
             "File-level round-trip produced different output for framework file"
         )
 

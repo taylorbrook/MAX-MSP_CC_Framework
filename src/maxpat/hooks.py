@@ -25,6 +25,62 @@ if TYPE_CHECKING:
     from src.maxpat.defaults import LayoutOptions
 
 
+def detect_indent(file_text: str) -> str:
+    """Detect the indentation style used in a JSON file.
+
+    Reads the first indented line and returns the whitespace prefix.
+    Returns 4 spaces (MAX default) if no indented line is found.
+
+    Args:
+        file_text: Raw file content as a string.
+
+    Returns:
+        The indentation string (e.g., "    ", "  ", "\\t").
+    """
+    for line in file_text.split("\n"):
+        stripped = line.lstrip()
+        if stripped and line != stripped:
+            # Found an indented line -- extract the leading whitespace
+            indent_chars = line[: len(line) - len(stripped)]
+            return indent_chars
+    return "    "  # Default: 4 spaces (MAX 9.1.2 format per user decision)
+
+
+def save_patch_roundtrip(
+    patch_dict: dict,
+    path: "str | Path",
+    original_text: str | None = None,
+) -> None:
+    """Save a .maxpat dict preserving the original file's indentation.
+
+    For round-trip saves (load -> edit -> save), pass the original file text
+    so indentation is preserved. For new files, omit original_text to use
+    MAX's default 4-space indentation.
+
+    Args:
+        patch_dict: The .maxpat dict (output of Patcher.to_dict()).
+        path: Destination file path.
+        original_text: Original file content (for indent detection). If None,
+            uses 4-space indent (MAX 9.1.2 default).
+    """
+    path = Path(path)
+
+    if original_text is not None:
+        indent = detect_indent(original_text)
+    else:
+        indent = "    "  # MAX default: 4 spaces
+
+    # json.dumps indent parameter accepts str for custom indentation
+    output = json.dumps(patch_dict, indent=indent, ensure_ascii=False)
+
+    # Preserve trailing newline status of original file
+    if original_text is not None and original_text.endswith("\n"):
+        output += "\n"
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(output)
+
+
 class PatchGenerationError(Exception):
     """Raised when unfixable structural errors prevent patch generation."""
 
