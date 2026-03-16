@@ -1,67 +1,62 @@
-# Requirements: MaxSystem v1.1
+# Requirements: MaxSystem v2.0
 
-**Defined:** 2026-03-13
+**Defined:** 2026-03-15
 **Core Value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work — with as much automated validation as possible before manual testing.
 
-## v1.1 Requirements
+## v2.0 Requirements
 
-Requirements for v1.1 Patch Quality & Aesthetics milestone. Each maps to roadmap phases.
+Requirements for v2.0 Direct .maxpat Editing milestone. Each maps to roadmap phases.
 
-### Audit Pipeline
+### Read-Write Foundation
 
-- [x] **AUDIT-01**: Help patch parser recursively descends into subpatcher tabs to find all object instances across 973 .maxhelp files
-- [x] **AUDIT-02**: Parser filters degenerate instances (objects with numoutlets: 0 used as labels) and extracts outlet types only from connected instances
-- [x] **AUDIT-03**: Outlet type audit compares DB outlet signal/control types against help patch outlettype arrays and generates corrections
-- [x] **AUDIT-04**: Inlet/outlet count validation cross-references DB counts against help patch instances, accounting for variable_io argument configurations
-- [x] **AUDIT-05**: Per-object box width extraction captures actual patching_rect widths from help patches for accurate sizing
-- [x] **AUDIT-06**: Argument format extraction captures canonical argument patterns from help patch newobj text fields
-- [x] **AUDIT-07**: Connection pattern extraction parses all help patch connections to build per-object outlet-to-inlet frequency tables
-- [x] **AUDIT-08**: Audit produces human-readable diff report (audit-report.json) showing DB vs help patch discrepancies with confidence scores
-- [x] **AUDIT-09**: Batch override generation writes proposed overrides.json entries, never overwriting the existing 16+ manually corrected entries
-- [x] **AUDIT-10**: Coverage tracker identifies and prioritizes the 292 objects with empty inlet/outlet data in the current DB
+- [ ] **RW-01**: Patcher can load any .maxpat file into fully populated Patcher/Box/Line objects — all maxclass types, recursive subpatchers, bpatcher attrs, unknown objects handled gracefully
+- [ ] **RW-02**: Loaded Patcher writes back to .maxpat with minimal diff — unchanged portions byte-for-byte identical, key ordering preserved, numeric precision maintained
+- [ ] **RW-03**: User can add objects to a loaded patch with unique IDs, correct I/O counts, and DB validation — existing objects undisturbed
+- [ ] **RW-04**: User can remove objects from a loaded patch — box and all connected patchlines removed cleanly
+- [ ] **RW-05**: User can add and remove connections between existing objects with inlet/outlet bounds checking
+- [ ] **RW-06**: All user state preserved on edit — positions, colors, presentation rects, varnames, scripting names, custom attrs, unknown keys survive load-edit-save cycle
+- [ ] **RW-07**: User can find objects by ID, name, maxclass, or text substring — with optional recursive search into subpatchers
 
-### DB Corrections
+### Intelligent Editing
 
-- [x] **DBCX-01**: High-confidence outlet type corrections merged into overrides.json and picked up automatically by db_lookup.py
-- [x] **DBCX-02**: Empty-I/O objects populated with help-patch-verified inlet/outlet data
-- [x] **DBCX-03**: All 624 existing tests continue to pass after DB corrections (regression gate)
-- [x] **DBCX-04**: Corrections organized by domain (max, msp, jitter, mc, gen, m4l, rnbo, packages) for reviewability
+- [ ] **ED-01**: User can modify object attributes in-place — change args (with I/O recomputation), position, color, or any property without remove-and-recreate
+- [ ] **ED-02**: User can insert an object into an existing connection — original connection removed, new box wired between source and destination, auto-positioned at midpoint
+- [ ] **ED-03**: User can replace/swap an object — new object placed at same position, compatible connections remapped, incompatible connections reported
+- [ ] **ED-04**: User can query patch graph — upstream/downstream traversal, signal path tracing, connected components, separate signal vs control graphs
+- [ ] **ED-05**: New objects auto-positioned intelligently near their connection context — below source, above target, between both, or in nearest empty space
 
-### Comment Styling
+### Patch Analysis & Onboarding
 
-- [x] **CMNT-01**: Section header comments rendered with configurable fontsize (14-18pt), fontface (bold), and textcolor
-- [x] **CMNT-02**: Bubble comment annotations with bubble outline, configurable bubbleside, and arrow pointing toward target object
-- [x] **CMNT-03**: Hierarchical comment system with three tiers: section header (16-18pt bold colored), subsection label (12pt bold), inline annotation (12pt italic/light)
-- [x] **CMNT-04**: Semantic color palette defines consistent colors for headers, annotations, and warnings across all generated patches
+- [ ] **AN-01**: Patch analyzer produces structured summary — object inventory by domain, signal flow chains, control flow paths, subpatcher map, parameter list, complexity metrics
+- [ ] **AN-02**: /max-onboard command analyzes an existing .maxpat file from any source, builds understanding of its structure, and produces a human-readable summary
+- [ ] **AN-03**: Patch analyzer identifies functional sections by connected components and spatial proximity — grouping objects into logical units
 
-### Panels
+### Agent & Command Migration
 
-- [x] **PANL-01**: Panel objects created with bgfillcolor (solid color mode), rounded corners, border, and correct background layer placement
-- [x] **PANL-02**: Panels inserted at index 0 in boxes array AND carry background: 1 and ignoreclick: 1 for correct z-order
-- [x] **PANL-03**: Panel auto-sizing computes bounding box around positioned object groups with configurable padding
-- [x] **PANL-04**: Gradient panel support via bgfillcolor dict with type: "gradient", color1, color2, angle, proportion (capped below 1.0)
-- [x] **PANL-05**: Step marker numbering using textbutton circles with amber background, rounded=60, in background layer
+- [ ] **MG-01**: /max-build generates patches by directly creating and writing .maxpat files — no generate.py intermediary
+- [ ] **MG-02**: /max-iterate reads existing .maxpat, understands its structure, makes surgical edits, and writes back — no generate.py modification
+- [ ] **MG-03**: /max-new creates project structure with direct .maxpat workflow — no generate.py scaffolding
+- [ ] **MG-04**: /max-onboard implemented as new slash command for onboarding existing patches
+- [ ] **MG-05**: All 6 specialist agent SKILL.md files updated to reference direct editing API instead of generate.py workflow
+- [ ] **MG-06**: Validation hooks adapted for direct editing — validate edits on demand, not on load; no DB rejection of unknown objects
 
-### Patcher Styling
+### v1.x Cleanup
 
-- [x] **PTCH-01**: Patcher-level editing_bgcolor and locked_bgcolor set via patcher props for canvas background color
-- [x] **PTCH-02**: Object background color (bgcolor) applied to key architectural objects (loadbang, dac~, key processors) via extra_attrs
+- [ ] **CL-01**: incremental.py module removed — manifest-based merge system eliminated
+- [ ] **CL-02**: All .manifest.json sidecar files removed from existing patches
+- [ ] **CL-03**: All generate.py scripts removed from existing patches — .maxpat files are standalone
+- [ ] **CL-04**: Test suite updated — read path covered, write-only assumptions replaced with read-write tests, expand-then-contract migration pattern
+- [ ] **CL-05**: hooks.py updated — write_patch uses direct save path, merge_and_write removed or redirected
 
-### Layout Refinements
+## v3.0 Requirements
 
-- [x] **LYOT-01**: Box width calculation improved using per-object width override table extracted from help patch measurements
-- [x] **LYOT-02**: Inlet-aligned cable routing positions child objects so inlets align under parent outlet X positions, reducing diagonal cables
-- [x] **LYOT-03**: 15px grid snapping rounds all object positions to MAX's native grid
-- [x] **LYOT-04**: Comment association placement positions comments near their target objects with consistent offset
-- [x] **LYOT-05**: LayoutOptions dataclass replaces module-level constants for configurable spacing, grid, and alignment parameters
-- [x] **LYOT-06**: Layout tests refactored to relative assertions before any spacing constant changes
+Deferred to future release. Tracked but not in current roadmap.
 
-### Agent Updates
+### Advanced Editing
 
-- [x] **AGNT-01**: Agent SKILL.md files updated with corrected outlet types and connection patterns from audit findings
-- [x] **AGNT-02**: Agent docs updated with aesthetic capabilities (comment styling, panels, layout options)
-
-## Future Requirements
+- **ADV-01**: Batch operations with transaction semantics — checkpoint/rollback for atomic multi-step edits
+- **ADV-02**: Subpatcher extraction — select objects, move into new subpatcher with auto-generated inlet/outlet mapping
+- **ADV-03**: Subpatcher inlining — copy inner patcher objects to parent, reconnect, remove subpatcher box
 
 ### Deferred from v1.1
 
@@ -77,13 +72,12 @@ Explicitly excluded. Documented to prevent scope creep.
 
 | Feature | Reason |
 |---------|--------|
-| Patchline color/thickness changes | User preference — no patch cord visual changes in v1.1 |
-| Custom MAX style definitions | Fragile external dependency, pollutes user's style library |
-| Custom fonts beyond Arial | Cross-platform inconsistency — vary weight and size instead |
-| Hidden connections for aesthetics | Debugging nightmare, violates visual programming paradigm |
-| Aggressive color theming | Conflicts with user preferences, impairs readability |
-| Help patch layout copying | Pedagogical layouts are not general-purpose — extract patterns, not positions |
-| Presentation mode integration | Separate concern from patching mode aesthetics |
+| Full auto-layout on loaded patches | Destroys user positioning — the exact problem v2.0 solves. Only auto-position NEW objects. |
+| Real-time MAX integration (OSC/MCP) | Creates fragile dependency on MAX running; Claude cannot test audio |
+| Patch screenshot analysis | .maxpat JSON is the source of truth, not pixels |
+| Backward compatibility with generate.py | Maintaining two editing paths recreates the dual-source-of-truth problem |
+| DB validation on load | Would reject third-party objects and packages not in our database |
+| py2max integration | Existing Patcher model is strictly more capable; incompatible naming conventions |
 
 ## Traceability
 
@@ -91,45 +85,38 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUDIT-01 | Phase 8 | Complete |
-| AUDIT-02 | Phase 8 | Complete |
-| AUDIT-03 | Phase 8 | Complete |
-| AUDIT-04 | Phase 8 | Complete |
-| AUDIT-05 | Phase 8 | Complete |
-| AUDIT-06 | Phase 8 | Complete |
-| AUDIT-07 | Phase 8 | Complete |
-| AUDIT-08 | Phase 8 | Complete |
-| AUDIT-09 | Phase 8 | Complete |
-| AUDIT-10 | Phase 8 | Complete |
-| DBCX-01 | Phase 9 | Complete |
-| DBCX-02 | Phase 9 | Complete |
-| DBCX-03 | Phase 9 | Complete |
-| DBCX-04 | Phase 9 | Complete |
-| CMNT-01 | Phase 10 | Complete |
-| CMNT-02 | Phase 10 | Complete |
-| CMNT-03 | Phase 10 | Complete |
-| CMNT-04 | Phase 10 | Complete |
-| PANL-01 | Phase 10 | Complete |
-| PANL-02 | Phase 10 | Complete |
-| PANL-03 | Phase 10 | Complete |
-| PANL-04 | Phase 10 | Complete |
-| PANL-05 | Phase 10 | Complete |
-| PTCH-01 | Phase 10 | Complete |
-| PTCH-02 | Phase 10 | Complete |
-| LYOT-01 | Phase 11 | Complete |
-| LYOT-02 | Phase 11 | Complete |
-| LYOT-03 | Phase 11 | Complete |
-| LYOT-04 | Phase 11 | Complete |
-| LYOT-05 | Phase 11 | Complete |
-| LYOT-06 | Phase 11 | Complete |
-| AGNT-01 | Phase 12 | Complete |
-| AGNT-02 | Phase 12 | Complete |
+| RW-01 | Phase 13 | Pending |
+| RW-02 | Phase 13 | Pending |
+| RW-03 | Phase 13 | Pending |
+| RW-04 | Phase 13 | Pending |
+| RW-05 | Phase 13 | Pending |
+| RW-06 | Phase 13 | Pending |
+| RW-07 | Phase 13 | Pending |
+| ED-01 | Phase 14 | Pending |
+| ED-02 | Phase 14 | Pending |
+| ED-03 | Phase 14 | Pending |
+| ED-04 | Phase 14 | Pending |
+| ED-05 | Phase 14 | Pending |
+| AN-01 | Phase 15 | Pending |
+| AN-02 | Phase 15 | Pending |
+| AN-03 | Phase 15 | Pending |
+| MG-01 | Phase 16 | Pending |
+| MG-02 | Phase 16 | Pending |
+| MG-03 | Phase 16 | Pending |
+| MG-04 | Phase 16 | Pending |
+| MG-05 | Phase 16 | Pending |
+| MG-06 | Phase 16 | Pending |
+| CL-01 | Phase 17 | Pending |
+| CL-02 | Phase 17 | Pending |
+| CL-03 | Phase 17 | Pending |
+| CL-04 | Phase 17 | Pending |
+| CL-05 | Phase 17 | Pending |
 
 **Coverage:**
-- v1.1 requirements: 33 total
-- Mapped to phases: 33
-- Unmapped: 0
+- v2.0 requirements: 27 total
+- Mapped to phases: 27
+- Unmapped: 0 ✓
 
 ---
-*Requirements defined: 2026-03-13*
-*Last updated: 2026-03-13 -- traceability updated with phase mappings*
+*Requirements defined: 2026-03-15*
+*Last updated: 2026-03-15 after initial definition*
