@@ -111,6 +111,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CL-03 | Phase 18 | Complete |
 | CL-04 | Phase 18 | Complete |
 | CL-05 | Phase 18 | Complete |
+| RW-02 (gap) | Phase 19 | Pending |
+| CL-05 (gap) | Phase 19 | Pending |
 
 **Coverage:**
 - v2.0 requirements: 26 total

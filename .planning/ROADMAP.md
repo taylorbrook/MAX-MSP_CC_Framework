@@ -50,6 +50,7 @@ Full details: see phase details below (archived in-place)
 - [x] **Phase 16: Patch Analysis** — Structured patch understanding for onboarding existing patches from any source (completed 2026-03-16)
 - [x] **Phase 17: Agent and Command Migration** — Rewire slash commands and agent skills to use direct .maxpat editing (completed 2026-03-16)
 - [x] **Phase 18: v1.x Cleanup** — Remove generation pipeline artifacts (incremental.py, generate.py, manifests) (completed 2026-03-16)
+- [ ] **Phase 19: Tech Debt Cleanup** — Close integration gaps and tech debt from milestone audit
 
 ## Phase Details
 
@@ -229,6 +230,21 @@ Plans:
 - [ ] 18-01-PLAN.md -- Delete all patch artifacts (scripts, manifests, versions.json)
 - [ ] 18-02-PLAN.md -- Remove incremental.py, clean __init__.py/hooks.py, update tests and SKILL.md files
 
+### Phase 19: Tech Debt Cleanup
+**Goal**: Close minor integration gaps and tech debt identified by the v2.0 milestone audit — subpatcher round-trip test coverage, stale docstring, and leftover script
+**Depends on**: Phase 18
+**Requirements**: RW-02 (gap closure), CL-05 (gap closure)
+**Gap Closure:** Closes gaps from v2.0-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+  1. A byte-identical round-trip test exists for at least one subpatcher-containing .maxpat file, proving JSON key order is preserved through load-save for embedded patchers
+  2. The stale docstring in `src/maxpat/externals.py` line 112 no longer references `write_patch`
+  3. `patches/rhythmic-sampler/generated/_fix2.py` is deleted
+  4. All existing tests continue to pass (zero regressions)
+**Plans**: 0 plans
+
+Plans:
+- [ ] 19-01-PLAN.md -- Fix stale docstring, delete leftover script, add subpatcher round-trip test
+
 ## Progress
 
 **Execution Order:**
@@ -254,7 +270,8 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 15. Intelligent Editing | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 16. Patch Analysis | v2.0 | 1/1 | Complete | 2026-03-16 |
 | 17. Agent and Command Migration | v2.0 | 3/3 | Complete | 2026-03-16 |
-| 18. v1.x Cleanup | 2/2 | Complete    | 2026-03-16 | - |
+| 18. v1.x Cleanup | v2.0 | 2/2 | Complete | 2026-03-16 |
+| 19. Tech Debt Cleanup | v2.0 | 0/1 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
