@@ -1379,7 +1379,136 @@ class TestAutoPosition:
 
 class TestInsertIntoConnection:
     """ED-02: insert_into_connection splice operation."""
-    pass
+
+    def test_basic_single_insert(self):
+        """Insert a box into a single connection between two boxes."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        src = p.add_box("cycle~", args=["440"])
+        dst = p.add_box("dac~")
+        p.add_connection(src, 0, dst, 0)
+        result = p.insert_into_connection(src, dst, "*~", args=["0.5"])
+        assert isinstance(result, EditResult)
+        assert result.box.name == "*~"
+        assert result.orphaned == []
+        # Old connection removed, two new connections present
+        assert len(p.lines) == 2
+
+    def test_stereo_insert(self):
+        """Insert into stereo (two parallel connections) -- single shared object."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        src = p.add_box("cycle~", args=["440"])
+        dst = p.add_box("dac~")
+        p.add_connection(src, 0, dst, 0)
+        p.add_connection(src, 0, dst, 1)
+        result = p.insert_into_connection(src, dst, "*~", args=["0.5"])
+        assert isinstance(result, EditResult)
+        # One shared box, not two
+        assert result.box.name == "*~"
+        # 2 old removed, 4 new added (src->new x2, new->dst x2)
+        assert len(p.lines) == 4
+        assert result.orphaned == []
+
+    def test_position_below_source(self):
+        """Inserted box is positioned below the source box."""
+        p = Patcher()
+        src = p.add_box("cycle~", args=["440"], x=60.0, y=60.0)
+        dst = p.add_box("dac~", x=60.0, y=200.0)
+        p.add_connection(src, 0, dst, 0)
+        result = p.insert_into_connection(src, dst, "*~", args=["0.5"])
+        # y should be below source
+        assert result.box.patching_rect[1] > src.patching_rect[1]
+
+    def test_grid_snap_on_insert(self):
+        """Inserted box position is snapped to 15px grid."""
+        p = Patcher()
+        src = p.add_box("cycle~", args=["440"], x=67.0, y=43.0)
+        dst = p.add_box("dac~", x=67.0, y=200.0)
+        p.add_connection(src, 0, dst, 0)
+        result = p.insert_into_connection(src, dst, "*~", args=["0.5"])
+        assert result.box.patching_rect[0] % 15 == 0
+        assert result.box.patching_rect[1] % 15 == 0
+
+    def test_no_connection_raises_valueerror(self):
+        """Raises ValueError when no connection exists between source and dest."""
+        p = Patcher()
+        src = p.add_box("cycle~", args=["440"])
+        dst = p.add_box("dac~")
+        # No connection added
+        with pytest.raises(ValueError, match="No connection found"):
+            p.insert_into_connection(src, dst, "*~")
+
+    def test_io_mismatch_returns_orphaned(self):
+        """I/O mismatch returns EditResult with orphaned, not ValueError."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        # pack has 2 inlets, 1 outlet by default
+        src = p.add_box("pack", args=["0", "0"])
+        dst = p.add_box("unpack", args=["0", "0"])
+        p.add_connection(src, 0, dst, 0)
+        p.add_connection(src, 0, dst, 1)
+        # toggle has 1 inlet, 1 outlet -- cannot handle 2 connections
+        result = p.insert_into_connection(src, dst, "toggle")
+        assert isinstance(result, EditResult)
+        # Only 1 connection fits (inlet 0, outlet 0); second is orphaned
+        assert len(result.orphaned) == 1
+        assert result.orphaned[0]["dest_inlet"] == 1
+
+    def test_args_forwarded(self):
+        """Arguments are passed through to the new box."""
+        p = Patcher()
+        src = p.add_box("cycle~", args=["440"])
+        dst = p.add_box("dac~")
+        p.add_connection(src, 0, dst, 0)
+        result = p.insert_into_connection(src, dst, "*~", args=["0.5"])
+        assert result.box.args == ["0.5"]
+        assert "0.5" in result.box.text
+
+    def test_connections_properly_rewired(self):
+        """Old connection removed, new connections (src->new and new->dst) present."""
+        p = Patcher()
+        src = p.add_box("cycle~", args=["440"])
+        dst = p.add_box("dac~")
+        p.add_connection(src, 0, dst, 0)
+        result = p.insert_into_connection(src, dst, "*~", args=["0.5"])
+        new_box = result.box
+        # Check no direct src->dst connection remains
+        direct = [
+            pl for pl in p.lines
+            if pl.source_id == src.id and pl.dest_id == dst.id
+        ]
+        assert len(direct) == 0
+        # Check src->new connection
+        src_to_new = [
+            pl for pl in p.lines
+            if pl.source_id == src.id and pl.dest_id == new_box.id
+        ]
+        assert len(src_to_new) == 1
+        # Check new->dst connection
+        new_to_dst = [
+            pl for pl in p.lines
+            if pl.source_id == new_box.id and pl.dest_id == dst.id
+        ]
+        assert len(new_to_dst) == 1
+
+    def test_orphaned_list_details(self):
+        """Orphaned list has correct connection details for excess connections."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        # trigger has variable outlets; trigger b b has 2 outlets
+        src = p.add_box("trigger", args=["b", "b", "b"])
+        dst = p.add_box("pack", args=["0", "0", "0"])
+        # Create 3 connections: outlet 0->0, outlet 1->1, outlet 2->2
+        p.add_connection(src, 0, dst, 0)
+        p.add_connection(src, 1, dst, 1)
+        p.add_connection(src, 2, dst, 2)
+        # Insert toggle (1 inlet, 1 outlet) -- can only handle index 0
+        result = p.insert_into_connection(src, dst, "toggle")
+        assert len(result.orphaned) == 2
+        # Orphaned should be the connections at index 1 and 2
+        orphan_outlets = sorted([o["source_outlet"] for o in result.orphaned])
+        assert orphan_outlets == [1, 2]
 
 
 class TestDownstream:
