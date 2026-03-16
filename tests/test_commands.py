@@ -1,6 +1,6 @@
 """Tests for slash command file structure, frontmatter, and cross-references.
 
-Validates that all 10 command files under .claude/commands/ have correct
+Validates that all 11 command files under .claude/commands/ have correct
 YAML frontmatter, naming convention, descriptions, and reference the
 appropriate skills and Python modules.
 """
@@ -26,6 +26,7 @@ ALL_COMMANDS = [
     "max-status",
     "max-memory",
     "max-switch",
+    "max-onboard",
 ]
 
 
@@ -200,4 +201,71 @@ def test_build_no_stub_labels() -> None:
     content = _read_command("max-build")
     assert "stub" not in content.lower(), (
         "max-build.md should not label any agent as a stub"
+    )
+
+
+# -- Test: v2.0 cross-references (max-onboard, direct editing API) -----------
+
+
+def test_onboard_references_analyze() -> None:
+    """max-onboard.md must reference analyze for patch analysis."""
+    content = _read_command("max-onboard")
+    assert "analyze" in content, (
+        "max-onboard.md should reference analyze"
+    )
+
+
+def test_onboard_references_read_patch() -> None:
+    """max-onboard.md must reference read_patch for loading patches."""
+    content = _read_command("max-onboard")
+    assert "read_patch" in content, (
+        "max-onboard.md should reference read_patch"
+    )
+
+
+def test_build_no_generate_py() -> None:
+    """max-build.md must not reference generate.py scripts."""
+    content = _read_command("max-build")
+    assert "generate.py" not in content, (
+        "max-build.md should not reference generate.py scripts"
+    )
+
+
+def test_build_references_write_patch() -> None:
+    """max-build.md must reference write_patch for output."""
+    content = _read_command("max-build")
+    assert "write_patch" in content, (
+        "max-build.md should reference write_patch"
+    )
+
+
+def test_iterate_references_read_patch() -> None:
+    """max-iterate.md must reference read_patch for loading patches."""
+    content = _read_command("max-iterate")
+    assert "read_patch" in content, (
+        "max-iterate.md should reference read_patch"
+    )
+
+
+def test_iterate_references_analyze() -> None:
+    """max-iterate.md must reference analyze for patch analysis."""
+    content = _read_command("max-iterate")
+    assert "analyze" in content, (
+        "max-iterate.md should reference analyze"
+    )
+
+
+def test_iterate_references_save_roundtrip() -> None:
+    """max-iterate.md must reference save_patch_roundtrip for saving."""
+    content = _read_command("max-iterate")
+    assert "save_patch_roundtrip" in content, (
+        "max-iterate.md should reference save_patch_roundtrip"
+    )
+
+
+def test_new_references_maxpat() -> None:
+    """max-new.md must reference .maxpat creation."""
+    content = _read_command("max-new")
+    assert "maxpat" in content, (
+        "max-new.md should reference .maxpat creation"
     )
