@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
-status: completed
-stopped_at: Phase 15 context gathered
-last_updated: "2026-03-16T17:30:21.289Z"
-last_activity: 2026-03-16 -- Plan 14-02 complete (remove_box, remove_connection, bounds checking, duplicate prevention)
+status: in-progress
+stopped_at: Plan 15-01 complete
+last_updated: "2026-03-16T18:02:31Z"
+last_activity: 2026-03-16 -- Plan 15-01 complete (EditResult, modify_box, replace_box)
 progress:
   total_phases: 11
   completed_phases: 7
-  total_plans: 18
-  completed_plans: 18
-  percent: 18
+  total_plans: 21
+  completed_plans: 19
+  percent: 19
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v2.0 Phase 14 complete -- Search and Mutation Primitives (all plans done)
+**Current focus:** v2.0 Phase 15 in progress -- Intelligent Editing (Plan 1 of 3 done)
 
 ## Current Position
 
-Phase: 14 of 18 (Search and Mutation Primitives)
-Plan: 2 of 2
-Status: Phase Complete
-Last activity: 2026-03-16 -- Plan 14-02 complete (remove_box, remove_connection, bounds checking, duplicate prevention)
+Phase: 15 of 18 (Intelligent Editing)
+Plan: 1 of 3
+Status: In Progress
+Last activity: 2026-03-16 -- Plan 15-01 complete (EditResult, modify_box, replace_box)
 
-Progress: [##░░░░░░░░] 18%
+Progress: [##░░░░░░░░] 19%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4 (v2.0) / 36 (lifetime)
+- Total plans completed: 5 (v2.0) / 37 (lifetime)
 - Average duration: 5min (v2.0)
-- Total execution time: 20min (v2.0)
+- Total execution time: 25min (v2.0)
 
 **By Phase:**
 
@@ -45,6 +45,7 @@ Progress: [##░░░░░░░░] 18%
 |-------|-------|-------|----------|
 | 13 | 2 | 11min | 5.5min |
 | 14 | 2 | 9min | 4.5min |
+| 15 | 1 | 5min | 5min |
 
 *Updated after each plan completion*
 
@@ -55,6 +56,9 @@ Progress: [##░░░░░░░░] 18%
 Decisions archived in PROJECT.md Key Decisions table.
 
 Recent decisions for v2.0:
+- [15-01]: EditResult uses @dataclass with default_factory for orphaned list
+- [15-01]: modify_box syncs _raw["text"] explicitly (Box.to_dict round-trip path doesn't overlay text)
+- [15-01]: replace_box captures orphaned connections before remove_box to preserve connection info
 - [14-02]: Bounds checking is index-only (no signal type checking) per user decision in research phase
 - [14-02]: Duplicate prevention returns existing patchline (idempotent) rather than raising
 - [14-02]: remove_box() builds new list via comprehension to avoid mutating during iteration
@@ -86,6 +90,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T17:30:21.287Z
-Stopped at: Phase 15 context gathered
-Resume file: .planning/phases/15-intelligent-editing/15-CONTEXT.md
+Last session: 2026-03-16T18:02:31Z
+Stopped at: Completed 15-01-PLAN.md
+Resume file: .planning/phases/15-intelligent-editing/15-01-SUMMARY.md
