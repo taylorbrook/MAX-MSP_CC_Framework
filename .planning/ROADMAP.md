@@ -254,7 +254,7 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 15. Intelligent Editing | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 16. Patch Analysis | v2.0 | 1/1 | Complete | 2026-03-16 |
 | 17. Agent and Command Migration | v2.0 | 3/3 | Complete | 2026-03-16 |
-| 18. v1.x Cleanup | 2/2 | Complete   | 2026-03-16 | - |
+| 18. v1.x Cleanup | 2/2 | Complete    | 2026-03-16 | - |
 
 ---
 *Roadmap created: 2026-03-08*
