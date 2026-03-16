@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: executing
-stopped_at: Plan 14-01 complete
-last_updated: "2026-03-16T16:22:00Z"
-last_activity: 2026-03-16 -- Plan 14-01 complete (find_box/find_boxes + read_patch)
+stopped_at: Plan 14-02 complete (Phase 14 done)
+last_updated: "2026-03-16T16:30:16Z"
+last_activity: 2026-03-16 -- Plan 14-02 complete (remove_box, remove_connection, bounds checking)
 progress:
   total_phases: 11
-  completed_phases: 6
+  completed_phases: 7
   total_plans: 18
-  completed_plans: 17
-  percent: 17
+  completed_plans: 18
+  percent: 18
 ---
 
 # Project State
@@ -21,30 +21,30 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v2.0 Phase 14 -- Search and Mutation Primitives (Plan 01 complete, Plan 02 next)
+**Current focus:** v2.0 Phase 14 complete -- Search and Mutation Primitives (all plans done)
 
 ## Current Position
 
 Phase: 14 of 18 (Search and Mutation Primitives)
-Plan: 1 of 2
-Status: Executing
-Last activity: 2026-03-16 -- Plan 14-01 complete (find_box/find_boxes + read_patch)
+Plan: 2 of 2
+Status: Phase Complete
+Last activity: 2026-03-16 -- Plan 14-02 complete (remove_box, remove_connection, bounds checking, duplicate prevention)
 
-Progress: [##░░░░░░░░] 15%
+Progress: [##░░░░░░░░] 18%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3 (v2.0) / 35 (lifetime)
+- Total plans completed: 4 (v2.0) / 36 (lifetime)
 - Average duration: 5min (v2.0)
-- Total execution time: 15min (v2.0)
+- Total execution time: 20min (v2.0)
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 13 | 2 | 11min | 5.5min |
-| 14 | 1 | 4min | 4min |
+| 14 | 2 | 9min | 4.5min |
 
 *Updated after each plan completion*
 
@@ -55,6 +55,9 @@ Progress: [##░░░░░░░░] 15%
 Decisions archived in PROJECT.md Key Decisions table.
 
 Recent decisions for v2.0:
+- [14-02]: Bounds checking is index-only (no signal type checking) per user decision in research phase
+- [14-02]: Duplicate prevention returns existing patchline (idempotent) rather than raising
+- [14-02]: remove_box() builds new list via comprehension to avoid mutating during iteration
 - [14-01]: find_box short-circuits on first match; find_boxes collects all -- separate methods for ergonomics
 - [14-01]: Alias resolution is bidirectional (t <-> trigger) via canonical form comparison
 - [14-01]: read_patch delegates structural validation to from_dict() -- no extra strictness
@@ -83,6 +86,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T16:22:00Z
-Stopped at: Plan 14-01 complete
-Resume file: .planning/phases/14-search-and-mutation-primitives/14-01-SUMMARY.md
+Last session: 2026-03-16T16:30:16Z
+Stopped at: Plan 14-02 complete (Phase 14 done)
+Resume file: .planning/phases/14-search-and-mutation-primitives/14-02-SUMMARY.md

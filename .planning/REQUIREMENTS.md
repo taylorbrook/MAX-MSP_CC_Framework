@@ -11,9 +11,9 @@ Requirements for v2.0 Direct .maxpat Editing milestone. Each maps to roadmap pha
 
 - [x] **RW-01**: Patcher can load any .maxpat file into fully populated Patcher/Box/Line objects — all maxclass types, recursive subpatchers, bpatcher attrs, unknown objects handled gracefully
 - [x] **RW-02**: Loaded Patcher writes back to .maxpat with minimal diff — unchanged portions byte-for-byte identical, key ordering preserved, numeric precision maintained
-- [ ] **RW-03**: User can add objects to a loaded patch with unique IDs, correct I/O counts, and DB validation — existing objects undisturbed
-- [ ] **RW-04**: User can remove objects from a loaded patch — box and all connected patchlines removed cleanly
-- [ ] **RW-05**: User can add and remove connections between existing objects with inlet/outlet bounds checking
+- [x] **RW-03**: User can add objects to a loaded patch with unique IDs, correct I/O counts, and DB validation — existing objects undisturbed
+- [x] **RW-04**: User can remove objects from a loaded patch — box and all connected patchlines removed cleanly
+- [x] **RW-05**: User can add and remove connections between existing objects with inlet/outlet bounds checking
 - [x] **RW-06**: All user state preserved on edit — positions, colors, presentation rects, varnames, scripting names, custom attrs, unknown keys survive load-edit-save cycle
 - [x] **RW-07**: User can find objects by ID, name, maxclass, or text substring — with optional recursive search into subpatchers
 
@@ -88,9 +88,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RW-01 | Phase 13 | Complete |
 | RW-02 | Phase 13 | Complete |
 | RW-06 | Phase 13 | Complete |
-| RW-03 | Phase 14 | Pending |
-| RW-04 | Phase 14 | Pending |
-| RW-05 | Phase 14 | Pending |
+| RW-03 | Phase 14 | Complete |
+| RW-04 | Phase 14 | Complete |
+| RW-05 | Phase 14 | Complete |
 | RW-07 | Phase 14 | Complete |
 | ED-01 | Phase 15 | Pending |
 | ED-02 | Phase 15 | Pending |
