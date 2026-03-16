@@ -388,10 +388,10 @@ class TestGenBox:
         assert codebox is not None
         assert codebox["code"] == code
 
-    def test_add_gen_generate_patch(self):
-        """Full pipeline: add_gen + generate_patch produces valid .maxpat."""
+    def test_add_gen_pipeline(self):
+        """Full pipeline: add_gen + styling/layout/validation produces valid .maxpat."""
         from src.maxpat.patcher import Patcher
-        from src.maxpat import generate_patch
+        from src.maxpat import _apply_auto_styling, apply_layout, validate_patch
 
         p = Patcher()
         code = "out1 = in1 * 0.5;"
@@ -401,7 +401,10 @@ class TestGenBox:
         dac = p.add_box("dac~")
         p.add_connection(box, 0, dac, 0)
 
-        patch_dict, results = generate_patch(p)
+        _apply_auto_styling(p)
+        apply_layout(p)
+        patch_dict = p.to_dict()
+        results = validate_patch(patch_dict, db=p.db)
 
         assert "patcher" in patch_dict
         # Find the gen~ box in serialized output (uses newobj maxclass)

@@ -3,9 +3,9 @@
 Generate valid .maxpat JSON files programmatically. This module re-exports
 the essential types and functions so callers can do:
 
-    from src.maxpat import Patcher, generate_patch, write_patch, validate_file
+    from src.maxpat import Patcher, read_patch, save_patch_roundtrip, validate_file
 
-The generation pipeline is: Patcher -> layout -> validation -> .maxpat JSON.
+Provides Patcher model, direct read/write, validation, and code generation for .maxpat files.
 """
 
 from __future__ import annotations
@@ -20,7 +20,6 @@ from src.maxpat.layout import apply_layout
 from src.maxpat.aesthetics import set_canvas_background, set_object_bgcolor, auto_size_panel, is_complex_patch
 from src.maxpat.defaults import LayoutOptions
 from src.maxpat.hooks import (
-    write_patch,
     write_gendsp,
     write_js,
     validate_file,
@@ -63,7 +62,6 @@ from src.maxpat.externals import (
     generate_help_patch,
 )
 from src.maxpat.ext_validation import validate_mxo, BuildResult
-from src.maxpat.incremental import Manifest, merge_and_write
 
 
 _AUTO_HIGHLIGHT = {
@@ -87,65 +85,13 @@ def _apply_auto_styling(patcher: Patcher) -> None:
             set_object_bgcolor(box, palette_key=palette_key)
 
 
-def generate_patch(
-    patcher: Patcher,
-    layout_options: LayoutOptions | None = None,
-) -> tuple[dict, list[ValidationResult]]:
-    """Generate a complete, laid-out, validated .maxpat dict from a Patcher.
-
-    This is the core generation function. It:
-    1. Applies auto-styling (canvas background, object highlights).
-    2. Applies column-based layout to position all boxes.
-    3. Serializes the Patcher to a .maxpat dict.
-    4. Runs the four-layer validation pipeline.
-    5. Raises PatchGenerationError if unfixable structural errors exist.
-
-    Args:
-        patcher: A Patcher instance containing boxes and connections.
-        layout_options: Optional LayoutOptions to customize spacing,
-            grid snapping, and alignment. Defaults to None (use defaults).
-
-    Returns:
-        (patch_dict, results) tuple where:
-        - patch_dict: Complete .maxpat JSON-serializable dict.
-        - results: List of ValidationResult (warnings, info, auto-fixed).
-
-    Raises:
-        PatchGenerationError: If has_blocking_errors is True.
-    """
-    # Step 1: Apply auto-styling
-    _apply_auto_styling(patcher)
-
-    # Step 2: Apply layout
-    apply_layout(patcher, layout_options)
-
-    # Step 3: Serialize to dict
-    patch_dict = patcher.to_dict()
-
-    # Step 4: Validate
-    results = validate_patch(patch_dict, db=patcher.db)
-
-    # Step 5: Block on unfixable errors
-    if has_blocking_errors(results):
-        error_msgs = [r.message for r in results if r.level == "error" and not r.auto_fixed]
-        raise PatchGenerationError(
-            f"Patch generation blocked by unfixable errors:\n" +
-            "\n".join(f"  - {m}" for m in error_msgs)
-        )
-
-    return (patch_dict, results)
-
-
 __all__ = [
     # Core types
     "Patcher",
     "Box",
     "Patchline",
     "EditResult",
-    # Generation
-    "generate_patch",
     # File I/O
-    "write_patch",
     "write_gendsp",
     "write_js",
     "validate_file",
@@ -195,7 +141,4 @@ __all__ = [
     "set_object_bgcolor",
     "auto_size_panel",
     "is_complex_patch",
-    # Incremental patching
-    "Manifest",
-    "merge_and_write",
 ]

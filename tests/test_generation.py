@@ -19,6 +19,25 @@ FIXTURES_DIR = Path(__file__).parent / "fixtures" / "expected"
 # Helpers
 # ---------------------------------------------------------------------------
 
+def _run_pipeline(patcher, layout_options=None):
+    """Apply styling, layout, validation and return (patch_dict, results)."""
+    from src.maxpat import _apply_auto_styling, apply_layout, validate_patch
+    from src.maxpat.hooks import PatchGenerationError
+
+    _apply_auto_styling(patcher)
+    apply_layout(patcher, layout_options)
+    patch_dict = patcher.to_dict()
+    results = validate_patch(patch_dict, db=patcher.db)
+    from src.maxpat import has_blocking_errors
+    if has_blocking_errors(results):
+        error_msgs = [r.message for r in results if r.level == "error" and not r.auto_fixed]
+        raise PatchGenerationError(
+            f"Patch generation blocked by unfixable errors:\n" +
+            "\n".join(f"  - {m}" for m in error_msgs)
+        )
+    return (patch_dict, results)
+
+
 def _extract_object_names(patch_dict: dict) -> set[str]:
     """Extract all object names from a patch dict's boxes array."""
     names = set()
@@ -67,7 +86,7 @@ class TestSimpleSynth:
     """Test the simple synth patch: cycle~ 440 -> *~ 0.5 -> ezdac~."""
 
     def _make_synth(self):
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
         p = Patcher()
         osc = p.add_box("cycle~", ["440"])
         gain = p.add_box("*~", ["0.5"])
@@ -75,7 +94,7 @@ class TestSimpleSynth:
         p.add_connection(osc, 0, gain, 0)
         p.add_connection(gain, 0, dac, 0)
         p.add_connection(gain, 0, dac, 1)
-        return generate_patch(p)
+        return _run_pipeline(p)
 
     def test_box_count(self):
         """Simple synth generates 3 boxes."""
@@ -146,7 +165,7 @@ class TestFixtureComparison:
 
     def test_simple_synth_fixture(self):
         """Generated simple synth matches fixture structure."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         osc = p.add_box("cycle~", ["440"])
@@ -156,7 +175,7 @@ class TestFixtureComparison:
         p.add_connection(gain, 0, dac, 0)
         p.add_connection(gain, 0, dac, 1)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         # Load fixture
         fixture = json.loads((FIXTURES_DIR / "simple_synth.maxpat").read_text())
@@ -175,7 +194,7 @@ class TestFixtureComparison:
 
     def test_subpatcher_fixture(self):
         """Generated subpatcher matches fixture structure."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         osc = p.add_box("cycle~", ["440"])
@@ -193,7 +212,7 @@ class TestFixtureComparison:
         p.add_connection(gain, 0, dac, 0)
         p.add_connection(gain, 0, dac, 1)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         # Load fixture
         fixture = json.loads((FIXTURES_DIR / "subpatcher_example.maxpat").read_text())
@@ -216,14 +235,14 @@ class TestSubpatcher:
 
     def test_subpatcher_structure(self):
         """Subpatcher box has nested patcher with boxes and lines."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         sub_box, inner = p.add_subpatcher("my_sub", inlets=1, outlets=1)
         inner_inlet = inner.boxes[0]
         inner_outlet = inner.boxes[1]
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         # Find the subpatcher box
         sub = None
@@ -239,12 +258,12 @@ class TestSubpatcher:
 
     def test_subpatcher_inlet_outlet_count(self):
         """Parent box numinlets/numoutlets match inner inlet/outlet count."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         sub_box, inner = p.add_subpatcher("two_io", inlets=2, outlets=3)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         sub = None
         for b in d["patcher"]["boxes"]:
@@ -258,12 +277,12 @@ class TestSubpatcher:
 
     def test_subpatcher_inner_has_inlets_outlets(self):
         """Inner patcher has correct number of inlet/outlet objects."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         sub_box, inner = p.add_subpatcher("my_sub", inlets=2, outlets=1)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         sub = None
         for b in d["patcher"]["boxes"]:
@@ -288,12 +307,12 @@ class TestBpatcher:
 
     def test_bpatcher_file_ref(self):
         """bpatcher referencing external file has correct maxclass and name."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         bp = p.add_bpatcher(filename="control.maxpat")
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         bp_box = None
         for b in d["patcher"]["boxes"]:
@@ -307,12 +326,12 @@ class TestBpatcher:
 
     def test_bpatcher_embedded(self):
         """Embedded bpatcher has patcher key inside box."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         bp_box, bp_inner = p.add_bpatcher(embedded=True)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         bp_dict = None
         for b in d["patcher"]["boxes"]:
@@ -333,7 +352,7 @@ class TestMultiDomain:
 
     def test_multi_domain_patch(self):
         """notein -> stripnote -> mtof -> cycle~ -> *~ 0.5 -> ezdac~ with comments."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         p.add_comment("// MIDI INPUT")
@@ -359,7 +378,7 @@ class TestMultiDomain:
         p.add_connection(gain, 0, dac, 0)
         p.add_connection(gain, 0, dac, 1)
 
-        d, results = generate_patch(p)
+        d, results = _run_pipeline(p)
 
         # Verify all objects are present
         names = _extract_object_names(d)
@@ -389,12 +408,12 @@ class TestVariableIO:
 
     def test_trigger_outlets(self):
         """trigger b i f generates box with correct outlet count in JSON."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         trig = p.add_box("trigger", ["b", "i", "f"])
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         trig_box = d["patcher"]["boxes"][0]["box"]
         # trigger b i f should have 3 outlets
@@ -402,12 +421,12 @@ class TestVariableIO:
 
     def test_pack_inlets(self):
         """pack 0 0 0 generates box with correct inlet count in JSON."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         pk = p.add_box("pack", ["0", "0", "0"])
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         pack_box = d["patcher"]["boxes"][0]["box"]
         # pack 0 0 0 should have 3 inlets
@@ -423,7 +442,7 @@ class TestPresentationMode:
 
     def test_presentation_rect_on_ui(self):
         """UI boxes with presentation=True get presentation and presentation_rect."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         toggle = p.add_box("toggle")
@@ -434,7 +453,7 @@ class TestPresentationMode:
         p.add_connection(toggle, 0, osc, 0)
         p.add_connection(slider, 0, osc, 0)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         for b in d["patcher"]["boxes"]:
             box = b["box"]
@@ -459,8 +478,9 @@ class TestWriteAndValidate:
     """Test the full write -> validate pipeline."""
 
     def test_write_and_validate(self, tmp_path):
-        """write_patch then validate_file: no blocking errors."""
-        from src.maxpat import Patcher, write_patch, validate_file, has_blocking_errors
+        """Save patch then validate_file: no blocking errors."""
+        from src.maxpat import Patcher, _apply_auto_styling, apply_layout, validate_file, has_blocking_errors
+        from src.maxpat.hooks import save_patch_roundtrip
 
         p = Patcher()
         osc = p.add_box("cycle~", ["440"])
@@ -471,7 +491,10 @@ class TestWriteAndValidate:
         p.add_connection(gain, 0, dac, 1)
 
         out = tmp_path / "synth.maxpat"
-        write_results = write_patch(p, out)
+        _apply_auto_styling(p)
+        apply_layout(p)
+        patch_dict = p.to_dict()
+        save_patch_roundtrip(patch_dict, out)
 
         assert out.exists()
         assert out.stat().st_size > 0
@@ -489,7 +512,7 @@ class TestValidationWarnings:
 
     def test_gain_staging_warning(self):
         """cycle~ -> ezdac~ (no gain) produces gain staging warning."""
-        from src.maxpat import Patcher, generate_patch
+        from src.maxpat import Patcher
 
         p = Patcher()
         osc = p.add_box("cycle~", ["440"])
@@ -497,7 +520,7 @@ class TestValidationWarnings:
         p.add_connection(osc, 0, dac, 0)
         p.add_connection(osc, 0, dac, 1)
 
-        d, results = generate_patch(p)
+        d, results = _run_pipeline(p)
 
         # Should still generate (warning, not error)
         assert "patcher" in d
@@ -519,9 +542,10 @@ class TestFullPipeline:
     def test_full_pipeline(self, tmp_path):
         """Create complex patch -> write -> validate from disk -> verify structure."""
         from src.maxpat import (
-            Patcher, generate_patch, write_patch, validate_file,
-            has_blocking_errors, ValidationResult,
+            Patcher, _apply_auto_styling, apply_layout, validate_patch,
+            validate_file, has_blocking_errors, ValidationResult,
         )
+        from src.maxpat.hooks import save_patch_roundtrip
 
         p = Patcher()
         # Build a complex patch
@@ -537,8 +561,10 @@ class TestFullPipeline:
 
         # Write to disk
         out = tmp_path / "complex_test.maxpat"
-        write_results = write_patch(p, out)
-        assert isinstance(write_results, list)
+        _apply_auto_styling(p)
+        apply_layout(p)
+        patch_dict = p.to_dict()
+        save_patch_roundtrip(patch_dict, out)
 
         # Validate from disk
         disk_results = validate_file(out)
@@ -595,11 +621,11 @@ class TestRegression:
 # ---------------------------------------------------------------------------
 
 class TestAutoStyling:
-    """Test auto-styling applied by generate_patch()."""
+    """Test auto-styling applied by the pipeline."""
 
-    def test_generate_patch_applies_canvas_bg(self):
-        """generate_patch() auto-applies canvas background color."""
-        from src.maxpat import Patcher, generate_patch
+    def test_pipeline_applies_canvas_bg(self):
+        """Pipeline auto-applies canvas background color."""
+        from src.maxpat import Patcher
         from src.maxpat.defaults import AESTHETIC_PALETTE
 
         p = Patcher()
@@ -610,14 +636,14 @@ class TestAutoStyling:
         p.add_connection(gain, 0, dac, 0)
         p.add_connection(gain, 0, dac, 1)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         assert d["patcher"]["editing_bgcolor"] == AESTHETIC_PALETTE["canvas_bg"]
         assert "locked_bgcolor" in d["patcher"]
 
-    def test_generate_patch_highlights_dac(self):
-        """generate_patch() auto-highlights ezdac~ with emphasis_dac palette color."""
-        from src.maxpat import Patcher, generate_patch
+    def test_pipeline_highlights_dac(self):
+        """Pipeline auto-highlights ezdac~ with emphasis_dac palette color."""
+        from src.maxpat import Patcher
         from src.maxpat.defaults import AESTHETIC_PALETTE
 
         p = Patcher()
@@ -628,7 +654,7 @@ class TestAutoStyling:
         p.add_connection(gain, 0, dac, 0)
         p.add_connection(gain, 0, dac, 1)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         # Find the ezdac~ box
         dac_box = None
@@ -641,9 +667,9 @@ class TestAutoStyling:
         assert "bgcolor" in dac_box, "ezdac~ should have bgcolor set"
         assert dac_box["bgcolor"] == AESTHETIC_PALETTE["emphasis_dac"]
 
-    def test_generate_patch_highlights_loadbang(self):
-        """generate_patch() auto-highlights loadbang with emphasis_loadbang palette color."""
-        from src.maxpat import Patcher, generate_patch
+    def test_pipeline_highlights_loadbang(self):
+        """Pipeline auto-highlights loadbang with emphasis_loadbang palette color."""
+        from src.maxpat import Patcher
         from src.maxpat.defaults import AESTHETIC_PALETTE
 
         p = Patcher()
@@ -651,7 +677,7 @@ class TestAutoStyling:
         toggle = p.add_box("toggle")
         p.add_connection(lb, 0, toggle, 0)
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         # Find the loadbang box -- it's a newobj with text "loadbang"
         lb_box = None
@@ -665,16 +691,16 @@ class TestAutoStyling:
         assert "bgcolor" in lb_box, "loadbang should have bgcolor set"
         assert lb_box["bgcolor"] == AESTHETIC_PALETTE["emphasis_loadbang"]
 
-    def test_generate_patch_no_overwrite_existing_bgcolor(self):
-        """generate_patch() does NOT overwrite user-set bgcolor on boxes."""
-        from src.maxpat import Patcher, generate_patch
+    def test_pipeline_no_overwrite_existing_bgcolor(self):
+        """Pipeline does NOT overwrite user-set bgcolor on boxes."""
+        from src.maxpat import Patcher
 
         p = Patcher()
         dac = p.add_box("ezdac~")
         # Manually set a custom bgcolor before generation
         dac.extra_attrs["bgcolor"] = [1.0, 0.0, 0.0, 1.0]
 
-        d, _ = generate_patch(p)
+        d, _ = _run_pipeline(p)
 
         # Find the ezdac~ box
         dac_box = None
@@ -687,9 +713,9 @@ class TestAutoStyling:
         # Should still have the user-set red color, not the palette color
         assert dac_box["bgcolor"] == [1.0, 0.0, 0.0, 1.0]
 
-    def test_generate_patch_with_layout_options(self):
-        """generate_patch() accepts layout_options parameter."""
-        from src.maxpat import Patcher, generate_patch
+    def test_pipeline_with_layout_options(self):
+        """Pipeline accepts layout_options parameter."""
+        from src.maxpat import Patcher
         from src.maxpat.defaults import LayoutOptions
 
         p = Patcher()
@@ -701,7 +727,7 @@ class TestAutoStyling:
         p.add_connection(gain, 0, dac, 1)
 
         # Should work without error
-        d, results = generate_patch(p, layout_options=LayoutOptions(v_spacing=50))
+        d, results = _run_pipeline(p, layout_options=LayoutOptions(v_spacing=50))
 
         assert isinstance(d, dict)
         assert "patcher" in d
