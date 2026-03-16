@@ -209,9 +209,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 17-01-PLAN.md -- Validation warning for unknown objects, empty .maxpat creation in create_project
-- [ ] 17-02-PLAN.md -- Rewrite 4 slash commands for v2.0 workflow (build, iterate, new, onboard)
-- [ ] 17-03-PLAN.md -- Update 9 agent SKILL.md files with dual workflow documentation
+- [x] 17-01-PLAN.md -- Validation warning for unknown objects, empty .maxpat creation in create_project
+- [x] 17-02-PLAN.md -- Rewrite 4 slash commands for v2.0 workflow (build, iterate, new, onboard)
+- [x] 17-03-PLAN.md -- Update 9 agent SKILL.md files with dual workflow documentation
 
 ### Phase 18: v1.x Cleanup
 **Goal**: The old generation pipeline is fully removed -- no generate.py scripts, no manifests, no incremental.py -- the .maxpat file is the only artifact
@@ -223,7 +223,11 @@ Plans:
   3. All generate.py and build_*.py scripts are deleted from patch directories -- .maxpat files stand alone without generation scripts
   4. Test suite covers the read-write path -- from_dict() has dedicated tests, write-only assumptions are replaced with round-trip tests, and the expand-then-contract migration keeps CI green throughout
   5. hooks.py write_patch uses the direct save path and merge_and_write is removed or raises a clear deprecation error
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 18-01-PLAN.md -- Delete all patch artifacts (scripts, manifests, versions.json)
+- [ ] 18-02-PLAN.md -- Remove incremental.py, clean __init__.py/hooks.py, update tests and SKILL.md files
 
 ## Progress
 
@@ -249,9 +253,9 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 14. Search and Mutation Primitives | v2.0 | 2/2 | Complete | 2026-03-16 |
 | 15. Intelligent Editing | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 16. Patch Analysis | v2.0 | 1/1 | Complete | 2026-03-16 |
-| 17. Agent and Command Migration | 3/3 | Complete    | 2026-03-16 | - |
-| 18. v1.x Cleanup | v2.0 | 0/0 | Not started | - |
+| 17. Agent and Command Migration | v2.0 | 3/3 | Complete | 2026-03-16 |
+| 18. v1.x Cleanup | v2.0 | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-16 -- Phase 17 plans created (3 plans in 1 wave)*
+*Last updated: 2026-03-16 -- Phase 18 plans created (2 plans in 2 waves)*
