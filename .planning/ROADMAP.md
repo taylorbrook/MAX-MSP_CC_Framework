@@ -178,9 +178,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 15-01-PLAN.md -- EditResult dataclass, modify_box() in-place attribute editing, replace_box() object swap
-- [ ] 15-02-PLAN.md -- Auto-positioning helpers (collision detection, grid snap) and insert_into_connection()
-- [ ] 15-03-PLAN.md -- Graph queries: downstream, upstream, signal_path, connected_components with subpatcher traversal
+- [x] 15-01-PLAN.md -- EditResult dataclass, modify_box() in-place attribute editing, replace_box() object swap
+- [x] 15-02-PLAN.md -- Auto-positioning helpers (collision detection, grid snap) and insert_into_connection()
+- [x] 15-03-PLAN.md -- Graph queries: downstream, upstream, signal_path, connected_components with subpatcher traversal
 
 ### Phase 16: Patch Analysis
 **Goal**: The framework can analyze any .maxpat file and produce a structured, human-readable summary of what the patch does -- enabling /max-onboard for existing patches
@@ -190,7 +190,10 @@ Plans:
   1. Patch analyzer produces a structured summary including: object inventory by domain, signal flow chains (audio source to dac~), control flow paths, subpatcher hierarchy map, parameter list, and complexity metrics
   2. /max-onboard command takes any .maxpat file path, runs analysis, and outputs a human-readable summary that a user can review to understand the patch without opening MAX
   3. Analyzer identifies functional sections by detecting connected components and spatial proximity -- grouping objects into logical units (e.g., "oscillator section", "filter chain", "envelope generator")
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 16-01-PLAN.md -- analyze() method with all facets: section detection, signal chain trees, inventory, complexity, hierarchy, parameters, control flow
 
 ### Phase 17: Agent and Command Migration
 **Goal**: All slash commands and agent skills use direct .maxpat editing instead of the Python generation pipeline -- the user-visible behavior change
@@ -239,11 +242,11 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 12. Pipeline Integration & Agent Updates | v1.1 | 2/2 | Complete | 2026-03-14 |
 | 13. Round-Trip Foundation | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 14. Search and Mutation Primitives | v2.0 | 2/2 | Complete | 2026-03-16 |
-| 15. Intelligent Editing | 3/3 | Complete    | 2026-03-16 | - |
-| 16. Patch Analysis | v2.0 | 0/0 | Not started | - |
+| 15. Intelligent Editing | v2.0 | 3/3 | Complete | 2026-03-16 |
+| 16. Patch Analysis | v2.0 | 0/1 | Planned | - |
 | 17. Agent and Command Migration | v2.0 | 0/0 | Not started | - |
 | 18. v1.x Cleanup | v2.0 | 0/0 | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-16 -- Phase 15 plans created (3 plans in 3 waves)*
+*Last updated: 2026-03-16 -- Phase 16 plans created (1 plan in 1 wave)*
