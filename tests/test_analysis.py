@@ -357,3 +357,330 @@ class TestSections:
         lines = [l for l in result.split("\n") if l.startswith("- **")]
         assert len(lines) == 1
         assert "Oscillator" in result
+
+
+# ===========================================================================
+# TestComplexity
+# ===========================================================================
+
+class TestComplexity:
+    """Complexity metrics computed correctly."""
+
+    def test_basic_metrics(self):
+        p = _make_patcher()
+        osc = _quick_box(p, "cycle~", ["440"])
+        gain = _quick_box(p, "*~", ["0.5"])
+        dac = _quick_box(p, "dac~")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, dac, 0)
+
+        result = p._analyze_complexity()
+        assert "## Overview" in result
+        assert "3" in result  # 3 objects
+        assert "2" in result  # 2 connections
+
+    def test_recursive_subpatcher_counting(self):
+        p = _make_patcher()
+        osc = _quick_box(p, "cycle~", ["440"])
+        sub = _quick_box(p, "patcher", ["mysubpatch"])
+        # Create inner patcher with some objects
+        inner = Patcher(db=p.db, is_subpatcher=True)
+        inner_a = inner.add_box("trigger", ["b", "i"])
+        inner_b = inner.add_box("print")
+        inner.add_connection(inner_a, 0, inner_b, 0)
+        sub._inner_patcher = inner
+        dac = _quick_box(p, "dac~")
+        p.add_connection(osc, 0, sub, 0)
+        p.add_connection(sub, 0, dac, 0)
+
+        result = p._analyze_complexity()
+        assert "## Overview" in result
+        # Top level: 3 objects, 2 connections
+        # Recursive total: 5 objects, 3 connections
+        assert "5" in result  # recursive total objects
+
+    def test_nesting_depth(self):
+        p = _make_patcher()
+        sub = _quick_box(p, "patcher", ["outer"])
+        inner = Patcher(db=p.db, is_subpatcher=True)
+        sub2 = inner.add_box("patcher", ["inner"])
+        inner2 = Patcher(db=p.db, is_subpatcher=True)
+        inner2.add_box("print")
+        sub2._inner_patcher = inner2
+        sub._inner_patcher = inner
+
+        result = p._analyze_complexity()
+        # Depth: outer=1, inner=2 -> max depth = 2
+        assert "2" in result
+
+    def test_domain_breakdown_percentages(self):
+        p = _make_patcher()
+        _quick_box(p, "cycle~", ["440"])
+        _quick_box(p, "dac~")
+        _quick_box(p, "toggle")
+
+        result = p._analyze_complexity()
+        assert "MSP" in result
+        assert "Max" in result
+
+
+# ===========================================================================
+# TestInventory
+# ===========================================================================
+
+class TestInventory:
+    """Domain grouping and object counting."""
+
+    def test_groups_by_domain(self):
+        p = _make_patcher()
+        _quick_box(p, "cycle~", ["440"])
+        _quick_box(p, "dac~")
+        _quick_box(p, "toggle")
+
+        result = p._analyze_inventory()
+        assert "## Object Inventory" in result
+        assert "MSP" in result
+        assert "Max" in result
+
+    def test_shows_counts(self):
+        p = _make_patcher()
+        _quick_box(p, "cycle~", ["440"])
+        _quick_box(p, "noise~")
+        _quick_box(p, "dac~")
+
+        result = p._analyze_inventory()
+        # 3 MSP objects
+        assert "3" in result
+
+    def test_empty_patcher(self):
+        p = _make_patcher()
+        result = p._analyze_inventory()
+        assert "## Object Inventory" in result
+
+
+# ===========================================================================
+# TestSignalChains
+# ===========================================================================
+
+class TestSignalChains:
+    """Signal chain tree rendering from source to sink."""
+
+    def test_simple_chain(self):
+        p = _make_patcher()
+        osc = _quick_box(p, "cycle~", ["440"])
+        gain = _quick_box(p, "*~", ["0.5"])
+        dac = _quick_box(p, "dac~")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, dac, 0)
+
+        result = p._analyze_signal_chains()
+        assert "## Signal Flow" in result
+        assert "cycle~" in result
+        assert "dac~" in result
+
+    def test_fork_point(self):
+        """One source feeding two destinations should show both branches."""
+        p = _make_patcher()
+        osc = _quick_box(p, "cycle~", ["440"])
+        gain1 = _quick_box(p, "*~", ["0.3"])
+        gain2 = _quick_box(p, "*~", ["0.7"])
+        p.add_connection(osc, 0, gain1, 0)
+        p.add_connection(osc, 0, gain2, 0)
+
+        result = p._analyze_signal_chains()
+        assert "cycle~" in result
+        # Both branches should appear
+        assert result.count("*~") == 2
+
+    def test_no_signal_objects(self):
+        p = _make_patcher()
+        _quick_box(p, "metro", ["500"])
+        _quick_box(p, "toggle")
+
+        result = p._analyze_signal_chains()
+        assert "## Signal Flow" in result
+        assert "no signal" in result.lower()
+
+
+# ===========================================================================
+# TestSignalChainsWireless
+# ===========================================================================
+
+class TestSignalChainsWireless:
+    """Send~/receive~ wireless connections shown in chain."""
+
+    def test_wireless_notation(self):
+        p = _make_patcher()
+        osc = _quick_box(p, "cycle~", ["440"])
+        s = _quick_box(p, "send~", ["audio"])
+        r = _quick_box(p, "receive~", ["audio"])
+        dac = _quick_box(p, "dac~")
+        p.add_connection(osc, 0, s, 0)
+        p.add_connection(r, 0, dac, 0)
+
+        result = p._analyze_signal_chains()
+        assert "wireless" in result.lower() or "receive~ audio" in result
+
+
+# ===========================================================================
+# TestControlPaths
+# ===========================================================================
+
+class TestControlPaths:
+    """Loadbang / notein / metro chains detected."""
+
+    def test_loadbang_chain(self):
+        p = _make_patcher()
+        lb = _quick_box(p, "loadbang")
+        msg = _quick_box(p, "message")
+        _quick_box(p, "print")
+        p.add_connection(lb, 0, msg, 0)
+
+        result = p._analyze_control_paths()
+        assert "## Control Flow" in result
+        assert "loadbang" in result
+
+    def test_metro_chain(self):
+        p = _make_patcher()
+        metro = _quick_box(p, "metro", ["500"])
+        counter = _quick_box(p, "counter", ["16"])
+        p.add_connection(metro, 0, counter, 0)
+
+        result = p._analyze_control_paths()
+        assert "metro" in result
+
+    def test_no_control_sources(self):
+        p = _make_patcher()
+        _quick_box(p, "cycle~", ["440"])
+
+        result = p._analyze_control_paths()
+        assert "## Control Flow" in result
+        assert "no notable" in result.lower()
+
+
+# ===========================================================================
+# TestHierarchy
+# ===========================================================================
+
+class TestHierarchy:
+    """Subpatcher indentation and object counts."""
+
+    def test_single_subpatcher(self):
+        p = _make_patcher()
+        sub = _quick_box(p, "patcher", ["mysubpatch"])
+        inner = Patcher(db=p.db, is_subpatcher=True)
+        inner.add_box("trigger", ["b", "i"])
+        inner.add_box("print")
+        sub._inner_patcher = inner
+
+        result = p._analyze_hierarchy()
+        assert isinstance(result, str)
+        assert "## Subpatchers" in result
+        assert "mysubpatch" in result
+        assert "2" in result  # 2 objects
+
+    def test_nested_subpatchers(self):
+        p = _make_patcher()
+        sub = _quick_box(p, "patcher", ["outer"])
+        inner = Patcher(db=p.db, is_subpatcher=True)
+        sub2 = inner.add_box("patcher", ["inner"])
+        inner2 = Patcher(db=p.db, is_subpatcher=True)
+        inner2.add_box("print")
+        sub2._inner_patcher = inner2
+        sub._inner_patcher = inner
+
+        result = p._analyze_hierarchy()
+        assert "outer" in result
+        assert "inner" in result
+
+    def test_no_subpatchers(self):
+        p = _make_patcher()
+        _quick_box(p, "cycle~", ["440"])
+
+        result = p._analyze_hierarchy()
+        assert "(none)" in result
+
+
+# ===========================================================================
+# TestParameters
+# ===========================================================================
+
+class TestParameters:
+    """UI control detection with varname labels."""
+
+    def test_detect_slider(self):
+        p = _make_patcher()
+        sl = _quick_box(p, "slider")
+        sl.extra_attrs["varname"] = "volume_slider"
+
+        result = p._analyze_parameters()
+        assert "## Parameters" in result
+        assert "volume_slider" in result
+        assert "slider" in result
+
+    def test_detect_toggle_no_varname(self):
+        p = _make_patcher()
+        _quick_box(p, "toggle")
+
+        result = p._analyze_parameters()
+        assert "toggle" in result
+
+    def test_no_params(self):
+        p = _make_patcher()
+        _quick_box(p, "cycle~", ["440"])
+
+        result = p._analyze_parameters()
+        assert "none" in result.lower()
+
+    def test_live_dial(self):
+        p = _make_patcher()
+        dial = _quick_box(p, "live.dial")
+        dial.extra_attrs["varname"] = "cutoff"
+
+        result = p._analyze_parameters()
+        assert "cutoff" in result
+
+
+# ===========================================================================
+# TestAnalyze
+# ===========================================================================
+
+class TestAnalyze:
+    """Full analyze() returns Markdown with all section headers."""
+
+    def test_all_headers_present(self):
+        p = _make_patcher()
+        osc = _quick_box(p, "cycle~", ["440"])
+        dac = _quick_box(p, "dac~")
+        p.add_connection(osc, 0, dac, 0)
+
+        result = p.analyze()
+        assert isinstance(result, str)
+        assert "# Patch Analysis" in result
+        assert "## Overview" in result
+        assert "## Object Inventory" in result
+        assert "## Sections" in result
+        assert "## Signal Flow" in result
+        assert "## Control Flow" in result
+        assert "## Subpatchers" in result
+        assert "## Parameters" in result
+
+
+# ===========================================================================
+# TestOnboard -- integration with real .maxpat file
+# ===========================================================================
+
+class TestOnboard:
+    """Integration: read_patch + analyze() on real .maxpat file."""
+
+    def test_performancepatchtest(self):
+        from src.maxpat.hooks import read_patch
+        patcher, _ = read_patch(
+            "patches/performancepatchtest/generated/performancepatchtest.maxpat"
+        )
+        result = patcher.analyze()
+        assert isinstance(result, str)
+        assert len(result) > 100
+        assert "## Overview" in result
+        assert "## Sections" in result
+        assert "## Signal Flow" in result
