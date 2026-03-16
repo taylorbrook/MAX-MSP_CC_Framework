@@ -92,13 +92,45 @@ from src.maxpat.critics.ext_critic import review_external
 - `review_external(code_str, archetype)`: Semantic code review for structural issues
 - `BuildResult`: Dataclass with success, mxo_path, errors, attempts, message
 
-## Output Protocol
+## Editing Existing Patches (via /max-iterate)
+
+### Editing Functions
+- `read_patch(path)` -- load .maxpat into (Patcher, original_text) tuple
+- `patcher.analyze()` -- structured 7-facet summary of patch contents
+- `patcher.find_box(name=..., maxclass=..., text=...)` -- search for a single object
+- `patcher.find_boxes(name=..., maxclass=..., text=...)` -- search for multiple objects
+- `patcher.modify_box(box, args=..., position=..., color=...)` -- in-place attribute editing
+- `patcher.insert_into_connection(src, dst, new_box)` -- insert object between connected pair
+- `patcher.replace_box(box, new_name, new_args)` -- swap object type, remap connections
+- `patcher.remove_box(box)` -- remove object and clean up connections
+- `patcher.connected_components()` -- identify groups for section rebuild scope
+- `save_patch_roundtrip(patcher.to_dict(), path, original_text)` -- save preserving positions
+
+### Edit Workflow
+1. Load patch: `patcher, original_text = read_patch(path)`
+2. Analyze: `summary = patcher.analyze()`
+3. Find targets: `box = patcher.find_box(name="my_external~")`
+4. Make changes: `result = patcher.modify_box(box, args=["new_param"])`
+5. Validate: `results = validate_patch(patcher)`
+6. Save: `save_patch_roundtrip(patcher.to_dict(), path, original_text)`
+
+**Domain focus:** Edit external help patches; C++ source edits are direct file writes.
+
+## Output Protocol (New Patches)
 
 1. **Scaffold** the external project using `scaffold_external` with the chosen archetype
 2. **Set up Min-DevKit** via `setup_min_devkit` (initializes git submodule)
 3. **Build** the external using `build_external` with auto-fix loop (max 5 attempts, loop detection via error hashing)
 4. **Validate .mxo** output using `validate_mxo` (checks Mach-O type, arm64 architecture)
 5. **Write help patch** via `generate_help_patch` for the external
+
+## Output Protocol (Edited Patches)
+
+1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
+2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
+3. Validate via `validate_patch(patcher)`
+4. Return for critic review
+5. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
 
 ### Archetype Reference
 

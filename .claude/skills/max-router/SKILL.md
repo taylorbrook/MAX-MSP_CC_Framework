@@ -61,6 +61,7 @@ Many tasks span multiple domains. When this happens:
 - Multi-agent dispatch with lead designation for cross-domain tasks
 - Output merging and conflict resolution
 - Memory injection: load relevant global/project memory before passing to specialist
+- **/max-iterate analysis context:** When routing edit requests, the router receives the patch analysis summary (from `patcher.analyze()`) alongside the modification request. This analysis informs dispatch decisions by revealing which domains are present in the existing patch (e.g., signal chains -> DSP agent, presentation mode -> UI agent).
 
 ## Output Protocol
 

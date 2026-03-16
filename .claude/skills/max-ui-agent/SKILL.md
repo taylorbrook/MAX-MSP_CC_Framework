@@ -109,7 +109,31 @@ Before any generation:
 - `inlet_align` (default True) -- adjust child x-position to straighten cables to parent inlets
 - `comment_gap` (default 10.0) -- horizontal offset for associated comment placement
 
-## Output Protocol
+## Editing Existing Patches (via /max-iterate)
+
+### Editing Functions
+- `read_patch(path)` -- load .maxpat into (Patcher, original_text) tuple
+- `patcher.analyze()` -- structured 7-facet summary of patch contents
+- `patcher.find_box(name=..., maxclass=..., text=...)` -- search for a single object
+- `patcher.find_boxes(name=..., maxclass=..., text=...)` -- search for multiple objects
+- `patcher.modify_box(box, args=..., position=..., color=...)` -- in-place attribute editing
+- `patcher.insert_into_connection(src, dst, new_box)` -- insert object between connected pair
+- `patcher.replace_box(box, new_name, new_args)` -- swap object type, remap connections
+- `patcher.remove_box(box)` -- remove object and clean up connections
+- `patcher.connected_components()` -- identify groups for section rebuild scope
+- `save_patch_roundtrip(patcher.to_dict(), path, original_text)` -- save preserving positions
+
+### Edit Workflow
+1. Load patch: `patcher, original_text = read_patch(path)`
+2. Analyze: `summary = patcher.analyze()`
+3. Find targets: `box = patcher.find_box(maxclass="dial")`
+4. Make changes: `result = patcher.modify_box(box, position=[100, 200])`
+5. Validate: `results = validate_patch(patcher)`
+6. Save: `save_patch_roundtrip(patcher.to_dict(), path, original_text)`
+
+**Domain focus:** Edit presentation mode layouts, control positioning, bpatcher configurations.
+
+## Output Protocol (New Patches)
 
 1. Receive box list from lead agent (or create UI-specific boxes)
 2. Design layout: determine grouping, spacing, and visual hierarchy
@@ -118,6 +142,14 @@ Before any generation:
 5. Add panel backgrounds and comment labels
 6. Return layout modifications for critic review
 7. Apply revisions if critic requests them
+
+## Output Protocol (Edited Patches)
+
+1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
+2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
+3. Validate via `validate_patch(patcher)`
+4. Return for critic review
+5. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
 
 ## When to Use
 

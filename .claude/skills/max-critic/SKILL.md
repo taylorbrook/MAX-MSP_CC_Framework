@@ -43,6 +43,10 @@ Summary:
 6. Loop continues until clean -- there is NO hard round limit
 7. Escalation triggers ONLY when the same identical finding persists across 5 consecutive revisions
 
+### Edited Patches (via /max-iterate)
+
+The critic loop applies equally to edited patches. After edits, `validate_patch()` runs, then `review_patch()` on `patcher.to_dict()`. The save path for edits is `save_patch_roundtrip()` (not `write_patch`). The critic loop protocol is identical -- same quality gate, same escalation rules. The only difference is the final save function used by the generator.
+
 ## Severity Handling
 
 | Severity | Action | Blocks Output? |

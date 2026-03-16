@@ -87,13 +87,45 @@ from src.maxpat.hooks import write_patch
 - `validate_rnbo_patch(patch_dict, target)`: 3-layer validation on the **inner RNBO patcher** (not the full rnbo~ wrapper). Checks: rnbo-objects, rnbo-target, rnbo-contained
 - `RNBO_TARGET_CONSTRAINTS`: Per-target constraint definitions (plugin, web, cpp)
 
-## Output Protocol
+## Editing Existing Patches (via /max-iterate)
+
+### Editing Functions
+- `read_patch(path)` -- load .maxpat into (Patcher, original_text) tuple
+- `patcher.analyze()` -- structured 7-facet summary of patch contents
+- `patcher.find_box(name=..., maxclass=..., text=...)` -- search for a single object
+- `patcher.find_boxes(name=..., maxclass=..., text=...)` -- search for multiple objects
+- `patcher.modify_box(box, args=..., position=..., color=...)` -- in-place attribute editing
+- `patcher.insert_into_connection(src, dst, new_box)` -- insert object between connected pair
+- `patcher.replace_box(box, new_name, new_args)` -- swap object type, remap connections
+- `patcher.remove_box(box)` -- remove object and clean up connections
+- `patcher.connected_components()` -- identify groups for section rebuild scope
+- `save_patch_roundtrip(patcher.to_dict(), path, original_text)` -- save preserving positions
+
+### Edit Workflow
+1. Load patch: `patcher, original_text = read_patch(path)`
+2. Analyze: `summary = patcher.analyze()`
+3. Find targets: `box = patcher.find_box(name="rnbo~")`
+4. Make changes: `result = patcher.modify_box(box, args=["mypatch"])`
+5. Validate: `results = validate_patch(patcher)`
+6. Save: `save_patch_roundtrip(patcher.to_dict(), path, original_text)`
+
+**Domain focus:** Edit RNBO patcher contents, param objects, export-compatible structures.
+
+## Output Protocol (New Patches)
 
 1. **Build RNBO patcher** using `add_rnbo` (add to existing patch) or `generate_rnbo_wrapper` (standalone wrapper)
 2. **Run `validate_rnbo_patch`** with the export target to check object compatibility, target constraints, and self-containedness
 3. **Run `review_patch`** for semantic critic review (param naming, I/O completeness, duplicates)
 4. **Fix any blockers** found by validation or critic
 5. **Generate wrapper .maxpat** via `write_patch` for the final output
+
+## Output Protocol (Edited Patches)
+
+1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
+2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
+3. Validate via `validate_patch(patcher)`
+4. Return for critic review
+5. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
 
 ### Export Target Reference
 

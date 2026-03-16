@@ -37,6 +37,7 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 
 ### Project Creation
 - Create new project with `create_project(name, base_dir)` which scaffolds the full directory structure
+- `create_project()` also creates an empty .maxpat file at `patches/{name}/generated/{name}.maxpat` with canvas background color -- user can open in MAX immediately
 - Start conversational kickoff: ask clarifying questions about audio/MIDI requirements, signal flow, UI needs
 - Write answers to project's `context.md`
 - See `references/project-structure.md` for standard directory layout
