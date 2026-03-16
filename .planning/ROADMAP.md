@@ -162,8 +162,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 14-01-PLAN.md -- Search methods (find_box, find_boxes) with alias resolution and recursive subpatcher search, plus read_patch() convenience function
-- [ ] 14-02-PLAN.md -- Mutation methods (remove_box, remove_connection), bounds checking and duplicate prevention in add_connection, mutation-safe round-trip tests
+- [x] 14-01-PLAN.md -- Search methods (find_box, find_boxes) with alias resolution and recursive subpatcher search, plus read_patch() convenience function
+- [x] 14-02-PLAN.md -- Mutation methods (remove_box, remove_connection), bounds checking and duplicate prevention in add_connection, mutation-safe round-trip tests
 
 ### Phase 15: Intelligent Editing
 **Goal**: Users can make sophisticated patch edits -- modify attributes in-place, insert objects into signal chains, swap objects, trace signal paths, and get smart auto-positioning
@@ -175,7 +175,12 @@ Plans:
   3. User can replace an object with a different one -- new object placed at same position, compatible connections remapped, incompatible connections listed in return value
   4. User can query the patch graph -- upstream/downstream traversal from any object, signal path tracing, connected component detection, with signal and control graphs separated
   5. New objects added near their connection context are auto-positioned intelligently -- below a source, above a target, between both, or in the nearest empty space
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 15-01-PLAN.md -- EditResult dataclass, modify_box() in-place attribute editing, replace_box() object swap
+- [ ] 15-02-PLAN.md -- Auto-positioning helpers (collision detection, grid snap) and insert_into_connection()
+- [ ] 15-03-PLAN.md -- Graph queries: downstream, upstream, signal_path, connected_components with subpatcher traversal
 
 ### Phase 16: Patch Analysis
 **Goal**: The framework can analyze any .maxpat file and produce a structured, human-readable summary of what the patch does -- enabling /max-onboard for existing patches
@@ -233,12 +238,12 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 11. Layout Refinements | v1.1 | 3/3 | Complete | 2026-03-13 |
 | 12. Pipeline Integration & Agent Updates | v1.1 | 2/2 | Complete | 2026-03-14 |
 | 13. Round-Trip Foundation | v2.0 | 3/3 | Complete | 2026-03-16 |
-| 14. Search and Mutation Primitives | 2/2 | Complete    | 2026-03-16 | - |
-| 15. Intelligent Editing | v2.0 | 0/0 | Not started | - |
+| 14. Search and Mutation Primitives | v2.0 | 2/2 | Complete | 2026-03-16 |
+| 15. Intelligent Editing | v2.0 | 0/3 | Not started | - |
 | 16. Patch Analysis | v2.0 | 0/0 | Not started | - |
 | 17. Agent and Command Migration | v2.0 | 0/0 | Not started | - |
 | 18. v1.x Cleanup | v2.0 | 0/0 | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-16 -- Phase 14 plans created (2 plans in 2 waves)*
+*Last updated: 2026-03-16 -- Phase 15 plans created (3 plans in 3 waves)*
