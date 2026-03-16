@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
-status: completed
-stopped_at: Phase 17 plans created (3 plans in 1 wave)
-last_updated: "2026-03-16T21:55:46.467Z"
-last_activity: 2026-03-16 -- Plan 16-01 complete (Patcher.analyze() with all 7 facets)
+status: executing
+stopped_at: Completed 17-01-PLAN.md
+last_updated: "2026-03-16T22:01:53.397Z"
+last_activity: 2026-03-16 -- Plan 17-01 complete (validation warning + empty maxpat creation)
 progress:
   total_phases: 11
   completed_phases: 9
   total_plans: 25
-  completed_plans: 22
-  percent: 96
+  completed_plans: 23
+  percent: 92
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v2.0 Phase 16 complete -- Patch Analysis
+**Current focus:** v2.0 Phase 17 in progress -- Agent & Command Migration
 
 ## Current Position
 
-Phase: 16 of 18 (Patch Analysis)
-Plan: 1 of 1
-Status: Complete
-Last activity: 2026-03-16 -- Plan 16-01 complete (Patcher.analyze() with all 7 facets)
+Phase: 17 of 18 (Agent & Command Migration)
+Plan: 1 of 3
+Status: In Progress
+Last activity: 2026-03-16 -- Plan 17-01 complete (validation warning + empty maxpat creation)
 
-Progress: [██████████] 96%
+Progress: [█████████░] 92%
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Progress: [██████████] 96%
 *Updated after each plan completion*
 | Phase 15 P03 | 5min | 2 tasks | 2 files |
 | Phase 16 P01 | 6min | 2 tasks | 2 files |
+| Phase 17 P01 | 2min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -89,6 +90,8 @@ Recent decisions for v2.0:
 - [Phase 16-01]: Section naming uses priority-based selection when multiple signatures found
 - [Phase 16-01]: Signal chain wireless connections shown as "...-> receive~ name (wireless)" notation
 - [Phase 16-01]: Control flow traces only notable origins (loadbang, metro, MIDI) -- not all control paths
+- [Phase 17]: [17-01]: Unknown objects downgraded from error to warning so third-party patches pass validation
+- [Phase 17]: [17-01]: Empty .maxpat uses Patcher + set_canvas_background for styled initial patch
 
 ### Pending Todos
 
@@ -103,6 +106,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T21:55:46.465Z
-Stopped at: Phase 17 plans created (3 plans in 1 wave)
-Resume file: .planning/phases/17-agent-and-command-migration/17-01-PLAN.md
+Last session: 2026-03-16T22:01:53.395Z
+Stopped at: Completed 17-01-PLAN.md
+Resume file: None

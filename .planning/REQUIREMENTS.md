@@ -35,10 +35,10 @@ Requirements for v2.0 Direct .maxpat Editing milestone. Each maps to roadmap pha
 
 - [ ] **MG-01**: /max-build generates patches by directly creating and writing .maxpat files — no generate.py intermediary
 - [ ] **MG-02**: /max-iterate reads existing .maxpat, understands its structure, makes surgical edits, and writes back — no generate.py modification
-- [ ] **MG-03**: /max-new creates project structure with direct .maxpat workflow — no generate.py scaffolding
+- [x] **MG-03**: /max-new creates project structure with direct .maxpat workflow — no generate.py scaffolding
 - [ ] **MG-04**: /max-onboard implemented as new slash command for onboarding existing patches
 - [ ] **MG-05**: All 6 specialist agent SKILL.md files updated to reference direct editing API instead of generate.py workflow
-- [ ] **MG-06**: Validation hooks adapted for direct editing — validate edits on demand, not on load; no DB rejection of unknown objects
+- [x] **MG-06**: Validation hooks adapted for direct editing — validate edits on demand, not on load; no DB rejection of unknown objects
 
 ### v1.x Cleanup
 
@@ -102,10 +102,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AN-03 | Phase 16 | Complete |
 | MG-01 | Phase 17 | Pending |
 | MG-02 | Phase 17 | Pending |
-| MG-03 | Phase 17 | Pending |
+| MG-03 | Phase 17 | Complete |
 | MG-04 | Phase 17 | Pending |
 | MG-05 | Phase 17 | Pending |
-| MG-06 | Phase 17 | Pending |
+| MG-06 | Phase 17 | Complete |
 | CL-01 | Phase 18 | Pending |
 | CL-02 | Phase 18 | Pending |
 | CL-03 | Phase 18 | Pending |
