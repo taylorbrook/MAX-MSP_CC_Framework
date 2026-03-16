@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed 17-03-PLAN.md (Phase 17 complete -- all 3 plans done)
-last_updated: "2026-03-16T22:02:07Z"
+stopped_at: Completed 17-03-PLAN.md
+last_updated: "2026-03-16T22:04:04.200Z"
 last_activity: 2026-03-16 -- Plan 17-03 complete (agent SKILL.md dual workflow documentation)
 progress:
   total_phases: 11
@@ -52,7 +52,7 @@ Progress: [██████████] 100%
 | Phase 16 P01 | 6min | 2 tasks | 2 files |
 | Phase 17 P01 | 2min | 2 tasks | 4 files |
 | Phase 17 P02 | 3min | 2 tasks | 5 files |
-| Phase 17 P02 | 3min | 2 tasks | 5 files |
+| Phase 17 P03 | 3min | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -97,6 +97,9 @@ Recent decisions for v2.0:
 - [Phase 17]: [17-02]: /max-build checks for existing .maxpat, offers overwrite or redirect to /max-iterate
 - [Phase 17]: [17-02]: /max-iterate uses transparent strategy selection (surgical vs section rebuild)
 - [Phase 17]: [17-02]: /max-onboard offers next steps after analysis (create project, iterate, or review)
+- [Phase 17]: [17-03]: Editing section placed after Aesthetic Capabilities, before Output Protocol
+- [Phase 17]: [17-03]: Output Protocol split into (New Patches) and (Edited Patches) subsections
+- [Phase 17]: [17-03]: Domain focus notes use distinct examples per agent (route, cycle~, rnbo~, etc.)
 
 ### Pending Todos
 
@@ -111,6 +114,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T22:03:28.055Z
-Stopped at: Completed 17-02-PLAN.md
+Last session: 2026-03-16T22:04:04.197Z
+Stopped at: Completed 17-03-PLAN.md
 Resume file: None
