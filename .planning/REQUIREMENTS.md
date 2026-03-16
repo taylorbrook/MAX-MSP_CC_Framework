@@ -9,8 +9,8 @@ Requirements for v2.0 Direct .maxpat Editing milestone. Each maps to roadmap pha
 
 ### Read-Write Foundation
 
-- [ ] **RW-01**: Patcher can load any .maxpat file into fully populated Patcher/Box/Line objects — all maxclass types, recursive subpatchers, bpatcher attrs, unknown objects handled gracefully
-- [ ] **RW-02**: Loaded Patcher writes back to .maxpat with minimal diff — unchanged portions byte-for-byte identical, key ordering preserved, numeric precision maintained
+- [x] **RW-01**: Patcher can load any .maxpat file into fully populated Patcher/Box/Line objects — all maxclass types, recursive subpatchers, bpatcher attrs, unknown objects handled gracefully
+- [x] **RW-02**: Loaded Patcher writes back to .maxpat with minimal diff — unchanged portions byte-for-byte identical, key ordering preserved, numeric precision maintained
 - [ ] **RW-03**: User can add objects to a loaded patch with unique IDs, correct I/O counts, and DB validation — existing objects undisturbed
 - [ ] **RW-04**: User can remove objects from a loaded patch — box and all connected patchlines removed cleanly
 - [ ] **RW-05**: User can add and remove connections between existing objects with inlet/outlet bounds checking
@@ -85,8 +85,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| RW-01 | Phase 13 | Pending |
-| RW-02 | Phase 13 | Pending |
+| RW-01 | Phase 13 | Complete |
+| RW-02 | Phase 13 | Complete |
 | RW-06 | Phase 13 | Complete |
 | RW-03 | Phase 14 | Pending |
 | RW-04 | Phase 14 | Pending |
