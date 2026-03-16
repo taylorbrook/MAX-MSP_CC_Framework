@@ -7,7 +7,7 @@ wave_0_complete: false
 created: 2026-03-15
 ---
 
-# Phase 13 — Validation Strategy
+# Phase 13 -- Validation Strategy
 
 > Per-phase validation contract for feedback sampling during execution.
 
@@ -18,7 +18,7 @@ created: 2026-03-15
 | Property | Value |
 |----------|-------|
 | **Framework** | pytest 9.0.2 |
-| **Config file** | none — pytest auto-discovers tests/ |
+| **Config file** | none -- pytest auto-discovers tests/ |
 | **Quick run command** | `python3 -m pytest tests/test_round_trip.py -x -q` |
 | **Full suite command** | `python3 -m pytest tests/ -x -q` |
 | **Estimated runtime** | ~5 seconds |
@@ -38,26 +38,28 @@ created: 2026-03-15
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 13-01-01 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestFromDict -x` | ❌ W0 | ⬜ pending |
-| 13-01-02 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestSubpatcherLoading -x` | ❌ W0 | ⬜ pending |
-| 13-01-03 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestBpatcherLoading -x` | ❌ W0 | ⬜ pending |
-| 13-01-04 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestUnknownObjects -x` | ❌ W0 | ⬜ pending |
-| 13-02-01 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestRoundTripIdentity -x` | ❌ W0 | ⬜ pending |
-| 13-02-02 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestKeyOrdering -x` | ❌ W0 | ⬜ pending |
-| 13-02-03 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestNumericPrecision -x` | ❌ W0 | ⬜ pending |
-| 13-03-01 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestPatchlineAttrs -x` | ❌ W0 | ⬜ pending |
-| 13-03-02 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestUserState -x` | ❌ W0 | ⬜ pending |
-| 13-03-03 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestExtraAttrs -x` | ❌ W0 | ⬜ pending |
+| 13-01-01 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestFromDict -x` | W0 | pending |
+| 13-01-02 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestSubpatcherLoading -x` | W0 | pending |
+| 13-01-03 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestBpatcherLoading -x` | W0 | pending |
+| 13-01-04 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestUnknownObjects -x` | W0 | pending |
+| 13-01-05 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestStructuralErrors -x` | W0 | pending |
+| 13-02-01 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestRoundTripIdentity -x` | W0 | pending |
+| 13-02-02 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestKeyOrdering -x` | W0 | pending |
+| 13-02-03 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestNumericPrecision -x` | W0 | pending |
+| 13-03-01 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestPatchlineAttrs -x` | W0 | pending |
+| 13-03-02 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestUserState -x` | W0 | pending |
+| 13-03-03 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestExtraAttrs -x` | W0 | pending |
+| 13-03-04 | 03 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestFileLevelRoundTrip -x` | W0 | pending |
 
-*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
+*Status: pending / green / red / flaky*
 
 ---
 
 ## Wave 0 Requirements
 
-- [ ] `tests/test_round_trip.py` — stubs for RW-01, RW-02, RW-06
-- [ ] `tests/fixtures/` — copy 3 MAX-saved .maxpat files (comp-band.maxpat, FDNVerb.maxpat, granularsynthtest.maxpat)
-- [ ] `tests/fixtures/` — synthetic .maxpat with colored patchlines for RW-06 color test
+- [ ] `tests/test_round_trip.py` -- stubs for RW-01, RW-02, RW-06 (including TestStructuralErrors and TestFileLevelRoundTrip)
+- [ ] `tests/fixtures/colored_patchlines.maxpat` -- synthetic .maxpat with colored patchlines for RW-06 color test
+- [ ] Project .maxpat files read directly from `patches/` directory via `_load_project_patch()` helper -- no fixture copy needed (MAX-saved files like comp-band.maxpat, FDNVerb.maxpat, granularsynthtest.maxpat are tested in-place)
 
 *Existing pytest infrastructure covers framework needs.*
 
