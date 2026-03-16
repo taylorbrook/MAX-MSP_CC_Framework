@@ -204,7 +204,6 @@ class TestKeyOrdering:
             f"to {result_keys.index('lines')}"
         )
 
-    @pytest.mark.xfail(reason="Key ordering not yet fully preserved -- Plan 02")
     def test_all_patcher_keys_in_order(self):
         """All patcher keys maintain exact original order."""
         original = {

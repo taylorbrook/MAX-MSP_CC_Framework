@@ -47,6 +47,9 @@ class Patchline:
         order: int = 0,
         hidden: bool = False,
         midpoints: list[float] | None = None,
+        color: list | None = None,
+        extra_attrs: dict | None = None,
+        _raw: dict | None = None,
     ):
         self.source_id = source_id
         self.source_outlet = source_outlet
@@ -55,19 +58,46 @@ class Patchline:
         self.order = order
         self.hidden = hidden
         self.midpoints = midpoints
+        self.color = color
+        self.extra_attrs = extra_attrs if extra_attrs is not None else {}
+        self._raw = _raw
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialize to .maxpat patchline JSON structure."""
-        d: dict[str, Any] = {
-            "source": [self.source_id, self.source_outlet],
-            "destination": [self.dest_id, self.dest_inlet],
-            "order": self.order,
-        }
-        if self.hidden:
-            d["hidden"] = 1
-        if self.midpoints:
-            d["midpoints"] = list(self.midpoints)
-        return {"patchline": d}
+        """Serialize to .maxpat patchline JSON structure.
+
+        Uses dual-path serialization:
+        - Round-trip path (self._raw exists): start from original dict, overlay
+          mutable fields for lossless preservation of unknown keys and key order.
+        - Creation path (no _raw): build dict from scratch for new connections.
+        """
+        if self._raw is not None:
+            # Round-trip path: preserve original dict structure
+            d = dict(self._raw)
+            d["source"] = [self.source_id, self.source_outlet]
+            d["destination"] = [self.dest_id, self.dest_inlet]
+            # Update color if changed from what was in _raw
+            if self.color is not None:
+                d["color"] = self.color
+            elif "color" in d and self.color is None:
+                del d["color"]
+            return {"patchline": d}
+        else:
+            # Creation path: build from scratch
+            d: dict[str, Any] = {
+                "source": [self.source_id, self.source_outlet],
+                "destination": [self.dest_id, self.dest_inlet],
+            }
+            # Only include "order" if non-zero (MAX omits order=0)
+            if self.order != 0:
+                d["order"] = self.order
+            if self.hidden:
+                d["hidden"] = 1
+            if self.midpoints:
+                d["midpoints"] = list(self.midpoints)
+            if self.color is not None:
+                d["color"] = self.color
+            d.update(self.extra_attrs)
+            return {"patchline": d}
 
 
 class Box:
@@ -1024,7 +1054,19 @@ class Patcher:
         Returns:
             Reconstructed Patcher instance.
         """
+        # Fail fast on structural errors (per CONTEXT.md locked decision)
+        if "patcher" not in data and "boxes" not in data:
+            raise ValueError(
+                "Invalid .maxpat structure: dict must contain a 'patcher' key "
+                "(or be a patcher dict itself with 'boxes')"
+            )
         patcher_data = data.get("patcher", data)
+        boxes_raw = patcher_data.get("boxes", [])
+        if not isinstance(boxes_raw, list):
+            raise TypeError(
+                f"Invalid .maxpat structure: 'boxes' must be a list, "
+                f"got {type(boxes_raw).__name__}"
+            )
 
         p = cls.__new__(cls)
         p.db = db if db is not None else ObjectDatabase()
@@ -1032,15 +1074,18 @@ class Patcher:
         p.lines = []
         p._is_subpatcher = False
 
-        # Rebuild props from all non-boxes/lines keys
+        # Rebuild props preserving key order (include boxes/lines placeholders)
         p.props = {}
         for key, val in patcher_data.items():
-            if key not in ("boxes", "lines"):
+            if key in ("boxes", "lines"):
+                # Store placeholder to preserve key position
+                p.props[key] = []
+            else:
                 p.props[key] = copy.deepcopy(val)
 
         # Rebuild boxes
         max_id_num = 0
-        for box_entry in patcher_data.get("boxes", []):
+        for box_entry in boxes_raw:
             box_data = box_entry.get("box", {})
 
             box = Box.__new__(Box)
@@ -1102,11 +1147,13 @@ class Patcher:
             except (ValueError, IndexError):
                 pass
 
-        # Rebuild lines
+        # Rebuild lines with color, extra attrs, and raw dict preservation
+        _handled_line_keys = {"source", "destination", "order", "hidden", "midpoints", "color"}
         for line_entry in patcher_data.get("lines", []):
             line_data = line_entry.get("patchline", {})
             src = line_data.get("source", ["", 0])
             dst = line_data.get("destination", ["", 0])
+            pl_extra = {k: v for k, v in line_data.items() if k not in _handled_line_keys}
             pl = Patchline(
                 source_id=src[0],
                 source_outlet=src[1],
@@ -1115,6 +1162,9 @@ class Patcher:
                 order=line_data.get("order", 0),
                 hidden=bool(line_data.get("hidden", 0)),
                 midpoints=line_data.get("midpoints"),
+                color=line_data.get("color"),
+                extra_attrs=pl_extra,
+                _raw=dict(line_data),
             )
             p.lines.append(pl)
 
@@ -1124,10 +1174,23 @@ class Patcher:
     def to_dict(self) -> dict[str, Any]:
         """Serialize to complete .maxpat JSON structure.
 
+        Preserves key ordering from the original file when round-tripping.
+        boxes/lines placeholders in props mark their original position.
+
         Returns:
             {"patcher": {...}} dict matching the .maxpat format.
         """
-        props = copy.deepcopy(self.props)
-        props["boxes"] = [box.to_dict() for box in self.boxes]
-        props["lines"] = [line.to_dict() for line in self.lines]
-        return {"patcher": props}
+        result: dict[str, Any] = {}
+        for key, val in self.props.items():
+            if key == "boxes":
+                result["boxes"] = [box.to_dict() for box in self.boxes]
+            elif key == "lines":
+                result["lines"] = [line.to_dict() for line in self.lines]
+            else:
+                result[key] = copy.deepcopy(val)
+        # If boxes/lines were not in props (new patcher), append them
+        if "boxes" not in result:
+            result["boxes"] = [box.to_dict() for box in self.boxes]
+        if "lines" not in result:
+            result["lines"] = [line.to_dict() for line in self.lines]
+        return {"patcher": result}

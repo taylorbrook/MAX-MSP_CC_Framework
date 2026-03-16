@@ -256,14 +256,23 @@ class TestPatchlineSerialization:
         assert pld["patchline"]["source"] == [b1.id, 0]
         assert pld["patchline"]["destination"] == [b2.id, 0]
 
-    def test_patchline_has_order(self):
-        """Patchline includes order field."""
+    def test_patchline_omits_order_when_zero(self):
+        """Patchline omits order field when order=0 (matches MAX output)."""
         p = Patcher()
         b1 = p.add_box("cycle~")
         b2 = p.add_box("ezdac~")
         pl = p.add_connection(b1, 0, b2, 0)
         pld = pl.to_dict()
-        assert "order" in pld["patchline"]
+        assert "order" not in pld["patchline"]
+
+    def test_patchline_includes_nonzero_order(self):
+        """Patchline includes order field when order is non-zero."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+        b2 = p.add_box("ezdac~")
+        pl = p.add_connection(b1, 0, b2, 0, order=1)
+        pld = pl.to_dict()
+        assert pld["patchline"]["order"] == 1
 
     def test_patchline_hidden(self):
         """Hidden patchline includes hidden field."""
