@@ -761,3 +761,153 @@ class TestFindBoxes:
         assert len(results) == 2
         assert b1 in results
         assert b2 in results
+
+
+class TestRemoveBox:
+    """remove_box() removes a box and cleans up connected patchlines."""
+
+    def test_remove_box_with_connections(self):
+        """Remove a box with connections -- verify box gone AND connected lines gone."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("*~", args=["0.5"])
+        b3 = p.add_box("ezdac~")
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b2, 0, b3, 0)
+        assert len(p.boxes) == 3
+        assert len(p.lines) == 2
+
+        p.remove_box(b2)
+
+        assert len(p.boxes) == 2
+        assert b2 not in p.boxes
+        assert len(p.lines) == 0  # Both connections involved b2
+
+    def test_remove_box_no_connections(self):
+        """Remove a box with no connections -- verify only box gone."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+        b2 = p.add_box("ezdac~")
+        assert len(p.boxes) == 2
+        assert len(p.lines) == 0
+
+        p.remove_box(b1)
+
+        assert len(p.boxes) == 1
+        assert b1 not in p.boxes
+        assert b2 in p.boxes
+
+    def test_remove_box_as_source(self):
+        """Remove a box that is a connection source -- verify source-side lines removed."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b1, 0, b2, 1)
+
+        p.remove_box(b1)
+
+        assert b1 not in p.boxes
+        assert len(p.lines) == 0
+
+    def test_remove_box_as_destination(self):
+        """Remove a box that is a connection destination -- verify dest-side lines removed."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("*~", args=["0.5"])
+        b3 = p.add_box("ezdac~")
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b1, 0, b3, 0)
+
+        p.remove_box(b2)
+
+        assert b2 not in p.boxes
+        assert len(p.lines) == 1  # Only b1->b3 remains
+        assert p.lines[0].dest_id == b3.id
+
+    def test_remove_box_not_in_patcher(self):
+        """Remove a box not in patcher -- verify ValueError."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+
+        p2 = Patcher()
+        b_other = p2.add_box("noise~")
+
+        with pytest.raises(ValueError, match="not found"):
+            p.remove_box(b_other)
+
+    def test_remove_box_preserves_other_boxes_and_connections(self):
+        """After removal, other boxes and their connections are untouched."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("*~", args=["0.5"])
+        b3 = p.add_box("ezdac~")
+        b4 = p.add_box("noise~")
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b2, 0, b3, 0)
+        p.add_connection(b4, 0, b3, 1)
+
+        p.remove_box(b2)
+
+        assert b1 in p.boxes
+        assert b3 in p.boxes
+        assert b4 in p.boxes
+        assert len(p.lines) == 1  # Only b4->b3 remains
+        assert p.lines[0].source_id == b4.id
+        assert p.lines[0].dest_id == b3.id
+
+
+class TestRemoveConnection:
+    """remove_connection() removes a specific connection by identity fields."""
+
+    def test_remove_connection(self):
+        """Remove a specific connection -- verify line count decreases by 1."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b1, 0, b2, 1)
+        assert len(p.lines) == 2
+
+        p.remove_connection(b1, 0, b2, 0)
+
+        assert len(p.lines) == 1
+        assert p.lines[0].dest_inlet == 1
+
+    def test_remove_connection_multiple_same_boxes(self):
+        """Remove connection between boxes with multiple connections -- only specified one removed."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b1, 0, b2, 1)
+
+        p.remove_connection(b1, 0, b2, 1)
+
+        assert len(p.lines) == 1
+        remaining = p.lines[0]
+        assert remaining.source_id == b1.id
+        assert remaining.dest_inlet == 0
+
+    def test_remove_connection_not_found(self):
+        """Remove connection that doesn't exist -- verify ValueError."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+
+        with pytest.raises(ValueError, match="Connection not found"):
+            p.remove_connection(b1, 0, b2, 0)
+
+    def test_remove_connection_preserves_others(self):
+        """After removal, other connections are untouched."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("*~", args=["0.5"])
+        b3 = p.add_box("ezdac~")
+        pl1 = p.add_connection(b1, 0, b2, 0)
+        pl2 = p.add_connection(b2, 0, b3, 0)
+
+        p.remove_connection(b1, 0, b2, 0)
+
+        assert len(p.lines) == 1
+        assert p.lines[0] is pl2

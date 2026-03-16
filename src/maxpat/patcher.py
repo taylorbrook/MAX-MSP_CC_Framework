@@ -676,6 +676,60 @@ class Patcher:
         return pl
 
     # ------------------------------------------------------------------
+    # Mutation / removal
+    # ------------------------------------------------------------------
+
+    def remove_box(self, box: Box) -> None:
+        """Remove a box and all patchlines connected to it.
+
+        Args:
+            box: The box to remove.
+
+        Raises:
+            ValueError: If the box is not in this patcher.
+        """
+        if box not in self.boxes:
+            raise ValueError(
+                f"Box {box.id} not found in this patcher"
+            )
+        # Filter out all patchlines referencing this box (build new list)
+        self.lines = [
+            pl for pl in self.lines
+            if pl.source_id != box.id and pl.dest_id != box.id
+        ]
+        self.boxes.remove(box)
+
+    def remove_connection(
+        self,
+        src_box: Box,
+        src_outlet: int,
+        dst_box: Box,
+        dst_inlet: int,
+    ) -> None:
+        """Remove a specific connection between two boxes.
+
+        Args:
+            src_box: Source box.
+            src_outlet: Source outlet index.
+            dst_box: Destination box.
+            dst_inlet: Destination inlet index.
+
+        Raises:
+            ValueError: If no matching connection exists.
+        """
+        for i, pl in enumerate(self.lines):
+            if (pl.source_id == src_box.id
+                    and pl.source_outlet == src_outlet
+                    and pl.dest_id == dst_box.id
+                    and pl.dest_inlet == dst_inlet):
+                self.lines.pop(i)
+                return
+        raise ValueError(
+            f"Connection not found: {src_box.id}[{src_outlet}] -> "
+            f"{dst_box.id}[{dst_inlet}]"
+        )
+
+    # ------------------------------------------------------------------
     # Search / query
     # ------------------------------------------------------------------
 
