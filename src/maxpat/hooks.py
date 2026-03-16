@@ -81,6 +81,34 @@ def save_patch_roundtrip(
     path.write_text(output)
 
 
+def read_patch(path: "str | Path") -> tuple["Patcher", str]:
+    """Load a .maxpat file into a Patcher ready for querying and editing.
+
+    Returns (patcher, original_text) tuple. Pass original_text to
+    save_patch_roundtrip() for indent-preserving saves.
+
+    Args:
+        path: Path to the .maxpat file (str or pathlib.Path).
+
+    Returns:
+        (patcher, original_text) tuple.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        json.JSONDecodeError: If the file is not valid JSON.
+        ValueError: If the JSON structure is not a valid .maxpat
+            (missing 'patcher' key).
+    """
+    path = Path(path)
+    if not path.exists():
+        raise FileNotFoundError(f"File not found: {path}")
+    original_text = path.read_text()
+    data = json.loads(original_text)
+    from src.maxpat.patcher import Patcher
+    patcher = Patcher.from_dict(data)
+    return (patcher, original_text)
+
+
 class PatchGenerationError(Exception):
     """Raised when unfixable structural errors prevent patch generation."""
 

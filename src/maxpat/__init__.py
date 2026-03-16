@@ -27,6 +27,7 @@ from src.maxpat.hooks import (
     validate_code_file,
     detect_indent,
     save_patch_roundtrip,
+    read_patch,
     PatchGenerationError,
     PatchValidationError,
 )
@@ -150,6 +151,7 @@ __all__ = [
     "validate_code_file",
     "detect_indent",
     "save_patch_roundtrip",
+    "read_patch",
     # Code generation
     "build_genexpr",
     "parse_genexpr_io",
