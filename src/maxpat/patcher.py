@@ -200,6 +200,9 @@ class Box:
         self._saved_object_attributes: dict[str, Any] | None = None
         self._bpatcher_attrs: dict[str, Any] | None = None
 
+        # Raw dict for lossless round-trip (None for newly created boxes)
+        self._raw: dict | None = None
+
     @staticmethod
     def _derive_outlet_types(obj_data: dict) -> list[str]:
         """Derive outlettype array from object database outlets."""
@@ -218,57 +221,99 @@ class Box:
     def to_dict(self) -> dict[str, Any]:
         """Serialize to .maxpat box JSON structure.
 
+        Uses dual-path serialization:
+        - Round-trip path (self._raw exists): start from original dict, overlay
+          mutable fields for lossless preservation of unknown keys and key order.
+        - Creation path (no _raw): build dict from scratch for new boxes.
+
         Returns:
             {"box": {...}} dict matching the .maxpat format.
         """
-        d: dict[str, Any] = {
-            "maxclass": self.maxclass,
-            "id": self.id,
-            "numinlets": self.numinlets,
-            "numoutlets": self.numoutlets,
-            "outlettype": self.outlettype,
-            "patching_rect": self.patching_rect,
-        }
+        if self._raw is not None:
+            # === ROUND-TRIP PATH ===
+            # Start from original dict, overlay any mutations
+            d = dict(self._raw)
 
-        # Non-UI objects: include text and font
-        if self.maxclass == "newobj":
-            d["text"] = self.text
-            d["fontname"] = self.fontname
-            d["fontsize"] = self.fontsize
-        elif self.maxclass in ("comment", "message"):
-            # Text-based UI objects
-            d["text"] = self.text
-            d["fontname"] = self.fontname
-            d["fontsize"] = self.fontsize
-        elif self.maxclass == "bpatcher":
-            # bpatcher may or may not have text
-            pass
+            # Overlay mutable fields that Python code may have changed
+            d["patching_rect"] = self.patching_rect
+            d["numinlets"] = self.numinlets
+            d["numoutlets"] = self.numoutlets
+            if "outlettype" in self._raw:
+                d["outlettype"] = self.outlettype
+
+            # Presentation mode
+            if self.presentation:
+                d["presentation"] = 1
+                if self.presentation_rect is not None:
+                    d["presentation_rect"] = self.presentation_rect
+            elif "presentation" in d:
+                del d["presentation"]
+                d.pop("presentation_rect", None)
+
+            # Inner patcher (subpatcher/bpatcher embed)
+            if self._inner_patcher is not None:
+                d["patcher"] = self._inner_patcher.to_dict()["patcher"]
+            elif "patcher" in self._raw:
+                # Inner patcher was removed -- don't emit stale copy
+                d.pop("patcher", None)
+
+            # saved_object_attributes
+            if self._saved_object_attributes is not None:
+                d["saved_object_attributes"] = self._saved_object_attributes
+            elif "saved_object_attributes" not in self._raw:
+                d.pop("saved_object_attributes", None)
+
+            return {"box": d}
         else:
-            # Fixed-size UI objects get parameter_enable
-            d["parameter_enable"] = 0
+            # === CREATION PATH (existing logic) ===
+            d: dict[str, Any] = {
+                "maxclass": self.maxclass,
+                "id": self.id,
+                "numinlets": self.numinlets,
+                "numoutlets": self.numoutlets,
+                "outlettype": self.outlettype,
+                "patching_rect": self.patching_rect,
+            }
 
-        # bpatcher-specific attributes
-        if self._bpatcher_attrs:
-            d.update(self._bpatcher_attrs)
+            # Non-UI objects: include text and font
+            if self.maxclass == "newobj":
+                d["text"] = self.text
+                d["fontname"] = self.fontname
+                d["fontsize"] = self.fontsize
+            elif self.maxclass in ("comment", "message"):
+                # Text-based UI objects
+                d["text"] = self.text
+                d["fontname"] = self.fontname
+                d["fontsize"] = self.fontsize
+            elif self.maxclass == "bpatcher":
+                # bpatcher may or may not have text
+                pass
+            else:
+                # Fixed-size UI objects get parameter_enable
+                d["parameter_enable"] = 0
 
-        # Embedded patcher (subpatcher or embedded bpatcher)
-        if self._inner_patcher is not None:
-            d["patcher"] = self._inner_patcher.to_dict()["patcher"]
+            # bpatcher-specific attributes
+            if self._bpatcher_attrs:
+                d.update(self._bpatcher_attrs)
 
-        # Saved object attributes (for subpatchers)
-        if self._saved_object_attributes is not None:
-            d["saved_object_attributes"] = self._saved_object_attributes
+            # Embedded patcher (subpatcher or embedded bpatcher)
+            if self._inner_patcher is not None:
+                d["patcher"] = self._inner_patcher.to_dict()["patcher"]
 
-        # Presentation mode
-        if self.presentation:
-            d["presentation"] = 1
-            if self.presentation_rect is not None:
-                d["presentation_rect"] = self.presentation_rect
+            # Saved object attributes (for subpatchers)
+            if self._saved_object_attributes is not None:
+                d["saved_object_attributes"] = self._saved_object_attributes
 
-        # Extra attributes
-        d.update(self.extra_attrs)
+            # Presentation mode
+            if self.presentation:
+                d["presentation"] = 1
+                if self.presentation_rect is not None:
+                    d["presentation_rect"] = self.presentation_rect
 
-        return {"box": d}
+            # Extra attributes
+            d.update(self.extra_attrs)
+
+            return {"box": d}
 
 
 class Patcher:
@@ -495,6 +540,7 @@ class Patcher:
         panel._inner_patcher = None
         panel._saved_object_attributes = None
         panel._bpatcher_attrs = None
+        panel._raw = None
 
         panel.extra_attrs = {
             "background": 1,
@@ -553,6 +599,7 @@ class Patcher:
         marker._inner_patcher = None
         marker._saved_object_attributes = None
         marker._bpatcher_attrs = None
+        marker._raw = None
 
         marker.extra_attrs = {
             "background": 1,
@@ -698,6 +745,7 @@ class Patcher:
             "tags": "",
         }
         parent_box._bpatcher_attrs = None
+        parent_box._raw = None
 
         self.boxes.append(parent_box)
         return (parent_box, inner)
@@ -753,6 +801,7 @@ class Patcher:
         bpatch_box.target_id = None
         bpatch_box.extra_attrs = {}
         bpatch_box._saved_object_attributes = None
+        bpatch_box._raw = None
 
         # bpatcher-specific attributes (from research Pattern 5)
         bpatcher_attrs: dict[str, Any] = {
@@ -846,6 +895,7 @@ class Patcher:
             in_box._inner_patcher = None
             in_box._saved_object_attributes = None
             in_box._bpatcher_attrs = None
+            in_box._raw = None
             inner.boxes.append(in_box)
             in_boxes.append(in_box)
 
@@ -873,6 +923,7 @@ class Patcher:
         codebox._inner_patcher = None
         codebox._saved_object_attributes = None
         codebox._bpatcher_attrs = None
+        codebox._raw = None
         inner.boxes.append(codebox)
 
         # Add out objects inside the inner patcher
@@ -897,6 +948,7 @@ class Patcher:
             out_box._inner_patcher = None
             out_box._saved_object_attributes = None
             out_box._bpatcher_attrs = None
+            out_box._raw = None
             inner.boxes.append(out_box)
             out_boxes.append(out_box)
 
@@ -930,6 +982,7 @@ class Patcher:
         parent_box._inner_patcher = inner
         parent_box._saved_object_attributes = None
         parent_box._bpatcher_attrs = None
+        parent_box._raw = None
 
         self.boxes.append(parent_box)
         return (parent_box, inner)
@@ -981,6 +1034,7 @@ class Patcher:
         box._inner_patcher = None
         box._saved_object_attributes = None
         box._bpatcher_attrs = None
+        box._raw = None
 
         self.boxes.append(box)
         return (box, code)
@@ -1035,6 +1089,7 @@ class Patcher:
         box._inner_patcher = None
         box._saved_object_attributes = None
         box._bpatcher_attrs = None
+        box._raw = None
 
         self.boxes.append(box)
         return (box, code)
@@ -1131,11 +1186,17 @@ class Patcher:
                 "id", "maxclass", "text", "numinlets", "numoutlets",
                 "outlettype", "patching_rect", "fontname", "fontsize",
                 "presentation", "presentation_rect", "patcher",
-                "saved_object_attributes", "parameter_enable",
+                "saved_object_attributes",
             }
             box.extra_attrs = {
                 k: v for k, v in box_data.items() if k not in _handled_keys
             }
+
+            # Preserve raw box dict for lossless round-trip
+            # Exclude nested patcher -- handled separately via _inner_patcher
+            raw = dict(box_data)
+            raw.pop("patcher", None)
+            box._raw = raw
 
             p.boxes.append(box)
 
