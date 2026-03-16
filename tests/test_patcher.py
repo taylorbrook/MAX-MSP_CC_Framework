@@ -1398,14 +1398,19 @@ class TestInsertIntoConnection:
         """Insert into stereo (two parallel connections) -- single shared object."""
         from src.maxpat.patcher import EditResult
         p = Patcher()
-        src = p.add_box("cycle~", args=["440"])
-        dst = p.add_box("dac~")
-        p.add_connection(src, 0, dst, 0)
-        p.add_connection(src, 0, dst, 1)
-        result = p.insert_into_connection(src, dst, "*~", args=["0.5"])
+        # Use swap (2 in, 2 out) as the inserted object
+        src = p.add_box("pack", args=["0", "0"])   # 2 inlets, 1 outlet
+        dst = p.add_box("unpack", args=["0", "0"]) # 1 inlet, 2 outlets
+        # But we need source with 2 outlets and dest with 2 inlets
+        # Use trigger (2 out) -> pack (2 in)
+        src2 = p.add_box("trigger", args=["b", "b"])  # 1 inlet, 2 outlets
+        dst2 = p.add_box("pack", args=["0", "0"])     # 2 inlets, 1 outlet
+        p.add_connection(src2, 0, dst2, 0)
+        p.add_connection(src2, 1, dst2, 1)
+        # Insert swap (2 in, 2 out) -- can handle both connections
+        result = p.insert_into_connection(src2, dst2, "swap")
         assert isinstance(result, EditResult)
-        # One shared box, not two
-        assert result.box.name == "*~"
+        assert result.box.name == "swap"
         # 2 old removed, 4 new added (src->new x2, new->dst x2)
         assert len(p.lines) == 4
         assert result.orphaned == []
@@ -1443,16 +1448,17 @@ class TestInsertIntoConnection:
         """I/O mismatch returns EditResult with orphaned, not ValueError."""
         from src.maxpat.patcher import EditResult
         p = Patcher()
-        # pack has 2 inlets, 1 outlet by default
-        src = p.add_box("pack", args=["0", "0"])
-        dst = p.add_box("unpack", args=["0", "0"])
+        # trigger b b has 1 inlet, 2 outlets; pack 0 0 has 2 inlets, 1 outlet
+        src = p.add_box("trigger", args=["b", "b"])
+        dst = p.add_box("pack", args=["0", "0"])
         p.add_connection(src, 0, dst, 0)
-        p.add_connection(src, 0, dst, 1)
+        p.add_connection(src, 1, dst, 1)
         # toggle has 1 inlet, 1 outlet -- cannot handle 2 connections
         result = p.insert_into_connection(src, dst, "toggle")
         assert isinstance(result, EditResult)
-        # Only 1 connection fits (inlet 0, outlet 0); second is orphaned
+        # Only 1 connection fits (index 0); second is orphaned
         assert len(result.orphaned) == 1
+        assert result.orphaned[0]["source_outlet"] == 1
         assert result.orphaned[0]["dest_inlet"] == 1
 
     def test_args_forwarded(self):

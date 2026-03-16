@@ -930,6 +930,82 @@ class Patcher:
 
         return EditResult(box=new_box, orphaned=orphaned)
 
+    def insert_into_connection(
+        self,
+        source: Box,
+        dest: Box,
+        name: str,
+        args: list[str] | None = None,
+    ) -> EditResult:
+        """Insert a new box into all connections between source and dest.
+
+        Splices a new object into existing connections: removes old
+        source->dest connections and creates source->new and new->dest
+        connections for each. One shared inserted object handles all
+        matching connections.
+
+        When the inserted object has fewer inlets/outlets than connections
+        found, wires what fits and returns the rest as orphaned in
+        EditResult (no hard failure for I/O mismatch).
+
+        Args:
+            source: Source box of the connection(s) to splice into.
+            dest: Destination box of the connection(s) to splice into.
+            name: Object name for the inserted box (e.g., "*~").
+            args: Optional arguments for the inserted box.
+
+        Returns:
+            EditResult with the new box and any orphaned connections.
+
+        Raises:
+            ValueError: If no connections exist between source and dest,
+                or source/dest not in patcher.
+        """
+        if source not in self.boxes:
+            raise ValueError(f"Box {source.id} not found in this patcher")
+        if dest not in self.boxes:
+            raise ValueError(f"Box {dest.id} not found in this patcher")
+
+        # Find ALL patchlines between source and dest
+        matching = [
+            pl for pl in self.lines
+            if pl.source_id == source.id and pl.dest_id == dest.id
+        ]
+        if not matching:
+            raise ValueError(
+                f"No connection found between {source.id} and {dest.id}"
+            )
+
+        # Create the new box
+        new_box = self.add_box(name, args=args)
+
+        # Auto-position below source
+        self._auto_position(new_box, near_box=source)
+
+        # Determine I/O capacity
+        capacity = min(new_box.numinlets, new_box.numoutlets)
+
+        orphaned: list[dict] = []
+
+        for i, pl in enumerate(matching):
+            # Remove old connection
+            self.lines = [ln for ln in self.lines if ln is not pl]
+
+            if i < capacity:
+                # Wire through the new box: source->new and new->dest
+                self.add_connection(source, pl.source_outlet, new_box, i)
+                self.add_connection(new_box, i, dest, pl.dest_inlet)
+            else:
+                # I/O capacity exceeded -- orphan this connection
+                orphaned.append({
+                    "source_id": pl.source_id,
+                    "source_outlet": pl.source_outlet,
+                    "dest_id": pl.dest_id,
+                    "dest_inlet": pl.dest_inlet,
+                })
+
+        return EditResult(box=new_box, orphaned=orphaned)
+
     # ------------------------------------------------------------------
     # Auto-positioning
     # ------------------------------------------------------------------
