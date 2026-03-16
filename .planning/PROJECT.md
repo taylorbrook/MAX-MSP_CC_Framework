@@ -27,13 +27,19 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - ✓ Persistent agent memory — learned patterns accumulate across projects — v1.0
 - ✓ Multi-layer validation (pre-generation scan, post-generation structure check, domain-specific critics) — v1.0
 - ✓ Generator-critic validation loops — critics review output before user sees it — v1.0
+- ✓ Object database audit — outlet types, messages, arguments corrected via help patch analysis — v1.1
+- ✓ Patch aesthetics — panels, background colors, comment styling, auto-highlighting — v1.1
+- ✓ Refined layout engine — width overrides, inlet alignment, grid snap, comment association — v1.1
+- ✓ Agent accuracy improvements — audit corrections fed back to specialist agents — v1.1
 
 ### Active
 
-- [ ] Comprehensive object database audit via help patches — correct outlet types, message names, argument formats, connection patterns for all ~2,015 objects
-- [ ] Patch aesthetics — panels, background colors, comment styling for professional-looking generated patches
-- [ ] Refined object positioning — layout engine improvements informed by help patch analysis and MAX UI best practices
-- [ ] Agent accuracy improvements — feed corrected object data and layout patterns back to specialist agents
+- [ ] Patcher library refactored to read-write editor — load, parse, edit, and write .maxpat files with .maxpat as single source of truth
+- [ ] Direct .maxpat editing replaces Python generation pipeline — no more generate.py intermediary
+- [ ] All agents and skills work directly with .maxpat files — read patch, understand structure, make surgical edits
+- [ ] /max-onboard command for analyzing and understanding existing .maxpat files from any source
+- [ ] Existing project patches cleaned up — Python generation scripts and manifests removed, patches standalone
+- [ ] Validation and hooks updated to work with direct .maxpat editing workflow
 
 ### Future
 
@@ -59,15 +65,16 @@ Tech stack: Python (generation + validation), JSON (object DB + .maxpat), C++ (M
 Object database: 2,015 objects across 8 domains (Max, MSP, Jitter, MC, Gen, M4L, RNBO, Packages).
 Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-scope memory.
 
-## Current Milestone: v1.1 Patch Quality & Aesthetics
+## Current Milestone: v2.0 Direct .maxpat Editing
 
-**Goal:** Improve the accuracy and visual quality of generated MAX patches through systematic object database auditing and aesthetic refinements.
+**Goal:** Replace the Python generation pipeline with direct .maxpat reading and editing, making the .maxpat file the single source of truth and enabling true back-and-forth between Claude and manual MAX editing.
 
 **Target features:**
-- Full help patch audit of all ~2,015 objects to correct outlet types, messages, arguments, and connection patterns
-- Patch aesthetics — panels, background colors, comment styling
-- Refined object positioning informed by help patch layouts and MAX UI best practices
-- Agent improvements informed by audit findings
+- Patcher library refactored from write-only generator to read-write editor
+- All agents/skills/hooks work directly with .maxpat files instead of Python generation scripts
+- /max-onboard command for analyzing and understanding existing patches from any source
+- Existing project patches cleaned up — generation scripts and manifests removed
+- Validation pipeline adapted for direct editing workflow
 
 ## Key Decisions
 
@@ -93,5 +100,7 @@ Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-
 - **External SDK:** Min-DevKit (C++) — CMake build system, Apple Silicon support
 - **No MAX automation:** Claude cannot launch or control MAX — all validation is offline
 
+| .maxpat as single source of truth | Python generation creates two competing sources of truth; user edits get lost on regeneration | — Pending |
+
 ---
-*Last updated: 2026-03-13 after v1.1 milestone start*
+*Last updated: 2026-03-15 after v2.0 milestone start*
