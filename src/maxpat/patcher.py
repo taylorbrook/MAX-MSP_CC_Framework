@@ -675,6 +675,133 @@ class Patcher:
         self.lines.append(pl)
         return pl
 
+    # ------------------------------------------------------------------
+    # Search / query
+    # ------------------------------------------------------------------
+
+    def find_boxes(
+        self,
+        *,
+        id: str | None = None,
+        name: str | None = None,
+        maxclass: str | None = None,
+        text: str | None = None,
+        recursive: bool = False,
+    ) -> list[Box]:
+        """Return all boxes matching the given criteria (AND combination).
+
+        Args:
+            id: Exact match against ``box.id``.
+            name: Match against ``box.name`` with bidirectional alias
+                resolution when a DB is available.
+            maxclass: Exact match against ``box.maxclass``.
+            text: Substring match against ``box.text``.
+            recursive: If True, also search boxes inside subpatchers.
+
+        Returns:
+            List of matching Box objects (may be empty).
+        """
+        # Resolve the search name to its canonical form for alias matching
+        canonical_search: str | None = None
+        if name is not None:
+            aliases = getattr(self.db, "_aliases", None) if self.db else None
+            if aliases:
+                canonical_search = aliases.get(name, name)
+            else:
+                canonical_search = name
+
+        results: list[Box] = []
+        for box in self.boxes:
+            if not self._box_matches(box, id, name, maxclass, text, canonical_search):
+                continue
+            results.append(box)
+        if recursive:
+            for box in self.boxes:
+                if box._inner_patcher is not None:
+                    results.extend(
+                        box._inner_patcher.find_boxes(
+                            id=id, name=name, maxclass=maxclass,
+                            text=text, recursive=True,
+                        )
+                    )
+        return results
+
+    def find_box(
+        self,
+        *,
+        id: str | None = None,
+        name: str | None = None,
+        maxclass: str | None = None,
+        text: str | None = None,
+        recursive: bool = False,
+    ) -> Box | None:
+        """Return the first box matching the given criteria, or None.
+
+        Same criteria as :meth:`find_boxes` but short-circuits on first
+        match.  When *recursive* is True, parent boxes are checked before
+        inner-patcher boxes (depth-first).
+
+        Args:
+            id: Exact match against ``box.id``.
+            name: Match against ``box.name`` with bidirectional alias
+                resolution when a DB is available.
+            maxclass: Exact match against ``box.maxclass``.
+            text: Substring match against ``box.text``.
+            recursive: If True, also search boxes inside subpatchers.
+
+        Returns:
+            First matching Box, or None.
+        """
+        # Resolve the search name to its canonical form for alias matching
+        canonical_search: str | None = None
+        if name is not None:
+            aliases = getattr(self.db, "_aliases", None) if self.db else None
+            if aliases:
+                canonical_search = aliases.get(name, name)
+            else:
+                canonical_search = name
+
+        for box in self.boxes:
+            if self._box_matches(box, id, name, maxclass, text, canonical_search):
+                return box
+        if recursive:
+            for box in self.boxes:
+                if box._inner_patcher is not None:
+                    found = box._inner_patcher.find_box(
+                        id=id, name=name, maxclass=maxclass,
+                        text=text, recursive=True,
+                    )
+                    if found is not None:
+                        return found
+        return None
+
+    def _box_matches(
+        self,
+        box: Box,
+        id: str | None,
+        name: str | None,
+        maxclass: str | None,
+        text: str | None,
+        canonical_search: str | None,
+    ) -> bool:
+        """Return True if *box* satisfies all non-None criteria."""
+        if id is not None and box.id != id:
+            return False
+        if name is not None:
+            aliases = getattr(self.db, "_aliases", None) if self.db else None
+            if aliases:
+                canonical_box = aliases.get(box.name, box.name)
+                if canonical_box != canonical_search:
+                    return False
+            else:
+                if box.name != name:
+                    return False
+        if maxclass is not None and box.maxclass != maxclass:
+            return False
+        if text is not None and text not in box.text:
+            return False
+        return True
+
     def add_subpatcher(
         self,
         name: str,

@@ -603,8 +603,9 @@ class TestFindBox:
         """find_box(maxclass=..., text=...) combines criteria with AND."""
         p = Patcher()
         b1 = p.add_box("cycle~", args=["440"])
-        b2 = p.add_box("ezdac~")
-        result = p.find_box(maxclass="newobj", text="dac~")
+        b2 = p.add_box("cycle~", args=["880"])
+        # Both are maxclass="newobj" -- text narrows it down
+        result = p.find_box(maxclass="newobj", text="880")
         assert result is b2
 
     def test_find_no_match_returns_none(self):
