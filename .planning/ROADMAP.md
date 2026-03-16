@@ -193,7 +193,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 16-01-PLAN.md -- analyze() method with all facets: section detection, signal chain trees, inventory, complexity, hierarchy, parameters, control flow
+- [x] 16-01-PLAN.md -- analyze() method with all facets: section detection, signal chain trees, inventory, complexity, hierarchy, parameters, control flow
 
 ### Phase 17: Agent and Command Migration
 **Goal**: All slash commands and agent skills use direct .maxpat editing instead of the Python generation pipeline -- the user-visible behavior change
@@ -206,7 +206,12 @@ Plans:
   4. /max-onboard is implemented as a working slash command that runs patch analysis and produces onboarding output
   5. All 6 specialist agent SKILL.md files reference the direct editing API (Patcher.from_dict, add_box, remove_box, find_box, etc.) instead of the generate.py workflow
   6. Validation hooks work with direct editing -- validate on demand after edits, do not reject unknown objects on load, write_patch_direct() never auto-layouts
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 17-01-PLAN.md -- Validation warning for unknown objects, empty .maxpat creation in create_project
+- [ ] 17-02-PLAN.md -- Rewrite 4 slash commands for v2.0 workflow (build, iterate, new, onboard)
+- [ ] 17-03-PLAN.md -- Update 9 agent SKILL.md files with dual workflow documentation
 
 ### Phase 18: v1.x Cleanup
 **Goal**: The old generation pipeline is fully removed -- no generate.py scripts, no manifests, no incremental.py -- the .maxpat file is the only artifact
@@ -243,10 +248,10 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 13. Round-Trip Foundation | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 14. Search and Mutation Primitives | v2.0 | 2/2 | Complete | 2026-03-16 |
 | 15. Intelligent Editing | v2.0 | 3/3 | Complete | 2026-03-16 |
-| 16. Patch Analysis | 1/1 | Complete    | 2026-03-16 | - |
-| 17. Agent and Command Migration | v2.0 | 0/0 | Not started | - |
+| 16. Patch Analysis | v2.0 | 1/1 | Complete | 2026-03-16 |
+| 17. Agent and Command Migration | v2.0 | 0/3 | Not started | - |
 | 18. v1.x Cleanup | v2.0 | 0/0 | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-16 -- Phase 16 plans created (1 plan in 1 wave)*
+*Last updated: 2026-03-16 -- Phase 17 plans created (3 plans in 1 wave)*
