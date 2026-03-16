@@ -231,7 +231,7 @@ def _validate_objects_exist(
             if is_ui_object(name):
                 continue  # UI objects may not have db entries; that is OK
             results.append(ValidationResult(
-                "objects", "error",
+                "objects", "warning",
                 f"Unknown object: '{name}' -- not in database",
             ))
 

@@ -112,15 +112,23 @@ class TestLayer2ObjectExistence:
         obj_errors = [r for r in results if r.layer == "objects" and r.level == "error"]
         assert obj_errors == []
 
-    def test_unknown_object_error(self, db):
-        """Completely unknown object produces an error."""
+    def test_unknown_object_warning(self, db):
+        """Completely unknown object produces a warning (not error)."""
         patch = _make_patch_dict(boxes=[
             _make_box("obj-1", text="fake_object_xyz 123")
         ])
         results = validate_patch(patch, db=db)
-        obj_errors = [r for r in results if r.layer == "objects" and r.level == "error"]
-        assert len(obj_errors) >= 1
-        assert "fake_object_xyz" in obj_errors[0].message
+        obj_warnings = [r for r in results if r.layer == "objects" and r.level == "warning"]
+        assert len(obj_warnings) >= 1
+        assert "fake_object_xyz" in obj_warnings[0].message
+
+    def test_unknown_object_not_blocking(self, db):
+        """Patch with only unknown objects has no blocking errors."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="fake_object_xyz 123")
+        ])
+        results = validate_patch(patch, db=db)
+        assert has_blocking_errors(results) is False
 
     def test_pd_object_error_with_suggestion(self, db):
         """PD object (osc~) produces error with MAX equivalent suggestion."""
