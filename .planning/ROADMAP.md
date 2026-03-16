@@ -44,7 +44,7 @@ Full details: see phase details below (archived in-place)
 - Integer phases (13, 14, 15, 16, 17, 18): Planned milestone work
 - Decimal phases (e.g., 14.1): Urgent insertions if needed (marked with INSERTED)
 
-- [ ] **Phase 13: Round-Trip Foundation** — Harden from_dict/to_dict for lossless .maxpat load-save cycle
+- [x] **Phase 13: Round-Trip Foundation** — Harden from_dict/to_dict for lossless .maxpat load-save cycle (completed 2026-03-16)
 - [ ] **Phase 14: Search and Mutation Primitives** — Find objects and make basic add/remove/connect edits on loaded patches
 - [ ] **Phase 15: Intelligent Editing** — Higher-level edit operations: modify-in-place, insert-into-connection, replace, graph queries, auto-position
 - [ ] **Phase 16: Patch Analysis** — Structured patch understanding for onboarding existing patches from any source
@@ -228,7 +228,7 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 10. Aesthetic Foundations | v1.1 | 2/2 | Complete | 2026-03-13 |
 | 11. Layout Refinements | v1.1 | 3/3 | Complete | 2026-03-13 |
 | 12. Pipeline Integration & Agent Updates | v1.1 | 2/2 | Complete | 2026-03-14 |
-| 13. Round-Trip Foundation | 2/3 | In Progress|  | - |
+| 13. Round-Trip Foundation | 3/3 | Complete   | 2026-03-16 | - |
 | 14. Search and Mutation Primitives | v2.0 | 0/0 | Not started | - |
 | 15. Intelligent Editing | v2.0 | 0/0 | Not started | - |
 | 16. Patch Analysis | v2.0 | 0/0 | Not started | - |
