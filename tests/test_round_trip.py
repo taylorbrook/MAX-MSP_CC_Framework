@@ -904,3 +904,166 @@ class TestFileLevelRoundTrip:
         assert '\n    "' in content, (
             "New file should use 4-space indent (MAX default)"
         )
+
+
+# ---------------------------------------------------------------------------
+# TestMutationPreservesRoundTrip -- RW-03/04/05: Mutations don't disturb fidelity
+# ---------------------------------------------------------------------------
+
+
+class TestMutationPreservesRoundTrip:
+    """Mutations on loaded patches do not disturb round-trip fidelity of untouched objects."""
+
+    def test_add_box_preserves_existing_boxes(self):
+        """Load kicksynth, add box, verify existing box dicts unchanged."""
+        original = _load_project_patch("kicksynth/generated/kicksynth.maxpat")
+        p = Patcher.from_dict(original)
+        original_boxes = p.to_dict()["patcher"]["boxes"]
+
+        p.add_box("cycle~", args=["880"])
+
+        result = p.to_dict()
+        result_boxes = result["patcher"]["boxes"]
+
+        # All original boxes should be unchanged
+        assert len(result_boxes) == len(original_boxes) + 1
+        for orig_box in original_boxes:
+            assert orig_box in result_boxes, (
+                f"Original box {orig_box['box']['id']} was modified after add_box"
+            )
+
+    def test_add_box_gets_unique_id(self):
+        """Load kicksynth (max ID obj-146), add_box, verify no ID collision."""
+        original = _load_project_patch("kicksynth/generated/kicksynth.maxpat")
+        p = Patcher.from_dict(original)
+
+        existing_ids = {b.id for b in p.boxes}
+        new_box = p.add_box("cycle~")
+
+        assert new_box.id not in existing_ids, (
+            f"New box ID {new_box.id} collides with existing ID"
+        )
+
+    def test_remove_box_preserves_remaining(self):
+        """Load kicksynth, remove a box with connections, verify remaining boxes identical."""
+        original = _load_project_patch("kicksynth/generated/kicksynth.maxpat")
+        p = Patcher.from_dict(original)
+
+        # Find a box involved in connections (obj-14 has outgoing lines)
+        target = p.find_box(id="obj-14")
+        assert target is not None, "obj-14 not found in kicksynth"
+        target_id = target.id
+
+        # Snapshot all box dicts except the target
+        original_result = p.to_dict()
+        original_boxes = [
+            bd for bd in original_result["patcher"]["boxes"]
+            if bd["box"]["id"] != target_id
+        ]
+        original_lines_without_target = [
+            ld for ld in original_result["patcher"]["lines"]
+            if ld["patchline"]["source"][0] != target_id
+            and ld["patchline"]["destination"][0] != target_id
+        ]
+
+        p.remove_box(target)
+
+        result = p.to_dict()
+        result_boxes = result["patcher"]["boxes"]
+        result_lines = result["patcher"]["lines"]
+
+        # Remaining boxes should be identical
+        assert len(result_boxes) == len(original_boxes)
+        for orig_box in original_boxes:
+            assert orig_box in result_boxes, (
+                f"Box {orig_box['box']['id']} was modified after remove_box"
+            )
+        # Remaining lines should be identical
+        assert len(result_lines) == len(original_lines_without_target)
+        for orig_line in original_lines_without_target:
+            assert orig_line in result_lines, (
+                f"Line was modified after remove_box"
+            )
+
+    def test_add_connection_preserves_existing_lines(self):
+        """Load kicksynth, add connection, verify existing line dicts unchanged."""
+        original = _load_project_patch("kicksynth/generated/kicksynth.maxpat")
+        p = Patcher.from_dict(original)
+        original_lines = p.to_dict()["patcher"]["lines"]
+
+        # Find two boxes not connected: obj-12 (button, 1 outlet) and obj-15 (stripnote, 2 inlets)
+        b1 = p.find_box(id="obj-12")
+        b2 = p.find_box(id="obj-15")
+        assert b1 is not None and b2 is not None
+
+        # Add a new connection between them
+        p.add_connection(b1, 0, b2, 0)
+
+        result = p.to_dict()
+        result_lines = result["patcher"]["lines"]
+
+        assert len(result_lines) == len(original_lines) + 1
+        for orig_line in original_lines:
+            assert orig_line in result_lines, (
+                "Existing line was modified after add_connection"
+            )
+
+    def test_full_mutation_cycle(self):
+        """Load, add box, connect, remove different box -- verify full integrity."""
+        original = _load_project_patch("kicksynth/generated/kicksynth.maxpat")
+        p = Patcher.from_dict(original)
+
+        original_count = len(p.boxes)
+
+        # Add a new box
+        new_box = p.add_box("noise~")
+
+        # Connect the new box to an existing box (ezdac~ or similar)
+        # Use the first box with at least 1 inlet
+        target_box = None
+        for b in p.boxes:
+            if b is not new_box and b.numinlets > 0 and b.numoutlets > 0:
+                target_box = b
+                break
+        assert target_box is not None
+        p.add_connection(new_box, 0, target_box, 0)
+
+        # Remove a different box (obj-14 which has connections)
+        remove_target = p.find_box(id="obj-14")
+        assert remove_target is not None
+        remove_id = remove_target.id
+        p.remove_box(remove_target)
+
+        result = p.to_dict()
+        result_boxes = result["patcher"]["boxes"]
+        result_lines = result["patcher"]["lines"]
+
+        # New box should be present
+        new_box_dicts = [
+            bd for bd in result_boxes if bd["box"]["id"] == new_box.id
+        ]
+        assert len(new_box_dicts) == 1, "New box not found in output"
+
+        # New connection should be present
+        new_conn = [
+            ld for ld in result_lines
+            if ld["patchline"]["source"][0] == new_box.id
+        ]
+        assert len(new_conn) == 1, "New connection not found in output"
+
+        # Removed box should be absent
+        removed_dicts = [
+            bd for bd in result_boxes if bd["box"]["id"] == remove_id
+        ]
+        assert len(removed_dicts) == 0, "Removed box still in output"
+
+        # Removed box's connections should be absent
+        removed_lines = [
+            ld for ld in result_lines
+            if ld["patchline"]["source"][0] == remove_id
+            or ld["patchline"]["destination"][0] == remove_id
+        ]
+        assert len(removed_lines) == 0, "Removed box's connections still in output"
+
+        # Box count: original - 1 (removed) + 1 (added) = original
+        assert len(result_boxes) == original_count
