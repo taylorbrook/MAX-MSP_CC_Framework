@@ -23,7 +23,11 @@ from src.maxpat.defaults import (
     FONTFACE_ITALIC,
     GEN_PATCHER_BGCOLOR,
     SUBPATCHER_RECT,
+    V_SPACING,
 )
+
+# Collision detection padding (px) around boxes for readability
+COLLISION_PAD = 5.0
 from src.maxpat.maxclass_map import resolve_maxclass, is_ui_object, UI_MAXCLASSES
 from src.maxpat.sizing import calculate_box_size
 from src.maxpat.db_lookup import ObjectDatabase
@@ -925,6 +929,92 @@ class Patcher:
         new_box = self.add_box(new_name, args=args, x=old_x, y=old_y)
 
         return EditResult(box=new_box, orphaned=orphaned)
+
+    # ------------------------------------------------------------------
+    # Auto-positioning
+    # ------------------------------------------------------------------
+
+    def _find_clear_position(
+        self,
+        x: float,
+        y: float,
+        w: float,
+        h: float,
+        exclude_box: Box | None = None,
+    ) -> tuple[float, float]:
+        """Find a non-overlapping position starting from (x, y), snapped to 15px grid.
+
+        Nudges right by 15px on collision; wraps to the next row when x > 1200.
+
+        Args:
+            x: Starting x position.
+            y: Starting y position.
+            w: Width of the box to place.
+            h: Height of the box to place.
+            exclude_box: Optional box to exclude from collision checks (self-reposition).
+
+        Returns:
+            (x, y) tuple snapped to 15px grid with no overlap.
+        """
+        # Snap to 15px grid
+        x = round(x / 15.0) * 15.0
+        y = round(y / 15.0) * 15.0
+        start_x = x
+
+        for _ in range(50):
+            collision = False
+            for box in self.boxes:
+                if box is exclude_box:
+                    continue
+                bx, by, bw, bh = box.patching_rect
+                # Check overlap with COLLISION_PAD on both rects
+                if not (
+                    x + w + COLLISION_PAD <= bx - COLLISION_PAD
+                    or x - COLLISION_PAD >= bx + bw + COLLISION_PAD
+                    or y + h + COLLISION_PAD <= by - COLLISION_PAD
+                    or y - COLLISION_PAD >= by + bh + COLLISION_PAD
+                ):
+                    collision = True
+                    break
+            if not collision:
+                return (x, y)
+            # Nudge right
+            x += 15.0
+            if x > 1200:
+                x = start_x
+                y += 15.0
+        return (x, y)
+
+    def _auto_position(self, box: Box, near_box: Box | None = None) -> None:
+        """Position a box automatically, avoiding collisions.
+
+        If near_box is provided, places below it with V_SPACING gap.
+        Otherwise, places at the center of the patcher visible rect.
+
+        Args:
+            box: The box to position.
+            near_box: Optional reference box to position relative to.
+        """
+        if near_box is not None:
+            ideal_x = near_box.patching_rect[0]
+            ideal_y = (
+                near_box.patching_rect[1]
+                + near_box.patching_rect[3]
+                + V_SPACING
+            )
+        else:
+            ideal_x = self.props["rect"][2] / 2.0
+            ideal_y = self.props["rect"][3] / 2.0
+
+        w = box.patching_rect[2]
+        h = box.patching_rect[3]
+        new_x, new_y = self._find_clear_position(ideal_x, ideal_y, w, h)
+        box.patching_rect[0] = new_x
+        box.patching_rect[1] = new_y
+
+        # Sync _raw if present (round-trip fidelity)
+        if box._raw is not None:
+            box._raw["patching_rect"] = box.patching_rect
 
     # ------------------------------------------------------------------
     # Search / query

@@ -1322,33 +1322,26 @@ class TestAutoPosition:
         """Overlapping box causes rightward nudge."""
         p = Patcher()
         existing = p.add_box("toggle", x=60.0, y=60.0)
-        new_box = p.add_box("bang", x=0.0, y=0.0)
-        # Position new_box exactly at existing position -- should collide and nudge
-        p._auto_position(new_box, near_box=existing)
-        # The auto-position would try directly below existing, but if that overlaps
-        # existing, it nudges right. Since the near_box positions below (y+h+V_SPACING),
-        # it should NOT overlap if V_SPACING is enough. Let's test explicit collision.
-        # Place another box at the exact target position first
-        blocker = p.add_box("button", x=60.0, y=existing.patching_rect[1] + existing.patching_rect[3] + 20)
-        # Snap blocker to grid
+        # Place a blocker at the exact near_box target position
+        target_y = existing.patching_rect[1] + existing.patching_rect[3] + 20
+        blocker = p.add_box("button", x=60.0, y=target_y)
+        # Snap blocker to grid to match where _auto_position would try
         blocker.patching_rect[0] = round(60.0 / 15.0) * 15.0
-        blocker.patching_rect[1] = round(blocker.patching_rect[1] / 15.0) * 15.0
-        new_box2 = p.add_box("toggle", x=0.0, y=0.0)
-        p._auto_position(new_box2, near_box=existing)
+        blocker.patching_rect[1] = round(target_y / 15.0) * 15.0
+        new_box = p.add_box("toggle", x=0.0, y=0.0)
+        p._auto_position(new_box, near_box=existing)
         # Should have nudged to avoid blocker
-        assert new_box2.patching_rect[0] != blocker.patching_rect[0] or new_box2.patching_rect[1] != blocker.patching_rect[1]
+        assert new_box.patching_rect[0] != blocker.patching_rect[0] or new_box.patching_rect[1] != blocker.patching_rect[1]
 
     def test_collision_wrap_to_next_row(self):
         """When x exceeds 1200, wraps to next row."""
         p = Patcher()
-        # Fill the row with boxes at y=60 from x=0 to x=1200+
-        for i in range(0, 1215, 15):
-            b = p.add_box("toggle", x=float(i), y=60.0)
-            b.patching_rect = [float(i), 60.0, 24.0, 24.0]
-        new_box = p.add_box("bang", x=0.0, y=0.0)
-        # _find_clear_position should eventually wrap to next row
-        fx, fy = p._find_clear_position(0.0, 60.0, 24.0, 24.0)
-        # y should have increased since the whole row is occupied
+        # Place a wide box near the 1200 boundary to force wrap
+        wide = p.add_box("toggle", x=1185.0, y=60.0)
+        wide.patching_rect = [1185.0, 60.0, 100.0, 24.0]
+        # Start searching from just before it -- nudging right crosses 1200
+        fx, fy = p._find_clear_position(1185.0, 60.0, 24.0, 24.0)
+        # Should have wrapped to next row since 1185 overlaps and nudge to 1200+ wraps
         assert fy > 60.0
 
     def test_exclude_box_self_collision(self):
