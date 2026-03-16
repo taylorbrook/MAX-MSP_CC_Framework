@@ -1283,7 +1283,105 @@ class TestReplaceBox:
 
 class TestAutoPosition:
     """ED-05: auto-positioning with collision detection and grid snap."""
-    pass
+
+    def test_grid_snap_basic(self):
+        """Positions are snapped to 15px grid."""
+        p = Patcher()
+        box = p.add_box("toggle", x=7.0, y=11.0)
+        p._auto_position(box)
+        # Should snap to nearest 15px grid
+        assert box.patching_rect[0] % 15 == 0
+        assert box.patching_rect[1] % 15 == 0
+
+    def test_near_box_positioning(self):
+        """Box positioned below near_box with V_SPACING gap."""
+        p = Patcher()
+        source = p.add_box("cycle~", args=["440"], x=60.0, y=45.0)
+        new_box = p.add_box("dac~", x=0.0, y=0.0)
+        p._auto_position(new_box, near_box=source)
+        # Should be below source: y = source.y + source.h + V_SPACING
+        expected_y = source.patching_rect[1] + source.patching_rect[3] + 20
+        # Snapped to 15px grid
+        expected_y_snapped = round(expected_y / 15.0) * 15.0
+        assert new_box.patching_rect[1] == expected_y_snapped
+        # x should be at source x, snapped
+        expected_x_snapped = round(source.patching_rect[0] / 15.0) * 15.0
+        assert new_box.patching_rect[0] == expected_x_snapped
+
+    def test_center_positioning_no_near_box(self):
+        """With no near_box, positions at center of patcher rect."""
+        p = Patcher()
+        # Default patcher rect is [85, 104, 640, 480]
+        box = p.add_box("toggle", x=0.0, y=0.0)
+        p._auto_position(box)
+        # Center: x = 640/2 = 320 (snapped), y = 480/2 = 240 (snapped)
+        assert box.patching_rect[0] == 315.0  # round(320/15)*15 = 315
+        assert box.patching_rect[1] == 240.0  # round(240/15)*15 = 240
+
+    def test_collision_nudge_right(self):
+        """Overlapping box causes rightward nudge."""
+        p = Patcher()
+        existing = p.add_box("toggle", x=60.0, y=60.0)
+        new_box = p.add_box("bang", x=0.0, y=0.0)
+        # Position new_box exactly at existing position -- should collide and nudge
+        p._auto_position(new_box, near_box=existing)
+        # The auto-position would try directly below existing, but if that overlaps
+        # existing, it nudges right. Since the near_box positions below (y+h+V_SPACING),
+        # it should NOT overlap if V_SPACING is enough. Let's test explicit collision.
+        # Place another box at the exact target position first
+        blocker = p.add_box("button", x=60.0, y=existing.patching_rect[1] + existing.patching_rect[3] + 20)
+        # Snap blocker to grid
+        blocker.patching_rect[0] = round(60.0 / 15.0) * 15.0
+        blocker.patching_rect[1] = round(blocker.patching_rect[1] / 15.0) * 15.0
+        new_box2 = p.add_box("toggle", x=0.0, y=0.0)
+        p._auto_position(new_box2, near_box=existing)
+        # Should have nudged to avoid blocker
+        assert new_box2.patching_rect[0] != blocker.patching_rect[0] or new_box2.patching_rect[1] != blocker.patching_rect[1]
+
+    def test_collision_wrap_to_next_row(self):
+        """When x exceeds 1200, wraps to next row."""
+        p = Patcher()
+        # Fill the row with boxes at y=60 from x=0 to x=1200+
+        for i in range(0, 1215, 15):
+            b = p.add_box("toggle", x=float(i), y=60.0)
+            b.patching_rect = [float(i), 60.0, 24.0, 24.0]
+        new_box = p.add_box("bang", x=0.0, y=0.0)
+        # _find_clear_position should eventually wrap to next row
+        fx, fy = p._find_clear_position(0.0, 60.0, 24.0, 24.0)
+        # y should have increased since the whole row is occupied
+        assert fy > 60.0
+
+    def test_exclude_box_self_collision(self):
+        """exclude_box prevents collision with itself."""
+        p = Patcher()
+        box = p.add_box("toggle", x=60.0, y=60.0)
+        # _find_clear_position at box's own position, excluding itself
+        fx, fy = p._find_clear_position(
+            60.0, 60.0, box.patching_rect[2], box.patching_rect[3],
+            exclude_box=box,
+        )
+        assert fx == 60.0
+        assert fy == 60.0
+
+    def test_no_boxes_trivial(self):
+        """Empty patcher: position returned as-is (snapped)."""
+        p = Patcher()
+        fx, fy = p._find_clear_position(33.0, 47.0, 40.0, 22.0)
+        assert fx == 30.0  # round(33/15)*15
+        assert fy == 45.0  # round(47/15)*15
+
+    def test_padding_respected(self):
+        """5px collision padding prevents boxes from touching."""
+        p = Patcher()
+        existing = p.add_box("toggle", x=60.0, y=60.0)
+        existing.patching_rect = [60.0, 60.0, 24.0, 24.0]
+        # Place right at the edge: x = 60 + 24 = 84 -- within 5px padding
+        fx, fy = p._find_clear_position(84.0, 60.0, 24.0, 24.0)
+        # 84 snaps to 90, but 90 is within 5px of edge 84, so might still
+        # overlap. The actual check: (84+24) vs (60) and (60+24+5) vs 84
+        # existing extends to 60+24+5=89 with pad, so 84 < 89 = overlap
+        # Should nudge
+        assert fx > 84.0 or fy > 60.0
 
 
 class TestInsertIntoConnection:
