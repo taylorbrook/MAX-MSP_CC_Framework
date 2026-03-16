@@ -94,6 +94,7 @@ Full decision log in `.planning/milestones/v1.0-ROADMAP.md`.
 - [Phase 12]: DSP agent curated object lists verified against audit corrections -- no changes needed, DB layer handles transparently
 
 - [Phase quick]: Incremental patching uses manifest JSON sidecar to track generator-owned objects; box IDs are stable identity keys; merge preserves user-added objects
+- [Phase quick]: Merge uses attribute-level ownership split: generator owns text/maxclass/IO, user owns patching_rect/bgcolor/visual; recursive inner patcher merge for subpatchers; layout skipped on merge runs
 
 ### Pending Todos
 
@@ -118,10 +119,11 @@ None.
 | 9 | Return default background color to standard MAX 9 dark grey | 2026-03-14 | 624fa83 | [9-return-the-default-background-color-to-t](./quick/9-return-the-default-background-color-to-t/) |
 | 10 | Remove omx object references and replace with gen~ compressors | 2026-03-14 | 337aa11 | [10-avoid-using-the-omx-objects-instead-you-](./quick/10-avoid-using-the-omx-objects-instead-you-/) |
 | 11 | Implement incremental patching with manifest-tracked merge_and_write | 2026-03-14 | 7caba99 | Verified | [11-implement-incremental-patching-in-the-pa](./quick/11-implement-incremental-patching-in-the-pa/) |
+| 12 | Fix merge overwriting user positions, subpatcher content, and layout | 2026-03-16 | bc096ff | Verified | [12-fix-python-generation-script-overwriting](./quick/12-fix-python-generation-script-overwriting/) |
 
 ## Session Continuity
 
-Last activity: 2026-03-14 -- Completed Quick Task 11 (Incremental patching with manifest sidecar)
-Last session: 2026-03-14T18:21:46Z
-Stopped at: Completed quick-11-PLAN.md
+Last activity: 2026-03-16 -- Completed Quick Task 12 (Fix merge overwriting user modifications)
+Last session: 2026-03-16T00:17:49Z
+Stopped at: Completed quick-12-PLAN.md
 Resume file: None
