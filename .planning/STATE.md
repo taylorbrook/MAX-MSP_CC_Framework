@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
-status: completed
-stopped_at: Phase 18 context gathered
-last_updated: "2026-03-16T22:24:13.639Z"
-last_activity: 2026-03-16 -- Plan 17-03 complete (agent SKILL.md dual workflow documentation)
+status: executing
+stopped_at: Completed 18-01-PLAN.md
+last_updated: "2026-03-16T22:51:39.112Z"
+last_activity: 2026-03-16 -- Plan 18-01 complete (delete v1.x pipeline artifacts)
 progress:
   total_phases: 11
   completed_phases: 10
-  total_plans: 25
-  completed_plans: 25
-  percent: 100
+  total_plans: 27
+  completed_plans: 26
+  percent: 96
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v2.0 Phase 17 complete -- Agent & Command Migration
+**Current focus:** v2.0 Phase 18 in progress -- v1.x Cleanup
 
 ## Current Position
 
-Phase: 17 of 18 (Agent & Command Migration)
-Plan: 3 of 3
-Status: Complete
-Last activity: 2026-03-16 -- Plan 17-03 complete (agent SKILL.md dual workflow documentation)
+Phase: 18 of 18 (v1.x Cleanup)
+Plan: 1 of 2
+Status: In Progress
+Last activity: 2026-03-16 -- Plan 18-01 complete (delete v1.x pipeline artifacts)
 
-Progress: [██████████] 100%
+Progress: [██████████] 96%
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [██████████] 100%
 | Phase 17 P01 | 2min | 2 tasks | 4 files |
 | Phase 17 P02 | 3min | 2 tasks | 5 files |
 | Phase 17 P03 | 3min | 2 tasks | 10 files |
+| Phase 18 P01 | 2min | 2 tasks | 21 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,7 @@ Recent decisions for v2.0:
 - [Phase 17]: [17-03]: Editing section placed after Aesthetic Capabilities, before Output Protocol
 - [Phase 17]: [17-03]: Output Protocol split into (New Patches) and (Edited Patches) subsections
 - [Phase 17]: [17-03]: Domain focus notes use distinct examples per agent (route, cycle~, rnbo~, etc.)
+- [Phase 18]: Untracked files deleted from disk only; 14 tracked files staged as git deletions
 
 ### Pending Todos
 
@@ -114,6 +116,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T22:24:13.637Z
-Stopped at: Phase 18 context gathered
-Resume file: .planning/phases/18-v1-x-cleanup/18-CONTEXT.md
+Last session: 2026-03-16T22:51:39.109Z
+Stopped at: Completed 18-01-PLAN.md
+Resume file: None

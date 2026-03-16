@@ -43,8 +43,8 @@ Requirements for v2.0 Direct .maxpat Editing milestone. Each maps to roadmap pha
 ### v1.x Cleanup
 
 - [ ] **CL-01**: incremental.py module removed — manifest-based merge system eliminated
-- [ ] **CL-02**: All .manifest.json sidecar files removed from existing patches
-- [ ] **CL-03**: All generate.py scripts removed from existing patches — .maxpat files are standalone
+- [x] **CL-02**: All .manifest.json sidecar files removed from existing patches
+- [x] **CL-03**: All generate.py scripts removed from existing patches — .maxpat files are standalone
 - [ ] **CL-04**: Test suite updated — read path covered, write-only assumptions replaced with read-write tests, expand-then-contract migration pattern
 - [ ] **CL-05**: hooks.py updated — write_patch uses direct save path, merge_and_write removed or redirected
 
@@ -107,8 +107,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | MG-05 | Phase 17 | Complete |
 | MG-06 | Phase 17 | Complete |
 | CL-01 | Phase 18 | Pending |
-| CL-02 | Phase 18 | Pending |
-| CL-03 | Phase 18 | Pending |
+| CL-02 | Phase 18 | Complete |
+| CL-03 | Phase 18 | Complete |
 | CL-04 | Phase 18 | Pending |
 | CL-05 | Phase 18 | Pending |
 
