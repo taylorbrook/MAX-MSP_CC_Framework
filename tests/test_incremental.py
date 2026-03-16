@@ -346,3 +346,227 @@ class TestMergeIdempotency:
         run2_manifest = manifest_path.read_text()
 
         assert run1_manifest == run2_manifest
+
+
+class TestMergePreservesUserPositions:
+    """Bug 1 fix: attribute-level merge preserves user-owned presentation attrs."""
+
+    def test_user_patching_rect_preserved(self, tmp_path):
+        """User moves a generator-owned box -> regenerate -> user position kept."""
+        path = tmp_path / "test.maxpat"
+
+        # Step 1: Initial generation
+        p1 = Patcher()
+        b1 = p1.add_box("cycle~", ["440"])
+        merge_and_write(p1, path, validate=False)
+
+        # Step 2: User moves the box to a new position in the .maxpat
+        data = json.loads(path.read_text())
+        gen_box = data["patcher"]["boxes"][0]["box"]
+        user_position = [500.0, 300.0, gen_box["patching_rect"][2], gen_box["patching_rect"][3]]
+        gen_box["patching_rect"] = user_position
+        path.write_text(json.dumps(data, indent=2))
+
+        # Step 3: Regenerate with updated text (cycle~ 880)
+        p2 = Patcher()
+        p2.add_box("cycle~", ["880"])
+        merge_and_write(p2, path, validate=False)
+
+        # Verify: user position preserved, text updated
+        result = json.loads(path.read_text())
+        result_box = result["patcher"]["boxes"][0]["box"]
+        assert result_box["patching_rect"][0] == 500.0, "User's x position should be preserved"
+        assert result_box["patching_rect"][1] == 300.0, "User's y position should be preserved"
+        assert result_box["text"] == "cycle~ 880", "Generator text should be updated"
+
+    def test_user_extra_attrs_preserved(self, tmp_path):
+        """User sets bgcolor on a generator box -> regenerate -> bgcolor preserved."""
+        path = tmp_path / "test.maxpat"
+
+        # Step 1: Initial generation
+        p1 = Patcher()
+        p1.add_box("cycle~")
+        merge_and_write(p1, path, validate=False)
+
+        # Step 2: User adds bgcolor to the box
+        data = json.loads(path.read_text())
+        gen_box = data["patcher"]["boxes"][0]["box"]
+        gen_box["bgcolor"] = [1.0, 0.0, 0.0, 1.0]
+        path.write_text(json.dumps(data, indent=2))
+
+        # Step 3: Regenerate
+        p2 = Patcher()
+        p2.add_box("cycle~")
+        merge_and_write(p2, path, validate=False)
+
+        # Verify: user's bgcolor preserved
+        result = json.loads(path.read_text())
+        result_box = result["patcher"]["boxes"][0]["box"]
+        assert result_box.get("bgcolor") == [1.0, 0.0, 0.0, 1.0], "User's bgcolor should be preserved"
+
+    def test_generator_text_updates_propagate(self, tmp_path):
+        """Generator changes text -> text updated despite position preservation."""
+        path = tmp_path / "test.maxpat"
+
+        # Step 1: Initial generation
+        p1 = Patcher()
+        p1.add_box("cycle~", ["440"])
+        merge_and_write(p1, path, validate=False)
+
+        # Step 2: Regenerate with different text
+        p2 = Patcher()
+        p2.add_box("cycle~", ["880"])
+        merge_and_write(p2, path, validate=False)
+
+        result = json.loads(path.read_text())
+        result_box = result["patcher"]["boxes"][0]["box"]
+        assert result_box["text"] == "cycle~ 880"
+
+
+class TestMergePreservesSubpatcherContent:
+    """Bug 2 fix: recursive subpatcher content preservation."""
+
+    def test_user_inner_objects_survive(self, tmp_path):
+        """User adds objects inside a subpatcher -> regenerate -> objects survive."""
+        path = tmp_path / "test.maxpat"
+
+        # Step 1: Generate with a subpatcher
+        p1 = Patcher()
+        sp_box, sp = p1.add_subpatcher("mysub", inlets=1, outlets=1)
+        merge_and_write(p1, path, validate=False)
+
+        # Step 2: User adds an object inside the subpatcher in the .maxpat
+        data = json.loads(path.read_text())
+        sp_entry = None
+        for b in data["patcher"]["boxes"]:
+            if b["box"].get("id") == sp_box.id:
+                sp_entry = b
+                break
+        assert sp_entry is not None, "Subpatcher box must exist"
+        assert "patcher" in sp_entry["box"], "Subpatcher must have inner patcher"
+
+        # Add a user object inside the subpatcher
+        user_inner_box = {
+            "box": {
+                "maxclass": "newobj",
+                "text": "print user-added",
+                "id": "user-inner-1",
+                "numinlets": 1,
+                "numoutlets": 0,
+                "outlettype": [],
+                "patching_rect": [100.0, 150.0, 80.0, 22.0],
+            }
+        }
+        sp_entry["box"]["patcher"]["boxes"].append(user_inner_box)
+        path.write_text(json.dumps(data, indent=2))
+
+        # Step 3: Regenerate
+        p2 = Patcher()
+        p2.add_subpatcher("mysub", inlets=1, outlets=1)
+        merge_and_write(p2, path, validate=False)
+
+        # Verify: user inner object survives
+        result = json.loads(path.read_text())
+        sp_result = None
+        for b in result["patcher"]["boxes"]:
+            if b["box"].get("id") == sp_box.id:
+                sp_result = b
+                break
+        assert sp_result is not None
+        inner_ids = [ib["box"]["id"] for ib in sp_result["box"]["patcher"]["boxes"]]
+        assert "user-inner-1" in inner_ids, "User's inner object should survive regeneration"
+
+    def test_existing_inner_patcher_preserved(self, tmp_path):
+        """Subpatcher inner content from existing file preserved on regeneration."""
+        path = tmp_path / "test.maxpat"
+
+        # Step 1: Generate with subpatcher
+        p1 = Patcher()
+        sp_box, sp = p1.add_subpatcher("mysub", inlets=1, outlets=1)
+        merge_and_write(p1, path, validate=False)
+
+        # Step 2: User modifies a position inside the subpatcher
+        data = json.loads(path.read_text())
+        sp_entry = None
+        for b in data["patcher"]["boxes"]:
+            if b["box"].get("id") == sp_box.id:
+                sp_entry = b
+                break
+        assert sp_entry is not None
+        inner_boxes = sp_entry["box"]["patcher"]["boxes"]
+        # Move the first inner box (inlet) to a new position
+        if inner_boxes:
+            inner_boxes[0]["box"]["patching_rect"] = [999.0, 888.0, 30.0, 22.0]
+        path.write_text(json.dumps(data, indent=2))
+
+        # Step 3: Regenerate
+        p2 = Patcher()
+        p2.add_subpatcher("mysub", inlets=1, outlets=1)
+        merge_and_write(p2, path, validate=False)
+
+        # Verify: inner positions preserved
+        result = json.loads(path.read_text())
+        sp_result = None
+        for b in result["patcher"]["boxes"]:
+            if b["box"].get("id") == sp_box.id:
+                sp_result = b
+                break
+        assert sp_result is not None
+        inner_first = sp_result["box"]["patcher"]["boxes"][0]["box"]
+        assert inner_first["patching_rect"][0] == 999.0, "Inner box position should be preserved"
+
+
+class TestMergeLayoutSkippedOnMerge:
+    """Bug 3 fix: layout engine only runs on fresh writes, not merge runs."""
+
+    def test_existing_positions_not_recomputed(self, tmp_path):
+        """Merge runs preserve existing box positions (layout not recomputed)."""
+        path = tmp_path / "test.maxpat"
+
+        # Step 1: Initial generation
+        p1 = Patcher()
+        b1 = p1.add_box("cycle~", ["440"])
+        b2 = p1.add_box("ezdac~")
+        p1.add_connection(b1, 0, b2, 0)
+        merge_and_write(p1, path, validate=False)
+
+        # Step 2: Manually set known positions in the .maxpat
+        data = json.loads(path.read_text())
+        for box_entry in data["patcher"]["boxes"]:
+            box_entry["box"]["patching_rect"] = [123.0, 456.0, 80.0, 22.0]
+        path.write_text(json.dumps(data, indent=2))
+
+        # Step 3: Regenerate (same content)
+        p2 = Patcher()
+        c1 = p2.add_box("cycle~", ["440"])
+        c2 = p2.add_box("ezdac~")
+        p2.add_connection(c1, 0, c2, 0)
+        merge_and_write(p2, path, validate=False)
+
+        # Verify: positions from step 2 are preserved, not recomputed
+        result = json.loads(path.read_text())
+        for box_entry in result["patcher"]["boxes"]:
+            rect = box_entry["box"]["patching_rect"]
+            assert rect[0] == 123.0, f"X should be preserved (got {rect[0]})"
+            assert rect[1] == 456.0, f"Y should be preserved (got {rect[1]})"
+
+
+class TestMergeFreshWriteStillLayouts:
+    """Fresh write (no existing file) still calls apply_layout for proper positioning."""
+
+    def test_fresh_write_positions_nonzero(self, tmp_path):
+        """Fresh write produces laid-out positions (not all at 0,0)."""
+        path = tmp_path / "test.maxpat"
+
+        p = Patcher()
+        b1 = p.add_box("cycle~", ["440"])
+        b2 = p.add_box("ezdac~")
+        p.add_connection(b1, 0, b2, 0)
+        merge_and_write(p, path, validate=False)
+
+        result = json.loads(path.read_text())
+        boxes = result["patcher"]["boxes"]
+        # At least one box should have non-zero position (layout was applied)
+        positions = [b["box"]["patching_rect"][:2] for b in boxes]
+        has_layout = any(x > 0 or y > 0 for x, y in positions)
+        assert has_layout, "Fresh write should produce laid-out positions"
