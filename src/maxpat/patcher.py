@@ -661,8 +661,40 @@ class Patcher:
                       list. Creates segmented cables with right-angle bends.
 
         Returns:
-            The created Patchline.
+            The created Patchline, or the existing Patchline if a duplicate.
         """
+        # Bounds checking
+        if src_outlet < 0 or src_outlet >= src_box.numoutlets:
+            valid_range = (
+                f"0..{src_box.numoutlets - 1}"
+                if src_box.numoutlets > 0
+                else "none (0 outlets)"
+            )
+            raise ValueError(
+                f"Outlet index {src_outlet} out of range for box {src_box.id} "
+                f"({src_box.text or src_box.name}) which has "
+                f"{src_box.numoutlets} outlet(s) (valid: {valid_range})"
+            )
+        if dst_inlet < 0 or dst_inlet >= dst_box.numinlets:
+            valid_range = (
+                f"0..{dst_box.numinlets - 1}"
+                if dst_box.numinlets > 0
+                else "none (0 inlets)"
+            )
+            raise ValueError(
+                f"Inlet index {dst_inlet} out of range for box {dst_box.id} "
+                f"({dst_box.text or dst_box.name}) which has "
+                f"{dst_box.numinlets} inlet(s) (valid: {valid_range})"
+            )
+
+        # Duplicate prevention
+        for pl in self.lines:
+            if (pl.source_id == src_box.id
+                    and pl.source_outlet == src_outlet
+                    and pl.dest_id == dst_box.id
+                    and pl.dest_inlet == dst_inlet):
+                return pl
+
         pl = Patchline(
             source_id=src_box.id,
             source_outlet=src_outlet,

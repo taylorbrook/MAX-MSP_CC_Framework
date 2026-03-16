@@ -911,3 +911,120 @@ class TestRemoveConnection:
 
         assert len(p.lines) == 1
         assert p.lines[0] is pl2
+
+
+class TestAddConnectionBoundsCheck:
+    """add_connection() rejects out-of-bounds indices with clear error messages."""
+
+    def test_valid_connection_still_works(self):
+        """Valid connection still works (regression test)."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])  # 1 outlet
+        b2 = p.add_box("ezdac~")  # 2 inlets
+        pl = p.add_connection(b1, 0, b2, 0)
+        assert pl is not None
+        assert len(p.lines) == 1
+
+    def test_outlet_ge_numoutlets_raises(self):
+        """Outlet index >= numoutlets raises ValueError."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")  # 1 outlet (index 0 only)
+        b2 = p.add_box("ezdac~")
+        with pytest.raises(ValueError, match="Outlet index 1 out of range"):
+            p.add_connection(b1, 1, b2, 0)
+
+    def test_inlet_ge_numinlets_raises(self):
+        """Inlet index >= numinlets raises ValueError."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+        b2 = p.add_box("toggle")  # 1 inlet (index 0 only)
+        with pytest.raises(ValueError, match="Inlet index 1 out of range"):
+            p.add_connection(b1, 0, b2, 1)
+
+    def test_negative_outlet_raises(self):
+        """Negative outlet raises ValueError."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+        b2 = p.add_box("ezdac~")
+        with pytest.raises(ValueError, match="Outlet index -1 out of range"):
+            p.add_connection(b1, -1, b2, 0)
+
+    def test_negative_inlet_raises(self):
+        """Negative inlet raises ValueError."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+        b2 = p.add_box("ezdac~")
+        with pytest.raises(ValueError, match="Inlet index -1 out of range"):
+            p.add_connection(b1, 0, b2, -1)
+
+    def test_error_message_includes_box_id_and_range(self):
+        """Error message includes box ID and valid range."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")  # 1 outlet
+        b2 = p.add_box("ezdac~")
+        with pytest.raises(ValueError, match=r"obj-\d+.*valid: 0\.\.0"):
+            p.add_connection(b1, 5, b2, 0)
+
+    def test_max_valid_outlet_succeeds(self):
+        """Outlet index numoutlets-1 succeeds (boundary test)."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")  # 1 outlet -> max index 0
+        b2 = p.add_box("ezdac~")
+        pl = p.add_connection(b1, 0, b2, 0)
+        assert pl is not None
+
+    def test_zero_outlets_any_index_raises(self):
+        """Box with 0 outlets: any outlet index raises ValueError."""
+        p = Patcher()
+        b1 = p.add_comment("test")  # 0 outlets
+        b2 = p.add_box("ezdac~")
+        with pytest.raises(ValueError, match="none.*0 outlet"):
+            p.add_connection(b1, 0, b2, 0)
+
+    def test_large_outlet_index_raises(self):
+        """Very large outlet index raises ValueError."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+        b2 = p.add_box("ezdac~")
+        with pytest.raises(ValueError, match="Outlet index 999 out of range"):
+            p.add_connection(b1, 999, b2, 0)
+
+    def test_large_inlet_index_raises(self):
+        """Very large inlet index raises ValueError."""
+        p = Patcher()
+        b1 = p.add_box("cycle~")
+        b2 = p.add_box("ezdac~")
+        with pytest.raises(ValueError, match="Inlet index 999 out of range"):
+            p.add_connection(b1, 0, b2, 999)
+
+
+class TestDuplicateConnectionPrevention:
+    """add_connection() returns existing patchline for duplicate connections."""
+
+    def test_duplicate_returns_existing(self):
+        """Duplicate connection returns existing Patchline (same object)."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        pl1 = p.add_connection(b1, 0, b2, 0)
+        pl2 = p.add_connection(b1, 0, b2, 0)
+        assert pl2 is pl1
+
+    def test_duplicate_line_count_unchanged(self):
+        """After duplicate, line count unchanged."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b1, 0, b2, 0)
+        assert len(p.lines) == 1
+
+    def test_different_outlets_not_duplicate(self):
+        """Connections with same boxes but different outlet/inlet are NOT duplicates."""
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        pl1 = p.add_connection(b1, 0, b2, 0)
+        pl2 = p.add_connection(b1, 0, b2, 1)
+        assert pl1 is not pl2
+        assert len(p.lines) == 2
