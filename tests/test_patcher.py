@@ -1201,7 +1201,84 @@ class TestModifyBox:
 
 class TestReplaceBox:
     """ED-03: replace_box object swap with orphaned connections."""
-    pass
+
+    def test_replace_basic(self):
+        """replace_box(old_box, 'saw~') creates new box with name 'saw~'."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        old = p.add_box("cycle~", args=["440"])
+        result = p.replace_box(old, "saw~")
+        assert isinstance(result, EditResult)
+        assert result.box.name == "saw~"
+
+    def test_replace_with_args(self):
+        """replace_box(old_box, 'pack', args=['0', '0']) passes args to new box."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        old = p.add_box("cycle~", args=["440"])
+        result = p.replace_box(old, "pack", args=["0", "0"])
+        assert result.box.name == "pack"
+        assert result.box.args == ["0", "0"]
+        assert result.box.numinlets == 2  # pack with 2 args has 2 inlets
+
+    def test_replace_preserves_position(self):
+        """New box has same patching_rect[0:2] as old box (position preserved)."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        old = p.add_box("cycle~", args=["440"], x=150.0, y=250.0)
+        result = p.replace_box(old, "saw~")
+        assert result.box.patching_rect[0] == 150.0
+        assert result.box.patching_rect[1] == 250.0
+
+    def test_replace_returns_all_connections_as_orphaned(self):
+        """replace_box returns ALL old connections as orphaned (no auto-remap)."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        old = p.add_box("cycle~", args=["440"])
+        dest = p.add_box("ezdac~")
+        src = p.add_box("message")
+        p.add_connection(old, 0, dest, 0)
+        p.add_connection(old, 0, dest, 1)
+        p.add_connection(src, 0, old, 0)
+
+        result = p.replace_box(old, "saw~")
+        assert len(result.orphaned) == 3
+
+    def test_replace_removes_old_box(self):
+        """Old box is removed from patcher.boxes after replace."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        old = p.add_box("cycle~", args=["440"])
+        old_id = old.id
+        result = p.replace_box(old, "saw~")
+        # Old box should not be in patcher
+        assert all(b.id != old_id for b in p.boxes)
+        # New box should be in patcher
+        assert result.box in p.boxes
+
+    def test_replace_removes_all_patchlines(self):
+        """All patchlines to/from old box are removed."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        b1 = p.add_box("cycle~", args=["440"])
+        b2 = p.add_box("ezdac~")
+        b3 = p.add_box("noise~")
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b3, 0, b2, 1)
+        assert len(p.lines) == 2
+
+        result = p.replace_box(b1, "saw~")
+        # Only the b3->b2 connection should remain
+        assert len(p.lines) == 1
+        assert p.lines[0].source_id == b3.id
+
+    def test_replace_raises_on_unknown_box(self):
+        """replace_box raises ValueError if old box not in patcher."""
+        p = Patcher()
+        p2 = Patcher()
+        foreign = p2.add_box("cycle~")
+        with pytest.raises(ValueError, match="not found"):
+            p.replace_box(foreign, "saw~")
 
 
 class TestAutoPosition:
