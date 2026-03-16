@@ -1074,4 +1074,67 @@ class TestMutationPreservesRoundTrip:
 
 class TestModifyPreservesRoundTrip:
     """ED-01: modify_box syncs _raw for lossless round-trip."""
-    pass
+
+    def test_modify_args_round_trip(self):
+        """Load patch, modify box args, serialize, verify text field in output matches new args."""
+        original = _load_project_patch("kicksynth/generated/kicksynth.maxpat")
+        p = Patcher.from_dict(original)
+
+        # Find a cycle~ box to modify
+        target = p.find_box(name="cycle~")
+        if target is None:
+            # Use any newobj box
+            target = p.find_box(maxclass="newobj")
+        assert target is not None
+
+        old_text = target.text
+        # Modify args
+        p.modify_box(target, args=["999"])
+
+        result = p.to_dict()
+
+        # Find the modified box in output
+        found = False
+        for box_entry in result["patcher"]["boxes"]:
+            bd = box_entry["box"]
+            if bd["id"] == target.id:
+                assert bd["text"] == target.text
+                assert "999" in bd["text"]
+                found = True
+                break
+        assert found, f"Modified box {target.id} not found in serialized output"
+
+    def test_modify_position_round_trip(self):
+        """Load patch, modify box position, serialize, verify patching_rect in output."""
+        original = _load_project_patch("kicksynth/generated/kicksynth.maxpat")
+        p = Patcher.from_dict(original)
+
+        target = p.boxes[0]
+        p.modify_box(target, position=[999.0, 888.0])
+
+        result = p.to_dict()
+
+        for box_entry in result["patcher"]["boxes"]:
+            bd = box_entry["box"]
+            if bd["id"] == target.id:
+                assert bd["patching_rect"][0] == 999.0
+                assert bd["patching_rect"][1] == 888.0
+                break
+
+    def test_modify_preserves_other_boxes(self):
+        """Modifying one box does not change any other box's serialization."""
+        original = _load_project_patch("kicksynth/generated/kicksynth.maxpat")
+        p = Patcher.from_dict(original)
+
+        target = p.boxes[0]
+        target_id = target.id
+        other_boxes_before = [
+            b.to_dict() for b in p.boxes if b.id != target_id
+        ]
+
+        p.modify_box(target, args=["999"])
+
+        other_boxes_after = [
+            b.to_dict() for b in p.boxes if b.id != target_id
+        ]
+        assert other_boxes_before == other_boxes_after

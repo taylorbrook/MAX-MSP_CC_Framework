@@ -1035,7 +1035,168 @@ class TestDuplicateConnectionPrevention:
 
 class TestModifyBox:
     """ED-01: modify_box in-place attribute editing."""
-    pass
+
+    def test_modify_args_updates_text(self):
+        """modify_box(box, args=["880"]) changes text to 'cycle~ 880'."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        box = p.add_box("cycle~", args=["440"])
+        result = p.modify_box(box, args=["880"])
+        assert isinstance(result, EditResult)
+        assert box.text == "cycle~ 880"
+        assert box.args == ["880"]
+
+    def test_modify_args_returns_edit_result(self):
+        """modify_box returns EditResult with box and orphaned fields."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        box = p.add_box("cycle~", args=["440"])
+        result = p.modify_box(box, args=["880"])
+        assert result.box is box
+        assert isinstance(result.orphaned, list)
+        assert len(result.orphaned) == 0
+
+    def test_modify_args_recomputes_io(self):
+        """modify_box(box, args=["b"]) on trigger recomputes I/O (1 arg = 1 outlet)."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        box = p.add_box("trigger", args=["b", "i", "f"])
+        assert box.numoutlets == 3
+        result = p.modify_box(box, args=["b"])
+        assert box.numoutlets == 1
+        assert box.numinlets == 1
+
+    def test_modify_args_orphans_connections_on_shrink(self):
+        """modify_box on variable_io object where I/O shrinks returns orphaned connections."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        trigger = p.add_box("trigger", args=["b", "i", "f"])
+        b1 = p.add_box("print", args=["first"])
+        b2 = p.add_box("print", args=["second"])
+        b3 = p.add_box("print", args=["third"])
+        p.add_connection(trigger, 0, b1, 0)
+        p.add_connection(trigger, 1, b2, 0)
+        p.add_connection(trigger, 2, b3, 0)
+        assert len(p.lines) == 3
+
+        result = p.modify_box(trigger, args=["b"])
+        # After shrink to 1 outlet, connections to outlets 1 and 2 are orphaned
+        assert len(result.orphaned) == 2
+        assert len(p.lines) == 1  # Only outlet 0 connection survives
+
+    def test_modify_position_changes_patching_rect(self):
+        """modify_box(box, position=[100, 200]) changes position without touching args."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        box = p.add_box("cycle~", args=["440"])
+        original_text = box.text
+        result = p.modify_box(box, position=[100.0, 200.0])
+        assert box.patching_rect[0] == 100.0
+        assert box.patching_rect[1] == 200.0
+        assert box.text == original_text
+        assert len(result.orphaned) == 0
+
+    def test_modify_color_sets_bgcolor(self):
+        """modify_box(box, color=[1,0,0,1]) sets extra_attrs['bgcolor']."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        box = p.add_box("cycle~")
+        result = p.modify_box(box, color=[1.0, 0.0, 0.0, 1.0])
+        assert box.extra_attrs["bgcolor"] == [1.0, 0.0, 0.0, 1.0]
+
+    def test_modify_extra_attrs_updates(self):
+        """modify_box(box, extra_attrs={"fontsize": 14}) updates extra_attrs."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        box = p.add_box("cycle~")
+        result = p.modify_box(box, extra_attrs={"fontsize": 14})
+        assert box.extra_attrs["fontsize"] == 14
+
+    def test_modify_syncs_raw_on_loaded_box(self):
+        """modify_box on loaded box (with _raw) updates _raw fields."""
+        import json
+        from src.maxpat.patcher import EditResult
+        data = {
+            "patcher": {
+                "fileversion": 1,
+                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                "classnamespace": "box",
+                "rect": [100.0, 100.0, 640.0, 480.0],
+                "boxes": [
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "cycle~ 440",
+                            "id": "obj-1",
+                            "numinlets": 2,
+                            "numoutlets": 1,
+                            "outlettype": ["signal"],
+                            "patching_rect": [100.0, 100.0, 80.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                        }
+                    }
+                ],
+                "lines": [],
+            }
+        }
+        p = Patcher.from_dict(data)
+        box = p.boxes[0]
+        assert box._raw is not None
+
+        result = p.modify_box(box, args=["880"])
+        assert box._raw["text"] == "cycle~ 880"
+        assert box.text == "cycle~ 880"
+
+    def test_modify_syncs_raw_position(self):
+        """modify_box on loaded box updates _raw['patching_rect']."""
+        data = {
+            "patcher": {
+                "fileversion": 1,
+                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                "classnamespace": "box",
+                "rect": [100.0, 100.0, 640.0, 480.0],
+                "boxes": [
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "cycle~ 440",
+                            "id": "obj-1",
+                            "numinlets": 2,
+                            "numoutlets": 1,
+                            "outlettype": ["signal"],
+                            "patching_rect": [100.0, 100.0, 80.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                        }
+                    }
+                ],
+                "lines": [],
+            }
+        }
+        p = Patcher.from_dict(data)
+        box = p.boxes[0]
+        p.modify_box(box, position=[200.0, 300.0])
+        assert box._raw["patching_rect"][0] == 200.0
+        assert box._raw["patching_rect"][1] == 300.0
+
+    def test_modify_raises_on_unknown_box(self):
+        """modify_box raises ValueError if box not in patcher."""
+        p = Patcher()
+        p2 = Patcher()
+        foreign_box = p2.add_box("cycle~")
+        with pytest.raises(ValueError, match="not found"):
+            p.modify_box(foreign_box, args=["880"])
+
+    def test_modify_no_changes_returns_empty_orphaned(self):
+        """modify_box with no args/position/color returns EditResult with empty orphaned."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        box = p.add_box("cycle~", args=["440"])
+        result = p.modify_box(box)
+        assert isinstance(result, EditResult)
+        assert result.box is box
+        assert result.orphaned == []
 
 
 class TestReplaceBox:
