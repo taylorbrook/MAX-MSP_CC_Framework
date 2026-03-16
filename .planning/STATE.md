@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: executing
-stopped_at: Completed 15-02-PLAN.md
-last_updated: "2026-03-16T18:12:40.937Z"
-last_activity: 2026-03-16 -- Plan 15-01 complete (EditResult, modify_box, replace_box)
+stopped_at: Completed 15-03-PLAN.md
+last_updated: "2026-03-16T18:19:42.234Z"
+last_activity: 2026-03-16 -- Plan 15-02 complete (auto-positioning, insert_into_connection)
 progress:
   total_phases: 11
-  completed_phases: 7
+  completed_phases: 8
   total_plans: 21
-  completed_plans: 20
-  percent: 19
+  completed_plans: 21
+  percent: 95
 ---
 
 # Project State
@@ -48,6 +48,7 @@ Progress: [██████████] 95%
 | 15 | 2 | 10min | 5min |
 
 *Updated after each plan completion*
+| Phase 15 P03 | 5min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -79,6 +80,10 @@ Recent decisions for v2.0:
 - [Phase 15-02]: COLLISION_PAD = 5.0px around all boxes for collision detection readability
 - [Phase 15-02]: insert_into_connection uses capacity = min(numinlets, numoutlets) for I/O mismatch handling
 - [Phase 15-02]: I/O mismatch returns orphaned in EditResult (not ValueError) per CONTEXT.md locked decision
+- [Phase 15-03]: signal_path excludes non-~ box itself from result (only ~ objects in signal chain)
+- [Phase 15-03]: connected_components returns disconnected boxes as single-element groups (not separate list)
+- [Phase 15-03]: Subpatcher crossing adds all inlet/outlet objects to result for full visibility
+- [Phase 15-03]: _build_adj sorts adjacency by outlet/inlet index for left-to-right traversal order
 
 ### Pending Todos
 
@@ -93,6 +98,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T18:12:40.934Z
-Stopped at: Completed 15-02-PLAN.md
+Last session: 2026-03-16T18:19:42.232Z
+Stopped at: Completed 15-03-PLAN.md
 Resume file: None
