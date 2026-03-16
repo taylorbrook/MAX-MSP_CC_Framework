@@ -76,6 +76,17 @@ def create_project(name: str, base_dir: Path) -> Path:
     )
     (project_dir / "status.md").write_text(status_content)
 
+    # Create empty .maxpat so the user can open the project in MAX immediately
+    from src.maxpat.patcher import Patcher as _Patcher
+    from src.maxpat.aesthetics import set_canvas_background as _set_canvas_bg
+    import json as _json
+
+    empty_patcher = _Patcher()
+    _set_canvas_bg(empty_patcher)
+    patch_dict = empty_patcher.to_dict()
+    maxpat_path = project_dir / "generated" / f"{name}.maxpat"
+    maxpat_path.write_text(_json.dumps(patch_dict, indent=2) + "\n")
+
     # Initialize version tracking at 0.0.0
     init_versions(project_dir)
 

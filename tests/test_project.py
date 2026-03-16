@@ -71,6 +71,16 @@ class TestCreateProject:
         assert status["progress"] == ""
         assert "created" in status
 
+    def test_creates_empty_maxpat(self, tmp_path: Path):
+        """create_project produces a valid empty .maxpat in generated/."""
+        project_path = create_project("my-synth", tmp_path)
+        maxpat_file = project_path / "generated" / "my-synth.maxpat"
+        assert maxpat_file.is_file()
+        data = json.loads(maxpat_file.read_text())
+        assert "patcher" in data
+        assert isinstance(data["patcher"]["boxes"], list)
+        assert isinstance(data["patcher"]["lines"], list)
+
 
 class TestActiveProject:
     """Tests for set_active_project / get_active_project."""
