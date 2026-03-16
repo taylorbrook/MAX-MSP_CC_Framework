@@ -351,3 +351,115 @@ def test_write_patch_backward_compat(tmp_path):
 
     assert out_path.exists()
     assert isinstance(results, list)
+
+
+# ---------------------------------------------------------------------------
+# read_patch
+# ---------------------------------------------------------------------------
+
+class TestReadPatch:
+    """Tests for read_patch() convenience function."""
+
+    def _write_minimal_patch(self, path):
+        """Write a minimal valid .maxpat JSON file and return its text."""
+        from src.maxpat import Patcher
+        p = Patcher()
+        p.add_box("cycle~", ["440"])
+        p.add_box("ezdac~")
+        data = p.to_dict()
+        text = json.dumps(data, indent=4)
+        path.write_text(text)
+        return text
+
+    def test_returns_patcher_and_text(self, tmp_path):
+        """read_patch returns (Patcher, str) tuple."""
+        from src.maxpat.hooks import read_patch
+        from src.maxpat.patcher import Patcher
+        fpath = tmp_path / "test.maxpat"
+        self._write_minimal_patch(fpath)
+        result = read_patch(str(fpath))
+        assert isinstance(result, tuple)
+        assert len(result) == 2
+        patcher, text = result
+        assert isinstance(patcher, Patcher)
+        assert isinstance(text, str)
+
+    def test_patcher_has_correct_box_count(self, tmp_path):
+        """Returned Patcher has boxes populated from file."""
+        from src.maxpat.hooks import read_patch
+        fpath = tmp_path / "test.maxpat"
+        self._write_minimal_patch(fpath)
+        patcher, _ = read_patch(str(fpath))
+        assert len(patcher.boxes) == 2
+
+    def test_original_text_matches_file(self, tmp_path):
+        """Returned original_text matches what was written."""
+        from src.maxpat.hooks import read_patch
+        fpath = tmp_path / "test.maxpat"
+        written = self._write_minimal_patch(fpath)
+        _, text = read_patch(str(fpath))
+        assert text == written
+
+    def test_original_text_for_roundtrip(self, tmp_path):
+        """original_text can be passed to save_patch_roundtrip for zero-diff."""
+        from src.maxpat.hooks import read_patch, save_patch_roundtrip
+        fpath = tmp_path / "test.maxpat"
+        self._write_minimal_patch(fpath)
+        patcher, original_text = read_patch(str(fpath))
+        # Re-save with original_text
+        out_path = tmp_path / "resaved.maxpat"
+        save_patch_roundtrip(patcher.to_dict(), out_path, original_text)
+        # Content should match original
+        assert out_path.read_text() == original_text
+
+    def test_accepts_pathlib_path(self, tmp_path):
+        """read_patch accepts pathlib.Path argument."""
+        from src.maxpat.hooks import read_patch
+        from pathlib import Path
+        fpath = tmp_path / "test.maxpat"
+        self._write_minimal_patch(fpath)
+        patcher, text = read_patch(Path(fpath))
+        assert len(patcher.boxes) == 2
+
+    def test_file_not_found_error(self):
+        """read_patch raises FileNotFoundError on nonexistent file."""
+        from src.maxpat.hooks import read_patch
+        with pytest.raises(FileNotFoundError):
+            read_patch("/tmp/nonexistent_12345.maxpat")
+
+    def test_invalid_json_error(self, tmp_path):
+        """read_patch raises json.JSONDecodeError on invalid JSON."""
+        import json as json_mod
+        from src.maxpat.hooks import read_patch
+        fpath = tmp_path / "bad.maxpat"
+        fpath.write_text("{ not valid json !!!")
+        with pytest.raises(json_mod.JSONDecodeError):
+            read_patch(str(fpath))
+
+    def test_missing_patcher_key_error(self, tmp_path):
+        """read_patch raises ValueError on JSON without 'patcher' key."""
+        from src.maxpat.hooks import read_patch
+        fpath = tmp_path / "no_patcher.maxpat"
+        fpath.write_text(json.dumps({"foo": "bar"}))
+        with pytest.raises(ValueError):
+            read_patch(str(fpath))
+
+    def test_loads_real_patch(self):
+        """read_patch loads a real project patch and returns populated Patcher."""
+        from src.maxpat.hooks import read_patch
+        import os
+        # Use kicksynth as a real test fixture
+        real_path = os.path.join(
+            os.path.dirname(__file__), "..",
+            "patches", "kicksynth", "generated", "kicksynth.maxpat",
+        )
+        if not os.path.exists(real_path):
+            pytest.skip("kicksynth.maxpat not available")
+        patcher, text = read_patch(real_path)
+        assert len(patcher.boxes) > 0
+        assert len(text) > 0
+
+    def test_importable_from_public_api(self):
+        """read_patch is importable from src.maxpat."""
+        from src.maxpat import read_patch
+        assert callable(read_patch)
