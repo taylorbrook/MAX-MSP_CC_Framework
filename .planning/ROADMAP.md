@@ -142,7 +142,12 @@ Plans:
   3. All user state survives the load-save cycle -- positions, colors, presentation rects, varnames, scripting names, custom attributes, and unknown keys are not dropped or reordered
   4. Patchline attributes (color, midpoints, hidden) are preserved through round-trip -- the verified color-drop bug is fixed
   5. Bpatcher attributes (offset, name, args, embed, lockeddragscroll) reconstruct correctly and are not lost or misplaced on save
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 13-01-PLAN.md -- Round-trip test suite, fixtures, and Patchline model fix (color, extra_attrs, _raw)
+- [ ] 13-02-PLAN.md -- Box _raw dict preservation and Patcher key-order fix
+- [ ] 13-03-PLAN.md -- Golden file integration tests passing for all 10 project .maxpat files
 
 ### Phase 14: Search and Mutation Primitives
 **Goal**: Users can find objects in loaded patches and make basic structural edits (add, remove, connect) without disturbing existing content
@@ -223,7 +228,7 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 10. Aesthetic Foundations | v1.1 | 2/2 | Complete | 2026-03-13 |
 | 11. Layout Refinements | v1.1 | 3/3 | Complete | 2026-03-13 |
 | 12. Pipeline Integration & Agent Updates | v1.1 | 2/2 | Complete | 2026-03-14 |
-| 13. Round-Trip Foundation | v2.0 | 0/0 | Not started | - |
+| 13. Round-Trip Foundation | v2.0 | 0/3 | Planned | - |
 | 14. Search and Mutation Primitives | v2.0 | 0/0 | Not started | - |
 | 15. Intelligent Editing | v2.0 | 0/0 | Not started | - |
 | 16. Patch Analysis | v2.0 | 0/0 | Not started | - |
@@ -232,4 +237,4 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-15 -- v2.0 milestone phases 13-18 added*
+*Last updated: 2026-03-15 -- Phase 13 plans created (3 plans in 3 waves)*
