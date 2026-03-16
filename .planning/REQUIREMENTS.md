@@ -87,36 +87,36 @@ Which phases cover which requirements. Updated during roadmap creation.
 |-------------|-------|--------|
 | RW-01 | Phase 13 | Pending |
 | RW-02 | Phase 13 | Pending |
-| RW-03 | Phase 13 | Pending |
-| RW-04 | Phase 13 | Pending |
-| RW-05 | Phase 13 | Pending |
 | RW-06 | Phase 13 | Pending |
-| RW-07 | Phase 13 | Pending |
-| ED-01 | Phase 14 | Pending |
-| ED-02 | Phase 14 | Pending |
-| ED-03 | Phase 14 | Pending |
-| ED-04 | Phase 14 | Pending |
-| ED-05 | Phase 14 | Pending |
-| AN-01 | Phase 15 | Pending |
-| AN-02 | Phase 15 | Pending |
-| AN-03 | Phase 15 | Pending |
-| MG-01 | Phase 16 | Pending |
-| MG-02 | Phase 16 | Pending |
-| MG-03 | Phase 16 | Pending |
-| MG-04 | Phase 16 | Pending |
-| MG-05 | Phase 16 | Pending |
-| MG-06 | Phase 16 | Pending |
-| CL-01 | Phase 17 | Pending |
-| CL-02 | Phase 17 | Pending |
-| CL-03 | Phase 17 | Pending |
-| CL-04 | Phase 17 | Pending |
-| CL-05 | Phase 17 | Pending |
+| RW-03 | Phase 14 | Pending |
+| RW-04 | Phase 14 | Pending |
+| RW-05 | Phase 14 | Pending |
+| RW-07 | Phase 14 | Pending |
+| ED-01 | Phase 15 | Pending |
+| ED-02 | Phase 15 | Pending |
+| ED-03 | Phase 15 | Pending |
+| ED-04 | Phase 15 | Pending |
+| ED-05 | Phase 15 | Pending |
+| AN-01 | Phase 16 | Pending |
+| AN-02 | Phase 16 | Pending |
+| AN-03 | Phase 16 | Pending |
+| MG-01 | Phase 17 | Pending |
+| MG-02 | Phase 17 | Pending |
+| MG-03 | Phase 17 | Pending |
+| MG-04 | Phase 17 | Pending |
+| MG-05 | Phase 17 | Pending |
+| MG-06 | Phase 17 | Pending |
+| CL-01 | Phase 18 | Pending |
+| CL-02 | Phase 18 | Pending |
+| CL-03 | Phase 18 | Pending |
+| CL-04 | Phase 18 | Pending |
+| CL-05 | Phase 18 | Pending |
 
 **Coverage:**
-- v2.0 requirements: 27 total
-- Mapped to phases: 27
-- Unmapped: 0 ✓
+- v2.0 requirements: 26 total
+- Mapped to phases: 26
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-15*
-*Last updated: 2026-03-15 after initial definition*
+*Last updated: 2026-03-15 -- phase mappings updated for 6-phase roadmap (13-18)*

@@ -3,7 +3,8 @@
 ## Milestones
 
 - ✅ **v1.0 MVP** — Phases 1-7 (shipped 2026-03-10)
-- 🚧 **v1.1 Patch Quality & Aesthetics** — Phases 8-12 (in progress)
+- ✅ **v1.1 Patch Quality & Aesthetics** — Phases 8-12 (shipped 2026-03-14)
+- 📋 **v2.0 Direct .maxpat Editing** — Phases 13-18 (planned)
 
 ## Phases
 
@@ -22,19 +23,33 @@ Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
 </details>
 
-### 🚧 v1.1 Patch Quality & Aesthetics (In Progress)
+<details>
+<summary>✅ v1.1 Patch Quality & Aesthetics (Phases 8-12) — SHIPPED 2026-03-14</summary>
 
-**Milestone Goal:** Improve the accuracy and visual quality of generated MAX patches through systematic object database auditing and aesthetic refinements.
+- [x] Phase 8: Help Patch Audit Pipeline (4/4 plans) — completed 2026-03-13
+- [ ] Phase 9: Object DB Corrections (0/2 plans) — deferred (low priority, audit data available for manual use)
+- [x] Phase 10: Aesthetic Foundations (2/2 plans) — completed 2026-03-13
+- [x] Phase 11: Layout Refinements (3/3 plans) — completed 2026-03-13
+- [x] Phase 12: Pipeline Integration & Agent Updates (2/2 plans) — completed 2026-03-14
+
+Full details: see phase details below (archived in-place)
+
+</details>
+
+### 📋 v2.0 Direct .maxpat Editing (Planned)
+
+**Milestone Goal:** Replace the Python generation pipeline with direct .maxpat reading and editing, making the .maxpat file the single source of truth and enabling true back-and-forth between Claude and manual MAX editing.
 
 **Phase Numbering:**
-- Integer phases (8, 9, 10, 11, 12): Planned milestone work
-- Decimal phases (e.g., 9.1): Urgent insertions (marked with INSERTED)
+- Integer phases (13, 14, 15, 16, 17, 18): Planned milestone work
+- Decimal phases (e.g., 14.1): Urgent insertions if needed (marked with INSERTED)
 
-- [x] **Phase 8: Help Patch Audit Pipeline** — Build offline audit tool that parses 973 .maxhelp files and extracts ground truth object metadata (completed 2026-03-13)
-- [ ] **Phase 9: Object DB Corrections** — Review audit results and merge verified corrections into overrides.json
-- [x] **Phase 10: Aesthetic Foundations** — Add comment styling, panels, patcher backgrounds, and visual polish to generated patches (completed 2026-03-13)
-- [x] **Phase 11: Layout Refinements** — Improve object positioning with better sizing, inlet alignment, grid snapping, and configurable options (completed 2026-03-13)
-- [x] **Phase 12: Pipeline Integration & Agent Updates** — Wire aesthetics and layout into generate_patch() and update agent documentation (completed 2026-03-14)
+- [ ] **Phase 13: Round-Trip Foundation** — Harden from_dict/to_dict for lossless .maxpat load-save cycle
+- [ ] **Phase 14: Search and Mutation Primitives** — Find objects and make basic add/remove/connect edits on loaded patches
+- [ ] **Phase 15: Intelligent Editing** — Higher-level edit operations: modify-in-place, insert-into-connection, replace, graph queries, auto-position
+- [ ] **Phase 16: Patch Analysis** — Structured patch understanding for onboarding existing patches from any source
+- [ ] **Phase 17: Agent and Command Migration** — Rewire slash commands and agent skills to use direct .maxpat editing
+- [ ] **Phase 18: v1.x Cleanup** — Remove generation pipeline artifacts (incremental.py, generate.py, manifests)
 
 ## Phase Details
 
@@ -117,11 +132,82 @@ Plans:
 - [x] 12-01-PLAN.md -- Auto-styling in generate_patch(), LayoutOptions parameter and public API export
 - [x] 12-02-PLAN.md -- Aesthetic capabilities documentation in all 6 agent SKILL.md files
 
+### Phase 13: Round-Trip Foundation
+**Goal**: Any .maxpat file can be loaded into Patcher objects and written back with zero data loss -- the trust foundation for all direct editing
+**Depends on**: Nothing (first phase in v2.0)
+**Requirements**: RW-01, RW-02, RW-06
+**Success Criteria** (what must be TRUE):
+  1. User can load any project .maxpat file (kicksynth, scala-synth, performancepatchtest, minitaur) into Patcher/Box/Patchline objects and all objects are present including recursive subpatchers
+  2. Loading a .maxpat and immediately writing it back produces a file with minimal diff -- key ordering preserved, numeric precision maintained, unchanged portions identical
+  3. All user state survives the load-save cycle -- positions, colors, presentation rects, varnames, scripting names, custom attributes, and unknown keys are not dropped or reordered
+  4. Patchline attributes (color, midpoints, hidden) are preserved through round-trip -- the verified color-drop bug is fixed
+  5. Bpatcher attributes (offset, name, args, embed, lockeddragscroll) reconstruct correctly and are not lost or misplaced on save
+**Plans**: TBD
+
+### Phase 14: Search and Mutation Primitives
+**Goal**: Users can find objects in loaded patches and make basic structural edits (add, remove, connect) without disturbing existing content
+**Depends on**: Phase 13
+**Requirements**: RW-03, RW-04, RW-05, RW-07
+**Success Criteria** (what must be TRUE):
+  1. User can find objects by ID, name, maxclass, or text substring -- including recursive search into subpatchers
+  2. User can add a new object to a loaded patch and it gets a unique ID, correct I/O counts from DB validation, and does not collide with any existing object
+  3. User can remove an object from a loaded patch and all connected patchlines are automatically cleaned up -- no dangling connections remain
+  4. User can add and remove connections between existing objects with inlet/outlet bounds checking that prevents invalid wiring
+  5. A read_patch() convenience function loads a .maxpat from disk into a Patcher ready for querying and editing
+**Plans**: TBD
+
+### Phase 15: Intelligent Editing
+**Goal**: Users can make sophisticated patch edits -- modify attributes in-place, insert objects into signal chains, swap objects, trace signal paths, and get smart auto-positioning
+**Depends on**: Phase 14
+**Requirements**: ED-01, ED-02, ED-03, ED-04, ED-05
+**Success Criteria** (what must be TRUE):
+  1. User can modify an object's arguments, position, color, or any attribute in-place without delete-and-recreate -- and I/O count recomputes when arguments change for variable_io objects
+  2. User can insert an object into an existing connection (e.g., "insert *~ 0.5 between cycle~ and dac~") -- original connection removed, new object wired in between, auto-positioned at midpoint
+  3. User can replace an object with a different one -- new object placed at same position, compatible connections remapped, incompatible connections listed in return value
+  4. User can query the patch graph -- upstream/downstream traversal from any object, signal path tracing, connected component detection, with signal and control graphs separated
+  5. New objects added near their connection context are auto-positioned intelligently -- below a source, above a target, between both, or in the nearest empty space
+**Plans**: TBD
+
+### Phase 16: Patch Analysis
+**Goal**: The framework can analyze any .maxpat file and produce a structured, human-readable summary of what the patch does -- enabling /max-onboard for existing patches
+**Depends on**: Phase 14 (uses search/query infrastructure), Phase 15 (uses graph traversal)
+**Requirements**: AN-01, AN-02, AN-03
+**Success Criteria** (what must be TRUE):
+  1. Patch analyzer produces a structured summary including: object inventory by domain, signal flow chains (audio source to dac~), control flow paths, subpatcher hierarchy map, parameter list, and complexity metrics
+  2. /max-onboard command takes any .maxpat file path, runs analysis, and outputs a human-readable summary that a user can review to understand the patch without opening MAX
+  3. Analyzer identifies functional sections by detecting connected components and spatial proximity -- grouping objects into logical units (e.g., "oscillator section", "filter chain", "envelope generator")
+**Plans**: TBD
+
+### Phase 17: Agent and Command Migration
+**Goal**: All slash commands and agent skills use direct .maxpat editing instead of the Python generation pipeline -- the user-visible behavior change
+**Depends on**: Phase 13, Phase 14, Phase 15, Phase 16
+**Requirements**: MG-01, MG-02, MG-03, MG-04, MG-05, MG-06
+**Success Criteria** (what must be TRUE):
+  1. /max-build creates patches by directly constructing Patcher objects and writing .maxpat files -- no generate.py script is created
+  2. /max-iterate reads an existing .maxpat, understands its structure (via analyzer), makes surgical edits (via edit methods), and writes back -- no generate.py modification
+  3. /max-new creates project structure with direct .maxpat workflow -- project scaffolding produces .maxpat files, not Python generation scripts
+  4. /max-onboard is implemented as a working slash command that runs patch analysis and produces onboarding output
+  5. All 6 specialist agent SKILL.md files reference the direct editing API (Patcher.from_dict, add_box, remove_box, find_box, etc.) instead of the generate.py workflow
+  6. Validation hooks work with direct editing -- validate on demand after edits, do not reject unknown objects on load, write_patch_direct() never auto-layouts
+**Plans**: TBD
+
+### Phase 18: v1.x Cleanup
+**Goal**: The old generation pipeline is fully removed -- no generate.py scripts, no manifests, no incremental.py -- the .maxpat file is the only artifact
+**Depends on**: Phase 17
+**Requirements**: CL-01, CL-02, CL-03, CL-04, CL-05
+**Success Criteria** (what must be TRUE):
+  1. incremental.py is deleted and its Manifest class, merge logic, and all imports are removed from the codebase -- no code references the manifest system
+  2. All .manifest.json sidecar files are deleted from every patch directory in the project
+  3. All generate.py and build_*.py scripts are deleted from patch directories -- .maxpat files stand alone without generation scripts
+  4. Test suite covers the read-write path -- from_dict() has dedicated tests, write-only assumptions are replaced with round-trip tests, and the expand-then-contract migration keeps CI green throughout
+  5. hooks.py write_patch uses the direct save path and merge_and_write is removed or raises a clear deprecation error
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 8 -> 9 -> 10 -> 11 -> 12
-Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 can begin after Phase 8 completes.
+Phases execute in numeric order: 13 -> 14 -> 15 -> 16 -> 17 -> 18
+Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 15 for graph traversal.
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -133,11 +219,17 @@ Note: Phase 10 can begin before Phase 9 completes (independent files). Phase 11 
 | 6. Fix Skill Documentation Signatures | v1.0 | 1/1 | Complete | 2026-03-10 |
 | 7. Fix Stale Agent Documentation | v1.0 | 1/1 | Complete | 2026-03-10 |
 | 8. Help Patch Audit Pipeline | v1.1 | 4/4 | Complete | 2026-03-13 |
-| 9. Object DB Corrections | v1.1 | 0/2 | Not started | - |
+| 9. Object DB Corrections | v1.1 | 0/2 | Deferred | - |
 | 10. Aesthetic Foundations | v1.1 | 2/2 | Complete | 2026-03-13 |
 | 11. Layout Refinements | v1.1 | 3/3 | Complete | 2026-03-13 |
-| 12. Pipeline Integration & Agent Updates | 2/2 | Complete    | 2026-03-14 | - |
+| 12. Pipeline Integration & Agent Updates | v1.1 | 2/2 | Complete | 2026-03-14 |
+| 13. Round-Trip Foundation | v2.0 | 0/0 | Not started | - |
+| 14. Search and Mutation Primitives | v2.0 | 0/0 | Not started | - |
+| 15. Intelligent Editing | v2.0 | 0/0 | Not started | - |
+| 16. Patch Analysis | v2.0 | 0/0 | Not started | - |
+| 17. Agent and Command Migration | v2.0 | 0/0 | Not started | - |
+| 18. v1.x Cleanup | v2.0 | 0/0 | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-14 -- Phase 12 planned (2 plans)*
+*Last updated: 2026-03-15 -- v2.0 milestone phases 13-18 added*
