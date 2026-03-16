@@ -239,7 +239,7 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 12. Pipeline Integration & Agent Updates | v1.1 | 2/2 | Complete | 2026-03-14 |
 | 13. Round-Trip Foundation | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 14. Search and Mutation Primitives | v2.0 | 2/2 | Complete | 2026-03-16 |
-| 15. Intelligent Editing | 1/3 | In Progress|  | - |
+| 15. Intelligent Editing | 2/3 | In Progress|  | - |
 | 16. Patch Analysis | v2.0 | 0/0 | Not started | - |
 | 17. Agent and Command Migration | v2.0 | 0/0 | Not started | - |
 | 18. v1.x Cleanup | v2.0 | 0/0 | Not started | - |

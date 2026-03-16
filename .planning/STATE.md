@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
-status: in-progress
-stopped_at: Plan 15-01 complete
-last_updated: "2026-03-16T18:02:31Z"
+status: executing
+stopped_at: Completed 15-02-PLAN.md
+last_updated: "2026-03-16T18:12:40.937Z"
 last_activity: 2026-03-16 -- Plan 15-01 complete (EditResult, modify_box, replace_box)
 progress:
   total_phases: 11
   completed_phases: 7
   total_plans: 21
-  completed_plans: 19
+  completed_plans: 20
   percent: 19
 ---
 
@@ -26,18 +26,18 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 ## Current Position
 
 Phase: 15 of 18 (Intelligent Editing)
-Plan: 1 of 3
+Plan: 2 of 3
 Status: In Progress
-Last activity: 2026-03-16 -- Plan 15-01 complete (EditResult, modify_box, replace_box)
+Last activity: 2026-03-16 -- Plan 15-02 complete (auto-positioning, insert_into_connection)
 
-Progress: [##░░░░░░░░] 19%
+Progress: [██████████] 95%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 5 (v2.0) / 37 (lifetime)
+- Total plans completed: 6 (v2.0) / 38 (lifetime)
 - Average duration: 5min (v2.0)
-- Total execution time: 25min (v2.0)
+- Total execution time: 30min (v2.0)
 
 **By Phase:**
 
@@ -45,7 +45,7 @@ Progress: [##░░░░░░░░] 19%
 |-------|-------|-------|----------|
 | 13 | 2 | 11min | 5.5min |
 | 14 | 2 | 9min | 4.5min |
-| 15 | 1 | 5min | 5min |
+| 15 | 2 | 10min | 5min |
 
 *Updated after each plan completion*
 
@@ -76,6 +76,9 @@ Recent decisions for v2.0:
 - [Research]: Zero new external dependencies -- all v2.0 built on existing codebase + stdlib
 - [Phase 13]: save_patch_roundtrip preserves trailing newline status; detect_indent defaults to 4 spaces (MAX 9.1.2 format)
 - [Phase 13]: save_patch_roundtrip is separate from write_patch -- creation path unchanged
+- [Phase 15-02]: COLLISION_PAD = 5.0px around all boxes for collision detection readability
+- [Phase 15-02]: insert_into_connection uses capacity = min(numinlets, numoutlets) for I/O mismatch handling
+- [Phase 15-02]: I/O mismatch returns orphaned in EditResult (not ValueError) per CONTEXT.md locked decision
 
 ### Pending Todos
 
@@ -90,6 +93,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T18:02:31Z
-Stopped at: Completed 15-01-PLAN.md
-Resume file: .planning/phases/15-intelligent-editing/15-01-SUMMARY.md
+Last session: 2026-03-16T18:12:40.934Z
+Stopped at: Completed 15-02-PLAN.md
+Resume file: None

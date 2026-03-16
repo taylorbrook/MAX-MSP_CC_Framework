@@ -20,10 +20,10 @@ Requirements for v2.0 Direct .maxpat Editing milestone. Each maps to roadmap pha
 ### Intelligent Editing
 
 - [x] **ED-01**: User can modify object attributes in-place — change args (with I/O recomputation), position, color, or any property without remove-and-recreate
-- [ ] **ED-02**: User can insert an object into an existing connection — original connection removed, new box wired between source and destination, auto-positioned at midpoint
+- [x] **ED-02**: User can insert an object into an existing connection — original connection removed, new box wired between source and destination, auto-positioned at midpoint
 - [x] **ED-03**: User can replace/swap an object — new object placed at same position, compatible connections remapped, incompatible connections reported
 - [ ] **ED-04**: User can query patch graph — upstream/downstream traversal, signal path tracing, connected components, separate signal vs control graphs
-- [ ] **ED-05**: New objects auto-positioned intelligently near their connection context — below source, above target, between both, or in nearest empty space
+- [x] **ED-05**: New objects auto-positioned intelligently near their connection context — below source, above target, between both, or in nearest empty space
 
 ### Patch Analysis & Onboarding
 
@@ -93,10 +93,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RW-05 | Phase 14 | Complete |
 | RW-07 | Phase 14 | Complete |
 | ED-01 | Phase 15 | Complete |
-| ED-02 | Phase 15 | Pending |
+| ED-02 | Phase 15 | Complete |
 | ED-03 | Phase 15 | Complete |
 | ED-04 | Phase 15 | Pending |
-| ED-05 | Phase 15 | Pending |
+| ED-05 | Phase 15 | Complete |
 | AN-01 | Phase 16 | Pending |
 | AN-02 | Phase 16 | Pending |
 | AN-03 | Phase 16 | Pending |
