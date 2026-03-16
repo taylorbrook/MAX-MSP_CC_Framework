@@ -811,3 +811,96 @@ class TestEdgeCases:
         assert "destination" in line0
         assert line0["source"][0] == osc.id
         assert line0["destination"][0] == dac.id
+
+
+# ---------------------------------------------------------------------------
+# TestFileLevelRoundTrip -- Plan 03: Indentation-preserving file save
+# ---------------------------------------------------------------------------
+
+
+class TestFileLevelRoundTrip:
+    """File-level round-trip preserves original indentation for zero-diff output."""
+
+    def test_detect_indent_4space(self):
+        """detect_indent identifies 4-space indentation."""
+        from src.maxpat.hooks import detect_indent
+        assert detect_indent('{\n    "patcher": {') == "    "
+
+    def test_detect_indent_2space(self):
+        """detect_indent identifies 2-space indentation."""
+        from src.maxpat.hooks import detect_indent
+        assert detect_indent('{\n  "patcher": {') == "  "
+
+    def test_detect_indent_tab(self):
+        """detect_indent identifies tab indentation."""
+        from src.maxpat.hooks import detect_indent
+        assert detect_indent('{\n\t"patcher": {') == "\t"
+
+    def test_detect_indent_no_indent_defaults_4space(self):
+        """detect_indent returns 4 spaces for file with no indented lines."""
+        from src.maxpat.hooks import detect_indent
+        assert detect_indent('{"patcher": {}}') == "    "
+
+    def test_max_saved_file_byte_identical(self, tmp_path):
+        """MAX-saved 4-space file round-trips to byte-identical output."""
+        from src.maxpat.hooks import save_patch_roundtrip, detect_indent
+        # Use a MAX-saved file (comp-band.maxpat has 4-space indent)
+        path = PATCHES_DIR / "performancepatchtest" / "generated" / "comp-band.maxpat"
+        original_text = path.read_text()
+        original_data = json.loads(original_text)
+
+        # Verify it uses 4-space indent
+        assert detect_indent(original_text) == "    "
+
+        # Round-trip through Patcher
+        p = Patcher.from_dict(original_data)
+        result = p.to_dict()
+
+        # Write via save_patch_roundtrip
+        out_path = tmp_path / "comp-band-rt.maxpat"
+        save_patch_roundtrip(result, out_path, original_text=original_text)
+
+        # Read back and compare
+        roundtrip_text = out_path.read_text()
+        assert roundtrip_text == original_text + "\n" or roundtrip_text == original_text, (
+            "File-level round-trip produced different output for MAX-saved file"
+        )
+
+    def test_framework_file_byte_identical(self, tmp_path):
+        """Framework-generated 2-space file round-trips to byte-identical output."""
+        from src.maxpat.hooks import save_patch_roundtrip, detect_indent
+        # Use a framework-generated file (rhythmic-sampler.maxpat has 2-space indent)
+        path = PATCHES_DIR / "rhythmic-sampler" / "generated" / "rhythmic-sampler.maxpat"
+        original_text = path.read_text()
+        original_data = json.loads(original_text)
+
+        # Verify it uses 2-space indent
+        assert detect_indent(original_text) == "  "
+
+        # Round-trip through Patcher
+        p = Patcher.from_dict(original_data)
+        result = p.to_dict()
+
+        # Write via save_patch_roundtrip
+        out_path = tmp_path / "rhythmic-sampler-rt.maxpat"
+        save_patch_roundtrip(result, out_path, original_text=original_text)
+
+        # Read back and compare
+        roundtrip_text = out_path.read_text()
+        assert roundtrip_text == original_text + "\n" or roundtrip_text == original_text, (
+            "File-level round-trip produced different output for framework file"
+        )
+
+    def test_new_file_uses_max_default(self, tmp_path):
+        """save_patch_roundtrip with no original_text uses 4-space indent."""
+        from src.maxpat.hooks import save_patch_roundtrip
+        data = {"patcher": {"fileversion": 1, "boxes": [], "lines": []}}
+
+        out_path = tmp_path / "new.maxpat"
+        save_patch_roundtrip(data, out_path)
+
+        content = out_path.read_text()
+        # Should use 4-space indent (MAX default)
+        assert '\n    "' in content, (
+            "New file should use 4-space indent (MAX default)"
+        )
