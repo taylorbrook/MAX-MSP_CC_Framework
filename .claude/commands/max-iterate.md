@@ -6,35 +6,66 @@ argument-hint: "[changes]"
 
 # /max-iterate
 
-Apply modifications to existing generated patches or code without regenerating from scratch.
+Apply modifications to existing .maxpat patches using the analyze-first protocol. Reads the patch, shows a structural analysis, then makes surgical or section-level edits while preserving all existing objects and user positioning.
 
 ## Behavior
 
 1. **Load active project** -- read `patches/.active-project.json` for the current project. If no active project, prompt the user.
 
-2. **Read existing files** -- load the generated files from the project's `generated/` directory that the user wants to modify.
+2. **Auto-detect target .maxpat** -- determine which patch file to edit:
+   - Single .maxpat in `generated/`: use it automatically
+   - Multiple .maxpat files: infer from the user's change description (match keywords to filenames)
+   - Ambiguous: ask the user which file to edit
 
-3. **Understand the change** -- parse the user's description of desired modifications.
+3. **Load patch** -- load the target file using read_patch:
+   ```python
+   patcher, original_text = read_patch(path)
+   ```
+   This returns a Patcher instance for editing and the original text for round-trip saving.
 
-4. **Route through max-router** -- invoke the max-router skill to determine which specialist agent(s) should handle the modification. The router receives:
+4. **Analyze patch** (mandatory before any edits) -- run structural analysis and display it to the user:
+   ```python
+   summary = patcher.analyze()
+   ```
+   The analysis shows: complexity metrics, object inventory by domain, functional sections, signal chain trees, control flow origins, subpatcher hierarchy, and parameters. This gives agent and user shared context before discussing changes.
+
+5. **Parse change request** -- interpret the user's desired modifications against the analysis context. Identify which objects, sections, or signal chains are affected.
+
+6. **Choose edit strategy** (transparent to user) -- the agent selects an approach and explains it before executing:
+   - **Surgical edit** -- for small, targeted changes: use `find_box()` to locate targets, then `modify_box()` or `replace_box()` to make changes in place. Preserves all positions and connections.
+   - **Section rebuild** -- for larger structural changes: use `connected_components()` to identify the affected group, `remove_box()` each object in the group, then rebuild with new objects and connections. Reconnect to the rest of the patch.
+
+7. **Preserve existing objects** -- unconditionally preserve all objects the user did not ask to change. If the requested edit would affect objects the user added manually in MAX (e.g., removing an object that user-added objects connect to), warn before proceeding.
+
+8. **Route through max-router** -- invoke the max-router skill for specialist dispatch with:
    - The modification description
-   - The existing file content(s) as context
+   - The analysis summary as context
    - Project context and relevant memory
 
-5. **Apply changes** -- the specialist agent modifies the existing output rather than regenerating from scratch. Modifications respect:
-   - Existing object positions and connections (for patches)
-   - Existing code structure (for GenExpr/JavaScript)
-   - User's prior decisions captured in context.md
+9. **Execute edits** -- the specialist agent applies changes via Patcher API methods:
+   - `find_box()` / `find_boxes()` for locating targets
+   - `modify_box()` for in-place attribute changes
+   - `replace_box()` for swapping object types
+   - `insert_into_connection()` for inserting objects into existing signal chains
+   - `remove_box()` for removing objects (with automatic patchline cleanup)
+   - `add_box()` / `add_connection()` for adding new objects
 
-6. **Critic loop** -- run the max-critic skill on the modified output to verify the changes are valid.
+10. **Critic loop** -- validate and review the modified patch:
+    - Run `validate_patch(patcher)` for structural validation
+    - Run `review_patch(patcher.to_dict())` via the max-critic skill
+    - Same quality gate as `/max-build` -- blockers require revision, warnings are annotated
 
-7. **Write output** -- save modified files back to the project's `generated/` directory.
+11. **Save patch** -- write back using round-trip save to preserve positions and indentation:
+    ```python
+    save_patch_roundtrip(patcher.to_dict(), path, original_text)
+    ```
+    This preserves the original file's indentation, key ordering, and any metadata that the Patcher model does not explicitly track.
 
-8. **Bump version** -- after a successful write, call `bump_version(project_dir, "patch", description)` where `description` is a short summary of the change (e.g., "add LFO to filter cutoff"). This auto-increments the patch version in `versions.json`. If the change is significant (new feature, major rework), use `"minor"` or `"major"` instead of `"patch"`.
+12. **Bump version** -- call `bump_version(project_dir, "patch", description)` where `description` is a short summary of the change. Use `"minor"` or `"major"` for significant reworks.
 
-9. **Write-back memory** -- store any new patterns from the modification.
+13. **Write-back memory** -- store any new patterns from the modification.
 
-10. **Update progress** -- increment progress via `update_status()`.
+14. **Update progress** -- increment progress via `update_status()`.
 
 ## Skills Referenced
 
@@ -46,6 +77,7 @@ Apply modifications to existing generated patches or code without regenerating f
 ## Python Modules
 
 ```python
+from src.maxpat import read_patch, save_patch_roundtrip, validate_patch, Patcher
 from src.maxpat.project import get_active_project, update_status, bump_version
 from src.maxpat.critics import review_patch, CriticResult
 from src.maxpat.memory import MemoryStore

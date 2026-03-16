@@ -16,6 +16,8 @@ Create a new MAX/MSP project with the given name and begin the conversational ki
    - Load `src/maxpat/project.py`
    - Call `create_project(name, base_dir)` to scaffold the full directory structure under `patches/{name}/`
    - Call `set_active_project(name, base_dir)` to make this the active project
+   - `create_project()` also creates an empty `.maxpat` file at `patches/{name}/generated/{name}.maxpat` with canvas background color set. The user can open this in MAX immediately.
+   - No intermediary Python scripts are created for new projects.
 
 3. **Start conversational kickoff** -- ask the user to describe what they want to build, then ask 3-4 clarifying questions:
    - What audio/MIDI requirements does this project have? (audio input/output, MIDI in/out, both?)
