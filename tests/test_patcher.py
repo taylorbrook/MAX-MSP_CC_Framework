@@ -1028,3 +1028,46 @@ class TestDuplicateConnectionPrevention:
         pl2 = p.add_connection(b1, 0, b2, 1)
         assert pl1 is not pl2
         assert len(p.lines) == 2
+
+
+# --- Phase 15: Intelligent Editing ---
+
+
+class TestModifyBox:
+    """ED-01: modify_box in-place attribute editing."""
+    pass
+
+
+class TestReplaceBox:
+    """ED-03: replace_box object swap with orphaned connections."""
+    pass
+
+
+class TestAutoPosition:
+    """ED-05: auto-positioning with collision detection and grid snap."""
+    pass
+
+
+class TestInsertIntoConnection:
+    """ED-02: insert_into_connection splice operation."""
+    pass
+
+
+class TestDownstream:
+    """ED-04: downstream graph traversal."""
+    pass
+
+
+class TestUpstream:
+    """ED-04: upstream graph traversal."""
+    pass
+
+
+class TestSignalPath:
+    """ED-04: signal-only path tracing."""
+    pass
+
+
+class TestConnectedComponents:
+    """ED-04: connected component detection."""
+    pass

@@ -1067,3 +1067,11 @@ class TestMutationPreservesRoundTrip:
 
         # Box count: original - 1 (removed) + 1 (added) = original
         assert len(result_boxes) == original_count
+
+
+# --- Phase 15: Modify Round-Trip ---
+
+
+class TestModifyPreservesRoundTrip:
+    """ED-01: modify_box syncs _raw for lossless round-trip."""
+    pass
