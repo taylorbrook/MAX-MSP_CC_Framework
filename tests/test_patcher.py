@@ -1519,12 +1519,185 @@ class TestInsertIntoConnection:
 
 class TestDownstream:
     """ED-04: downstream graph traversal."""
-    pass
+
+    def test_linear_chain(self):
+        """A->B->C: downstream(A) returns [B, C]."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("*~", args=["0.5"])
+        c = p.add_box("dac~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+        result = p.downstream(a)
+        assert result == [b, c]
+
+    def test_branching_left_to_right(self):
+        """Branching: outlet 0 targets come before outlet 1 targets."""
+        p = Patcher()
+        src = p.add_box("trigger", args=["b", "b"])
+        left = p.add_box("toggle")
+        right = p.add_box("button")
+        # outlet 0 -> left, outlet 1 -> right
+        p.add_connection(src, 0, left, 0)
+        p.add_connection(src, 1, right, 0)
+        result = p.downstream(src)
+        assert result == [left, right]
+
+    def test_signal_only_filters_control(self):
+        """signal_only=True skips non-~ boxes."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        gain = p.add_box("*~", args=["0.5"])
+        meter = p.add_box("meter~")
+        # Also connect osc to a control object via snapshot~->print
+        snap = p.add_box("snapshot~", args=["50"])
+        prnt = p.add_box("print")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, meter, 0)
+        p.add_connection(osc, 0, snap, 0)
+        p.add_connection(snap, 0, prnt, 0)
+        result = p.downstream(osc, signal_only=True)
+        # snapshot~ ends with ~ so it IS included, but print does not
+        assert gain in result
+        assert meter in result
+        assert snap in result
+        assert prnt not in result
+
+    def test_empty_when_no_downstream(self):
+        """Sink box with no outgoing connections returns empty list."""
+        p = Patcher()
+        a = p.add_box("dac~")
+        result = p.downstream(a)
+        assert result == []
+
+    def test_feedback_loop_terminates(self):
+        """Visited set prevents infinite loop in feedback patches."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("*~", args=["0.5"])
+        # Create feedback: a->b and b->a
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, a, 0)
+        result = p.downstream(a)
+        assert b in result
+        # a should NOT be in result (starting box excluded), but loop terminates
+        assert a not in result
+
+    def test_valueerror_on_missing_box(self):
+        """Raises ValueError if box is not in this patcher."""
+        p = Patcher()
+        p.add_box("cycle~", args=["440"])
+        other_p = Patcher()
+        foreign_box = other_p.add_box("dac~")
+        with pytest.raises(ValueError, match="not in this patcher"):
+            p.downstream(foreign_box)
+
+    def test_starting_box_not_in_result(self):
+        """Starting box is excluded from the returned list."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("dac~")
+        p.add_connection(a, 0, b, 0)
+        result = p.downstream(a)
+        assert a not in result
+        assert b in result
+
+    def test_subpatcher_crossing_downstream(self):
+        """Traversal crosses into subpatcher via inlet objects."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        # Create a subpatcher with 1 inlet, 1 outlet
+        sub_box, inner = p.add_subpatcher("mysub", inlets=1, outlets=1)
+        out = p.add_box("dac~")
+        # Connect osc -> subpatcher inlet 0
+        p.add_connection(osc, 0, sub_box, 0)
+        # Connect subpatcher outlet 0 -> dac~
+        p.add_connection(sub_box, 0, out, 0)
+        # Inside subpatcher: wire inlet -> some_box -> outlet
+        inner_boxes = inner.boxes  # inlet at index 0, outlet at index 1
+        inner_gain = inner.add_box("*~", args=["0.5"])
+        inner.add_connection(inner_boxes[0], 0, inner_gain, 0)
+        inner.add_connection(inner_gain, 0, inner_boxes[1], 0)
+        # downstream(osc) should see: sub_box, inner_gain, out
+        result = p.downstream(osc)
+        assert sub_box in result
+        assert inner_gain in result
+        assert out in result
 
 
 class TestUpstream:
     """ED-04: upstream graph traversal."""
-    pass
+
+    def test_linear_chain_upstream(self):
+        """A->B->C: upstream(C) returns [B, A]."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("*~", args=["0.5"])
+        c = p.add_box("dac~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+        result = p.upstream(c)
+        assert result == [b, a]
+
+    def test_signal_only_filters_control(self):
+        """signal_only=True skips non-~ boxes upstream."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        gain = p.add_box("*~", args=["0.5"])
+        out = p.add_box("dac~")
+        # Also a control path into gain
+        slider = p.add_box("slider")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(slider, 0, gain, 1)
+        p.add_connection(gain, 0, out, 0)
+        result = p.upstream(out, signal_only=True)
+        assert gain in result
+        assert osc in result
+        assert slider not in result
+
+    def test_empty_when_no_upstream(self):
+        """Source box with no incoming connections returns empty list."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        result = p.upstream(a)
+        assert result == []
+
+    def test_valueerror_on_missing_box(self):
+        """Raises ValueError if box is not in this patcher."""
+        p = Patcher()
+        p.add_box("dac~")
+        other_p = Patcher()
+        foreign = other_p.add_box("cycle~", args=["440"])
+        with pytest.raises(ValueError, match="not in this patcher"):
+            p.upstream(foreign)
+
+    def test_subpatcher_crossing_upstream(self):
+        """Traversal crosses into subpatcher via outlet objects upstream."""
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        sub_box, inner = p.add_subpatcher("mysub", inlets=1, outlets=1)
+        out = p.add_box("dac~")
+        p.add_connection(osc, 0, sub_box, 0)
+        p.add_connection(sub_box, 0, out, 0)
+        # Inside: inlet -> gain -> outlet
+        inner_boxes = inner.boxes
+        inner_gain = inner.add_box("*~", args=["0.5"])
+        inner.add_connection(inner_boxes[0], 0, inner_gain, 0)
+        inner.add_connection(inner_gain, 0, inner_boxes[1], 0)
+        # upstream(out) should see: sub_box, inner_gain, osc
+        result = p.upstream(out)
+        assert sub_box in result
+        assert inner_gain in result
+        assert osc in result
+
+    def test_starting_box_excluded(self):
+        """Starting box is never in the result."""
+        p = Patcher()
+        a = p.add_box("cycle~", args=["440"])
+        b = p.add_box("dac~")
+        p.add_connection(a, 0, b, 0)
+        result = p.upstream(b)
+        assert b not in result
 
 
 class TestSignalPath:

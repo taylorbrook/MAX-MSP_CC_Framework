@@ -10,6 +10,7 @@ All JSON output follows the .maxpat format verified in 02-RESEARCH.md.
 from __future__ import annotations
 
 import copy
+from collections import deque
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -1800,3 +1801,238 @@ class Patcher:
         if "lines" not in result:
             result["lines"] = [line.to_dict() for line in self.lines]
         return {"patcher": result}
+
+    # ------------------------------------------------------------------
+    # Graph traversal / query
+    # ------------------------------------------------------------------
+
+    def _build_adj(
+        self, signal_only: bool = False
+    ) -> tuple[dict[str, list[tuple[str, int]]], dict[str, list[tuple[str, int]]], dict[str, Box]]:
+        """Build forward and reverse adjacency dicts from self.lines.
+
+        Args:
+            signal_only: If True, skip connections where either source or
+                destination box name does not end with ``~``.
+
+        Returns:
+            (forward, reverse, box_map) where:
+            - forward[source_id] = sorted list of (dest_id, source_outlet) tuples
+            - reverse[dest_id] = sorted list of (source_id, dest_inlet) tuples
+            - box_map maps id -> Box for fast lookups
+        """
+        box_map: dict[str, Box] = {b.id: b for b in self.boxes}
+        forward: dict[str, list[tuple[str, int]]] = {}
+        reverse: dict[str, list[tuple[str, int]]] = {}
+
+        for line in self.lines:
+            src_id = line.source_id
+            dst_id = line.dest_id
+            if src_id not in box_map or dst_id not in box_map:
+                continue
+            if signal_only:
+                src_box = box_map[src_id]
+                dst_box = box_map[dst_id]
+                if not src_box.name.endswith("~") or not dst_box.name.endswith("~"):
+                    continue
+            forward.setdefault(src_id, []).append((dst_id, line.source_outlet))
+            reverse.setdefault(dst_id, []).append((src_id, line.dest_inlet))
+
+        # Sort by outlet/inlet index for left-to-right ordering
+        for v in forward.values():
+            v.sort(key=lambda t: t[1])
+        for v in reverse.values():
+            v.sort(key=lambda t: t[1])
+
+        return forward, reverse, box_map
+
+    def downstream(self, box: Box, *, signal_only: bool = False) -> list[Box]:
+        """Return all boxes reachable downstream from *box* (BFS, full chain).
+
+        Results are ordered by outlet index (left to right) for natural
+        signal-flow reading. The starting box is NOT included.
+
+        Traversal crosses subpatcher boundaries: when a downstream neighbor
+        has ``_inner_patcher``, the traversal follows through inlet objects
+        inside the subpatcher and continues out through outlet objects.
+
+        Args:
+            box: Starting box.
+            signal_only: If True, only follow connections where both source
+                and destination box names end with ``~``.
+
+        Returns:
+            List of downstream Box objects.
+
+        Raises:
+            ValueError: If *box* is not in this patcher.
+        """
+        if box not in self.boxes:
+            raise ValueError(
+                f"Box '{box.id}' ({box.name}) is not in this patcher"
+            )
+        return self._traverse(box, direction="downstream", signal_only=signal_only)
+
+    def upstream(self, box: Box, *, signal_only: bool = False) -> list[Box]:
+        """Return all boxes reachable upstream from *box* (BFS, full chain).
+
+        Results are ordered by inlet index (left to right). The starting
+        box is NOT included.
+
+        Traversal crosses subpatcher boundaries by following outlet objects
+        inside subpatchers back to their sources.
+
+        Args:
+            box: Starting box.
+            signal_only: If True, only follow connections where both source
+                and destination box names end with ``~``.
+
+        Returns:
+            List of upstream Box objects.
+
+        Raises:
+            ValueError: If *box* is not in this patcher.
+        """
+        if box not in self.boxes:
+            raise ValueError(
+                f"Box '{box.id}' ({box.name}) is not in this patcher"
+            )
+        return self._traverse(box, direction="upstream", signal_only=signal_only)
+
+    def _traverse(
+        self,
+        start: Box,
+        *,
+        direction: str,
+        signal_only: bool = False,
+    ) -> list[Box]:
+        """BFS traversal in given direction, crossing subpatcher boundaries.
+
+        Args:
+            start: The starting box.
+            direction: ``"downstream"`` or ``"upstream"``.
+            signal_only: Filter to signal-only connections.
+
+        Returns:
+            Ordered list of reachable Box objects (starting box excluded).
+        """
+        result: list[Box] = []
+        # visited tracks (id(patcher), box_id) to handle cross-patcher traversal
+        visited: set[tuple[int, str]] = set()
+        visited.add((id(self), start.id))
+
+        # Queue items: (patcher, box_id) -- the patcher that owns the box
+        queue: deque[tuple[Patcher, str]] = deque()
+
+        # Seed the queue with immediate neighbors in this patcher
+        self._enqueue_neighbors(
+            queue, visited, result, self, start, direction, signal_only
+        )
+
+        while queue:
+            patcher, box_id = queue.popleft()
+            box_map = {b.id: b for b in patcher.boxes}
+            current_box = box_map.get(box_id)
+            if current_box is None:
+                continue
+
+            # If this box has an inner patcher, cross the boundary
+            if current_box._inner_patcher is not None:
+                self._cross_subpatcher(
+                    queue, visited, result, patcher, current_box,
+                    direction, signal_only
+                )
+
+            # Enqueue neighbors of current_box within its own patcher
+            self._enqueue_neighbors(
+                queue, visited, result, patcher, current_box, direction, signal_only
+            )
+
+        return result
+
+    def _enqueue_neighbors(
+        self,
+        queue: deque[tuple[Patcher, str]],
+        visited: set[tuple[int, str]],
+        result: list[Box],
+        patcher: Patcher,
+        box: Box,
+        direction: str,
+        signal_only: bool,
+    ) -> None:
+        """Add unvisited neighbors of *box* to the BFS queue and result."""
+        forward, reverse, box_map = patcher._build_adj(signal_only=signal_only)
+
+        if direction == "downstream":
+            neighbors = forward.get(box.id, [])
+        else:
+            neighbors = reverse.get(box.id, [])
+
+        for neighbor_id, _index in neighbors:
+            key = (id(patcher), neighbor_id)
+            if key in visited:
+                continue
+            visited.add(key)
+            neighbor_box = box_map.get(neighbor_id)
+            if neighbor_box is not None:
+                result.append(neighbor_box)
+                queue.append((patcher, neighbor_id))
+
+    def _cross_subpatcher(
+        self,
+        queue: deque[tuple[Patcher, str]],
+        visited: set[tuple[int, str]],
+        result: list[Box],
+        parent_patcher: Patcher,
+        sub_box: Box,
+        direction: str,
+        signal_only: bool,
+    ) -> None:
+        """Cross into a subpatcher boundary during traversal.
+
+        For downstream: find inlet/inlet~ objects inside and continue from them.
+        For upstream: find outlet/outlet~ objects inside and trace back from them.
+        """
+        inner = sub_box._inner_patcher
+        if inner is None:
+            return
+
+        if direction == "downstream":
+            # Find connections entering sub_box in parent, map to inner inlet objects
+            # Then find outlet/outlet~ objects in inner, map back to parent connections
+            # Step 1: find inlet objects inside
+            for inner_box in inner.boxes:
+                if inner_box.name in ("inlet", "inlet~"):
+                    key = (id(inner), inner_box.id)
+                    if key not in visited:
+                        visited.add(key)
+                        result.append(inner_box)
+                        queue.append((inner, inner_box.id))
+
+            # Step 2: find outlet objects that lead back to parent
+            for inner_box in inner.boxes:
+                if inner_box.name in ("outlet", "outlet~"):
+                    key = (id(inner), inner_box.id)
+                    if key not in visited:
+                        visited.add(key)
+                        result.append(inner_box)
+                        # Outlet objects map back to parent's sub_box outlets
+                        # Enqueue sub_box's downstream in parent (already handled
+                        # by normal traversal since sub_box is in the result path)
+        else:
+            # upstream: find outlet objects inside and trace backwards
+            for inner_box in inner.boxes:
+                if inner_box.name in ("outlet", "outlet~"):
+                    key = (id(inner), inner_box.id)
+                    if key not in visited:
+                        visited.add(key)
+                        result.append(inner_box)
+                        queue.append((inner, inner_box.id))
+
+            # Also expose inlet objects (they connect back to parent upstream)
+            for inner_box in inner.boxes:
+                if inner_box.name in ("inlet", "inlet~"):
+                    key = (id(inner), inner_box.id)
+                    if key not in visited:
+                        visited.add(key)
+                        result.append(inner_box)
