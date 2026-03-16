@@ -48,7 +48,7 @@ Full details: see phase details below (archived in-place)
 - [x] **Phase 14: Search and Mutation Primitives** — Find objects and make basic add/remove/connect edits on loaded patches (completed 2026-03-16)
 - [x] **Phase 15: Intelligent Editing** — Higher-level edit operations: modify-in-place, insert-into-connection, replace, graph queries, auto-position (completed 2026-03-16)
 - [x] **Phase 16: Patch Analysis** — Structured patch understanding for onboarding existing patches from any source (completed 2026-03-16)
-- [ ] **Phase 17: Agent and Command Migration** — Rewire slash commands and agent skills to use direct .maxpat editing
+- [x] **Phase 17: Agent and Command Migration** — Rewire slash commands and agent skills to use direct .maxpat editing (completed 2026-03-16)
 - [ ] **Phase 18: v1.x Cleanup** — Remove generation pipeline artifacts (incremental.py, generate.py, manifests)
 
 ## Phase Details
@@ -249,7 +249,7 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 | 14. Search and Mutation Primitives | v2.0 | 2/2 | Complete | 2026-03-16 |
 | 15. Intelligent Editing | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 16. Patch Analysis | v2.0 | 1/1 | Complete | 2026-03-16 |
-| 17. Agent and Command Migration | 1/3 | In Progress|  | - |
+| 17. Agent and Command Migration | 3/3 | Complete   | 2026-03-16 | - |
 | 18. v1.x Cleanup | v2.0 | 0/0 | Not started | - |
 
 ---

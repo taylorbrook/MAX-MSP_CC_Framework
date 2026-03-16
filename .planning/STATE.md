@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
-status: executing
-stopped_at: Completed 17-01-PLAN.md
-last_updated: "2026-03-16T22:01:53.397Z"
-last_activity: 2026-03-16 -- Plan 17-01 complete (validation warning + empty maxpat creation)
+status: completed
+stopped_at: Completed 17-03-PLAN.md (Phase 17 complete -- all 3 plans done)
+last_updated: "2026-03-16T22:02:07Z"
+last_activity: 2026-03-16 -- Plan 17-03 complete (agent SKILL.md dual workflow documentation)
 progress:
   total_phases: 11
-  completed_phases: 9
+  completed_phases: 10
   total_plans: 25
-  completed_plans: 23
-  percent: 92
+  completed_plans: 25
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v2.0 Phase 17 in progress -- Agent & Command Migration
+**Current focus:** v2.0 Phase 17 complete -- Agent & Command Migration
 
 ## Current Position
 
 Phase: 17 of 18 (Agent & Command Migration)
-Plan: 1 of 3
-Status: In Progress
-Last activity: 2026-03-16 -- Plan 17-01 complete (validation warning + empty maxpat creation)
+Plan: 3 of 3
+Status: Complete
+Last activity: 2026-03-16 -- Plan 17-03 complete (agent SKILL.md dual workflow documentation)
 
-Progress: [█████████░] 92%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -51,6 +51,8 @@ Progress: [█████████░] 92%
 | Phase 15 P03 | 5min | 2 tasks | 2 files |
 | Phase 16 P01 | 6min | 2 tasks | 2 files |
 | Phase 17 P01 | 2min | 2 tasks | 4 files |
+| Phase 17 P02 | 3min | 2 tasks | 5 files |
+| Phase 17 P02 | 3min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -92,6 +94,9 @@ Recent decisions for v2.0:
 - [Phase 16-01]: Control flow traces only notable origins (loadbang, metro, MIDI) -- not all control paths
 - [Phase 17]: [17-01]: Unknown objects downgraded from error to warning so third-party patches pass validation
 - [Phase 17]: [17-01]: Empty .maxpat uses Patcher + set_canvas_background for styled initial patch
+- [Phase 17]: [17-02]: /max-build checks for existing .maxpat, offers overwrite or redirect to /max-iterate
+- [Phase 17]: [17-02]: /max-iterate uses transparent strategy selection (surgical vs section rebuild)
+- [Phase 17]: [17-02]: /max-onboard offers next steps after analysis (create project, iterate, or review)
 
 ### Pending Todos
 
@@ -106,6 +111,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T22:01:53.395Z
-Stopped at: Completed 17-01-PLAN.md
+Last session: 2026-03-16T22:03:28.055Z
+Stopped at: Completed 17-02-PLAN.md
 Resume file: None
