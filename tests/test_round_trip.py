@@ -12,6 +12,7 @@ import pathlib
 import pytest
 
 from src.maxpat.patcher import Patcher, Box, Patchline
+from src.maxpat.hooks import detect_indent
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -1138,3 +1139,35 @@ class TestModifyPreservesRoundTrip:
             b.to_dict() for b in p.boxes if b.id != target_id
         ]
         assert other_boxes_before == other_boxes_after
+
+
+# ---------------------------------------------------------------------------
+# TestSubpatcherByteIdentity -- Phase 19: Subpatcher key ordering bug fix
+# ---------------------------------------------------------------------------
+
+
+class TestSubpatcherByteIdentity:
+    """Subpatcher-containing patches produce byte-identical output through from_dict/to_dict."""
+
+    @pytest.mark.parametrize("relpath", [
+        "minitaur/generated/minitaur.maxpat",
+        "performancepatchtest/generated/performancepatchtest.maxpat",
+        "scala-synth/generated/scala-synth.maxpat",
+    ])
+    def test_byte_identical_round_trip(self, relpath):
+        """Loading a subpatcher-containing .maxpat through from_dict/to_dict produces byte-identical output."""
+        path = PATCHES_DIR / relpath
+        original_text = path.read_text()
+        original = json.loads(original_text)
+
+        p = Patcher.from_dict(original)
+        result = p.to_dict()
+
+        result_text = json.dumps(result, indent=detect_indent(original_text))
+        if original_text.endswith("\n"):
+            result_text += "\n"
+
+        assert result_text == original_text, (
+            f"Round-trip of {relpath} is not byte-identical "
+            f"(lengths: original={len(original_text)}, result={len(result_text)})"
+        )
