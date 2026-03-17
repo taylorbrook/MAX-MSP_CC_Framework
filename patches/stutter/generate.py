@@ -52,6 +52,7 @@ History ch_lscale(1);
 History ch_roff(0);
 History fb_L(0);
 History fb_R(0);
+History smooth_act(0);
 History init_done(0);
 
 // Initialize division factor lookup table
@@ -202,10 +203,19 @@ phase_B = clamp(phase_B, -slen_B * 0.1, slen_B * 1.1);
 stut_L = sA_L * env_A + sB_L * env_B;
 stut_R = sA_R * env_A + sB_R * env_B;
 
-// Dry/wet output
-act = stutter_active > 0.5;
-out_L = act ? mix(x_L, stut_L, dry_wet) : x_L;
-out_R = act ? mix(x_R, stut_R, dry_wet) : x_R;
+// Smooth stutter_active toggle to prevent clicks (~5ms ramp)
+act_target = stutter_active > 0.5 ? 1 : 0;
+if (smooth_act < act_target) {
+    smooth_act = min(smooth_act + fade_inc, act_target);
+} else {
+    smooth_act = max(smooth_act - fade_inc, act_target);
+}
+
+// Dry/wet output with smoothed activation
+wet_L = mix(x_L, stut_L, dry_wet);
+wet_R = mix(x_R, stut_R, dry_wet);
+out_L = mix(x_L, wet_L, smooth_act);
+out_R = mix(x_R, wet_R, smooth_act);
 
 fb_L = stut_L;
 fb_R = stut_R;
@@ -288,6 +298,11 @@ def build():
     sfplay.numoutlets = 3
     sfplay.outlettype = ["signal", "signal", ""]
     sfplay.extra_attrs["loop"] = 1
+
+    # Loop toggle for soundfile mode (default ON)
+    loop_tog = p.add_box("toggle", x=590, y=110)
+    loop_prep = p.add_box("prepend", ["loop"], x=590, y=140)
+    loop_init = p.add_box("loadmess", ["1"], x=590, y=85)
 
     sel_L = p.add_box("selector~", ["2"], x=30, y=165)
     sel_R = p.add_box("selector~", ["2"], x=200, y=165)
@@ -417,6 +432,13 @@ def build():
     fb_num = make_readout(2, FX3, 170)
     dw_num = make_readout(2, FX3, 360)
 
+    # ===== DIAL DEFAULTS (init from gen~ Param values) =====
+    bpm_init = p.add_box("loadmess", ["100"], x=CX1, y=90)
+    div_init = p.add_box("loadmess", ["3"], x=CX1, y=215)
+    sl_init = p.add_box("loadmess", ["127"], x=CX1, y=280)
+    pit_init = p.add_box("loadmess", ["42"], x=CX2, y=90)
+    dw_init = p.add_box("loadmess", ["64"], x=CX3, y=280)
+
     # ===== SECTION LABELS (patching mode) =====
     p.add_section_header("SIGNAL CHAIN", x=30, y=15)
     p.add_section_header("DISPLAY", x=420, y=15)
@@ -445,6 +467,7 @@ def build():
     plabel("Dry/Wet", 460, 360, 60)
     plabel("IN", 120, 435, 25)
     plabel("OUT", 540, 435, 30)
+    plabel("Loop", 585, 0, 40)
 
     # ============================================================
     # CONNECTIONS
@@ -536,6 +559,18 @@ def build():
     p.add_connection(fb_sc, 0, fb_num, 0)
     p.add_connection(dw_sc, 0, dw_num, 0)
 
+    # Dial initialization (loadmess -> dials on patch load)
+    p.add_connection(bpm_init, 0, bpm_dial, 0)
+    p.add_connection(div_init, 0, div_menu, 0)
+    p.add_connection(sl_init, 0, sl_dial, 0)
+    p.add_connection(pit_init, 0, pit_dial, 0)
+    p.add_connection(dw_init, 0, dw_dial, 0)
+
+    # Loop toggle -> sfplay~
+    p.add_connection(loop_init, 0, loop_tog, 0)
+    p.add_connection(loop_tog, 0, loop_prep, 0)
+    p.add_connection(loop_prep, 0, sfplay, 0)
+
     # ============================================================
     # PRESENTATION MODE
     # ============================================================
@@ -551,6 +586,8 @@ def build():
     in_tog.presentation_rect = [430.0, 15.0, 30.0, 30.0]
     open_btn.presentation = True
     open_btn.presentation_rect = [480.0, 17.0, 90.0, 26.0]
+    loop_tog.presentation = True
+    loop_tog.presentation_rect = [590.0, 17.0, 26.0, 26.0]
 
     # Waveform display
     wf.presentation = True
