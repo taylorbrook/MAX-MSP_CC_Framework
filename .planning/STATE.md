@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-17 - Completed quick task 260316-rzx: max-build should assume new patch, max-iterate for existing patches
+Last activity: 2026-03-17 - Completed quick task 260316-uzv: Remove examples/ folder and list patches in README
 
 Progress: [██████████] 100%
 
@@ -116,6 +116,7 @@ None.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260316-rzx | max-build should assume new patch, max-iterate for existing patches | 2026-03-17 | d8b2e22 | [260316-rzx-max-build-should-assume-new-patch-max-it](./quick/260316-rzx-max-build-should-assume-new-patch-max-it/) |
+| 260316-uzv | Remove examples/ folder and list patches in README | 2026-03-17 | 0807246 | [260316-uzv-remove-examples-folder-and-list-patches-](./quick/260316-uzv-remove-examples-folder-and-list-patches-/) |
 
 ### Blockers/Concerns
 
@@ -126,6 +127,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-17T03:12:31.105Z
-Stopped at: Completed quick-260316-rzx-PLAN.md
+Last session: 2026-03-17T05:23:05Z
+Stopped at: Completed quick-260316-uzv-PLAN.md
 Resume file: None
