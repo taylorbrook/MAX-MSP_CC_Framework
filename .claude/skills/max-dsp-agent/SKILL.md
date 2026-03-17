@@ -37,7 +37,7 @@ Before any generation:
 - `parse_genexpr_io(code)` -- detect input/output count from GenExpr code
 - `generate_gendsp(code, num_inputs=None, num_outputs=None)` -- generate standalone .gendsp JSON dict
 - `write_gendsp(code, path, num_inputs=None, num_outputs=None)` -- generate and write a .gendsp file to disk (imported from `src.maxpat.hooks`, not from `src.maxpat.patcher`)
-- GenExpr syntax: `in 1`/`out 1` for I/O, `Param` for parameters, `History` for feedback, `Buffer`/`Data` for samples
+- GenExpr syntax: `in1`/`out1` for I/O (no space -- space form is for gen~ patcher objects only), `Param` for parameters, `History` for feedback, `Buffer`/`Data` for samples
 - **Declaration ordering rule:** ALL declarations (`Param`, `Delay`, `History`, `Buffer`, `Data`) MUST appear at the top of the codebox, before any expressions or assignments. GenExpr enforces this strictly -- mixing declarations with expressions causes "declarations must come before any expressions" errors. Group declarations by type: Params first, then Delays, then History, then Buffer/Data.
 
 ### Gen~ Patch Integration

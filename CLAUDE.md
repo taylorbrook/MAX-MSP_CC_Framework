@@ -77,7 +77,7 @@ Getting this wrong causes silent bugs where objects compute with stale values. A
 - Add `comment` objects on non-obvious connections
 - Prefer named `send`/`receive` (and `send~`/`receive~`) over long patch cords that cross the patch
 - Use `patcher` (subpatchers) to organize complex logic into named sections
-- Standard object spacing: ~80-120px vertical, ~150-200px horizontal
+- Standard object spacing: ~20px vertical, ~15px horizontal gutter (matches defaults.py; user-confirmed tight spacing)
 
 ### Rule #5: No Generator Scripts
 
@@ -98,7 +98,7 @@ This rule exists because the generator pattern causes regeneration to overwrite 
 
 ### Gen~ (GenExpr DSP Code)
 
-- GenExpr uses C-style syntax with `in 1`, `in 2` for inputs and `out 1`, `out 2` for outputs
+- GenExpr codebox uses C-style syntax with `in1`, `in2` for inputs and `out1`, `out2` for outputs (no space -- `in 1`/`out 1` is only for gen~ patcher objects, not codebox code)
 - Use `Param` for user-controllable parameters (maps to gen~ attributes)
 - Use `History` for single-sample delay (feedback loops, state)
 - `Buffer` and `Data` for sample data access
