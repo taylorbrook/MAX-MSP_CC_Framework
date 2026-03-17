@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed 18-02-PLAN.md
-last_updated: "2026-03-16T23:10:29.080Z"
-last_activity: 2026-03-16 -- Plan 18-02 complete (remove v1.x code infrastructure)
+stopped_at: Completed 19-01-PLAN.md
+last_updated: "2026-03-17T00:29:40Z"
+last_activity: 2026-03-17 -- Plan 19-01 complete (tech debt cleanup - subpatcher round-trip fix)
 progress:
-  total_phases: 11
-  completed_phases: 11
-  total_plans: 27
-  completed_plans: 27
+  total_phases: 12
+  completed_phases: 12
+  total_plans: 28
+  completed_plans: 28
   percent: 100
 ---
 
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-03-15)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v2.0 complete -- all phases finished
+**Current focus:** v2.0 complete + tech debt cleanup
 
 ## Current Position
 
-Phase: 18 of 18 (v1.x Cleanup)
-Plan: 2 of 2
+Phase: 19 of 19 (Tech Debt Cleanup)
+Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-16 -- Plan 18-02 complete (remove v1.x code infrastructure)
+Last activity: 2026-03-17 -- Plan 19-01 complete (tech debt cleanup - subpatcher round-trip fix)
 
 Progress: [██████████] 100%
 
@@ -55,6 +55,7 @@ Progress: [██████████] 100%
 | Phase 17 P03 | 3min | 2 tasks | 10 files |
 | Phase 18 P01 | 2min | 2 tasks | 21 files |
 | Phase 18 P02 | 11min | 2 tasks | 18 files |
+| Phase 19 P01 | 2min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -104,6 +105,7 @@ Recent decisions for v2.0:
 - [Phase 17]: [17-03]: Domain focus notes use distinct examples per agent (route, cycle~, rnbo~, etc.)
 - [Phase 18]: Untracked files deleted from disk only; 14 tracked files staged as git deletions
 - [Phase 18]: SKILL.md verification tests updated to check v2.0 API names (save_patch_roundtrip) instead of v1.x (write_patch)
+- [Phase 19]: [19-01]: Sentinel raw["patcher"] = None preserves key ordering instead of pop() which destroys ordered dict position
 
 ### Pending Todos
 
@@ -118,6 +120,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-16T23:04:05.000Z
-Stopped at: Completed 18-02-PLAN.md
+Last session: 2026-03-17T00:29:40Z
+Stopped at: Completed 19-01-PLAN.md
 Resume file: None
