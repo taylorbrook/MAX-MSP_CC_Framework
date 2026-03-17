@@ -109,7 +109,7 @@ def generate_help_patch(
         outlets: Outlet descriptions (for comment generation).
 
     Returns:
-        Patcher instance (caller writes via write_patch or manual JSON).
+        Patcher instance (caller saves via save_patch_roundtrip or manual JSON).
     """
     from src.maxpat.db_lookup import ObjectDatabase
 
