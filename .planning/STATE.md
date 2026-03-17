@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260317-e14-PLAN.md
-last_updated: "2026-03-17T17:10:57.340Z"
-last_activity: "2026-03-17 - Completed quick task 260317-e14: Remove generate.py approach and add safeguards"
+stopped_at: Completed quick-260317-g0a-PLAN.md
+last_updated: "2026-03-17T18:39:14.430Z"
+last_activity: "2026-03-17 - Completed quick task 260317-g0a: Fix documentation inconsistencies"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-17 - Completed quick task 260317-e14: Remove generate.py approach and add safeguards
+Last activity: 2026-03-17 - Completed quick task 260317-g0a: Fix documentation inconsistencies
 
 Progress: [██████████] 100%
 
@@ -57,6 +57,7 @@ Progress: [██████████] 100%
 | Phase 18 P02 | 11min | 2 tasks | 18 files |
 | Phase 19 P01 | 2min | 2 tasks | 4 files |
 | Phase quick-260317-b86 P01 | 6min | 2 tasks | 3 files |
+| Phase quick-260317-g0a P01 | 2min | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -109,6 +110,9 @@ Recent decisions for v2.0:
 - [Phase 19]: [19-01]: Sentinel raw["patcher"] = None preserves key ordering instead of pop() which destroys ordered dict position
 - [Phase quick-260317-b86]: COLLISION_PAD overlap uses half-pad expansion per rect (Minkowski sum) so 5px means 2.5px per side
 - [Phase quick-260317-e14]: Rule #5 placed after Rule #4 (Patch Style), before Domain-Specific Rules section
+- [Phase quick-260317-g0a]: GenExpr I/O syntax docs corrected: in1/out1 for codebox, in 1/out 1 for patcher objects only
+- [Phase quick-260317-g0a]: Layout spacing docs corrected: ~20px vertical, ~15px gutter (matching defaults.py)
+- [Phase quick-260317-g0a]: All /max: command format replaced with /max- across 10 skill files
 
 ### Pending Todos
 
@@ -122,6 +126,7 @@ None.
 | 260316-uzv | Remove examples/ folder and list patches in README | 2026-03-17 | 0807246 | [260316-uzv-remove-examples-folder-and-list-patches-](./quick/260316-uzv-remove-examples-folder-and-list-patches-/) |
 | 260317-b86 | Add post-generation patch layout validation critic | 2026-03-17 | 9467aa3 | [260317-b86-add-post-generation-patch-layout-validat](./quick/260317-b86-add-post-generation-patch-layout-validat/) |
 | 260317-e14 | Remove generate.py approach and add safeguards | 2026-03-17 | 195096e | [260317-e14-remove-generate-py-approach-and-add-safe](./quick/260317-e14-remove-generate-py-approach-and-add-safe/) |
+| 260317-g0a | Fix documentation inconsistencies (GenExpr syntax, spacing, command format) | 2026-03-17 | 793811b | [260317-g0a-thoroughly-review-the-entire-repo-for-in](./quick/260317-g0a-thoroughly-review-the-entire-repo-for-in/) |
 
 ### Blockers/Concerns
 
@@ -132,6 +137,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-17T17:10:49.629Z
-Stopped at: Completed quick-260317-e14-PLAN.md
+Last session: 2026-03-17T18:39:10.388Z
+Stopped at: Completed quick-260317-g0a-PLAN.md
 Resume file: None
