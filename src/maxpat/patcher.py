@@ -1828,7 +1828,8 @@ class Patcher:
             # Preserve raw box dict for lossless round-trip
             # Exclude nested patcher -- handled separately via _inner_patcher
             raw = dict(box_data)
-            raw.pop("patcher", None)
+            if "patcher" in raw:
+                raw["patcher"] = None  # sentinel preserves key position in ordered dict
             box._raw = raw
 
             p.boxes.append(box)
