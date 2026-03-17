@@ -4,6 +4,11 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-03-17T04:36:13.280499+00:00"
+    },
+    {
+      "version": "1.0.0",
+      "description": "v1.0.0: Glitchy stutter effect with dual-voice crossfade gen~ engine, brickwall limiter, 19 rhythmic divisions, chaos mode, feedback, full presentation UI with readouts",
+      "timestamp": "2026-03-17T06:00:53.112266+00:00"
     }
   ]
 }

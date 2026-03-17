@@ -5,9 +5,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.maxpat import (
-    Patcher, _apply_auto_styling, apply_layout,
+    Patcher, _apply_auto_styling,
     save_patch_roundtrip, validate_patch,
 )
+from src.maxpat.hooks import write_gendsp
 from src.maxpat.project import update_status
 
 BASE = Path(__file__).resolve().parent
@@ -138,7 +139,7 @@ if (swap > 0.5) {
     ch_roff = noise() * 0.5;
 }
 
-// Compute blended slice params (rhythmic ↔ chaotic)
+// Compute blended slice params (rhythmic / chaotic)
 rhy_anch = write_pos - cur_slen;
 if (rhy_anch < 0) {
     rhy_anch = rhy_anch + buf_len;
@@ -265,121 +266,168 @@ DIVISIONS = [
 
 
 def build():
+    # --- Write standalone .gendsp files ---
+    write_gendsp(STUTTER_CODE, OUT / "stutter-engine.gendsp", 2, 4)
+    write_gendsp(LIMITER_CODE, OUT / "brickwall-limiter.gendsp", 2, 2)
+    print("Wrote stutter-engine.gendsp")
+    print("Wrote brickwall-limiter.gendsp")
+
     p = Patcher()
 
-    # ===== NON-AUDIO =====
-    buf = p.add_box("buffer~", ["stutter_buf", "4000", "2"])
-    lb = p.add_box("loadbang")
-    start_msg = p.add_message("startwindow")
+    # ============================================================
+    # COLUMN 1 (x=30): Audio signal chain
+    # ============================================================
 
-    # ===== INPUT STAGE =====
-    adc = p.add_box("adc~")
-    sfplay = p.add_box("sfplay~", ["2"])
+    buf = p.add_box("buffer~", ["stutter_buf", "4000", "2"], x=30, y=45)
+
+    lb = p.add_box("loadbang", x=220, y=40)
+    start_msg = p.add_message("startwindow", x=220, y=67)
+
+    adc = p.add_box("adc~", x=30, y=110)
+    sfplay = p.add_box("sfplay~", ["2"], x=200, y=110)
     sfplay.numoutlets = 3
     sfplay.outlettype = ["signal", "signal", ""]
     sfplay.extra_attrs["loop"] = 1
 
-    sel_L = p.add_box("selector~", ["2"])
-    sel_R = p.add_box("selector~", ["2"])
+    sel_L = p.add_box("selector~", ["2"], x=30, y=165)
+    sel_R = p.add_box("selector~", ["2"], x=200, y=165)
 
-    # ===== GEN~ =====
-    gen_stut, _ = p.add_gen(STUTTER_CODE, 2, 4)
-    gen_lim, _ = p.add_gen(LIMITER_CODE, 2, 2)
+    # meter~ is 15x100 tall — position to right of selectors, clear of gen~
+    in_meter = p.add_box("meter~", x=370, y=165)
 
-    # ===== OUTPUT =====
-    dac = p.add_box("dac~")
+    # gen~ references external .gendsp files
+    gen_stut = p.add_box("gen~", ["stutter-engine"], x=30, y=270)
+    gen_stut.numinlets = 2
+    gen_stut.numoutlets = 4
+    gen_stut.outlettype = ["signal"] * 4
 
-    # ===== DISPLAY =====
-    wf = p.add_box("waveform~")
-    wf.extra_attrs["buffername"] = "stutter_buf"
-    wf.patching_rect[2] = 300.0
-    wf.patching_rect[3] = 80.0
+    gen_lim = p.add_box("gen~", ["brickwall-limiter"], x=30, y=345)
+    gen_lim.numinlets = 2
+    gen_lim.numoutlets = 2
+    gen_lim.outlettype = ["signal"] * 2
 
-    snap_s = p.add_box("snapshot~", ["50"])
-    snap_s.extra_attrs["active"] = 1
-    snap_e = p.add_box("snapshot~", ["50"])
-    snap_e.extra_attrs["active"] = 1
-    mul_s = p.add_box("*", ["4000."])
-    mul_e = p.add_box("*", ["4000."])
+    dac = p.add_box("dac~", x=30, y=405)
+    out_meter = p.add_box("meter~", x=200, y=345)
 
-    # ===== METERS =====
-    in_meter = p.add_box("meter~")
-    out_meter = p.add_box("meter~")
+    # ============================================================
+    # COLUMN 2 (x=420): Display + file loading
+    # ============================================================
 
-    # ===== FILE LOADING =====
-    open_btn = p.add_box("textbutton")
+    # File loading
+    open_btn = p.add_box("textbutton", x=420, y=45)
     open_btn.extra_attrs["text"] = "Open File"
     open_btn.extra_attrs["mode"] = 0
-    opendlg = p.add_box("opendialog")
-    file_trig = p.add_box("trigger", ["b", "s"])
-    open_prep = p.add_box("prepend", ["open"])
-    play_msg = p.add_message("1")
+    opendlg = p.add_box("opendialog", x=420, y=70)
+    file_trig = p.add_box("trigger", ["b", "s"], x=420, y=100)
+    open_prep = p.add_box("prepend", ["open"], x=420, y=130)
+    play_msg = p.add_message("1", x=530, y=130)
 
-    # ===== UI CONTROLS =====
+    # Input source switch
+    in_tog = p.add_box("toggle", x=420, y=165)
+    in_add = p.add_box("+", ["1"], x=420, y=195)
 
-    # Stutter toggle + LED
-    stut_tog = p.add_box("toggle")
-    stut_prep = p.add_box("prepend", ["stutter_active"])
-    activity_led = p.add_box("led")
+    # Waveform display chain
+    snap_s = p.add_box("snapshot~", ["50"], x=420, y=270)
+    snap_s.extra_attrs["active"] = 1
+    snap_e = p.add_box("snapshot~", ["50"], x=530, y=270)
+    snap_e.extra_attrs["active"] = 1
+    mul_s = p.add_box("*", ["4000."], x=420, y=300)
+    mul_e = p.add_box("*", ["4000."], x=530, y=300)
+
+    wf = p.add_box("waveform~", x=420, y=340)
+    wf.extra_attrs["buffername"] = "stutter_buf"
+    wf.patching_rect[2] = 200.0
+    wf.patching_rect[3] = 80.0
+
+    # ============================================================
+    # COLUMNS 3-5 (x=660, 860, 1060): Parameter controls
+    # ============================================================
+    CX1, CX2, CX3 = 660, 860, 1060  # control column x positions
+    FX1, FX2, FX3 = 780, 980, 1180  # flonum x positions (+120)
+
+    # -- Stutter on/off --
+    stut_tog = p.add_box("toggle", x=CX1, y=45)
+    stut_prep = p.add_box("prepend", ["stutter_active"], x=CX1, y=75)
+    activity_led = p.add_box("led", x=CX1 + 40, y=45)
     activity_led.extra_attrs["oncolor"] = [0.2, 0.9, 0.2, 1.0]
 
-    # Input source toggle
-    in_tog = p.add_box("toggle")
-    in_add = p.add_box("+", ["1"])
-
-    # BPM
-    bpm_dial = p.add_box("dial")
+    # -- BPM (col 3, row 1) --
+    bpm_dial = p.add_box("dial", x=CX1, y=110)
     bpm_dial.extra_attrs["size"] = 281
-    bpm_sc = p.add_box("scale", ["0", "280", "20.", "300."])
-    bpm_prep = p.add_box("prepend", ["bpm"])
+    bpm_sc = p.add_box("scale", ["0", "280", "20.", "300."], x=CX1, y=170)
+    bpm_prep = p.add_box("prepend", ["bpm"], x=CX1, y=197)
 
-    # Division
+    # -- Division (col 3, row 2) --
     div_items = []
     for d in DIVISIONS:
         if div_items:
             div_items.append(",")
         div_items.append(d)
-    div_menu = p.add_box("umenu")
+    div_menu = p.add_box("umenu", x=CX1, y=235)
     div_menu.extra_attrs["items"] = div_items
-    div_prep = p.add_box("prepend", ["division"])
+    div_prep = p.add_box("prepend", ["division"], x=CX1, y=262)
 
-    # Slice length
-    sl_dial = p.add_box("dial")
+    # -- Slice (col 3, row 3) --
+    sl_dial = p.add_box("dial", x=CX1, y=300)
     sl_dial.extra_attrs["size"] = 128
-    sl_sc = p.add_box("scale", ["0", "127", "0.1", "1."])
-    sl_prep = p.add_box("prepend", ["slice_length"])
+    sl_sc = p.add_box("scale", ["0", "127", "0.1", "1."], x=CX1, y=360)
+    sl_prep = p.add_box("prepend", ["slice_length"], x=CX1, y=387)
 
-    # Pitch
-    pit_dial = p.add_box("dial")
+    # -- Pitch (col 4, row 1) --
+    pit_dial = p.add_box("dial", x=CX2, y=110)
     pit_dial.extra_attrs["size"] = 128
-    pit_sc = p.add_box("scale", ["0", "127", "0.5", "2."])
-    pit_prep = p.add_box("prepend", ["pitch"])
+    pit_sc = p.add_box("scale", ["0", "127", "0.5", "2."], x=CX2, y=170)
+    pit_prep = p.add_box("prepend", ["pitch"], x=CX2, y=197)
 
-    # Reverse
-    rev_tog = p.add_box("toggle")
-    rev_prep = p.add_box("prepend", ["reverse"])
+    # -- Reverse (col 4, row 2) --
+    rev_tog = p.add_box("toggle", x=CX2, y=235)
+    rev_prep = p.add_box("prepend", ["reverse"], x=CX2, y=262)
 
-    # Chaos amount
-    ch_dial = p.add_box("dial")
+    # -- Chaos (col 4, row 3) --
+    ch_dial = p.add_box("dial", x=CX2, y=300)
     ch_dial.extra_attrs["size"] = 128
-    ch_sc = p.add_box("scale", ["0", "127", "0.", "1."])
-    ch_prep = p.add_box("prepend", ["chaos_amount"])
+    ch_sc = p.add_box("scale", ["0", "127", "0.", "1."], x=CX2, y=360)
+    ch_prep = p.add_box("prepend", ["chaos_amount"], x=CX2, y=387)
 
-    # Feedback
-    fb_dial = p.add_box("dial")
+    # -- Feedback (col 5, row 1) --
+    fb_dial = p.add_box("dial", x=CX3, y=110)
     fb_dial.extra_attrs["size"] = 128
-    fb_sc = p.add_box("scale", ["0", "127", "0.", "0.95"])
-    fb_prep = p.add_box("prepend", ["feedback"])
+    fb_sc = p.add_box("scale", ["0", "127", "0.", "0.95"], x=CX3, y=170)
+    fb_prep = p.add_box("prepend", ["feedback"], x=CX3, y=197)
 
-    # Dry/wet
-    dw_dial = p.add_box("dial")
+    # -- Dry/Wet (col 5, row 3) --
+    dw_dial = p.add_box("dial", x=CX3, y=300)
     dw_dial.extra_attrs["size"] = 128
-    dw_sc = p.add_box("scale", ["0", "127", "0.", "1."])
-    dw_prep = p.add_box("prepend", ["dry_wet"])
+    dw_sc = p.add_box("scale", ["0", "127", "0.", "1."], x=CX3, y=360)
+    dw_prep = p.add_box("prepend", ["dry_wet"], x=CX3, y=387)
 
-    # ===== PRESENTATION LABELS =====
+    # ===== VALUE READOUTS (flonum, display-only) =====
+    def make_readout(decimals, x, y):
+        fn = p.add_box("flonum", x=x, y=y)
+        fn.extra_attrs["cantchange"] = 1
+        fn.extra_attrs["numdecimalplaces"] = decimals
+        fn.extra_attrs["triangle"] = 0
+        fn.extra_attrs["bordercolor"] = [0.5, 0.5, 0.5, 0.0]
+        return fn
+
+    bpm_num = make_readout(0, FX1, 170)
+    sl_num = make_readout(2, FX1, 360)
+    pit_num = make_readout(2, FX2, 170)
+    ch_num = make_readout(2, FX2, 360)
+    fb_num = make_readout(2, FX3, 170)
+    dw_num = make_readout(2, FX3, 360)
+
+    # ===== SECTION LABELS (patching mode) =====
+    p.add_section_header("SIGNAL CHAIN", x=30, y=15)
+    p.add_section_header("DISPLAY", x=420, y=15)
+    p.add_section_header("CONTROLS", x=660, y=15)
+
+    # ===== PRESENTATION LABELS (patching pos offscreen at x=1400) =====
+    label_y = [40]  # mutable counter for stacking labels offscreen
+
     def plabel(text, px, py, pw=None):
-        c = p.add_comment(text)
+        c = p.add_comment(text, x=1400, y=label_y[0])
+        label_y[0] += 20
         c.presentation = True
         c.presentation_rect = [px, py, pw or len(text) * 7 + 10, 18]
         c.extra_attrs["textjustification"] = 1
@@ -415,16 +463,16 @@ def build():
     p.add_connection(in_add, 0, sel_L, 0)
     p.add_connection(in_add, 0, sel_R, 0)
 
-    # Selectors → gen~ stutter
+    # Selectors -> gen~ stutter
     p.add_connection(sel_L, 0, gen_stut, 0)
     p.add_connection(sel_R, 0, gen_stut, 1)
     p.add_connection(sel_L, 0, in_meter, 0)
 
-    # Gen~ stutter → limiter
+    # Gen~ stutter -> limiter
     p.add_connection(gen_stut, 0, gen_lim, 0)
     p.add_connection(gen_stut, 1, gen_lim, 1)
 
-    # Display: gen~ position → waveform~ selection
+    # Display: gen~ position -> waveform~ selection
     p.add_connection(gen_stut, 2, snap_s, 0)
     p.add_connection(gen_stut, 3, snap_e, 0)
     p.add_connection(snap_s, 0, mul_s, 0)
@@ -432,12 +480,12 @@ def build():
     p.add_connection(mul_s, 0, wf, 2)
     p.add_connection(mul_e, 0, wf, 3)
 
-    # Limiter → output
+    # Limiter -> output
     p.add_connection(gen_lim, 0, dac, 0)
     p.add_connection(gen_lim, 1, dac, 1)
     p.add_connection(gen_lim, 0, out_meter, 0)
 
-    # File loading: textbutton → opendialog → trigger → sfplay~
+    # File loading: textbutton -> opendialog -> trigger -> sfplay~
     p.add_connection(open_btn, 0, opendlg, 0)
     p.add_connection(opendlg, 0, file_trig, 0)
     p.add_connection(file_trig, 1, open_prep, 0)   # s (path) fires first
@@ -445,7 +493,7 @@ def build():
     p.add_connection(open_prep, 0, sfplay, 0)
     p.add_connection(play_msg, 0, sfplay, 0)
 
-    # Param controls → gen~ stutter (all to inlet 0)
+    # Param controls -> gen~ stutter (all to inlet 0)
     p.add_connection(stut_tog, 0, stut_prep, 0)
     p.add_connection(stut_prep, 0, gen_stut, 0)
     p.add_connection(stut_tog, 0, activity_led, 0)
@@ -480,11 +528,19 @@ def build():
     p.add_connection(dw_sc, 0, dw_prep, 0)
     p.add_connection(dw_prep, 0, gen_stut, 0)
 
+    # Value readouts (scale output -> flonum display)
+    p.add_connection(bpm_sc, 0, bpm_num, 0)
+    p.add_connection(sl_sc, 0, sl_num, 0)
+    p.add_connection(pit_sc, 0, pit_num, 0)
+    p.add_connection(ch_sc, 0, ch_num, 0)
+    p.add_connection(fb_sc, 0, fb_num, 0)
+    p.add_connection(dw_sc, 0, dw_num, 0)
+
     # ============================================================
     # PRESENTATION MODE
     # ============================================================
     p.props["openinpresentation"] = 1
-    p.props["rect"] = [85.0, 104.0, 700.0, 500.0]
+    p.props["rect"] = [50.0, 80.0, 1300.0, 520.0]
 
     # Top row: toggles + file open
     stut_tog.presentation = True
@@ -512,6 +568,14 @@ def build():
     rev_tog.presentation = True
     rev_tog.presentation_rect = [495.0, 190.0, 30.0, 30.0]
 
+    # Row 1 readouts
+    bpm_num.presentation = True
+    bpm_num.presentation_rect = [35.0, 258.0, 55.0, 22.0]
+    sl_num.presentation = True
+    sl_num.presentation_rect = [283.0, 258.0, 55.0, 22.0]
+    pit_num.presentation = True
+    pit_num.presentation_rect = [383.0, 258.0, 55.0, 22.0]
+
     # Control row 2: Chaos, Feedback, Dry/Wet
     ch_dial.presentation = True
     ch_dial.presentation_rect = [100.0, 295.0, 60.0, 60.0]
@@ -520,6 +584,14 @@ def build():
     dw_dial.presentation = True
     dw_dial.presentation_rect = [460.0, 295.0, 60.0, 60.0]
 
+    # Row 2 readouts
+    ch_num.presentation = True
+    ch_num.presentation_rect = [103.0, 378.0, 55.0, 22.0]
+    fb_num.presentation = True
+    fb_num.presentation_rect = [283.0, 378.0, 55.0, 22.0]
+    dw_num.presentation = True
+    dw_num.presentation_rect = [463.0, 378.0, 55.0, 22.0]
+
     # Meters
     in_meter.presentation = True
     in_meter.presentation_rect = [30.0, 415.0, 200.0, 20.0]
@@ -527,10 +599,10 @@ def build():
     out_meter.presentation_rect = [450.0, 415.0, 200.0, 20.0]
 
     # ============================================================
-    # STYLE, LAYOUT, VALIDATE, SAVE
+    # STYLE, VALIDATE, SAVE
     # ============================================================
     _apply_auto_styling(p)
-    apply_layout(p)
+    # No apply_layout() -- positions are set explicitly above
 
     patch_dict = p.to_dict()
     errors = validate_patch(patch_dict)
@@ -540,7 +612,7 @@ def build():
     save_patch_roundtrip(patch_dict, OUT / "stutter.maxpat")
     print(f"Saved {OUT / 'stutter.maxpat'}")
 
-    update_status(BASE, stage="build", progress="initial build complete")
+    update_status(BASE, stage="build", progress="v2 - clean layout + external gendsp")
 
 
 if __name__ == "__main__":
