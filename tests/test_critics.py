@@ -15,6 +15,7 @@ from src.maxpat.critics.dsp_critic import review_dsp
 from src.maxpat.critics.structure_critic import review_structure
 from src.maxpat.critics.rnbo_critic import review_rnbo
 from src.maxpat.critics.ext_critic import review_external
+from src.maxpat.critics.layout_critic import review_layout
 from src.maxpat.critics import review_patch
 
 
@@ -1053,3 +1054,256 @@ class TestReviewPatchRNBO:
         assert len(rnbo_warnings) >= 2, (
             f"Expected RNBO param warnings in review_patch, got: {results}"
         )
+
+
+# ===========================================================================
+# Layout Critic tests
+# ===========================================================================
+
+class TestLayoutCritic:
+    """Test the layout critic checks (overlap, midpoints, out-of-bounds)."""
+
+    def test_overlapping_boxes_detected(self):
+        """Two boxes with overlapping patching_rects produce a warning."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "cycle~ 440",
+                "patching_rect": [100.0, 100.0, 80.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "*~ 0.5",
+                "patching_rect": [150.0, 110.0, 60.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_layout(patch)
+        warnings = [r for r in results if r.severity == "warning" and "overlap" in r.finding.lower()]
+        assert len(warnings) >= 1, f"Expected overlap warning, got: {results}"
+
+    def test_no_overlap_no_warning(self):
+        """Two boxes side-by-side with no overlap produce zero layout findings."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "cycle~ 440",
+                "patching_rect": [30.0, 100.0, 80.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "*~ 0.5",
+                "patching_rect": [200.0, 100.0, 60.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_layout(patch)
+        assert len(results) == 0, f"Expected no findings, got: {results}"
+
+    def test_missing_midpoint_horizontal_offset(self):
+        """Cable with horizontal offset > HORIZONTAL_THRESHOLD and no midpoints produces a warning."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "metro 500",
+                "patching_rect": [30.0, 30.0, 80.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "print",
+                "patching_rect": [200.0, 80.0, 50.0, 22.0],
+                "numinlets": 1,
+                "numoutlets": 0,
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_layout(patch)
+        warnings = [r for r in results if r.severity == "warning" and "midpoint" in r.finding.lower()]
+        assert len(warnings) >= 1, f"Expected midpoint warning, got: {results}"
+
+    def test_cable_with_midpoints_no_warning(self):
+        """Cable with proper midpoints produces zero findings."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "metro 500",
+                "patching_rect": [30.0, 30.0, 80.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "print",
+                "patching_rect": [200.0, 80.0, 50.0, 22.0],
+                "numinlets": 1,
+                "numoutlets": 0,
+            },
+        ]
+        lines = [
+            {
+                "source": ["obj-1", 0],
+                "destination": ["obj-2", 0],
+                "midpoints": [70.0, 55.0, 225.0, 55.0],
+            },
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_layout(patch)
+        midpoint_warnings = [r for r in results if "midpoint" in r.finding.lower()]
+        assert len(midpoint_warnings) == 0, f"Expected no midpoint warnings, got: {results}"
+
+    def test_upward_cable_no_midpoints(self):
+        """Upward-flowing cable without midpoints produces a warning."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "loadbang",
+                "patching_rect": [30.0, 200.0, 70.0, 22.0],
+                "numinlets": 1,
+                "numoutlets": 1,
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "toggle",
+                "patching_rect": [30.0, 30.0, 40.0, 22.0],
+                "numinlets": 1,
+                "numoutlets": 1,
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_layout(patch)
+        warnings = [r for r in results if r.severity == "warning" and "midpoint" in r.finding.lower()]
+        assert len(warnings) >= 1, f"Expected upward cable midpoint warning, got: {results}"
+
+    def test_negative_position_out_of_bounds(self):
+        """Box placed with negative x or y produces an out-of-bounds warning."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "print",
+                "patching_rect": [-10.0, 30.0, 50.0, 22.0],
+                "numinlets": 1,
+                "numoutlets": 0,
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_layout(patch)
+        warnings = [r for r in results if r.severity == "warning" and "bounds" in r.finding.lower()]
+        assert len(warnings) >= 1, f"Expected out-of-bounds warning, got: {results}"
+
+    def test_empty_patch_no_findings(self):
+        """Empty patch (no boxes) produces zero findings."""
+        patch = _make_patch([], [])
+        results = review_layout(patch)
+        assert len(results) == 0, f"Expected no findings, got: {results}"
+
+    def test_collision_pad_exact_touch_warns(self):
+        """Boxes exactly touching (0px gap) produce a warning due to COLLISION_PAD=5.0."""
+        # obj-1 ends at x=110, obj-2 starts at x=110 -- 0px gap < 5px pad
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "metro 500",
+                "patching_rect": [30.0, 100.0, 80.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "print",
+                "patching_rect": [110.0, 100.0, 50.0, 22.0],
+                "numinlets": 1,
+                "numoutlets": 0,
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_layout(patch)
+        warnings = [r for r in results if r.severity == "warning" and "overlap" in r.finding.lower()]
+        assert len(warnings) >= 1, f"Expected overlap warning for touching boxes, got: {results}"
+
+    def test_collision_pad_sufficient_gap_no_warning(self):
+        """Boxes separated by > 5px do not produce overlap warning."""
+        # obj-1 ends at x=110, obj-2 starts at x=116 -- 6px gap > 5px pad
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "metro 500",
+                "patching_rect": [30.0, 100.0, 80.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "print",
+                "patching_rect": [116.0, 100.0, 50.0, 22.0],
+                "numinlets": 1,
+                "numoutlets": 0,
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_layout(patch)
+        overlap_warnings = [r for r in results if "overlap" in r.finding.lower()]
+        assert len(overlap_warnings) == 0, f"Expected no overlap warnings, got: {results}"
+
+    def test_comment_and_panel_excluded_from_overlap(self):
+        """Comment and panel boxes are excluded from overlap checks."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "comment",
+                "text": "Section header",
+                "patching_rect": [30.0, 100.0, 200.0, 22.0],
+                "numinlets": 1,
+                "numoutlets": 0,
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "metro 500",
+                "patching_rect": [50.0, 105.0, 80.0, 22.0],
+                "numinlets": 2,
+                "numoutlets": 1,
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "panel",
+                "text": "",
+                "patching_rect": [20.0, 90.0, 300.0, 100.0],
+                "numinlets": 1,
+                "numoutlets": 0,
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_layout(patch)
+        overlap_warnings = [r for r in results if "overlap" in r.finding.lower()]
+        assert len(overlap_warnings) == 0, f"Expected no overlap warnings with comment/panel, got: {results}"
