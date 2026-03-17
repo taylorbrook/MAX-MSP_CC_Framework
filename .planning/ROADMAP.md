@@ -240,10 +240,10 @@ Plans:
   2. The stale docstring in `src/maxpat/externals.py` line 112 no longer references `write_patch`
   3. `patches/rhythmic-sampler/generated/_fix2.py` is deleted
   4. All existing tests continue to pass (zero regressions)
-**Plans**: 0 plans
+**Plans**: 1 plan
 
 Plans:
-- [ ] 19-01-PLAN.md -- Fix stale docstring, delete leftover script, add subpatcher round-trip test
+- [ ] 19-01-PLAN.md -- Fix subpatcher key ordering bug, add byte-identical round-trip test, fix stale docstring, delete leftover script
 
 ## Progress
 
@@ -275,4 +275,4 @@ Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 1
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-03-16 -- Phase 18 plans created (2 plans in 2 waves)*
+*Last updated: 2026-03-16 -- Phase 19 plan created (1 plan in 1 wave)*
