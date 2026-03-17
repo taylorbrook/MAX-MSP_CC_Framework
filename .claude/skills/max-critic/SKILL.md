@@ -66,7 +66,7 @@ The critic loop applies equally to edited patches. After edits, `validate_patch(
 
 - After any patch or code generation, before output is written to file
 - After generator applies revisions (re-run critic)
-- When `/max:verify` is invoked on existing output
+- When `/max-verify` is invoked on existing output
 
 ## When NOT to Use
 

@@ -1,6 +1,6 @@
 # Manual Test Protocol
 
-How `/max:test` generates checklists and how results are recorded.
+How `/max-test` generates checklists and how results are recorded.
 
 ## Checklist Generation
 

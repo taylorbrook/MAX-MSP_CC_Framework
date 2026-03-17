@@ -75,13 +75,13 @@ Many tasks span multiple domains. When this happens:
 
 ## When to Use
 
-- Every `/max:build` invocation routes through the router
-- Every `/max:iterate` invocation routes through the router
+- Every `/max-build` invocation routes through the router
+- Every `/max-iterate` invocation routes through the router
 - Any task that requires generating or modifying MAX patches or code
 
 ## When NOT to Use
 
-- `/max:verify` -- invokes critics directly, not the router
-- `/max:test` -- generates test checklists, not patches
-- `/max:status`, `/max:memory`, `/max:switch` -- project management, no generation
-- `/max:discuss`, `/max:research` -- conversation phases, no generation
+- `/max-verify` -- invokes critics directly, not the router
+- `/max-test` -- generates test checklists, not patches
+- `/max-status`, `/max-memory`, `/max-switch` -- project management, no generation
+- `/max-discuss`, `/max-research` -- conversation phases, no generation

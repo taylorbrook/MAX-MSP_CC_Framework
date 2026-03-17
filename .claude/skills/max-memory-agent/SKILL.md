@@ -84,7 +84,7 @@ Before a generation starts:
 
 - Before generation: inject relevant memory as context
 - After successful generation: write-back notable patterns
-- When user invokes `/max:memory` to view, edit, or delete entries
+- When user invokes `/max-memory` to view, edit, or delete entries
 - During project setup to load project-specific patterns
 
 ## When NOT to Use

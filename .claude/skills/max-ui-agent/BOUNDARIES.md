@@ -32,5 +32,5 @@
 - Presentation mode positions (`presentation_rect`) are this agent's authority
 - Patching mode positions (`patching_rect`) defer to lead agent or layout engine
 - These are independent: a box can have different positions in each mode
-- Standard object spacing: ~80-120px vertical, ~150-200px horizontal (patching mode)
+- Standard object spacing: ~20px vertical, ~15px horizontal gutter (patching mode, per defaults.py)
 - Presentation spacing: minimum 10px between controls, 20px between groups

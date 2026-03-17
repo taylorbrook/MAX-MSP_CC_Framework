@@ -73,11 +73,11 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 
 ## When to Use
 
-- `/max:new` -- Create new project
-- `/max:status` -- Show project overview and progress
-- `/max:switch` -- Change active project
-- `/max:test` -- Generate test checklist from generated patches
-- `/max:version` -- Show current version or bump version
+- `/max-new` -- Create new project
+- `/max-status` -- Show project overview and progress
+- `/max-switch` -- Change active project
+- `/max-test` -- Generate test checklist from generated patches
+- `/max-version` -- Show current version or bump version
 - Any command that needs to read/update project state
 
 ## When NOT to Use

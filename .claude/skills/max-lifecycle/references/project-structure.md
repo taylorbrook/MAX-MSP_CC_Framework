@@ -1,6 +1,6 @@
 # Project Directory Structure
 
-Standard layout for MAX projects created by `/max:new`.
+Standard layout for MAX projects created by `/max-new`.
 
 ## Directory Layout
 
@@ -52,7 +52,7 @@ Semver version history, auto-created at `0.0.0` when a project is created. Each 
 Versions are stored oldest-first on disk. Use `list_versions(project_dir)` to get them newest-first.
 
 ### context.md
-Populated during `/max:discuss` or conversational kickoff in `/max:new`. Contains:
+Populated during `/max-discuss` or conversational kickoff in `/max-new`. Contains:
 - Project description and goals
 - Audio/MIDI requirements
 - Signal flow description (inputs, processing, outputs)
@@ -75,4 +75,4 @@ Project-specific patterns in structured markdown sections. Managed by the memory
 All output from specialist agents. Files written via `save_patch_roundtrip()`, `write_gendsp()`, `write_js()` hooks which trigger validation on write.
 
 ### test-results/
-Manual test results from `/max:test` runs. Each file is a completed checklist with Pass/Fail markings.
+Manual test results from `/max-test` runs. Each file is a completed checklist with Pass/Fail markings.

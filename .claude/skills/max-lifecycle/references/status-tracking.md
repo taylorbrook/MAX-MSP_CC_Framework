@@ -8,11 +8,11 @@ Projects move through these stages (mirroring the GSD workflow):
 
 | Stage | Description | Triggered By |
 |-------|-------------|--------------|
-| ideation | Initial project creation, no details yet | `/max:new` |
-| discuss | Capturing requirements and vision | `/max:discuss` |
-| research | Investigating MAX approaches and patterns | `/max:research` |
-| build | Active generation of patches and code | `/max:build` |
-| verify | Testing and validation of generated output | `/max:test` or `/max:verify` |
+| ideation | Initial project creation, no details yet | `/max-new` |
+| discuss | Capturing requirements and vision | `/max-discuss` |
+| research | Investigating MAX approaches and patterns | `/max-research` |
+| build | Active generation of patches and code | `/max-build` |
+| verify | Testing and validation of generated output | `/max-test` or `/max-verify` |
 
 Stages are not strictly linear -- a project can return to earlier stages (e.g., from build back to discuss if requirements change).
 
@@ -80,7 +80,7 @@ init_versions(project_dir)  # Creates versions.json at 0.0.0 (idempotent)
 
 ## Display Format
 
-When showing status (via `/max:status`):
+When showing status (via `/max-status`):
 
 ```
 Project: my-synth

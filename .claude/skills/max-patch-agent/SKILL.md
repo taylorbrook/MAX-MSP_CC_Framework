@@ -44,7 +44,7 @@ Before any generation:
 - `Patcher.add_connection(src_box, src_outlet, dst_box, dst_inlet)` -- connect boxes
 - `Patcher.add_subpatcher(name)` -- add a subpatcher
 - `_apply_auto_styling(patcher)` -- apply canvas background and object highlights
-- `apply_layout(patcher, layout_options=None)` -- column-based layout positioning (accepts LayoutOptions)
+- `apply_layout(patcher, layout_options=None)` -- row-based topological layout positioning (accepts LayoutOptions)
 - `validate_patch(patcher.to_dict(), db=patcher.db)` -- run four-layer validation pipeline
 - `save_patch_roundtrip(patcher.to_dict(), path)` -- write .maxpat to disk
 - `Patcher.add_comment(text, x, y)` -- add a comment box (for inline annotations, critic notes)

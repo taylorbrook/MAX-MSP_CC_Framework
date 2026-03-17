@@ -6,7 +6,7 @@
 - Manages both global (~/.claude/max-memory/) and project ({project}/.max-memory/) scopes
 - Deduplicates entries before writing
 - Filters memory by domain relevance for injection
-- Handles /max:memory command operations (list, view, forget)
+- Handles /max-memory command operations (list, view, forget)
 
 ## What This Agent Does NOT Do
 
