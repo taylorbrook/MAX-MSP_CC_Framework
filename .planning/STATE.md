@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-17 -- Plan 19-01 complete (tech debt cleanup - subpatcher round-trip fix)
+Last activity: 2026-03-17 - Completed quick task 260316-rzx: max-build should assume new patch, max-iterate for existing patches
 
 Progress: [██████████] 100%
 
@@ -110,6 +110,12 @@ Recent decisions for v2.0:
 ### Pending Todos
 
 None.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260316-rzx | max-build should assume new patch, max-iterate for existing patches | 2026-03-17 | d8b2e22 | [260316-rzx-max-build-should-assume-new-patch-max-it](./quick/260316-rzx-max-build-should-assume-new-patch-max-it/) |
 
 ### Blockers/Concerns
 
