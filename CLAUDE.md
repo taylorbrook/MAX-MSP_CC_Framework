@@ -79,6 +79,12 @@ Getting this wrong causes silent bugs where objects compute with stale values. A
 - Use `patcher` (subpatchers) to organize complex logic into named sections
 - Standard object spacing: ~80-120px vertical, ~150-200px horizontal
 
+### Rule #5: No Generator Scripts
+
+Never create `generate.py` or similar intermediary Python scripts that regenerate `.maxpat` files from scratch. The Patcher API (`src.maxpat`) is the only sanctioned way to create and edit patches. Agents build Patcher instances in-memory during the `/max-build` or `/max-iterate` commands, then write via `save_patch_roundtrip()`. There is no separate generator script to maintain or re-run.
+
+This rule exists because the generator pattern causes regeneration to overwrite manual edits and iterate improvements. It was deprecated in milestone 2.0.
+
 ## Domain-Specific Rules
 
 ### MSP (Audio/Signal)
