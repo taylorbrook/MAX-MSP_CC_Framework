@@ -5,7 +5,7 @@ milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260317-b86-PLAN.md
 last_updated: "2026-03-17T15:16:45.170Z"
-last_activity: "2026-03-17 - Completed quick task 260316-uzv: Remove examples/ folder and list patches in README"
+last_activity: "2026-03-17 - Completed quick task 260317-b86: Add post-generation patch layout validation hook"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-17 - Completed quick task 260316-uzv: Remove examples/ folder and list patches in README
+Last activity: 2026-03-17 - Completed quick task 260317-b86: Add post-generation patch layout validation hook
 
 Progress: [██████████] 100%
 
