@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260317-b86-PLAN.md
-last_updated: "2026-03-17T15:16:45.170Z"
-last_activity: "2026-03-17 - Completed quick task 260317-b86: Add post-generation patch layout validation hook"
+stopped_at: Completed quick-260317-e14-PLAN.md
+last_updated: "2026-03-17T17:10:57.340Z"
+last_activity: "2026-03-17 - Completed quick task 260317-e14: Remove generate.py approach and add safeguards"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-17 - Completed quick task 260317-b86: Add post-generation patch layout validation hook
+Last activity: 2026-03-17 - Completed quick task 260317-e14: Remove generate.py approach and add safeguards
 
 Progress: [██████████] 100%
 
@@ -108,6 +108,7 @@ Recent decisions for v2.0:
 - [Phase 18]: SKILL.md verification tests updated to check v2.0 API names (save_patch_roundtrip) instead of v1.x (write_patch)
 - [Phase 19]: [19-01]: Sentinel raw["patcher"] = None preserves key ordering instead of pop() which destroys ordered dict position
 - [Phase quick-260317-b86]: COLLISION_PAD overlap uses half-pad expansion per rect (Minkowski sum) so 5px means 2.5px per side
+- [Phase quick-260317-e14]: Rule #5 placed after Rule #4 (Patch Style), before Domain-Specific Rules section
 
 ### Pending Todos
 
@@ -120,6 +121,7 @@ None.
 | 260316-rzx | max-build should assume new patch, max-iterate for existing patches | 2026-03-17 | d8b2e22 | [260316-rzx-max-build-should-assume-new-patch-max-it](./quick/260316-rzx-max-build-should-assume-new-patch-max-it/) |
 | 260316-uzv | Remove examples/ folder and list patches in README | 2026-03-17 | 0807246 | [260316-uzv-remove-examples-folder-and-list-patches-](./quick/260316-uzv-remove-examples-folder-and-list-patches-/) |
 | 260317-b86 | Add post-generation patch layout validation critic | 2026-03-17 | 9467aa3 | [260317-b86-add-post-generation-patch-layout-validat](./quick/260317-b86-add-post-generation-patch-layout-validat/) |
+| 260317-e14 | Remove generate.py approach and add safeguards | 2026-03-17 | 195096e | [260317-e14-remove-generate-py-approach-and-add-safe](./quick/260317-e14-remove-generate-py-approach-and-add-safe/) |
 
 ### Blockers/Concerns
 
@@ -130,6 +132,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-17T15:16:40.290Z
-Stopped at: Completed quick-260317-b86-PLAN.md
+Last session: 2026-03-17T17:10:49.629Z
+Stopped at: Completed quick-260317-e14-PLAN.md
 Resume file: None
