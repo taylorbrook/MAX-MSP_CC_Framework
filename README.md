@@ -1,12 +1,15 @@
 # MAX/MSP Claude Code Framework
 
-An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversational creation of MAX patches and externals. Design, build, and iterate on MAX through dialogue with [Claude Code](https://claude.ai/claude-code).
+An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversational creation and editing of MAX patches and externals. Design, build, and iterate on MAX through dialogue with [Claude Code](https://claude.ai/claude-code).
 
-> **Note:** Generated patches must be opened and tested in MAX. This framework produces valid `.maxpat` files, Gen~ code, JavaScript, and C++ externals — but there is no in-framework audio preview or simulation. All testing is manual in MAX 9. There are safety checks in place, but audio coding done by AI is still risky so don't blow your ears off!
+> **Note:** Patches must be opened and tested in MAX. This framework produces and edits valid `.maxpat` files, Gen~ code, JavaScript, and C++ externals — but there is no in-framework audio preview or simulation. All testing is manual in MAX 9. There are safety checks in place, but audio coding done by AI is still risky so don't blow your ears off!
 
 ## Features
 
+- **Direct .maxpat editing** — reads, edits, and writes `.maxpat` files directly with lossless round-trip preservation; the patch file is the single source of truth
 - **Conversational patch creation** — describe what you want in natural language; Claude generates valid `.maxpat` files
+- **Patch analysis and onboarding** — analyze any existing `.maxpat` file to understand its structure, signal flow, and sections before editing or extending it
+- **Intelligent editing** — modify objects in-place, insert into signal chains, replace/swap objects, query upstream/downstream signal paths, and auto-position new objects
 - **2,015-object knowledge base** — verified database covering MAX, MSP, Jitter, MC, Gen~, Max for Live, RNBO, and package objects with full inlet/outlet schemas
 - **10 specialist agents** — router, patch, DSP/Gen~, RNBO, JavaScript, UI layout, C++ externals, critic, memory, and lifecycle management
 - **4-layer validation pipeline** — structure checks, connection verification, domain-specific critics (DSP signal flow, RNBO compatibility, C++ review), and iterative revision
@@ -23,7 +26,7 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (requires an Anthropic account)
 - [MAX 9](https://cycling74.com/products/max) (required for opening and testing generated patches)
-- Python 3.10+ (for the validation and generation engine)
+- Python 3.10+ (for the validation and editing engine)
 - RNBO (optional — only needed for export targets)
 
 ## Quick Start
@@ -42,7 +45,12 @@ claude
 /max-new my-synth
 ```
 
-Claude will ask about your goals — what kind of patch, audio requirements, signal flow, UI needs. Your answers are saved to `patches/my-synth/context.md` and guide all subsequent generation.
+Claude walks you through a full project kickoff in one continuous conversation:
+1. **Kickoff** — asks about your goals, audio/MIDI requirements, signal flow, and UI needs
+2. **Discuss** — dives deeper into implementation decisions (object choices, signal architecture, control design)
+3. **Research** — looks up the best MAX objects, patterns, and techniques from the 2,015-object database
+
+By the end, all findings are saved to `patches/my-synth/context.md` and Claude suggests a concrete `/max-build` command.
 
 ### 3. Build
 
@@ -50,9 +58,17 @@ Claude will ask about your goals — what kind of patch, audio requirements, sig
 /max-build subtractive synth with resonant filter and ADSR envelope
 ```
 
-The router analyzes your request, dispatches to the appropriate agent(s), generates the patch, and runs it through the critic pipeline. The output lands in `patches/my-synth/generated/`.
+The router analyzes your request, dispatches to the appropriate agent(s), and directly writes a new `.maxpat` file. Output lands in `patches/my-synth/generated/`.
 
-### 4. Verify
+### 4. Onboard an existing patch (optional)
+
+```
+/max-onboard /path/to/existing-patch.maxpat
+```
+
+Analyzes any `.maxpat` file — from MAX's own examples, third-party sources, or your own work — and produces a structured summary of its objects, signal flow, sections, and complexity.
+
+### 5. Verify
 
 ```
 /max-verify
@@ -60,7 +76,7 @@ The router analyzes your request, dispatches to the appropriate agent(s), genera
 
 Runs all generated files through the full validation pipeline — structure checks, connection bounds, signal flow analysis. Reports blockers, warnings, and notes.
 
-### 5. Test in MAX
+### 6. Test in MAX
 
 ```
 /max-test
@@ -68,21 +84,22 @@ Runs all generated files through the full validation pipeline — structure chec
 
 Generates a manual test checklist based on the objects and signal flow in your patch. Open the `.maxpat` in MAX 9, run through the checklist, and report results back.
 
-### 6. Iterate
+### 7. Iterate
 
 ```
 /max-iterate add a chorus effect after the filter
 ```
 
-Loads your existing patch, applies changes, and re-validates — preserving positions, connections, and previous decisions.
+Reads the existing `.maxpat`, analyzes its structure, makes surgical edits, and writes back — preserving all positions, colors, connections, and manual changes you've made in MAX.
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/max-new` | Create a new project with conversational kickoff |
+| `/max-new` | Create a new project with kickoff, discussion, and research in one flow |
 | `/max-build` | Generate patches and code via agent dispatch |
-| `/max-iterate` | Modify existing patches or code |
+| `/max-iterate` | Read, edit, and write back existing patches or code |
+| `/max-onboard` | Analyze an existing `.maxpat` file and produce a structured summary |
 | `/max-verify` | Run validation and critic review on all output |
 | `/max-test` | Generate a manual test checklist for MAX |
 | `/max-status` | Show project overview, progress, and current stage |
@@ -91,29 +108,35 @@ Loads your existing patch, applies changes, and re-validates — preserving posi
 | `/max-switch` | Change the active project |
 | `/max-memory` | View, list, or manage stored pattern memories |
 
-## Example Projects
+## Patches
 
-The `examples/` directory includes complete example projects you can open in MAX 9 (see [PATCHES.md](PATCHES.md) for the full catalog):
+The `patches/` directory contains example and user-created projects:
 
-| Project | Description | Domains |
-|---------|-------------|---------|
-| **rhythmic-sampler** | 8-slot sampler with slice-based sequencing, time-stretching, and per-slot FX (pitch, filter, stutter, bitcrush) | MSP, js, bpatcher |
-| **FDNVerb** | Feedback delay network reverb with 8 delay lines, Hadamard matrix, decay/diffusion/damping/freeze controls | Gen~ |
-| **granularsynthtest** | Granular synthesizer with Gen~ DSP engine and MC multichannel output for flexible speaker arrays | Gen~, MC |
-| **performancepatchtest** | Live performance cue system with multiband compression, feedback delay, distortion, and soundfile playback | MSP, routing |
-| **scala-synth** | 16-voice polyphonic additive synthesizer with Scala (.scl) file support for microtonal playback | Gen~, poly~ |
-
-Each project contains a `context.md` with the full design conversation and a `generated/` directory with the output files.
+| Project | Description | Files |
+|---------|-------------|-------|
+| **FDNVerb** | Feedback delay network reverb with 8 delay lines, Hadamard matrix, decay/diffusion/damping/freeze controls | `.maxpat`, `.gendsp` |
+| **granularsynthtest** | Granular synthesizer with Gen~ DSP engine and MC multichannel output for flexible speaker arrays | `.maxpat`, `.gendsp` |
+| **kicksynth** | Kick drum synthesizer with Gen~ pitch envelopes, click/sub/noise layers, and drive/saturation | `.maxpat`, `.js` |
+| **minitaur** | Digital recreation of the Moog Minitaur bass synthesizer with dual VCOs, Moog ladder filter, and LFO modulation | `.maxpat` |
+| **mixer** | Virtual mixing console with channel strips, aux buses, master section, and per-track sends | `.maxpat`, `.js` |
+| **performancepatchtest** | Live performance cue system with multiband compression, feedback delay, distortion, and soundfile playback | `.maxpat`, `.gendsp` |
+| **rhythmic-sampler** | 8-slot sampler with slice-based sequencing, time-stretching, and per-slot FX | `.maxpat`, `.js` |
+| **scala-synth** | 16-voice polyphonic additive synthesizer with Scala (.scl) file support for microtonal playback | `.maxpat`, `.js` |
+| **stutter** | Glitchy stutter effect with rhythmic and chaotic modes, built around a Gen~ stutter engine | `.maxpat` |
+| **TSC** | Temporal Semiotic Composition system for corpus-based live performance with behavior modules | `.maxpat`, `.gendsp` |
+| **wormhole** | Spectral effects processor with warp, pitch/frequency shifting, dual reverb, and stereo delay | `.maxpat` |
 
 ## How It Works
 
-The framework has three core layers:
+The framework has four core layers:
+
+**Direct .maxpat Editing (v2.0)** — The `.maxpat` file is the single source of truth. Patches are loaded into `Patcher`/`Box`/`Patchline` objects, edited with search, mutation, and graph query methods, and written back with lossless round-trip preservation. All user state — positions, colors, varnames, custom attributes, manual edits made in MAX — survives the load-edit-save cycle. No intermediate code generation step.
 
 **Object Database** — A verified knowledge base of 2,015 MAX objects (`.claude/max-objects/`) with full inlet/outlet schemas, signal types, argument formats, variable I/O rules, and RNBO compatibility flags. Every object used in generation is looked up here — nothing is guessed.
 
-**Agent System** — A router analyzes your task description and dispatches to one or more specialist agents (DSP, patch, RNBO, js, UI, externals). For multi-domain tasks (e.g., "synth with knobs"), a lead agent generates the core patch and secondary agents contribute their domain.
+**Agent System** — A router analyzes your task description and dispatches to one or more specialist agents (DSP, patch, RNBO, js, UI, externals). Agents read existing patches, analyze their structure, make surgical edits or build new ones, and write the result directly.
 
-**Validation Pipeline** — Every generated patch passes through structure validation, connection bounds checking, and domain-specific critics (DSP signal flow, RNBO compatibility, C++ code review). Blockers trigger automatic revision before output is written. Aesthetic styling (panels, comments, patcher colors) is applied automatically during generation.
+**Validation Pipeline** — Every patch passes through structure validation, connection bounds checking, and domain-specific critics (DSP signal flow, RNBO compatibility, C++ code review). Blockers trigger automatic revision before output is written. Aesthetic styling (panels, comments, patcher colors) is applied automatically during generation.
 
 For full technical documentation — agent internals, validation details, object database schema, memory system, and architecture — see [TECHNICAL.md](TECHNICAL.md).
 
@@ -125,9 +148,8 @@ MAX-MSP_CC_Framework/
 │   ├── max-objects/        # Object database (2,015 objects across 8 domains)
 │   ├── skills/             # Agent definitions (10 specialist agents)
 │   └── commands/           # Slash command definitions
-├── src/maxpat/             # Python generation and validation engine
-├── tests/                  # Test suite (888 tests)
-├── examples/               # Example patches with catalog (PATCHES.md)
+├── src/maxpat/             # Python editing, validation, and analysis engine (~11,900 LOC)
+├── tests/                  # Test suite (1,141 tests across 32 files)
 ├── patches/                # Your projects live here
 │   ├── .active-project.json
 │   └── {project-name}/
@@ -160,7 +182,11 @@ Planning artifacts live in `.planning/`:
 - `PROJECT.md` -- project identity and technical context
 - `phases/` -- per-phase plans, summaries, and verification results
 
-The project shipped v1.0 (MVP) on 2026-03-10 with 21 plans across 7 phases. v1.1 (Patch Quality and Aesthetics) added 13 plans across 5 phases, improving database accuracy, visual polish, and layout quality.
+| Milestone | Shipped | Phases | Plans | Highlights |
+|-----------|---------|--------|-------|------------|
+| **v1.0 MVP** | 2026-03-10 | 7 | 21 | Object database, agent system, validation pipeline, code generation |
+| **v1.1 Patch Quality** | 2026-03-14 | 5 | 13 | Help patch audit, aesthetic styling, layout refinements |
+| **v2.0 Direct Editing** | 2026-03-17 | 7 | 19 | Lossless round-trip, search/mutation API, patch analysis, agent migration, v1.x cleanup |
 
 ## License
 
