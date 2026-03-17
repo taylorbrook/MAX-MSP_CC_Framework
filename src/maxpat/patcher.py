@@ -173,6 +173,11 @@ class Patchline:
                 d["color"] = self.color
             elif "color" in d and self.color is None:
                 del d["color"]
+            # Sync midpoints: add/update/remove as needed
+            if self.midpoints:
+                d["midpoints"] = list(self.midpoints)
+            elif "midpoints" in d:
+                del d["midpoints"]
             return {"patchline": d}
         else:
             # Creation path: build from scratch

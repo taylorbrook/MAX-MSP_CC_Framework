@@ -29,6 +29,12 @@ Create a new MAX/MSP project with the given name and begin the conversational ki
 
 5. **Update status** -- set the project stage to "ideation" via `update_status()`.
 
+6. **Flow into discuss** -- after the kickoff conversation, automatically invoke `/max-discuss` to dive deeper into implementation decisions. Use the kickoff answers as the starting point — ask about signal flow architecture, object selection, audio design, and UI/control mapping as relevant to the project.
+
+7. **Flow into research** -- after discussion decisions are captured, automatically invoke `/max-research` to investigate the best MAX objects, patterns, and techniques for the approach decided in discussion. Research findings are appended to `context.md`.
+
+8. **Ready to build** -- after research completes, inform the user that the project is ready and suggest `/max-build` with a concrete description based on everything captured so far.
+
 ## Skills Referenced
 
 - **max-lifecycle** -- project creation, status tracking, directory scaffolding

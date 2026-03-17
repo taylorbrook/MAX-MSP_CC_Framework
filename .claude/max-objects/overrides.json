@@ -2136,23 +2136,23 @@
       "inlets": [
         {
           "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Audio Out Ch 1, also accepts start/stop/int messages"
         },
         {
           "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": ""
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Audio Out Ch 2"
         }
       ],
       "outlets": [],
       "_audit": {
-        "confidence": "MEDIUM",
+        "confidence": "HIGH",
         "instances": 17,
-        "agreement": 0.9411764705882353,
-        "source": "io_count_finding"
+        "agreement": 1.0,
+        "source": "manual_expert_correction"
       }
     },
     "dspstate~": {

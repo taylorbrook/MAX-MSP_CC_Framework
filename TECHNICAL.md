@@ -23,10 +23,10 @@ For setup and usage, see [README.md](README.md).
 
 ## Architecture Overview
 
-The framework has three core layers that work together during patch generation:
+The framework has four core layers that work together during patch creation and editing:
 
 ```
-User Request
+User Request (build new or iterate on existing)
     │
     ▼
 ┌─────────────────┐
@@ -37,13 +37,13 @@ User Request
     ▼         ▼
 ┌────────┐ ┌────────┐
 │ Agent  │ │ Agent  │  Specialist agents (DSP, Patch, RNBO, js, UI, Ext)
-│  Lead  │ │ Support│  generate patches using the Python engine
+│  Lead  │ │ Support│  read, edit, and write .maxpat files directly
 └────┬───┘ └───┬────┘
      │         │
      ▼         ▼
 ┌─────────────────┐
 │  Python Engine   │  Patcher/Box/Patchline classes, ObjectDatabase,
-│  (src/maxpat/)   │  layout, code generation
+│  (src/maxpat/)   │  read/edit/save, layout, analysis, code generation
 └────────┬────────┘
          │
          ▼
@@ -262,9 +262,9 @@ After generation, the router passes output through the critic loop before writin
 
 ---
 
-## Python Generation Engine
+## Python Engine
 
-`src/maxpat/` contains the core Python library (24 modules, ~16,500 LOC).
+`src/maxpat/` contains the core Python library (~11,900 LOC).
 
 ### Core Classes (`patcher.py`)
 
@@ -272,27 +272,57 @@ After generation, the router passes output through the critic loop before writin
 
 | Method | Purpose |
 |--------|---------|
+| `from_dict(data)` | Load a `.maxpat` JSON dict into Patcher/Box/Patchline objects (recursive subpatchers) |
+| `to_dict()` | Serialize to complete `.maxpat` JSON structure (round-trip safe) |
 | `add_box(name, args, x, y)` | Create and add a Box (auto-generates ID, validates against DB) |
 | `add_comment(text, x, y)` | Create comment box |
 | `add_message(text, x, y)` | Create message box |
-| `add_connection(src, outlet, dst, inlet)` | Create patchline between boxes |
+| `add_connection(src, outlet, dst, inlet)` | Create patchline between boxes (with bounds checking) |
 | `add_subpatcher(name, inlets, outlets, x, y)` | Create embedded subpatcher with inlet/outlet objects |
 | `add_bpatcher(filename, args, x, y)` | Create bpatcher (file reference or embedded) |
 | `add_gen(code, inputs, outputs, x, y)` | Create gen~ with embedded codebox |
 | `add_node_script(filename, code, outlets, x, y)` | Create node.script box |
 | `add_js(filename, code, inlets, outlets, x, y)` | Create js object box |
-| `to_dict()` | Serialize to complete `.maxpat` JSON structure |
+| `find_box(query, by, recursive)` | Find first matching box by id, name, maxclass, or text |
+| `find_boxes(query, by, recursive)` | Find all matching boxes |
+| `remove_box(box)` | Remove box and all connected patchlines |
+| `remove_connection(src, outlet, dst, inlet)` | Remove a specific patchline |
+| `modify_box(box, **attrs)` | Modify box attributes in-place (with I/O recomputation) |
+| `insert_into_connection(patchline, name, args)` | Insert new object into an existing connection |
+| `replace_box(old_box, name, args)` | Replace object, remap compatible connections |
+| `downstream(box)` / `upstream(box)` | Graph traversal from a box |
+| `signal_path(box)` | Trace signal-only path from a box |
+| `connected_components()` | Find independent subgraphs |
 
 **Box** — Individual MAX object:
 - Resolves object name through ObjectDatabase (enforces Rule #1)
+- Preserves all original attributes via `_raw` dict for lossless round-trip
 - Computes `numinlets`, `numoutlets`, `outlettype` from database
 - Auto-sizes based on object name and argument text width
 - Stores position in `patching_rect = [x, y, width, height]`
 
 **Patchline** — Connection between two boxes:
 - Stores source/destination box IDs and outlet/inlet indices
-- Supports midpoints for L-shaped cable routing
+- Preserves color, midpoints, and extra attributes through round-trip
 - Serializes to `{"patchline": {...}}` format
+
+### Read/Write Functions
+
+| Function | Purpose |
+|----------|---------|
+| `read_patch(path)` | Load a `.maxpat` file from disk into a Patcher (returns Patcher + raw JSON string) |
+| `save_patch_roundtrip(patcher, path)` | Write back with lossless preservation (key order, numeric precision, trailing newline) |
+
+### Patch Analysis (`analysis.py`)
+
+`analyze(patcher)` produces a 7-facet structured summary:
+- **Inventory** — object counts by domain (MAX, MSP, Jitter, MC, Gen~, etc.)
+- **Sections** — functional groups detected by connected components and spatial proximity
+- **Signal chains** — audio paths from sources to `dac~`
+- **Control flow** — notable control paths (loadbang, metro, MIDI origins)
+- **Hierarchy** — subpatcher/bpatcher/gen~ nesting map
+- **Parameters** — user-controllable parameters (sliders, dials, number boxes)
+- **Complexity** — object count, connection count, nesting depth, domain spread
 
 ---
 
@@ -378,9 +408,11 @@ Additional validation for RNBO export patches (`src/maxpat/rnbo_validation.py`):
 
 | Function | Validates | Blocks on Error |
 |----------|-----------|----------------|
-| `write_patch(patcher, path)` | Full 4-layer pipeline | Yes — raises `PatchValidationError` |
+| `save_patch_roundtrip(patcher, path)` | None (lossless round-trip, preserves key order and precision) | No |
 | `write_gendsp(code, path)` | None (write-only) | No |
 | `write_js(code, path)` | Code validation (report-only) | No |
+
+Validation is run on demand via `validate_patch()` rather than automatically on every save — this avoids rejecting third-party objects on load-edit-save cycles.
 
 ---
 
@@ -626,7 +658,7 @@ Results are saved to `test-results/` for tracking.
 
 ## Test Suite
 
-The project includes 626 tests across 27 test files covering all modules. Run with:
+The project includes 1,141 tests across 32 test files covering all modules. Run with:
 
 ```bash
 python3 -m pytest tests/ -v
@@ -634,6 +666,10 @@ python3 -m pytest tests/ -v
 
 Key test areas:
 - Patcher/Box/Patchline creation and serialization
+- Round-trip load-save preservation (byte-identical for all project patches)
+- Search and mutation primitives (find, add, remove, connect)
+- Intelligent editing (modify, insert, replace, graph queries)
+- Patch analysis (inventory, sections, signal chains, complexity)
 - Layout engine (topological ordering, component detection, midpoints)
 - All validation layers (structure, bounds, signal flow, domain rules)
 - Code validation (GenExpr, js, N4M)

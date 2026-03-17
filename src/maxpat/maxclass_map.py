@@ -36,6 +36,7 @@ UI_MAXCLASSES: frozenset[str] = frozenset({
     # MSP UI (only objects that use their own name as maxclass in .maxpat)
     "meter~", "levelmeter~", "spectroscope~", "scope~",
     "number~", "gain~", "ezdac~", "ezadc~",
+    "filtergraph~", "waveform~",
     # Max for Live UI
     "live.dial", "live.slider", "live.numbox",
     "live.toggle", "live.button", "live.text",

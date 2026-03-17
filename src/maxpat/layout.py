@@ -165,6 +165,8 @@ def apply_layout(patcher: Patcher, options: LayoutOptions | None = None) -> None
     # Recursively layout inner patchers (subpatchers, gen~, bpatchers)
     for box in patcher.boxes:
         if box._inner_patcher is not None and box._inner_patcher.boxes:
+            if getattr(box._inner_patcher, '_skip_auto_layout', False):
+                continue
             apply_layout(box._inner_patcher, options)
 
     # Apply presentation mode layout if any boxes have presentation=True
