@@ -1319,6 +1319,8 @@ class Patcher:
         outlets: int = 1,
         x: float = 0.0,
         y: float = 0.0,
+        inlet_comments: list[str] | None = None,
+        outlet_comments: list[str] | None = None,
     ) -> tuple[Box, Patcher]:
         """Add a subpatcher (p name) with embedded patcher.
 
@@ -1332,6 +1334,12 @@ class Patcher:
             outlets: Number of outlet objects to create inside.
             x: Horizontal position.
             y: Vertical position.
+            inlet_comments: Optional list of descriptive comments for each inlet.
+                If provided, each string maps to the corresponding inlet's
+                "comment" attribute (mouseover tooltip in MAX). If the list is
+                shorter than inlets, extra inlets get empty string.
+            outlet_comments: Optional list of descriptive comments for each outlet.
+                Same behavior as inlet_comments but for outlet objects.
 
         Returns:
             (parent_box, inner_patcher) tuple.
@@ -1345,12 +1353,18 @@ class Patcher:
         inlet_spacing = 80.0
         for i in range(inlets):
             inlet_box = inner.add_box("inlet", x=50.0 + i * inlet_spacing, y=30.0)
-            inlet_box.extra_attrs["comment"] = ""
+            comment = ""
+            if inlet_comments and i < len(inlet_comments):
+                comment = inlet_comments[i]
+            inlet_box.extra_attrs["comment"] = comment
 
         # Add outlet objects inside the subpatcher
         for i in range(outlets):
             outlet_box = inner.add_box("outlet", x=50.0 + i * inlet_spacing, y=250.0)
-            outlet_box.extra_attrs["comment"] = ""
+            comment = ""
+            if outlet_comments and i < len(outlet_comments):
+                comment = outlet_comments[i]
+            outlet_box.extra_attrs["comment"] = comment
 
         # Create the parent box manually (subpatcher uses "newobj" maxclass)
         text = f"p {name}"
@@ -1468,6 +1482,92 @@ class Patcher:
             bpatch_box._inner_patcher = None
             self.boxes.append(bpatch_box)
             return bpatch_box
+
+    def populate_assistance_comments(self) -> "Patcher":
+        """Auto-populate empty assistance comments on inlet/outlet objects.
+
+        Walks all boxes in this patcher looking for subpatchers (boxes with
+        _inner_patcher set). For each inner patcher, finds inlet/outlet objects
+        with empty comment attributes and infers descriptive text from their
+        connections:
+
+        - For inlets: looks at what the inlet connects to downstream and
+          generates a comment like "signal to cycle~ 440".
+        - For outlets: looks at what connects upstream to the outlet and
+          generates a comment like "signal from *~ 0.5".
+        - If no connections found, uses positional fallback: "inlet 1",
+          "outlet 2", etc.
+        - Skips inlet/outlet objects that already have non-empty comments.
+        - Recurses into nested subpatchers.
+
+        Returns:
+            self for method chaining.
+        """
+        self._populate_comments_recursive(self)
+        return self
+
+    @staticmethod
+    def _populate_comments_recursive(patcher: "Patcher") -> None:
+        """Recursively populate assistance comments in a patcher and its subpatchers."""
+        for box in patcher.boxes:
+            if box._inner_patcher is not None:
+                inner = box._inner_patcher
+                # Build a lookup from box id to box object for the inner patcher
+                id_to_box: dict[str, Box] = {b.id: b for b in inner.boxes}
+
+                # Find inlet and outlet boxes, track their position index
+                inlet_boxes: list[Box] = []
+                outlet_boxes: list[Box] = []
+                for b in inner.boxes:
+                    if b.maxclass == "inlet":
+                        inlet_boxes.append(b)
+                    elif b.maxclass == "outlet":
+                        outlet_boxes.append(b)
+
+                # Sort by x position to get correct index ordering
+                inlet_boxes.sort(key=lambda b: b.patching_rect[0])
+                outlet_boxes.sort(key=lambda b: b.patching_rect[0])
+
+                # Process inlets: find downstream connections
+                for idx, inlet_box in enumerate(inlet_boxes):
+                    if inlet_box.extra_attrs.get("comment", "") != "":
+                        continue  # Skip non-empty comments
+                    # Find patchlines where this inlet is the source
+                    downstream = None
+                    for line in inner.lines:
+                        if line.source_id == inlet_box.id:
+                            dest_box = id_to_box.get(line.dest_id)
+                            if dest_box is not None:
+                                downstream = dest_box
+                                break
+                    if downstream is not None:
+                        prefix = "signal" if inlet_box.name.endswith("~") else "signal" if downstream.name.endswith("~") else "data"
+                        desc = downstream.text[:40] if downstream.text else downstream.name
+                        inlet_box.extra_attrs["comment"] = f"{prefix} to {desc}"
+                    else:
+                        inlet_box.extra_attrs["comment"] = f"inlet {idx + 1}"
+
+                # Process outlets: find upstream connections
+                for idx, outlet_box in enumerate(outlet_boxes):
+                    if outlet_box.extra_attrs.get("comment", "") != "":
+                        continue  # Skip non-empty comments
+                    # Find patchlines where this outlet is the destination
+                    upstream = None
+                    for line in inner.lines:
+                        if line.dest_id == outlet_box.id:
+                            src_box = id_to_box.get(line.source_id)
+                            if src_box is not None:
+                                upstream = src_box
+                                break
+                    if upstream is not None:
+                        prefix = "signal" if outlet_box.name.endswith("~") else "signal" if upstream.name.endswith("~") else "data"
+                        desc = upstream.text[:40] if upstream.text else upstream.name
+                        outlet_box.extra_attrs["comment"] = f"{prefix} from {desc}"
+                    else:
+                        outlet_box.extra_attrs["comment"] = f"outlet {idx + 1}"
+
+                # Recurse into the inner patcher
+                Patcher._populate_comments_recursive(inner)
 
     def add_gen(
         self,
