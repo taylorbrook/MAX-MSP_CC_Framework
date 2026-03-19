@@ -44,8 +44,8 @@ function tracks(count) {
 		var varname = "strip-" + (i + 1);
 		var x = X_START + i * (STRIP_W + GAP);
 		outlet(0, "script", "newobject", "bpatcher",
-			"@name", "mixer-strip.maxpat",
 			"@args", i + 1,
+			"@name", "mixer-strip.maxpat",
 			"@varname", varname,
 			"@presentation", 0,
 			"@patching_rect", x, ROW_Y, STRIP_W, STRIP_H);
@@ -78,8 +78,8 @@ function busses(count) {
 		var recvL = "bus-" + busNum + "-L";
 		var recvR = "bus-" + busNum + "-R";
 		outlet(0, "script", "newobject", "bpatcher",
-			"@name", "mixer-bus.maxpat",
 			"@args", busNum, recvL, recvR,
+			"@name", "mixer-bus.maxpat",
 			"@varname", varname,
 			"@presentation", 0,
 			"@patching_rect", x, ROW_Y, BUS_W, BUS_H);

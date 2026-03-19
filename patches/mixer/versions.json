@@ -4,6 +4,26 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-03-17T03:08:55.620628+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "Fix bpatcher label substitution by reordering @args before @name",
+      "timestamp": "2026-03-19T04:37:40.710413+00:00"
+    },
+    {
+      "version": "0.0.2",
+      "description": "Fix labels: loadbang message chain for #1 substitution in comments",
+      "timestamp": "2026-03-19T04:44:43.944355+00:00"
+    },
+    {
+      "version": "0.0.3",
+      "description": "Add assistance comments labeling all inlets and outlets",
+      "timestamp": "2026-03-19T04:52:17.592245+00:00"
+    },
+    {
+      "version": "0.0.4",
+      "description": "Set assistance comments on all inlet/outlet objects for mouse-over help",
+      "timestamp": "2026-03-19T04:55:23.377645+00:00"
     }
   ]
 }
