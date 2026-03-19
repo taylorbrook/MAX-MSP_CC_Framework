@@ -123,7 +123,6 @@ The `patches/` directory contains example and user-created projects:
 | **rhythmic-sampler** | 8-slot sampler with slice-based sequencing, time-stretching, and per-slot FX | `.maxpat`, `.js` |
 | **scala-synth** | 16-voice polyphonic additive synthesizer with Scala (.scl) file support for microtonal playback | `.maxpat`, `.js` |
 | **stutter** | Glitchy stutter effect with rhythmic and chaotic modes, built around a Gen~ stutter engine | `.maxpat` |
-| **TSC** | Temporal Semiotic Composition system for corpus-based live performance with behavior modules | `.maxpat`, `.gendsp` |
 | **wormhole** | Spectral effects processor with warp, pitch/frequency shifting, dual reverb, and stereo delay | `.maxpat` |
 
 ## How It Works
