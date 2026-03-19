@@ -1,0 +1,25 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build tarball
+        run: |
+          tar czf framework.tar.gz \
+            --exclude-from=.release-ignore \
+            --transform 's,^\./,MAX-MSP_CC_Framework/,' \
+            .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: framework.tar.gz

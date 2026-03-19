@@ -1,0 +1,13 @@
+.planning
+.git
+.github
+.pytest_cache
+tests
+.claude/max-objects/audit
+src/maxpat/__pycache__
+patches
+installer
+scripts
+.DS_Store
+*.pyc
+__pycache__
