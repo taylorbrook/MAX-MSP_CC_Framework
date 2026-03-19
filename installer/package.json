@@ -1,0 +1,20 @@
+{
+  "name": "create-max-framework",
+  "version": "1.0.0",
+  "description": "Create a MAX/MSP Claude Code Framework project",
+  "bin": {
+    "create-max-framework": "./bin/create-max-framework.js"
+  },
+  "files": ["bin/", "README.md"],
+  "keywords": ["max", "msp", "maxmsp", "claude", "claude-code", "audio", "music", "dsp"],
+  "author": "Taylor Brook",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taylorbrook/MAX-MSP_CC_Framework.git",
+    "directory": "installer"
+  }
+}
