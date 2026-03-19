@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260319-d83-PLAN.md
-last_updated: "2026-03-19T16:52:30Z"
-last_activity: "2026-03-19 - Completed quick task 260319-d83: Investigate npx installer for framework distribution"
+stopped_at: Completed quick-260319-e32-PLAN.md
+last_updated: "2026-03-19T17:16:38.617Z"
+last_activity: "2026-03-19 - Completed quick task 260319-e32: Create npx installer for framework distribution"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-19 - Completed quick task 260319-d83: Investigate npx installer for framework distribution
+Last activity: 2026-03-19 - Completed quick task 260319-e32: Create npx installer for framework distribution
 
 Progress: [██████████] 100%
 
@@ -116,6 +116,7 @@ Recent decisions for v2.0:
 - [Phase quick-260317-g0a]: All /max: command format replaced with /max- across 10 skill files
 - [Phase quick-260318-s03]: Inline project detection uses case-insensitive first-word match against list_projects()
 - [Phase quick-260318-ujk]: Signal prefix heuristic: 'signal' if tilde-named, 'data' otherwise; 1-indexed positional fallback for unconnected I/O
+- [Phase quick-260319-e32]: GitHub release tarball + npx scaffolder pattern for framework distribution (zero npm dependencies, Node 16+)
 
 ### Pending Todos
 
@@ -135,6 +136,7 @@ None.
 | 260318-ujk | Auto-populate assistance comments on inlet/outlet objects | 2026-03-19 | 64f41d8 | [260318-ujk-auto-populate-assistance-comments-on-inl](./quick/260318-ujk-auto-populate-assistance-comments-on-inl/) |
 | 260319-cws | Add assistance comment instructions to edit protocols | 2026-03-19 | e3cbd6b | [260319-cws-add-assistance-comment-instructions-to-e](./quick/260319-cws-add-assistance-comment-instructions-to-e/) |
 | 260319-d83 | Investigate npx installer for framework distribution | 2026-03-19 | 625290b | [260319-d83-investigate-npx-installer-for-framework-](./quick/260319-d83-investigate-npx-installer-for-framework-/) |
+| 260319-e32 | Create npx installer for framework distribution | 2026-03-19 | 56faca5 | [260319-e32-create-npx-installer-for-framework-distr](./quick/260319-e32-create-npx-installer-for-framework-distr/) |
 
 ### Blockers/Concerns
 
@@ -145,6 +147,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-19T16:52:30Z
-Stopped at: Completed quick-260319-d83-PLAN.md
+Last session: 2026-03-19T17:16:08.782Z
+Stopped at: Completed quick-260319-e32-PLAN.md
 Resume file: None
