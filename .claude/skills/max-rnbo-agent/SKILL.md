@@ -23,6 +23,13 @@ Generate RNBO patches for VST3/AU plugin, Web Audio, and C++ embedded export tar
 - **Object compatibility**: Check RNBO compatibility of any object via `RNBODatabase`
 - **Semantic review**: Run RNBO critic to catch param naming issues, missing I/O, and duplicate params
 
+### Assistance Comments on Inlets/Outlets
+- When calling `add_subpatcher()`, ALWAYS provide `inlet_comments` and `outlet_comments` with descriptive labels
+- Example: `p.add_subpatcher("rnbo_io", inlets=2, outlets=2, inlet_comments=["Audio In L", "Audio In R"], outlet_comments=["Audio Out L", "Audio Out R"])`
+- If you forget or cannot determine comments at creation time, call `patcher.populate_assistance_comments()` after building all connections -- it auto-infers from connection context
+- Comments appear as mouseover tooltips in MAX when hovering over the parent object's inlets/outlets
+- **Direct JSON edits:** When editing .maxpat JSON directly (not via the Python API), you MUST manually include a `"comment"` attribute on any inlet or outlet box dictionary being added or modified. Example: `{"maxclass": "inlet", "comment": "Audio Input Left", ...}`. The auto-populate method only works via the Patcher API, so direct JSON manipulation requires explicit comment attributes.
+
 ### Aesthetic Capabilities
 
 **Aesthetic auto-styling (call explicitly for new patches):**
@@ -122,9 +129,10 @@ from src.maxpat.hooks import save_patch_roundtrip
 
 1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
 2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
-3. Validate via `validate_patch(patcher)`
-4. Return for critic review
-5. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
+3. Run `patcher.populate_assistance_comments()` to auto-fill any empty inlet/outlet comments from connection context
+4. Validate via `validate_patch(patcher)`
+5. Return for critic review
+6. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
 
 ### Export Target Reference
 
