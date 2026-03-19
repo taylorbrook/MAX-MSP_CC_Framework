@@ -130,9 +130,10 @@ def calculate_box_size(text: str, maxclass: str) -> tuple[float, float]:
         arg_count = len(parts) - 1
         overrides = _WIDTH_OVERRIDES.get(obj_name)
         if overrides:
-            width = overrides.get(str(arg_count)) or overrides.get("default")
-            if width:
-                return (width, DEFAULT_HEIGHT)
+            override_width = overrides.get(str(arg_count)) or overrides.get("default")
+            if override_width:
+                text_width = len(text) * CHAR_WIDTH + PADDING
+                return (max(override_width, text_width), DEFAULT_HEIGHT)
 
     # Text-based sizing: newobj, comment, message, or UI objects with None size
     width = len(text) * CHAR_WIDTH + PADDING

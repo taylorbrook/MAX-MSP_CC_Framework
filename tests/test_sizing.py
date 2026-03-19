@@ -172,8 +172,10 @@ class TestWidthOverrides:
         text_based_w = len("cycle~ 440") * CHAR_WIDTH + PADDING
         # cycle~ should be in overrides with ~68.0 median width
         if "cycle~" in _WIDTH_OVERRIDES:
-            expected = _WIDTH_OVERRIDES["cycle~"].get("1") or _WIDTH_OVERRIDES["cycle~"].get("default")
-            assert w == expected
+            override_w = _WIDTH_OVERRIDES["cycle~"].get("1") or _WIDTH_OVERRIDES["cycle~"].get("default")
+            text_based_w = len("cycle~ 440") * CHAR_WIDTH + PADDING
+            # After fix: override acts as floor, text_width can exceed it
+            assert w == max(override_w, text_based_w)
             assert h == DEFAULT_HEIGHT
 
     def test_unknown_object_falls_back_to_text(self):
