@@ -31,11 +31,29 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 
 ## Quick Start
 
-### 1. Clone and open
+### 1. Install
+
+**Option A: npx (recommended)**
 
 ```bash
-git clone https://github.com/taylorbrook/MAX-MSP_CC_Framework.git
-cd MAX-MSP_CC_Framework
+npx create-max-framework my-project
+cd my-project
+claude
+```
+
+**Option B: Shell script**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/taylorbrook/MAX-MSP_CC_Framework/main/install.sh | bash -s my-project
+cd my-project
+claude
+```
+
+**Option C: Git clone (for contributors)**
+
+```bash
+git clone https://github.com/taylorbrook/MAX-MSP_CC_Framework.git my-project
+cd my-project
 claude
 ```
 
