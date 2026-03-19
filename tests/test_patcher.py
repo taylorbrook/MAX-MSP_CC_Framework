@@ -458,6 +458,126 @@ class TestSubpatcher:
         assert inlet_count == 3
 
 
+class TestAssistanceComments:
+    """Tests for assistance comment population on inlet/outlet objects."""
+
+    def test_explicit_inlet_comments(self):
+        """add_subpatcher with inlet_comments sets those comments on inner inlet boxes."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher(
+            "my_sub", inlets=2, outlets=1,
+            inlet_comments=["Audio In", "MIDI In"],
+        )
+        inner_dict = parent_box.to_dict()["box"]["patcher"]
+        inlets = [b["box"] for b in inner_dict["boxes"] if b["box"]["maxclass"] == "inlet"]
+        assert inlets[0]["comment"] == "Audio In"
+        assert inlets[1]["comment"] == "MIDI In"
+
+    def test_explicit_outlet_comments(self):
+        """add_subpatcher with outlet_comments sets that comment on inner outlet box."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher(
+            "my_sub", inlets=1, outlets=1,
+            outlet_comments=["Audio Out"],
+        )
+        inner_dict = parent_box.to_dict()["box"]["patcher"]
+        outlets = [b["box"] for b in inner_dict["boxes"] if b["box"]["maxclass"] == "outlet"]
+        assert outlets[0]["comment"] == "Audio Out"
+
+    def test_no_comments_backward_compatible(self):
+        """add_subpatcher without comment params still sets empty string."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher("my_sub", inlets=1, outlets=1)
+        inner_dict = parent_box.to_dict()["box"]["patcher"]
+        inlets = [b["box"] for b in inner_dict["boxes"] if b["box"]["maxclass"] == "inlet"]
+        outlets = [b["box"] for b in inner_dict["boxes"] if b["box"]["maxclass"] == "outlet"]
+        assert inlets[0]["comment"] == ""
+        assert outlets[0]["comment"] == ""
+
+    def test_fewer_comments_than_inlets(self):
+        """add_subpatcher with fewer comments than inlets -- extra inlets get empty string."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher(
+            "my_sub", inlets=3, outlets=1,
+            inlet_comments=["Audio In"],
+        )
+        inner_dict = parent_box.to_dict()["box"]["patcher"]
+        inlets = [b["box"] for b in inner_dict["boxes"] if b["box"]["maxclass"] == "inlet"]
+        assert inlets[0]["comment"] == "Audio In"
+        assert inlets[1]["comment"] == ""
+        assert inlets[2]["comment"] == ""
+
+    def test_populate_infers_from_downstream(self):
+        """populate_assistance_comments() infers comment from first downstream object for inlet."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher("my_sub", inlets=1, outlets=1)
+        # Add a cycle~ connected from the inlet
+        inlet_box = [b for b in inner.boxes if b.maxclass == "inlet"][0]
+        cyc = inner.add_box("cycle~", args=["440"])
+        inner.add_connection(inlet_box, 0, cyc, 0)
+        # Populate
+        p.populate_assistance_comments()
+        assert inlet_box.extra_attrs["comment"] == "signal to cycle~ 440"
+
+    def test_populate_infers_from_upstream(self):
+        """populate_assistance_comments() infers comment from first upstream object for outlet."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher("my_sub", inlets=1, outlets=1)
+        # Add a *~ connected to the outlet
+        outlet_box = [b for b in inner.boxes if b.maxclass == "outlet"][0]
+        mul = inner.add_box("*~", args=["0.5"])
+        inner.add_connection(mul, 0, outlet_box, 0)
+        # Populate
+        p.populate_assistance_comments()
+        assert outlet_box.extra_attrs["comment"] == "signal from *~ 0.5"
+
+    def test_populate_skips_nonempty_comments(self):
+        """populate_assistance_comments() skips inlet/outlet objects that already have non-empty comments."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher(
+            "my_sub", inlets=1, outlets=1,
+            inlet_comments=["My Custom Comment"],
+        )
+        inlet_box = [b for b in inner.boxes if b.maxclass == "inlet"][0]
+        cyc = inner.add_box("cycle~", args=["440"])
+        inner.add_connection(inlet_box, 0, cyc, 0)
+        # Populate should not overwrite
+        p.populate_assistance_comments()
+        assert inlet_box.extra_attrs["comment"] == "My Custom Comment"
+
+    def test_populate_no_connections_fallback(self):
+        """populate_assistance_comments() handles inlet/outlet with no connections (sets 'inlet N' / 'outlet N')."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher("my_sub", inlets=2, outlets=2)
+        p.populate_assistance_comments()
+        inlets = [b for b in inner.boxes if b.maxclass == "inlet"]
+        outlets = [b for b in inner.boxes if b.maxclass == "outlet"]
+        assert inlets[0].extra_attrs["comment"] == "inlet 1"
+        assert inlets[1].extra_attrs["comment"] == "inlet 2"
+        assert outlets[0].extra_attrs["comment"] == "outlet 1"
+        assert outlets[1].extra_attrs["comment"] == "outlet 2"
+
+    def test_populate_recurses_into_nested_subpatchers(self):
+        """populate_assistance_comments() recurses into nested subpatchers."""
+        p = Patcher()
+        parent_box, inner = p.add_subpatcher("outer", inlets=1, outlets=1)
+        # Create a nested subpatcher inside inner
+        nested_box, nested = inner.add_subpatcher("nested", inlets=1, outlets=1)
+        nested_inlet = [b for b in nested.boxes if b.maxclass == "inlet"][0]
+        cyc = nested.add_box("cycle~", args=["880"])
+        nested.add_connection(nested_inlet, 0, cyc, 0)
+        # Populate from the top-level patcher
+        p.populate_assistance_comments()
+        # Should recurse and populate the nested inlet
+        assert nested_inlet.extra_attrs["comment"] == "signal to cycle~ 880"
+
+    def test_populate_returns_self_for_chaining(self):
+        """populate_assistance_comments() returns self for chaining."""
+        p = Patcher()
+        result = p.populate_assistance_comments()
+        assert result is p
+
+
 class TestBpatcher:
     """PAT-03: bpatcher generation (file reference and embedded)."""
 
