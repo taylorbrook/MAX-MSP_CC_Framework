@@ -124,8 +124,8 @@ None.
 
 ### Quick Tasks Completed
 
-| # | Description | Date | Commit | Directory |
-|---|-------------|------|--------|-----------|
+| # | Description | Date | Commit | Status | Directory |
+|---|-------------|------|--------|--------|-----------|
 | 260316-rzx | max-build should assume new patch, max-iterate for existing patches | 2026-03-17 | d8b2e22 | [260316-rzx-max-build-should-assume-new-patch-max-it](./quick/260316-rzx-max-build-should-assume-new-patch-max-it/) |
 | 260316-uzv | Remove examples/ folder and list patches in README | 2026-03-17 | 0807246 | [260316-uzv-remove-examples-folder-and-list-patches-](./quick/260316-uzv-remove-examples-folder-and-list-patches-/) |
 | 260317-b86 | Add post-generation patch layout validation critic | 2026-03-17 | 9467aa3 | [260317-b86-add-post-generation-patch-layout-validat](./quick/260317-b86-add-post-generation-patch-layout-validat/) |
@@ -136,7 +136,7 @@ None.
 | 260318-ujk | Auto-populate assistance comments on inlet/outlet objects | 2026-03-19 | 64f41d8 | [260318-ujk-auto-populate-assistance-comments-on-inl](./quick/260318-ujk-auto-populate-assistance-comments-on-inl/) |
 | 260319-cws | Add assistance comment instructions to edit protocols | 2026-03-19 | e3cbd6b | [260319-cws-add-assistance-comment-instructions-to-e](./quick/260319-cws-add-assistance-comment-instructions-to-e/) |
 | 260319-d83 | Investigate npx installer for framework distribution | 2026-03-19 | 625290b | [260319-d83-investigate-npx-installer-for-framework-](./quick/260319-d83-investigate-npx-installer-for-framework-/) |
-| 260319-e32 | Create npx installer for framework distribution | 2026-03-19 | 56faca5 | [260319-e32-create-npx-installer-for-framework-distr](./quick/260319-e32-create-npx-installer-for-framework-distr/) |
+| 260319-e32 | Create npx installer for framework distribution | 2026-03-19 | 56faca5 | Verified | [260319-e32-create-npx-installer-for-framework-distr](./quick/260319-e32-create-npx-installer-for-framework-distr/) |
 
 ### Blockers/Concerns
 
