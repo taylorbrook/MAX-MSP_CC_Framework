@@ -201,3 +201,59 @@ class TestWidthOverrides:
         expected_w = max(len("test comment") * CHAR_WIDTH + PADDING, MIN_BOX_WIDTH)
         assert w == expected_w
         assert h == 20.0
+
+
+class TestOverrideFloorBehavior:
+    """Override width acts as a floor, not a cap -- max(override, text_width)."""
+
+    def test_long_arg_exceeds_override_uses_text_width(self):
+        """receive~ with long arg: text width (198.0) > override (94.0), text wins."""
+        from src.maxpat.sizing import _WIDTH_OVERRIDES
+        text = "receive~ mt-glide-freq-sig"
+        w, h = calculate_box_size(text, "newobj")
+        text_width = len(text) * CHAR_WIDTH + PADDING
+        # text_width = 26 * 7.0 + 16.0 = 198.0
+        assert text_width == 198.0
+        if "receive~" in _WIDTH_OVERRIDES:
+            override_w = _WIDTH_OVERRIDES["receive~"].get("1") or _WIDTH_OVERRIDES["receive~"].get("default")
+            assert override_w < text_width, "Override should be smaller than text width for this test"
+            assert w == text_width, f"Expected text_width {text_width}, got {w}"
+        assert h == DEFAULT_HEIGHT
+
+    def test_long_send_arg_exceeds_override(self):
+        """send~ with long arg: text width > override (88.0), text wins."""
+        from src.maxpat.sizing import _WIDTH_OVERRIDES
+        text = "send~ my-very-long-signal-name"
+        w, h = calculate_box_size(text, "newobj")
+        text_width = len(text) * CHAR_WIDTH + PADDING
+        if "send~" in _WIDTH_OVERRIDES:
+            override_w = _WIDTH_OVERRIDES["send~"].get("1") or _WIDTH_OVERRIDES["send~"].get("default")
+            assert w > override_w, f"Width {w} should exceed override {override_w}"
+            assert w == text_width, f"Expected text_width {text_width}, got {w}"
+        assert h == DEFAULT_HEIGHT
+
+    def test_bare_object_keeps_override(self):
+        """cycle~ (no args): override 68.0 > text_width 58.0, override wins."""
+        from src.maxpat.sizing import _WIDTH_OVERRIDES
+        w, h = calculate_box_size("cycle~", "newobj")
+        text_width = len("cycle~") * CHAR_WIDTH + PADDING
+        # text_width = 6 * 7.0 + 16.0 = 58.0
+        assert text_width == 58.0
+        if "cycle~" in _WIDTH_OVERRIDES:
+            override_w = _WIDTH_OVERRIDES["cycle~"].get("0") or _WIDTH_OVERRIDES["cycle~"].get("default")
+            assert override_w == 68.0
+            assert w == 68.0
+        assert h == DEFAULT_HEIGHT
+
+    def test_bare_receive_keeps_override(self):
+        """receive~ (no args): override 94.0 > text_width 72.0, override wins."""
+        from src.maxpat.sizing import _WIDTH_OVERRIDES
+        w, h = calculate_box_size("receive~", "newobj")
+        text_width = len("receive~") * CHAR_WIDTH + PADDING
+        # text_width = 8 * 7.0 + 16.0 = 72.0
+        assert text_width == 72.0
+        if "receive~" in _WIDTH_OVERRIDES:
+            override_w = _WIDTH_OVERRIDES["receive~"].get("0") or _WIDTH_OVERRIDES["receive~"].get("default")
+            assert override_w == 94.0
+            assert w == 94.0
+        assert h == DEFAULT_HEIGHT
