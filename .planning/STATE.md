@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260317-g0a-PLAN.md
-last_updated: "2026-03-17T18:39:14.430Z"
-last_activity: "2026-03-17 - Completed quick task 260317-g0a: Fix documentation inconsistencies"
+stopped_at: Completed quick-260318-s03-PLAN.md
+last_updated: "2026-03-19T03:15:28.373Z"
+last_activity: "2026-03-18 - Completed quick task 260318-s03: Add inline project switching to /max-iterate"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -58,6 +58,7 @@ Progress: [██████████] 100%
 | Phase 19 P01 | 2min | 2 tasks | 4 files |
 | Phase quick-260317-b86 P01 | 6min | 2 tasks | 3 files |
 | Phase quick-260317-g0a P01 | 2min | 3 tasks | 12 files |
+| Phase quick-260318-s03 P01 | 2min | 1 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,7 @@ Recent decisions for v2.0:
 - [Phase quick-260317-g0a]: GenExpr I/O syntax docs corrected: in1/out1 for codebox, in 1/out 1 for patcher objects only
 - [Phase quick-260317-g0a]: Layout spacing docs corrected: ~20px vertical, ~15px gutter (matching defaults.py)
 - [Phase quick-260317-g0a]: All /max: command format replaced with /max- across 10 skill files
+- [Phase quick-260318-s03]: Inline project detection uses case-insensitive first-word match against list_projects()
 
 ### Pending Todos
 
@@ -127,6 +129,7 @@ None.
 | 260317-b86 | Add post-generation patch layout validation critic | 2026-03-17 | 9467aa3 | [260317-b86-add-post-generation-patch-layout-validat](./quick/260317-b86-add-post-generation-patch-layout-validat/) |
 | 260317-e14 | Remove generate.py approach and add safeguards | 2026-03-17 | 195096e | [260317-e14-remove-generate-py-approach-and-add-safe](./quick/260317-e14-remove-generate-py-approach-and-add-safe/) |
 | 260317-g0a | Fix documentation inconsistencies (GenExpr syntax, spacing, command format) | 2026-03-17 | 793811b | [260317-g0a-thoroughly-review-the-entire-repo-for-in](./quick/260317-g0a-thoroughly-review-the-entire-repo-for-in/) |
+| 260318-s03 | Add inline project switching to /max-iterate | 2026-03-18 | 9e41826 | [260318-s03-when-using-the-max-iterate-command-autom](./quick/260318-s03-when-using-the-max-iterate-command-autom/) |
 
 ### Blockers/Concerns
 
@@ -137,6 +140,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-17T18:39:10.388Z
-Stopped at: Completed quick-260317-g0a-PLAN.md
+Last session: 2026-03-19T03:15:26.051Z
+Stopped at: Completed quick-260318-s03-PLAN.md
 Resume file: None
