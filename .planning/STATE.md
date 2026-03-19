@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260318-ujk-PLAN.md
-last_updated: "2026-03-19T16:13:53.765Z"
-last_activity: "2026-03-19 - Completed quick task 260318-ujk: Auto-populate assistance comments on inlet/outlet objects"
+stopped_at: Completed quick-260319-cws-PLAN.md
+last_updated: "2026-03-19T16:22:35.667Z"
+last_activity: "2026-03-19 - Completed quick task 260319-cws: Add assistance comment instructions to edit protocols"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-19 - Completed quick task 260318-ujk: Auto-populate assistance comments on inlet/outlet objects
+Last activity: 2026-03-19 - Completed quick task 260319-cws: Add assistance comment instructions to edit protocols
 
 Progress: [██████████] 100%
 
@@ -133,6 +133,7 @@ None.
 | 260318-s03 | Add inline project switching to /max-iterate | 2026-03-18 | 9e41826 | [260318-s03-when-using-the-max-iterate-command-autom](./quick/260318-s03-when-using-the-max-iterate-command-autom/) |
 | 260318-u2i | Remove TSC patch project from repo | 2026-03-19 | 10c5177 | [260318-u2i-remove-the-tsc-patch-and-project-by-dele](./quick/260318-u2i-remove-the-tsc-patch-and-project-by-dele/) |
 | 260318-ujk | Auto-populate assistance comments on inlet/outlet objects | 2026-03-19 | 64f41d8 | [260318-ujk-auto-populate-assistance-comments-on-inl](./quick/260318-ujk-auto-populate-assistance-comments-on-inl/) |
+| 260319-cws | Add assistance comment instructions to edit protocols | 2026-03-19 | e3cbd6b | [260319-cws-add-assistance-comment-instructions-to-e](./quick/260319-cws-add-assistance-comment-instructions-to-e/) |
 
 ### Blockers/Concerns
 
@@ -143,6 +144,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-19T16:13:48.984Z
-Stopped at: Completed quick-260318-ujk-PLAN.md
+Last session: 2026-03-19T16:22:35.665Z
+Stopped at: Completed quick-260319-cws-PLAN.md
 Resume file: None
