@@ -68,6 +68,12 @@ Before any generation:
 - Feedback loops: tapin~/tapout~ pair (MSP) or History operator (gen~)
 - gen~ exempted from feedback loop warnings (History is the intended mechanism)
 
+### Assistance Comments on Inlets/Outlets
+- When calling `add_subpatcher()`, ALWAYS provide `inlet_comments` and `outlet_comments` with descriptive labels for signal I/O
+- Example: `p.add_subpatcher("filter_stage", inlets=2, outlets=1, inlet_comments=["Audio Input", "Cutoff Frequency"], outlet_comments=["Filtered Output"])`
+- If you forget or cannot determine comments at creation time, call `patcher.populate_assistance_comments()` after building all connections -- it auto-infers from connection context
+- Comments appear as mouseover tooltips in MAX when hovering over the parent object's inlets/outlets
+
 ### Aesthetic Capabilities
 
 **Aesthetic auto-styling (call explicitly for new patches):**

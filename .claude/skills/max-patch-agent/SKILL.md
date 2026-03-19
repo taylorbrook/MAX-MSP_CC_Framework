@@ -42,7 +42,8 @@ Before any generation:
 - `Box(name, args, db)` -- create a validated box
 - `Patcher.add_box(box)` -- add box to patch
 - `Patcher.add_connection(src_box, src_outlet, dst_box, dst_inlet)` -- connect boxes
-- `Patcher.add_subpatcher(name)` -- add a subpatcher
+- `Patcher.add_subpatcher(name, inlets, outlets, inlet_comments, outlet_comments)` -- add a subpatcher with labeled I/O
+- `Patcher.populate_assistance_comments()` -- auto-fill empty inlet/outlet comments from connection context
 - `_apply_auto_styling(patcher)` -- apply canvas background and object highlights
 - `apply_layout(patcher, layout_options=None)` -- row-based topological layout positioning (accepts LayoutOptions)
 - `validate_patch(patcher.to_dict(), db=patcher.db)` -- run four-layer validation pipeline
@@ -75,6 +76,12 @@ Before any generation:
 - Named send/receive for long-distance connections
 - Subpatcher organization for complex logic
 - Comment objects on non-obvious connections
+
+### Assistance Comments on Inlets/Outlets
+- When calling `add_subpatcher()`, ALWAYS provide `inlet_comments` and `outlet_comments` with descriptive labels
+- Example: `p.add_subpatcher("audio_proc", inlets=2, outlets=1, inlet_comments=["Audio Input Left", "Audio Input Right"], outlet_comments=["Processed Output"])`
+- If you forget or cannot determine comments at creation time, call `patcher.populate_assistance_comments()` after building all connections -- it auto-infers from connection context
+- Comments appear as mouseover tooltips in MAX when hovering over the parent object's inlets/outlets
 
 ### Aesthetic Capabilities
 
