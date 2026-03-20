@@ -448,6 +448,9 @@ def _validate_domain_rules(
     # --- Rule: Missing gain staging ---
     results.extend(_check_gain_staging(box_lookup, signal_adj))
 
+    # --- Rule: Unsafe gain values ---
+    results.extend(_check_unsafe_gain_values(box_lookup))
+
     # --- Rule: Feedback loop detection ---
     results.extend(_check_feedback_loops(box_lookup, signal_adj))
 
@@ -596,6 +599,43 @@ def _check_gain_staging(
                     continue
 
                 queue.append((next_id, next_has_gain))
+
+    return results
+
+
+def _check_unsafe_gain_values(
+    box_lookup: dict[str, dict],
+) -> list[ValidationResult]:
+    """Detect *~ objects with literal gain arguments > 1.0.
+
+    A *~ with a constant multiplier > 1.0 amplifies signal beyond unity gain,
+    which is dangerous for audio output. Values <= 1.0 are safe.
+    """
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        name = _get_box_name(box)
+        if name != "*~":
+            continue
+
+        text = box.get("text", "")
+        parts = text.split()
+        if len(parts) < 2:
+            continue  # No argument -- skip
+
+        arg_str = parts[1]
+        try:
+            arg_val = float(arg_str)
+        except ValueError:
+            continue  # Not a number literal (could be a variable)
+
+        if arg_val > 1.0:
+            results.append(ValidationResult(
+                "domain", "warning",
+                f"Unsafe gain multiplier: '*~ {arg_str}' ({box_id}) has value "
+                f"> 1.0 -- gain values should be 0.0-1.0 to prevent dangerous "
+                f"audio levels",
+            ))
 
     return results
 

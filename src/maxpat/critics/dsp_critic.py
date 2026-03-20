@@ -29,6 +29,16 @@ _GAIN_NAMES = frozenset({"*~", "gain~"})
 # Terminal signal objects
 _TERMINAL_NAMES = frozenset({"dac~", "ezdac~"})
 
+# Objects known to output MIDI-range (0-127) or UI-range values
+_MIDI_RANGE_SOURCES = frozenset({
+    "ctlin", "notein", "slider", "kslider",
+    "live.dial", "live.slider", "live.numbox",
+    "number", "flonum",
+})
+
+# Objects that normalize/scale values into safe ranges
+_NORMALIZER_NAMES = frozenset({"scale", "zmap", "clip", "clip~"})
+
 
 def review_dsp(
     patch_dict: dict,
@@ -67,6 +77,7 @@ def review_dsp(
     results.extend(_check_gen_io_match(box_lookup, code_context))
     results.extend(_check_gain_staging(box_lookup, lines))
     results.extend(_check_audio_rate_consistency(box_lookup, lines))
+    results.extend(_check_unsafe_gain_sources(box_lookup, lines))
 
     return results
 
@@ -232,7 +243,7 @@ def _check_gain_staging(
                 if next_name in _TERMINAL_NAMES:
                     if not next_has_gain:
                         results.append(CriticResult(
-                            "warning",
+                            "blocker",
                             f"Missing gain staging: '{osc_name}' ({osc_id}) "
                             f"connected to '{next_name}' ({next_id}) without "
                             f"passing through *~ or gain~",
@@ -309,5 +320,149 @@ def _check_audio_rate_consistency(
                 f"Use a 'sig~' object to convert control data to signal rate, "
                 f"or verify this is intentional (some inlets accept both)",
             ))
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Check 4: Unsafe gain sources
+# ---------------------------------------------------------------------------
+
+def _is_normalizer(box: dict) -> bool:
+    """Check if a box is a normalizer/scaler that constrains values to safe range."""
+    name = _get_box_name(box)
+    if name in _NORMALIZER_NAMES:
+        return True
+
+    text = box.get("text", "")
+    # Division by 127 normalizes MIDI range: "/ 127." or "!/ 127."
+    if text.startswith("/ 127") or text.startswith("!/ 127"):
+        return True
+    # Small multiplication factor like "* 0.007" (approx 1/127)
+    if text.startswith("* 0.00") and not text.startswith("* 0.0 "):
+        return True
+    # expr/vexpr might normalize
+    if name in ("expr", "vexpr"):
+        return True
+
+    return False
+
+
+def _check_unsafe_gain_sources(
+    box_lookup: dict[str, dict],
+    lines: list[dict],
+) -> list[CriticResult]:
+    """Detect MIDI-range control sources feeding *~ gain inlet without normalization.
+
+    Traces backward from *~ inlet 1 (the gain/multiplier inlet) through
+    control-rate connections. If it reaches a MIDI-range source (ctlin, notein,
+    number, slider, etc.) without passing through a normalizer (scale, clip,
+    / 127.), emit a blocker.
+    """
+    results: list[CriticResult] = []
+
+    # Build control adjacency: for each (dst_id, dst_inlet) -> list of src_ids
+    # Only non-signal connections
+    ctrl_predecessors: dict[tuple[str, int], list[str]] = {}
+    for line_entry in lines:
+        patchline = line_entry.get("patchline", line_entry)
+        source = patchline.get("source", [])
+        destination = patchline.get("destination", [])
+        if len(source) < 2 or len(destination) < 2:
+            continue
+
+        src_id, src_outlet = source[0], source[1]
+        dst_id, dst_inlet = destination[0], destination[1]
+
+        src_box = box_lookup.get(src_id)
+        if not src_box:
+            continue
+
+        # Check if this is a signal connection -- skip those
+        src_outlettype = src_box.get("outlettype", [])
+        is_signal = (
+            src_outlet < len(src_outlettype)
+            and src_outlettype[src_outlet] == "signal"
+        )
+        if is_signal:
+            continue
+
+        key = (dst_id, dst_inlet)
+        ctrl_predecessors.setdefault(key, []).append(src_id)
+
+    # Also build general control backward adjacency (any inlet) for tracing
+    ctrl_backward: dict[str, list[str]] = {}
+    for line_entry in lines:
+        patchline = line_entry.get("patchline", line_entry)
+        source = patchline.get("source", [])
+        destination = patchline.get("destination", [])
+        if len(source) < 2 or len(destination) < 2:
+            continue
+
+        src_id, src_outlet = source[0], source[1]
+        dst_id = destination[0]
+
+        src_box = box_lookup.get(src_id)
+        if not src_box:
+            continue
+
+        src_outlettype = src_box.get("outlettype", [])
+        is_signal = (
+            src_outlet < len(src_outlettype)
+            and src_outlettype[src_outlet] == "signal"
+        )
+        if is_signal:
+            continue
+
+        ctrl_backward.setdefault(dst_id, []).append(src_id)
+
+    # Find all *~ boxes and check what feeds inlet 1
+    for box_id, box in box_lookup.items():
+        name = _get_box_name(box)
+        if name != "*~":
+            continue
+
+        # Get control sources feeding inlet 1 (gain inlet)
+        inlet_1_sources = ctrl_predecessors.get((box_id, 1), [])
+        if not inlet_1_sources:
+            continue
+
+        # BFS backward from each source to find MIDI-range origins
+        for start_src in inlet_1_sources:
+            queue = deque([start_src])
+            visited: set[str] = set()
+
+            while queue:
+                current_id = queue.popleft()
+                if current_id in visited:
+                    continue
+                visited.add(current_id)
+
+                current_box = box_lookup.get(current_id)
+                if not current_box:
+                    continue
+
+                current_name = _get_box_name(current_box)
+
+                # If we hit a normalizer, this path is safe -- stop tracing
+                if _is_normalizer(current_box):
+                    continue
+
+                # If we hit a MIDI-range source, flag it
+                if current_name in _MIDI_RANGE_SOURCES:
+                    results.append(CriticResult(
+                        "blocker",
+                        f"Unsafe gain source: '{current_name}' ({current_id}) "
+                        f"feeds '*~' ({box_id}) inlet 1 without normalization "
+                        f"-- raw MIDI/UI values (0-127) will cause dangerous "
+                        f"audio levels",
+                        f"Insert 'scale 0 127 0. 1.' or '/ 127.' before the "
+                        f"gain input",
+                    ))
+                    continue
+
+                # Continue tracing backward
+                for prev_id in ctrl_backward.get(current_id, []):
+                    queue.append(prev_id)
 
     return results
