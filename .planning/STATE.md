@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260319-f6q-PLAN.md
-last_updated: "2026-03-19T18:06:06.389Z"
-last_activity: "2026-03-19 - Completed quick task 260319-f6q: Fix layout spacing for send~/receive~ objects"
+stopped_at: Completed quick-260319-mnh-PLAN.md
+last_updated: "2026-03-20T02:46:00.298Z"
+last_activity: "2026-03-19 - Completed quick task 260319-mnh: add gain safety guards for *~ and gain~ objects"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -118,6 +118,7 @@ Recent decisions for v2.0:
 - [Phase quick-260318-ujk]: Signal prefix heuristic: 'signal' if tilde-named, 'data' otherwise; 1-indexed positional fallback for unconnected I/O
 - [Phase quick-260319-e32]: GitHub release tarball + npx scaffolder pattern for framework distribution (zero npm dependencies, Node 16+)
 - [Phase quick-260319-f6q]: Override width is a floor (minimum), not an absolute value -- max(override, text_width)
+- [Phase quick-260319-mnh]: MIDI-range sources to *~ gain inlet without normalization = blocker severity for hearing safety
 
 ### Pending Todos
 
@@ -139,6 +140,7 @@ None.
 | 260319-d83 | Investigate npx installer for framework distribution | 2026-03-19 | 625290b | [260319-d83-investigate-npx-installer-for-framework-](./quick/260319-d83-investigate-npx-installer-for-framework-/) |
 | 260319-e32 | Create npx installer for framework distribution | 2026-03-19 | 56faca5 | Verified | [260319-e32-create-npx-installer-for-framework-distr](./quick/260319-e32-create-npx-installer-for-framework-distr/) |
 | 260319-f6q | Fix layout spacing for send~/receive~ objects | 2026-03-19 | bc1b6ed | Verified | [260319-f6q-fix-layout-spacing-for-send-receive-obje](./quick/260319-f6q-fix-layout-spacing-for-send-receive-obje/) |
+| 260319-mnh | Add gain safety guards for *~ and gain~ objects | 2026-03-19 | 6e591ef | Verified | [260319-mnh-add-gain-safety-guard-ensure-gain-multip](./quick/260319-mnh-add-gain-safety-guard-ensure-gain-multip/) |
 
 ### Blockers/Concerns
 
@@ -149,6 +151,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-19T18:06:05.682Z
-Stopped at: Completed quick-260319-f6q-PLAN.md
+Last session: 2026-03-20T02:45:59.149Z
+Stopped at: Completed quick-260319-mnh-PLAN.md
 Resume file: None
