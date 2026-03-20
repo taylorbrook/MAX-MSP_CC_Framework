@@ -287,27 +287,27 @@ class TestDSPCritic:
         assert any("output" in r.finding.lower() or "outlet" in r.finding.lower() for r in blockers)
 
     def test_missing_gain_staging_cycle(self):
-        """cycle~ directly to dac~ -> warning about missing gain staging."""
+        """cycle~ directly to dac~ -> blocker about missing gain staging."""
         patch = _no_gain_staging_patch()
         results = review_dsp(patch)
-        warnings = [r for r in results if r.severity == "warning"]
-        assert len(warnings) >= 1
-        assert any("gain" in r.finding.lower() for r in warnings)
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1
+        assert any("gain" in r.finding.lower() for r in blockers)
 
     def test_missing_gain_staging_noise(self):
-        """noise~ directly to ezdac~ -> warning about missing gain staging."""
+        """noise~ directly to ezdac~ -> blocker about missing gain staging."""
         patch = _noise_no_gain_patch()
         results = review_dsp(patch)
-        warnings = [r for r in results if r.severity == "warning"]
-        assert len(warnings) >= 1
-        assert any("gain" in r.finding.lower() for r in warnings)
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1
+        assert any("gain" in r.finding.lower() for r in blockers)
 
     def test_proper_gain_staging_no_warning(self):
-        """cycle~ -> *~ 0.5 -> dac~ -> no gain staging warning."""
+        """cycle~ -> *~ 0.5 -> dac~ -> no gain staging warning or blocker."""
         patch = _proper_gain_staging_patch()
         results = review_dsp(patch)
-        gain_warnings = [r for r in results if r.severity == "warning" and "gain" in r.finding.lower()]
-        assert len(gain_warnings) == 0
+        gain_issues = [r for r in results if r.severity in ("warning", "blocker") and "gain" in r.finding.lower()]
+        assert len(gain_issues) == 0
 
     def test_control_to_signal_warning(self):
         """Control-rate number to signal inlet of *~ -> warning."""

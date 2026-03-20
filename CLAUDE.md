@@ -91,6 +91,7 @@ This rule exists because the generator pattern causes regeneration to overwrite 
 
 - Always terminate signal chains with `dac~` or `*~ 0.` (multiply by zero to mute)
 - Use `*~ 0.5` or `*~` with `line~` for gain control -- never connect raw oscillators to `dac~` at full volume
+- Gain safety: values feeding `*~` or `gain~` for volume control MUST be in the 0.0-1.0 range. Raw MIDI (0-127), slider, or number values must be normalized first (use `scale 0 127 0. 1.` or `/ 127.`). The validation pipeline and DSP critic will block output that violates this rule.
 - Signal objects (names ending in `~`) process at audio rate -- they are always "on" once connected
 - Use `snapshot~` to convert signal values to control rate for display
 - Use `meter~` or `levelmeter~` for audio level monitoring
