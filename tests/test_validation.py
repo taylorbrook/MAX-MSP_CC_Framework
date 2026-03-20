@@ -485,3 +485,67 @@ class TestValidationResult:
         """__repr__ follows [layer:level] message format."""
         r = ValidationResult("json", "error", "missing patcher key")
         assert repr(r) == "[json:error] missing patcher key"
+
+
+# ===========================================================================
+# Layer 4: Unsafe Gain Value Detection
+# ===========================================================================
+
+class TestLayer4UnsafeGainValues:
+    """GAIN-SAFETY: Detect *~ objects with literal gain arguments > 1.0."""
+
+    def test_unsafe_gain_literal_warning(self, db):
+        """*~ 127 produces domain warning with 'unsafe gain'."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="*~ 127", numinlets=2, numoutlets=1,
+                       outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db)
+        gain_warnings = [r for r in results
+                         if r.layer == "domain" and "unsafe gain" in r.message.lower()]
+        assert len(gain_warnings) >= 1
+        assert "127" in gain_warnings[0].message
+
+    def test_safe_gain_literal_no_warning(self, db):
+        """*~ 0.5 produces no unsafe gain warning."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="*~ 0.5", numinlets=2, numoutlets=1,
+                       outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db)
+        gain_warnings = [r for r in results
+                         if r.layer == "domain" and "unsafe gain" in r.message.lower()]
+        assert gain_warnings == []
+
+    def test_gain_at_unity_no_warning(self, db):
+        """*~ 1.0 produces no unsafe gain warning (1.0 is the boundary, still safe)."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="*~ 1.0", numinlets=2, numoutlets=1,
+                       outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db)
+        gain_warnings = [r for r in results
+                         if r.layer == "domain" and "unsafe gain" in r.message.lower()]
+        assert gain_warnings == []
+
+    def test_gain_no_arg_no_warning(self, db):
+        """*~ alone produces no unsafe gain warning."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="*~", numinlets=2, numoutlets=1,
+                       outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db)
+        gain_warnings = [r for r in results
+                         if r.layer == "domain" and "unsafe gain" in r.message.lower()]
+        assert gain_warnings == []
+
+    def test_gain_negative_literal_no_warning(self, db):
+        """*~ -0.5 -- negative is not > 1.0, no warning."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="*~ -0.5", numinlets=2, numoutlets=1,
+                       outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db)
+        gain_warnings = [r for r in results
+                         if r.layer == "domain" and "unsafe gain" in r.message.lower()]
+        assert gain_warnings == []

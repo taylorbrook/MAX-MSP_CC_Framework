@@ -1275,6 +1275,142 @@ class TestLayoutCritic:
         overlap_warnings = [r for r in results if "overlap" in r.finding.lower()]
         assert len(overlap_warnings) == 0, f"Expected no overlap warnings, got: {results}"
 
+# ===========================================================================
+# DSP Critic Gain Safety tests
+# ===========================================================================
+
+class TestDSPCriticGainSafety:
+    """GAIN-SAFETY: DSP critic detects unsafe gain sources and upgrades severity."""
+
+    def test_midi_source_to_gain_inlet_blocker(self):
+        """ctlin -> *~ inlet 1 without normalizer = blocker."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "ctlin",
+                "numinlets": 1,
+                "numoutlets": 3,
+                "outlettype": ["", "", ""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
+        assert len(blockers) >= 1, f"Expected blocker for ctlin->*~ inlet 1, got: {results}"
+
+    def test_signal_source_to_gain_inlet_no_warning(self):
+        """cycle~ -> *~ inlet 1 = no unsafe gain warning (signal modulation is fine)."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "cycle~ 440",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        gain_blockers = [r for r in results if "unsafe gain" in r.finding.lower()]
+        assert len(gain_blockers) == 0, f"Expected no unsafe gain findings for signal source, got: {results}"
+
+    def test_normalized_midi_to_gain_no_warning(self):
+        """ctlin -> scale 0 127 0. 1. -> *~ inlet 1 = no warning."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "ctlin",
+                "numinlets": 1,
+                "numoutlets": 3,
+                "outlettype": ["", "", ""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "scale 0 127 0. 1.",
+                "numinlets": 6,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        gain_blockers = [r for r in results if "unsafe gain" in r.finding.lower()]
+        assert len(gain_blockers) == 0, f"Expected no unsafe gain findings after normalization, got: {results}"
+
+    def test_missing_gain_staging_is_now_blocker(self):
+        """cycle~ -> dac~ = blocker (not warning)."""
+        patch = _no_gain_staging_patch()
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "gain" in r.finding.lower()]
+        assert len(blockers) >= 1, f"Expected blocker for missing gain staging, got: {results}"
+
+    def test_number_to_gain_inlet_blocker(self):
+        """number box -> *~ inlet 1 = blocker."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "number",
+                "text": "",
+                "numinlets": 1,
+                "numoutlets": 2,
+                "outlettype": ["", ""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
+        assert len(blockers) >= 1, f"Expected blocker for number->*~ inlet 1, got: {results}"
+
+
     def test_comment_and_panel_excluded_from_overlap(self):
         """Comment and panel boxes are excluded from overlap checks."""
         boxes = [
