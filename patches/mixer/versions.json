@@ -24,6 +24,56 @@
       "version": "0.0.4",
       "description": "Set assistance comments on all inlet/outlet objects for mouse-over help",
       "timestamp": "2026-03-19T04:55:23.377645+00:00"
+    },
+    {
+      "version": "0.0.5",
+      "description": "Add send level controls to strip presentation",
+      "timestamp": "2026-03-19T20:48:15.585853+00:00"
+    },
+    {
+      "version": "0.0.6",
+      "description": "Move mixer controls to top-left, shift instances down",
+      "timestamp": "2026-03-19T20:58:43.236389+00:00"
+    },
+    {
+      "version": "0.0.7",
+      "description": "Fix instancing: thispatcher at root, mixer-manager commands routed via subpatcher outlet",
+      "timestamp": "2026-03-19T21:14:41.216463+00:00"
+    },
+    {
+      "version": "0.0.8",
+      "description": "Fix instancing: thispatcher at root, subpatcher only holds loadbang defaults",
+      "timestamp": "2026-03-19T21:21:45.360837+00:00"
+    },
+    {
+      "version": "0.0.9",
+      "description": "Fix init: atomic init function, set for silent number box display",
+      "timestamp": "2026-03-19T21:30:04.696711+00:00"
+    },
+    {
+      "version": "0.0.10",
+      "description": "Fix audio: initialize insert bypass selector on loadbang",
+      "timestamp": "2026-03-19T21:41:35.477755+00:00"
+    },
+    {
+      "version": "0.0.11",
+      "description": "Fix audio: mute multipliers default to 1, initialize mute toggle on loadbang",
+      "timestamp": "2026-03-19T22:07:26.145531+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "Fix R channel gain (normalize gain~ slider value) and fix duplicate strips on reload",
+      "timestamp": "2026-03-19T23:07:14.531722+00:00"
+    },
+    {
+      "version": "0.2.0",
+      "description": "Fix master/bus R channel gain and fix send selectors to default Pre-Fader",
+      "timestamp": "2026-03-19T23:14:55.563399+00:00"
+    },
+    {
+      "version": "0.2.1",
+      "description": "fix mute click, sends routing, and layout overlap",
+      "timestamp": "2026-03-21T11:51:37.496374+00:00"
     }
   ]
 }

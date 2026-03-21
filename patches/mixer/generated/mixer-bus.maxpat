@@ -911,6 +911,26 @@
 					"fontname": "Arial",
 					"fontsize": 12.0
 				}
+			},
+			{
+				"box": {
+					"fontname": "Arial",
+					"fontsize": 12.0,
+					"id": "obj-26",
+					"maxclass": "newobj",
+					"numinlets": 2,
+					"numoutlets": 1,
+					"outlettype": [
+						""
+					],
+					"patching_rect": [
+						200.0,
+						200.0,
+						44.0,
+						22.0
+					],
+					"text": "/ 128."
+				}
 			}
 		],
 		"lines": [
@@ -929,26 +949,6 @@
 						51.0,
 						218.0,
 						51.0
-					]
-				}
-			},
-			{
-				"patchline": {
-					"source": [
-						"obj-3",
-						1
-					],
-					"destination": [
-						"obj-4",
-						1
-					],
-					"midpoints": [
-						440.0,
-						195.0,
-						440.0,
-						102,
-						135.0,
-						102
 					]
 				}
 			},
@@ -1349,6 +1349,46 @@
 					"destination": [
 						"obj-26",
 						0
+					]
+				}
+			},
+			{
+				"patchline": {
+					"source": [
+						"obj-3",
+						1
+					],
+					"destination": [
+						"obj-26",
+						0
+					],
+					"midpoints": [
+						440.0,
+						195.0,
+						209.0,
+						195.0
+					]
+				}
+			},
+			{
+				"patchline": {
+					"source": [
+						"obj-26",
+						0
+					],
+					"destination": [
+						"obj-4",
+						1
+					],
+					"midpoints": [
+						209.0,
+						220.0,
+						440.0,
+						220.0,
+						440.0,
+						102.0,
+						135.0,
+						102.0
 					]
 				}
 			}

@@ -1,0 +1,19 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-03-19T22:14:44.452564+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "Connect LFO pitch mod to oscillator frequency chain",
+      "timestamp": "2026-03-19T22:14:44.453264+00:00"
+    },
+    {
+      "version": "0.0.2",
+      "description": "Rearrange UI: logical grouping, keyboard at bottom with mod wheel",
+      "timestamp": "2026-03-21T11:54:28.882875+00:00"
+    }
+  ]
+}

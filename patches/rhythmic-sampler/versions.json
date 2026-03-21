@@ -1,0 +1,14 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-03-21T12:13:19.387078+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "fix DSP auto-start and init values",
+      "timestamp": "2026-03-21T12:13:19.387691+00:00"
+    }
+  ]
+}

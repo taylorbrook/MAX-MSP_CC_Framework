@@ -3,283 +3,252 @@
         "fileversion": 1,
         "appversion": {
             "major": 9,
-            "minor": 0,
-            "revision": 0,
+            "minor": 1,
+            "revision": 2,
             "architecture": "x64",
             "modernui": 1
         },
         "classnamespace": "box",
         "rect": [
-            50.0,
-            80.0,
+            134.0,
+            166.0,
             1400.0,
-            750.0
+            827.0
         ],
-        "bglocked": 0,
-        "openinpresentation": 0,
-        "default_fontsize": 12.0,
-        "default_fontface": 0,
-        "default_fontname": "Arial",
-        "gridonopen": 1,
-        "gridsize": [
-            15.0,
-            15.0
-        ],
-        "gridsnaponopen": 1,
-        "objectsnaponopen": 1,
-        "statusbarvisible": 2,
-        "toolbarvisible": 1,
-        "lefttoolbarpinned": 0,
-        "toptoolbarpinned": 0,
-        "righttoolbarpinned": 0,
-        "bottomtoolbarpinned": 0,
-        "toolbars_unpinned_last_save": 0,
-        "tallnewobj": 0,
-        "boxanimatetime": 200,
-        "enablehscroll": 1,
-        "enablevscroll": 1,
-        "devicewidth": 0.0,
-        "description": "",
-        "digest": "",
-        "tags": "",
-        "style": "",
-        "subpatcher_template": "",
-        "assistshowspatchername": 0,
         "boxes": [
             {
                 "box": {
-                    "maxclass": "comment",
-                    "id": "obj-1",
+                    "data": {
+                        "clips": [
+                            {
+                                "absolutepath": "Macintosh HD:/Users/taylorbrook/Downloads/wind-48000hz-24bit.wav",
+                                "filename": "wind-48000hz-24bit.wav",
+                                "filekind": "audiofile",
+                                "id": "u350004807",
+                                "loop": 1,
+                                "content_state": {
+                                    "loop": 1
+                                }
+                            }
+                        ]
+                    },
+                    "id": "obj-27",
+                    "maxclass": "playlist~",
+                    "mode": "basic",
                     "numinlets": 1,
-                    "numoutlets": 0,
-                    "outlettype": [],
+                    "numoutlets": 5,
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "",
+                        "dictionary"
+                    ],
+                    "parameter_enable": 0,
                     "patching_rect": [
-                        10,
-                        530,
-                        153.0,
-                        24.0
+                        424.0,
+                        62.0,
+                        150.0,
+                        30.0
                     ],
-                    "text": "Mixer Controls",
-                    "fontname": "Arial",
-                    "fontsize": 16.0,
-                    "fontface": 1,
-                    "textcolor": [
-                        0.2,
-                        0.25,
-                        0.42,
-                        1.0
-                    ],
+                    "quality": "basic",
+                    "saved_attribute_attributes": {
+                        "candicane2": {
+                            "expression": ""
+                        },
+                        "candicane3": {
+                            "expression": ""
+                        },
+                        "candicane4": {
+                            "expression": ""
+                        },
+                        "candicane5": {
+                            "expression": ""
+                        },
+                        "candicane6": {
+                            "expression": ""
+                        },
+                        "candicane7": {
+                            "expression": ""
+                        },
+                        "candicane8": {
+                            "expression": ""
+                        }
+                    }
+                }
+            },
+            {
+                "box": {
                     "bgcolor": [
                         0.88,
                         0.9,
                         0.95,
                         1.0
-                    ]
-                }
-            },
-            {
-                "box": {
+                    ],
+                    "fontface": 1,
+                    "fontname": "Arial",
+                    "fontsize": 16.0,
+                    "id": "obj-1",
                     "maxclass": "comment",
-                    "id": "obj-2",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
-                        10,
-                        558,
-                        58.0,
-                        20.0
-                    ],
-                    "text": "Tracks",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "number",
-                    "id": "obj-3",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        10,
-                        575,
-                        50.0,
-                        22.0
-                    ],
-                    "parameter_enable": 0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-4",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        10,
-                        602,
-                        97.0,
-                        22.0
-                    ],
-                    "text": "prepend tracks",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "comment",
-                    "id": "obj-5",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [
-                        110,
-                        558,
-                        58.0,
-                        20.0
-                    ],
-                    "text": "Busses",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "number",
-                    "id": "obj-6",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        110,
-                        575,
-                        50.0,
-                        22.0
-                    ],
-                    "parameter_enable": 0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-7",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        110,
-                        602,
-                        97.0,
-                        22.0
-                    ],
-                    "text": "prepend busses",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-8",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        60,
-                        630,
-                        135.0,
-                        22.0
-                    ],
-                    "text": "js mixer-manager.js",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-9",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        60,
-                        660,
-                        69.0,
-                        22.0
-                    ],
-                    "text": "thispatcher",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "bpatcher",
-                    "id": "obj-10",
-                    "numinlets": 0,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [
-                        590.0,
                         10.0,
-                        118.0,
-                        438.0
+                        10.0,
+                        153.0,
+                        24.0
                     ],
-                    "name": "mixer-master.maxpat",
-                    "args": [],
-                    "varname": "master"
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-11",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        230,
-                        558,
-                        62.0,
-                        22.0
-                    ],
-                    "text": "loadbang",
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "bgcolor": [
-                        0.85,
-                        0.92,
-                        0.85,
+                    "text": "Mixer Controls",
+                    "textcolor": [
+                        0.2,
+                        0.25,
+                        0.42,
                         1.0
                     ]
                 }
             },
             {
                 "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-2",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        10.0,
+                        38.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "Tracks"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-5",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        73.0,
+                        38.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "Busses"
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-3",
+                    "maxclass": "number",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        "bang"
+                    ],
+                    "parameter_enable": 0,
+                    "patching_rect": [
+                        10.0,
+                        55.0,
+                        50.0,
+                        22.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-6",
+                    "maxclass": "number",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        "bang"
+                    ],
+                    "parameter_enable": 0,
+                    "patching_rect": [
+                        73.0,
+                        55.0,
+                        50.0,
+                        22.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-43",
                     "maxclass": "newobj",
-                    "id": "obj-12",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        10.0,
+                        85.0,
+                        97.0,
+                        22.0
+                    ],
+                    "text": "prepend tracks"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-44",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        115.0,
+                        85.0,
+                        97.0,
+                        22.0
+                    ],
+                    "text": "prepend busses"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-41",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        10.0,
+                        115.0,
+                        135.0,
+                        22.0
+                    ],
+                    "saved_object_attributes": {
+                        "filename": "mixer-manager.js",
+                        "parameter_enable": 0
+                    },
+                    "text": "js mixer-manager.js"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-42",
+                    "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [
@@ -287,73 +256,146 @@
                         ""
                     ],
                     "patching_rect": [
-                        230,
-                        583,
-                        36.0,
+                        10.0,
+                        145.0,
+                        69.0,
                         22.0
                     ],
-                    "text": "t b b",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
+                    "save": [
+                        "#N",
+                        "thispatcher",
+                        ";",
+                        "#Q",
+                        "end",
+                        ";"
+                    ],
+                    "text": "thispatcher"
                 }
             },
             {
                 "box": {
+                    "bgcolor": [
+                        0.85,
+                        0.92,
+                        0.85,
+                        1.0
+                    ],
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-50",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        "bang"
+                    ],
+                    "patching_rect": [
+                        266.0,
+                        11.0,
+                        62.0,
+                        22.0
+                    ],
+                    "text": "loadbang"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-51",
+                    "maxclass": "newobj",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "bang",
+                        "bang",
+                        "bang"
+                    ],
+                    "patching_rect": [
+                        266.0,
+                        39.0,
+                        46.0,
+                        22.0
+                    ],
+                    "text": "t b b b"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-52",
                     "maxclass": "message",
-                    "id": "obj-13",
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [
                         ""
                     ],
                     "patching_rect": [
-                        220,
-                        610,
-                        40.0,
+                        266.0,
+                        66.0,
+                        56.0,
                         22.0
                     ],
-                    "text": "4",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
+                    "text": "init 4 2"
                 }
             },
             {
                 "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-53",
                     "maxclass": "message",
-                    "id": "obj-14",
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [
                         ""
                     ],
                     "patching_rect": [
-                        260,
-                        610,
+                        326.0,
+                        66.0,
                         40.0,
                         22.0
                     ],
-                    "text": "2",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
+                    "text": "set 4"
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-54",
+                    "maxclass": "message",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        376.0,
+                        66.0,
+                        40.0,
+                        22.0
+                    ],
+                    "text": "set 2"
+                }
+            },
+            {
+                "box": {
+                    "fontface": 2,
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
                     "id": "obj-15",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
-                        10,
-                        695,
+                        10.0,
+                        170.0,
                         356.0,
                         18.0
                     ],
                     "text": "Strips and busses created dynamically by mixer-manager.js",
-                    "fontname": "Arial",
-                    "fontsize": 10.0,
-                    "fontface": 2,
                     "textcolor": [
                         0.55,
                         0.55,
@@ -361,181 +403,526 @@
                         1.0
                     ]
                 }
+            },
+            {
+                "box": {
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-10",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-master.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 0,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "patching_rect": [
+                        602.0,
+                        190.0,
+                        118.0,
+                        438.0
+                    ],
+                    "varname": "master",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-7",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        10.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-1",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-9",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        102.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-2",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        3
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-12",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        194.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-3",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        4
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-14",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        286.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-4",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1,
+                        "bus-1-L",
+                        "bus-1-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-17",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        394.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-1",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2,
+                        "bus-2-L",
+                        "bus-2-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-19",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        486.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-2",
+                    "viewvisibility": 1
+                }
             }
         ],
         "lines": [
             {
                 "patchline": {
-                    "source": [
-                        "obj-3",
-                        0
-                    ],
-                    "destination": [
-                        "obj-4",
-                        0
-                    ],
-                    "midpoints": [
-                        17.0,
-                        599.5,
-                        58.5,
-                        599.5
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-6",
-                        0
-                    ],
                     "destination": [
                         "obj-7",
-                        0
-                    ],
-                    "midpoints": [
-                        117.0,
-                        599.5,
-                        158.5,
-                        599.5
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-4",
-                        0
-                    ],
-                    "destination": [
-                        "obj-8",
-                        0
-                    ],
-                    "midpoints": [
-                        58.5,
-                        627.0,
-                        127.5,
-                        627.0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-7",
-                        0
-                    ],
-                    "destination": [
-                        "obj-8",
-                        0
-                    ],
-                    "midpoints": [
-                        158.5,
-                        627.0,
-                        127.5,
-                        627.0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-8",
-                        0
-                    ],
-                    "destination": [
-                        "obj-9",
-                        0
-                    ],
-                    "midpoints": [
-                        127.5,
-                        656.0,
-                        94.5,
-                        656.0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-11",
-                        0
-                    ],
-                    "destination": [
-                        "obj-12",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-12",
                         1
                     ],
+                    "source": [
+                        "obj-27",
+                        1
+                    ]
+                }
+            },
+            {
+                "patchline": {
                     "destination": [
-                        "obj-14",
+                        "obj-7",
+                        0
+                    ],
+                    "source": [
+                        "obj-27",
                         0
                     ]
                 }
             },
             {
                 "patchline": {
-                    "source": [
-                        "obj-12",
+                    "destination": [
+                        "obj-43",
                         0
                     ],
-                    "destination": [
-                        "obj-13",
+                    "midpoints": [
+                        19.5,
+                        78.0,
+                        19.5,
+                        78.0
+                    ],
+                    "source": [
+                        "obj-3",
                         0
                     ]
                 }
             },
             {
                 "patchline": {
-                    "source": [
-                        "obj-13",
+                    "destination": [
+                        "obj-42",
                         0
                     ],
+                    "midpoints": [
+                        19.5,
+                        138.0,
+                        19.5,
+                        138.0
+                    ],
+                    "source": [
+                        "obj-41",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-41",
+                        0
+                    ],
+                    "midpoints": [
+                        19.5,
+                        108.0,
+                        19.5,
+                        108.0
+                    ],
+                    "source": [
+                        "obj-43",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-41",
+                        0
+                    ],
+                    "midpoints": [
+                        124.5,
+                        108.0,
+                        19.5,
+                        108.0
+                    ],
+                    "source": [
+                        "obj-44",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-51",
+                        0
+                    ],
+                    "midpoints": [
+                        275.5,
+                        34.0,
+                        275.5,
+                        34.0
+                    ],
+                    "source": [
+                        "obj-50",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-52",
+                        0
+                    ],
+                    "midpoints": [
+                        275.5,
+                        64.0,
+                        275.5,
+                        64.0
+                    ],
+                    "source": [
+                        "obj-51",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-53",
+                        0
+                    ],
+                    "midpoints": [
+                        289.0,
+                        61.0,
+                        335.5,
+                        61.0
+                    ],
+                    "source": [
+                        "obj-51",
+                        1
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-54",
+                        0
+                    ],
+                    "midpoints": [
+                        302.5,
+                        61.0,
+                        385.5,
+                        61.0
+                    ],
+                    "source": [
+                        "obj-51",
+                        2
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-41",
+                        0
+                    ],
+                    "midpoints": [
+                        275.5,
+                        111.0,
+                        19.5,
+                        111.0
+                    ],
+                    "source": [
+                        "obj-52",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
                     "destination": [
                         "obj-3",
                         0
                     ],
                     "midpoints": [
-                        240.0,
-                        603.5,
-                        35.0,
-                        603.5
+                        335.5,
+                        99.0,
+                        180.0,
+                        99.0,
+                        180.0,
+                        72.0,
+                        123.0,
+                        72.0,
+                        123.0,
+                        78.0,
+                        6.0,
+                        78.0,
+                        6.0,
+                        51.0,
+                        19.5,
+                        51.0
+                    ],
+                    "source": [
+                        "obj-53",
+                        0
                     ]
                 }
             },
             {
                 "patchline": {
-                    "source": [
-                        "obj-14",
-                        0
-                    ],
                     "destination": [
                         "obj-6",
                         0
                     ],
                     "midpoints": [
-                        280.0,
-                        603.5,
-                        135.0,
-                        603.5
+                        385.5,
+                        99.0,
+                        180.0,
+                        99.0,
+                        180.0,
+                        72.0,
+                        123.0,
+                        72.0,
+                        123.0,
+                        78.0,
+                        69.0,
+                        78.0,
+                        69.0,
+                        51.0,
+                        82.5,
+                        51.0
+                    ],
+                    "source": [
+                        "obj-54",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-44",
+                        0
+                    ],
+                    "midpoints": [
+                        82.5,
+                        78.0,
+                        124.5,
+                        78.0
+                    ],
+                    "source": [
+                        "obj-6",
+                        0
                     ]
                 }
             }
         ],
-        "dependency_cache": [],
         "autosave": 0,
         "editing_bgcolor": [
-            0.333,
-            0.333,
-            0.333,
-            1.0
-        ],
-        "locked_bgcolor": [
             0.333,
             0.333,
             0.333,
