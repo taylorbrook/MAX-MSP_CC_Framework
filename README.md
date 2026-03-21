@@ -106,9 +106,22 @@ Generates a manual test checklist based on the objects and signal flow in your p
 
 ```
 /max-iterate add a chorus effect after the filter
+/max-iterate --full redesign the delay feedback path
+/max-iterate --discuss --research add sidechain compression
 ```
 
 Reads the existing `.maxpat`, analyzes its structure, makes surgical edits, and writes back — preserving all positions, colors, connections, and manual changes you've made in MAX.
+
+Optional flags prepend phases before the edit:
+
+| Flag | Description |
+|------|-------------|
+| `--full` | Run discuss + research + plan before building |
+| `--discuss` | Clarify implementation approach interactively |
+| `--research` | Look up objects and techniques from the database |
+| `--plan` | Outline edit steps and get approval before executing |
+
+Flags are composable (`--discuss --research`) and can be combined with inline project switching (`/max-iterate stutter --full add granular engine`).
 
 ## Commands
 
@@ -116,7 +129,7 @@ Reads the existing `.maxpat`, analyzes its structure, makes surgical edits, and 
 |---------|-------------|
 | `/max-new` | Create a new project with kickoff, discussion, and research in one flow |
 | `/max-build` | Generate patches and code via agent dispatch |
-| `/max-iterate` | Read, edit, and write back existing patches or code |
+| `/max-iterate` | Read, edit, and write back existing patches or code (`--full`, `--discuss`, `--research`, `--plan`) |
 | `/max-onboard` | Analyze an existing `.maxpat` file and produce a structured summary |
 | `/max-verify` | Run validation and critic review on all output |
 | `/max-test` | Generate a manual test checklist for MAX |
