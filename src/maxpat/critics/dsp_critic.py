@@ -352,6 +352,24 @@ def _is_normalizer(box: dict) -> bool:
     return False
 
 
+def _parse_line_tilde_targets(text: str) -> list[float]:
+    """Parse target values from a message box feeding line~.
+
+    line~ message format: target1 time1 target2 time2 ...
+    Values at even indices (0, 2, 4...) are target values.
+    A single number with no time is also a valid target.
+    """
+    targets: list[float] = []
+    parts = text.split()
+    for i, part in enumerate(parts):
+        if i % 2 == 0:  # even indices are target values
+            try:
+                targets.append(float(part))
+            except ValueError:
+                pass
+    return targets
+
+
 def _check_unsafe_gain_sources(
     box_lookup: dict[str, dict],
     lines: list[dict],
@@ -362,12 +380,18 @@ def _check_unsafe_gain_sources(
     control-rate connections. If it reaches a MIDI-range source (ctlin, notein,
     number, slider, etc.) without passing through a normalizer (scale, clip,
     / 127.), emit a blocker.
+
+    Also traces through line~ (signal-rate) to detect >1.0 message values
+    and MIDI sources feeding the gain inlet indirectly.
     """
     results: list[CriticResult] = []
 
     # Build control adjacency: for each (dst_id, dst_inlet) -> list of src_ids
     # Only non-signal connections
     ctrl_predecessors: dict[tuple[str, int], list[str]] = {}
+    # Build signal adjacency: for each (dst_id, dst_inlet) -> list of src_ids
+    sig_predecessors: dict[tuple[str, int], list[str]] = {}
+
     for line_entry in lines:
         patchline = line_entry.get("patchline", line_entry)
         source = patchline.get("source", [])
@@ -382,17 +406,17 @@ def _check_unsafe_gain_sources(
         if not src_box:
             continue
 
-        # Check if this is a signal connection -- skip those
         src_outlettype = src_box.get("outlettype", [])
         is_signal = (
             src_outlet < len(src_outlettype)
             and src_outlettype[src_outlet] == "signal"
         )
-        if is_signal:
-            continue
 
         key = (dst_id, dst_inlet)
-        ctrl_predecessors.setdefault(key, []).append(src_id)
+        if is_signal:
+            sig_predecessors.setdefault(key, []).append(src_id)
+        else:
+            ctrl_predecessors.setdefault(key, []).append(src_id)
 
     # Also build general control backward adjacency (any inlet) for tracing
     ctrl_backward: dict[str, list[str]] = {}
@@ -423,19 +447,9 @@ def _check_unsafe_gain_sources(
     # Names with a gain inlet at index 1 (mc.gain~ excluded: only 1 inlet)
     _GAIN_INLET_1_NAMES = frozenset({"*~", "mc.*~"})
 
-    # Find all *~/mc.*~ boxes and check what feeds inlet 1
-    for box_id, box in box_lookup.items():
-        name = _get_box_name(box)
-        if name not in _GAIN_INLET_1_NAMES:
-            continue
-
-        # Get control sources feeding inlet 1 (gain inlet)
-        inlet_1_sources = ctrl_predecessors.get((box_id, 1), [])
-        if not inlet_1_sources:
-            continue
-
-        # BFS backward from each source to find MIDI-range origins
-        for start_src in inlet_1_sources:
+    def _trace_ctrl_backward(start_ids: list[str], gain_name: str, gain_id: str):
+        """BFS backward from control sources to find MIDI-range origins."""
+        for start_src in start_ids:
             queue = deque([start_src])
             visited: set[str] = set()
 
@@ -455,14 +469,31 @@ def _check_unsafe_gain_sources(
                 if _is_normalizer(current_box):
                     continue
 
+                # Check message boxes for >1.0 target values (line~ path)
+                if current_box.get("maxclass") == "message":
+                    targets = _parse_line_tilde_targets(
+                        current_box.get("text", ""),
+                    )
+                    if any(abs(t) > 1.0 for t in targets):
+                        results.append(CriticResult(
+                            "blocker",
+                            f"Unsafe gain source: message '{current_box.get('text', '')}' "
+                            f"({current_id}) feeds '{gain_name}' ({gain_id}) "
+                            f"inlet 1 via line~ with value >1.0 "
+                            f"-- will cause dangerous audio levels",
+                            f"Keep message target values in 0.0-1.0 range "
+                            f"for gain control",
+                        ))
+                    continue
+
                 # If we hit a MIDI-range source, flag it
                 if current_name in _MIDI_RANGE_SOURCES:
                     results.append(CriticResult(
                         "blocker",
                         f"Unsafe gain source: '{current_name}' ({current_id}) "
-                        f"feeds '{name}' ({box_id}) inlet 1 without normalization "
-                        f"-- raw MIDI/UI values (0-127) will cause dangerous "
-                        f"audio levels",
+                        f"feeds '{gain_name}' ({gain_id}) inlet 1 without "
+                        f"normalization -- raw MIDI/UI values (0-127) will "
+                        f"cause dangerous audio levels",
                         f"Insert 'scale 0 127 0. 1.' or '/ 127.' before the "
                         f"gain input",
                     ))
@@ -471,5 +502,32 @@ def _check_unsafe_gain_sources(
                 # Continue tracing backward
                 for prev_id in ctrl_backward.get(current_id, []):
                     queue.append(prev_id)
+
+    # Find all *~/mc.*~ boxes and check what feeds inlet 1
+    for box_id, box in box_lookup.items():
+        name = _get_box_name(box)
+        if name not in _GAIN_INLET_1_NAMES:
+            continue
+
+        # Get control sources feeding inlet 1 (gain inlet) -- direct control
+        inlet_1_ctrl = ctrl_predecessors.get((box_id, 1), [])
+
+        # Get signal sources feeding inlet 1 -- check for line~
+        inlet_1_sig = sig_predecessors.get((box_id, 1), [])
+        line_tilde_ctrl_sources: list[str] = []
+        for sig_src_id in inlet_1_sig:
+            sig_src_box = box_lookup.get(sig_src_id)
+            if sig_src_box and _get_box_name(sig_src_box) == "line~":
+                # Trace backward from line~'s control inputs
+                line_ctrl = ctrl_backward.get(sig_src_id, [])
+                line_tilde_ctrl_sources.extend(line_ctrl)
+
+        # Trace from direct control sources
+        if inlet_1_ctrl:
+            _trace_ctrl_backward(inlet_1_ctrl, name, box_id)
+
+        # Trace from line~ control inputs (line~ acts as signal bridge)
+        if line_tilde_ctrl_sources:
+            _trace_ctrl_backward(line_tilde_ctrl_sources, name, box_id)
 
     return results
