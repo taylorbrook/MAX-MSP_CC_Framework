@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260319-mnh-PLAN.md
-last_updated: "2026-03-20T02:46:00.298Z"
-last_activity: "2026-03-22 - Completed quick task 260322-fee: extract duplicated content blocks into shared-capabilities.md"
+stopped_at: Completed quick-260322-fpd-PLAN.md
+last_updated: "2026-03-22T18:24:10.818Z"
+last_activity: "2026-03-22 - Completed quick task 260322-fpd: Update CLAUDE.md and SKILL.md files to recommend ObjectDatabase"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,13 +28,14 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-22 - Completed quick task 260322-fee: Extract duplicated content blocks into shared-capabilities.md
+Last activity: 2026-03-22 - Completed quick task 260322-fpd: Update CLAUDE.md and SKILL.md files to recommend ObjectDatabase
 
 Progress: [██████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 7 (v2.0) / 39 (lifetime)
 - Average duration: 6min (v2.0)
 - Total execution time: 41min (v2.0)
@@ -67,6 +68,7 @@ Progress: [██████████] 100%
 Decisions archived in PROJECT.md Key Decisions table.
 
 Recent decisions for v2.0:
+
 - [15-01]: EditResult uses @dataclass with default_factory for orphaned list
 - [15-01]: modify_box syncs _raw["text"] explicitly (Box.to_dict round-trip path doesn't overlay text)
 - [15-01]: replace_box captures orphaned connections before remove_box to preserve connection info
@@ -119,6 +121,7 @@ Recent decisions for v2.0:
 - [Phase quick-260319-e32]: GitHub release tarball + npx scaffolder pattern for framework distribution (zero npm dependencies, Node 16+)
 - [Phase quick-260319-f6q]: Override width is a floor (minimum), not an absolute value -- max(override, text_width)
 - [Phase quick-260319-mnh]: MIDI-range sources to *~ gain inlet without normalization = blocker severity for hearing safety
+- [Phase quick-260322-fpd]: ObjectDatabase.lookup() is the documented primary method; raw JSON files kept as secondary for browsing
 
 ### Pending Todos
 
@@ -148,6 +151,7 @@ None.
 | 260322-eai | Bulk-correct MSP outlet types for gain~ and index~ | 2026-03-22 | c2c88f1 | Verified | [260322-eai-bulk-correct-outlet-types-for-msp-object](./quick/260322-eai-bulk-correct-outlet-types-for-msp-object/) |
 | 260322-eva | Retire the in-app memory system (max-memory-agent) | 2026-03-22 | b4d20a3 | Verified | [260322-eva-retire-the-in-app-memory-system-max-memo](./quick/260322-eva-retire-the-in-app-memory-system-max-memo/) |
 | 260322-fee | Extract duplicated content blocks into shared-capabilities.md | 2026-03-22 | 587f034 | Verified | [260322-fee-extract-duplicated-content-blocks-from-a](./quick/260322-fee-extract-duplicated-content-blocks-from-a/) |
+| 260322-fpd | Update CLAUDE.md and SKILL.md files to recommend ObjectDatabase | 2026-03-22 | 8f9ac8b | | [260322-fpd-update-claude-md-and-skill-md-files-to-r](./quick/260322-fpd-update-claude-md-and-skill-md-files-to-r/) |
 
 ### Blockers/Concerns
 
@@ -158,6 +162,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-22T18:14:00Z
-Stopped at: Completed quick-260322-fee-PLAN.md
+Last session: 2026-03-22T18:24:10.771Z
+Stopped at: Completed quick-260322-fpd-PLAN.md
 Resume file: None
