@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260322-fyt-PLAN.md
-last_updated: "2026-03-22T18:34:06.108Z"
+stopped_at: Completed quick-260322-g3q-PLAN.md
+last_updated: "2026-03-22T19:21:53.934Z"
 last_activity: "2026-03-22 - Completed quick task 260322-fyt: Add Context Budget section to max-router SKILL.md"
 progress:
   total_phases: 12
@@ -60,6 +60,7 @@ Progress: [██████████] 100%
 | Phase quick-260317-b86 P01 | 6min | 2 tasks | 3 files |
 | Phase quick-260317-g0a P01 | 2min | 3 tasks | 12 files |
 | Phase quick-260318-s03 P01 | 2min | 1 tasks | 1 files |
+| Phase quick-260322-g3q P01 | 5min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -123,6 +124,9 @@ Recent decisions for v2.0:
 - [Phase quick-260319-mnh]: MIDI-range sources to *~ gain inlet without normalization = blocker severity for hearing safety
 - [Phase quick-260322-fpd]: ObjectDatabase.lookup() is the documented primary method; raw JSON files kept as secondary for browsing
 - [Phase quick-260322-fyt]: Target ~250 lines total context for 3+ agent dispatch (not 200, based on actual section sizes)
+- [Phase quick-260322-g3q]: expr/vexpr normalizer requires explicit division/scaling pattern -- no blanket pass
+- [Phase quick-260322-g3q]: mc.gain~ in _GAIN_NAMES for recognition only; excluded from inlet-1 checks (single inlet object)
+- [Phase quick-260322-g3q]: line~ tracing uses signal predecessor map to cross signal/control boundary
 
 ### Pending Todos
 
@@ -154,6 +158,7 @@ None.
 | 260322-fee | Extract duplicated content blocks into shared-capabilities.md | 2026-03-22 | 587f034 | Verified | [260322-fee-extract-duplicated-content-blocks-from-a](./quick/260322-fee-extract-duplicated-content-blocks-from-a/) |
 | 260322-fpd | Update CLAUDE.md and SKILL.md files to recommend ObjectDatabase | 2026-03-22 | 8f9ac8b | | [260322-fpd-update-claude-md-and-skill-md-files-to-r](./quick/260322-fpd-update-claude-md-and-skill-md-files-to-r/) |
 | 260322-fyt | Add Context Budget section to max-router SKILL.md | 2026-03-22 | ac1351c | | [260322-fyt-add-context-budget-section-to-max-router](./quick/260322-fyt-add-context-budget-section-to-max-router/) |
+| 260322-g3q | Extend DSP critic gain staging checks | 2026-03-22 | c4524b6 | | [260322-g3q-extend-dsp-critic-gain-staging-checks-wi](./quick/260322-g3q-extend-dsp-critic-gain-staging-checks-wi/) |
 
 ### Blockers/Concerns
 
@@ -164,6 +169,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-22T18:34:04.522Z
-Stopped at: Completed quick-260322-fyt-PLAN.md
+Last session: 2026-03-22T19:21:45.925Z
+Stopped at: Completed quick-260322-g3q-PLAN.md
 Resume file: None
