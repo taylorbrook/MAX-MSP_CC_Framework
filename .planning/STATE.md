@@ -4,8 +4,8 @@ milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260322-hhw-PLAN.md
-last_updated: "2026-03-22T19:43:15.456Z"
-last_activity: "2026-03-22 - Completed quick task 260322-hk7: Add interactive mode note to max-iterate flags"
+last_updated: "2026-03-22T19:43:23.975Z"
+last_activity: "2026-03-22 - Completed quick task 260322-hhw: Add soft limit to critic loop after 3 rounds"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -61,6 +61,7 @@ Progress: [██████████] 100%
 | Phase quick-260317-g0a P01 | 2min | 3 tasks | 12 files |
 | Phase quick-260318-s03 P01 | 2min | 1 tasks | 1 files |
 | Phase quick-260322-g3q P01 | 5min | 2 tasks | 2 files |
+| Phase quick-260322-hhw P01 | 4min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -127,6 +128,8 @@ Recent decisions for v2.0:
 - [Phase quick-260322-g3q]: expr/vexpr normalizer requires explicit division/scaling pattern -- no blanket pass
 - [Phase quick-260322-g3q]: mc.gain~ in _GAIN_NAMES for recognition only; excluded from inlet-1 checks (single inlet object)
 - [Phase quick-260322-g3q]: line~ tracing uses signal predecessor map to cross signal/control boundary
+- [Phase quick-260322-hhw]: Soft limit is one-shot: after user says continue, no further soft-limit pauses (next stop is 5-identical escalation)
+- [Phase quick-260322-hhw]: Accept option downgrades remaining blockers to warnings rather than silently dropping them
 
 ### Pending Todos
 
@@ -161,6 +164,7 @@ None.
 | 260322-g3q | Extend DSP critic gain staging checks | 2026-03-22 | ce56fee | Verified | [260322-g3q-extend-dsp-critic-gain-staging-checks-wi](./quick/260322-g3q-extend-dsp-critic-gain-staging-checks-wi/) |
 | 260322-hcn | Fix failing test layout inlet alignment tolerance | 2026-03-22 | 1ebd679 | | [260322-hcn-fix-failing-test-layout-inlet-alignment-](./quick/260322-hcn-fix-failing-test-layout-inlet-alignment-/) |
 | 260322-hk7 | Add interactive mode note to max-iterate flags | 2026-03-22 | 6f73145 | | [260322-hk7-add-full-interactive-mode-note-to-max-it](./quick/260322-hk7-add-full-interactive-mode-note-to-max-it/) |
+| 260322-hhw | Add soft limit to critic loop after 3 rounds | 2026-03-22 | ae39141 | | [260322-hhw-add-soft-limit-to-critic-loop-after-3-ro](./quick/260322-hhw-add-soft-limit-to-critic-loop-after-3-ro/) |
 
 ### Blockers/Concerns
 
