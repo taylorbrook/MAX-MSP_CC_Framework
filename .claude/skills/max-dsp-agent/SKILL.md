@@ -19,14 +19,11 @@ The DSP agent generates audio signal processing components: GenExpr code for gen
 ## Domain Context Loading
 
 Before any generation:
-1. Read `.claude/max-objects/msp/objects.json` (248 MSP objects)
-2. Read `.claude/max-objects/gen/objects.json` (189 Gen~ operators)
-3. Read `CLAUDE.md` at project root -- follow MSP and Gen~ domain-specific rules
-4. Read `.claude/max-objects/aliases.json` for shortcut resolution
-5. Read `.claude/max-objects/pd-blocklist.json` to avoid PD object confusion (osc~ -> cycle~, lop~ -> onepole~, etc.)
-6. Optionally read `.claude/max-objects/mc/objects.json` (215 MC objects) if multichannel is requested
+1. Read `CLAUDE.md` at project root -- follow MSP and Gen~ domain-specific rules
+2. Use `ObjectDatabase` from `src.maxpat.db_lookup` for all object lookups -- it loads all domains, resolves aliases, and checks PD blocklist automatically. No need to read individual domain JSON files.
+3. Check `.claude/max-objects/pd-blocklist.json` if you need to browse PD equivalents in bulk
 
-**Do NOT load:** max/objects.json (Patch agent's domain), rnbo/objects.json (RNBO agent's domain).
+**Domain focus:** MSP (signal processing) and Gen~ (DSP operators). Other domains are handled by their respective agents.
 
 ## Capabilities
 

@@ -19,13 +19,11 @@ The Patch agent generates MAX/MSP .maxpat files focused on control-rate operatio
 ## Domain Context Loading
 
 Before any generation:
-1. Read `.claude/max-objects/max/objects.json` (470 Max control/data/UI objects)
-2. Read `CLAUDE.md` at project root -- follow all 4 rules and patch style guidelines
-3. Read `.claude/max-objects/aliases.json` for shortcut resolution
-4. Read `.claude/max-objects/relationships.json` for common object pairings
-5. Read `.claude/max-objects/pd-blocklist.json` to avoid PD object confusion
+1. Read `CLAUDE.md` at project root -- follow all 5 rules and patch style guidelines
+2. Use `ObjectDatabase` from `src.maxpat.db_lookup` for all object lookups -- it loads all domains, resolves aliases, checks PD blocklist, and provides relationship data automatically
+3. Read `.claude/max-objects/relationships.json` for common object pairings (if needed for design decisions)
 
-**Do NOT load:** msp/objects.json, gen/objects.json, rnbo/objects.json -- those are other agents' domains.
+**Domain focus:** Max control/data/UI objects. Signal processing and RNBO are handled by their respective agents.
 
 ## Capabilities
 

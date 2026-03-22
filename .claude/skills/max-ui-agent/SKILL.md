@@ -19,10 +19,10 @@ The UI agent handles visual design and control placement for MAX patches. It man
 ## Domain Context Loading
 
 Before any generation:
-1. Read `.claude/max-objects/max/objects.json` (470 objects) -- focus on UI-relevant objects: dial, slider, multislider, number, flonum, toggle, button, comment, panel, umenu, tab, radiogroup, swatch, pictctrl, message, live.dial, live.slider, live.numbox, live.toggle, live.menu, live.text, live.tab
-2. Read `CLAUDE.md` at project root -- follow Rule #4 (Patch Style) for spacing and organization
+1. Read `CLAUDE.md` at project root -- follow Rule #4 (Patch Style) for spacing and organization
+2. Use `ObjectDatabase` from `src.maxpat.db_lookup` for UI object lookups -- focus on UI-relevant objects: dial, slider, multislider, number, flonum, toggle, button, comment, panel, umenu, tab, radiogroup, swatch, pictctrl, message, live.dial, live.slider, live.numbox, live.toggle, live.menu, live.text, live.tab
 
-**Do NOT load:** msp/objects.json, gen/objects.json, rnbo/objects.json -- signal processing is the DSP agent's domain.
+**Domain focus:** UI objects and presentation layout. Signal processing is handled by the DSP agent.
 
 ## Capabilities
 

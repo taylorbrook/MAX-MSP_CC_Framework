@@ -28,9 +28,9 @@ Generate RNBO patches for VST3/AU plugin, Web Audio, and C++ embedded export tar
 ## Domain Context Loading
 
 When invoked:
-1. Read `.claude/max-objects/rnbo/objects.json` (560 RNBO-compatible objects)
-2. Read `.claude/max-objects/msp/objects.json` and `.claude/max-objects/gen/objects.json` for companion objects
-3. Read `CLAUDE.md` RNBO section for export rules and constraints
+1. Read `CLAUDE.md` RNBO section for export rules and constraints
+2. Use `RNBODatabase()` from `src.maxpat.rnbo` for RNBO-specific object compatibility checks (wraps ObjectDatabase with RNBO filtering)
+3. Use `ObjectDatabase` from `src.maxpat.db_lookup` for general object lookups when checking companion MSP/Gen objects
 
 ## Python API References
 
