@@ -84,4 +84,3 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 
 - For patch/code generation (use specialist agents via router)
 - For critic review (use max-critic)
-- For memory operations (use max-memory-agent)

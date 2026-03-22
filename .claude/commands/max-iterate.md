@@ -92,7 +92,7 @@ After all flagged phases complete, proceed to the standard edit flow (steps 10+)
 13. **Route through max-router** -- invoke the max-router skill for specialist dispatch with:
     - The modification description
     - The analysis summary as context
-    - Project context and relevant memory
+    - Project context
 
 14. **Execute edits** -- the specialist agent applies changes via Patcher API methods:
     - `find_box()` / `find_boxes()` for locating targets
@@ -115,15 +115,12 @@ After all flagged phases complete, proceed to the standard edit flow (steps 10+)
 
 17. **Bump version** -- call `bump_version(project_dir, "patch", description)` where `description` is a short summary of the change. Use `"minor"` or `"major"` for significant reworks.
 
-18. **Write-back memory** -- store any new patterns from the modification.
-
-19. **Update progress** -- increment progress via `update_status()`.
+18. **Update progress** -- increment progress via `update_status()`.
 
 ## Skills Referenced
 
 - **max-router** -- domain detection and agent dispatch
 - **max-critic** -- post-modification quality review
-- **max-memory-agent** -- memory injection and write-back
 - **max-lifecycle** -- project context and status updates
 
 ## Python Modules
@@ -132,7 +129,6 @@ After all flagged phases complete, proceed to the standard edit flow (steps 10+)
 from src.maxpat import read_patch, save_patch_roundtrip, validate_patch, Patcher
 from src.maxpat.project import get_active_project, set_active_project, list_projects, update_status, bump_version
 from src.maxpat.critics import review_patch, CriticResult
-from src.maxpat.memory import MemoryStore
 ```
 
 ## Arguments

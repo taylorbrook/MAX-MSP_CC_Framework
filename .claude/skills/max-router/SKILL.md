@@ -20,8 +20,6 @@ The router is the entry point for all MAX generation tasks. It analyzes the user
 Before dispatching:
 1. Read `patches/.active-project.json` to identify the active project
 2. Read the active project's `context.md` for project vision
-3. Read the active project's `.max-memory/patterns.md` for project-specific patterns
-4. Read `~/.claude/max-memory/` for global patterns (filtered by detected domain)
 
 Do NOT load object database JSON files -- specialists handle their own context loading.
 
@@ -60,14 +58,13 @@ Many tasks span multiple domains. When this happens:
 - Single-agent dispatch for pure domain tasks
 - Multi-agent dispatch with lead designation for cross-domain tasks
 - Output merging and conflict resolution
-- Memory injection: load relevant global/project memory before passing to specialist
 - **/max-iterate analysis context:** When routing edit requests, the router receives the patch analysis summary (from `patcher.analyze()`) alongside the modification request. This analysis informs dispatch decisions by revealing which domains are present in the existing patch (e.g., signal chains -> DSP agent, presentation mode -> UI agent).
 
 ## Output Protocol
 
 1. Analyze the task and determine agent(s)
 2. Log dispatch decision: which agent(s) and why
-3. Load and pass relevant context (project context, memory) to specialist(s)
+3. Load and pass relevant context (project context) to specialist(s)
 4. Invoke specialist skill(s)
 5. If multi-agent: merge outputs per merge-protocol.md
 6. Pass merged output to critic loop for review
@@ -83,5 +80,5 @@ Many tasks span multiple domains. When this happens:
 
 - `/max-verify` -- invokes critics directly, not the router
 - `/max-test` -- generates test checklists, not patches
-- `/max-status`, `/max-memory`, `/max-switch` -- project management, no generation
+- `/max-status`, `/max-switch` -- project management, no generation
 - `/max-discuss`, `/max-research` -- conversation phases, no generation

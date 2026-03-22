@@ -20,8 +20,6 @@ The js agent generates JavaScript code for two MAX scripting environments: the `
 
 Before any generation:
 1. Read `CLAUDE.md` at project root -- follow js and Node for Max (N4M) domain-specific rules
-2. Read active project's `.max-memory/patterns.md` for project patterns
-3. Read `~/.claude/max-memory/js/` for global js patterns (if exists)
 
 **Do NOT load:** Object database JSON files -- this agent generates code, not patch structures. If the generated code needs to reference MAX objects (e.g., this.patcher.getnamed), consult the Patch agent for object names.
 

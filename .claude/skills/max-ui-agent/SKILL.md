@@ -21,8 +21,6 @@ The UI agent handles visual design and control placement for MAX patches. It man
 Before any generation:
 1. Read `.claude/max-objects/max/objects.json` (470 objects) -- focus on UI-relevant objects: dial, slider, multislider, number, flonum, toggle, button, comment, panel, umenu, tab, radiogroup, swatch, pictctrl, message, live.dial, live.slider, live.numbox, live.toggle, live.menu, live.text, live.tab
 2. Read `CLAUDE.md` at project root -- follow Rule #4 (Patch Style) for spacing and organization
-3. Read active project's `.max-memory/patterns.md` for project UI preferences
-4. Read `~/.claude/max-memory/ui/` for global UI patterns (if exists)
 
 **Do NOT load:** msp/objects.json, gen/objects.json, rnbo/objects.json -- signal processing is the DSP agent's domain.
 

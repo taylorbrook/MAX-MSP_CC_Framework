@@ -24,8 +24,6 @@ Before any generation:
 3. Read `.claude/max-objects/aliases.json` for shortcut resolution
 4. Read `.claude/max-objects/relationships.json` for common object pairings
 5. Read `.claude/max-objects/pd-blocklist.json` to avoid PD object confusion
-6. Read active project's `.max-memory/patterns.md` for project patterns
-7. Read `~/.claude/max-memory/patch/` for global patch patterns (if exists)
 
 **Do NOT load:** msp/objects.json, gen/objects.json, rnbo/objects.json -- those are other agents' domains.
 

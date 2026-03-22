@@ -11,8 +11,6 @@ patches/
     versions.json           # Version history (semver, auto-created at 0.0.0)
     context.md              # Project vision, requirements, clarifying answers
     status.md               # Current stage, progress, created date
-    .max-memory/
-      patterns.md           # Project-specific learned patterns
     generated/              # All generated output files
       *.maxpat              # MAX patches
       *.gendsp              # Gen~ patches
@@ -67,9 +65,6 @@ progress: 2/5 patches generated
 created: 2026-03-10T14:00:00Z
 updated: 2026-03-10T15:30:00Z
 ```
-
-### .max-memory/patterns.md
-Project-specific patterns in structured markdown sections. Managed by the memory agent.
 
 ### generated/
 All output from specialist agents. Files written via `save_patch_roundtrip()`, `write_gendsp()`, `write_js()` hooks which trigger validation on write.

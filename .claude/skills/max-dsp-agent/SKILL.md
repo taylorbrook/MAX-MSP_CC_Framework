@@ -24,9 +24,7 @@ Before any generation:
 3. Read `CLAUDE.md` at project root -- follow MSP and Gen~ domain-specific rules
 4. Read `.claude/max-objects/aliases.json` for shortcut resolution
 5. Read `.claude/max-objects/pd-blocklist.json` to avoid PD object confusion (osc~ -> cycle~, lop~ -> onepole~, etc.)
-6. Read active project's `.max-memory/patterns.md` for project patterns
-7. Read `~/.claude/max-memory/dsp/` for global DSP patterns (if exists)
-8. Optionally read `.claude/max-objects/mc/objects.json` (215 MC objects) if multichannel is requested
+6. Optionally read `.claude/max-objects/mc/objects.json` (215 MC objects) if multichannel is requested
 
 **Do NOT load:** max/objects.json (Patch agent's domain), rnbo/objects.json (RNBO agent's domain).
 

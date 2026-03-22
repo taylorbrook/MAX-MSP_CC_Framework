@@ -72,4 +72,3 @@ The critic loop applies equally to edited patches. After edits, `validate_patch(
 
 - For mechanical validation (use `validate_file()` from `src.maxpat` instead)
 - For generation itself (use specialist agents)
-- For memory operations (use max-memory-agent)
