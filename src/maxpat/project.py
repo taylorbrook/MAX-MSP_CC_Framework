@@ -16,9 +16,16 @@ import re
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.maxpat.patcher import Box, Patcher
 
 # Valid project name: lowercase alphanumeric + hyphens, no leading/trailing hyphen
 _PROJECT_NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+
+# Matches version comment text like "v0.1.0", "v1.2.3"
+_VERSION_COMMENT_RE = re.compile(r"^v\d+\.\d+\.\d+$")
 
 
 def create_project(name: str, base_dir: Path) -> Path:
@@ -278,6 +285,32 @@ def list_versions(project_dir: Path) -> list[dict]:
 
     data = json.loads(versions_file.read_text())
     return list(reversed(data["versions"]))
+
+
+def update_version_comment(patcher: Patcher, version: str) -> Box:
+    """Add or update a version comment box in the top-right of the patch.
+
+    Searches for an existing comment matching the ``vX.Y.Z`` pattern and
+    updates its text in place.  If none exists, a new comment is created at
+    position (550, 10).
+
+    Args:
+        patcher: The Patcher instance to modify.
+        version: Version string *without* the ``v`` prefix (e.g., ``"0.1.0"``).
+
+    Returns:
+        The Box object for the version comment (created or updated).
+    """
+    version_text = f"v{version}"
+
+    # Search for existing version comment
+    for box in patcher.find_boxes(maxclass="comment"):
+        if _VERSION_COMMENT_RE.match(box.text):
+            box.text = version_text
+            return box
+
+    # No existing version comment -- create one
+    return patcher.add_comment(version_text, x=550.0, y=10.0)
 
 
 def list_projects(base_dir: Path) -> list[str]:
