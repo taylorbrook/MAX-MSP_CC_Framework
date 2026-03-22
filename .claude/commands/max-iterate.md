@@ -141,14 +141,16 @@ from src.maxpat.critics import review_patch, CriticResult
 
 | Flag | Description |
 |------|-------------|
-| --full | Run full pipeline: discuss -> research -> plan -> build |
-| --discuss | Run discuss phase only before build |
+| --full | Run full pipeline: discuss -> research -> plan -> build (requires interactive mode) |
+| --discuss | Run discuss phase only before build (requires interactive mode) |
 | --research | Run research phase only before build |
-| --plan | Run plan phase only before build |
+| --plan | Run plan phase only before build (requires interactive mode) |
 
 Flags are composable: `--discuss --research` runs both phases. `--full` is shorthand for `--discuss --research --plan`.
 
 Flags are stripped from the change description before processing.
+
+**Note:** `--full`, `--discuss`, and `--plan` require interactive mode because the discuss and plan phases wait for user input. `--research` can run non-interactively.
 
 ## Examples
 
@@ -162,7 +164,7 @@ Flags are stripped from the change description before processing.
 /max-iterate stutter add LFO to filter cutoff     # switches to stutter, then iterates
 /max-iterate FDNVerb increase diffusion            # switches to FDNVerb, then iterates
 
-# Full pipeline (discuss + research + plan before edit):
+# Full pipeline (requires interactive mode -- discuss and plan wait for user input):
 /max-iterate --full add granular synthesis engine
 /max-iterate stutter --full redesign the delay feedback path
 
