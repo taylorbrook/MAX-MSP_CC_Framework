@@ -57,11 +57,48 @@ Round 3: [finding_A, finding_C]  -- same as round 2
 
 Track by comparing the `finding` string of each CriticResult across rounds.
 
+## Soft Round Limit
+
+After completing 3 total revision rounds (not counting the initial generation), the critic loop pauses before requesting further revisions. This prevents unbounded context consumption when novel findings keep appearing each round.
+
+### Pause Behavior
+
+At the pause, the critic must:
+
+1. **Log a cumulative summary table** of all findings across all rounds:
+
+   | Round | Finding | Severity | Status |
+   |-------|---------|----------|--------|
+   | 1 | [finding text] | blocker | resolved / persists / new |
+   | 2 | [finding text] | blocker | resolved / persists / new |
+   | ... | ... | ... | ... |
+
+   Status values:
+   - **resolved**: finding was present in an earlier round but is no longer reported
+   - **persists**: finding was present in an earlier round and is still reported
+   - **new**: finding appeared for the first time this round
+
+2. **Present the summary to the user**
+
+3. **Ask:** "3 revision rounds completed. Continue revising or accept current state?"
+
+4. **Options:**
+   - **continue**: resume the loop normally with no further soft-limit pauses (the next stop would be the existing 5-identical-finding escalation below)
+   - **accept**: remaining blockers are downgraded to warnings, annotated inline, and output is approved
+
+### Interaction with Escalation
+
+The soft limit and escalation are independent mechanisms:
+- **Soft limit** catches loops with novel findings each round (context cost)
+- **Escalation** catches loops stuck on the same finding (generator inability)
+
+Both can trigger in the same session. If the user says "continue" at the soft limit, the escalation rule still applies to any finding persisting 5 consecutive rounds.
+
 ## Escalation Rules
 
 **IMPORTANT:** Escalation is for repeated identical findings only, NOT a general round limit.
 
-The loop runs until clean with no hard round cap. The intent is to let the generator resolve all issues without artificial cutoff.
+The loop runs until clean. A soft limit pauses after 3 rounds for user confirmation (see above). The 5-identical-finding escalation below is a separate mechanism.
 
 Escalation triggers when:
 - The **same identical finding** (matched by `finding` string) persists across **5 consecutive revisions**
@@ -73,7 +110,7 @@ When escalation triggers:
 3. Ask the user to decide: accept as-is, provide guidance, or skip the check
 4. Resume the loop with user's decision applied
 
-**This is NOT a round limit.** A loop that produces different findings each round (fixing one thing, discovering another) runs indefinitely. Only a stuck loop (same finding, round after round) escalates.
+**This is NOT a round limit.** A loop that produces different findings each round (fixing one thing, discovering another) is caught by the soft limit above. A stuck loop (same finding, round after round) escalates here.
 
 ## Examples
 
@@ -89,6 +126,23 @@ Round 1: [blocker: gen~ I/O mismatch]
 -> Generator fixes gen~ inlet count
 Round 2: [] (no findings)
 -> Approved
+```
+
+### Soft Limit Pause
+```
+Round 1: [blocker: missing dac~]
+-> Generator adds dac~
+Round 2: [blocker: gain safety on *~ inlet]
+-> Generator adds gain scaling
+Round 3: [blocker: fan-out without trigger]
+-> Soft limit reached. Summary:
+   | Round | Finding | Severity | Status |
+   |-------|---------|----------|--------|
+   | 1 | missing dac~ | blocker | resolved |
+   | 2 | gain safety on *~ inlet | blocker | resolved |
+   | 3 | fan-out without trigger | blocker | persists |
+-> User: "accept"
+-> Fan-out finding downgraded to warning, annotated, output approved
 ```
 
 ### Escalation
