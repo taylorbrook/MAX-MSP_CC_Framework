@@ -144,7 +144,7 @@ None.
 | 260321-6mo | Add --full flag to /max-iterate for discuss-research-plan pipeline | 2026-03-21 | 491bdd0 | Verified | [260321-6mo-add-full-flag-to-max-iterate-for-discuss](./quick/260321-6mo-add-full-flag-to-max-iterate-for-discuss/) |
 | 260322-bbh | Framework effectiveness review with prioritized recommendations | 2026-03-22 | cccf531 | Verified | [260322-bbh-review-the-repo-and-make-suggestions-tha](./quick/260322-bbh-review-the-repo-and-make-suggestions-tha/) |
 | 260322-c7w | Guard signal-to-control auto-removal for unverified MSP objects | 2026-03-22 | e899cda | Verified | [260322-c7w-in-validation-py-validate-connections-ad](./quick/260322-c7w-in-validation-py-validate-connections-ad/) |
-| 260322-dz9 | Add 8 new validation checks for MAX API misuse | 2026-03-22 | f376fd6 | | [260322-dz9-add-8-new-validation-checks-for-max-api-](./quick/260322-dz9-add-8-new-validation-checks-for-max-api-/) |
+| 260322-dz9 | Add 8 new validation checks for MAX API misuse | 2026-03-22 | 45c3187 | Verified | [260322-dz9-add-8-new-validation-checks-for-max-api-](./quick/260322-dz9-add-8-new-validation-checks-for-max-api-/) |
 
 ### Blockers/Concerns
 
