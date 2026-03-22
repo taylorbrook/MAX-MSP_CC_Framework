@@ -5,7 +5,7 @@ milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260322-fyt-PLAN.md
 last_updated: "2026-03-22T18:34:06.108Z"
-last_activity: "2026-03-22 - Completed quick task 260322-fpd: Update CLAUDE.md and SKILL.md files to recommend ObjectDatabase"
+last_activity: "2026-03-22 - Completed quick task 260322-fyt: Add Context Budget section to max-router SKILL.md"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-22 - Completed quick task 260322-fpd: Update CLAUDE.md and SKILL.md files to recommend ObjectDatabase
+Last activity: 2026-03-22 - Completed quick task 260322-fyt: Add Context Budget section to max-router SKILL.md
 
 Progress: [██████████] 100%
 
