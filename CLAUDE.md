@@ -30,17 +30,23 @@ Each domain file is a JSON object keyed by object name. Every object entry conta
 
 ### How to Use the Database
 
-**Look up an object:** Read the domain JSON file and find the object by its name key. If unsure which domain, check `max/objects.json` first (largest domain), then `msp/`, `jitter/`, `mc/`, etc.
+**Primary method -- `ObjectDatabase`:** Use the `ObjectDatabase` class from `src.maxpat.db_lookup` for all object lookups. It loads all 8 domain files, resolves aliases, applies overrides, and checks the PD blocklist automatically.
 
-**Browse by domain:** List the keys in the relevant domain's `objects.json` to see all available objects.
+```python
+from src.maxpat.db_lookup import ObjectDatabase
 
-**Check RNBO compatibility:** Read the `rnbo_compatible` field on any object. Only objects with `rnbo_compatible: true` can be used in RNBO patches.
+db = ObjectDatabase()
+obj = db.lookup("cycle~")                          # Returns object dict or None, auto-resolves aliases
+db.exists("t")                                     # True (resolves alias to "trigger")
+db.is_pd_object("osc~")                            # True (PD object, not MAX)
+db.get_pd_equivalent("osc~")                       # "cycle~"
+db.compute_io_counts("trigger", ["b", "i", "f"])   # (1, 3)
+db.get_outlet_types("cycle~")                      # ["signal"]
+```
 
-**Resolve aliases:** Check `aliases.json` first. If the name is an alias, look up the canonical name in the appropriate domain file.
+**Browse by domain:** The raw JSON files at `.claude/max-objects/{domain}/objects.json` are still available for browsing all objects in a domain or bulk operations, but for individual lookups always use `ObjectDatabase`.
 
 **Check common companions:** Look up the object name in `relationships.json` to find commonly paired objects.
-
-**Check inlet/outlet counts:** Read the `inlets` and `outlets` arrays. For `variable_io: true` objects, compute actual counts from arguments using the `io_rule` field.
 
 ## Rules
 
