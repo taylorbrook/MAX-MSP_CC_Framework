@@ -40,7 +40,7 @@ Summary:
 3. If blockers found: format findings, request revision from generator
 4. If only warnings/notes: annotate inline and proceed
 5. If clean (no findings): approve output
-6. Loop continues until clean -- there is NO hard round limit
+6. **Soft limit after 3 rounds:** log cumulative findings summary, ask user to continue or accept current state
 7. Escalation triggers ONLY when the same identical finding persists across 5 consecutive revisions
 
 ### Edited Patches (via /max-iterate)
