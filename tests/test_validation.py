@@ -549,3 +549,89 @@ class TestLayer4UnsafeGainValues:
         gain_warnings = [r for r in results
                          if r.layer == "domain" and "unsafe gain" in r.message.lower()]
         assert gain_warnings == []
+
+
+# ===========================================================================
+# Layer 3: Override Guard for Signal-to-Control Auto-Removal
+# ===========================================================================
+
+class TestLayer3OverrideGuard:
+    """Guard: non-overridden MSP objects skip signal-to-control auto-removal."""
+
+    def test_overridden_msp_object_auto_removes(self, db):
+        """Overridden MSP object (line~) signal->control: connection auto-removed.
+
+        line~ is in overrides.json, so its outlet types are trusted.
+        Signal outlet 0 -> print inlet 0 (control-only) should be removed.
+        """
+        boxes = [
+            _make_box("obj-1", text="line~", numinlets=2, numoutlets=2,
+                       outlettype=["signal", ""]),
+            _make_box("obj-2", text="print", numinlets=1, numoutlets=0,
+                       outlettype=[]),
+        ]
+        # Connect signal outlet 0 of line~ to control-only inlet 0 of print
+        lines = [_make_line("obj-1", 0, "obj-2", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+
+        # Connection should be auto-fixed (removed)
+        auto_fixed = [r for r in results
+                      if r.layer == "connections" and r.auto_fixed
+                      and "signal" in r.message.lower()]
+        assert len(auto_fixed) >= 1
+
+        # Line should be removed from patch
+        assert len(patch["patcher"]["lines"]) == 0
+
+    def test_non_overridden_msp_object_preserves_connection(self, db):
+        """Non-overridden MSP object (fakesynth~) signal->control: connection preserved.
+
+        fakesynth~ is NOT in overrides.json, so its outlet types are unverified.
+        Connection should survive with a warning instead of being removed.
+        """
+        boxes = [
+            _make_box("obj-1", text="fakesynth~ 440", numinlets=2, numoutlets=2,
+                       outlettype=["signal", "signal"]),
+            _make_box("obj-2", text="print", numinlets=1, numoutlets=0,
+                       outlettype=[]),
+        ]
+        # Connect signal outlet 0 of fakesynth~ to control-only inlet 0 of print
+        lines = [_make_line("obj-1", 0, "obj-2", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+
+        # Connection should NOT be removed (preserved)
+        assert len(patch["patcher"]["lines"]) == 1
+
+        # Should have a warning (not error) about unverified outlet types
+        warnings = [r for r in results
+                    if r.layer == "connections" and r.level == "warning"
+                    and "unverified" in r.message.lower()]
+        assert len(warnings) >= 1
+        assert not warnings[0].auto_fixed
+
+    def test_non_msp_object_unchanged(self, db):
+        """Non-tilde object with signal outlettype: existing auto-removal unchanged.
+
+        A non-MSP object (no ~) with outlettype=["signal"] should still have
+        signal->control connections auto-removed as before.
+        """
+        boxes = [
+            _make_box("obj-1", text="fakebox", numinlets=1, numoutlets=1,
+                       outlettype=["signal"]),
+            _make_box("obj-2", text="print", numinlets=1, numoutlets=0,
+                       outlettype=[]),
+        ]
+        lines = [_make_line("obj-1", 0, "obj-2", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+
+        # Connection should be auto-fixed (removed) -- existing behavior unchanged
+        auto_fixed = [r for r in results
+                      if r.layer == "connections" and r.auto_fixed
+                      and "signal" in r.message.lower()]
+        assert len(auto_fixed) >= 1
+
+        # Line should be removed
+        assert len(patch["patcher"]["lines"]) == 0
