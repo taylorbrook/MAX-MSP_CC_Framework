@@ -91,3 +91,37 @@ class TestSpotChecks:
         # At least one inlet should be signal type
         signal_inlets = [i for i in dac["inlets"] if i.get("signal", False)]
         assert len(signal_inlets) >= 1, "dac~ should have at least one signal inlet"
+
+
+class TestMspOutletOverrides:
+    """Verify gain~ and index~ outlet overrides are correctly applied."""
+
+    @pytest.fixture(scope="class")
+    def db(self):
+        from src.maxpat.db_lookup import ObjectDatabase
+        return ObjectDatabase()
+
+    def test_gain_tilde_outlet_1_is_control(self, db):
+        """gain~ outlet 1 must be control (signal: false), not signal."""
+        gain = db.lookup("gain~")
+        assert gain is not None, "gain~ not found in database"
+        outlets = gain["outlets"]
+        assert len(outlets) == 2, f"gain~ expected 2 outlets, got {len(outlets)}"
+        assert outlets[0]["signal"] is True, "gain~ outlet 0 should be signal"
+        assert outlets[1]["signal"] is False, "gain~ outlet 1 should be control (not signal)"
+
+    def test_index_tilde_has_single_outlet(self, db):
+        """index~ must have exactly 1 outlet (extraction had erroneous outlet 1)."""
+        idx = db.lookup("index~")
+        assert idx is not None, "index~ not found in database"
+        outlets = idx["outlets"]
+        assert len(outlets) == 1, f"index~ expected 1 outlet, got {len(outlets)}"
+        assert outlets[0]["signal"] is True, "index~ outlet 0 should be signal"
+
+    def test_gain_tilde_is_overridden(self, db):
+        """gain~ must be marked as overridden in ObjectDatabase."""
+        assert db.is_overridden("gain~"), "gain~ should be overridden"
+
+    def test_index_tilde_is_overridden(self, db):
+        """index~ must be marked as overridden in ObjectDatabase."""
+        assert db.is_overridden("index~"), "index~ should be overridden"
