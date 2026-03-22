@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-22 - Completed quick task 260322-hhw: Add soft limit to critic loop after 3 rounds
+Last activity: 2026-03-22 - Completed quick task 260322-hmn: Enforce version tracking with every max-iterate run
 
 Progress: [██████████] 100%
 
@@ -130,6 +130,8 @@ Recent decisions for v2.0:
 - [Phase quick-260322-g3q]: line~ tracing uses signal predecessor map to cross signal/control boundary
 - [Phase quick-260322-hhw]: Soft limit is one-shot: after user says continue, no further soft-limit pauses (next stop is 5-identical escalation)
 - [Phase quick-260322-hhw]: Accept option downgrades remaining blockers to warnings rather than silently dropping them
+- [Phase quick-260322-hmn]: Version comment at (550, 10) top-right of default patcher; regex ^v\d+\.\d+\.\d+$ for in-place update
+- [Phase quick-260322-hmn]: TYPE_CHECKING import for Patcher/Box avoids circular import in project.py
 
 ### Pending Todos
 
@@ -165,6 +167,7 @@ None.
 | 260322-hcn | Fix failing test layout inlet alignment tolerance | 2026-03-22 | 1ebd679 | | [260322-hcn-fix-failing-test-layout-inlet-alignment-](./quick/260322-hcn-fix-failing-test-layout-inlet-alignment-/) |
 | 260322-hk7 | Add interactive mode note to max-iterate flags | 2026-03-22 | 6f73145 | | [260322-hk7-add-full-interactive-mode-note-to-max-it](./quick/260322-hk7-add-full-interactive-mode-note-to-max-it/) |
 | 260322-hhw | Add soft limit to critic loop after 3 rounds | 2026-03-22 | ae39141 | | [260322-hhw-add-soft-limit-to-critic-loop-after-3-ro](./quick/260322-hhw-add-soft-limit-to-critic-loop-after-3-ro/) |
+| 260322-hmn | Enforce version tracking with every max-iterate run | 2026-03-22 | 58bb2b6 | | [260322-hmn-enforce-version-tracking-with-every-max-](./quick/260322-hmn-enforce-version-tracking-with-every-max-/) |
 
 ### Blockers/Concerns
 
@@ -175,6 +178,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-22T19:43:15.454Z
-Stopped at: Completed quick-260322-hhw-PLAN.md
+Last session: 2026-03-22T20:02:09Z
+Stopped at: Completed quick-260322-hmn-PLAN.md
 Resume file: None
