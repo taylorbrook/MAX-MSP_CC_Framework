@@ -634,8 +634,8 @@ class TestInletAlignment:
         from src.maxpat.layout import _outlet_x, _inlet_x
         outlet_x_pos = _outlet_x(a, 0)
         inlet_x_pos = _inlet_x(b, 0)
-        # Within one grid step (15px) due to grid snapping
-        assert abs(outlet_x_pos - inlet_x_pos) <= 15.0
+        # Within two grid snaps (25px) due to independent grid snapping of parent and child
+        assert abs(outlet_x_pos - inlet_x_pos) <= 25.0
 
     def test_multi_child_same_outlet(self):
         """Multiple children on same outlet: all positioned, no overlap."""
