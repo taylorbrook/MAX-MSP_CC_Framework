@@ -813,7 +813,7 @@ class TestLayer4GenExprChecks:
         results = validate_patch(patch, db=db)
         warns = [r for r in results
                  if r.layer == "domain" and r.level == "warning"
-                 and "line~" in r.message.lower()]
+                 and "replaces ramps" in r.message.lower()]
         assert len(warns) >= 1
 
     def test_line_tilde_no_comma_no_warning(self, db):
@@ -829,7 +829,7 @@ class TestLayer4GenExprChecks:
         results = validate_patch(patch, db=db)
         warns = [r for r in results
                  if r.layer == "domain" and r.level == "warning"
-                 and "line~" in r.message.lower()]
+                 and "replaces ramps" in r.message.lower()]
         assert warns == []
 
     # --- Check 6: multislider fetchindex ---

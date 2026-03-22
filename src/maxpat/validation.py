@@ -454,6 +454,31 @@ def _validate_domain_rules(
             has_signal_out.add(src_id)
             has_signal_in.add(dst_id)
 
+    # Build control adjacency: src_id -> list of dst_ids (non-signal connections)
+    ctrl_adj: dict[str, list[str]] = defaultdict(list)
+
+    for line_entry in lines:
+        patchline = line_entry.get("patchline", {})
+        source = patchline.get("source", [])
+        destination = patchline.get("destination", [])
+        if len(source) < 2 or len(destination) < 2:
+            continue
+
+        src_id, src_outlet = source[0], source[1]
+        dst_id = destination[0]
+
+        src_box = box_lookup.get(src_id)
+        if not src_box:
+            continue
+
+        src_outlettype = src_box.get("outlettype", [])
+        is_sig = (
+            src_outlet < len(src_outlettype)
+            and src_outlettype[src_outlet] == "signal"
+        )
+        if not is_sig:
+            ctrl_adj[src_id].append(dst_id)
+
     # --- Rule: Compound #N argument substitution ---
     results.extend(_check_compound_argument_substitution(box_lookup))
 
@@ -468,6 +493,30 @@ def _validate_domain_rules(
 
     # --- Rule: Feedback loop detection ---
     results.extend(_check_feedback_loops(box_lookup, signal_adj))
+
+    # --- Rule: GenExpr I/O syntax ---
+    results.extend(_check_genexpr_io_syntax(box_lookup))
+
+    # --- Rule: GenExpr delay usage ---
+    results.extend(_check_genexpr_delay_usage(box_lookup))
+
+    # --- Rule: gen~ @param message syntax ---
+    results.extend(_check_gen_param_message_syntax(box_lookup, ctrl_adj))
+
+    # --- Rule: Comment #N substitution ---
+    results.extend(_check_comment_hash_substitution(box_lookup))
+
+    # --- Rule: line~ comma messages ---
+    results.extend(_check_line_tilde_comma_messages(box_lookup, ctrl_adj))
+
+    # --- Rule: multislider fetchindex ---
+    results.extend(_check_multislider_fetchindex(box_lookup))
+
+    # --- Rule: umenu items format ---
+    results.extend(_check_umenu_items_format(box_lookup))
+
+    # --- Rule: Assistance comments ---
+    results.extend(_check_assistance_comments(box_lookup))
 
     return results
 
@@ -718,6 +767,210 @@ def _check_feedback_loops(
             results.append(ValidationResult(
                 "domain", "warning",
                 f"Signal feedback loop without delay detected: {node_desc}",
+            ))
+
+    return results
+
+
+# ===========================================================================
+# Layer 4: GenExpr and API-usage checks
+# ===========================================================================
+
+def _check_genexpr_io_syntax(
+    box_lookup: dict[str, dict],
+) -> list[ValidationResult]:
+    """Catch GenExpr codebox using 'in 1'/'out 2' instead of 'in1'/'out2'."""
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        if box.get("maxclass") != "newobj":
+            continue
+        text = box.get("text", "")
+        if not text.startswith("codebox"):
+            continue
+        code = box.get("code", "")
+        if not code:
+            continue
+        if _re.search(r'\b(in|out)\s+\d', code):
+            results.append(ValidationResult(
+                "domain", "error",
+                f"GenExpr codebox uses 'in1'/'out1' (no space), not "
+                f"'in 1'/'out 1' ({box_id})",
+            ))
+
+    return results
+
+
+def _check_genexpr_delay_usage(
+    box_lookup: dict[str, dict],
+) -> list[ValidationResult]:
+    """Catch GenExpr codebox using delay() instead of Delay.read()/Delay.write()."""
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        if box.get("maxclass") != "newobj":
+            continue
+        text = box.get("text", "")
+        if not text.startswith("codebox"):
+            continue
+        code = box.get("code", "")
+        if not code:
+            continue
+        if _re.search(r'\bdelay\s*\(', code):
+            results.append(ValidationResult(
+                "domain", "error",
+                f"GenExpr uses Delay.read()/Delay.write(), not delay() "
+                f"function ({box_id})",
+            ))
+
+    return results
+
+
+def _check_gen_param_message_syntax(
+    box_lookup: dict[str, dict],
+    ctrl_adj: dict[str, list[str]],
+) -> list[ValidationResult]:
+    """Catch '@param $1' message syntax connected to gen~ (should be 'param $1')."""
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        if box.get("maxclass") != "message":
+            continue
+        text = box.get("text", "")
+        if not _re.search(r'@\w+\s+\$', text):
+            continue
+        # Check if any downstream box is gen~
+        for dst_id in ctrl_adj.get(box_id, []):
+            dst_box = box_lookup.get(dst_id)
+            if not dst_box:
+                continue
+            dst_name = _get_box_name(dst_box)
+            if dst_name == "gen~":
+                results.append(ValidationResult(
+                    "domain", "warning",
+                    f"gen~ params use plain name messages ('depth $1'), "
+                    f"not '@depth $1' ({box_id})",
+                ))
+                break  # one warning per message box
+
+    return results
+
+
+def _check_comment_hash_substitution(
+    box_lookup: dict[str, dict],
+) -> list[ValidationResult]:
+    """Warn about #N text in comment boxes (comment doesn't support substitution)."""
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        if box.get("maxclass") != "comment":
+            continue
+        text = box.get("text", "")
+        if _re.search(r'#\d+', text):
+            results.append(ValidationResult(
+                "domain", "warning",
+                f"Comment boxes don't support #N substitution; use "
+                f"loadbang -> message -> set chain ({box_id})",
+            ))
+
+    return results
+
+
+def _check_line_tilde_comma_messages(
+    box_lookup: dict[str, dict],
+    ctrl_adj: dict[str, list[str]],
+) -> list[ValidationResult]:
+    """Catch messages with commas connected to line~ (commas restart ramps)."""
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        if box.get("maxclass") != "message":
+            continue
+        text = box.get("text", "")
+        if "," not in text:
+            continue
+        # Check if any downstream box is line~
+        for dst_id in ctrl_adj.get(box_id, []):
+            dst_box = box_lookup.get(dst_id)
+            if not dst_box:
+                continue
+            dst_name = _get_box_name(dst_box)
+            if dst_name == "line~":
+                results.append(ValidationResult(
+                    "domain", "warning",
+                    f"line~ replaces ramps on new messages; use single list "
+                    f"without comma separators ({box_id})",
+                ))
+                break
+
+    return results
+
+
+def _check_multislider_fetchindex(
+    box_lookup: dict[str, dict],
+) -> list[ValidationResult]:
+    """Catch messages using 'fetchindex' (doesn't exist; use 'fetch')."""
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        if box.get("maxclass") != "message":
+            continue
+        text = box.get("text", "")
+        if "fetchindex" in text:
+            results.append(ValidationResult(
+                "domain", "error",
+                f"multislider uses 'fetch' not 'fetchindex'; "
+                f"fetchindex does not exist ({box_id})",
+            ))
+
+    return results
+
+
+def _check_umenu_items_format(
+    box_lookup: dict[str, dict],
+) -> list[ValidationResult]:
+    """Catch umenu items without comma separators."""
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        maxclass = box.get("maxclass", "")
+        # umenu can be a UI maxclass or newobj with text "umenu"
+        is_umenu = (
+            maxclass == "umenu"
+            or (maxclass == "newobj" and box.get("text", "").split()[0] == "umenu")
+        )
+        if not is_umenu:
+            continue
+        items = box.get("items")
+        if not isinstance(items, list):
+            continue
+        if len(items) <= 1:
+            continue
+        if "," not in items:
+            results.append(ValidationResult(
+                "domain", "warning",
+                f"umenu items need comma separators: "
+                f"['LP', ',', 'HP', ',', 'BP'] ({box_id})",
+            ))
+
+    return results
+
+
+def _check_assistance_comments(
+    box_lookup: dict[str, dict],
+) -> list[ValidationResult]:
+    """Flag inlet/outlet boxes missing assistance comment tooltips."""
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        maxclass = box.get("maxclass", "")
+        if maxclass not in ("inlet", "outlet"):
+            continue
+        comment = box.get("comment", "")
+        if not comment:
+            results.append(ValidationResult(
+                "domain", "info",
+                f"{maxclass} missing assistance comment (tooltip) ({box_id})",
             ))
 
     return results
