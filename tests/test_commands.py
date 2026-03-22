@@ -1,6 +1,6 @@
 """Tests for slash command file structure, frontmatter, and cross-references.
 
-Validates that all 11 command files under .claude/commands/ have correct
+Validates that all 10 command files under .claude/commands/ have correct
 YAML frontmatter, naming convention, descriptions, and reference the
 appropriate skills and Python modules.
 """
@@ -24,7 +24,6 @@ ALL_COMMANDS = [
     "max-verify",
     "max-test",
     "max-status",
-    "max-memory",
     "max-switch",
     "max-onboard",
 ]
@@ -53,22 +52,22 @@ def _parse_frontmatter(content: str) -> dict[str, str]:
     return result
 
 
-# -- Test: All 10 command files exist -----------------------------------------
+# -- Test: All command files exist -----------------------------------------
 
 
 @pytest.mark.parametrize("cmd_name", ALL_COMMANDS)
 def test_command_file_exists(cmd_name: str) -> None:
-    """Each of the 10 command files must exist under .claude/commands/."""
+    """Each command file must exist under .claude/commands/."""
     path = COMMANDS_DIR / f"{cmd_name}.md"
     assert path.is_file(), f"Command file missing: {path}"
 
 
 def test_total_command_count() -> None:
-    """There must be at least 10 command files matching max-*.md."""
+    """There must be at least 9 command files matching max-*.md."""
     if not COMMANDS_DIR.is_dir():
         pytest.fail(f"Commands directory does not exist: {COMMANDS_DIR}")
     cmd_files = list(COMMANDS_DIR.glob("max-*.md"))
-    assert len(cmd_files) >= 10, (
+    assert len(cmd_files) >= 9, (
         f"Expected at least 10 command files, found {len(cmd_files)}: "
         f"{sorted(f.name for f in cmd_files)}"
     )
@@ -137,14 +136,6 @@ def test_test_references_generate_test_checklist() -> None:
     content = _read_command("max-test")
     assert "generate_test_checklist" in content, (
         "max-test.md should reference generate_test_checklist from testing module"
-    )
-
-
-def test_memory_references_memory_store() -> None:
-    """max-memory.md must reference MemoryStore from memory module."""
-    content = _read_command("max-memory")
-    assert "MemoryStore" in content, (
-        "max-memory.md should reference MemoryStore from memory module"
     )
 
 

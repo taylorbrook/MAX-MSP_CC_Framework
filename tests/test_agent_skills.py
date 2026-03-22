@@ -1,6 +1,6 @@
 """Tests for agent skill file structure and content validation.
 
-Validates that all 10 skill directories under .claude/skills/ have correct
+Validates that all 9 skill directories under .claude/skills/ have correct
 structure, frontmatter, cross-references, boundary definitions, and content.
 Skills are prompts (not code), so these tests verify file structure and
 required content patterns rather than runtime behavior.
@@ -25,7 +25,6 @@ ALL_SKILL_DIRS = [
     "max-ext-agent",
     "max-ui-agent",
     "max-critic",
-    "max-memory-agent",
     "max-lifecycle",
 ]
 
@@ -276,23 +275,6 @@ def test_specialist_has_boundaries(agent_name: str) -> None:
     assert path.is_file(), f"BOUNDARIES.md missing: {path}"
 
 
-# ── Test: Memory agent references memory module ────────────────────
-
-
-def test_memory_agent_references_memory_module() -> None:
-    """Memory agent SKILL.md must reference src/maxpat/memory."""
-    content = _read_skill("max-memory-agent")
-    assert "src/maxpat/memory" in content or "src.maxpat.memory" in content, (
-        "Memory agent should reference the Python memory module"
-    )
-
-
-def test_memory_agent_has_boundaries() -> None:
-    """Memory agent must have a BOUNDARIES.md file."""
-    path = SKILLS_DIR / "max-memory-agent" / "BOUNDARIES.md"
-    assert path.is_file(), f"BOUNDARIES.md missing: {path}"
-
-
 # ── Test: Lifecycle references all 3 reference files ───────────────
 
 
@@ -350,15 +332,15 @@ def test_lifecycle_references_project_module() -> None:
 
 
 def test_total_skill_count() -> None:
-    """There must be exactly 10 skill directories."""
+    """There must be exactly 9 skill directories."""
     if not SKILLS_DIR.is_dir():
         pytest.fail(f"Skills directory does not exist: {SKILLS_DIR}")
     skill_dirs = [
         d for d in SKILLS_DIR.iterdir()
         if d.is_dir() and not d.name.startswith(".")
     ]
-    assert len(skill_dirs) >= 10, (
-        f"Expected at least 10 skill directories, found {len(skill_dirs)}: "
+    assert len(skill_dirs) >= 9, (
+        f"Expected at least 9 skill directories, found {len(skill_dirs)}: "
         f"{sorted(d.name for d in skill_dirs)}"
     )
 

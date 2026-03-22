@@ -27,7 +27,6 @@ def create_project(name: str, base_dir: Path) -> Path:
     Creates patches/{name}/ with:
     - context.md (empty template)
     - status.md (stage: ideation, progress: empty, created: ISO date)
-    - .max-memory/patterns.md (empty)
     - generated/ (empty directory)
     - test-results/ (empty directory)
 
@@ -53,18 +52,12 @@ def create_project(name: str, base_dir: Path) -> Path:
 
     # Create directory tree
     project_dir.mkdir(parents=True)
-    (project_dir / ".max-memory").mkdir()
     (project_dir / "generated").mkdir()
     (project_dir / "test-results").mkdir()
 
     # Initialize context.md
     (project_dir / "context.md").write_text(
         f"# {name}\n\nProject context and notes.\n"
-    )
-
-    # Initialize .max-memory/patterns.md
-    (project_dir / ".max-memory" / "patterns.md").write_text(
-        f"# {name} -- Learned Patterns\n\nPatterns discovered during development.\n"
     )
 
     # Initialize status.md

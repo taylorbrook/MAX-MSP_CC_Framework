@@ -30,14 +30,12 @@ class TestCreateProject:
         assert project_path.is_dir()
 
         # Directories
-        assert (project_path / ".max-memory").is_dir()
         assert (project_path / "generated").is_dir()
         assert (project_path / "test-results").is_dir()
 
         # Files
         assert (project_path / "context.md").is_file()
         assert (project_path / "status.md").is_file()
-        assert (project_path / ".max-memory" / "patterns.md").is_file()
 
     def test_invalid_name_uppercase_raises(self, tmp_path: Path):
         with pytest.raises(ValueError, match="Invalid project name"):
