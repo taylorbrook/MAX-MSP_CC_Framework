@@ -1469,6 +1469,202 @@ class TestDSPCriticGainSafety:
         blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
         assert len(blockers) >= 1, f"Expected blocker for ctlin->mc.*~ inlet 1, got: {results}"
 
+    # --- Task 2: line~ backward tracing ---
+
+    def test_line_tilde_safe_message_to_gain(self):
+        """message '0.5 500' -> line~ -> *~ inlet 1 = no blocker (safe value)."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "message",
+                "text": "0.5 500",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "line~",
+                "numinlets": 2,
+                "numoutlets": 2,
+                "outlettype": ["signal", "bang"],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
+        assert len(blockers) == 0, f"Expected no blocker for safe line~ message, got: {results}"
+
+    def test_line_tilde_unsafe_message_to_gain(self):
+        """message '100 500' -> line~ -> *~ inlet 1 = blocker (>1.0)."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "message",
+                "text": "100 500",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "line~",
+                "numinlets": 2,
+                "numoutlets": 2,
+                "outlettype": ["signal", "bang"],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
+        assert len(blockers) >= 1, f"Expected blocker for unsafe line~ message, got: {results}"
+
+    def test_line_tilde_midi_source_to_gain(self):
+        """ctlin -> line~ -> *~ inlet 1 = blocker (MIDI source through line~)."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "ctlin",
+                "numinlets": 1,
+                "numoutlets": 3,
+                "outlettype": ["", "", ""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "line~",
+                "numinlets": 2,
+                "numoutlets": 2,
+                "outlettype": ["signal", "bang"],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
+        assert len(blockers) >= 1, f"Expected blocker for ctlin->line~->*~ inlet 1, got: {results}"
+
+    def test_line_tilde_normalized_midi_to_gain(self):
+        """ctlin -> scale 0 127 0. 1. -> line~ -> *~ inlet 1 = no blocker."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "ctlin",
+                "numinlets": 1,
+                "numoutlets": 3,
+                "outlettype": ["", "", ""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "scale 0 127 0. 1.",
+                "numinlets": 6,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "line~",
+                "numinlets": 2,
+                "numoutlets": 2,
+                "outlettype": ["signal", "bang"],
+            },
+            {
+                "id": "obj-4",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 0]},
+            {"source": ["obj-3", 0], "destination": ["obj-4", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
+        assert len(blockers) == 0, f"Expected no blocker for normalized MIDI through line~, got: {results}"
+
+    def test_line_tilde_to_signal_inlet_no_flag(self):
+        """message '100 500' -> line~ -> *~ inlet 0 = no unsafe gain blocker."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "message",
+                "text": "100 500",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "line~",
+                "numinlets": 2,
+                "numoutlets": 2,
+                "outlettype": ["signal", "bang"],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 0]},  # inlet 0 = audio, not gain
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
+        assert len(blockers) == 0, f"Expected no unsafe gain blocker for line~ to inlet 0, got: {results}"
+
     def test_comment_and_panel_excluded_from_overlap(self):
         """Comment and panel boxes are excluded from overlap checks."""
         boxes = [
