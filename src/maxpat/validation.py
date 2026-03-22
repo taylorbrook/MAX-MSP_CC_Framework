@@ -328,17 +328,32 @@ def _validate_connections(
             )
 
             if is_signal_source:
-                # Check if destination inlet accepts signal
-                dst_accepts_signal = _inlet_accepts_signal(dst_box, dst_inlet, db)
-                if not dst_accepts_signal:
+                # Guard: non-overridden MSP objects have unverified outlet types.
+                # The MSP domain extraction marked ALL outlets as signal=true,
+                # so for uncorrected objects a valid control outlet would be
+                # incorrectly flagged. Emit a warning and preserve the connection.
+                src_name = _extract_object_name(src_box)
+                if src_name and src_name.endswith("~") and not db.is_overridden(src_name):
                     results.append(ValidationResult(
-                        "connections", "error",
-                        f"Signal outlet to control-only inlet: "
-                        f"'{src_id}' outlet {src_outlet} -> "
-                        f"'{dst_id}' inlet {dst_inlet} -- connection removed",
-                        auto_fixed=True,
+                        "connections", "warning",
+                        f"Unverified outlet types: '{src_name}' outlet "
+                        f"{src_outlet} -> '{dst_id}' inlet {dst_inlet} "
+                        f"-- source MSP object not in overrides, "
+                        f"connection preserved",
+                        auto_fixed=False,
                     ))
-                    remove_this = True
+                else:
+                    # Overridden MSP or non-MSP: apply existing auto-removal
+                    dst_accepts_signal = _inlet_accepts_signal(dst_box, dst_inlet, db)
+                    if not dst_accepts_signal:
+                        results.append(ValidationResult(
+                            "connections", "error",
+                            f"Signal outlet to control-only inlet: "
+                            f"'{src_id}' outlet {src_outlet} -> "
+                            f"'{dst_id}' inlet {dst_inlet} -- connection removed",
+                            auto_fixed=True,
+                        ))
+                        remove_this = True
 
         if remove_this:
             to_remove.append(idx)

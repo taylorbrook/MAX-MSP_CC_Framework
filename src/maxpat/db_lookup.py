@@ -71,14 +71,18 @@ class ObjectDatabase:
                     self._objects[name] = obj
 
         # Apply object overrides (deep-merge onto loaded objects)
+        self._overridden_objects: set[str] = set()
         if overrides_path.exists():
             overrides_data = json.loads(overrides_path.read_text())
             for name, overrides in overrides_data.get("objects", {}).items():
+                if name.startswith("_"):
+                    continue  # skip comment keys
                 if name in self._objects:
                     for key, value in overrides.items():
                         if key.startswith("_"):
                             continue  # skip comments
                         self._objects[name][key] = value
+                    self._overridden_objects.add(name)
 
     def lookup(self, name: str) -> dict | None:
         """Look up an object by name, resolving aliases.
@@ -103,6 +107,18 @@ class ObjectDatabase:
         """
         canonical = self._aliases.get(name, name)
         return canonical in self._objects
+
+    def is_overridden(self, name: str) -> bool:
+        """Check whether an object has expert-verified overrides applied.
+
+        Args:
+            name: Object name or alias.
+
+        Returns:
+            True if the object (or its alias target) has overrides in overrides.json.
+        """
+        canonical = self._aliases.get(name, name)
+        return canonical in self._overridden_objects
 
     def is_pd_object(self, name: str) -> bool:
         """Check whether a name is a Pure Data object (not in MAX).
