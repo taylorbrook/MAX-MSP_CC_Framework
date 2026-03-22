@@ -635,3 +635,332 @@ class TestLayer3OverrideGuard:
 
         # Line should be removed
         assert len(patch["patcher"]["lines"]) == 0
+
+
+# ===========================================================================
+# Layer 4: GenExpr and Domain-Specific Checks
+# ===========================================================================
+
+def _make_codebox(box_id, code="out1 = in1;"):
+    """Return a codebox box entry with embedded GenExpr code."""
+    return {
+        "box": {
+            "maxclass": "newobj",
+            "id": box_id,
+            "text": "codebox",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [""],
+            "patching_rect": [0.0, 0.0, 80.0, 22.0],
+            "code": code,
+        }
+    }
+
+
+class TestLayer4GenExprChecks:
+    """Validate GenExpr codebox syntax checks."""
+
+    # --- Check 1: GenExpr I/O syntax ---
+
+    def test_genexpr_spaced_io_triggers_error(self, db):
+        """Codebox with 'in 1' triggers error."""
+        patch = _make_patch_dict(boxes=[
+            _make_codebox("obj-1", code="out1 = in 1 * 0.5;"),
+        ])
+        results = validate_patch(patch, db=db)
+        errs = [r for r in results
+                if r.layer == "domain" and r.level == "error"
+                and "in1" in r.message.lower()]
+        assert len(errs) >= 1
+
+    def test_genexpr_spaced_out_triggers_error(self, db):
+        """Codebox with 'out 2' triggers error."""
+        patch = _make_patch_dict(boxes=[
+            _make_codebox("obj-1", code="out 2 = in1;"),
+        ])
+        results = validate_patch(patch, db=db)
+        errs = [r for r in results
+                if r.layer == "domain" and r.level == "error"
+                and "in1" in r.message.lower()]
+        assert len(errs) >= 1
+
+    def test_genexpr_correct_io_no_error(self, db):
+        """Codebox with 'in1'/'out1' (no space) produces no error."""
+        patch = _make_patch_dict(boxes=[
+            _make_codebox("obj-1", code="out1 = in1 * 0.5;"),
+        ])
+        results = validate_patch(patch, db=db)
+        errs = [r for r in results
+                if r.layer == "domain" and r.level == "error"
+                and "genexpr" in r.message.lower()]
+        assert errs == []
+
+    # --- Check 2: GenExpr delay syntax ---
+
+    def test_genexpr_delay_call_triggers_error(self, db):
+        """Codebox with delay() triggers error."""
+        patch = _make_patch_dict(boxes=[
+            _make_codebox("obj-1", code="out1 = delay(in1, 100);"),
+        ])
+        results = validate_patch(patch, db=db)
+        errs = [r for r in results
+                if r.layer == "domain" and r.level == "error"
+                and "delay" in r.message.lower()]
+        assert len(errs) >= 1
+
+    def test_genexpr_delay_read_no_error(self, db):
+        """Codebox with Delay.read() produces no error."""
+        patch = _make_patch_dict(boxes=[
+            _make_codebox("obj-1", code="d = Delay(1000);\nout1 = d.read(100);"),
+        ])
+        results = validate_patch(patch, db=db)
+        errs = [r for r in results
+                if r.layer == "domain" and r.level == "error"
+                and "delay" in r.message.lower()]
+        assert errs == []
+
+    # --- Check 3: gen~ @param message syntax ---
+
+    def test_gen_at_param_connected_to_gen_warning(self, db):
+        """Message '@depth $1' connected to gen~ triggers warning."""
+        boxes = [
+            _make_box("msg-1", maxclass="message", text="@depth $1",
+                       numinlets=2, numoutlets=1, outlettype=[""]),
+            _make_box("gen-1", text="gen~", numinlets=1, numoutlets=1,
+                       outlettype=["signal"]),
+        ]
+        lines = [_make_line("msg-1", 0, "gen-1", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "param" in r.message.lower()]
+        assert len(warns) >= 1
+
+    def test_gen_plain_param_no_warning(self, db):
+        """Message 'depth $1' connected to gen~ produces no warning."""
+        boxes = [
+            _make_box("msg-1", maxclass="message", text="depth $1",
+                       numinlets=2, numoutlets=1, outlettype=[""]),
+            _make_box("gen-1", text="gen~", numinlets=1, numoutlets=1,
+                       outlettype=["signal"]),
+        ]
+        lines = [_make_line("msg-1", 0, "gen-1", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "param" in r.message.lower()]
+        assert warns == []
+
+    def test_at_param_not_connected_to_gen_no_warning(self, db):
+        """Message '@depth $1' NOT connected to gen~ produces no warning."""
+        boxes = [
+            _make_box("msg-1", maxclass="message", text="@depth $1",
+                       numinlets=2, numoutlets=1, outlettype=[""]),
+            _make_box("obj-1", text="bpatcher", maxclass="bpatcher",
+                       numinlets=1, numoutlets=1, outlettype=[""]),
+        ]
+        lines = [_make_line("msg-1", 0, "obj-1", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "param" in r.message.lower()]
+        assert warns == []
+
+    # --- Check 4: Comment #N substitution ---
+
+    def test_comment_with_hash_n_warning(self, db):
+        """Comment box with '#1' text triggers warning."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "comment", "id": "obj-1",
+                     "text": "Freq: #1 Hz",
+                     "numinlets": 1, "numoutlets": 0,
+                     "outlettype": [],
+                     "patching_rect": [0, 0, 80, 22]}},
+        ])
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "comment" in r.message.lower() and "#" in r.message]
+        assert len(warns) >= 1
+
+    def test_newobj_with_hash_n_no_comment_warning(self, db):
+        """newobj with '#1' in text does NOT trigger the comment warning."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="buffer~ #1",
+                       numinlets=1, numoutlets=2, outlettype=["", ""]),
+        ])
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "comment" in r.message.lower() and "#n" in r.message.lower()]
+        assert warns == []
+
+    # --- Check 5: line~ comma messages ---
+
+    def test_line_tilde_comma_message_warning(self, db):
+        """Message with comma connected to line~ triggers warning."""
+        boxes = [
+            _make_box("msg-1", maxclass="message", text="100, 500 1000",
+                       numinlets=2, numoutlets=1, outlettype=[""]),
+            _make_box("line-1", text="line~", numinlets=2, numoutlets=2,
+                       outlettype=["signal", ""]),
+        ]
+        lines = [_make_line("msg-1", 0, "line-1", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "line~" in r.message.lower()]
+        assert len(warns) >= 1
+
+    def test_line_tilde_no_comma_no_warning(self, db):
+        """Message without comma connected to line~ produces no warning."""
+        boxes = [
+            _make_box("msg-1", maxclass="message", text="100 500 1000",
+                       numinlets=2, numoutlets=1, outlettype=[""]),
+            _make_box("line-1", text="line~", numinlets=2, numoutlets=2,
+                       outlettype=["signal", ""]),
+        ]
+        lines = [_make_line("msg-1", 0, "line-1", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "line~" in r.message.lower()]
+        assert warns == []
+
+    # --- Check 6: multislider fetchindex ---
+
+    def test_multislider_fetchindex_error(self, db):
+        """Message with 'fetchindex' triggers error."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("msg-1", maxclass="message", text="fetchindex 3",
+                       numinlets=2, numoutlets=1, outlettype=[""]),
+        ])
+        results = validate_patch(patch, db=db)
+        errs = [r for r in results
+                if r.layer == "domain" and r.level == "error"
+                and "fetchindex" in r.message.lower()]
+        assert len(errs) >= 1
+
+    def test_multislider_fetch_no_error(self, db):
+        """Message with 'fetch' (not 'fetchindex') produces no error."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("msg-1", maxclass="message", text="fetch 3",
+                       numinlets=2, numoutlets=1, outlettype=[""]),
+        ])
+        results = validate_patch(patch, db=db)
+        errs = [r for r in results
+                if r.layer == "domain" and r.level == "error"
+                and "fetchindex" in r.message.lower()]
+        assert errs == []
+
+    # --- Check 7: umenu items format ---
+
+    def test_umenu_items_no_comma_warning(self, db):
+        """umenu with items=["LP","HP","BP"] (no commas) triggers warning."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "umenu", "id": "obj-1",
+                     "items": ["LP", "HP", "BP"],
+                     "numinlets": 1, "numoutlets": 3,
+                     "outlettype": ["int", "", ""],
+                     "patching_rect": [0, 0, 100, 22]}},
+        ])
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "umenu" in r.message.lower()]
+        assert len(warns) >= 1
+
+    def test_umenu_items_with_comma_no_warning(self, db):
+        """umenu with items=["LP",",","HP",",","BP"] produces no warning."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "umenu", "id": "obj-1",
+                     "items": ["LP", ",", "HP", ",", "BP"],
+                     "numinlets": 1, "numoutlets": 3,
+                     "outlettype": ["int", "", ""],
+                     "patching_rect": [0, 0, 100, 22]}},
+        ])
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "umenu" in r.message.lower()]
+        assert warns == []
+
+    def test_umenu_single_item_no_warning(self, db):
+        """umenu with only 1 item doesn't trigger warning (edge case)."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "umenu", "id": "obj-1",
+                     "items": ["OnlyOne"],
+                     "numinlets": 1, "numoutlets": 3,
+                     "outlettype": ["int", "", ""],
+                     "patching_rect": [0, 0, 100, 22]}},
+        ])
+        results = validate_patch(patch, db=db)
+        warns = [r for r in results
+                 if r.layer == "domain" and r.level == "warning"
+                 and "umenu" in r.message.lower()]
+        assert warns == []
+
+    # --- Check 8: Assistance comments on inlet/outlet ---
+
+    def test_inlet_without_comment_info(self, db):
+        """inlet maxclass without 'comment' attr triggers info."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "inlet", "id": "obj-1",
+                     "numinlets": 0, "numoutlets": 1,
+                     "outlettype": [""],
+                     "patching_rect": [0, 0, 30, 30]}},
+        ])
+        results = validate_patch(patch, db=db)
+        infos = [r for r in results
+                 if r.layer == "domain" and r.level == "info"
+                 and "assistance" in r.message.lower()]
+        assert len(infos) >= 1
+
+    def test_outlet_without_comment_info(self, db):
+        """outlet maxclass without 'comment' attr triggers info."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "outlet", "id": "obj-1",
+                     "numinlets": 1, "numoutlets": 0,
+                     "outlettype": [],
+                     "patching_rect": [0, 0, 30, 30]}},
+        ])
+        results = validate_patch(patch, db=db)
+        infos = [r for r in results
+                 if r.layer == "domain" and r.level == "info"
+                 and "assistance" in r.message.lower()]
+        assert len(infos) >= 1
+
+    def test_inlet_with_comment_no_info(self, db):
+        """inlet with 'comment': 'frequency' produces no info."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "inlet", "id": "obj-1",
+                     "comment": "frequency",
+                     "numinlets": 0, "numoutlets": 1,
+                     "outlettype": [""],
+                     "patching_rect": [0, 0, 30, 30]}},
+        ])
+        results = validate_patch(patch, db=db)
+        infos = [r for r in results
+                 if r.layer == "domain" and r.level == "info"
+                 and "assistance" in r.message.lower()]
+        assert infos == []
+
+    def test_inlet_with_empty_comment_info(self, db):
+        """inlet with empty comment string still triggers info."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "inlet", "id": "obj-1",
+                     "comment": "",
+                     "numinlets": 0, "numoutlets": 1,
+                     "outlettype": [""],
+                     "patching_rect": [0, 0, 30, 30]}},
+        ])
+        results = validate_patch(patch, db=db)
+        infos = [r for r in results
+                 if r.layer == "domain" and r.level == "info"
+                 and "assistance" in r.message.lower()]
+        assert len(infos) >= 1
