@@ -11,7 +11,7 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 - **Patch analysis and onboarding** — analyze any existing `.maxpat` file to understand its structure, signal flow, and sections before editing or extending it
 - **Intelligent editing** — modify objects in-place, insert into signal chains, replace/swap objects, query upstream/downstream signal paths, and auto-position new objects
 - **2,015-object knowledge base** — verified database covering MAX, MSP, Jitter, MC, Gen~, Max for Live, RNBO, and package objects with full inlet/outlet schemas
-- **10 specialist agents** — router, patch, DSP/Gen~, RNBO, JavaScript, UI layout, C++ externals, critic, memory, and lifecycle management
+- **9 specialist agents** — router, patch, DSP/Gen~, RNBO, JavaScript, UI layout, C++ externals, critic, and lifecycle management
 - **4-layer validation pipeline** — structure checks, connection verification, domain-specific critics (DSP signal flow, RNBO compatibility, C++ review), and iterative revision
 - **Gen~ / GenExpr code generation** — sample-rate DSP code with proper declaration ordering, feedback loops, and parameter mapping
 - **RNBO export support** — generate export-ready patches for VST3/AU plugins, Web Audio, and C++ embedded targets
@@ -19,8 +19,7 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 - **C++ external development** — scaffold, generate, and build Min-DevKit externals with help patches
 - **Help patch audit pipeline** — offline tool that parses 973 .maxhelp files to extract ground truth object metadata and automatically correct database entries
 - **Professional patch aesthetics** — styled section comments, background panels, patcher colors, grid-snapped layout, and inlet-aligned cables for polished output
-- **Persistent memory system** — learns patterns across sessions (global and per-project scopes)
-- **Project lifecycle management** — structured workflow from ideation through build and verification
+- **Project lifecycle management** — structured workflow from ideation through build and verification with automatic version tracking
 
 ## Prerequisites
 
@@ -110,7 +109,7 @@ Generates a manual test checklist based on the objects and signal flow in your p
 /max-iterate --discuss --research add sidechain compression
 ```
 
-Reads the existing `.maxpat`, analyzes its structure, makes surgical edits, and writes back — preserving all positions, colors, connections, and manual changes you've made in MAX.
+Reads the existing `.maxpat`, analyzes its structure, makes surgical edits, and writes back — preserving all positions, colors, connections, and manual changes you've made in MAX. Every iteration automatically bumps the project version and embeds a `vX.Y.Z` comment in the patch.
 
 Optional flags prepend phases before the edit:
 
@@ -137,7 +136,6 @@ Flags are composable (`--discuss --research`) and can be combined with inline pr
 | `/max-discuss` | Capture implementation decisions |
 | `/max-research` | Research MAX-specific techniques and approaches |
 | `/max-switch` | Change the active project |
-| `/max-memory` | View, list, or manage stored pattern memories |
 
 ## Patches
 
