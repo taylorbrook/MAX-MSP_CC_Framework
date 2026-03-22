@@ -15,6 +15,7 @@ import pytest
 # ── Constants ──────────────────────────────────────────────────────
 
 SKILLS_DIR = Path(__file__).resolve().parent.parent / ".claude" / "skills"
+SHARED_CAPABILITIES = SKILLS_DIR / "references" / "shared-capabilities.md"
 
 ALL_SKILL_DIRS = [
     "max-router",
@@ -45,6 +46,13 @@ def _read_skill(name: str) -> str:
     """Read SKILL.md content for a given skill directory."""
     path = SKILLS_DIR / name / "SKILL.md"
     return path.read_text()
+
+
+def _read_skill_with_shared(name: str) -> str:
+    """Read SKILL.md + shared-capabilities.md for full capability context."""
+    skill = _read_skill(name)
+    shared = SHARED_CAPABILITIES.read_text()
+    return skill + "\n" + shared
 
 
 def _has_frontmatter_field(content: str, field: str) -> bool:
@@ -492,48 +500,67 @@ def test_rnbo_validate_scope_documented() -> None:
     pytest.fail("Could not find validate_rnbo_patch description line in RNBO SKILL.md")
 
 
+# ── Test: Shared capabilities reference file ─────────────────────
+
+
+def test_shared_capabilities_exists() -> None:
+    """The shared-capabilities.md reference file must exist."""
+    assert SHARED_CAPABILITIES.is_file(), (
+        f"shared-capabilities.md missing: {SHARED_CAPABILITIES}"
+    )
+
+
+@pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
+def test_specialist_references_shared_capabilities(agent_name: str) -> None:
+    """Each specialist SKILL.md must reference shared-capabilities.md."""
+    content = _read_skill(agent_name)
+    assert "shared-capabilities.md" in content, (
+        f"{agent_name}/SKILL.md missing reference to shared-capabilities.md"
+    )
+
+
 # ── Test: Aesthetic capabilities in all 6 specialist agents ──────
 
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_has_aesthetic_capabilities(agent_name: str) -> None:
-    """Each specialist agent SKILL.md must have an Aesthetic Capabilities section."""
-    content = _read_skill(agent_name)
+    """Each specialist agent must have Aesthetic Capabilities (via SKILL.md or shared reference)."""
+    content = _read_skill_with_shared(agent_name)
     assert "Aesthetic Capabilities" in content, (
-        f"{agent_name}/SKILL.md missing 'Aesthetic Capabilities' section"
+        f"{agent_name} missing 'Aesthetic Capabilities' section"
     )
 
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_references_patcher_styling_methods(agent_name: str) -> None:
     """Each specialist agent must reference Patcher aesthetic methods."""
-    content = _read_skill(agent_name)
+    content = _read_skill_with_shared(agent_name)
     assert "add_section_header" in content, (
-        f"{agent_name}/SKILL.md missing add_section_header reference"
+        f"{agent_name} missing add_section_header reference"
     )
     assert "add_panel" in content, (
-        f"{agent_name}/SKILL.md missing add_panel reference"
+        f"{agent_name} missing add_panel reference"
     )
 
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_references_aesthetics_helpers(agent_name: str) -> None:
     """Each specialist agent must reference aesthetics.py helpers."""
-    content = _read_skill(agent_name)
+    content = _read_skill_with_shared(agent_name)
     assert "set_canvas_background" in content, (
-        f"{agent_name}/SKILL.md missing set_canvas_background reference"
+        f"{agent_name} missing set_canvas_background reference"
     )
     assert "set_object_bgcolor" in content, (
-        f"{agent_name}/SKILL.md missing set_object_bgcolor reference"
+        f"{agent_name} missing set_object_bgcolor reference"
     )
 
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_references_layout_options(agent_name: str) -> None:
     """Each specialist agent must reference LayoutOptions for layout configuration."""
-    content = _read_skill(agent_name)
+    content = _read_skill_with_shared(agent_name)
     assert "LayoutOptions" in content, (
-        f"{agent_name}/SKILL.md missing LayoutOptions reference"
+        f"{agent_name} missing LayoutOptions reference"
     )
 
 
@@ -542,46 +569,46 @@ def test_specialist_references_layout_options(agent_name: str) -> None:
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_has_editing_section(agent_name: str) -> None:
-    """Each specialist agent SKILL.md must have an Editing Existing Patches section."""
-    content = _read_skill(agent_name)
+    """Each specialist agent must have an Editing section (via SKILL.md or shared reference)."""
+    content = _read_skill_with_shared(agent_name)
     assert "Editing Existing Patches" in content or "Editing Functions" in content, (
-        f"{agent_name}/SKILL.md missing 'Editing Existing Patches' or 'Editing Functions' section"
+        f"{agent_name} missing 'Editing Existing Patches' or 'Editing Functions' section"
     )
 
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_references_read_patch(agent_name: str) -> None:
-    """Each specialist agent SKILL.md must reference read_patch."""
-    content = _read_skill(agent_name)
+    """Each specialist agent must reference read_patch."""
+    content = _read_skill_with_shared(agent_name)
     assert "read_patch" in content, (
-        f"{agent_name}/SKILL.md missing read_patch reference"
+        f"{agent_name} missing read_patch reference"
     )
 
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_references_find_box(agent_name: str) -> None:
-    """Each specialist agent SKILL.md must reference find_box."""
-    content = _read_skill(agent_name)
+    """Each specialist agent must reference find_box."""
+    content = _read_skill_with_shared(agent_name)
     assert "find_box" in content, (
-        f"{agent_name}/SKILL.md missing find_box reference"
+        f"{agent_name} missing find_box reference"
     )
 
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_references_modify_box(agent_name: str) -> None:
-    """Each specialist agent SKILL.md must reference modify_box."""
-    content = _read_skill(agent_name)
+    """Each specialist agent must reference modify_box."""
+    content = _read_skill_with_shared(agent_name)
     assert "modify_box" in content, (
-        f"{agent_name}/SKILL.md missing modify_box reference"
+        f"{agent_name} missing modify_box reference"
     )
 
 
 @pytest.mark.parametrize("agent_name", SPECIALIST_AGENTS)
 def test_specialist_references_save_roundtrip(agent_name: str) -> None:
-    """Each specialist agent SKILL.md must reference save_patch_roundtrip."""
-    content = _read_skill(agent_name)
+    """Each specialist agent must reference save_patch_roundtrip."""
+    content = _read_skill_with_shared(agent_name)
     assert "save_patch_roundtrip" in content, (
-        f"{agent_name}/SKILL.md missing save_patch_roundtrip reference"
+        f"{agent_name} missing save_patch_roundtrip reference"
     )
 
 
