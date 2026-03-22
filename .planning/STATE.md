@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260322-fpd-PLAN.md
-last_updated: "2026-03-22T18:24:10.818Z"
+stopped_at: Completed quick-260322-fyt-PLAN.md
+last_updated: "2026-03-22T18:34:06.108Z"
 last_activity: "2026-03-22 - Completed quick task 260322-fpd: Update CLAUDE.md and SKILL.md files to recommend ObjectDatabase"
 progress:
   total_phases: 12
@@ -122,6 +122,7 @@ Recent decisions for v2.0:
 - [Phase quick-260319-f6q]: Override width is a floor (minimum), not an absolute value -- max(override, text_width)
 - [Phase quick-260319-mnh]: MIDI-range sources to *~ gain inlet without normalization = blocker severity for hearing safety
 - [Phase quick-260322-fpd]: ObjectDatabase.lookup() is the documented primary method; raw JSON files kept as secondary for browsing
+- [Phase quick-260322-fyt]: Target ~250 lines total context for 3+ agent dispatch (not 200, based on actual section sizes)
 
 ### Pending Todos
 
@@ -152,6 +153,7 @@ None.
 | 260322-eva | Retire the in-app memory system (max-memory-agent) | 2026-03-22 | b4d20a3 | Verified | [260322-eva-retire-the-in-app-memory-system-max-memo](./quick/260322-eva-retire-the-in-app-memory-system-max-memo/) |
 | 260322-fee | Extract duplicated content blocks into shared-capabilities.md | 2026-03-22 | 587f034 | Verified | [260322-fee-extract-duplicated-content-blocks-from-a](./quick/260322-fee-extract-duplicated-content-blocks-from-a/) |
 | 260322-fpd | Update CLAUDE.md and SKILL.md files to recommend ObjectDatabase | 2026-03-22 | 8f9ac8b | | [260322-fpd-update-claude-md-and-skill-md-files-to-r](./quick/260322-fpd-update-claude-md-and-skill-md-files-to-r/) |
+| 260322-fyt | Add Context Budget section to max-router SKILL.md | 2026-03-22 | ac1351c | | [260322-fyt-add-context-budget-section-to-max-router](./quick/260322-fyt-add-context-budget-section-to-max-router/) |
 
 ### Blockers/Concerns
 
@@ -162,6 +164,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-22T18:24:10.771Z
-Stopped at: Completed quick-260322-fpd-PLAN.md
+Last session: 2026-03-22T18:34:04.522Z
+Stopped at: Completed quick-260322-fyt-PLAN.md
 Resume file: None
