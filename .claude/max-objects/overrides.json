@@ -2288,6 +2288,27 @@
         "source": "io_count_finding"
       }
     },
+    "gain~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Scaled audio output (signal)"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Slider value (int)"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "outlet_type_correction",
+        "note": "Outlet 1 is control (current slider value as int), not signal. Confirmed via official docs."
+      }
+    },
     "info~": {
       "outlets": [
         {
@@ -2370,6 +2391,21 @@
         "instances": 6,
         "agreement": 1.0,
         "source": "io_count_finding"
+      }
+    },
+    "index~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Sample value at index"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "outlet_count_correction",
+        "note": "Only 1 outlet per official docs. Outlet 1 was extraction error (inlet 1 digest duplicated as outlet 1)."
       }
     },
     "limi~": {
