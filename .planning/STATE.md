@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-22 - Completed quick task 260322-hk7: Add interactive mode note to max-iterate flags
+Last activity: 2026-03-22 - Completed quick task 260322-hhw: Add soft limit to critic loop after 3 rounds
 
 Progress: [██████████] 100%
 
