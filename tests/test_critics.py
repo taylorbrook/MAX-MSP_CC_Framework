@@ -11,7 +11,7 @@ from __future__ import annotations
 import pytest
 
 from src.maxpat.critics.base import CriticResult
-from src.maxpat.critics.dsp_critic import review_dsp
+from src.maxpat.critics.dsp_critic import review_dsp, _is_normalizer, _GAIN_NAMES
 from src.maxpat.critics.structure_critic import review_structure
 from src.maxpat.critics.rnbo_critic import review_rnbo
 from src.maxpat.critics.ext_critic import review_external
@@ -1410,6 +1410,64 @@ class TestDSPCriticGainSafety:
         blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
         assert len(blockers) >= 1, f"Expected blocker for number->*~ inlet 1, got: {results}"
 
+
+    # --- Task 1: expr/vexpr normalizer + MC gain objects ---
+
+    def test_expr_normalizer_with_division(self):
+        """expr containing '/ 127.' is a normalizer."""
+        box = {"maxclass": "newobj", "text": "expr $f1 / 127."}
+        assert _is_normalizer(box) is True
+
+    def test_expr_normalizer_rejected_without_pattern(self):
+        """expr with '$i1 + $i2' (no division/scaling) is NOT a normalizer."""
+        box = {"maxclass": "newobj", "text": "expr $i1 + $i2"}
+        assert _is_normalizer(box) is False
+
+    def test_vexpr_normalizer_with_scale_pattern(self):
+        """vexpr with '/ 255.' is a normalizer."""
+        box = {"maxclass": "newobj", "text": "vexpr $f1 / 255."}
+        assert _is_normalizer(box) is True
+
+    def test_vexpr_not_normalizer_generic_multiply(self):
+        """vexpr with '$f1 * $f2' (variable multiply) is NOT a normalizer."""
+        box = {"maxclass": "newobj", "text": "vexpr $f1 * $f2"}
+        assert _is_normalizer(box) is False
+
+    def test_mc_multiply_in_gain_names(self):
+        """mc.*~ is in _GAIN_NAMES."""
+        assert "mc.*~" in _GAIN_NAMES
+
+    def test_mc_gain_in_gain_names(self):
+        """mc.gain~ is in _GAIN_NAMES."""
+        assert "mc.gain~" in _GAIN_NAMES
+
+    def test_mc_multiply_unsafe_source(self):
+        """ctlin -> mc.*~ inlet 1 without normalizer = blocker."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "ctlin",
+                "numinlets": 1,
+                "numoutlets": 3,
+                "outlettype": ["", "", ""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "mc.*~ 1.",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["multichannelsignal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 1]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_dsp(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "unsafe gain" in r.finding.lower()]
+        assert len(blockers) >= 1, f"Expected blocker for ctlin->mc.*~ inlet 1, got: {results}"
 
     def test_comment_and_panel_excluded_from_overlap(self):
         """Comment and panel boxes are excluded from overlap checks."""
