@@ -65,3 +65,10 @@
 4. Make changes: `result = patcher.modify_box(box, args=["new_value"])`
 5. Validate: `results = validate_patch(patcher)`
 6. Save: `save_patch_roundtrip(patcher.to_dict(), path, original_text)`
+
+## Version Comment
+
+- `from src.maxpat.project import update_version_comment`
+- `update_version_comment(patcher, version_string)` -- adds or updates a `vX.Y.Z` comment in top-right of patch
+- Existing version comments are updated in place (no duplicates)
+- Called automatically by `/max-iterate` after version bump, before save

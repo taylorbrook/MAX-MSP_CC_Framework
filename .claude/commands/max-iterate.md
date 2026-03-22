@@ -107,15 +107,17 @@ After all flagged phases complete, proceed to the standard edit flow (steps 10+)
     - Run `review_patch(patcher.to_dict())` via the max-critic skill
     - Same quality gate as `/max-build` -- blockers require revision, warnings are annotated
 
-16. **Save patch** -- write back using round-trip save to preserve positions and indentation:
+16. **Bump version** -- call `bump_version(project_dir, "patch", description)` where `description` is a short summary of the change. Use `"minor"` for significant reworks, `"major"` for breaking changes. Store the returned version string for the next step.
+
+17. **Embed version comment** -- call `update_version_comment(patcher, new_version)` to add or update the version comment box in the patch. This MUST happen after bump (to get the new string) and before save (so the comment is in the saved file). The version comment is a visible `v0.1.0`-style comment placed in the top-right of the patch. Agents MUST NOT skip this step.
+
+18. **Save patch** -- write back using round-trip save to preserve positions and indentation:
     ```python
     save_patch_roundtrip(patcher.to_dict(), path, original_text)
     ```
     This preserves the original file's indentation, key ordering, and any metadata that the Patcher model does not explicitly track.
 
-17. **Bump version** -- call `bump_version(project_dir, "patch", description)` where `description` is a short summary of the change. Use `"minor"` or `"major"` for significant reworks.
-
-18. **Update progress** -- increment progress via `update_status()`.
+19. **Update progress** -- increment progress via `update_status()`.
 
 ## Skills Referenced
 
@@ -127,7 +129,7 @@ After all flagged phases complete, proceed to the standard edit flow (steps 10+)
 
 ```python
 from src.maxpat import read_patch, save_patch_roundtrip, validate_patch, Patcher
-from src.maxpat.project import get_active_project, set_active_project, list_projects, update_status, bump_version
+from src.maxpat.project import get_active_project, set_active_project, list_projects, update_status, bump_version, update_version_comment
 from src.maxpat.critics import review_patch, CriticResult
 ```
 
