@@ -52,6 +52,41 @@ Many tasks span multiple domains. When this happens:
 - "step sequencer with MIDI" -> Patch (lead) + js
 - "audio effect with preset system" -> DSP (lead) + Patch + js
 
+## Context Budget
+
+When dispatching to multiple agents, minimize total SKILL.md context loaded.
+
+**Loading tiers:**
+
+| Agents | Strategy |
+|--------|----------|
+| 1 | Full SKILL.md |
+| 2 | Both full |
+| 3+ | Lead: full SKILL.md. Secondaries: load ONLY "Domain Context Loading" + "Capabilities" sections |
+
+**Per-agent section map:**
+
+| Section | Classification | Present In |
+|---------|---------------|------------|
+| Domain Context Loading | domain-specific (always load) | all agents |
+| Capabilities (+ subsections) | domain-specific (always load) | all agents |
+| Python API References | domain-specific (always load) | rnbo |
+| Editing Existing Patches | shared -- skip for secondaries | all agents |
+| Output Protocol (New Patches) | shared -- skip for secondaries | all agents |
+| Output Protocol (Edited Patches) | shared -- skip for secondaries | all agents |
+| When to Use / When NOT to Use | shared -- skip for secondaries | all agents |
+| Bpatcher Argument Substitution | shared -- skip for secondaries | patch, dsp |
+| Shared Capabilities reference | shared -- skip for secondaries | all agents |
+
+**Example -- "MIDI-controlled FM synth with presets":**
+- Lead: DSP (full ~107 lines)
+- Secondary: Patch (DCL + Capabilities ~59 lines)
+- Secondary: UI (DCL + Capabilities ~62 lines)
+- Secondary: js (DCL + Capabilities ~46 lines)
+- **Total: ~274 lines** vs ~443 lines loading all fully
+
+**Target:** Keep total loaded SKILL.md context under ~250 lines per generation task.
+
 ## Capabilities
 
 - Keyword/intent analysis against domain definitions
