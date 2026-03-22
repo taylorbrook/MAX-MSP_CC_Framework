@@ -12,6 +12,7 @@ feedback loops). Focus is on semantic issues validation misses.
 
 from __future__ import annotations
 
+import re
 from collections import deque
 
 from src.maxpat.critics.base import CriticResult
@@ -23,8 +24,8 @@ _OSCILLATOR_NAMES = frozenset({
     "cycle~", "saw~", "rect~", "tri~", "noise~", "pink~",
 })
 
-# Gain objects that attenuate signal
-_GAIN_NAMES = frozenset({"*~", "gain~"})
+# Gain objects that attenuate signal (includes MC variants)
+_GAIN_NAMES = frozenset({"*~", "gain~", "mc.*~", "mc.gain~"})
 
 # Terminal signal objects
 _TERMINAL_NAMES = frozenset({"dac~", "ezdac~"})
@@ -341,9 +342,12 @@ def _is_normalizer(box: dict) -> bool:
     # Small multiplication factor like "* 0.007" (approx 1/127)
     if text.startswith("* 0.00") and not text.startswith("* 0.0 "):
         return True
-    # expr/vexpr might normalize
+    # expr/vexpr: only treat as normalizer if text contains division/scaling patterns
     if name in ("expr", "vexpr"):
-        return True
+        # Division by common ranges, or multiplication by small constant < 1.0
+        if re.search(r'[/!]\s*127|[/!]\s*255|[/!]\s*100|\*\s*0\.\d', text):
+            return True
+        return False
 
     return False
 
@@ -416,10 +420,13 @@ def _check_unsafe_gain_sources(
 
         ctrl_backward.setdefault(dst_id, []).append(src_id)
 
-    # Find all *~ boxes and check what feeds inlet 1
+    # Names with a gain inlet at index 1 (mc.gain~ excluded: only 1 inlet)
+    _GAIN_INLET_1_NAMES = frozenset({"*~", "mc.*~"})
+
+    # Find all *~/mc.*~ boxes and check what feeds inlet 1
     for box_id, box in box_lookup.items():
         name = _get_box_name(box)
-        if name != "*~":
+        if name not in _GAIN_INLET_1_NAMES:
             continue
 
         # Get control sources feeding inlet 1 (gain inlet)
@@ -453,7 +460,7 @@ def _check_unsafe_gain_sources(
                     results.append(CriticResult(
                         "blocker",
                         f"Unsafe gain source: '{current_name}' ({current_id}) "
-                        f"feeds '*~' ({box_id}) inlet 1 without normalization "
+                        f"feeds '{name}' ({box_id}) inlet 1 without normalization "
                         f"-- raw MIDI/UI values (0-127) will cause dangerous "
                         f"audio levels",
                         f"Insert 'scale 0 127 0. 1.' or '/ 127.' before the "
