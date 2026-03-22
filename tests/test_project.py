@@ -17,6 +17,7 @@ from src.maxpat.project import (
     bump_version,
     list_versions,
     build_examples_catalog,
+    update_version_comment,
 )
 
 
@@ -434,3 +435,68 @@ class TestBuildExamplesCatalog:
 
         content = (tmp_path / "PATCHES.md").read_text()
         assert "No description" in content
+
+
+class TestUpdateVersionComment:
+    """Tests for update_version_comment function."""
+
+    def test_adds_version_comment_to_empty_patcher(self):
+        """Test 1: update_version_comment on empty patcher adds a comment box with text 'v0.1.0'."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        update_version_comment(p, "0.1.0")
+
+        comments = p.find_boxes(maxclass="comment")
+        assert len(comments) == 1
+        assert comments[0].text == "v0.1.0"
+
+    def test_comment_positioned_in_top_right(self):
+        """Test 2: comment is positioned in top-right area (x >= 500, y <= 30)."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        box = update_version_comment(p, "0.1.0")
+
+        x = box.patching_rect[0]
+        y = box.patching_rect[1]
+        assert x >= 500, f"x={x} should be >= 500"
+        assert y <= 30, f"y={y} should be <= 30"
+
+    def test_updates_existing_version_comment_in_place(self):
+        """Test 3: update on patcher with existing version comment updates text, no duplicate."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        update_version_comment(p, "0.1.0")
+        update_version_comment(p, "0.2.0")
+
+        comments = p.find_boxes(maxclass="comment")
+        version_comments = [c for c in comments if c.text.startswith("v") and "." in c.text]
+        assert len(version_comments) == 1
+        assert version_comments[0].text == "v0.2.0"
+
+    def test_leaves_non_version_comments_untouched(self):
+        """Test 4: non-version comments are untouched, version comment still added."""
+        from src.maxpat.patcher import Patcher
+
+        p = Patcher()
+        p.add_comment("This is a regular comment", x=10.0, y=10.0)
+        p.add_comment("Another note", x=10.0, y=30.0)
+        update_version_comment(p, "1.0.0")
+
+        comments = p.find_boxes(maxclass="comment")
+        assert len(comments) == 3  # 2 regular + 1 version
+        texts = sorted(c.text for c in comments)
+        assert "Another note" in texts
+        assert "This is a regular comment" in texts
+        assert "v1.0.0" in texts
+
+    def test_returns_box_object(self):
+        """Test 5: returns the Box object for the version comment."""
+        from src.maxpat.patcher import Patcher, Box
+
+        p = Patcher()
+        result = update_version_comment(p, "0.1.0")
+        assert isinstance(result, Box)
+        assert result.text == "v0.1.0"
