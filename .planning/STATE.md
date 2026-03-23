@@ -174,7 +174,7 @@ None.
 | 260322-hmn | Enforce version tracking with every max-iterate run | 2026-03-22 | 58bb2b6 | Verified | [260322-hmn-enforce-version-tracking-with-every-max-](./quick/260322-hmn-enforce-version-tracking-with-every-max-/) |
 | 260322-n59 | Build reusable gen~ pattern library and standardized UI presets | 2026-03-22 | eb2513f | Verified | [260322-n59-build-reusable-gen-pattern-library-and-s](./quick/260322-n59-build-reusable-gen-pattern-library-and-s/) |
 | 260322-pkm | Add finalize_patch() hook for centralized layout cleanup | 2026-03-23 | e8c735e | Verified | [260322-pkm-add-a-hook-so-that-the-appropriate-agent](./quick/260322-pkm-add-a-hook-so-that-the-appropriate-agent/) |
-| 260322-pxv | Fix patch file caching with os.fsync on all write paths | 2026-03-23 | 6b57e00 | | [260322-pxv-investigate-and-fix-patch-file-caching-i](./quick/260322-pxv-investigate-and-fix-patch-file-caching-i/) |
+| 260322-pxv | Fix patch file caching with os.fsync on all write paths | 2026-03-23 | 6b57e00 | Verified | [260322-pxv-investigate-and-fix-patch-file-caching-i](./quick/260322-pxv-investigate-and-fix-patch-file-caching-i/) |
 
 ### Blockers/Concerns
 
