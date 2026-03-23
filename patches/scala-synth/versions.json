@@ -1,0 +1,24 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-03-23T01:29:08.929452+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "reduce volume 6dB, kslider note-off mode",
+      "timestamp": "2026-03-23T01:29:08.929824+00:00"
+    },
+    {
+      "version": "0.0.2",
+      "description": "dial float 0-1 default 0.5, kslider midinote note-off",
+      "timestamp": "2026-03-23T01:38:13.371492+00:00"
+    },
+    {
+      "version": "0.0.3",
+      "description": "dedicated kslider midinote chain",
+      "timestamp": "2026-03-23T01:46:18.326450+00:00"
+    }
+  ]
+}

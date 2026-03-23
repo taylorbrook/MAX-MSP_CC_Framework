@@ -1,0 +1,24 @@
+{
+  "versions": [
+    {
+      "version": "0.1.0",
+      "date": "2026-03-22",
+      "notes": "5-band TPT SVF parametric EQ with Neve-style DC-biased tanh saturation, one-pole param smoothing, SSL-style horizontal UI, test patcher with bpatcher integration"
+    },
+    {
+      "version": "0.1.1",
+      "description": "layout cleanup - reorganized columns and spacing",
+      "timestamp": "2026-03-23T01:29:21.237247+00:00"
+    },
+    {
+      "version": "0.2.0",
+      "description": "Replace scale objects with native dial ranges; add readout overlays",
+      "timestamp": "2026-03-23T02:00:33.249096+00:00"
+    },
+    {
+      "version": "0.2.1",
+      "description": "Fix dial attrs: use min for offset, add presentation mode to readouts",
+      "timestamp": "2026-03-23T02:08:29.326593+00:00"
+    }
+  ]
+}

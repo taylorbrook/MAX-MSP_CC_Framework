@@ -1,0 +1,143 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 0,
+      "revision": 0,
+      "architecture": "x64",
+      "modernui": 1
+    },
+    "classnamespace": "box",
+    "rect": [
+      100.0,
+      100.0,
+      600.0,
+      450.0
+    ],
+    "bglocked": 0,
+    "openinpresentation": 0,
+    "default_fontsize": 12.0,
+    "default_fontface": 0,
+    "default_fontname": "Arial",
+    "gridonopen": 1,
+    "gridsize": [
+      15.0,
+      15.0
+    ],
+    "gridsnaponopen": 1,
+    "objectsnaponopen": 1,
+    "statusbarvisible": 2,
+    "toolbarvisible": 1,
+    "lefttoolbarpinned": 0,
+    "toptoolbarpinned": 0,
+    "righttoolbarpinned": 0,
+    "bottomtoolbarpinned": 0,
+    "toolbars_unpinned_last_save": 0,
+    "tallnewobj": 0,
+    "boxanimatetime": 200,
+    "enablehscroll": 1,
+    "enablevscroll": 1,
+    "devicewidth": 0.0,
+    "description": "",
+    "digest": "",
+    "tags": "",
+    "style": "",
+    "subpatcher_template": "",
+    "assistshowspatchername": 0,
+    "boxes": [
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "in 1",
+          "id": "obj-1",
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            20.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "codebox",
+          "id": "obj-2",
+          "code": "// === PARAMETERS ===\nParam hpf_freq(30, min=20, max=20000);\nParam hpf_slope(1, min=0, max=3);\nParam bell1_freq(200, min=20, max=20000);\nParam bell1_gain(0, min=-18, max=18);\nParam bell1_q(1, min=0.1, max=10);\nParam bell2_freq(1000, min=20, max=20000);\nParam bell2_gain(0, min=-18, max=18);\nParam bell2_q(1, min=0.1, max=10);\nParam bell3_freq(5000, min=20, max=20000);\nParam bell3_gain(0, min=-18, max=18);\nParam bell3_q(1, min=0.1, max=10);\nParam lpf_freq(18000, min=20, max=20000);\nParam lpf_slope(1, min=0, max=3);\nParam drive(1.0, min=1.0, max=5.0);\nParam bias(0.15, min=0.0, max=0.5);\n\n// === FILTER STATE ===\n// HPF: 4 cascaded SVF stages\nHistory hpf1_ic1(0); History hpf1_ic2(0);\nHistory hpf2_ic1(0); History hpf2_ic2(0);\nHistory hpf3_ic1(0); History hpf3_ic2(0);\nHistory hpf4_ic1(0); History hpf4_ic2(0);\n// Bell: 3 bands\nHistory b1_ic1(0); History b1_ic2(0);\nHistory b2_ic1(0); History b2_ic2(0);\nHistory b3_ic1(0); History b3_ic2(0);\n// LPF: 4 cascaded SVF stages\nHistory lpf1_ic1(0); History lpf1_ic2(0);\nHistory lpf2_ic1(0); History lpf2_ic2(0);\nHistory lpf3_ic1(0); History lpf3_ic2(0);\nHistory lpf4_ic1(0); History lpf4_ic2(0);\n\n// === SMOOTHING STATE ===\nHistory s_hpf_freq(30);\nHistory s_hpf_slope(1);\nHistory s_bell1_freq(200);\nHistory s_bell1_gain(0);\nHistory s_bell1_q(1);\nHistory s_bell2_freq(1000);\nHistory s_bell2_gain(0);\nHistory s_bell2_q(1);\nHistory s_bell3_freq(5000);\nHistory s_bell3_gain(0);\nHistory s_bell3_q(1);\nHistory s_lpf_freq(18000);\nHistory s_lpf_slope(1);\nHistory s_drive(1.0);\nHistory s_bias(0.15);\n\n// === CONSTANTS ===\npi = 3.14159265358979;\nsr = samplerate;\ndnrm = 1e-18;\n\n// === SMOOTH PARAMETERS ===\ns_hpf_freq = s_hpf_freq + (hpf_freq - s_hpf_freq) * 0.0005;\ns_hpf_slope = s_hpf_slope + (hpf_slope - s_hpf_slope) * 0.002;\ns_bell1_freq = s_bell1_freq + (bell1_freq - s_bell1_freq) * 0.0005;\ns_bell1_gain = s_bell1_gain + (bell1_gain - s_bell1_gain) * 0.001;\ns_bell1_q = s_bell1_q + (bell1_q - s_bell1_q) * 0.001;\ns_bell2_freq = s_bell2_freq + (bell2_freq - s_bell2_freq) * 0.0005;\ns_bell2_gain = s_bell2_gain + (bell2_gain - s_bell2_gain) * 0.001;\ns_bell2_q = s_bell2_q + (bell2_q - s_bell2_q) * 0.001;\ns_bell3_freq = s_bell3_freq + (bell3_freq - s_bell3_freq) * 0.0005;\ns_bell3_gain = s_bell3_gain + (bell3_gain - s_bell3_gain) * 0.001;\ns_bell3_q = s_bell3_q + (bell3_q - s_bell3_q) * 0.001;\ns_lpf_freq = s_lpf_freq + (lpf_freq - s_lpf_freq) * 0.0005;\ns_lpf_slope = s_lpf_slope + (lpf_slope - s_lpf_slope) * 0.002;\ns_drive = s_drive + (drive - s_drive) * 0.001;\ns_bias = s_bias + (bias - s_bias) * 0.001;\n\n// === INPUT ===\nsig = in1;\n\n// === HPF (4 cascaded SVF stages, HP mode) ===\nhpf_g = tan(pi * s_hpf_freq / sr);\nhpf_k = 1.0 / 0.7071;\nhpf_a1 = 1.0 / (1.0 + hpf_g * (hpf_g + hpf_k));\nhpf_a2 = hpf_g * hpf_a1;\nhpf_a3 = hpf_g * hpf_a2;\n\n// HPF Stage 1\nhpf1_v3 = sig - hpf1_ic2;\nhpf1_v1 = hpf1_ic1 * hpf_a1 + hpf1_v3 * hpf_a2;\nhpf1_v2 = hpf1_ic2 + hpf1_ic1 * hpf_a2 + hpf1_v3 * hpf_a3;\nhpf1_ic1 = 2.0 * hpf1_v1 - hpf1_ic1 + dnrm;\nhpf1_ic2 = 2.0 * hpf1_v2 - hpf1_ic2 + dnrm;\nhpf1_hp = sig - hpf_k * hpf1_v1 - hpf1_v2;\n\n// HPF Stage 2\nhpf2_v3 = hpf1_hp - hpf2_ic2;\nhpf2_v1 = hpf2_ic1 * hpf_a1 + hpf2_v3 * hpf_a2;\nhpf2_v2 = hpf2_ic2 + hpf2_ic1 * hpf_a2 + hpf2_v3 * hpf_a3;\nhpf2_ic1 = 2.0 * hpf2_v1 - hpf2_ic1 + dnrm;\nhpf2_ic2 = 2.0 * hpf2_v2 - hpf2_ic2 + dnrm;\nhpf2_hp = hpf1_hp - hpf_k * hpf2_v1 - hpf2_v2;\n\n// HPF Stage 3\nhpf3_v3 = hpf2_hp - hpf3_ic2;\nhpf3_v1 = hpf3_ic1 * hpf_a1 + hpf3_v3 * hpf_a2;\nhpf3_v2 = hpf3_ic2 + hpf3_ic1 * hpf_a2 + hpf3_v3 * hpf_a3;\nhpf3_ic1 = 2.0 * hpf3_v1 - hpf3_ic1 + dnrm;\nhpf3_ic2 = 2.0 * hpf3_v2 - hpf3_ic2 + dnrm;\nhpf3_hp = hpf2_hp - hpf_k * hpf3_v1 - hpf3_v2;\n\n// HPF Stage 4\nhpf4_v3 = hpf3_hp - hpf4_ic2;\nhpf4_v1 = hpf4_ic1 * hpf_a1 + hpf4_v3 * hpf_a2;\nhpf4_v2 = hpf4_ic2 + hpf4_ic1 * hpf_a2 + hpf4_v3 * hpf_a3;\nhpf4_ic1 = 2.0 * hpf4_v1 - hpf4_ic1 + dnrm;\nhpf4_ic2 = 2.0 * hpf4_v2 - hpf4_ic2 + dnrm;\nhpf4_hp = hpf3_hp - hpf_k * hpf4_v1 - hpf4_v2;\n\n// HPF slope select\nhpf_out = (s_hpf_slope < 1) ? hpf1_hp : ((s_hpf_slope < 2) ? hpf2_hp : ((s_hpf_slope < 3) ? hpf3_hp : hpf4_hp));\n\n// === BELL 1 ===\nb1_k = 0.0;\nb1_m1 = 0.0;\nif (s_bell1_gain >= 0) {\n    b1_A = pow(10.0, s_bell1_gain / 40.0);\n    b1_k = 1.0 / (s_bell1_q * b1_A);\n    b1_m1 = b1_k * (b1_A * b1_A - 1.0);\n} else {\n    b1_A = pow(10.0, -s_bell1_gain / 40.0);\n    b1_k = b1_A / s_bell1_q;\n    b1_m1 = b1_k * (1.0 / (b1_A * b1_A) - 1.0);\n}\nb1_g = tan(pi * s_bell1_freq / sr);\nb1_a1 = 1.0 / (1.0 + b1_g * (b1_g + b1_k));\nb1_a2 = b1_g * b1_a1;\nb1_a3 = b1_g * b1_a2;\nb1_v3 = hpf_out - b1_ic2;\nb1_v1 = b1_ic1 * b1_a1 + b1_v3 * b1_a2;\nb1_v2 = b1_ic2 + b1_ic1 * b1_a2 + b1_v3 * b1_a3;\nb1_ic1 = 2.0 * b1_v1 - b1_ic1 + dnrm;\nb1_ic2 = 2.0 * b1_v2 - b1_ic2 + dnrm;\nb1_out = hpf_out + b1_m1 * b1_v1;\n\n// === SATURATION (after Bell 1) ===\nsat1_biased = b1_out + s_bias;\nsat1_out = tanh(sat1_biased * s_drive) - tanh(s_bias * s_drive);\n\n// === BELL 2 ===\nb2_k = 0.0;\nb2_m1 = 0.0;\nif (s_bell2_gain >= 0) {\n    b2_A = pow(10.0, s_bell2_gain / 40.0);\n    b2_k = 1.0 / (s_bell2_q * b2_A);\n    b2_m1 = b2_k * (b2_A * b2_A - 1.0);\n} else {\n    b2_A = pow(10.0, -s_bell2_gain / 40.0);\n    b2_k = b2_A / s_bell2_q;\n    b2_m1 = b2_k * (1.0 / (b2_A * b2_A) - 1.0);\n}\nb2_g = tan(pi * s_bell2_freq / sr);\nb2_a1 = 1.0 / (1.0 + b2_g * (b2_g + b2_k));\nb2_a2 = b2_g * b2_a1;\nb2_a3 = b2_g * b2_a2;\nb2_v3 = sat1_out - b2_ic2;\nb2_v1 = b2_ic1 * b2_a1 + b2_v3 * b2_a2;\nb2_v2 = b2_ic2 + b2_ic1 * b2_a2 + b2_v3 * b2_a3;\nb2_ic1 = 2.0 * b2_v1 - b2_ic1 + dnrm;\nb2_ic2 = 2.0 * b2_v2 - b2_ic2 + dnrm;\nb2_out = sat1_out + b2_m1 * b2_v1;\n\n// === SATURATION (after Bell 2) ===\nsat2_biased = b2_out + s_bias;\nsat2_out = tanh(sat2_biased * s_drive) - tanh(s_bias * s_drive);\n\n// === BELL 3 ===\nb3_k = 0.0;\nb3_m1 = 0.0;\nif (s_bell3_gain >= 0) {\n    b3_A = pow(10.0, s_bell3_gain / 40.0);\n    b3_k = 1.0 / (s_bell3_q * b3_A);\n    b3_m1 = b3_k * (b3_A * b3_A - 1.0);\n} else {\n    b3_A = pow(10.0, -s_bell3_gain / 40.0);\n    b3_k = b3_A / s_bell3_q;\n    b3_m1 = b3_k * (1.0 / (b3_A * b3_A) - 1.0);\n}\nb3_g = tan(pi * s_bell3_freq / sr);\nb3_a1 = 1.0 / (1.0 + b3_g * (b3_g + b3_k));\nb3_a2 = b3_g * b3_a1;\nb3_a3 = b3_g * b3_a2;\nb3_v3 = sat2_out - b3_ic2;\nb3_v1 = b3_ic1 * b3_a1 + b3_v3 * b3_a2;\nb3_v2 = b3_ic2 + b3_ic1 * b3_a2 + b3_v3 * b3_a3;\nb3_ic1 = 2.0 * b3_v1 - b3_ic1 + dnrm;\nb3_ic2 = 2.0 * b3_v2 - b3_ic2 + dnrm;\nb3_out = sat2_out + b3_m1 * b3_v1;\n\n// === SATURATION (after Bell 3) ===\nsat3_biased = b3_out + s_bias;\nsat3_out = tanh(sat3_biased * s_drive) - tanh(s_bias * s_drive);\n\n// === LPF (4 cascaded SVF stages, LP mode) ===\nlpf_g = tan(pi * s_lpf_freq / sr);\nlpf_k = 1.0 / 0.7071;\nlpf_a1 = 1.0 / (1.0 + lpf_g * (lpf_g + lpf_k));\nlpf_a2 = lpf_g * lpf_a1;\nlpf_a3 = lpf_g * lpf_a2;\n\n// LPF Stage 1\nlpf1_v3 = sat3_out - lpf1_ic2;\nlpf1_v1 = lpf1_ic1 * lpf_a1 + lpf1_v3 * lpf_a2;\nlpf1_v2 = lpf1_ic2 + lpf1_ic1 * lpf_a2 + lpf1_v3 * lpf_a3;\nlpf1_ic1 = 2.0 * lpf1_v1 - lpf1_ic1 + dnrm;\nlpf1_ic2 = 2.0 * lpf1_v2 - lpf1_ic2 + dnrm;\n\n// LPF Stage 2\nlpf2_v3 = lpf1_v2 - lpf2_ic2;\nlpf2_v1 = lpf2_ic1 * lpf_a1 + lpf2_v3 * lpf_a2;\nlpf2_v2 = lpf2_ic2 + lpf2_ic1 * lpf_a2 + lpf2_v3 * lpf_a3;\nlpf2_ic1 = 2.0 * lpf2_v1 - lpf2_ic1 + dnrm;\nlpf2_ic2 = 2.0 * lpf2_v2 - lpf2_ic2 + dnrm;\n\n// LPF Stage 3\nlpf3_v3 = lpf2_v2 - lpf3_ic2;\nlpf3_v1 = lpf3_ic1 * lpf_a1 + lpf3_v3 * lpf_a2;\nlpf3_v2 = lpf3_ic2 + lpf3_ic1 * lpf_a2 + lpf3_v3 * lpf_a3;\nlpf3_ic1 = 2.0 * lpf3_v1 - lpf3_ic1 + dnrm;\nlpf3_ic2 = 2.0 * lpf3_v2 - lpf3_ic2 + dnrm;\n\n// LPF Stage 4\nlpf4_v3 = lpf3_v2 - lpf4_ic2;\nlpf4_v1 = lpf4_ic1 * lpf_a1 + lpf4_v3 * lpf_a2;\nlpf4_v2 = lpf4_ic2 + lpf4_ic1 * lpf_a2 + lpf4_v3 * lpf_a3;\nlpf4_ic1 = 2.0 * lpf4_v1 - lpf4_ic1 + dnrm;\nlpf4_ic2 = 2.0 * lpf4_v2 - lpf4_ic2 + dnrm;\n\n// LPF slope select\nlpf_out = (s_lpf_slope < 1) ? lpf1_v2 : ((s_lpf_slope < 2) ? lpf2_v2 : ((s_lpf_slope < 3) ? lpf3_v2 : lpf4_v2));\n\n// === OUTPUT SATURATION ===\nsat_final_biased = lpf_out + s_bias;\nsat_final = tanh(sat_final_biased * s_drive) - tanh(s_bias * s_drive);\n\n// === OUTPUT ===\nout1 = sat_final;\n",
+          "numinlets": 1,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            80.0,
+            400.0,
+            200.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 1",
+          "id": "obj-3",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            50.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": [
+            "obj-1",
+            0
+          ],
+          "destination": [
+            "obj-2",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            0
+          ],
+          "destination": [
+            "obj-3",
+            0
+          ]
+        }
+      }
+    ],
+    "dependency_cache": [],
+    "autosave": 0,
+    "bgcolor": [
+      0.9,
+      0.9,
+      0.9,
+      1.0
+    ]
+  }
+}
