@@ -17,7 +17,14 @@ from src.maxpat.validation import (
     ValidationResult,
 )
 from src.maxpat.layout import apply_layout
-from src.maxpat.aesthetics import set_canvas_background, set_object_bgcolor, auto_size_panel, is_complex_patch
+from src.maxpat.aesthetics import (
+    set_canvas_background,
+    set_object_bgcolor,
+    auto_size_panel,
+    is_complex_patch,
+    apply_auto_styling,
+    _AUTO_HIGHLIGHT,
+)
 from src.maxpat.defaults import LayoutOptions
 from src.maxpat.hooks import (
     write_gendsp,
@@ -27,6 +34,7 @@ from src.maxpat.hooks import (
     detect_indent,
     save_patch_roundtrip,
     read_patch,
+    finalize_patch,
     PatchGenerationError,
     PatchValidationError,
 )
@@ -64,25 +72,8 @@ from src.maxpat.externals import (
 from src.maxpat.ext_validation import validate_mxo, BuildResult
 
 
-_AUTO_HIGHLIGHT = {
-    "dac~": "emphasis_dac",
-    "ezdac~": "emphasis_dac",
-    "loadbang": "emphasis_loadbang",
-}
-
-
-def _apply_auto_styling(patcher: Patcher) -> None:
-    """Apply default aesthetic styling to a patcher.
-
-    Sets the canvas background color and highlights special objects
-    (dac~, ezdac~, loadbang) with subtle palette colors. Skips boxes
-    that already have a user-set bgcolor.
-    """
-    set_canvas_background(patcher)
-    for box in patcher.boxes:
-        palette_key = _AUTO_HIGHLIGHT.get(box.name)
-        if palette_key and "bgcolor" not in box.extra_attrs:
-            set_object_bgcolor(box, palette_key=palette_key)
+# Backward compat alias -- canonical location is src.maxpat.aesthetics
+_apply_auto_styling = apply_auto_styling
 
 
 __all__ = [
@@ -136,6 +127,8 @@ __all__ = [
     "BuildResult",
     # Layout
     "LayoutOptions",
+    # Hooks
+    "finalize_patch",
     # Aesthetics
     "set_canvas_background",
     "set_object_bgcolor",

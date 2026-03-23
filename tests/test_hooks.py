@@ -287,8 +287,7 @@ class TestFinalizePatch:
 
         p = Patcher()
         # Add a subpatcher with objects inside
-        sub_box = p.add_subpatcher("audio_proc", inlets=1, outlets=1)
-        inner = sub_box._inner_patcher
+        sub_box, inner = p.add_subpatcher("audio_proc", inlets=1, outlets=1)
         osc = inner.add_box("cycle~", ["440"])
         gain = inner.add_box("*~", ["0.5"])
         inner.add_connection(osc, 0, gain, 0)

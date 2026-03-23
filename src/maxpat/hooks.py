@@ -3,6 +3,7 @@
 Implements FRM-05: auto hook on file write triggers validation.
 
 Provides:
+- finalize_patch: Single-call layout cleanup hook for new and edited patches.
 - write_gendsp: Generate and write a .gendsp file to disk.
 - write_js: Write JavaScript code and run code validation.
 - validate_file: Load and validate an existing .maxpat file from disk.
@@ -21,6 +22,54 @@ from src.maxpat.validation import validate_patch, has_blocking_errors, Validatio
 
 if TYPE_CHECKING:
     from src.maxpat.patcher import Patcher
+
+
+def finalize_patch(patcher: "Patcher", is_new: bool = True) -> None:
+    """Single-call layout cleanup hook for new and edited patches.
+
+    For new patches (is_new=True):
+        Applies auto-styling, full topological layout, assistance comments,
+        and midpoint generation for all patchers and subpatchers.
+
+    For edited patches (is_new=False):
+        Regenerates cable midpoints and populates assistance comments
+        without repositioning existing objects.
+
+    Args:
+        patcher: The Patcher instance to finalize.
+        is_new: True for newly created patches, False for loaded/edited patches.
+    """
+    from src.maxpat.aesthetics import apply_auto_styling
+    from src.maxpat.layout import apply_layout, _generate_midpoints
+
+    if is_new:
+        apply_auto_styling(patcher)
+        apply_layout(patcher)
+        patcher.populate_assistance_comments()
+    else:
+        patcher.populate_assistance_comments()
+        _finalize_midpoints_recursive(patcher, _generate_midpoints)
+
+
+def _finalize_midpoints_recursive(
+    patcher: "Patcher",
+    generate_fn: "callable",
+) -> None:
+    """Clear and regenerate midpoints on a patcher and all nested subpatchers.
+
+    Args:
+        patcher: The Patcher instance to process.
+        generate_fn: The _generate_midpoints function from layout module.
+    """
+    # Clear existing midpoints before regenerating
+    for line in patcher.lines:
+        line.midpoints = []
+    generate_fn(patcher)
+
+    # Recurse into subpatchers
+    for box in patcher.boxes:
+        if box._inner_patcher is not None and box._inner_patcher.boxes:
+            _finalize_midpoints_recursive(box._inner_patcher, generate_fn)
 
 
 def detect_indent(file_text: str) -> str:

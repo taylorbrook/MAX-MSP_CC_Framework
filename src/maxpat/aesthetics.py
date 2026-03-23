@@ -92,6 +92,27 @@ def auto_size_panel(
     )
 
 
+_AUTO_HIGHLIGHT = {
+    "dac~": "emphasis_dac",
+    "ezdac~": "emphasis_dac",
+    "loadbang": "emphasis_loadbang",
+}
+
+
+def apply_auto_styling(patcher: Patcher) -> None:
+    """Apply default aesthetic styling to a patcher.
+
+    Sets the canvas background color and highlights special objects
+    (dac~, ezdac~, loadbang) with subtle palette colors. Skips boxes
+    that already have a user-set bgcolor.
+    """
+    set_canvas_background(patcher)
+    for box in patcher.boxes:
+        palette_key = _AUTO_HIGHLIGHT.get(box.name)
+        if palette_key and "bgcolor" not in box.extra_attrs:
+            set_object_bgcolor(box, palette_key=palette_key)
+
+
 def is_complex_patch(patcher: Patcher) -> bool:
     """Heuristic to determine if a patch is visually complex.
 
