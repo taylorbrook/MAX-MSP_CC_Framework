@@ -72,6 +72,7 @@ Before any generation:
 - Named send/receive for long-distance connections
 - Subpatcher organization for complex logic
 - Comment objects on non-obvious connections
+- For dial, number, and control appearance, consult `.claude/skills/references/ui-presets.md`
 
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 

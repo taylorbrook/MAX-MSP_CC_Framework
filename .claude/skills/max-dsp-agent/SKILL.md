@@ -40,6 +40,36 @@ Before any generation:
 - Codebox via `Box.__new__()` pattern (structural object bypassing DB)
 - Codebox code stored in `extra_attrs` for serialization
 
+## Gen~ Pattern Library
+
+Reusable .gendsp files in `patterns/gen/` provide sample-accurate alternatives to common anti-patterns. Consult `patterns/gen/INDEX.md` for the full pattern table with I/O counts, params, and use cases.
+
+### Using External .gendsp Patterns
+
+Create a `gen~ pattern-name` newobj box (NOT via `add_gen()` which is for inline codebox):
+
+```python
+gen_box = patcher.add_box(Box("gen~", ["smooth-ramp"], db))
+gen_box.numinlets = 1    # Must match .gendsp I/O count
+gen_box.numoutlets = 1
+gen_box.outlettype = ["signal"]  # Use ["signal", "signal"] for stereo
+```
+
+**File placement:** Copy the .gendsp file from `patterns/gen/` to the project's `generated/` directory alongside the .maxpat.
+
+**Param messages:** Send as plain name messages: `time 50` or `time $1` (NOT `@time 50`).
+
+### Don't Hand-Roll
+
+| Problem | Don't Build | Use Instead |
+|---------|-------------|-------------|
+| Smooth parameter transitions | Custom line~ message chains | `one-pole-smooth` or `smooth-ramp` |
+| ADSR envelopes | function + line~ combos | `adsr-envelope` |
+| Timing/clocks | metro + counter | `master-clock` + `subdivider` |
+| Soft clipping | clip~ 0 1 | `soft-clipper` |
+| Parameter smoothing | Nothing (zipper noise) | `one-pole-smooth` |
+| Volume control | Raw *~ at full level | `safe-gain` |
+
 ### Signal Chain Construction
 - Oscillators: cycle~, saw~, rect~, noise~, phasor~, pink~, rand~
 - Filters: biquad~, onepole~, reson~, svf~, cascade~, lores~, cross~
