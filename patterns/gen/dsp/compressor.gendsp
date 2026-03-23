@@ -1,0 +1,143 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 0,
+      "revision": 0,
+      "architecture": "x64",
+      "modernui": 1
+    },
+    "classnamespace": "box",
+    "rect": [
+      100.0,
+      100.0,
+      600.0,
+      450.0
+    ],
+    "bglocked": 0,
+    "openinpresentation": 0,
+    "default_fontsize": 12.0,
+    "default_fontface": 0,
+    "default_fontname": "Arial",
+    "gridonopen": 1,
+    "gridsize": [
+      15.0,
+      15.0
+    ],
+    "gridsnaponopen": 1,
+    "objectsnaponopen": 1,
+    "statusbarvisible": 2,
+    "toolbarvisible": 1,
+    "lefttoolbarpinned": 0,
+    "toptoolbarpinned": 0,
+    "righttoolbarpinned": 0,
+    "bottomtoolbarpinned": 0,
+    "toolbars_unpinned_last_save": 0,
+    "tallnewobj": 0,
+    "boxanimatetime": 200,
+    "enablehscroll": 1,
+    "enablevscroll": 1,
+    "devicewidth": 0.0,
+    "description": "",
+    "digest": "",
+    "tags": "",
+    "style": "",
+    "subpatcher_template": "",
+    "assistshowspatchername": 0,
+    "boxes": [
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "in 1",
+          "id": "obj-1",
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            20.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "codebox",
+          "id": "obj-2",
+          "code": "// === PARAMETERS ===\nParam threshold(-12, min=-60, max=0);\nParam ratio(4, min=1, max=20);\nParam attack_ms(5, min=0.1, max=100);\nParam release_ms(50, min=1, max=1000);\nParam makeup(0, min=0, max=24);\n\n// === STATE ===\nHistory env_db(0);\n\n// === DSP ===\nsr = samplerate;\natt_coeff = exp(-1.0 / max(attack_ms * sr * 0.001, 1));\nrel_coeff = exp(-1.0 / max(release_ms * sr * 0.001, 1));\n\n// Convert input to dB\ninput_abs = max(abs(in1), 0.000001);\ninput_db = 20.0 * log10(input_abs);\n\n// Envelope follower in dB domain\nif (input_db > env_db) {\n    env_db = input_db + (1 - att_coeff) * (env_db - input_db);\n} else {\n    env_db = input_db + (1 - rel_coeff) * (env_db - input_db);\n}\n\n// Gain computation\ngain_db = 0;\nif (env_db > threshold) {\n    gain_db = threshold + (env_db - threshold) / ratio - env_db;\n}\n\n// Apply gain + makeup\ngain_lin = pow(10, (gain_db + makeup) / 20.0);\nout1 = in1 * gain_lin;\n",
+          "numinlets": 1,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            80.0,
+            400.0,
+            200.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 1",
+          "id": "obj-3",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            50.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": [
+            "obj-1",
+            0
+          ],
+          "destination": [
+            "obj-2",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            0
+          ],
+          "destination": [
+            "obj-3",
+            0
+          ]
+        }
+      }
+    ],
+    "dependency_cache": [],
+    "autosave": 0,
+    "bgcolor": [
+      0.9,
+      0.9,
+      0.9,
+      1.0
+    ]
+  }
+}

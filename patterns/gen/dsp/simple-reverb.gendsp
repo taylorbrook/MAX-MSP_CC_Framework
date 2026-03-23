@@ -1,0 +1,206 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 0,
+      "revision": 0,
+      "architecture": "x64",
+      "modernui": 1
+    },
+    "classnamespace": "box",
+    "rect": [
+      100.0,
+      100.0,
+      600.0,
+      450.0
+    ],
+    "bglocked": 0,
+    "openinpresentation": 0,
+    "default_fontsize": 12.0,
+    "default_fontface": 0,
+    "default_fontname": "Arial",
+    "gridonopen": 1,
+    "gridsize": [
+      15.0,
+      15.0
+    ],
+    "gridsnaponopen": 1,
+    "objectsnaponopen": 1,
+    "statusbarvisible": 2,
+    "toolbarvisible": 1,
+    "lefttoolbarpinned": 0,
+    "toptoolbarpinned": 0,
+    "righttoolbarpinned": 0,
+    "bottomtoolbarpinned": 0,
+    "toolbars_unpinned_last_save": 0,
+    "tallnewobj": 0,
+    "boxanimatetime": 200,
+    "enablehscroll": 1,
+    "enablevscroll": 1,
+    "devicewidth": 0.0,
+    "description": "",
+    "digest": "",
+    "tags": "",
+    "style": "",
+    "subpatcher_template": "",
+    "assistshowspatchername": 0,
+    "boxes": [
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "in 1",
+          "id": "obj-1",
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            20.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "in 2",
+          "id": "obj-2",
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            130.0,
+            20.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "codebox",
+          "id": "obj-3",
+          "code": "// === PARAMETERS ===\nParam decay(0.5, min=0, max=0.99);\nParam damping(0.5, min=0, max=1);\nParam drywet(0.3, min=0, max=1);\n\n// === STATE ===\nDelay comb1(1687);\nDelay comb2(1601);\nDelay comb3(2053);\nDelay comb4(2251);\nDelay ap1(556);\nDelay ap2(441);\nHistory damp1(0);\nHistory damp2(0);\nHistory damp3(0);\nHistory damp4(0);\n\n// === DSP ===\ndry_L = in1;\ndry_R = in2;\ninput_mix = (dry_L + dry_R) * 0.5;\n\n// 4 comb filters with damping\nc1 = comb1.read(1687);\ndamp1 = c1 + damping * (damp1 - c1);\ncomb1.write(input_mix + decay * damp1);\n\nc2 = comb2.read(1601);\ndamp2 = c2 + damping * (damp2 - c2);\ncomb2.write(input_mix + decay * damp2);\n\nc3 = comb3.read(2053);\ndamp3 = c3 + damping * (damp3 - c3);\ncomb3.write(input_mix + decay * damp3);\n\nc4 = comb4.read(2251);\ndamp4 = c4 + damping * (damp4 - c4);\ncomb4.write(input_mix + decay * damp4);\n\ncomb_sum = c1 + c2 + c3 + c4;\n\n// 2 allpass filters in series\na1_out = ap1.read(556);\nap1.write(comb_sum + 0.5 * a1_out);\nap1_result = a1_out - 0.5 * (comb_sum + 0.5 * a1_out);\n\na2_out = ap2.read(441);\nap2.write(ap1_result + 0.5 * a2_out);\nap2_result = a2_out - 0.5 * (ap1_result + 0.5 * a2_out);\n\nwet = ap2_result;\nout1 = dry_L + drywet * (wet - dry_L);\nout2 = dry_R + drywet * (wet - dry_R);\n",
+          "numinlets": 2,
+          "numoutlets": 2,
+          "outlettype": [
+            "",
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            80.0,
+            400.0,
+            200.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 1",
+          "id": "obj-4",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            50.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 2",
+          "id": "obj-5",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            130.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": [
+            "obj-1",
+            0
+          ],
+          "destination": [
+            "obj-3",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            0
+          ],
+          "destination": [
+            "obj-3",
+            1
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-3",
+            0
+          ],
+          "destination": [
+            "obj-4",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-3",
+            1
+          ],
+          "destination": [
+            "obj-5",
+            0
+          ]
+        }
+      }
+    ],
+    "dependency_cache": [],
+    "autosave": 0,
+    "bgcolor": [
+      0.9,
+      0.9,
+      0.9,
+      1.0
+    ]
+  }
+}

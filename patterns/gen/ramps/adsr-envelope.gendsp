@@ -1,0 +1,143 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 0,
+      "revision": 0,
+      "architecture": "x64",
+      "modernui": 1
+    },
+    "classnamespace": "box",
+    "rect": [
+      100.0,
+      100.0,
+      600.0,
+      450.0
+    ],
+    "bglocked": 0,
+    "openinpresentation": 0,
+    "default_fontsize": 12.0,
+    "default_fontface": 0,
+    "default_fontname": "Arial",
+    "gridonopen": 1,
+    "gridsize": [
+      15.0,
+      15.0
+    ],
+    "gridsnaponopen": 1,
+    "objectsnaponopen": 1,
+    "statusbarvisible": 2,
+    "toolbarvisible": 1,
+    "lefttoolbarpinned": 0,
+    "toptoolbarpinned": 0,
+    "righttoolbarpinned": 0,
+    "bottomtoolbarpinned": 0,
+    "toolbars_unpinned_last_save": 0,
+    "tallnewobj": 0,
+    "boxanimatetime": 200,
+    "enablehscroll": 1,
+    "enablevscroll": 1,
+    "devicewidth": 0.0,
+    "description": "",
+    "digest": "",
+    "tags": "",
+    "style": "",
+    "subpatcher_template": "",
+    "assistshowspatchername": 0,
+    "boxes": [
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "in 1",
+          "id": "obj-1",
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            20.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "codebox",
+          "id": "obj-2",
+          "code": "// === PARAMETERS ===\nParam attack(10, min=0.1, max=5000);\nParam decay(100, min=0.1, max=5000);\nParam sustain(0.7, min=0, max=1);\nParam release(200, min=0.1, max=10000);\n\n// === STATE ===\nHistory env(0);\nHistory phase(0);\nHistory prev_gate(0);\n\n// === DSP ===\ngate = in1;\nsr = samplerate;\n\natt_coeff = exp(-1.0 / max(attack * sr * 0.001, 1));\ndec_coeff = exp(-1.0 / max(decay * sr * 0.001, 1));\nrel_coeff = exp(-1.0 / max(release * sr * 0.001, 1));\n\n// Retrigger on rising edge\nif (gate > 0 && prev_gate <= 0) {\n    phase = 1;\n}\n\n// Release on falling edge\nif (gate <= 0 && prev_gate > 0) {\n    phase = 4;\n}\n\nprev_gate = gate;\n\n// State machine: 0=idle, 1=attack, 2=decay, 3=sustain, 4=release\nif (phase == 1) {\n    env = 1.0 + att_coeff * (env - 1.0);\n    if (env >= 0.999) {\n        env = 1.0;\n        phase = 2;\n    }\n} else if (phase == 2) {\n    env = sustain + dec_coeff * (env - sustain);\n    if (abs(env - sustain) < 0.001) {\n        env = sustain;\n        phase = 3;\n    }\n} else if (phase == 3) {\n    env = sustain;\n} else if (phase == 4) {\n    env = rel_coeff * env;\n    if (env < 0.001) {\n        env = 0;\n        phase = 0;\n    }\n} else {\n    env = 0;\n}\n\nout1 = env;\n",
+          "numinlets": 1,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            80.0,
+            400.0,
+            200.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 1",
+          "id": "obj-3",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            50.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": [
+            "obj-1",
+            0
+          ],
+          "destination": [
+            "obj-2",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            0
+          ],
+          "destination": [
+            "obj-3",
+            0
+          ]
+        }
+      }
+    ],
+    "dependency_cache": [],
+    "autosave": 0,
+    "bgcolor": [
+      0.9,
+      0.9,
+      0.9,
+      1.0
+    ]
+  }
+}
