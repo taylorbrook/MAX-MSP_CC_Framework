@@ -1,6 +1,6 @@
 """Tests for file write hooks and public API integration.
 
-Tests validate_file() and the public API importability from src.maxpat.
+Tests validate_file(), finalize_patch(), and the public API importability from src.maxpat.
 """
 
 import json
@@ -204,3 +204,101 @@ class TestReadPatch:
         """read_patch is importable from src.maxpat."""
         from src.maxpat import read_patch
         assert callable(read_patch)
+
+
+# ---------------------------------------------------------------------------
+# finalize_patch
+# ---------------------------------------------------------------------------
+
+class TestFinalizePatch:
+    """Tests for finalize_patch() hook function."""
+
+    def test_new_patch_applies_layout(self):
+        """finalize_patch(patcher, is_new=True) repositions boxes top-to-bottom."""
+        from src.maxpat import Patcher
+        from src.maxpat.hooks import finalize_patch
+
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        gain = p.add_box("*~", ["0.5"])
+        dac = p.add_box("ezdac~")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, dac, 0)
+        p.add_connection(gain, 0, dac, 1)
+
+        finalize_patch(p, is_new=True)
+
+        # Boxes should be in top-to-bottom y order after layout
+        assert osc.patching_rect[1] < gain.patching_rect[1]
+        assert gain.patching_rect[1] < dac.patching_rect[1]
+
+    def test_edit_patch_preserves_positions(self):
+        """finalize_patch(patcher, is_new=False) does NOT reposition boxes."""
+        from src.maxpat import Patcher
+        from src.maxpat.hooks import finalize_patch
+
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        gain = p.add_box("*~", ["0.5"])
+        dac = p.add_box("ezdac~")
+        p.add_connection(osc, 0, gain, 0)
+        p.add_connection(gain, 0, dac, 0)
+        p.add_connection(gain, 0, dac, 1)
+
+        # Manually set specific positions (simulate loaded patch)
+        osc.patching_rect = [100.0, 200.0, 80.0, 22.0]
+        gain.patching_rect = [100.0, 250.0, 80.0, 22.0]
+        dac.patching_rect = [100.0, 300.0, 80.0, 22.0]
+
+        finalize_patch(p, is_new=False)
+
+        # Original positions should be preserved
+        assert osc.patching_rect[0] == 100.0
+        assert osc.patching_rect[1] == 200.0
+        assert gain.patching_rect[0] == 100.0
+        assert gain.patching_rect[1] == 250.0
+        assert dac.patching_rect[0] == 100.0
+        assert dac.patching_rect[1] == 300.0
+
+    def test_edit_patch_generates_midpoints_for_offset_cables(self):
+        """finalize_patch(patcher, is_new=False) generates midpoints on offset cables."""
+        from src.maxpat import Patcher
+        from src.maxpat.hooks import finalize_patch
+
+        p = Patcher()
+        osc = p.add_box("cycle~", ["440"])
+        gain = p.add_box("*~", ["0.5"])
+        p.add_connection(osc, 0, gain, 0)
+
+        # Place boxes with significant horizontal offset to trigger midpoints
+        osc.patching_rect = [30.0, 30.0, 80.0, 22.0]
+        gain.patching_rect = [250.0, 80.0, 80.0, 22.0]
+
+        finalize_patch(p, is_new=False)
+
+        # At least one line should have midpoints due to horizontal offset
+        has_midpoints = any(line.midpoints for line in p.lines)
+        assert has_midpoints, "Expected midpoints on horizontally offset cable"
+
+    def test_new_patch_recurses_into_subpatchers(self):
+        """finalize_patch(patcher, is_new=True) applies layout to subpatcher contents."""
+        from src.maxpat import Patcher
+        from src.maxpat.hooks import finalize_patch
+
+        p = Patcher()
+        # Add a subpatcher with objects inside
+        sub_box = p.add_subpatcher("audio_proc", inlets=1, outlets=1)
+        inner = sub_box._inner_patcher
+        osc = inner.add_box("cycle~", ["440"])
+        gain = inner.add_box("*~", ["0.5"])
+        inner.add_connection(osc, 0, gain, 0)
+
+        finalize_patch(p, is_new=True)
+
+        # Inner patcher objects should be laid out top-to-bottom
+        assert osc.patching_rect[1] < gain.patching_rect[1]
+
+    def test_importable_from_src_maxpat(self):
+        """finalize_patch is importable from src.maxpat."""
+        from src.maxpat import finalize_patch
+        assert callable(finalize_patch)
