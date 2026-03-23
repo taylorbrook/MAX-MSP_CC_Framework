@@ -144,6 +144,7 @@ The `patches/` directory contains example and user-created projects:
 | Project | Description | Files |
 |---------|-------------|-------|
 | **FDNVerb** | Feedback delay network reverb with 8 delay lines, Hadamard matrix, decay/diffusion/damping/freeze controls | `.maxpat`, `.gendsp` |
+| **gen-eq** | 5-band parametric EQ with TPT SVF filters in gen~, Neve-warm asymmetric saturation, and SSL-style horizontal UI | `.maxpat`, `.gendsp` |
 | **granularsynthtest** | Granular synthesizer with Gen~ DSP engine and MC multichannel output for flexible speaker arrays | `.maxpat`, `.gendsp` |
 | **kicksynth** | Kick drum synthesizer with Gen~ pitch envelopes, click/sub/noise layers, and drive/saturation | `.maxpat`, `.js` |
 | **minitaur** | Digital recreation of the Moog Minitaur bass synthesizer with dual VCOs, Moog ladder filter, and LFO modulation | `.maxpat` |
@@ -215,6 +216,8 @@ Planning artifacts live in `.planning/`:
 | **v1.0 MVP** | 2026-03-10 | 7 | 21 | Object database, agent system, validation pipeline, code generation |
 | **v1.1 Patch Quality** | 2026-03-14 | 5 | 13 | Help patch audit, aesthetic styling, layout refinements |
 | **v2.0 Direct Editing** | 2026-03-17 | 7 | 19 | Lossless round-trip, search/mutation API, patch analysis, agent migration, v1.x cleanup |
+| **v2.1 Iteration & Polish** | 2026-03-20 | — | — | Interactive iterate modes, version tracking, project lifecycle improvements |
+| **v2.2 Gen~ Patterns & Hooks** | 2026-03-22 | — | — | Gen~ pattern library (19 .gendsp), finalize_patch hook, fsync reliability, gen-eq project |
 
 ## License
 
