@@ -48,6 +48,630 @@
         "boxes": [
             {
                 "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-139",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        132,
+                        84,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 0,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        26.0,
+                        45.0,
+                        48.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-140",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        312,
+                        84,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 0,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        106.0,
+                        45.0,
+                        48.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-141",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        492,
+                        84,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 0,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        201.0,
+                        45.0,
+                        48.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-142",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        672,
+                        84,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 0,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        296.0,
+                        45.0,
+                        48.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-143",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        852,
+                        84,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 0,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        406.0,
+                        45.0,
+                        48.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-144",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        312,
+                        246,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 1,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        109.0,
+                        105.0,
+                        42.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-145",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        492,
+                        246,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 1,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        204.0,
+                        105.0,
+                        42.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-146",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        672,
+                        246,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 1,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        299.0,
+                        105.0,
+                        42.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-147",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        312,
+                        404,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 1,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        109.0,
+                        165.0,
+                        42.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-148",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        492,
+                        404,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 1,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        204.0,
+                        165.0,
+                        42.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-149",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        672,
+                        404,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 1,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        299.0,
+                        165.0,
+                        42.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-150",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1042,
+                        84,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 1,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        489.0,
+                        45.0,
+                        42.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-151",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1042,
+                        246,
+                        36.0,
+                        14.0
+                    ],
+                    "parameter_enable": 0,
+                    "fontsize": 10.0,
+                    "ignoreclick": 1,
+                    "triangle": 0,
+                    "numdecimalplaces": 2,
+                    "bgcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bordercolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        489.0,
+                        105.0,
+                        42.0,
+                        14.0
+                    ]
+                }
+            },
+            {
+                "box": {
                     "maxclass": "inlet",
                     "id": "obj-1",
                     "numinlets": 1,
@@ -2473,539 +3097,6 @@
                     "text": "receive _eq_param",
                     "fontname": "Arial",
                     "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-139",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        132,
-                        84,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 0,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-140",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        312,
-                        84,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 0,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-141",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        492,
-                        84,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 0,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-142",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        672,
-                        84,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 0,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-143",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        852,
-                        84,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 0,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-144",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        312,
-                        246,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 1,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-145",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        492,
-                        246,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 1,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-146",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        672,
-                        246,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 1,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-147",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        312,
-                        404,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 1,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-148",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        492,
-                        404,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 1,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-149",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        672,
-                        404,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 1,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-150",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        1042,
-                        84,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 1,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "flonum",
-                    "id": "obj-151",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        1042,
-                        246,
-                        36.0,
-                        14.0
-                    ],
-                    "parameter_enable": 0,
-                    "fontsize": 10.0,
-                    "ignoreclick": 1,
-                    "triangle": 0,
-                    "numdecimalplaces": 2,
-                    "bgcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "textcolor": [
-                        0.1,
-                        0.1,
-                        0.1,
-                        1.0
-                    ],
-                    "bordercolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0
-                    ]
                 }
             }
         ],
