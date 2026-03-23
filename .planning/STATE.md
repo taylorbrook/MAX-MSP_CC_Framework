@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260322-n59-PLAN.md
-last_updated: "2026-03-23T00:11:33.165Z"
+stopped_at: Completed quick-260322-pkm-PLAN.md
+last_updated: "2026-03-23T01:39:20.639Z"
 last_activity: "2026-03-22 - Completed quick task 260322-n59: Build reusable gen~ pattern library and standardized UI presets"
 progress:
   total_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-22 - Completed quick task 260322-n59: Build reusable gen~ pattern library and standardized UI presets
+Last activity: 2026-03-22 - Completed quick task 260322-pkm: Add finalize_patch() hook for centralized layout cleanup
 
 Progress: [██████████] 100%
 
@@ -134,6 +134,7 @@ Recent decisions for v2.0:
 - [Phase quick-260322-hmn]: Version comment at (550, 10) top-right of default patcher; regex ^v\d+\.\d+\.\d+$ for in-place update
 - [Phase quick-260322-hmn]: TYPE_CHECKING import for Patcher/Box avoids circular import in project.py
 - [Phase quick-260322-n59]: 19 .gendsp patterns generated via write_gendsp() across 7 categories; agents reference via gen~ pattern-name newobj
+- [Phase quick-260322-pkm]: Moved _apply_auto_styling to aesthetics.py to avoid circular imports; finalize_patch clears midpoints before regenerating for clean cable routing
 
 ### Pending Todos
 
@@ -171,6 +172,7 @@ None.
 | 260322-hhw | Add soft limit to critic loop after 3 rounds | 2026-03-22 | ae39141 | | [260322-hhw-add-soft-limit-to-critic-loop-after-3-ro](./quick/260322-hhw-add-soft-limit-to-critic-loop-after-3-ro/) |
 | 260322-hmn | Enforce version tracking with every max-iterate run | 2026-03-22 | 58bb2b6 | Verified | [260322-hmn-enforce-version-tracking-with-every-max-](./quick/260322-hmn-enforce-version-tracking-with-every-max-/) |
 | 260322-n59 | Build reusable gen~ pattern library and standardized UI presets | 2026-03-22 | eb2513f | Verified | [260322-n59-build-reusable-gen-pattern-library-and-s](./quick/260322-n59-build-reusable-gen-pattern-library-and-s/) |
+| 260322-pkm | Add finalize_patch() hook for centralized layout cleanup | 2026-03-22 | 442853f | | [260322-pkm-add-a-hook-so-that-the-appropriate-agent](./quick/260322-pkm-add-a-hook-so-that-the-appropriate-agent/) |
 
 ### Blockers/Concerns
 
@@ -181,6 +183,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-23T00:11:20.532Z
-Stopped at: Completed quick-260322-n59-PLAN.md
+Last session: 2026-03-23T01:39:12.611Z
+Stopped at: Completed quick-260322-pkm-PLAN.md
 Resume file: None
