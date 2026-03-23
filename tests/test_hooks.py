@@ -301,3 +301,66 @@ class TestFinalizePatch:
         """finalize_patch is importable from src.maxpat."""
         from src.maxpat import finalize_patch
         assert callable(finalize_patch)
+
+
+# ---------------------------------------------------------------------------
+# _write_and_sync
+# ---------------------------------------------------------------------------
+
+class TestWriteAndSync:
+    """Tests for _write_and_sync() fsync helper."""
+
+    def test_write_and_sync_writes_content(self, tmp_path):
+        """_write_and_sync writes file content correctly (read back matches)."""
+        from src.maxpat.hooks import _write_and_sync
+
+        fpath = tmp_path / "test_output.txt"
+        content = '{"patcher": {"boxes": []}}'
+        _write_and_sync(fpath, content)
+        assert fpath.read_text() == content
+
+    def test_write_and_sync_calls_fsync(self, tmp_path):
+        """_write_and_sync calls os.fsync on the file descriptor."""
+        from unittest.mock import patch as mock_patch
+        from src.maxpat.hooks import _write_and_sync
+
+        fpath = tmp_path / "test_fsync.txt"
+        with mock_patch("src.maxpat.hooks.os.fsync") as mock_fsync:
+            _write_and_sync(fpath, "hello")
+            mock_fsync.assert_called_once()
+
+    def test_save_patch_roundtrip_uses_sync(self, tmp_path):
+        """save_patch_roundtrip uses _write_and_sync instead of write_text."""
+        from unittest.mock import patch as mock_patch
+        from src.maxpat.hooks import save_patch_roundtrip
+
+        fpath = tmp_path / "test.maxpat"
+        data = {"patcher": {"boxes": []}}
+        with mock_patch("src.maxpat.hooks._write_and_sync") as mock_sync:
+            save_patch_roundtrip(data, fpath)
+            mock_sync.assert_called_once()
+
+    def test_write_gendsp_uses_sync(self, tmp_path):
+        """write_gendsp uses _write_and_sync instead of write_text."""
+        from unittest.mock import patch as mock_patch
+        from src.maxpat.hooks import write_gendsp
+
+        fpath = tmp_path / "test.gendsp"
+        code = "out1 = in1 * 0.5;"
+        with mock_patch("src.maxpat.hooks._write_and_sync") as mock_sync:
+            write_gendsp(code, fpath)
+            mock_sync.assert_called_once()
+
+    def test_write_js_uses_sync(self, tmp_path):
+        """write_js uses _write_and_sync instead of write_text."""
+        from unittest.mock import patch as mock_patch
+        from src.maxpat.hooks import write_js
+
+        fpath = tmp_path / "test.js"
+        code = 'inlets = 1;\noutlets = 1;\nfunction bang() { outlet(0, "bang"); }'
+        with mock_patch("src.maxpat.hooks._write_and_sync") as mock_sync:
+            # write_js also calls validate_code_file which reads the file,
+            # so we need the file to exist for validation
+            fpath.write_text(code)
+            write_js(code, fpath)
+            mock_sync.assert_called_once()

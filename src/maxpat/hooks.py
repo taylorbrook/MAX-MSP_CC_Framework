@@ -15,6 +15,7 @@ Provides:
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -22,6 +23,14 @@ from src.maxpat.validation import validate_patch, has_blocking_errors, Validatio
 
 if TYPE_CHECKING:
     from src.maxpat.patcher import Patcher
+
+
+def _write_and_sync(path: Path, content: str) -> None:
+    """Write content to file and fsync to ensure Finder/MAX see changes."""
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+        f.flush()
+        os.fsync(f.fileno())
 
 
 def finalize_patch(patcher: "Patcher", is_new: bool = True) -> None:
@@ -125,7 +134,7 @@ def save_patch_roundtrip(
         output += "\n"
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(output)
+    _write_and_sync(path, output)
 
 
 def read_patch(path: "str | Path") -> tuple["Patcher", str]:
@@ -193,7 +202,7 @@ def write_gendsp(
     path.parent.mkdir(parents=True, exist_ok=True)
 
     # Write JSON with readable formatting
-    path.write_text(json.dumps(gendsp_dict, indent=2))
+    _write_and_sync(path, json.dumps(gendsp_dict, indent=2))
 
     return gendsp_dict
 
@@ -330,7 +339,7 @@ def write_js(
     path.parent.mkdir(parents=True, exist_ok=True)
 
     # Write the file first (never blocked by validation)
-    path.write_text(code)
+    _write_and_sync(path, code)
 
     # Run validation on the written file
     return validate_code_file(path)
