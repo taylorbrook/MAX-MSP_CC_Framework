@@ -34,7 +34,8 @@ Before any generation:
 - Consistent spacing and alignment across control groups
 
 ### Layout Engine Integration (Patching Mode)
-- `apply_layout(patcher)` from `src.maxpat.layout` -- row-based topological auto-layout for patching mode
+- `finalize_patch(patcher, is_new=True)` -- single-call layout cleanup: styling, layout, comments, midpoints (new); midpoints + comments (edit)
+- `apply_layout(patcher)` from `src.maxpat.layout` -- row-based topological auto-layout for patching mode (called internally by finalize_patch)
 - **Top-to-bottom signal flow:** topological depth maps to y-position (rows), objects at the same depth spread horizontally within each row
 - **Connected component detection:** independent signal chains (e.g., transport vs mixer) are automatically detected and placed side by side as separate vertical groups
 - **Within-row ordering:** objects in the same row are sorted by the average x-position of their parents to minimize cable crossings
@@ -96,10 +97,10 @@ Before any generation:
 
 1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
 2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
-3. Run `patcher.populate_assistance_comments()` to auto-fill any empty inlet/outlet comments from connection context
+3. Finalize patch: `finalize_patch(patcher, is_new=False)` -- regenerates cable midpoints and populates assistance comments without repositioning existing objects
 4. Validate via `validate_patch(patcher)`
 5. Return for critic review
-6. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
+6. Save via `save_patch_roundtrip()`
 
 ## When to Use
 

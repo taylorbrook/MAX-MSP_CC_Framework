@@ -74,10 +74,10 @@ from src.maxpat.hooks import save_patch_roundtrip
 
 1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
 2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
-3. Run `patcher.populate_assistance_comments()` to auto-fill any empty inlet/outlet comments from connection context
+3. Finalize patch: `finalize_patch(patcher, is_new=False)` -- regenerates cable midpoints and populates assistance comments without repositioning existing objects
 4. Validate via `validate_patch(patcher)`
 5. Return for critic review
-6. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
+6. Save via `save_patch_roundtrip()`
 
 ### Export Target Reference
 

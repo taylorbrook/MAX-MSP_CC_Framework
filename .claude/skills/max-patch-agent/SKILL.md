@@ -40,7 +40,7 @@ Before any generation:
 - `Patcher.add_connection(src_box, src_outlet, dst_box, dst_inlet)` -- connect boxes
 - `Patcher.add_subpatcher(name, inlets, outlets, inlet_comments, outlet_comments)` -- add a subpatcher with labeled I/O
 - `Patcher.populate_assistance_comments()` -- auto-fill empty inlet/outlet comments from connection context
-- `_apply_auto_styling(patcher)` -- apply canvas background and object highlights
+- `finalize_patch(patcher, is_new=True)` -- single-call layout cleanup: styling, layout, comments, midpoints (new); midpoints + comments (edit)
 - `apply_layout(patcher, layout_options=None)` -- row-based topological layout positioning (accepts LayoutOptions)
 - `validate_patch(patcher.to_dict(), db=patcher.db)` -- run four-layer validation pipeline
 - `save_patch_roundtrip(patcher.to_dict(), path)` -- write .maxpat to disk
@@ -83,7 +83,7 @@ Before any generation:
 ## Output Protocol (New Patches)
 
 1. Create Patcher and build patch structure
-2. Apply styling and layout: `_apply_auto_styling(patcher)`, `apply_layout(patcher)`
+2. Finalize patch: `finalize_patch(patcher, is_new=True)` -- applies styling, layout, assistance comments, and midpoint generation for all patchers and subpatchers
 3. Serialize and validate: `patch_dict = patcher.to_dict()`, `results = validate_patch(patch_dict, db=patcher.db)`
 4. Return `(patch_dict, results)` tuple for critic review
 5. Apply revisions if critic requests them
@@ -93,10 +93,10 @@ Before any generation:
 
 1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
 2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
-3. Run `patcher.populate_assistance_comments()` to auto-fill any empty inlet/outlet comments from connection context
+3. Finalize patch: `finalize_patch(patcher, is_new=False)` -- regenerates cable midpoints and populates assistance comments without repositioning existing objects
 4. Validate via `validate_patch(patcher)`
 5. Return for critic review
-6. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
+6. Save via `save_patch_roundtrip()`
 
 ## When to Use
 

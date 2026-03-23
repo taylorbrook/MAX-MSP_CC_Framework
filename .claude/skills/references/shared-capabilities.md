@@ -11,6 +11,12 @@
 - Comments appear as mouseover tooltips in MAX when hovering over the parent object's inlets/outlets
 - **Direct JSON edits:** When editing .maxpat JSON directly (not via the Python API), you MUST manually include a `"comment"` attribute on any inlet or outlet box dictionary being added or modified. Example: `{"maxclass": "inlet", "comment": "Audio Input Left", ...}`. The auto-populate method only works via the Patcher API, so direct JSON manipulation requires explicit comment attributes.
 
+## Patch Finalization
+
+- `finalize_patch(patcher, is_new=True)` -- single-call layout cleanup hook. For new patches (`is_new=True`): applies auto-styling, layout, assistance comments, midpoints. For edited patches (`is_new=False`): regenerates midpoints and populates assistance comments without moving objects.
+- Import from `src.maxpat`: `from src.maxpat import finalize_patch`
+- Replaces manual `_apply_auto_styling()` + `apply_layout()` + `populate_assistance_comments()` calls
+
 ## Aesthetic Capabilities
 
 **Aesthetic auto-styling (call explicitly for new patches):**

@@ -79,9 +79,10 @@ from src.maxpat.critics.ext_critic import review_external
 
 1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
 2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
-3. Validate via `validate_patch(patcher)`
-4. Return for critic review
-5. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
+3. Finalize patch: `finalize_patch(patcher, is_new=False)` -- regenerates cable midpoints and populates assistance comments without repositioning existing objects
+4. Validate via `validate_patch(patcher)`
+5. Return for critic review
+6. Save via `save_patch_roundtrip()`
 
 ### Archetype Reference
 

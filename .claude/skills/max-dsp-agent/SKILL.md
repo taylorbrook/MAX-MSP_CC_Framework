@@ -70,6 +70,10 @@ gen_box.outlettype = ["signal"]  # Use ["signal", "signal"] for stereo
 | Parameter smoothing | Nothing (zipper noise) | `one-pole-smooth` |
 | Volume control | Raw *~ at full level | `safe-gain` |
 
+### Layout and Finalization
+- `finalize_patch(patcher, is_new=True)` -- single-call layout cleanup: styling, layout, comments, midpoints (new); midpoints + comments (edit)
+- `apply_layout(patcher)` -- row-based topological auto-layout (called internally by finalize_patch)
+
 ### Signal Chain Construction
 - Oscillators: cycle~, saw~, rect~, noise~, phasor~, pink~, rand~
 - Filters: biquad~, onepole~, reson~, svf~, cascade~, lores~, cross~
@@ -103,7 +107,7 @@ gen_box.outlettype = ["signal"]  # Use ["signal", "signal"] for stereo
 
 1. Generate GenExpr code and/or MSP signal chain
 2. If GenExpr: validate with `validate_genexpr()` from `src.maxpat.code_validation`
-3. If .maxpat with signal objects: apply `_apply_auto_styling(patcher)`, `apply_layout(patcher)`, serialize via `patcher.to_dict()`, validate via `validate_patch()`
+3. If .maxpat with signal objects: `finalize_patch(patcher, is_new=True)` -- applies styling, layout, assistance comments, and midpoint generation for all patchers and subpatchers. Then serialize via `patcher.to_dict()`, validate via `validate_patch()`
 4. If standalone .gendsp: generate via `generate_gendsp()`
 5. Return output for critic review (DSP critic checks signal flow, gen~ I/O matching)
 6. Apply revisions if critic requests them
@@ -113,10 +117,10 @@ gen_box.outlettype = ["signal"]  # Use ["signal", "signal"] for stereo
 
 1. Load and analyze existing patch via `read_patch()` and `patcher.analyze()`
 2. Make surgical edits or section rebuild using find/modify/replace/insert/remove
-3. Run `patcher.populate_assistance_comments()` to auto-fill any empty inlet/outlet comments from connection context
+3. Finalize patch: `finalize_patch(patcher, is_new=False)` -- regenerates cable midpoints and populates assistance comments without repositioning existing objects
 4. Validate via `validate_patch(patcher)`
 5. Return for critic review
-6. Save via `save_patch_roundtrip()` -- never `apply_layout()` on loaded patches
+6. Save via `save_patch_roundtrip()`
 
 ## When to Use
 
