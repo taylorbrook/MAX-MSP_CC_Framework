@@ -19,6 +19,16 @@
       "version": "0.2.1",
       "description": "Fix dial attrs: use min for offset, add presentation mode to readouts",
       "timestamp": "2026-03-23T02:08:29.326593+00:00"
+    },
+    {
+      "version": "0.2.2",
+      "description": "Replace send/receive init with direct loadbang connections",
+      "timestamp": "2026-03-26T03:22:27.456083+00:00"
+    },
+    {
+      "version": "0.2.3",
+      "description": "Add background panel and title to UI",
+      "timestamp": "2026-03-26T03:42:24.409203+00:00"
     }
   ]
 }

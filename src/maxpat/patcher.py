@@ -349,6 +349,8 @@ class Box:
             d["patching_rect"] = self.patching_rect
             d["numinlets"] = self.numinlets
             d["numoutlets"] = self.numoutlets
+            if self.text is not None:
+                d["text"] = self.text
             if "outlettype" in self._raw:
                 d["outlettype"] = self.outlettype
 
