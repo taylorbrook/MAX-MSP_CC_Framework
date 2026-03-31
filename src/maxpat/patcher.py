@@ -729,6 +729,67 @@ class Patcher:
         self.boxes.insert(0, marker)
         return marker
 
+    def bring_to_front(self, box: Box) -> None:
+        """Move box to end of boxes array (renders on top of all other objects).
+
+        In .maxpat files, z-order is implicit: objects later in the boxes array
+        render on top of earlier ones. This moves the box to the last position.
+
+        Args:
+            box: Box to bring to front.
+
+        Raises:
+            ValueError: If box is not in this patcher.
+        """
+        try:
+            self.boxes.remove(box)
+        except ValueError:
+            raise ValueError(f"Box {box.id!r} not in this patcher")
+        self.boxes.append(box)
+
+    def send_to_back(self, box: Box) -> None:
+        """Move box to index 0 in boxes array (renders behind all other objects).
+
+        In .maxpat files, z-order is implicit: objects earlier in the boxes array
+        render behind later ones. This moves the box to the first position.
+
+        Args:
+            box: Box to send to back.
+
+        Raises:
+            ValueError: If box is not in this patcher.
+        """
+        try:
+            self.boxes.remove(box)
+        except ValueError:
+            raise ValueError(f"Box {box.id!r} not in this patcher")
+        self.boxes.insert(0, box)
+
+    def set_z_index(self, box: Box, index: int) -> None:
+        """Move box to a specific position in the boxes array for z-order control.
+
+        Index 0 = behind everything (same as send_to_back).
+        Index -1 or len(boxes) = on top of everything (same as bring_to_front).
+        Out-of-range indices are clamped to valid range.
+
+        Args:
+            box: Box to reposition.
+            index: Target index in boxes array.
+
+        Raises:
+            ValueError: If box is not in this patcher.
+        """
+        try:
+            self.boxes.remove(box)
+        except ValueError:
+            raise ValueError(f"Box {box.id!r} not in this patcher")
+        # Clamp index to valid range after removal
+        max_idx = len(self.boxes)
+        if index < 0:
+            index = max(0, max_idx + 1 + index)
+        index = min(index, max_idx)
+        self.boxes.insert(index, box)
+
     def add_message(self, text: str, x: float = 0.0, y: float = 0.0) -> Box:
         """Add a message box to the patcher.
 
