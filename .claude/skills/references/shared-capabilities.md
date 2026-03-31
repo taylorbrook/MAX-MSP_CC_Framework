@@ -17,6 +17,24 @@
 - Import from `src.maxpat`: `from src.maxpat import finalize_patch`
 - Replaces manual `_apply_auto_styling()` + `apply_layout()` + `populate_assistance_comments()` calls
 
+## Z-Order Manipulation
+
+In `.maxpat` files, z-order = boxes array order. Later in array = renders on top.
+
+**Patcher methods:**
+- `patcher.bring_to_front(box)` -- move box to end of array (renders on top)
+- `patcher.send_to_back(box)` -- move box to index 0 (renders behind everything)
+- `patcher.set_z_index(box, index)` -- place box at specific array position
+
+**Overlay readout pattern** (flonum/number displayed on top of dial/slider):
+1. Create the interactive control (dial, slider, etc.)
+2. Create the readout (flonum, number) -- it naturally renders on top since it was added later
+3. Set `extra_attrs["ignoreclick"] = 1` on the readout so mouse events pass through to the control
+4. Position readout overlapping the control
+5. If readout was created before the control, call `patcher.bring_to_front(readout)` to fix z-order
+
+**Background elements** (panels, markers) are handled automatically -- `add_panel()` and `add_step_marker()` insert at index 0.
+
 ## Aesthetic Capabilities
 
 **Aesthetic auto-styling (call explicitly for new patches):**

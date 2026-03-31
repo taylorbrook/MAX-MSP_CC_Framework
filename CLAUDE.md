@@ -91,6 +91,21 @@ Never create `generate.py` or similar intermediary Python scripts that regenerat
 
 This rule exists because the generator pattern causes regeneration to overwrite manual edits and iterate improvements. It was deprecated in milestone 2.0.
 
+### Rule #6: Z-Order Awareness
+
+In `.maxpat` files, z-order is implicit: objects render in the order they appear in the `boxes` array. Later objects render on top of earlier ones.
+
+- Background elements (panels, step markers): use `add_panel()` / `add_step_marker()` which auto-insert at index 0
+- Overlay readouts (flonum on top of dial): add the readout AFTER the dial, or use `bring_to_front(readout)` to move it on top
+- Overlay readouts must set `ignoreclick=1` so mouse events pass through to the interactive control underneath
+- Use `bring_to_front(box)`, `send_to_back(box)`, or `set_z_index(box, index)` for explicit z-order control
+
+The overlay readout pattern (from gen-eq):
+1. Create the interactive control (e.g., `dial`)
+2. Create the readout display (e.g., `flonum`) -- added later = renders on top
+3. Set `ignoreclick=1` on the readout so the dial remains interactive
+4. Position the readout overlapping the dial (same or overlapping coordinates)
+
 ## Domain-Specific Rules
 
 ### MSP (Audio/Signal)
