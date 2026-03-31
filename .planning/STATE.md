@@ -176,7 +176,7 @@ None.
 | 260322-n59 | Build reusable gen~ pattern library and standardized UI presets | 2026-03-22 | eb2513f | Verified | [260322-n59-build-reusable-gen-pattern-library-and-s](./quick/260322-n59-build-reusable-gen-pattern-library-and-s/) |
 | 260322-pkm | Add finalize_patch() hook for centralized layout cleanup | 2026-03-23 | e8c735e | Verified | [260322-pkm-add-a-hook-so-that-the-appropriate-agent](./quick/260322-pkm-add-a-hook-so-that-the-appropriate-agent/) |
 | 260322-pxv | Fix patch file caching with os.fsync on all write paths | 2026-03-23 | 6b57e00 | Verified | [260322-pxv-investigate-and-fix-patch-file-caching-i](./quick/260322-pxv-investigate-and-fix-patch-file-caching-i/) |
-| 260331-eqh | Add z-order manipulation API and documentation | 2026-03-31 | adaa5ef | | [260331-eqh-research-z-order-of-objects-in-max-and-a](./quick/260331-eqh-research-z-order-of-objects-in-max-and-a/) |
+| 260331-eqh | Add z-order manipulation API and documentation | 2026-03-31 | adaa5ef | Verified | [260331-eqh-research-z-order-of-objects-in-max-and-a](./quick/260331-eqh-research-z-order-of-objects-in-max-and-a/) |
 
 ### Blockers/Concerns
 
