@@ -549,6 +549,93 @@ class TestStepMarkers:
         assert "box" in d
 
 
+class TestZOrder:
+    """Tests for z-order manipulation methods."""
+
+    def test_bring_to_front(self):
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("dac~")
+        c = p.add_box("*~", ["0.5"])
+        p.bring_to_front(a)
+        assert p.boxes[-1] is a
+        assert p.boxes[0] is b
+        assert p.boxes[1] is c
+
+    def test_bring_to_front_not_found(self):
+        p = Patcher()
+        p2 = Patcher()
+        orphan = p2.add_box("cycle~", ["440"])
+        with pytest.raises(ValueError):
+            p.bring_to_front(orphan)
+
+    def test_send_to_back(self):
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("dac~")
+        c = p.add_box("*~", ["0.5"])
+        p.send_to_back(c)
+        assert p.boxes[0] is c
+        assert p.boxes[1] is a
+        assert p.boxes[2] is b
+
+    def test_send_to_back_not_found(self):
+        p = Patcher()
+        p2 = Patcher()
+        orphan = p2.add_box("cycle~", ["440"])
+        with pytest.raises(ValueError):
+            p.send_to_back(orphan)
+
+    def test_set_z_index_zero(self):
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("dac~")
+        p.set_z_index(b, 0)
+        assert p.boxes[0] is b
+        assert p.boxes[1] is a
+
+    def test_set_z_index_negative_one(self):
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("dac~")
+        c = p.add_box("*~", ["0.5"])
+        p.set_z_index(a, -1)
+        assert p.boxes[-1] is a
+
+    def test_set_z_index_clamps_high(self):
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("dac~")
+        p.set_z_index(a, 999)
+        assert p.boxes[-1] is a
+
+    def test_set_z_index_not_found(self):
+        p = Patcher()
+        p2 = Patcher()
+        orphan = p2.add_box("cycle~", ["440"])
+        with pytest.raises(ValueError):
+            p.set_z_index(orphan, 0)
+
+    def test_set_z_index_middle(self):
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("dac~")
+        c = p.add_box("*~", ["0.5"])
+        d = p.add_box("number")
+        p.set_z_index(d, 1)
+        assert p.boxes[0] is a
+        assert p.boxes[1] is d
+        assert p.boxes[2] is b
+        assert p.boxes[3] is c
+
+    def test_bring_to_front_preserves_identity(self):
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        original_id = id(a)
+        p.bring_to_front(a)
+        assert id(p.boxes[-1]) == original_id
+
+
 class TestComplexity:
     """Tests for is_complex_patch() heuristic."""
 
