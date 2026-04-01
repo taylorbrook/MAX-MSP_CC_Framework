@@ -33,6 +33,7 @@ _STRUCTURAL_MAXCLASSES = frozenset({"inlet", "outlet", "patcher", "bpatcher"})
 # Oscillator objects that need gain staging before dac~/ezdac~
 _OSCILLATOR_NAMES = frozenset({
     "cycle~", "saw~", "rect~", "tri~", "noise~", "pink~",
+    "mc.cycle~", "mc.saw~", "mc.rect~", "mc.tri~",
 })
 
 # Gain objects that attenuate signal
@@ -85,6 +86,7 @@ class ValidationResult:
 def validate_patch(
     patch,
     db: ObjectDatabase | None = None,
+    patch_dir: "str | Path | None" = None,
 ) -> list[ValidationResult]:
     """Run the full four-layer validation pipeline on a patch.
 
@@ -92,10 +94,14 @@ def validate_patch(
         patch: Either a Patcher instance or a raw dict in .maxpat format.
         db: ObjectDatabase for lookups. If *patch* is a Patcher instance
             and *db* is None, the Patcher's own db is used.
+        patch_dir: Optional directory containing the patch file. When
+            provided, enables external .gendsp I/O validation for gen~
+            boxes using ``@gen filename.gendsp``.
 
     Returns:
         Combined list of ValidationResult from all layers.
     """
+    from pathlib import Path as _Path
     # Import here to avoid circular imports at module level
     from src.maxpat.patcher import Patcher as PatcherClass
 
@@ -109,6 +115,9 @@ def validate_patch(
 
     if db is None:
         db = ObjectDatabase()
+
+    # Normalize patch_dir to Path if provided
+    _patch_dir = _Path(patch_dir) if patch_dir is not None else None
 
     results: list[ValidationResult] = []
 
@@ -125,7 +134,7 @@ def validate_patch(
     results.extend(_validate_connections(patch_dict, db))
 
     # Layer 4: Domain-specific rules
-    results.extend(_validate_domain_rules(patch_dict, db))
+    results.extend(_validate_domain_rules(patch_dict, db, _patch_dir))
 
     return results
 
@@ -408,6 +417,7 @@ def _inlet_accepts_signal(box_dict: dict, inlet_idx: int, db: ObjectDatabase) ->
 def _validate_domain_rules(
     patch_dict: dict,
     db: ObjectDatabase,
+    patch_dir: "Path | None" = None,
 ) -> list[ValidationResult]:
     """Check domain-specific rules for MSP signal chains."""
     results: list[ValidationResult] = []
@@ -447,7 +457,7 @@ def _validate_domain_rules(
         src_outlettype = src_box.get("outlettype", [])
         is_signal = (
             src_outlet < len(src_outlettype)
-            and src_outlettype[src_outlet] == "signal"
+            and src_outlettype[src_outlet] in ("signal", "multichannelsignal")
         )
 
         if is_signal:
@@ -475,7 +485,7 @@ def _validate_domain_rules(
         src_outlettype = src_box.get("outlettype", [])
         is_sig = (
             src_outlet < len(src_outlettype)
-            and src_outlettype[src_outlet] == "signal"
+            and src_outlettype[src_outlet] in ("signal", "multichannelsignal")
         )
         if not is_sig:
             ctrl_adj[src_id].append(dst_id)
@@ -518,6 +528,10 @@ def _validate_domain_rules(
 
     # --- Rule: Assistance comments ---
     results.extend(_check_assistance_comments(box_lookup))
+
+    # --- Rule: External .gendsp I/O validation ---
+    if patch_dir is not None:
+        results.extend(_check_external_gendsp_io(box_lookup, patch_dir))
 
     return results
 
@@ -583,7 +597,9 @@ def _check_unterminated_chains(
 
         # Check if this object has signal outlets
         outlettype = box.get("outlettype", [])
-        has_signal_outlet = any(ot == "signal" for ot in outlettype)
+        has_signal_outlet = any(
+            ot in ("signal", "multichannelsignal") for ot in outlettype
+        )
         if not has_signal_outlet:
             continue
 
@@ -961,6 +977,112 @@ def _check_assistance_comments(
             results.append(ValidationResult(
                 "domain", "info",
                 f"{maxclass} missing assistance comment (tooltip) ({box_id})",
+            ))
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# External .gendsp I/O validation
+# ---------------------------------------------------------------------------
+
+_GEN_ATTR_PATTERN = _re.compile(r'gen~\s+@gen\s+(\S+\.gendsp)')
+
+
+def _check_external_gendsp_io(
+    box_lookup: dict[str, dict],
+    patch_dir: "Path",
+) -> list[ValidationResult]:
+    """Validate gen~ @gen .gendsp file I/O counts against the gen~ box.
+
+    For each gen~ box referencing an external .gendsp via ``@gen``, loads
+    the .gendsp JSON, counts ``in N`` and ``out N`` objects, and compares
+    to the gen~ box's numinlets/numoutlets.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    results: list[ValidationResult] = []
+
+    for box_id, box in box_lookup.items():
+        if box.get("maxclass") != "newobj":
+            continue
+        text = box.get("text", "")
+        m = _GEN_ATTR_PATTERN.search(text)
+        if not m:
+            continue
+
+        filename = m.group(1)
+        gendsp_path = _Path(patch_dir) / filename
+
+        if not gendsp_path.exists():
+            results.append(ValidationResult(
+                "domain", "info",
+                f"External .gendsp file '{filename}' not found at "
+                f"{gendsp_path} -- cannot validate I/O ({box_id})",
+            ))
+            continue
+
+        # Load and parse the .gendsp JSON
+        try:
+            gendsp_data = _json.loads(gendsp_path.read_text())
+        except (_json.JSONDecodeError, OSError):
+            results.append(ValidationResult(
+                "domain", "info",
+                f"Could not parse .gendsp file '{filename}' ({box_id})",
+            ))
+            continue
+
+        # Count in/out objects in the .gendsp patcher
+        gendsp_boxes = gendsp_data.get("patcher", {}).get("boxes", [])
+        gendsp_inputs = 0
+        gendsp_outputs = 0
+        io_pattern = _re.compile(r'^(in|out)\s+\d+$')
+
+        for entry in gendsp_boxes:
+            inner_box = entry.get("box", {})
+            if inner_box.get("maxclass") != "newobj":
+                continue
+            inner_text = inner_box.get("text", "")
+            if io_pattern.match(inner_text):
+                if inner_text.startswith("in "):
+                    gendsp_inputs += 1
+                elif inner_text.startswith("out "):
+                    gendsp_outputs += 1
+
+        box_numinlets = box.get("numinlets", 0)
+        box_numoutlets = box.get("numoutlets", 0)
+
+        # Check input mismatch
+        if gendsp_inputs > box_numinlets:
+            results.append(ValidationResult(
+                "domain", "warning",
+                f"gen~ I/O mismatch: .gendsp '{filename}' has {gendsp_inputs} "
+                f"input(s) but gen~ box ({box_id}) has {box_numinlets} "
+                f"inlet(s)",
+            ))
+        elif gendsp_inputs < box_numinlets and gendsp_inputs > 0:
+            results.append(ValidationResult(
+                "domain", "warning",
+                f"gen~ I/O mismatch: gen~ box ({box_id}) has {box_numinlets} "
+                f"inlet(s) but .gendsp '{filename}' only defines "
+                f"{gendsp_inputs} input(s)",
+            ))
+
+        # Check output mismatch
+        if gendsp_outputs > box_numoutlets:
+            results.append(ValidationResult(
+                "domain", "warning",
+                f"gen~ I/O mismatch: .gendsp '{filename}' has {gendsp_outputs} "
+                f"output(s) but gen~ box ({box_id}) has {box_numoutlets} "
+                f"outlet(s)",
+            ))
+        elif gendsp_outputs < box_numoutlets and gendsp_outputs > 0:
+            results.append(ValidationResult(
+                "domain", "warning",
+                f"gen~ I/O mismatch: gen~ box ({box_id}) has {box_numoutlets} "
+                f"outlet(s) but .gendsp '{filename}' only defines "
+                f"{gendsp_outputs} output(s)",
             ))
 
     return results

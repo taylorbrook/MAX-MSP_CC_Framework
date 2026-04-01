@@ -23,6 +23,7 @@ from src.maxpat.utils import get_box_name
 # Oscillator objects that need gain staging before dac~/ezdac~
 _OSCILLATOR_NAMES = frozenset({
     "cycle~", "saw~", "rect~", "tri~", "noise~", "pink~",
+    "mc.cycle~", "mc.saw~", "mc.rect~", "mc.tri~",
 })
 
 # Gain objects that attenuate signal (includes MC variants)

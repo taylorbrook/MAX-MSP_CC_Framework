@@ -266,8 +266,8 @@ def validate_file(path: str | Path) -> list[ValidationResult]:
             f"Invalid JSON: {e}",
         )]
 
-    # Run the validation pipeline on the loaded dict
-    return validate_patch(data)
+    # Run the validation pipeline on the loaded dict (pass patch_dir for .gendsp validation)
+    return validate_patch(data, patch_dir=path.parent)
 
 
 def validate_code_file(path: str | Path) -> list[ValidationResult]:
