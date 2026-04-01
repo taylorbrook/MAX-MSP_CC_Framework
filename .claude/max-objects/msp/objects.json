@@ -958,140 +958,6 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
-  "MC Wrapper Features": {
-    "name": "MC Wrapper Features",
-    "maxclass": "MC Wrapper Features",
-    "module": "msp",
-    "domain": "MSP",
-    "category": "Unlisted",
-    "digest": "Messages and attributes common to MC wrapper objects",
-    "description": "The MC wrapper defines common messages and attributes for all compatible objects.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [
-      "deviate",
-      "exponential",
-      "scaledexponential",
-      "increment",
-      "harmonic",
-      "subharmonic",
-      "spread",
-      "spreadinclusive",
-      "spreadexclusive",
-      "spreadincludefirst",
-      "spreadincludesecond",
-      "decide",
-      "randomrange",
-      "generate",
-      "ease.linear",
-      "smoothstep",
-      "setvalue",
-      "setvaluerange",
-      "applymessages",
-      "applyvalues",
-      "replicatevalues",
-      "applynvalues",
-      "replicatenvalues"
-    ],
-    "attributes": {
-      "chans": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "initialvalues": {
-        "type": "list",
-        "get": true,
-        "set": true
-      },
-      "values": {
-        "type": "list",
-        "get": true,
-        "set": true
-      },
-      "replicate": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "target": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "usebusymap": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "zero": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "busymapname": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "op": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "voiceprob": {
-        "type": "float",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [],
-    "tags": [
-      "Audio",
-      "MC"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "Snapshot Messages": {
-    "name": "Snapshot Messages",
-    "maxclass": "Snapshot Messages",
-    "module": "msp",
-    "domain": "MSP",
-    "category": "Unlisted",
-    "digest": "Messages and attributes common to the Snapshot group",
-    "description": "",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [
-      "snapshot",
-      "restore",
-      "addsnapshot",
-      "deletesnapshot",
-      "exportsnapshot",
-      "importsnapshot",
-      "setsnapshotname",
-      "setembedsnapshot",
-      "movesnapshot"
-    ],
-    "attributes": {
-      "autosave": {
-        "type": "int",
-        "get": false,
-        "set": true
-      }
-    },
-    "seealso": [],
-    "tags": [],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
   "abs~": {
     "name": "abs~",
     "maxclass": "abs~",
@@ -3548,7 +3414,7 @@
     "domain": "MSP",
     "category": "MSP Operators",
     "digest": "Signal cosine function",
-    "description": "Use the cosx~ object to calculate and output a signal that is the cosine function of each sample of the input signal. The cosx~ object is a true \u03c0 based function - it varies from the cos~ object, whose output is based around a value range of 0. - 1.0 and is intended for use as a lookup table with the phasor~ object.",
+    "description": "Use the cosx~ object to calculate and output a signal that is the cosine function of each sample of the input signal. The cosx~ object is a true π based function - it varies from the cos~ object, whose output is based around a value range of 0. - 1.0 and is intended for use as a lookup table with the phasor~ object.",
     "inlets": [
       {
         "id": 0,
@@ -13632,8 +13498,8 @@
     "module": "msp",
     "domain": "MSP",
     "category": "MSP FFT",
-    "digest": "Wrap a signal between \u03c0 and -\u03c0",
-    "description": "phasewrap~ takes any input signal and wrap it between \u03c0 and -\u03c0 values.",
+    "digest": "Wrap a signal between π and -π",
+    "description": "phasewrap~ takes any input signal and wrap it between π and -π values.",
     "inlets": [
       {
         "id": 0,
@@ -17903,7 +17769,7 @@
     "domain": "MSP",
     "category": "MSP Operators",
     "digest": "Signal sine function",
-    "description": "sinx~ is a real sine function whose input expects values between 0 and 2\u03c0 (similar to cosx~ but unlike cos~ which is designed to work with phasor~'s output from 0 to 1).",
+    "description": "sinx~ is a real sine function whose input expects values between 0 and 2π (similar to cosx~ but unlike cos~ which is designed to work with phasor~'s output from 0 to 1).",
     "inlets": [
       {
         "id": 0,
@@ -19756,7 +19622,7 @@
     "domain": "MSP",
     "category": "MSP Operators",
     "digest": "Signal tangent function",
-    "description": "Use the tanx~ object to calculate and output a signal that is the tangent function of each sample of the input signal. The tanx~ object is a true \u03c0 based function - it varies from the tanh~ object, whose output is based around 1 and is intended for use as a lookup table with the phasor~ object.",
+    "description": "Use the tanx~ object to calculate and output a signal that is the tangent function of each sample of the input signal. The tanx~ object is a true π based function - it varies from the tanh~ object, whose output is based around 1 and is intended for use as a lookup table with the phasor~ object.",
     "inlets": [
       {
         "id": 0,

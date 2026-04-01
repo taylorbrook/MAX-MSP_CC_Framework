@@ -10,6 +10,8 @@
     "r": "receive",
     "s": "send",
     "r~": "receive~",
-    "s~": "send~"
+    "s~": "send~",
+    "v": "value",
+    "del": "delay"
   }
 }
