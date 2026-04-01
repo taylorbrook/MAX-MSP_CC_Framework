@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260331-o1y-PLAN.md
-last_updated: "2026-04-01T00:45:14.114Z"
+stopped_at: Completed quick-260331-w95-PLAN.md
+last_updated: "2026-04-01T06:23:21.653Z"
 last_activity: "2026-04-01 - Completed quick task 260331-o1y: Strengthen Rule #3 trigger enforcement across specialist agent SKILL.md files"
 progress:
   total_phases: 12
@@ -64,6 +64,7 @@ Progress: [██████████] 100%
 | Phase quick-260322-hhw P01 | 4min | 2 tasks | 2 files |
 | Phase quick-260322-n59 P01 | 4min | 2 tasks | 23 files |
 | Phase quick-260331-n24 P01 | 8min | 1 tasks | 1 files |
+| Phase quick-260331-w95 P01 | 3min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -141,6 +142,7 @@ Recent decisions for v2.0:
 - [Phase quick-260331-n24]: Round-trip text bug: from_dict() line 1950 defaults text to empty string for UI boxes without text key; fix is box_data.get('text') instead of box_data.get('text', '')
 - [Phase quick-260331-nps]: box_data.get("text") returns None (not "") when original box has no text key -- to_dict handles None correctly
 - [Phase quick-260331-o1y]: Control-Rate Fan-Out Rule placed between Z-Order and Aesthetics in shared-capabilities.md; MUST-level enforcement in all 4 specialist agents
+- [Phase quick-260331-w95]: shared-capabilities.md z-order section was stale after user's 8feeebf fix; corrected to match CLAUDE.md and patcher.py
 
 ### Pending Todos
 
@@ -184,6 +186,7 @@ None.
 | 260331-n24 | Full repo analysis: identify improvements for next milestone | 2026-03-31 | f02dfbd | Verified | [260331-n24-full-repo-analysis-identify-improvements](./quick/260331-n24-full-repo-analysis-identify-improvements/) |
 | 260331-nps | Fix round-trip text:"" bug and xfail externally-modified round-trip tests | 2026-04-01 | ea844a1 | | [260331-nps-fix-round-trip-text-bug-and-xfail-extern](./quick/260331-nps-fix-round-trip-text-bug-and-xfail-extern/) |
 | 260331-o1y | Strengthen Rule #3 trigger enforcement across all specialist SKILL.md files | 2026-04-01 | 0642e94 | | [260331-o1y-strengthen-rule-3-trigger-enforcement-ac](./quick/260331-o1y-strengthen-rule-3-trigger-enforcement-ac/) |
+| 260331-w95 | Review recent updates: fix tests and z-order doc consistency | 2026-04-01 | 0841a18 | | [260331-w95-review-the-recent-updates-to-the-repo-an](./quick/260331-w95-review-the-recent-updates-to-the-repo-an/) |
 
 ### Blockers/Concerns
 
@@ -194,6 +197,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-01T00:45:14.083Z
-Stopped at: Completed quick-260331-o1y-PLAN.md
+Last session: 2026-04-01T06:23:14.970Z
+Stopped at: Completed quick-260331-w95-PLAN.md
 Resume file: None
