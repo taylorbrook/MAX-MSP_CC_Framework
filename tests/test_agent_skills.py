@@ -116,9 +116,9 @@ def test_dsp_agent_references_msp_and_gen() -> None:
 
 
 def test_patch_agent_references_max_objects() -> None:
-    """Patch agent must reference max/objects.json."""
+    """Patch agent must reference max domain objects (via ObjectDatabase or direct path)."""
     content = _read_skill("max-patch-agent")
-    assert "max/objects.json" in content or "max/" in content, (
+    assert "max/objects.json" in content or "max/" in content or "ObjectDatabase" in content, (
         "Patch agent should reference max domain objects"
     )
 
@@ -263,9 +263,9 @@ def test_critic_protocol_escalation_for_repeated_findings() -> None:
     assert "identical finding" in content or "same finding" in content or "repeated" in content, (
         "Critic protocol should document escalation for repeated identical findings"
     )
-    # Must mention that there is no hard round limit
-    assert "no hard round" in content or "no round limit" in content, (
-        "Critic protocol should state there is no hard round limit"
+    # Must mention that escalation is NOT a round limit
+    assert "not a round limit" in content or "no hard round" in content or "no round limit" in content, (
+        "Critic protocol should state that escalation is not a round limit"
     )
     # Must mention 5 consecutive revisions as the threshold
     assert "5 consecutive" in content or "5 revisions" in content, (

@@ -19,21 +19,21 @@
 
 ## Z-Order Manipulation
 
-In `.maxpat` files, z-order = boxes array order. Later in array = renders on top.
+In `.maxpat` files, z-order is implicit: objects **earlier** in the `boxes` array render **on top** (index 0 = topmost).
 
 **Patcher methods:**
-- `patcher.bring_to_front(box)` -- move box to end of array (renders on top)
-- `patcher.send_to_back(box)` -- move box to index 0 (renders behind everything)
-- `patcher.set_z_index(box, index)` -- place box at specific array position
+- `patcher.bring_to_front(box)` -- move box to index 0 (renders on top of everything)
+- `patcher.send_to_back(box)` -- move box to end of array (renders behind everything)
+- `patcher.set_z_index(box, index)` -- place box at specific array position (0 = front)
 
 **Overlay readout pattern** (flonum/number displayed on top of dial/slider):
 1. Create the interactive control (dial, slider, etc.)
-2. Create the readout (flonum, number) -- it naturally renders on top since it was added later
-3. Set `extra_attrs["ignoreclick"] = 1` on the readout so mouse events pass through to the control
-4. Position readout overlapping the control
-5. If readout was created before the control, call `patcher.bring_to_front(readout)` to fix z-order
+2. Create the readout (flonum, number)
+3. Call `patcher.bring_to_front(readout)` to move it to index 0 (renders on top of dial)
+4. Set `extra_attrs["ignoreclick"] = 1` on the readout so mouse events pass through (omit for editable readouts)
+5. Position readout overlapping the control
 
-**Background elements** (panels, markers) are handled automatically -- `add_panel()` and `add_step_marker()` insert at index 0.
+**Background elements** (panels, markers) use `background=1` attribute -- `add_panel()` and `add_step_marker()` set this automatically to force behind all objects regardless of array position.
 
 ## Control-Rate Fan-Out Rule (MUST)
 
