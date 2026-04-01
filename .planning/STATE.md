@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260331-snl-PLAN.md
-last_updated: "2026-04-01T03:47:07.466Z"
-last_activity: "2026-04-01 - Completed quick task 260331-snl: Add external .gendsp validation and MC oscillator gain staging"
+stopped_at: Completed quick-260331-vs8-PLAN.md
+last_updated: "2026-04-01T06:06:59.984Z"
+last_activity: "2026-04-01 - Completed quick task 260331-o1y: Strengthen Rule #3 trigger enforcement across specialist agent SKILL.md files"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-04-01 - Completed quick task 260331-snl: Add external .gendsp validation and MC oscillator gain staging
+Last activity: 2026-04-01 - Completed quick task 260331-o1y: Strengthen Rule #3 trigger enforcement across specialist agent SKILL.md files
 
 Progress: [██████████] 100%
 
@@ -64,10 +64,7 @@ Progress: [██████████] 100%
 | Phase quick-260322-hhw P01 | 4min | 2 tasks | 2 files |
 | Phase quick-260322-n59 P01 | 4min | 2 tasks | 23 files |
 | Phase quick-260331-n24 P01 | 8min | 1 tasks | 1 files |
-| Phase quick-260331-oua P01 | 9min | 3 tasks | 8 files |
-| Phase quick-260331-riy P01 | 3min | 1 tasks | 1 files |
-| Phase quick-260331-rzs P01 | 2min | 2 tasks | 5 files |
-| Phase quick-260331-snl P01 | 4min | 1 tasks | 5 files |
+| Phase quick-260331-vs8 P01 | 9min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -145,12 +142,7 @@ Recent decisions for v2.0:
 - [Phase quick-260331-n24]: Round-trip text bug: from_dict() line 1950 defaults text to empty string for UI boxes without text key; fix is box_data.get('text') instead of box_data.get('text', '')
 - [Phase quick-260331-nps]: box_data.get("text") returns None (not "") when original box has no text key -- to_dict handles None correctly
 - [Phase quick-260331-o1y]: Control-Rate Fan-Out Rule placed between Z-Order and Aesthetics in shared-capabilities.md; MUST-level enforcement in all 4 specialist agents
-- [Phase quick-260331-oua]: auto_commit_patch stages only project-specific files for multi-instance safety
-- [Phase quick-260331-oua]: Auto-commit failures silently skip to never block patch saves
-- [Phase quick-260331-oua]: git stash prohibited during patch workflows (CLAUDE.md Rule #7)
-- [Phase quick-260331-riy]: Minimal _outlet_types_verified entries for 195 verified-correct MSP objects; full outlet corrections for 7 DB-error objects
-- [Phase quick-260331-rzs]: get_box_name() is public API in utils.py (no underscore); mixer-strip.maxpat marked xfail for known gain blocker
-- [Phase quick-260331-snl]: External .gendsp not found emits info (not error); multichannelsignal treated as signal for gain checks; patch_dir=None skips .gendsp validation
+- [Phase quick-260331-vs8]: Mixin pattern for Patcher decomposition: GraphMixin + AnalysisMixin, zero API changes
 
 ### Pending Todos
 
@@ -194,10 +186,6 @@ None.
 | 260331-n24 | Full repo analysis: identify improvements for next milestone | 2026-03-31 | f02dfbd | Verified | [260331-n24-full-repo-analysis-identify-improvements](./quick/260331-n24-full-repo-analysis-identify-improvements/) |
 | 260331-nps | Fix round-trip text:"" bug and xfail externally-modified round-trip tests | 2026-04-01 | ea844a1 | | [260331-nps-fix-round-trip-text-bug-and-xfail-extern](./quick/260331-nps-fix-round-trip-text-bug-and-xfail-extern/) |
 | 260331-o1y | Strengthen Rule #3 trigger enforcement across all specialist SKILL.md files | 2026-04-01 | 0642e94 | | [260331-o1y-strengthen-rule-3-trigger-enforcement-ac](./quick/260331-o1y-strengthen-rule-3-trigger-enforcement-ac/) |
-| 260331-oua | Prevent MAX patch work loss with auto-commit and stash recovery | 2026-04-01 | 87f866a | Verified | [260331-oua-prevent-max-patch-work-loss-with-isolati](./quick/260331-oua-prevent-max-patch-work-loss-with-isolati/) |
-| 260331-riy | Bulk-verify remaining MSP outlet types in overrides.json | 2026-04-01 | 5b792f7 | | [260331-riy-bulk-verify-remaining-msp-outlet-types-i](./quick/260331-riy-bulk-verify-remaining-msp-outlet-types-i/) |
-| 260331-rzs | Add integration validation tests on real patches and extract duplicated _get_box_name helper | 2026-04-01 | 6b3f89f | | [260331-rzs-add-integration-validation-tests-on-real](./quick/260331-rzs-add-integration-validation-tests-on-real/) |
-| 260331-snl | Add external .gendsp I/O validation and MC oscillator gain checks | 2026-04-01 | 7fd9239 | | [260331-snl-add-external-gendsp-validation-and-mc-os](./quick/260331-snl-add-external-gendsp-validation-and-mc-os/) |
 
 ### Blockers/Concerns
 
@@ -208,6 +196,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-01T03:46:58.864Z
-Stopped at: Completed quick-260331-snl-PLAN.md
+Last session: 2026-04-01T06:06:54.940Z
+Stopped at: Completed quick-260331-vs8-PLAN.md
 Resume file: None

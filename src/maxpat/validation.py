@@ -17,8 +17,7 @@ from collections import defaultdict
 from typing import TYPE_CHECKING
 
 from src.maxpat.db_lookup import ObjectDatabase
-from src.maxpat.maxclass_map import is_ui_object
-from src.maxpat.utils import get_box_name
+from src.maxpat.maxclass_map import is_ui_object, UI_MAXCLASSES
 
 if TYPE_CHECKING:
     from src.maxpat.patcher import Patcher
@@ -33,7 +32,6 @@ _STRUCTURAL_MAXCLASSES = frozenset({"inlet", "outlet", "patcher", "bpatcher"})
 # Oscillator objects that need gain staging before dac~/ezdac~
 _OSCILLATOR_NAMES = frozenset({
     "cycle~", "saw~", "rect~", "tri~", "noise~", "pink~",
-    "mc.cycle~", "mc.saw~", "mc.rect~", "mc.tri~",
 })
 
 # Gain objects that attenuate signal
@@ -86,7 +84,6 @@ class ValidationResult:
 def validate_patch(
     patch,
     db: ObjectDatabase | None = None,
-    patch_dir: "str | Path | None" = None,
 ) -> list[ValidationResult]:
     """Run the full four-layer validation pipeline on a patch.
 
@@ -94,14 +91,10 @@ def validate_patch(
         patch: Either a Patcher instance or a raw dict in .maxpat format.
         db: ObjectDatabase for lookups. If *patch* is a Patcher instance
             and *db* is None, the Patcher's own db is used.
-        patch_dir: Optional directory containing the patch file. When
-            provided, enables external .gendsp I/O validation for gen~
-            boxes using ``@gen filename.gendsp``.
 
     Returns:
         Combined list of ValidationResult from all layers.
     """
-    from pathlib import Path as _Path
     # Import here to avoid circular imports at module level
     from src.maxpat.patcher import Patcher as PatcherClass
 
@@ -116,9 +109,6 @@ def validate_patch(
     if db is None:
         db = ObjectDatabase()
 
-    # Normalize patch_dir to Path if provided
-    _patch_dir = _Path(patch_dir) if patch_dir is not None else None
-
     results: list[ValidationResult] = []
 
     # Layer 1: JSON structure
@@ -130,11 +120,14 @@ def validate_patch(
     # Layer 2: Object existence
     results.extend(_validate_objects_exist(patch_dict, db))
 
+    # Layer 2b: Maxclass usage (non-UI objects should use "newobj")
+    results.extend(_validate_maxclass_usage(patch_dict))
+
     # Layer 3: Connection bounds and signal types (mutates lines in-place)
     results.extend(_validate_connections(patch_dict, db))
 
     # Layer 4: Domain-specific rules
-    results.extend(_validate_domain_rules(patch_dict, db, _patch_dir))
+    results.extend(_validate_domain_rules(patch_dict, db))
 
     return results
 
@@ -244,6 +237,47 @@ def _validate_objects_exist(
                 "objects", "warning",
                 f"Unknown object: '{name}' -- not in database",
             ))
+
+    return results
+
+
+def _validate_maxclass_usage(patch_dict: dict) -> list[ValidationResult]:
+    """Check that non-UI objects use maxclass='newobj', not their own name.
+
+    Objects whose maxclass is neither 'newobj' nor a known UI maxclass are
+    likely authored with incorrect maxclass values. For example, a box with
+    maxclass='cycle~' instead of maxclass='newobj' with text='cycle~' will
+    not work correctly in MAX.
+
+    Skips structural maxclasses (inlet, outlet, patcher, bpatcher).
+    Emits warnings (not errors) since third-party patches may have custom
+    maxclasses.
+    """
+    results: list[ValidationResult] = []
+
+    for box_entry in patch_dict["patcher"]["boxes"]:
+        box = box_entry.get("box", {})
+        maxclass = box.get("maxclass", "")
+
+        # Skip structural maxclasses
+        if maxclass in _STRUCTURAL_MAXCLASSES:
+            continue
+
+        # newobj is always correct for non-UI objects
+        if maxclass == "newobj":
+            continue
+
+        # Known UI maxclasses are correct when used as their own maxclass
+        if maxclass in UI_MAXCLASSES:
+            continue
+
+        # Non-UI, non-structural maxclass that isn't newobj -- flag it
+        name = _extract_object_name(box) or maxclass
+        results.append(ValidationResult(
+            "objects", "warning",
+            f"Object '{name}' uses maxclass '{maxclass}' instead of "
+            f"'newobj' -- non-UI objects should use maxclass='newobj'",
+        ))
 
     return results
 
@@ -417,7 +451,6 @@ def _inlet_accepts_signal(box_dict: dict, inlet_idx: int, db: ObjectDatabase) ->
 def _validate_domain_rules(
     patch_dict: dict,
     db: ObjectDatabase,
-    patch_dir: "Path | None" = None,
 ) -> list[ValidationResult]:
     """Check domain-specific rules for MSP signal chains."""
     results: list[ValidationResult] = []
@@ -457,7 +490,7 @@ def _validate_domain_rules(
         src_outlettype = src_box.get("outlettype", [])
         is_signal = (
             src_outlet < len(src_outlettype)
-            and src_outlettype[src_outlet] in ("signal", "multichannelsignal")
+            and src_outlettype[src_outlet] == "signal"
         )
 
         if is_signal:
@@ -485,7 +518,7 @@ def _validate_domain_rules(
         src_outlettype = src_box.get("outlettype", [])
         is_sig = (
             src_outlet < len(src_outlettype)
-            and src_outlettype[src_outlet] in ("signal", "multichannelsignal")
+            and src_outlettype[src_outlet] == "signal"
         )
         if not is_sig:
             ctrl_adj[src_id].append(dst_id)
@@ -529,11 +562,18 @@ def _validate_domain_rules(
     # --- Rule: Assistance comments ---
     results.extend(_check_assistance_comments(box_lookup))
 
-    # --- Rule: External .gendsp I/O validation ---
-    if patch_dir is not None:
-        results.extend(_check_external_gendsp_io(box_lookup, patch_dir))
-
     return results
+
+
+def _get_box_name(box_dict: dict) -> str:
+    """Get the object name from a box dict."""
+    maxclass = box_dict.get("maxclass", "")
+    if maxclass == "newobj":
+        text = box_dict.get("text", "")
+        if text:
+            return text.split()[0]
+        return ""
+    return maxclass
 
 
 # Pattern matching compound #N usage: text containing #N preceded or followed
@@ -585,7 +625,7 @@ def _check_unterminated_chains(
     results: list[ValidationResult] = []
 
     for box_id, box in box_lookup.items():
-        name = get_box_name(box)
+        name = _get_box_name(box)
 
         # Only check MSP objects (name ends with ~)
         if not name.endswith("~"):
@@ -597,9 +637,7 @@ def _check_unterminated_chains(
 
         # Check if this object has signal outlets
         outlettype = box.get("outlettype", [])
-        has_signal_outlet = any(
-            ot in ("signal", "multichannelsignal") for ot in outlettype
-        )
+        has_signal_outlet = any(ot == "signal" for ot in outlettype)
         if not has_signal_outlet:
             continue
 
@@ -630,13 +668,13 @@ def _check_gain_staging(
     # Find all oscillator box ids
     osc_ids = []
     for box_id, box in box_lookup.items():
-        name = get_box_name(box)
+        name = _get_box_name(box)
         if name in _OSCILLATOR_NAMES:
             osc_ids.append(box_id)
 
     # For each oscillator, BFS to see if it reaches dac~/ezdac~ without gain
     for osc_id in osc_ids:
-        osc_name = get_box_name(box_lookup[osc_id])
+        osc_name = _get_box_name(box_lookup[osc_id])
         # BFS: track (current_id, passed_through_gain)
         from collections import deque
         queue = deque([(osc_id, False)])
@@ -652,7 +690,7 @@ def _check_gain_staging(
                 next_box = box_lookup.get(next_id)
                 if not next_box:
                     continue
-                next_name = get_box_name(next_box)
+                next_name = _get_box_name(next_box)
 
                 next_has_gain = has_gain or (next_name in _GAIN_NAMES)
 
@@ -684,7 +722,7 @@ def _check_unsafe_gain_values(
     results: list[ValidationResult] = []
 
     for box_id, box in box_lookup.items():
-        name = get_box_name(box)
+        name = _get_box_name(box)
         if name != "*~":
             continue
 
@@ -762,12 +800,12 @@ def _check_feedback_loops(
         reported_cycles.add(cycle_key)
 
         # Check if cycle contains delay objects
-        cycle_names = [get_box_name(box_lookup[bid]) for bid in cycle if bid in box_lookup]
+        cycle_names = [_get_box_name(box_lookup[bid]) for bid in cycle if bid in box_lookup]
         has_delay = any(name in _DELAY_NAMES for name in cycle_names)
 
         if not has_delay:
             node_desc = ", ".join(
-                f"{get_box_name(box_lookup.get(bid, {}))} ({bid})"
+                f"{_get_box_name(box_lookup.get(bid, {}))} ({bid})"
                 for bid in cycle
             )
             results.append(ValidationResult(
@@ -850,7 +888,7 @@ def _check_gen_param_message_syntax(
             dst_box = box_lookup.get(dst_id)
             if not dst_box:
                 continue
-            dst_name = get_box_name(dst_box)
+            dst_name = _get_box_name(dst_box)
             if dst_name == "gen~":
                 results.append(ValidationResult(
                     "domain", "warning",
@@ -900,7 +938,7 @@ def _check_line_tilde_comma_messages(
             dst_box = box_lookup.get(dst_id)
             if not dst_box:
                 continue
-            dst_name = get_box_name(dst_box)
+            dst_name = _get_box_name(dst_box)
             if dst_name == "line~":
                 results.append(ValidationResult(
                     "domain", "warning",
@@ -977,112 +1015,6 @@ def _check_assistance_comments(
             results.append(ValidationResult(
                 "domain", "info",
                 f"{maxclass} missing assistance comment (tooltip) ({box_id})",
-            ))
-
-    return results
-
-
-# ---------------------------------------------------------------------------
-# External .gendsp I/O validation
-# ---------------------------------------------------------------------------
-
-_GEN_ATTR_PATTERN = _re.compile(r'gen~\s+@gen\s+(\S+\.gendsp)')
-
-
-def _check_external_gendsp_io(
-    box_lookup: dict[str, dict],
-    patch_dir: "Path",
-) -> list[ValidationResult]:
-    """Validate gen~ @gen .gendsp file I/O counts against the gen~ box.
-
-    For each gen~ box referencing an external .gendsp via ``@gen``, loads
-    the .gendsp JSON, counts ``in N`` and ``out N`` objects, and compares
-    to the gen~ box's numinlets/numoutlets.
-    """
-    import json as _json
-    from pathlib import Path as _Path
-
-    results: list[ValidationResult] = []
-
-    for box_id, box in box_lookup.items():
-        if box.get("maxclass") != "newobj":
-            continue
-        text = box.get("text", "")
-        m = _GEN_ATTR_PATTERN.search(text)
-        if not m:
-            continue
-
-        filename = m.group(1)
-        gendsp_path = _Path(patch_dir) / filename
-
-        if not gendsp_path.exists():
-            results.append(ValidationResult(
-                "domain", "info",
-                f"External .gendsp file '{filename}' not found at "
-                f"{gendsp_path} -- cannot validate I/O ({box_id})",
-            ))
-            continue
-
-        # Load and parse the .gendsp JSON
-        try:
-            gendsp_data = _json.loads(gendsp_path.read_text())
-        except (_json.JSONDecodeError, OSError):
-            results.append(ValidationResult(
-                "domain", "info",
-                f"Could not parse .gendsp file '{filename}' ({box_id})",
-            ))
-            continue
-
-        # Count in/out objects in the .gendsp patcher
-        gendsp_boxes = gendsp_data.get("patcher", {}).get("boxes", [])
-        gendsp_inputs = 0
-        gendsp_outputs = 0
-        io_pattern = _re.compile(r'^(in|out)\s+\d+$')
-
-        for entry in gendsp_boxes:
-            inner_box = entry.get("box", {})
-            if inner_box.get("maxclass") != "newobj":
-                continue
-            inner_text = inner_box.get("text", "")
-            if io_pattern.match(inner_text):
-                if inner_text.startswith("in "):
-                    gendsp_inputs += 1
-                elif inner_text.startswith("out "):
-                    gendsp_outputs += 1
-
-        box_numinlets = box.get("numinlets", 0)
-        box_numoutlets = box.get("numoutlets", 0)
-
-        # Check input mismatch
-        if gendsp_inputs > box_numinlets:
-            results.append(ValidationResult(
-                "domain", "warning",
-                f"gen~ I/O mismatch: .gendsp '{filename}' has {gendsp_inputs} "
-                f"input(s) but gen~ box ({box_id}) has {box_numinlets} "
-                f"inlet(s)",
-            ))
-        elif gendsp_inputs < box_numinlets and gendsp_inputs > 0:
-            results.append(ValidationResult(
-                "domain", "warning",
-                f"gen~ I/O mismatch: gen~ box ({box_id}) has {box_numinlets} "
-                f"inlet(s) but .gendsp '{filename}' only defines "
-                f"{gendsp_inputs} input(s)",
-            ))
-
-        # Check output mismatch
-        if gendsp_outputs > box_numoutlets:
-            results.append(ValidationResult(
-                "domain", "warning",
-                f"gen~ I/O mismatch: .gendsp '{filename}' has {gendsp_outputs} "
-                f"output(s) but gen~ box ({box_id}) has {box_numoutlets} "
-                f"outlet(s)",
-            ))
-        elif gendsp_outputs < box_numoutlets and gendsp_outputs > 0:
-            results.append(ValidationResult(
-                "domain", "warning",
-                f"gen~ I/O mismatch: gen~ box ({box_id}) has {box_numoutlets} "
-                f"outlet(s) but .gendsp '{filename}' only defines "
-                f"{gendsp_outputs} output(s)",
             ))
 
     return results
