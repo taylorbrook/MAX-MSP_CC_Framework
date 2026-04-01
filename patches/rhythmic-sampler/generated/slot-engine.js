@@ -1,10 +1,10 @@
 // slot-engine.js
 // Slice position computer for rhythmic-sampler slot bpatcher.
-// Queries buffer length directly via js Buffer API (no info~ needed).
+// Buffer length is received from info~ on inlet 1 (float).
 //
 // inlets:
 //   0: int (step/slice index from counter)
-//   1: symbol (buffer name, e.g. "setbuffer slot-1")
+//   1: float (buffer duration ms from info~) or symbol (setbuffer name)
 //   2: int (number of slices)
 //   3: float (start offset percentage, 0-100)
 //
@@ -16,28 +16,12 @@ autowatch = 1;
 inlets = 4;
 outlets = 2;
 
-var buf = null;
 var bufferLength = 0;
 var numSlices = 16;
 var startOffsetPct = 0;
 
-function getBufferLengthMs() {
-	if (!buf) return 0;
-	// Try property access first (MAX 9 js Buffer.length returns ms)
-	var len = buf.length;
-	if (typeof len === "number" && len > 0) return len;
-	// Fallback: compute from framecount and samplerate
-	var fc = buf.framecount;
-	var sr = buf.samplerate;
-	if (fc > 0 && sr > 0) return fc / sr * 1000;
-	return 0;
-}
-
 function msg_int(v) {
 	if (inlet === 0) {
-		// Refresh buffer length each step (handles re-loads)
-		var len = getBufferLengthMs();
-		if (len > 0) bufferLength = len;
 		// Compute slice boundaries
 		if (bufferLength > 0 && numSlices > 0) {
 			var sliceIndex = v % numSlices;
@@ -49,6 +33,8 @@ function msg_int(v) {
 			outlet(1, endMs);
 			outlet(0, startMs);
 		}
+	} else if (inlet === 1) {
+		if (v > 0) bufferLength = v;
 	} else if (inlet === 2) {
 		numSlices = Math.max(1, v);
 	} else if (inlet === 3) {
@@ -59,6 +45,12 @@ function msg_int(v) {
 function msg_float(v) {
 	if (inlet === 0) {
 		msg_int(Math.floor(v));
+	} else if (inlet === 1) {
+		// Buffer duration in ms from info~
+		if (v > 0) {
+			bufferLength = v;
+			post("slot-engine: buffer length " + bufferLength + " ms\n");
+		}
 	} else if (inlet === 2) {
 		numSlices = Math.max(1, Math.floor(v));
 	} else if (inlet === 3) {
@@ -66,26 +58,16 @@ function msg_float(v) {
 	}
 }
 
-function setbuffer(name) {
-	buf = new Buffer(name);
-	bufferLength = getBufferLengthMs();
-	post("slot-engine: buffer set to " + name + " (" + bufferLength + " ms)\n");
-}
-
 function anything() {
-	// Handle messages on inlet 1 (buffer name)
 	if (inlet === 1) {
 		var name = messagename;
 		if (name === "setbuffer" && arguments.length > 0) {
-			setbuffer(arguments[0]);
-		} else if (name !== "float" && name !== "int" && name !== "bang") {
-			// Treat as buffer name directly
-			setbuffer(name);
+			// Just acknowledge buffer name, length comes from info~
+			post("slot-engine: buffer name " + arguments[0] + "\n");
 		}
 	}
 }
 
 function reset() {
 	bufferLength = 0;
-	buf = null;
 }
