@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260401-l3t-PLAN.md
-last_updated: "2026-04-01T22:15:44.965Z"
-last_activity: "2026-04-01 - Completed quick task 260401-l3t: Clean object DB: add missing aliases, remove non-real entries, normalize case mismatches"
+stopped_at: Completed quick-260401-lak-PLAN.md
+last_updated: "2026-04-01T22:27:05.551Z"
+last_activity: "2026-04-01 - Completed quick task 260401-jyk: Audit objects database and overrides for correctness"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -151,6 +151,7 @@ Recent decisions for v2.0:
 - [Phase quick-260401-jyk]: Audit-only task: 41 phantom overrides, 116 I/O corrections, 2 missing aliases (v->value, del->delay), 195 metadata-only entries identified
 - [Phase quick-260401-l3t]: Bucket/Uzi overrides renamed to lowercase to match domain JSON convention
 - [Phase quick-260401-l3t]: 5 non-object override entries removed (!, 1, 2, >p, ?) -- patch metadata artifacts
+- [Phase quick-260401-lak]: maxclass=newobj for all 21 objects; I/O data from overrides.json _domain_other
 
 ### Pending Todos
 
@@ -209,6 +210,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-01T22:15:44.886Z
-Stopped at: Completed quick-260401-l3t-PLAN.md
+Last session: 2026-04-01T22:27:05.522Z
+Stopped at: Completed quick-260401-lak-PLAN.md
 Resume file: None
