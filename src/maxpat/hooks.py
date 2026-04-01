@@ -25,6 +25,33 @@ if TYPE_CHECKING:
     from src.maxpat.patcher import Patcher
 
 
+def _auto_commit_saved_file(path: Path) -> None:
+    """Auto-commit a saved file to git to prevent work loss.
+
+    Walks up the path to find the project directory (patches/{name}/)
+    and commits the file using auto_commit_patch.  Silently skips if
+    the path is not inside a patches/ tree or if git is unavailable.
+    """
+    try:
+        from src.maxpat.project import auto_commit_patch
+
+        patch_path = Path(path)
+        parts = list(patch_path.parts)
+        if "patches" in parts:
+            patches_idx = parts.index("patches")
+            if len(parts) > patches_idx + 1:
+                project_dir = Path(*parts[: patches_idx + 2])
+                base_dir = Path(*parts[:patches_idx])
+                auto_commit_patch(
+                    project_dir,
+                    base_dir,
+                    description=f"save {patch_path.name}",
+                    files=[str(path)],
+                )
+    except Exception:
+        pass  # Never let commit failure block patch save
+
+
 def _write_and_sync(path: Path, content: str) -> None:
     """Write content to file and fsync to ensure Finder/MAX see changes."""
     with open(path, "w", encoding="utf-8") as f:
@@ -136,6 +163,9 @@ def save_patch_roundtrip(
     path.parent.mkdir(parents=True, exist_ok=True)
     _write_and_sync(path, output)
 
+    # Auto-commit to git to prevent work loss
+    _auto_commit_saved_file(path)
+
 
 def read_patch(path: "str | Path") -> tuple["Patcher", str]:
     """Load a .maxpat file into a Patcher ready for querying and editing.
@@ -203,6 +233,9 @@ def write_gendsp(
 
     # Write JSON with readable formatting
     _write_and_sync(path, json.dumps(gendsp_dict, indent=2))
+
+    # Auto-commit to git to prevent work loss
+    _auto_commit_saved_file(path)
 
     return gendsp_dict
 
@@ -340,6 +373,9 @@ def write_js(
 
     # Write the file first (never blocked by validation)
     _write_and_sync(path, code)
+
+    # Auto-commit to git to prevent work loss
+    _auto_commit_saved_file(path)
 
     # Run validation on the written file
     return validate_code_file(path)

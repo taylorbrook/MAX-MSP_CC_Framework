@@ -219,7 +219,8 @@ def get_version(project_dir: Path) -> str | None:
 
 
 def bump_version(
-    project_dir: Path, bump: str = "patch", description: str = ""
+    project_dir: Path, bump: str = "patch", description: str = "",
+    files_changed: list[str] | None = None,
 ) -> str:
     """Increment the project version and record the change.
 
@@ -258,15 +259,97 @@ def bump_version(
         parts = [parts[0], parts[1], parts[2] + 1]
 
     new_version = ".".join(str(p) for p in parts)
-    data["versions"].append(
-        {
-            "version": new_version,
-            "description": description,
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-        }
-    )
+    entry = {
+        "version": new_version,
+        "description": description,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+    if files_changed:
+        entry["files_changed"] = files_changed
+    data["versions"].append(entry)
     versions_file.write_text(json.dumps(data, indent=2) + "\n")
     return new_version
+
+
+def auto_commit_patch(
+    project_dir: Path,
+    base_dir: Path,
+    description: str = "",
+    files: list[str] | None = None,
+) -> str | None:
+    """Auto-commit patch project files to git after a save operation.
+
+    Commits only the specific files within the project's directory (and any
+    explicitly listed extra files) to avoid interfering with other Claude
+    instances working on different patches.
+
+    Args:
+        project_dir: Path to the project directory (e.g., patches/gen-eq/).
+        base_dir: Root directory of the repo (for running git commands).
+        description: Human-readable description of the change.
+        files: Optional explicit list of file paths to stage (relative to base_dir).
+            If None, stages all changed files under project_dir/.
+
+    Returns:
+        The commit hash string, or None if nothing to commit or git fails.
+    """
+    import subprocess
+
+    try:
+        if files:
+            # Stage only the specific files listed
+            for f in files:
+                subprocess.run(
+                    ["git", "add", str(f)],
+                    cwd=str(base_dir),
+                    capture_output=True,
+                    timeout=10,
+                )
+        else:
+            # Stage all changed files under the project directory
+            rel_project = project_dir.relative_to(base_dir)
+            subprocess.run(
+                ["git", "add", str(rel_project)],
+                cwd=str(base_dir),
+                capture_output=True,
+                timeout=10,
+            )
+
+        # Check if there are staged changes
+        result = subprocess.run(
+            ["git", "diff", "--cached", "--quiet"],
+            cwd=str(base_dir),
+            capture_output=True,
+            timeout=10,
+        )
+        if result.returncode == 0:
+            return None  # Nothing staged
+
+        # Build commit message
+        project_name = project_dir.name
+        msg = f"patch({project_name}): {description}" if description else f"patch({project_name}): auto-save"
+
+        result = subprocess.run(
+            ["git", "commit", "-m", msg],
+            cwd=str(base_dir),
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if result.returncode == 0:
+            # Extract commit hash
+            hash_result = subprocess.run(
+                ["git", "rev-parse", "--short", "HEAD"],
+                cwd=str(base_dir),
+                capture_output=True,
+                text=True,
+                timeout=10,
+            )
+            return hash_result.stdout.strip() if hash_result.returncode == 0 else "unknown"
+        return None
+    except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        # Git not available or timed out -- silently skip
+        return None
 
 
 def list_versions(project_dir: Path) -> list[dict]:
