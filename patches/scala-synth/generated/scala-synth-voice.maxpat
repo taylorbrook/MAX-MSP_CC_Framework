@@ -617,6 +617,24 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-28",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        550.0,
+                        10.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "v1.0.0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
