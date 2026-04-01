@@ -5,7 +5,7 @@ milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260401-j8z-PLAN.md
 last_updated: "2026-04-01T20:57:14.198Z"
-last_activity: "2026-04-01 - Completed quick task 260331-w95: Update README and TECHNICAL.md for v2.3 release"
+last_activity: "2026-04-01 - Completed quick task 260401-j8z: Fix info~ object outlets in MSP database"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-04-01 - Completed quick task 260331-w95: Update README and TECHNICAL.md for v2.3 release
+Last activity: 2026-04-01 - Completed quick task 260401-j8z: Fix info~ object outlets in MSP database
 
 Progress: [██████████] 100%
 
