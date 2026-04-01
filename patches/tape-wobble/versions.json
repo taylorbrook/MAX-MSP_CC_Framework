@@ -1,0 +1,14 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-04-01T20:44:49.247173+00:00"
+    },
+    {
+      "version": "1.0.0",
+      "description": "Stereo tape wobble with gen~ DSP engine, three-layer modulation, saturation, EQ, and live.scope~ visualization",
+      "timestamp": "2026-04-01T23:00:00.000000+00:00"
+    }
+  ]
+}
