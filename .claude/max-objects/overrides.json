@@ -3043,13 +3043,6 @@
       ],
       "_note": "Outlet 0 is signal, outlet 1 is control."
     },
-    "multislider": {
-      "outlets": [
-        {"id": 0, "type": "", "signal": false, "digest": "Slider values from direct interaction or set messages"},
-        {"id": 1, "type": "", "signal": false, "digest": "Slider value from fetch message (use 'fetch [index]', NOT 'fetchindex')"}
-      ],
-      "_note": "The message to read a value by index is 'fetch [index]' (not 'fetchindex'). Fetched values are output from outlet 1 (RIGHT), not outlet 0. Outlet 0 is for direct editing/interaction output."
-    },
     "stretch~": {
       "outlets": [
         {

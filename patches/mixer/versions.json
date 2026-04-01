@@ -74,11 +74,6 @@
       "version": "0.2.1",
       "description": "fix mute click, sends routing, and layout overlap",
       "timestamp": "2026-03-21T11:51:37.496374+00:00"
-    },
-    {
-      "version": "0.2.2",
-      "description": "fix bpatcher duplication on load",
-      "timestamp": "2026-03-22T17:21:56.513169+00:00"
     }
   ]
 }
