@@ -109,15 +109,6 @@
       "files_changed": [
         "slot.maxpat"
       ]
-    },
-    {
-      "version": "0.2.16",
-      "description": "feed info~ duration to js; remove direct dial->groove chain",
-      "timestamp": "2026-04-01T19:05:26.374102+00:00",
-      "files_changed": [
-        "slot.maxpat",
-        "slot-engine.js"
-      ]
     }
   ]
 }
