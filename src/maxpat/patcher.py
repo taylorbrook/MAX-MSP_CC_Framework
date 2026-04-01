@@ -1294,6 +1294,34 @@ class Patcher(GraphMixin, AnalysisMixin):
             return False
         return True
 
+    def get_inlets(self) -> list[Box]:
+        """Return all inlet objects in this patcher, sorted left-to-right.
+
+        Used to find inlet objects inside subpatchers for connecting to them.
+        All inlet objects have identical text="inlet", so they cannot be
+        distinguished by text -- use list index instead.
+
+        Returns:
+            List of inlet Box objects sorted by x-position (leftmost first).
+        """
+        inlets = [b for b in self.boxes if b.maxclass == "inlet"]
+        inlets.sort(key=lambda b: b.patching_rect[0])
+        return inlets
+
+    def get_outlets(self) -> list[Box]:
+        """Return all outlet objects in this patcher, sorted left-to-right.
+
+        Used to find outlet objects inside subpatchers for connecting from them.
+        All outlet objects have identical text="outlet", so they cannot be
+        distinguished by text -- use list index instead.
+
+        Returns:
+            List of outlet Box objects sorted by x-position (leftmost first).
+        """
+        outlets = [b for b in self.boxes if b.maxclass == "outlet"]
+        outlets.sort(key=lambda b: b.patching_rect[0])
+        return outlets
+
     def add_subpatcher(
         self,
         name: str,
@@ -1575,7 +1603,10 @@ class Patcher(GraphMixin, AnalysisMixin):
         Returns:
             (parent_box, inner_patcher) tuple.
         """
-        from src.maxpat.codegen import parse_genexpr_io
+        from src.maxpat.codegen import parse_genexpr_io, reorder_genexpr_declarations
+
+        # Auto-fix declaration ordering (Param/History/Delay must precede expressions)
+        code = reorder_genexpr_declarations(code)
 
         # Auto-detect I/O from code if not specified
         if num_inputs is None or num_outputs is None:
@@ -1584,6 +1615,13 @@ class Patcher(GraphMixin, AnalysisMixin):
                 num_inputs = detected_in
             if num_outputs is None:
                 num_outputs = detected_out
+
+        # Validate GenExpr as diagnostic (warn but don't block)
+        from src.maxpat.code_validation import validate_genexpr
+        for result in validate_genexpr(code, db=self.db):
+            if result.level == "error":
+                import warnings
+                warnings.warn(f"GenExpr: {result.message}", stacklevel=2)
 
         box_id = self._gen_id()
 

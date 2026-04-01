@@ -7133,6 +7133,30 @@
         "source": "io_count_finding"
       }
     },
+    "live.scope~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Signal to display",
+          "hot": true
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Signal to display (overlay)",
+          "hot": true
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "manual_correction",
+        "note": "live.scope~ matches scope~ I/O: 2 signal inlets, 0 outlets"
+      }
+    },
     "_domain_rnbo": "--- RNBO Objects ---",
     "list.group": {
       "inlets": [

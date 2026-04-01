@@ -766,3 +766,98 @@ class TestHookIntegration:
 
         info = [r for r in results if r.level == "info"]
         assert any("1 input" in r.message and "1 output" in r.message for r in info)
+
+
+# ---------------------------------------------------------------------------
+# TestReorderDeclarations -- reorder_genexpr_declarations
+# ---------------------------------------------------------------------------
+
+class TestReorderDeclarations:
+    """Tests for GenExpr declaration reordering."""
+
+    def test_no_reorder_needed(self):
+        """Code already in correct order returns unchanged."""
+        from src.maxpat.codegen import reorder_genexpr_declarations
+
+        code = "Param freq(440, min=20, max=20000);\nHistory h(0);\n\nout1 = in1;\n"
+        result = reorder_genexpr_declarations(code)
+        assert result == code
+
+    def test_history_after_expression(self):
+        """History after expression gets moved before it."""
+        from src.maxpat.codegen import reorder_genexpr_declarations
+
+        code = "Param p(1, min=0, max=1);\npi = 3.14;\nHistory h(0);\nout1 = in1;\n"
+        result = reorder_genexpr_declarations(code)
+        lines = [l for l in result.split("\n") if l.strip()]
+        param_i = next(i for i, l in enumerate(lines) if l.strip().startswith("Param"))
+        hist_i = next(i for i, l in enumerate(lines) if l.strip().startswith("History"))
+        expr_i = next(i for i, l in enumerate(lines) if "pi = " in l)
+        assert param_i < hist_i < expr_i
+
+    def test_delay_after_expression(self):
+        """Delay after expression gets moved before it."""
+        from src.maxpat.codegen import reorder_genexpr_declarations
+
+        code = "x = in1;\nDelay d(4096);\nout1 = x;\n"
+        result = reorder_genexpr_declarations(code)
+        lines = [l for l in result.split("\n") if l.strip()]
+        delay_i = next(i for i, l in enumerate(lines) if l.strip().startswith("Delay"))
+        expr_i = next(i for i, l in enumerate(lines) if "x = " in l)
+        assert delay_i < expr_i
+
+    def test_grouping_order(self):
+        """Declarations grouped: Param first, then History, then Delay."""
+        from src.maxpat.codegen import reorder_genexpr_declarations
+
+        code = "x = 1;\nDelay d(4096);\nHistory h(0);\nParam p(1, min=0, max=1);\nout1 = x;\n"
+        result = reorder_genexpr_declarations(code)
+        lines = [l for l in result.split("\n") if l.strip()]
+        param_i = next(i for i, l in enumerate(lines) if l.strip().startswith("Param"))
+        hist_i = next(i for i, l in enumerate(lines) if l.strip().startswith("History"))
+        delay_i = next(i for i, l in enumerate(lines) if l.strip().startswith("Delay"))
+        assert param_i < hist_i < delay_i
+
+    def test_preserves_comments(self):
+        """Comments in expression section are preserved."""
+        from src.maxpat.codegen import reorder_genexpr_declarations
+
+        code = "Param p(1, min=0, max=1);\n// Process\nx = in1;\nHistory h(0);\nout1 = x;\n"
+        result = reorder_genexpr_declarations(code)
+        assert "// Process" in result
+
+    def test_tape_wobble_scenario(self):
+        """Reproduces the tape-wobble failure: declarations interleaved with expressions."""
+        from src.maxpat.codegen import reorder_genexpr_declarations
+
+        code = (
+            "Param wow_rate(2, min=0.1, max=6);\n"
+            "Param wow_depth(0.3, min=0, max=1);\n"
+            "\n"
+            "pi = 3.14159;\n"
+            "twopi = 2.0 * pi;\n"
+            "\n"
+            "History ou_L(0);\n"
+            "History ou_R(0.1);\n"
+            "Delay del_L(4096);\n"
+            "Delay del_R(4096);\n"
+            "\n"
+            "out1 = in1;\n"
+            "out2 = in2;\n"
+        )
+        result = reorder_genexpr_declarations(code)
+
+        # Verify all declarations come before any expression
+        decl_prefixes = ("Param ", "History ", "Delay ")
+        last_decl = -1
+        first_expr = -1
+        for i, line in enumerate(result.split("\n")):
+            s = line.strip()
+            if not s or s.startswith("//"):
+                continue
+            if any(s.startswith(p) for p in decl_prefixes):
+                last_decl = i
+            elif "=" in s and first_expr < 0:
+                first_expr = i
+
+        assert first_expr > last_decl

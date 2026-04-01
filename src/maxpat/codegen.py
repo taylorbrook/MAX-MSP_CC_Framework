@@ -87,6 +87,85 @@ def build_genexpr(
     return "\n\n".join(sections) + "\n"
 
 
+_DECL_PREFIXES = ("Param ", "History ", "Delay ", "Buffer ", "Data ")
+_TYPE_ORDER = {"Param": 0, "History": 1, "Delay": 2, "Buffer": 3, "Data": 3}
+
+
+def reorder_genexpr_declarations(code: str) -> str:
+    """Reorder GenExpr code so all declarations precede expressions.
+
+    GenExpr requires Param, History, Delay, Buffer, and Data declarations
+    to appear before any expression or assignment. This function extracts
+    all declaration lines (with associated preceding comments) and moves
+    them to the top, grouped by type: Param, then History, then Delay,
+    then Buffer/Data.
+
+    If no reordering is needed, returns the original code unchanged.
+
+    Args:
+        code: GenExpr source code string.
+
+    Returns:
+        Reordered GenExpr code string.
+    """
+    lines = code.split("\n")
+
+    # Quick check: is reordering actually needed?
+    first_expr_line = -1
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("//") or stripped.startswith("#"):
+            continue
+        is_decl = any(stripped.startswith(p) for p in _DECL_PREFIXES)
+        is_expr = not is_decl and ("=" in stripped or re.search(r"\w+\.\w+\(", stripped))
+        if is_decl and first_expr_line >= 0:
+            break  # found a declaration after an expression — needs reorder
+        if is_expr and first_expr_line < 0:
+            first_expr_line = i
+    else:
+        # Loop completed without break — no declaration after expression
+        return code
+
+    # Extract declarations (with preceding comments) into type groups
+    decl_groups: dict[int, list[str]] = {0: [], 1: [], 2: [], 3: []}
+    remaining: list[str] = []
+
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+
+        # Identify declaration type
+        decl_type = None
+        for prefix in _DECL_PREFIXES:
+            if stripped.startswith(prefix):
+                decl_type = prefix.strip()
+                break
+
+        if decl_type is not None:
+            group = _TYPE_ORDER[decl_type]
+            # Pull directly-preceding comment lines from remaining
+            associated: list[str] = []
+            while remaining and remaining[-1].strip().startswith("//"):
+                associated.insert(0, remaining.pop())
+            decl_groups[group].extend(associated)
+            decl_groups[group].append(line)
+        else:
+            remaining.append(line)
+
+    # Reassemble: declarations first (grouped), then remaining code
+    output: list[str] = []
+    for gid in sorted(decl_groups.keys()):
+        if decl_groups[gid]:
+            output.extend(decl_groups[gid])
+
+    # Ensure blank line separator between declarations and code
+    if output and remaining:
+        if output[-1].strip() and remaining[0].strip():
+            output.append("")
+
+    output.extend(remaining)
+    return "\n".join(output)
+
+
 def generate_gendsp(
     code: str,
     num_inputs: int | None = None,

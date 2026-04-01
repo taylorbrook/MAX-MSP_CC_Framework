@@ -136,6 +136,20 @@ Every patch save MUST be committed to git. The `save_patch_roundtrip()`, `write_
 - Gen~ operates at sample rate -- every operation runs once per sample
 - No conditional branching cost -- both branches always execute (SIMD-friendly)
 - Codebox objects embed GenExpr in `.maxpat` patches; `.gendsp` files are standalone Gen~ patchers
+- **Declaration ordering**: ALL declarations (`Param`, `History`, `Delay`, `Buffer`, `Data`) MUST appear before ANY expressions or assignments. gen~ will refuse to compile code with declarations after expressions. The `add_gen()` method auto-reorders declarations, but always write code with declarations at the top: Params first, then Delay, then History, then Buffer/Data, then all expressions.
+
+### Subpatcher Inlet/Outlet Access
+
+When connecting to inlet/outlet objects inside a subpatcher created by `add_subpatcher()`, use `get_inlets()` / `get_outlets()` to access them by index. Do NOT search by `box.text` -- all inlet objects have identical text `"inlet"` and all outlet objects have identical text `"outlet"`.
+
+```python
+_, inner = p.add_subpatcher("control", inlets=4, outlets=2)
+inlets = inner.get_inlets()   # [inlet_0, inlet_1, inlet_2, inlet_3]
+outlets = inner.get_outlets()  # [outlet_0, outlet_1]
+
+# Connect to the third inlet (index 2)
+inner.add_connection(some_box, 0, inlets[2], 0)
+```
 
 ### RNBO (Export-Ready Patches)
 

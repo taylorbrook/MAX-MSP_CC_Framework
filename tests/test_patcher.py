@@ -1954,3 +1954,75 @@ class TestConnectedComponents:
         assert len(result[0]) == 3  # largest first
         assert len(result[1]) == 2
         assert len(result[2]) == 1
+
+
+# ---------------------------------------------------------------------------
+# TestSubpatcherInletHelpers
+# ---------------------------------------------------------------------------
+
+class TestSubpatcherInletHelpers:
+    """Tests for get_inlets() and get_outlets() helpers."""
+
+    def test_get_inlets_returns_inlet_boxes(self):
+        from src.maxpat import Patcher
+        p = Patcher()
+        _, inner = p.add_subpatcher("sub", inlets=3, outlets=1)
+        inlets = inner.get_inlets()
+        assert len(inlets) == 3
+        assert all(b.maxclass == "inlet" for b in inlets)
+
+    def test_get_outlets_returns_outlet_boxes(self):
+        from src.maxpat import Patcher
+        p = Patcher()
+        _, inner = p.add_subpatcher("sub", inlets=1, outlets=2)
+        outlets = inner.get_outlets()
+        assert len(outlets) == 2
+        assert all(b.maxclass == "outlet" for b in outlets)
+
+    def test_get_inlets_sorted_by_x(self):
+        from src.maxpat import Patcher
+        p = Patcher()
+        _, inner = p.add_subpatcher("sub", inlets=4, outlets=1)
+        inlets = inner.get_inlets()
+        xs = [b.patching_rect[0] for b in inlets]
+        assert xs == sorted(xs)
+
+    def test_get_inlets_empty_for_no_inlets(self):
+        from src.maxpat import Patcher
+        p = Patcher()
+        _, inner = p.add_subpatcher("sub", inlets=0, outlets=1)
+        assert inner.get_inlets() == []
+
+    def test_get_inlets_connectable(self):
+        """Inlet boxes from get_inlets() can be wired with add_connection."""
+        from src.maxpat import Patcher
+        p = Patcher()
+        _, inner = p.add_subpatcher("sub", inlets=2, outlets=1)
+        mul = inner.add_box("*~", args=["0.5"])
+        inlets = inner.get_inlets()
+        inner.add_connection(inlets[0], 0, mul, 0)
+        assert len(inner.lines) == 1
+
+
+# ---------------------------------------------------------------------------
+# TestLiveScopeOverride
+# ---------------------------------------------------------------------------
+
+class TestLiveScopeOverride:
+    """Verify live.scope~ has correct I/O from override."""
+
+    def test_live_scope_has_signal_inlets(self):
+        from src.maxpat import Patcher
+        p = Patcher()
+        box = p.add_box("live.scope~")
+        assert box.numinlets == 2
+        assert box.numoutlets == 0
+
+    def test_live_scope_connectable(self):
+        """Can connect signal sources to live.scope~ inlets."""
+        from src.maxpat import Patcher
+        p = Patcher()
+        osc = p.add_box("cycle~", args=["440"])
+        scope = p.add_box("live.scope~")
+        p.add_connection(osc, 0, scope, 0)
+        assert len(p.lines) == 1
