@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260401-jyk-PLAN.md
-last_updated: "2026-04-01T21:31:37.042Z"
-last_activity: "2026-04-01 - Completed quick task 260401-jyk: Audit objects database and overrides for correctness"
+stopped_at: Completed quick-260401-l3t-PLAN.md
+last_updated: "2026-04-01T22:15:44.965Z"
+last_activity: "2026-04-01 - Completed quick task 260401-l3t: Clean object DB: add missing aliases, remove non-real entries, normalize case mismatches"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -67,6 +67,7 @@ Progress: [██████████] 100%
 | Phase quick-260331-vs8 P01 | 9min | 2 tasks | 5 files |
 | Phase quick-260331-w95 P01 | 3min | 2 tasks | 3 files |
 | Phase quick-260401-j8z P01 | 2min | 1 tasks | 2 files |
+| Phase quick-260401-l3t P01 | 1min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -148,6 +149,8 @@ Recent decisions for v2.0:
 - [Phase quick-260331-w95]: shared-capabilities.md z-order section was stale after user's 8feeebf fix; corrected to match CLAUDE.md and patcher.py
 - [Phase quick-260401-j8z]: get_outlet_types() returns maxpat-format strings (signal/''), not raw type fields; override includes _manual_original for audit trail
 - [Phase quick-260401-jyk]: Audit-only task: 41 phantom overrides, 116 I/O corrections, 2 missing aliases (v->value, del->delay), 195 metadata-only entries identified
+- [Phase quick-260401-l3t]: Bucket/Uzi overrides renamed to lowercase to match domain JSON convention
+- [Phase quick-260401-l3t]: 5 non-object override entries removed (!, 1, 2, >p, ?) -- patch metadata artifacts
 
 ### Pending Todos
 
@@ -195,6 +198,7 @@ None.
 | 260331-w95 | Update README and TECHNICAL.md for v2.3 release | 2026-04-01 | 0841a18 | Verified | [260331-w95-review-the-recent-updates-to-the-repo-an](./quick/260331-w95-review-the-recent-updates-to-the-repo-an/) |
 | 260401-j8z | Fix info~ object outlets in MSP database | 2026-04-01 | 7ea4d72 | | [260401-j8z-fix-info-object-outlets-in-msp-database-](./quick/260401-j8z-fix-info-object-outlets-in-msp-database-/) |
 | 260401-jyk | Audit objects database and overrides for correctness | 2026-04-01 | 268175a | Verified | [260401-jyk-audit-objects-database-and-overrides-for](./quick/260401-jyk-audit-objects-database-and-overrides-for/) |
+| 260401-l3t | Clean object DB: add missing aliases, remove non-real entries, normalize case mismatches | 2026-04-01 | a62bcd4 | | [260401-l3t-clean-object-db-add-missing-aliases-remo](./quick/260401-l3t-clean-object-db-add-missing-aliases-remo/) |
 
 ### Blockers/Concerns
 
@@ -205,6 +209,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-01T21:31:37.011Z
-Stopped at: Completed quick-260401-jyk-PLAN.md
+Last session: 2026-04-01T22:15:44.886Z
+Stopped at: Completed quick-260401-l3t-PLAN.md
 Resume file: None
