@@ -93,6 +93,14 @@
         "slot.maxpat",
         "slot-engine.js"
       ]
+    },
+    {
+      "version": "0.2.14",
+      "description": "fix Buffer length API and msg_float inlet routing in slot-engine.js",
+      "timestamp": "2026-04-01T18:49:36.179636+00:00",
+      "files_changed": [
+        "slot-engine.js"
+      ]
     }
   ]
 }

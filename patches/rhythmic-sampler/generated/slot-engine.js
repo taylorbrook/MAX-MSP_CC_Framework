@@ -21,13 +21,23 @@ var bufferLength = 0;
 var numSlices = 16;
 var startOffsetPct = 0;
 
+function getBufferLengthMs() {
+	if (!buf) return 0;
+	// Try property access first (MAX 9 js Buffer.length returns ms)
+	var len = buf.length;
+	if (typeof len === "number" && len > 0) return len;
+	// Fallback: compute from framecount and samplerate
+	var fc = buf.framecount;
+	var sr = buf.samplerate;
+	if (fc > 0 && sr > 0) return fc / sr * 1000;
+	return 0;
+}
+
 function msg_int(v) {
 	if (inlet === 0) {
 		// Refresh buffer length each step (handles re-loads)
-		if (buf) {
-			var len = buf.length;
-			if (len > 0) bufferLength = len;
-		}
+		var len = getBufferLengthMs();
+		if (len > 0) bufferLength = len;
 		// Compute slice boundaries
 		if (bufferLength > 0 && numSlices > 0) {
 			var sliceIndex = v % numSlices;
@@ -49,14 +59,16 @@ function msg_int(v) {
 function msg_float(v) {
 	if (inlet === 0) {
 		msg_int(Math.floor(v));
-	} else {
-		msg_int(v);
+	} else if (inlet === 2) {
+		numSlices = Math.max(1, Math.floor(v));
+	} else if (inlet === 3) {
+		startOffsetPct = Math.max(0, Math.min(100, v));
 	}
 }
 
 function setbuffer(name) {
 	buf = new Buffer(name);
-	bufferLength = buf.length;
+	bufferLength = getBufferLengthMs();
 	post("slot-engine: buffer set to " + name + " (" + bufferLength + " ms)\n");
 }
 
