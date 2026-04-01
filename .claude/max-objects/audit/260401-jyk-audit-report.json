@@ -1,0 +1,1131 @@
+{
+  "stats": {
+    "total_db_objects": 1672,
+    "unique_db_objects": 1672,
+    "total_overrides": 438,
+    "corrective_overrides": 243,
+    "metadata_only_overrides": 195,
+    "manual_overrides": 6,
+    "total_aliases": 10
+  },
+  "confidence_distribution": {
+    "MEDIUM": 30,
+    "HIGH": 384,
+    "HELP_PATCH": 6
+  },
+  "phantom_objects": {
+    "r": {
+      "category": "unresolved_alias",
+      "instances": 109,
+      "confidence": "HIGH"
+    },
+    "!": {
+      "category": "not_real_object",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "1": {
+      "category": "not_real_object",
+      "instances": 9,
+      "confidence": "HIGH"
+    },
+    "2": {
+      "category": "not_real_object",
+      "instances": 7,
+      "confidence": "HIGH"
+    },
+    ">p": {
+      "category": "not_real_object",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "?": {
+      "category": "not_real_object",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "Bucket": {
+      "category": "case_mismatch",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "M4L.api.ObserveTransport": {
+      "category": "m4l_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "M4L.api.ToggleTransport": {
+      "category": "m4l_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "Uzi": {
+      "category": "case_mismatch",
+      "instances": 13,
+      "confidence": "HIGH"
+    },
+    "array.at": {
+      "category": "likely_user_abstraction",
+      "instances": 2,
+      "confidence": "HIGH"
+    },
+    "del": {
+      "category": "possibly_missing_from_db",
+      "instances": 10,
+      "confidence": "HIGH"
+    },
+    "fswap": {
+      "category": "possibly_missing_from_db",
+      "instances": 4,
+      "confidence": "HIGH"
+    },
+    "jit.*": {
+      "category": "jitter_missing_from_db",
+      "instances": 2,
+      "confidence": "HIGH"
+    },
+    "jit.fx.rota": {
+      "category": "jitter_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "jit.gl.layer": {
+      "category": "jitter_missing_from_db",
+      "instances": 15,
+      "confidence": "HIGH"
+    },
+    "jit.gl.movie": {
+      "category": "jitter_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "jit.gl.pbr": {
+      "category": "jitter_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "jit.gl.polymovie": {
+      "category": "jitter_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "jit.mo.sin": {
+      "category": "jitter_missing_from_db",
+      "instances": 3,
+      "confidence": "HIGH"
+    },
+    "jit.time": {
+      "category": "jitter_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "jit.time.perlin": {
+      "category": "jitter_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "jit.time.saw": {
+      "category": "jitter_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "jit.time.sin": {
+      "category": "jitter_missing_from_db",
+      "instances": 2,
+      "confidence": "HIGH"
+    },
+    "mc.capture~": {
+      "category": "mc_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "mc.receive~": {
+      "category": "mc_missing_from_db",
+      "instances": 2,
+      "confidence": "HIGH"
+    },
+    "mc.send~": {
+      "category": "mc_missing_from_db",
+      "instances": 2,
+      "confidence": "HIGH"
+    },
+    "mc.sum~": {
+      "category": "mc_missing_from_db",
+      "instances": 2,
+      "confidence": "HIGH"
+    },
+    "mcp.record~": {
+      "category": "mc_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "mcs.loudness~": {
+      "category": "mc_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "mcs.sfizz~": {
+      "category": "mc_missing_from_db",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "pan2": {
+      "category": "likely_user_abstraction",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "pan2S": {
+      "category": "possibly_missing_from_db",
+      "instances": 3,
+      "confidence": "HIGH"
+    },
+    "pcontrol_ExamplePatch": {
+      "category": "likely_user_abstraction",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "poobah": {
+      "category": "likely_user_abstraction",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "thru": {
+      "category": "possibly_missing_from_db",
+      "instances": 7,
+      "confidence": "HIGH"
+    },
+    "transratio": {
+      "category": "likely_user_abstraction",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "urn-jb": {
+      "category": "likely_user_abstraction",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "v": {
+      "category": "possibly_missing_from_db",
+      "instances": 11,
+      "confidence": "HIGH"
+    },
+    "xbendout2": {
+      "category": "likely_user_abstraction",
+      "instances": 1,
+      "confidence": "HIGH"
+    },
+    "yafr2": {
+      "category": "likely_user_abstraction",
+      "instances": 1,
+      "confidence": "HIGH"
+    }
+  },
+  "missing_aliases": {
+    "v": "value",
+    "del": "delay",
+    "accum": "accum"
+  },
+  "low_agreement": {
+    "bondo": {
+      "agreement": 0.75,
+      "instances": 4,
+      "confidence": "MEDIUM"
+    },
+    "mousestate": {
+      "agreement": 0.75,
+      "instances": 4,
+      "confidence": "MEDIUM"
+    },
+    "pipe": {
+      "agreement": 0.75,
+      "instances": 12,
+      "confidence": "MEDIUM"
+    },
+    "receive": {
+      "agreement": 0.7777777777777778,
+      "instances": 9,
+      "confidence": "MEDIUM"
+    },
+    "jit.gl.pix": {
+      "agreement": 0.75,
+      "instances": 4,
+      "confidence": "MEDIUM"
+    },
+    "jit.phys.multiple": {
+      "agreement": 0.75,
+      "instances": 4,
+      "confidence": "MEDIUM"
+    },
+    "mc.targetlist": {
+      "agreement": 0.75,
+      "instances": 8,
+      "confidence": "MEDIUM"
+    }
+  },
+  "signal_type_corrections": {
+    "count": 77,
+    "affected_ios": 149
+  },
+  "io_count_corrections": {
+    "count": 116,
+    "details": {
+      "active": {
+        "domain": "max",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "array.flatten": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.foreach": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 3,
+        "override_outlets": 3
+      },
+      "array.frombuffer": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "array.iter": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.max": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.mean": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.median": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.min": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.mode": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.reverse": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.stddev": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.tobuffer": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "array.wrap": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "bangbang": {
+        "domain": "max",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 3
+      },
+      "decode": {
+        "domain": "max",
+        "base_inlets": 3,
+        "override_inlets": 3,
+        "base_outlets": 1,
+        "override_outlets": 4
+      },
+      "ftom": {
+        "domain": "rnbo",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "if": {
+        "domain": "max",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "int": {
+        "domain": "gen",
+        "base_inlets": 1,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "jstrigger": {
+        "domain": "max",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 3
+      },
+      "linedrive": {
+        "domain": "max",
+        "base_inlets": 0,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "mappings": {
+        "domain": "max",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 0
+      },
+      "maxurl": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "menubar": {
+        "domain": "max",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 4,
+        "override_outlets": 5
+      },
+      "midiformat": {
+        "domain": "rnbo",
+        "base_inlets": 7,
+        "override_inlets": 7,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "mousestate": {
+        "domain": "max",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 10,
+        "override_outlets": 5
+      },
+      "mtof": {
+        "domain": "rnbo",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "notein": {
+        "domain": "rnbo",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 4,
+        "override_outlets": 3
+      },
+      "param": {
+        "domain": "rnbo",
+        "base_inlets": 2,
+        "override_inlets": 0,
+        "base_outlets": 2,
+        "override_outlets": 1
+      },
+      "patcher": {
+        "domain": "rnbo",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "pipe": {
+        "domain": "rnbo",
+        "base_inlets": 0,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "router": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 4,
+        "base_outlets": 2,
+        "override_outlets": 5
+      },
+      "select": {
+        "domain": "rnbo",
+        "base_inlets": 1,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 2
+      },
+      "string.bytes": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "string.frombytes": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "string.fromutf8": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "string.length": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "string.reverse": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "string.tosymbol": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "string.trim": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "string.trimend": {
+        "domain": "max",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "thresh": {
+        "domain": "rnbo",
+        "base_inlets": 3,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "udpsend": {
+        "domain": "max",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 0
+      },
+      "2d.wave~": {
+        "domain": "msp",
+        "base_inlets": 4,
+        "override_inlets": 4,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "adc~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 3
+      },
+      "adstatus": {
+        "domain": "msp",
+        "base_inlets": 0,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 2
+      },
+      "fffb~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 4,
+        "override_outlets": 8
+      },
+      "gridmeter~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 0
+      },
+      "index~": {
+        "domain": "msp",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 2,
+        "override_outlets": 1
+      },
+      "limi~": {
+        "domain": "rnbo",
+        "base_inlets": 1,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "mcs.poly~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "mcs.tapout~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 3,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "peek~": {
+        "domain": "rnbo",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 2,
+        "override_outlets": 1
+      },
+      "pfft~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "pitchshift~": {
+        "domain": "msp",
+        "base_inlets": 2,
+        "override_inlets": 3,
+        "base_outlets": 2,
+        "override_outlets": 3
+      },
+      "playlist~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 5,
+        "override_outlets": 3
+      },
+      "poly~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "retune~": {
+        "domain": "msp",
+        "base_inlets": 3,
+        "override_inlets": 3,
+        "base_outlets": 5,
+        "override_outlets": 3
+      },
+      "sfizz~": {
+        "domain": "msp",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 2,
+        "override_outlets": 8
+      },
+      "sfrecord~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "spectroscope~": {
+        "domain": "msp",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 0
+      },
+      "thispoly~": {
+        "domain": "msp",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 3,
+        "override_outlets": 2
+      },
+      "train~": {
+        "domain": "rnbo",
+        "base_inlets": 3,
+        "override_inlets": 3,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "vst~": {
+        "domain": "msp",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 8,
+        "override_outlets": 4
+      },
+      "windowed-fft~": {
+        "domain": "msp",
+        "base_inlets": 0,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 2
+      },
+      "jit.dx.grab": {
+        "domain": "jitter",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "jit.dx.videoout": {
+        "domain": "jitter",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "jit.gl.pix": {
+        "domain": "jitter",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "jit.glue": {
+        "domain": "jitter",
+        "base_inlets": 1,
+        "override_inlets": 4,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "jit.graph": {
+        "domain": "jitter",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 2
+      },
+      "jit.movie": {
+        "domain": "jitter",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "jit.phys.multiple": {
+        "domain": "jitter",
+        "base_inlets": 2,
+        "override_inlets": 3,
+        "base_outlets": 3,
+        "override_outlets": 3
+      },
+      "jit.plot": {
+        "domain": "jitter",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 2
+      },
+      "jit.qt.movie": {
+        "domain": "jitter",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "jit.record": {
+        "domain": "jitter",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "jit.scissors": {
+        "domain": "jitter",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 7
+      },
+      "mc.adsr~": {
+        "domain": "mc",
+        "base_inlets": 5,
+        "override_inlets": 5,
+        "base_outlets": 4,
+        "override_outlets": 5
+      },
+      "mc.amxd~": {
+        "domain": "mc",
+        "base_inlets": 3,
+        "override_inlets": 3,
+        "base_outlets": 4,
+        "override_outlets": 5
+      },
+      "mc.bands~": {
+        "domain": "mc",
+        "base_inlets": 0,
+        "override_inlets": 5,
+        "base_outlets": 0,
+        "override_outlets": 3
+      },
+      "mc.edge~": {
+        "domain": "mc",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 3
+      },
+      "mc.fffb~": {
+        "domain": "mc",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 4,
+        "override_outlets": 8
+      },
+      "mc.gen": {
+        "domain": "mc",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "mc.groove~": {
+        "domain": "mc",
+        "base_inlets": 3,
+        "override_inlets": 3,
+        "base_outlets": 2,
+        "override_outlets": 3
+      },
+      "mc.line~": {
+        "domain": "mc",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 2,
+        "override_outlets": 3
+      },
+      "mc.peakamp~": {
+        "domain": "mc",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "mc.play~": {
+        "domain": "mc",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 3
+      },
+      "mc.poly~": {
+        "domain": "mc",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "mc.selector~": {
+        "domain": "mc",
+        "base_inlets": 2,
+        "override_inlets": 3,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "mc.snapshot~": {
+        "domain": "mc",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "mc.spike~": {
+        "domain": "mc",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "mc.tapout~": {
+        "domain": "mc",
+        "base_inlets": 1,
+        "override_inlets": 3,
+        "base_outlets": 1,
+        "override_outlets": 3
+      },
+      "mc.targetlist": {
+        "domain": "mc",
+        "base_inlets": 2,
+        "override_inlets": 4,
+        "base_outlets": 2,
+        "override_outlets": 2
+      },
+      "mc.train~": {
+        "domain": "mc",
+        "base_inlets": 3,
+        "override_inlets": 3,
+        "base_outlets": 2,
+        "override_outlets": 3
+      },
+      "mc.vst~": {
+        "domain": "mc",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 8,
+        "override_outlets": 9
+      },
+      "buffer": {
+        "domain": "gen",
+        "base_inlets": 0,
+        "override_inlets": 0,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "cell": {
+        "domain": "gen",
+        "base_inlets": 0,
+        "override_inlets": 0,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "concat": {
+        "domain": "gen",
+        "base_inlets": 1,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "dim": {
+        "domain": "rnbo",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 2,
+        "override_outlets": 1
+      },
+      "history": {
+        "domain": "gen",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "hsl2rgb": {
+        "domain": "gen",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "norm": {
+        "domain": "gen",
+        "base_inlets": 0,
+        "override_inlets": 0,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "phasor": {
+        "domain": "gen",
+        "base_inlets": 2,
+        "override_inlets": 1,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "rgb2hsl": {
+        "domain": "gen",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "sah": {
+        "domain": "rnbo",
+        "base_inlets": 3,
+        "override_inlets": 3,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "swiz": {
+        "domain": "gen",
+        "base_inlets": 1,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "train": {
+        "domain": "rnbo",
+        "base_inlets": 3,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 1
+      },
+      "vec": {
+        "domain": "gen",
+        "base_inlets": 1,
+        "override_inlets": 3,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "live.miditool.out": {
+        "domain": "m4l",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 0
+      },
+      "live.object": {
+        "domain": "m4l",
+        "base_inlets": 0,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "live.observer": {
+        "domain": "m4l",
+        "base_inlets": 0,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 2
+      },
+      "live.path": {
+        "domain": "m4l",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 3
+      },
+      "live.remote~": {
+        "domain": "m4l",
+        "base_inlets": 0,
+        "override_inlets": 2,
+        "base_outlets": 0,
+        "override_outlets": 1
+      },
+      "list.group": {
+        "domain": "rnbo",
+        "base_inlets": 2,
+        "override_inlets": 2,
+        "base_outlets": 1,
+        "override_outlets": 2
+      },
+      "jit.bang": {
+        "domain": "packages",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 2
+      },
+      "jit.framecount": {
+        "domain": "packages",
+        "base_inlets": 0,
+        "override_inlets": 1,
+        "base_outlets": 0,
+        "override_outlets": 2
+      },
+      "jit.mo.join": {
+        "domain": "packages",
+        "base_inlets": 0,
+        "override_inlets": 3,
+        "base_outlets": 0,
+        "override_outlets": 2
+      }
+    }
+  },
+  "non_real_entries": {
+    "msp": [
+      "MC Wrapper Features",
+      "Snapshot Messages",
+      "adstatus",
+      "mxj~",
+      "windowed-fft~"
+    ]
+  },
+  "verification": {
+    "sample_size": 20,
+    "passed": 13,
+    "failed": 0,
+    "not_found": 7,
+    "failures": [
+      {
+        "name": "M4L.api.ToggleTransport",
+        "status": "NOT_FOUND"
+      },
+      {
+        "name": "array.at",
+        "status": "NOT_FOUND"
+      },
+      {
+        "name": "Bucket",
+        "status": "NOT_FOUND"
+      },
+      {
+        "name": "jit.fx.rota",
+        "status": "NOT_FOUND"
+      },
+      {
+        "name": "urn-jb",
+        "status": "NOT_FOUND"
+      },
+      {
+        "name": "mcp.record~",
+        "status": "NOT_FOUND"
+      },
+      {
+        "name": "jit.time.saw",
+        "status": "NOT_FOUND"
+      }
+    ]
+  }
+}
