@@ -109,6 +109,14 @@
       "files_changed": [
         "slot.maxpat"
       ]
+    },
+    {
+      "version": "0.2.16",
+      "description": "fix start dial scaling: use info~ duration outlet instead of sample rate",
+      "timestamp": "2026-04-01T20:43:13.723369+00:00",
+      "files_changed": [
+        "slot.maxpat"
+      ]
     }
   ]
 }
