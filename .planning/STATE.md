@@ -5,7 +5,7 @@ milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260401-lak-PLAN.md
 last_updated: "2026-04-01T22:27:05.551Z"
-last_activity: "2026-04-01 - Completed quick task 260401-jyk: Audit objects database and overrides for correctness"
+last_activity: "2026-04-01 - Completed quick task 260401-lak: Add missing objects to domain files identified in audit report"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-04-01 - Completed quick task 260401-jyk: Audit objects database and overrides for correctness
+Last activity: 2026-04-01 - Completed quick task 260401-lak: Add missing objects to domain files identified in audit report
 
 Progress: [██████████] 100%
 
@@ -200,6 +200,7 @@ None.
 | 260401-j8z | Fix info~ object outlets in MSP database | 2026-04-01 | 7ea4d72 | | [260401-j8z-fix-info-object-outlets-in-msp-database-](./quick/260401-j8z-fix-info-object-outlets-in-msp-database-/) |
 | 260401-jyk | Audit objects database and overrides for correctness | 2026-04-01 | 268175a | Verified | [260401-jyk-audit-objects-database-and-overrides-for](./quick/260401-jyk-audit-objects-database-and-overrides-for/) |
 | 260401-l3t | Clean object DB: add missing aliases, remove non-real entries, normalize case mismatches | 2026-04-01 | a62bcd4 | | [260401-l3t-clean-object-db-add-missing-aliases-remo](./quick/260401-l3t-clean-object-db-add-missing-aliases-remo/) |
+| 260401-lak | Add missing objects to domain files identified in audit report | 2026-04-01 | bfed726 | Verified | [260401-lak-add-missing-objects-to-domain-files-iden](./quick/260401-lak-add-missing-objects-to-domain-files-iden/) |
 
 ### Blockers/Concerns
 
