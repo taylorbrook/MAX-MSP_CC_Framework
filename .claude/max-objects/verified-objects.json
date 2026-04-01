@@ -1,0 +1,1370 @@
+{
+  "_comment": "Objects verified by audit as having correct I/O in domain files. Tracking file only -- not loaded by ObjectDatabase.",
+  "objects": {
+    "!-~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "!/~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "!=~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "%~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "*~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "+=~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "+~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "-~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "/~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "<=~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "<~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "==~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    ">=~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    ">~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "abs~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "acosh~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "acos~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "adoutput~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "adsr~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "allpass~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "asinh~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "asin~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "atan2~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "atanh~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "atan~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "atodb~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "average~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "avg~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "begin~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "biquad~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "bitand~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "bitnot~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "bitor~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "bitsafe~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "bitshift~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "bitxor~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "buffir~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "capture~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "cartopol~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "cascade~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "change~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "chucker~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "click~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "clip~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "comb~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "cosh~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "cosx~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "cos~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "count~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "cross~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "cverb~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "dbtoa~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "ddg.mono": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "degrade~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "delay~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "deltaclip~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "delta~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "downsamp~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "edge~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "ezadc~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "ezdac~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "fbinshift~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "fftinfo~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "fftin~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "fftout~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "fft~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "filtercoeff~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "filterdesign": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "filterdetail": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "filtergraph~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "frameaccum~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "frameaverage~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "framedelta~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "framesmooth~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "framesnap~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "frame~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "freqshift~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "ftom~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "fzero~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "gate~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "gen": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "gen.codebox": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "gen.codebox~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "gen~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "gizmo~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "groove~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "hilbert~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "ifft~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "in~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "ioscbank~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "kink~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "log~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "lookup~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "lores~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "loudness~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "matrix~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "maximum~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.2d.wave~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.fffb~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.gate~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.gen~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.groove~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.limi~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.matrix~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.selector~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.sig~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mcs.wave~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "minimum~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "minmax~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mstosamps~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mtof~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "multirange": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "mxj~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "noise~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "normalize~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "number~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "omx.4band~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "omx.5band~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "omx.comp~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "omx.peaklim~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "onepole~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "oscbank~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "out": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "out~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "overdrive~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "pass~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "peakamp~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "phasegroove~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "phaseshift~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "phasewrap~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "phasor~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "pink~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "plugin~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "plugout~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "plugphasor~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "plugreceive~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "plugsend~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "plugsync~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "poltocar~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "pong~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "pow~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "rampsmooth~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "rand~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "rate~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "receive~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "record~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "rect~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "reson~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "round~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "sah~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "sampstoms~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "sash~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "saw~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "scale~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "scope~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "selector~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "send~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "seq~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "shape~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "sig~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "sinh~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "sinx~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "slide~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "snapshot~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "snowfall~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "spike~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "sqrt~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "stepcounter~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "stepdiv~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "stepfun~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "stutter~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "subdiv~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "svf~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "swing~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "table~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "tanh~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "tanx~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "tapout~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "techno~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "teeth~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "thresh~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "trapezoid~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "triangle~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "tri~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "trunc~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "twist~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "typeroute~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "updown~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "vectral~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "waveform~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "wave~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "what~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "where~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "zerox~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    },
+    "zplane~": {
+      "_outlet_types_verified": true,
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "bulk_outlet_type_verification"
+      }
+    }
+  }
+}
