@@ -7274,192 +7274,6 @@
       }
     },
     "_domain_other": "--- Other Objects (not in domain JSONs) ---",
-    "!": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        }
-      ],
-      "_audit": {
-        "confidence": "HIGH",
-        "instances": 1,
-        "agreement": 1.0,
-        "source": "io_count_finding"
-      },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
-    },
-    "1": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        }
-      ],
-      "_audit": {
-        "confidence": "HIGH",
-        "instances": 9,
-        "agreement": 1.0,
-        "source": "io_count_finding"
-      },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
-    },
-    "2": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        }
-      ],
-      "_audit": {
-        "confidence": "HIGH",
-        "instances": 7,
-        "agreement": 1.0,
-        "source": "io_count_finding"
-      },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
-    },
-    ">p": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        }
-      ],
-      "_audit": {
-        "confidence": "HIGH",
-        "instances": 1,
-        "agreement": 1.0,
-        "source": "io_count_finding"
-      },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
-    },
-    "?": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        },
-        {
-          "id": 2,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        }
-      ],
-      "_audit": {
-        "confidence": "HIGH",
-        "instances": 1,
-        "agreement": 1.0,
-        "source": "io_count_finding"
-      },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
-    },
-    "Bucket": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        }
-      ],
-      "_audit": {
-        "confidence": "HIGH",
-        "instances": 1,
-        "agreement": 1.0,
-        "source": "io_count_finding"
-      },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
-    },
     "M4L.api.ObserveTransport": {
       "inlets": [
         {
@@ -7498,49 +7312,6 @@
       "_audit": {
         "confidence": "HIGH",
         "instances": 1,
-        "agreement": 1.0,
-        "source": "io_count_finding"
-      },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
-    },
-    "Uzi": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        },
-        {
-          "id": 2,
-          "type": "",
-          "signal": false,
-          "digest": "Control output"
-        }
-      ],
-      "_audit": {
-        "confidence": "HIGH",
-        "instances": 13,
         "agreement": 1.0,
         "source": "io_count_finding"
       },
@@ -8599,6 +8370,80 @@
           "digest": ""
         }
       ],
+      "_note": "No base domain entry -- override inactive until object added to domain JSON"
+    },
+    "bucket": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 1,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      },
+      "_note": "No base domain entry -- override inactive until object added to domain JSON"
+    },
+    "uzi": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": ""
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Control output"
+        }
+      ],
+      "_audit": {
+        "confidence": "HIGH",
+        "instances": 13,
+        "agreement": 1.0,
+        "source": "io_count_finding"
+      },
       "_note": "No base domain entry -- override inactive until object added to domain JSON"
     }
   },
