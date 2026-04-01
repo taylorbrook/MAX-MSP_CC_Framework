@@ -17,6 +17,7 @@ from collections import deque
 
 from src.maxpat.critics.base import CriticResult
 from src.maxpat.codegen import parse_genexpr_io
+from src.maxpat.utils import get_box_name
 
 
 # Oscillator objects that need gain staging before dac~/ezdac~
@@ -166,17 +167,6 @@ def _extract_codebox_code(gen_box: dict) -> str | None:
 # Check 2: Gain staging
 # ---------------------------------------------------------------------------
 
-def _get_box_name(box: dict) -> str:
-    """Get the object name from a box dict."""
-    maxclass = box.get("maxclass", "")
-    if maxclass == "newobj":
-        text = box.get("text", "")
-        if text:
-            return text.split()[0]
-        return ""
-    return maxclass
-
-
 def _check_gain_staging(
     box_lookup: dict[str, dict],
     lines: list[dict],
@@ -217,12 +207,12 @@ def _check_gain_staging(
     # Find oscillator boxes
     osc_ids = [
         box_id for box_id, box in box_lookup.items()
-        if _get_box_name(box) in _OSCILLATOR_NAMES
+        if get_box_name(box) in _OSCILLATOR_NAMES
     ]
 
     # BFS from each oscillator
     for osc_id in osc_ids:
-        osc_name = _get_box_name(box_lookup[osc_id])
+        osc_name = get_box_name(box_lookup[osc_id])
         queue = deque([(osc_id, False)])  # (current_id, passed_through_gain)
         visited: set[tuple[str, bool]] = set()
 
@@ -237,7 +227,7 @@ def _check_gain_staging(
                 next_box = box_lookup.get(next_id)
                 if not next_box:
                     continue
-                next_name = _get_box_name(next_box)
+                next_name = get_box_name(next_box)
 
                 next_has_gain = has_gain or (next_name in _GAIN_NAMES)
 
@@ -293,8 +283,8 @@ def _check_audio_rate_consistency(
         if not src_box or not dst_box:
             continue
 
-        src_name = _get_box_name(src_box)
-        dst_name = _get_box_name(dst_box)
+        src_name = get_box_name(src_box)
+        dst_name = get_box_name(dst_box)
 
         # Source is control-rate (no ~ suffix in name)
         src_is_signal = src_name.endswith("~")
@@ -331,7 +321,7 @@ def _check_audio_rate_consistency(
 
 def _is_normalizer(box: dict) -> bool:
     """Check if a box is a normalizer/scaler that constrains values to safe range."""
-    name = _get_box_name(box)
+    name = get_box_name(box)
     if name in _NORMALIZER_NAMES:
         return True
 
@@ -463,7 +453,7 @@ def _check_unsafe_gain_sources(
                 if not current_box:
                     continue
 
-                current_name = _get_box_name(current_box)
+                current_name = get_box_name(current_box)
 
                 # If we hit a normalizer, this path is safe -- stop tracing
                 if _is_normalizer(current_box):
@@ -505,7 +495,7 @@ def _check_unsafe_gain_sources(
 
     # Find all *~/mc.*~ boxes and check what feeds inlet 1
     for box_id, box in box_lookup.items():
-        name = _get_box_name(box)
+        name = get_box_name(box)
         if name not in _GAIN_INLET_1_NAMES:
             continue
 
@@ -517,7 +507,7 @@ def _check_unsafe_gain_sources(
         line_tilde_ctrl_sources: list[str] = []
         for sig_src_id in inlet_1_sig:
             sig_src_box = box_lookup.get(sig_src_id)
-            if sig_src_box and _get_box_name(sig_src_box) == "line~":
+            if sig_src_box and get_box_name(sig_src_box) == "line~":
                 # Trace backward from line~'s control inputs
                 line_ctrl = ctrl_backward.get(sig_src_id, [])
                 line_tilde_ctrl_sources.extend(line_ctrl)

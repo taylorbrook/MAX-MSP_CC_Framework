@@ -18,6 +18,7 @@ from typing import TYPE_CHECKING
 
 from src.maxpat.db_lookup import ObjectDatabase
 from src.maxpat.maxclass_map import is_ui_object
+from src.maxpat.utils import get_box_name
 
 if TYPE_CHECKING:
     from src.maxpat.patcher import Patcher
@@ -521,17 +522,6 @@ def _validate_domain_rules(
     return results
 
 
-def _get_box_name(box_dict: dict) -> str:
-    """Get the object name from a box dict."""
-    maxclass = box_dict.get("maxclass", "")
-    if maxclass == "newobj":
-        text = box_dict.get("text", "")
-        if text:
-            return text.split()[0]
-        return ""
-    return maxclass
-
-
 # Pattern matching compound #N usage: text containing #N preceded or followed
 # by non-whitespace characters (e.g., "slot-#1", "#1-out", "my#2thing").
 # Standalone #N (space-delimited or at start/end of text) is fine.
@@ -581,7 +571,7 @@ def _check_unterminated_chains(
     results: list[ValidationResult] = []
 
     for box_id, box in box_lookup.items():
-        name = _get_box_name(box)
+        name = get_box_name(box)
 
         # Only check MSP objects (name ends with ~)
         if not name.endswith("~"):
@@ -624,13 +614,13 @@ def _check_gain_staging(
     # Find all oscillator box ids
     osc_ids = []
     for box_id, box in box_lookup.items():
-        name = _get_box_name(box)
+        name = get_box_name(box)
         if name in _OSCILLATOR_NAMES:
             osc_ids.append(box_id)
 
     # For each oscillator, BFS to see if it reaches dac~/ezdac~ without gain
     for osc_id in osc_ids:
-        osc_name = _get_box_name(box_lookup[osc_id])
+        osc_name = get_box_name(box_lookup[osc_id])
         # BFS: track (current_id, passed_through_gain)
         from collections import deque
         queue = deque([(osc_id, False)])
@@ -646,7 +636,7 @@ def _check_gain_staging(
                 next_box = box_lookup.get(next_id)
                 if not next_box:
                     continue
-                next_name = _get_box_name(next_box)
+                next_name = get_box_name(next_box)
 
                 next_has_gain = has_gain or (next_name in _GAIN_NAMES)
 
@@ -678,7 +668,7 @@ def _check_unsafe_gain_values(
     results: list[ValidationResult] = []
 
     for box_id, box in box_lookup.items():
-        name = _get_box_name(box)
+        name = get_box_name(box)
         if name != "*~":
             continue
 
@@ -756,12 +746,12 @@ def _check_feedback_loops(
         reported_cycles.add(cycle_key)
 
         # Check if cycle contains delay objects
-        cycle_names = [_get_box_name(box_lookup[bid]) for bid in cycle if bid in box_lookup]
+        cycle_names = [get_box_name(box_lookup[bid]) for bid in cycle if bid in box_lookup]
         has_delay = any(name in _DELAY_NAMES for name in cycle_names)
 
         if not has_delay:
             node_desc = ", ".join(
-                f"{_get_box_name(box_lookup.get(bid, {}))} ({bid})"
+                f"{get_box_name(box_lookup.get(bid, {}))} ({bid})"
                 for bid in cycle
             )
             results.append(ValidationResult(
@@ -844,7 +834,7 @@ def _check_gen_param_message_syntax(
             dst_box = box_lookup.get(dst_id)
             if not dst_box:
                 continue
-            dst_name = _get_box_name(dst_box)
+            dst_name = get_box_name(dst_box)
             if dst_name == "gen~":
                 results.append(ValidationResult(
                     "domain", "warning",
@@ -894,7 +884,7 @@ def _check_line_tilde_comma_messages(
             dst_box = box_lookup.get(dst_id)
             if not dst_box:
                 continue
-            dst_name = _get_box_name(dst_box)
+            dst_name = get_box_name(dst_box)
             if dst_name == "line~":
                 results.append(ValidationResult(
                     "domain", "warning",

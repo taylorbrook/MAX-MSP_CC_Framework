@@ -15,6 +15,7 @@ from __future__ import annotations
 from collections import defaultdict
 
 from src.maxpat.critics.base import CriticResult
+from src.maxpat.utils import get_box_name
 
 
 # Object names that provide explicit ordering for fan-out
@@ -61,26 +62,15 @@ def review_structure(patch_dict: dict) -> list[CriticResult]:
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _get_box_name(box: dict) -> str:
-    """Get the object name from a box dict."""
-    maxclass = box.get("maxclass", "")
-    if maxclass == "newobj":
-        text = box.get("text", "")
-        if text:
-            return text.split()[0]
-        return ""
-    return maxclass
-
-
 def _is_trigger_object(box: dict) -> bool:
     """Check if a box is a trigger/t object."""
-    name = _get_box_name(box)
+    name = get_box_name(box)
     return name in _TRIGGER_NAMES
 
 
 def _is_signal_object(box: dict) -> bool:
     """Check if a box is a signal-rate (~) object."""
-    name = _get_box_name(box)
+    name = get_box_name(box)
     return name.endswith("~")
 
 
@@ -129,12 +119,12 @@ def _check_fan_out_without_trigger(
         if _is_signal_object(src_box):
             continue
 
-        src_name = _get_box_name(src_box)
+        src_name = get_box_name(src_box)
         dst_names = []
         for dst_id in destinations:
             dst_box = box_lookup.get(dst_id)
             if dst_box:
-                dst_names.append(f"'{_get_box_name(dst_box)}' ({dst_id})")
+                dst_names.append(f"'{get_box_name(dst_box)}' ({dst_id})")
             else:
                 dst_names.append(dst_id)
 
@@ -230,7 +220,7 @@ def _check_hot_cold_ordering(
 
         # Multiple separate sources feeding hot and cold inlets
         # without trigger-based ordering
-        dst_name = _get_box_name(dst_box)
+        dst_name = get_box_name(dst_box)
         cold_desc = ", ".join(str(idx) for idx in sorted(cold_inlet_indices))
 
         results.append(CriticResult(
