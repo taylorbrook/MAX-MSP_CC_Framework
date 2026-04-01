@@ -550,17 +550,21 @@ class TestStepMarkers:
 
 
 class TestZOrder:
-    """Tests for z-order manipulation methods."""
+    """Tests for z-order manipulation methods.
+
+    MAX z-order: earlier in boxes array = renders on top (front).
+    bring_to_front moves to index 0, send_to_back moves to end.
+    """
 
     def test_bring_to_front(self):
         p = Patcher()
         a = p.add_box("cycle~", ["440"])
         b = p.add_box("dac~")
         c = p.add_box("*~", ["0.5"])
-        p.bring_to_front(a)
-        assert p.boxes[-1] is a
-        assert p.boxes[0] is b
-        assert p.boxes[1] is c
+        p.bring_to_front(c)
+        assert p.boxes[0] is c
+        assert p.boxes[1] is a
+        assert p.boxes[2] is b
 
     def test_bring_to_front_not_found(self):
         p = Patcher()
@@ -574,10 +578,10 @@ class TestZOrder:
         a = p.add_box("cycle~", ["440"])
         b = p.add_box("dac~")
         c = p.add_box("*~", ["0.5"])
-        p.send_to_back(c)
-        assert p.boxes[0] is c
-        assert p.boxes[1] is a
-        assert p.boxes[2] is b
+        p.send_to_back(a)
+        assert p.boxes[0] is b
+        assert p.boxes[1] is c
+        assert p.boxes[-1] is a
 
     def test_send_to_back_not_found(self):
         p = Patcher()
@@ -587,6 +591,7 @@ class TestZOrder:
             p.send_to_back(orphan)
 
     def test_set_z_index_zero(self):
+        """Index 0 = front (on top of everything)."""
         p = Patcher()
         a = p.add_box("cycle~", ["440"])
         b = p.add_box("dac~")
@@ -595,6 +600,7 @@ class TestZOrder:
         assert p.boxes[1] is a
 
     def test_set_z_index_negative_one(self):
+        """Index -1 = back (behind everything)."""
         p = Patcher()
         a = p.add_box("cycle~", ["440"])
         b = p.add_box("dac~")
@@ -633,7 +639,16 @@ class TestZOrder:
         a = p.add_box("cycle~", ["440"])
         original_id = id(a)
         p.bring_to_front(a)
-        assert id(p.boxes[-1]) == original_id
+        assert id(p.boxes[0]) == original_id
+
+    def test_overlay_readout_pattern(self):
+        """Readout flonum added after dial, then brought to front, renders on top."""
+        p = Patcher()
+        dial = p.add_box("dial")
+        flonum = p.add_box("flonum")
+        p.bring_to_front(flonum)
+        assert p.boxes[0] is flonum
+        assert p.boxes.index(flonum) < p.boxes.index(dial)
 
 
 class TestComplexity:

@@ -676,7 +676,7 @@ class Patcher:
         else:
             panel.extra_attrs["bgcolor"] = list(AESTHETIC_PALETTE["panel_fill"])
 
-        # Insert at index 0 for correct z-order (behind all objects)
+        # Insert at index 0 (visually front, but background=1 forces behind)
         self.boxes.insert(0, panel)
         return panel
 
@@ -725,15 +725,15 @@ class Patcher:
             "parameter_enable": 0,
         }
 
-        # Insert at index 0 for background layer z-order
+        # Insert at index 0 (visually front, but background=1 forces behind)
         self.boxes.insert(0, marker)
         return marker
 
     def bring_to_front(self, box: Box) -> None:
-        """Move box to end of boxes array (renders on top of all other objects).
+        """Move box to index 0 in boxes array (renders on top of all other objects).
 
-        In .maxpat files, z-order is implicit: objects later in the boxes array
-        render on top of earlier ones. This moves the box to the last position.
+        In .maxpat files, z-order is implicit: objects EARLIER in the boxes
+        array render on top of later ones. This moves the box to index 0.
 
         Args:
             box: Box to bring to front.
@@ -745,13 +745,14 @@ class Patcher:
             self.boxes.remove(box)
         except ValueError:
             raise ValueError(f"Box {box.id!r} not in this patcher")
-        self.boxes.append(box)
+        self.boxes.insert(0, box)
 
     def send_to_back(self, box: Box) -> None:
-        """Move box to index 0 in boxes array (renders behind all other objects).
+        """Move box to end of boxes array (renders behind all other objects).
 
-        In .maxpat files, z-order is implicit: objects earlier in the boxes array
-        render behind later ones. This moves the box to the first position.
+        In .maxpat files, z-order is implicit: objects LATER in the boxes
+        array render behind earlier ones. This moves the box to the last
+        position.
 
         Args:
             box: Box to send to back.
@@ -763,13 +764,13 @@ class Patcher:
             self.boxes.remove(box)
         except ValueError:
             raise ValueError(f"Box {box.id!r} not in this patcher")
-        self.boxes.insert(0, box)
+        self.boxes.append(box)
 
     def set_z_index(self, box: Box, index: int) -> None:
         """Move box to a specific position in the boxes array for z-order control.
 
-        Index 0 = behind everything (same as send_to_back).
-        Index -1 or len(boxes) = on top of everything (same as bring_to_front).
+        Index 0 = on top of everything (same as bring_to_front).
+        Index -1 or len(boxes) = behind everything (same as send_to_back).
         Out-of-range indices are clamped to valid range.
 
         Args:

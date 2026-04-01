@@ -1,0 +1,14 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-03-30T21:47:27.179792+00:00"
+    },
+    {
+      "version": "1.0.0",
+      "description": "Renamed to performance-patch-template, marked as v1.0.0",
+      "timestamp": "2026-03-30T21:47:27.180359+00:00"
+    }
+  ]
+}

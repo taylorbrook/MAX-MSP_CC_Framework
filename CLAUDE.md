@@ -93,18 +93,19 @@ This rule exists because the generator pattern causes regeneration to overwrite 
 
 ### Rule #6: Z-Order Awareness
 
-In `.maxpat` files, z-order is implicit: objects render in the order they appear in the `boxes` array. Later objects render on top of earlier ones.
+In `.maxpat` files, z-order is implicit: objects **earlier** in the `boxes` array render **on top** of later ones (index 0 = topmost).
 
-- Background elements (panels, step markers): use `add_panel()` / `add_step_marker()` which auto-insert at index 0
-- Overlay readouts (flonum on top of dial): add the readout AFTER the dial, or use `bring_to_front(readout)` to move it on top
-- Overlay readouts must set `ignoreclick=1` so mouse events pass through to the interactive control underneath
-- Use `bring_to_front(box)`, `send_to_back(box)`, or `set_z_index(box, index)` for explicit z-order control
+- Background elements (panels, step markers): use `add_panel()` / `add_step_marker()` which set `background=1` to force behind all objects regardless of array position
+- Overlay readouts (flonum on top of dial): use `bring_to_front(readout)` to move the readout to index 0 (renders on top)
+- Overlay readouts must set `ignoreclick=1` so mouse events pass through to the interactive control underneath (unless the readout should be editable)
+- Use `bring_to_front(box)` (index 0 = top), `send_to_back(box)` (end = bottom), or `set_z_index(box, index)` for explicit z-order control
 
 The overlay readout pattern (from gen-eq):
 1. Create the interactive control (e.g., `dial`)
-2. Create the readout display (e.g., `flonum`) -- added later = renders on top
-3. Set `ignoreclick=1` on the readout so the dial remains interactive
-4. Position the readout overlapping the dial (same or overlapping coordinates)
+2. Create the readout display (e.g., `flonum`)
+3. Call `bring_to_front(readout)` to move it to index 0 (renders on top of dial)
+4. Set `ignoreclick=1` on the readout so the dial remains interactive (omit for editable readouts)
+5. Position the readout overlapping the dial (same or overlapping coordinates)
 
 ## Domain-Specific Rules
 
