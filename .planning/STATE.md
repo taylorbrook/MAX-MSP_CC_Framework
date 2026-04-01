@@ -5,7 +5,7 @@ milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260331-o1y-PLAN.md
 last_updated: "2026-04-01T00:45:14.114Z"
-last_activity: "2026-04-01 - Completed quick task 260331-nps: Fix round-trip text bug and xfail externally-modified round-trip tests"
+last_activity: "2026-04-01 - Completed quick task 260331-o1y: Strengthen Rule #3 trigger enforcement across specialist agent SKILL.md files"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-04-01 - Completed quick task 260331-nps: Fix round-trip text bug and xfail externally-modified round-trip tests
+Last activity: 2026-04-01 - Completed quick task 260331-o1y: Strengthen Rule #3 trigger enforcement across specialist agent SKILL.md files
 
 Progress: [██████████] 100%
 
