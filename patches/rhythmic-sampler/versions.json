@@ -84,6 +84,15 @@
       "version": "0.2.12",
       "description": "fix playhead: use waveform~ selection overlay instead of panel",
       "timestamp": "2026-03-31T23:48:18.760706+00:00"
+    },
+    {
+      "version": "0.2.13",
+      "description": "fix start param and waveform playback cursor",
+      "timestamp": "2026-04-01T16:50:01.955415+00:00",
+      "files_changed": [
+        "slot.maxpat",
+        "slot-engine.js"
+      ]
     }
   ]
 }

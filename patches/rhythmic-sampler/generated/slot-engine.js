@@ -49,6 +49,8 @@ function msg_int(v) {
 function msg_float(v) {
 	if (inlet === 0) {
 		msg_int(Math.floor(v));
+	} else {
+		msg_int(v);
 	}
 }
 
