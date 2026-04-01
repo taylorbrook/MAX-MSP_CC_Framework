@@ -125,6 +125,14 @@
       "files_changed": [
         "slot.maxpat"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "reorganize patch mode layout with p init subpatcher",
+      "timestamp": "2026-04-01T22:48:36.944327+00:00",
+      "files_changed": [
+        "slot.maxpat"
+      ]
     }
   ]
 }
