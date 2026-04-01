@@ -9,6 +9,81 @@
       "version": "0.0.1",
       "description": "fix DSP auto-start and init values",
       "timestamp": "2026-03-21T12:13:19.387691+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "remove debug meters, fix steps\u2192multislider, add per-slot BPM",
+      "timestamp": "2026-03-30T23:09:29.219293+00:00"
+    },
+    {
+      "version": "0.1.1",
+      "description": "Fix line~ comma bug: envelope now ramps correctly",
+      "timestamp": "2026-03-31T01:18:46.814842+00:00"
+    },
+    {
+      "version": "0.2.0",
+      "description": "Global BPM/play sync, per-slot BPM override and mute",
+      "timestamp": "2026-03-31T01:38:23.427907+00:00"
+    },
+    {
+      "version": "0.2.1",
+      "description": "Invert mute toggle (selected=muted)",
+      "timestamp": "2026-03-31T01:57:57.261594+00:00"
+    },
+    {
+      "version": "0.2.2",
+      "description": "Scale decay by metro interval for BPM-proportional playback",
+      "timestamp": "2026-03-31T02:07:51.135690+00:00"
+    },
+    {
+      "version": "0.2.3",
+      "description": "dial ranges: remove scale objects, use explicit min/max",
+      "timestamp": "2026-03-31T05:18:24.143256+00:00"
+    },
+    {
+      "version": "0.2.4",
+      "description": "fix dial ranges: use setminmax instead of minimum/maximum",
+      "timestamp": "2026-03-31T05:24:18.272617+00:00"
+    },
+    {
+      "version": "0.2.5",
+      "description": "fix dial ranges: use min/mult/size pattern from gen-eq",
+      "timestamp": "2026-03-31T05:35:18.181924+00:00"
+    },
+    {
+      "version": "0.2.6",
+      "description": "fix init values for new dial step mapping",
+      "timestamp": "2026-03-31T05:41:15.662377+00:00"
+    },
+    {
+      "version": "0.2.7",
+      "description": "fix init values for dial step mapping (text persist fix)",
+      "timestamp": "2026-03-31T05:45:26.935632+00:00"
+    },
+    {
+      "version": "0.2.8",
+      "description": "fix init values for dial step mapping",
+      "timestamp": "2026-03-31T05:46:11.337355+00:00"
+    },
+    {
+      "version": "0.2.9",
+      "description": "Add dial readouts to slot",
+      "timestamp": "2026-03-31T16:55:23.391030+00:00"
+    },
+    {
+      "version": "0.2.10",
+      "description": "add playback position indicator and start offset control",
+      "timestamp": "2026-03-31T22:18:51.125699+00:00"
+    },
+    {
+      "version": "0.2.11",
+      "description": "fix playhead to panel overlay, move start control next to vol",
+      "timestamp": "2026-03-31T23:45:24.427663+00:00"
+    },
+    {
+      "version": "0.2.12",
+      "description": "fix playhead: use waveform~ selection overlay instead of panel",
+      "timestamp": "2026-03-31T23:48:18.760706+00:00"
     }
   ]
 }

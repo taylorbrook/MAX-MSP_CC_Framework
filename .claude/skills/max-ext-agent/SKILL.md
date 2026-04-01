@@ -26,7 +26,7 @@ Scaffold, generate, build, and validate C++ externals using the Min-DevKit. Supp
 - **Help patch generation**: Create .maxhelp demonstration patches via `generate_help_patch`
 - **Code review**: Run external critic for structural code issues
 
-> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
+> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Z-Order Manipulation, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
 ## Domain Context Loading
 

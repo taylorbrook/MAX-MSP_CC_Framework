@@ -1,4 +1,4 @@
-// partial-display.js -- Computes partial amplitudes for multislider
+// partial-display.js -- Computes partial amplitudes for multislider and buffer
 // Inlets: 0 = num_partials (int), 1 = tilt (float), 2 = even_odd (float)
 // Outlet 0: list of 32 amplitude values
 
@@ -30,10 +30,12 @@ function bang() { compute(); }
 
 function compute() {
     var amps = [];
+    var buf = new Buffer("partial-amps");
     for (var i = 0; i < 32; i++) {
         var n = i + 1;
         if (n > num_partials) {
             amps.push(0);
+            buf.poke(1, i + 1, 0);
         } else {
             var amp = 1.0 / Math.pow(n, tilt);
             if (n > 1) {
@@ -45,6 +47,7 @@ function compute() {
                 }
             }
             amps.push(amp);
+            buf.poke(1, i + 1, amp);
         }
     }
     outlet(0, amps);

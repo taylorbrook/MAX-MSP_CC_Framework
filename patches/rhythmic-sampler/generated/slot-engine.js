@@ -6,18 +6,20 @@
 //   0: int (step/slice index from counter)
 //   1: symbol (buffer name, e.g. "setbuffer slot-1")
 //   2: int (number of slices)
+//   3: float (start offset percentage, 0-100)
 //
 // outlets:
 //   0: float (slice start ms -> groove~ inlet 1)
 //   1: float (slice end ms -> groove~ inlet 2)
 
 autowatch = 1;
-inlets = 3;
+inlets = 4;
 outlets = 2;
 
 var buf = null;
 var bufferLength = 0;
 var numSlices = 16;
+var startOffsetPct = 0;
 
 function msg_int(v) {
 	if (inlet === 0) {
@@ -30,13 +32,17 @@ function msg_int(v) {
 		if (bufferLength > 0 && numSlices > 0) {
 			var sliceIndex = v % numSlices;
 			var sliceLen = bufferLength / numSlices;
-			var startMs = sliceIndex * sliceLen;
-			var endMs = startMs + sliceLen;
+			var endMs = (sliceIndex + 1) * sliceLen;
+			var offsetMs = sliceLen * (startOffsetPct / 100);
+			var startMs = sliceIndex * sliceLen + offsetMs;
+			if (startMs >= endMs) startMs = endMs - 1;
 			outlet(1, endMs);
 			outlet(0, startMs);
 		}
 	} else if (inlet === 2) {
 		numSlices = Math.max(1, v);
+	} else if (inlet === 3) {
+		startOffsetPct = Math.max(0, Math.min(100, v));
 	}
 }
 

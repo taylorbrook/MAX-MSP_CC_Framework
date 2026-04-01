@@ -14,6 +14,21 @@
       "version": "0.0.2",
       "description": "Rearrange UI: logical grouping, keyboard at bottom with mod wheel",
       "timestamp": "2026-03-21T11:54:28.882875+00:00"
+    },
+    {
+      "version": "0.0.3",
+      "description": "add section panels to presentation UI",
+      "timestamp": "2026-03-31T16:56:47.007412+00:00"
+    },
+    {
+      "version": "0.0.4",
+      "description": "fix panel spacing, text legibility, and clipping",
+      "timestamp": "2026-03-31T22:21:19.066515+00:00"
+    },
+    {
+      "version": "0.0.5",
+      "description": "fix panel gaps and label overlaps",
+      "timestamp": "2026-03-31T22:22:59.629099+00:00"
     }
   ]
 }

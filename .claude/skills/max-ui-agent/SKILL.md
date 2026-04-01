@@ -77,7 +77,7 @@ Before any generation:
 - `fontsize` -- font size for text
 - `fontname` -- font family
 
-> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
+> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Assistance Comments, Z-Order Manipulation, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
 ## Editing Existing Patches (via /max-iterate)
 

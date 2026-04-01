@@ -183,7 +183,7 @@
                             },
                             {
                                 "box": {
-                                    "code": "Param num_partials(8, min=1, max=32);\nParam tilt(1.0, min=0, max=3);\nParam stretch(1.0, min=0.5, max=2);\nParam even_odd(0.5, min=0, max=1);\nParam drift_amt(0.0, min=0, max=1);\n\nData phases(32);\nHistory drift_clock(0);\n\nfreq = in1;\nsum = 0;\nsr = samplerate;\n\ndrift_clock = wrap(drift_clock + 1.0 / sr, 0, 1000);\n\nif (freq > 0) {\n    for (i = 0; i < 32; i = i + 1) {\n        n = i + 1;\n\n        if (n <= num_partials) {\n            partial_freq = freq * pow(n, stretch);\n            phase_inc = partial_freq / sr;\n\n            drift_val = sin(drift_clock * TWOPI * 0.3 + n * 2.17) * drift_amt * 0.003;\n            phase_inc = phase_inc * (1 + drift_val);\n\n            phase = peek(phases, i);\n            phase = phase + phase_inc;\n            phase = wrap(phase, 0, 1);\n            poke(phases, phase, i);\n\n            amp = 1.0 / pow(n, tilt);\n\n            if (n > 1) {\n                is_even = (n % 2 == 0);\n                if (is_even) {\n                    amp = amp * clamp(even_odd * 2, 0, 1);\n                } else {\n                    amp = amp * clamp((1 - even_odd) * 2, 0, 1);\n                }\n            }\n\n            sum = sum + sin(phase * TWOPI) * amp;\n        } else {\n            poke(phases, 0, i);\n        }\n    }\n\n    sum = sum / sqrt(num_partials);\n}\n\nout1 = sum;",
+                                    "code": "Param num_partials(8, min=1, max=32);\nParam stretch(1.0, min=0.5, max=2);\nParam drift_amt(0.0, min=0, max=1);\n\nBuffer partial_amps(\"partial-amps\");\nData phases(32);\nHistory drift_clock(0);\n\nfreq = in1;\nsum = 0;\nsr = samplerate;\n\ndrift_clock = wrap(drift_clock + 1.0 / sr, 0, 1000);\n\nif (freq > 0) {\n    for (i = 0; i < 32; i = i + 1) {\n        n = i + 1;\n\n        if (n <= num_partials) {\n            partial_freq = freq * pow(n, stretch);\n            phase_inc = partial_freq / sr;\n\n            drift_val = sin(drift_clock * TWOPI * 0.3 + n * 2.17) * drift_amt * 0.003;\n            phase_inc = phase_inc * (1 + drift_val);\n\n            phase = peek(phases, i);\n            phase = phase + phase_inc;\n            phase = wrap(phase, 0, 1);\n            poke(phases, phase, i);\n\n            amp = peek(partial_amps, i, 0);\n\n            sum = sum + sin(phase * TWOPI) * amp;\n        } else {\n            poke(phases, 0, i);\n        }\n    }\n\n    sum = sum / sqrt(num_partials);\n}\n\nout1 = sum;",
                                     "fontface": 0,
                                     "fontname": "<Monospaced>",
                                     "fontsize": 12.0,
@@ -199,7 +199,8 @@
                                         72.0,
                                         400.0,
                                         200.0
-                                    ]
+                                    ],
+                                    "text": ""
                                 }
                             },
                             {
@@ -500,46 +501,6 @@
             {
                 "box": {
                     "maxclass": "newobj",
-                    "id": "obj-18",
-                    "numinlets": 0,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        200.0,
-                        30.0,
-                        83.0,
-                        22.0
-                    ],
-                    "text": "receive scala-tilt",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-19",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        200.0,
-                        55.0,
-                        97.0,
-                        22.0
-                    ],
-                    "text": "prepend tilt",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
                     "id": "obj-20",
                     "numinlets": 0,
                     "numoutlets": 1,
@@ -580,46 +541,6 @@
             {
                 "box": {
                     "maxclass": "newobj",
-                    "id": "obj-22",
-                    "numinlets": 0,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        350.0,
-                        80.0,
-                        83.0,
-                        22.0
-                    ],
-                    "text": "receive scala-evenodd",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-23",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        350.0,
-                        130.0,
-                        97.0,
-                        22.0
-                    ],
-                    "text": "prepend even_odd",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
                     "id": "obj-24",
                     "numinlets": 0,
                     "numoutlets": 1,
@@ -653,6 +574,46 @@
                         22.0
                     ],
                     "text": "prepend drift_amt",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-26",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        850.0,
+                        180.0,
+                        79.0,
+                        22.0
+                    ],
+                    "text": "delay 510",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-27",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        850.0,
+                        80.0,
+                        65.0,
+                        22.0
+                    ],
+                    "text": "stop",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -794,18 +755,6 @@
             {
                 "patchline": {
                     "source": [
-                        "obj-6",
-                        1
-                    ],
-                    "destination": [
-                        "obj-13",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
                         "obj-13",
                         0
                     ],
@@ -878,30 +827,6 @@
             {
                 "patchline": {
                     "source": [
-                        "obj-18",
-                        0
-                    ],
-                    "destination": [
-                        "obj-19",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-19",
-                        0
-                    ],
-                    "destination": [
-                        "obj-5",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
                         "obj-20",
                         0
                     ],
@@ -915,30 +840,6 @@
                 "patchline": {
                     "source": [
                         "obj-21",
-                        0
-                    ],
-                    "destination": [
-                        "obj-5",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-22",
-                        0
-                    ],
-                    "destination": [
-                        "obj-23",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-23",
                         0
                     ],
                     "destination": [
@@ -967,6 +868,54 @@
                     ],
                     "destination": [
                         "obj-5",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-6",
+                        1
+                    ],
+                    "destination": [
+                        "obj-26",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-26",
+                        0
+                    ],
+                    "destination": [
+                        "obj-13",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-6",
+                        0
+                    ],
+                    "destination": [
+                        "obj-27",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-27",
+                        0
+                    ],
+                    "destination": [
+                        "obj-26",
                         0
                     ]
                 }

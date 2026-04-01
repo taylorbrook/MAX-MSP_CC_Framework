@@ -14,56 +14,6 @@
         "boxes": [
             {
                 "box": {
-                    "data": {
-                        "clips": [
-                            {
-                                "absolutepath": "Macintosh HD:/Users/taylorbrook/Downloads/testAudio.wav",
-                                "filename": "testAudio.wav",
-                                "filekind": "audiofile",
-                                "id": "u774005026",
-                                "loop": 1,
-                                "content_state": {
-                                    "loop": 1
-                                }
-                            }
-                        ]
-                    },
-                    "id": "obj-98",
-                    "maxclass": "playlist~",
-                    "mode": "basic",
-                    "numinlets": 1,
-                    "numoutlets": 5,
-                    "outlettype": [ "signal", "signal", "signal", "", "dictionary" ],
-                    "parameter_enable": 0,
-                    "patching_rect": [ 117.0, 109.0, 150.0, 30.0 ],
-                    "quality": "basic",
-                    "saved_attribute_attributes": {
-                        "candicane2": {
-                            "expression": ""
-                        },
-                        "candicane3": {
-                            "expression": ""
-                        },
-                        "candicane4": {
-                            "expression": ""
-                        },
-                        "candicane5": {
-                            "expression": ""
-                        },
-                        "candicane6": {
-                            "expression": ""
-                        },
-                        "candicane7": {
-                            "expression": ""
-                        },
-                        "candicane8": {
-                            "expression": ""
-                        }
-                    }
-                }
-            },
-            {
-                "box": {
                     "background": 1,
                     "bgcolor": [ 0.17, 0.17, 0.2, 1.0 ],
                     "id": "obj-83",
@@ -310,7 +260,7 @@
                         ],
                         "bgcolor": [ 0.9, 0.9, 0.9, 1.0 ]
                     },
-                    "patching_rect": [ 44.0, 332.0, 121.0, 22.0 ],
+                    "patching_rect": [ 29.0, 332.0, 121.0, 22.0 ],
                     "text": "gen~"
                 }
             },
@@ -322,7 +272,7 @@
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 59.0, 377.0, 134.0, 22.0 ],
+                    "patching_rect": [ 17.5, 377.0, 134.0, 22.0 ],
                     "text": "send~ wormhole_dry_L"
                 }
             },
@@ -334,7 +284,7 @@
                     "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 164.0, 377.0, 136.0, 22.0 ],
+                    "patching_rect": [ 175.0, 377.0, 136.0, 22.0 ],
                     "text": "send~ wormhole_dry_R"
                 }
             },
@@ -2215,7 +2165,7 @@
             {
                 "patchline": {
                     "destination": [ "obj-4", 0 ],
-                    "midpoints": [ 53.5, 320.5, 53.5, 320.5 ],
+                    "midpoints": [ 53.5, 320.5, 38.5, 320.5 ],
                     "source": [ "obj-24", 0 ]
                 }
             },
@@ -2235,14 +2185,14 @@
             {
                 "patchline": {
                     "destination": [ "obj-4", 0 ],
-                    "midpoints": [ 173.5, 320.5, 53.5, 320.5 ],
+                    "midpoints": [ 173.5, 320.5, 38.5, 320.5 ],
                     "source": [ "obj-28", 0 ]
                 }
             },
             {
                 "patchline": {
                     "destination": [ "obj-4", 1 ],
-                    "midpoints": [ 83.5, 279.5, 155.5, 279.5 ],
+                    "midpoints": [ 83.5, 279.5, 140.5, 279.5 ],
                     "source": [ "obj-3", 0 ]
                 }
             },
@@ -2289,7 +2239,7 @@
             {
                 "patchline": {
                     "destination": [ "obj-5", 0 ],
-                    "midpoints": [ 53.5, 365.5, 68.5, 365.5 ],
+                    "midpoints": [ 38.5, 365.5, 27.0, 365.5 ],
                     "order": 1,
                     "source": [ "obj-4", 0 ]
                 }
@@ -2297,7 +2247,7 @@
             {
                 "patchline": {
                     "destination": [ "obj-6", 0 ],
-                    "midpoints": [ 155.5, 365.5, 173.5, 365.5 ],
+                    "midpoints": [ 140.5, 365.5, 184.5, 365.5 ],
                     "order": 1,
                     "source": [ "obj-4", 1 ]
                 }
@@ -2305,7 +2255,7 @@
             {
                 "patchline": {
                     "destination": [ "obj-7", 1 ],
-                    "midpoints": [ 155.5, 365.5, 485.5, 365.5 ],
+                    "midpoints": [ 140.5, 365.5, 485.5, 365.5 ],
                     "order": 0,
                     "source": [ "obj-4", 1 ]
                 }
@@ -2313,7 +2263,7 @@
             {
                 "patchline": {
                     "destination": [ "obj-7", 0 ],
-                    "midpoints": [ 53.5, 365.5, 383.5, 365.5 ],
+                    "midpoints": [ 38.5, 365.5, 383.5, 365.5 ],
                     "order": 0,
                     "source": [ "obj-4", 0 ]
                 }
@@ -2603,18 +2553,6 @@
                     "destination": [ "obj-13", 0 ],
                     "midpoints": [ 1823.5, 425.5, 1673.5, 425.5 ],
                     "source": [ "obj-96", 0 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-4", 1 ],
-                    "source": [ "obj-98", 1 ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [ "obj-4", 0 ],
-                    "source": [ "obj-98", 0 ]
                 }
             }
         ],
