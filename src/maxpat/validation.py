@@ -17,7 +17,7 @@ from collections import defaultdict
 from typing import TYPE_CHECKING
 
 from src.maxpat.db_lookup import ObjectDatabase
-from src.maxpat.maxclass_map import is_ui_object
+from src.maxpat.maxclass_map import is_ui_object, UI_MAXCLASSES
 
 if TYPE_CHECKING:
     from src.maxpat.patcher import Patcher
@@ -119,6 +119,9 @@ def validate_patch(
 
     # Layer 2: Object existence
     results.extend(_validate_objects_exist(patch_dict, db))
+
+    # Layer 2b: Maxclass usage (non-UI objects should use "newobj")
+    results.extend(_validate_maxclass_usage(patch_dict))
 
     # Layer 3: Connection bounds and signal types (mutates lines in-place)
     results.extend(_validate_connections(patch_dict, db))
@@ -234,6 +237,47 @@ def _validate_objects_exist(
                 "objects", "warning",
                 f"Unknown object: '{name}' -- not in database",
             ))
+
+    return results
+
+
+def _validate_maxclass_usage(patch_dict: dict) -> list[ValidationResult]:
+    """Check that non-UI objects use maxclass='newobj', not their own name.
+
+    Objects whose maxclass is neither 'newobj' nor a known UI maxclass are
+    likely authored with incorrect maxclass values. For example, a box with
+    maxclass='cycle~' instead of maxclass='newobj' with text='cycle~' will
+    not work correctly in MAX.
+
+    Skips structural maxclasses (inlet, outlet, patcher, bpatcher).
+    Emits warnings (not errors) since third-party patches may have custom
+    maxclasses.
+    """
+    results: list[ValidationResult] = []
+
+    for box_entry in patch_dict["patcher"]["boxes"]:
+        box = box_entry.get("box", {})
+        maxclass = box.get("maxclass", "")
+
+        # Skip structural maxclasses
+        if maxclass in _STRUCTURAL_MAXCLASSES:
+            continue
+
+        # newobj is always correct for non-UI objects
+        if maxclass == "newobj":
+            continue
+
+        # Known UI maxclasses are correct when used as their own maxclass
+        if maxclass in UI_MAXCLASSES:
+            continue
+
+        # Non-UI, non-structural maxclass that isn't newobj -- flag it
+        name = _extract_object_name(box) or maxclass
+        results.append(ValidationResult(
+            "objects", "warning",
+            f"Object '{name}' uses maxclass '{maxclass}' instead of "
+            f"'newobj' -- non-UI objects should use maxclass='newobj'",
+        ))
 
     return results
 

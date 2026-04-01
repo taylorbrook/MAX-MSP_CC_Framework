@@ -964,3 +964,75 @@ class TestLayer4GenExprChecks:
                  if r.layer == "domain" and r.level == "info"
                  and "assistance" in r.message.lower()]
         assert len(infos) >= 1
+
+
+# ===========================================================================
+# Maxclass Usage Validation
+# ===========================================================================
+
+class TestMaxclassUsage:
+    """Non-UI objects using their own name as maxclass should be flagged."""
+
+    def test_non_ui_object_wrong_maxclass_triggers_warning(self, db):
+        """Object like cycle~ using maxclass='cycle~' instead of 'newobj' gets warning."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "cycle~", "text": "cycle~ 440",
+                     "id": "obj-1",
+                     "numinlets": 2, "numoutlets": 1,
+                     "outlettype": ["signal"],
+                     "patching_rect": [100, 100, 80, 22]}},
+        ])
+        results = validate_patch(patch, db=db)
+        warnings = [r for r in results
+                    if r.layer == "objects" and r.level == "warning"
+                    and "maxclass" in r.message.lower()
+                    and "cycle~" in r.message]
+        assert len(warnings) == 1
+
+    def test_ui_object_own_maxclass_no_warning(self, db):
+        """UI objects like toggle correctly use their own name as maxclass."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "toggle", "id": "obj-1",
+                     "numinlets": 1, "numoutlets": 1,
+                     "outlettype": ["int"],
+                     "parameter_enable": 0,
+                     "patching_rect": [100, 100, 24, 24]}},
+        ])
+        results = validate_patch(patch, db=db)
+        warnings = [r for r in results
+                    if r.layer == "objects" and r.level == "warning"
+                    and "maxclass" in r.message.lower()]
+        assert warnings == []
+
+    def test_structural_maxclass_no_warning(self, db):
+        """Structural maxclasses (inlet, outlet) do not trigger warning."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "inlet", "id": "obj-1",
+                     "numinlets": 0, "numoutlets": 1,
+                     "outlettype": [""],
+                     "patching_rect": [0, 0, 30, 30]}},
+            {"box": {"maxclass": "outlet", "id": "obj-2",
+                     "numinlets": 1, "numoutlets": 0,
+                     "outlettype": [],
+                     "patching_rect": [0, 50, 30, 30]}},
+        ])
+        results = validate_patch(patch, db=db)
+        warnings = [r for r in results
+                    if r.layer == "objects" and r.level == "warning"
+                    and "maxclass" in r.message.lower()]
+        assert warnings == []
+
+    def test_standard_newobj_no_warning(self, db):
+        """Standard newobj box does not trigger maxclass warning."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "newobj", "text": "cycle~ 440",
+                     "id": "obj-1",
+                     "numinlets": 2, "numoutlets": 1,
+                     "outlettype": ["signal"],
+                     "patching_rect": [100, 100, 80, 22]}},
+        ])
+        results = validate_patch(patch, db=db)
+        warnings = [r for r in results
+                    if r.layer == "objects" and r.level == "warning"
+                    and "maxclass" in r.message.lower()]
+        assert warnings == []
