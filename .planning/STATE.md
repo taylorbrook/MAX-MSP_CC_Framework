@@ -5,7 +5,7 @@ milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260401-jyk-PLAN.md
 last_updated: "2026-04-01T21:31:37.042Z"
-last_activity: "2026-04-01 - Completed quick task 260401-j8z: Fix info~ object outlets in MSP database"
+last_activity: "2026-04-01 - Completed quick task 260401-jyk: Audit objects database and overrides for correctness"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-04-01 - Completed quick task 260401-j8z: Fix info~ object outlets in MSP database
+Last activity: 2026-04-01 - Completed quick task 260401-jyk: Audit objects database and overrides for correctness
 
 Progress: [██████████] 100%
 
@@ -194,6 +194,7 @@ None.
 | 260331-vs8 | Decompose patcher.py — extract graph/analysis mixins + maxclass validation | 2026-04-01 | e3b0415 | | [260331-vs8-decompose-patcher-py-extract-graph-trave](./quick/260331-vs8-decompose-patcher-py-extract-graph-trave/) |
 | 260331-w95 | Update README and TECHNICAL.md for v2.3 release | 2026-04-01 | 0841a18 | Verified | [260331-w95-review-the-recent-updates-to-the-repo-an](./quick/260331-w95-review-the-recent-updates-to-the-repo-an/) |
 | 260401-j8z | Fix info~ object outlets in MSP database | 2026-04-01 | 7ea4d72 | | [260401-j8z-fix-info-object-outlets-in-msp-database-](./quick/260401-j8z-fix-info-object-outlets-in-msp-database-/) |
+| 260401-jyk | Audit objects database and overrides for correctness | 2026-04-01 | 268175a | Verified | [260401-jyk-audit-objects-database-and-overrides-for](./quick/260401-jyk-audit-objects-database-and-overrides-for/) |
 
 ### Blockers/Concerns
 

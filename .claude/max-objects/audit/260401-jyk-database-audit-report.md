@@ -277,3 +277,173 @@ These are the most reliable corrections -- verified by human expertise.
 ### P3 -- Nice to Have
 11. Add missing M4L objects (2) to m4l/objects.json
 12. Consider adding `variable_io` flags to objects where patch instances disagreed on I/O counts
+
+---
+
+## 11. Cross-Domain Duplicates (Check 4)
+
+**301 objects** appear in 2 or more domain files. Of these, **197 have mismatches** in inlet count, outlet count, or maxclass between domains. **104 are fully consistent** across domains.
+
+### Mismatch Breakdown
+
+| Category | Count | Notes |
+|----------|-------|-------|
+| maxclass-only (gen~ convention) | 89 | Gen domain uses `maxclass: "gen~"` for all objects -- expected behavior |
+| I/O mismatch only | 62 | Inlet/outlet counts differ between domains |
+| Both I/O and maxclass | 46 | Both maxclass and I/O counts differ |
+| **Total mismatched** | **197** | |
+| Consistent duplicates | 104 | Same inlets, outlets, maxclass across all domains |
+
+### I/O Mismatches Between Non-Gen Domains (71)
+
+These are the actionable mismatches -- same object name in max/msp vs rnbo with different I/O counts. Most reflect genuine RNBO behavioral differences (RNBO objects often have different I/O from their MAX counterparts), but 12 overlap with `variable_io` objects where default counts may simply differ by convention.
+
+**Variable I/O objects (12)** -- expected to differ, low concern:
+`gate`, `join`, `matrix~`, `pack`, `route`, `routepass`, `select`, `selector~`, `switch`, `trigger`, `unjoin`, `unpack`
+
+**RNBO objects with 0 inlets or 0 outlets (14)** -- likely incomplete RNBO DB entries:
+
+| Object | RNBO inlets | RNBO outlets | MAX/MSP inlets | MAX/MSP outlets |
+|--------|-------------|--------------|----------------|-----------------|
+| expr | 0 | 0 | 1 | 1 |
+| ftom | 2 | 0 | 1 | 1 |
+| ftom~ | 2 | 0 | 1 | 1 |
+| gate | 2 | 0 | 2 | 1 |
+| gen~ | 1 | 0 | 2 | 1 |
+| mtof | 2 | 0 | 1 | 1 |
+| mtof~ | 2 | 0 | 1 | 1 |
+| pack | 0 | 1 | 2 | 1 |
+| pak | 0 | 1 | 2 | 1 |
+| patcher | 0 | 0 | 1 | 0 |
+| pipe | 0 | 0 | 2 | 1 |
+| sah~ | 3 | 0 | 2 | 1 |
+| trigger | 1 | 0 | 1 | 2 |
+| waveform~ | 0 | 0 | 5 | 6 |
+
+**MIDI objects with RNBO differences (8)** -- RNBO adds explicit port/channel inlets and status outlets:
+
+| Object | MAX in/out | RNBO in/out |
+|--------|-----------|-------------|
+| bendout | 2/0 | 3/1 |
+| ctlin | 1/3 | 3/3 |
+| ctlout | 3/0 | 4/1 |
+| midiformat | 0/2 | 7/1 |
+| notein | 1/3 | 2/4 |
+| noteout | 3/0 | 5/1 |
+| pgmout | 2/0 | 3/1 |
+| touchout | 2/0 | 3/1 |
+
+**MSP vs RNBO signal objects with real I/O differences (18)**:
+
+| Object | MSP in/out | RNBO in/out | Delta |
+|--------|-----------|-------------|-------|
+| adsr~ | 5/4 | 5/2 | outlets -2 |
+| average~ | 1/1 | 3/1 | inlets +2 |
+| cycle~ | 2/1 | 2/2 | outlets +1 |
+| gain~ | 1/2 | 2/2 | inlets +1 |
+| log~ | 2/1 | 1/1 | inlets -1 |
+| lookup~ | 3/1 | 2/2 | inlets -1, outlets +1 |
+| mstosamps~ | 1/2 | 1/1 | outlets -1 |
+| peek~ | 3/1 | 2/2 | inlets -1, outlets +1 |
+| poke~ | 3/1 | 4/0 | inlets +1, outlets -1 |
+| record~ | 3/1 | 4/1 | inlets +1 |
+| rect~ | 3/1 | 3/2 | outlets +1 |
+| reson~ | 4/1 | 3/1 | inlets -1 |
+| sampstoms~ | 1/2 | 1/1 | outlets -1 |
+| saw~ | 2/1 | 2/2 | outlets +1 |
+| swing~ | 1/3 | 1/2 | outlets -1 |
+| train~ | 3/2 | 3/1 | outlets -1 |
+| tri~ | 3/1 | 3/2 | outlets +1 |
+| wave~ | 3/1 | 4/3 | inlets +1, outlets +2 |
+
+**MAX control objects with RNBO differences (19)**:
+
+| Object | MAX in/out | RNBO in/out |
+|--------|-----------|-------------|
+| accum | 3/1 | 2/1 |
+| append | 1/1 | 2/1 |
+| bag | 2/1 | 2/2 |
+| iter | 1/1 | 2/1 |
+| midiout | 1/0 | 2/0 |
+| midiparse | 1/8 | 1/7 |
+| number | 1/2 | 1/1 |
+| param | 1/2 | 2/2 |
+| polyout | 3/0 | 4/1 |
+| prepend | 1/1 | 2/1 |
+| receive | 1/1 | 0/1 |
+| sig~ | 1/1 | 2/1 |
+| sysexin | 1/1 | 1/2 |
+| tempo | 4/1 | 1/1 |
+| thresh | 2/1 | 3/1 |
+| timer | 2/2 | 2/1 |
+| transport | 2/9 | 2/8 |
+| zerox~ | 1/2 | 1/1 |
+| receive~ | 1/1 | 0/1 |
+
+**Recommendation:** Most RNBO differences are by design (RNBO is a different runtime). However, 14 RNBO entries with 0 inlets/outlets likely represent incomplete extraction and should be verified manually. The framework already uses domain-specific lookups via `ObjectDatabase`, so cross-domain differences do not cause connection errors as long as each domain's data is correct for its context.
+
+## 12. Structural Integrity (Check 5)
+
+**0 issues found.** Every object across all 8 domain files (2,012 total) has all 6 required fields (`name`, `maxclass`, `module`, `domain`, `inlets`, `outlets`) present with correct types. `inlets` and `outlets` are lists in every case.
+
+| Domain | Objects Checked | Issues |
+|--------|----------------|--------|
+| max | 470 | 0 |
+| msp | 248 | 0 |
+| jitter | 210 | 0 |
+| mc | 215 | 0 |
+| gen | 189 | 0 |
+| m4l | 33 | 0 |
+| rnbo | 560 | 0 |
+| packages | 87 | 0 |
+| **Total** | **2,012** | **0** |
+
+The database has clean structural integrity.
+
+## 13. PD Blocklist Consistency (Check 6)
+
+**0 missing equivalents.** All `max_equivalent` references in `pd-blocklist.json` resolve to objects that exist in at least one domain file.
+
+| Metric | Count |
+|--------|-------|
+| Blocklist entries | 19 |
+| Equivalents checked | 27 |
+| Found in DB | 26 |
+| Not found in DB | 0 |
+| Descriptive/special cases | 1 |
+
+### All Equivalents Verified
+
+| PD Object | MAX Equivalent(s) | Found |
+|-----------|--------------------|-------|
+| osc~ | cycle~ | Yes |
+| lop~ | onepole~ | Yes |
+| hip~ | onepole~ | Yes |
+| bp~ | reson~ | Yes |
+| vcf~ | reson~, biquad~ | Yes, Yes |
+| tabread~ | index~, play~, wave~ | Yes, Yes, Yes |
+| tabwrite~ | poke~, record~ | Yes, Yes |
+| catch~ | receive~ | Yes |
+| throw~ | send~ | Yes |
+| readsf~ | sfplay~ | Yes |
+| writesf~ | sfrecord~ | Yes |
+| tabread | table, coll | Yes, Yes |
+| tabwrite | table, coll | Yes, Yes |
+| soundfiler | buffer~ | Yes |
+| vline~ | line~ | Yes |
+| netsend | udpsend, mxj | Yes, Yes |
+| netreceive | udpreceive, mxj | Yes, Yes |
+| wrap~ | pong~ | Yes |
+| clip~ | *(descriptive note -- clip~ exists in both PD and MAX)* | N/A |
+
+The PD blocklist is fully consistent with the object database.
+
+---
+
+## Check Summary (11-13)
+
+| Check | Description | Issues Found |
+|-------|-------------|-------------|
+| 11. Cross-domain duplicates | Objects in 2+ domains with differing I/O or maxclass | **197 mismatched** (89 gen~ convention only; 71 real I/O mismatches between non-gen domains; 14 likely incomplete RNBO entries) |
+| 12. Structural integrity | Required fields and types on all 2,012 objects | **0 issues** |
+| 13. PD blocklist consistency | max_equivalent references resolve to DB objects | **0 missing equivalents** |
