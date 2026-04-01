@@ -449,6 +449,58 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "jit.*": {
+    "name": "jit.*",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter Matrix Ops",
+    "digest": "Jitter matrix multiply",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "Matrix",
+      "Math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "jit.3m": {
     "name": "jit.3m",
     "maxclass": "jit.3m",
@@ -4603,6 +4655,45 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "jit.fx.rota": {
+    "name": "jit.fx.rota",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter FX",
+    "digest": "FX rotation effect",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "FX",
+      "Video"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "jit.gen": {
     "name": "jit.gen",
     "maxclass": "jit.gen",
@@ -6041,6 +6132,51 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "jit.gl.layer": {
+    "name": "jit.gl.layer",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter GL",
+    "digest": "GL rendering layer",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "GL",
+      "Rendering"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "jit.gl.light": {
     "name": "jit.gl.light",
     "maxclass": "jit.gl.light",
@@ -6824,6 +6960,51 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "jit.gl.movie": {
+    "name": "jit.gl.movie",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter GL",
+    "digest": "GL movie playback",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "GL",
+      "Video"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "jit.gl.multiple": {
     "name": "jit.gl.multiple",
     "maxclass": "jit.gl.multiple",
@@ -7364,6 +7545,101 @@
     ],
     "min_version": 8,
     "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.gl.pbr": {
+    "name": "jit.gl.pbr",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter GL",
+    "digest": "Physically-based rendering material",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      },
+      {
+        "id": 4,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      },
+      {
+        "id": 5,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      },
+      {
+        "id": 6,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      },
+      {
+        "id": 7,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "GL",
+      "Rendering",
+      "PBR"
+    ],
+    "min_version": 8,
+    "verified": false,
     "variable_io": false,
     "rnbo_compatible": false
   },
@@ -7995,6 +8271,57 @@
     ],
     "min_version": 8,
     "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.gl.polymovie": {
+    "name": "jit.gl.polymovie",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter GL",
+    "digest": "GL polymovie playback",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 2,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "GL",
+      "Video"
+    ],
+    "min_version": 8,
+    "verified": false,
     "variable_io": false,
     "rnbo_compatible": false
   },
@@ -11329,6 +11656,51 @@
     ],
     "min_version": 8,
     "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.mo.sin": {
+    "name": "jit.mo.sin",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter Gen",
+    "digest": "Motion sine generator",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "Motion",
+      "Generator"
+    ],
+    "min_version": 8,
+    "verified": false,
     "variable_io": false,
     "rnbo_compatible": false
   },
@@ -19724,6 +20096,187 @@
     ],
     "min_version": 8,
     "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.time": {
+    "name": "jit.time",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter Gen",
+    "digest": "Time base generator",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "Time",
+      "Generator"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.time.perlin": {
+    "name": "jit.time.perlin",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter Gen",
+    "digest": "Perlin noise time generator",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "Time",
+      "Noise",
+      "Generator"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.time.saw": {
+    "name": "jit.time.saw",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter Gen",
+    "digest": "Sawtooth time generator",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "Time",
+      "Generator"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.time.sin": {
+    "name": "jit.time.sin",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter Gen",
+    "digest": "Time-based sine generator",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "Time",
+      "Generator"
+    ],
+    "min_version": 8,
+    "verified": false,
     "variable_io": false,
     "rnbo_compatible": false
   },

@@ -2833,6 +2833,37 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "mc.capture~": {
+    "name": "mc.capture~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "MC",
+    "category": "Multichannel",
+    "digest": "Multichannel signal capture",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Multichannel",
+      "Analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "mc.cartopol~": {
     "name": "mc.cartopol~",
     "maxclass": "mc.cartopol~",
@@ -12840,6 +12871,44 @@
     "variable_io": false,
     "rnbo_compatible": true
   },
+  "mc.receive~": {
+    "name": "mc.receive~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "MC",
+    "category": "Multichannel, Routing",
+    "digest": "Multichannel wireless receive",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Multichannel",
+      "Routing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "mc.record~": {
     "name": "mc.record~",
     "maxclass": "mc.record~",
@@ -14066,6 +14135,37 @@
     "verified": true,
     "variable_io": false,
     "rnbo_compatible": true
+  },
+  "mc.send~": {
+    "name": "mc.send~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "MC",
+    "category": "Multichannel, Routing",
+    "digest": "Multichannel wireless send",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Multichannel",
+      "Routing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.separate~": {
     "name": "mc.separate~",
@@ -16052,6 +16152,44 @@
     "verified": true,
     "variable_io": false,
     "rnbo_compatible": true
+  },
+  "mc.sum~": {
+    "name": "mc.sum~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "MC",
+    "category": "Multichannel, MSP Operators",
+    "digest": "Multichannel sum to mono",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Multichannel",
+      "Math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
   },
   "mc.svf~": {
     "name": "mc.svf~",
@@ -18612,6 +18750,171 @@
     ],
     "min_version": 8.1,
     "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "mcp.record~": {
+    "name": "mcp.record~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "MC",
+    "category": "Multichannel",
+    "digest": "Multichannel record (parameter)",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Multichannel",
+      "Recording"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "mcs.loudness~": {
+    "name": "mcs.loudness~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "MC",
+    "category": "Multichannel, Analysis",
+    "digest": "Multichannel loudness analysis (sum)",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 2,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 3,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 4,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 5,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Multichannel",
+      "Analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "mcs.sfizz~": {
+    "name": "mcs.sfizz~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "MC",
+    "category": "Multichannel",
+    "digest": "Multichannel SFZ player (sum)",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Multichannel",
+      "Sampling"
+    ],
+    "min_version": 8,
+    "verified": false,
     "variable_io": false,
     "rnbo_compatible": false
   }

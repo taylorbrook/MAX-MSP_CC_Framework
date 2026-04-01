@@ -1,4 +1,73 @@
 {
+  "M4L.api.ObserveTransport": {
+    "name": "M4L.api.ObserveTransport",
+    "maxclass": "newobj",
+    "module": "m4l",
+    "domain": "M4L",
+    "category": "Max for Live",
+    "digest": "Observe Live transport state",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Max for Live",
+      "Transport"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "M4L.api.ToggleTransport": {
+    "name": "M4L.api.ToggleTransport",
+    "maxclass": "newobj",
+    "module": "m4l",
+    "domain": "M4L",
+    "category": "Max for Live",
+    "digest": "Toggle Live transport",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Max for Live",
+      "Transport"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "Parameter Properties": {
     "name": "Parameter Properties",
     "maxclass": "Parameter Properties",
