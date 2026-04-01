@@ -964,3 +964,116 @@ class TestLayer4GenExprChecks:
                  if r.layer == "domain" and r.level == "info"
                  and "assistance" in r.message.lower()]
         assert len(infos) >= 1
+
+
+# ===========================================================================
+# External .gendsp I/O Validation
+# ===========================================================================
+
+class TestExternalGendspValidation:
+    """Validate gen~ @gen .gendsp file I/O matching."""
+
+    def test_gendsp_matching_io(self, db, tmp_path):
+        """gen~ @gen with matching I/O produces no domain error."""
+        from src.maxpat.codegen import generate_gendsp
+
+        # Create a .gendsp with 1 in + 1 out
+        gendsp = generate_gendsp("out1 = in1 * 0.5;")
+        gendsp_path = tmp_path / "test.gendsp"
+        import json
+        gendsp_path.write_text(json.dumps(gendsp))
+
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="gen~ @gen test.gendsp",
+                       numinlets=1, numoutlets=1, outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db, patch_dir=tmp_path)
+        domain_errors = [r for r in results
+                         if r.layer == "domain"
+                         and r.level in ("error", "warning")
+                         and "gendsp" in r.message.lower()]
+        assert domain_errors == []
+
+    def test_gendsp_io_mismatch(self, db, tmp_path):
+        """gen~ @gen with mismatched I/O produces domain warnings."""
+        from src.maxpat.codegen import generate_gendsp
+
+        # Create a .gendsp with 2 in + 3 out
+        gendsp = generate_gendsp("out1 = in1; out2 = in2; out3 = in1 + in2;",
+                                  num_inputs=2, num_outputs=3)
+        gendsp_path = tmp_path / "test.gendsp"
+        import json
+        gendsp_path.write_text(json.dumps(gendsp))
+
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="gen~ @gen test.gendsp",
+                       numinlets=1, numoutlets=1, outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db, patch_dir=tmp_path)
+        mismatch_warnings = [r for r in results
+                             if r.layer == "domain"
+                             and r.level == "warning"
+                             and "mismatch" in r.message.lower()]
+        assert len(mismatch_warnings) >= 1
+
+    def test_gendsp_file_not_found(self, db, tmp_path):
+        """gen~ @gen referencing nonexistent .gendsp produces info-level result."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="gen~ @gen nonexistent.gendsp",
+                       numinlets=1, numoutlets=1, outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db, patch_dir=tmp_path)
+        info_results = [r for r in results
+                        if r.layer == "domain"
+                        and r.level == "info"
+                        and "not found" in r.message.lower()]
+        assert len(info_results) >= 1
+
+    def test_gendsp_no_patch_dir(self, db):
+        """gen~ @gen without patch_dir skips check silently (backward compatible)."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="gen~ @gen test.gendsp",
+                       numinlets=1, numoutlets=1, outlettype=["signal"]),
+        ])
+        # No patch_dir -- should not raise or emit gendsp-related results
+        results = validate_patch(patch, db=db)
+        gendsp_results = [r for r in results
+                          if r.layer == "domain"
+                          and "gendsp" in r.message.lower()]
+        assert gendsp_results == []
+
+
+# ===========================================================================
+# MC Oscillator Gain Staging
+# ===========================================================================
+
+class TestMCOscillatorGainStaging:
+    """MC oscillator variants trigger gain staging checks."""
+
+    def test_mc_cycle_gain_staging_warning(self, db):
+        """mc.cycle~ -> dac~ without *~ triggers gain staging warning."""
+        boxes = [
+            _make_box("obj-1", text="mc.cycle~ 440", numoutlets=1,
+                       outlettype=["multichannelsignal"]),
+            _make_box("obj-2", maxclass="ezdac~", text="ezdac~",
+                       numinlets=2, numoutlets=0, outlettype=[]),
+        ]
+        lines = [_make_line("obj-1", 0, "obj-2", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+        gain_warnings = [r for r in results
+                         if r.layer == "domain" and "gain" in r.message.lower()
+                         and "mc.cycle~" in r.message]
+        assert len(gain_warnings) >= 1
+
+    def test_mc_oscillator_names_in_set(self):
+        """mc.saw~, mc.rect~, mc.tri~ are in _OSCILLATOR_NAMES."""
+        from src.maxpat.validation import _OSCILLATOR_NAMES
+        for name in ("mc.cycle~", "mc.saw~", "mc.rect~", "mc.tri~"):
+            assert name in _OSCILLATOR_NAMES, f"{name} missing from _OSCILLATOR_NAMES"
+
+    def test_mc_oscillator_names_in_dsp_critic(self):
+        """MC oscillators are in dsp_critic._OSCILLATOR_NAMES."""
+        from src.maxpat.critics.dsp_critic import _OSCILLATOR_NAMES as critic_names
+        for name in ("mc.cycle~", "mc.saw~", "mc.rect~", "mc.tri~"):
+            assert name in critic_names, f"{name} missing from dsp_critic._OSCILLATOR_NAMES"
