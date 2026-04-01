@@ -35,6 +35,42 @@ In `.maxpat` files, z-order = boxes array order. Later in array = renders on top
 
 **Background elements** (panels, markers) are handled automatically -- `add_panel()` and `add_step_marker()` insert at index 0.
 
+## Control-Rate Fan-Out Rule (MUST)
+
+When a control-rate outlet connects to 2+ destinations, you **MUST** use a `trigger` (t) object. Direct multi-connect from one outlet to multiple inlets is **NEVER** acceptable for control-rate connections.
+
+**Signal-rate exemption:** MSP signal (~) fan-out is safe and does NOT require trigger. All signal inlets process simultaneously at audio rate, so execution order is not a concern for signal connections.
+
+### Before/After Example
+
+**WRONG -- direct fan-out (undefined execution order):**
+```
+[button]
+  |  \
+  |   \
+  v    v
+[counter] [toggle]
+```
+The outlet of button connects to both counter inlet 0 and toggle inlet 0. Execution order is undefined -- MAX may fire them in any order.
+
+**RIGHT -- trigger for explicit ordering:**
+```
+[button]
+  |
+  v
+[t b b]
+  |   \
+  v    v
+[counter] [toggle]
+```
+trigger fires right-to-left: toggle gets bang first, then counter. Order is explicit and predictable.
+
+### Enforcement
+
+The structure critic (`src/maxpat/critics/structure_critic.py`) detects fan-out without trigger and flags it. Agents must not produce patterns that trigger this finding.
+
+**This applies to ALL control-rate fan-out, even when execution order "does not matter." Always use trigger -- no exceptions for control-rate.**
+
 ## Aesthetic Capabilities
 
 **Aesthetic auto-styling (call explicitly for new patches):**
