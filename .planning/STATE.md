@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260331-rzs-PLAN.md
-last_updated: "2026-04-01T03:15:35.677Z"
+stopped_at: Completed quick-260331-snl-PLAN.md
+last_updated: "2026-04-01T03:47:07.466Z"
 last_activity: "2026-04-01 - Completed quick task 260331-rzs: Add integration validation tests on real patches and extract _get_box_name helper"
 progress:
   total_phases: 12
@@ -67,6 +67,7 @@ Progress: [██████████] 100%
 | Phase quick-260331-oua P01 | 9min | 3 tasks | 8 files |
 | Phase quick-260331-riy P01 | 3min | 1 tasks | 1 files |
 | Phase quick-260331-rzs P01 | 2min | 2 tasks | 5 files |
+| Phase quick-260331-snl P01 | 4min | 1 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -149,6 +150,7 @@ Recent decisions for v2.0:
 - [Phase quick-260331-oua]: git stash prohibited during patch workflows (CLAUDE.md Rule #7)
 - [Phase quick-260331-riy]: Minimal _outlet_types_verified entries for 195 verified-correct MSP objects; full outlet corrections for 7 DB-error objects
 - [Phase quick-260331-rzs]: get_box_name() is public API in utils.py (no underscore); mixer-strip.maxpat marked xfail for known gain blocker
+- [Phase quick-260331-snl]: External .gendsp not found emits info (not error); multichannelsignal treated as signal for gain checks; patch_dir=None skips .gendsp validation
 
 ### Pending Todos
 
@@ -195,6 +197,7 @@ None.
 | 260331-oua | Prevent MAX patch work loss with auto-commit and stash recovery | 2026-04-01 | 87f866a | Verified | [260331-oua-prevent-max-patch-work-loss-with-isolati](./quick/260331-oua-prevent-max-patch-work-loss-with-isolati/) |
 | 260331-riy | Bulk-verify remaining MSP outlet types in overrides.json | 2026-04-01 | 5b792f7 | | [260331-riy-bulk-verify-remaining-msp-outlet-types-i](./quick/260331-riy-bulk-verify-remaining-msp-outlet-types-i/) |
 | 260331-rzs | Add integration validation tests on real patches and extract duplicated _get_box_name helper | 2026-04-01 | 6b3f89f | | [260331-rzs-add-integration-validation-tests-on-real](./quick/260331-rzs-add-integration-validation-tests-on-real/) |
+| 260331-snl | Add external .gendsp I/O validation and MC oscillator gain checks | 2026-04-01 | 7fd9239 | | [260331-snl-add-external-gendsp-validation-and-mc-os](./quick/260331-snl-add-external-gendsp-validation-and-mc-os/) |
 
 ### Blockers/Concerns
 
@@ -205,6 +208,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-01T03:15:35.674Z
-Stopped at: Completed quick-260331-rzs-PLAN.md
+Last session: 2026-04-01T03:46:58.864Z
+Stopped at: Completed quick-260331-snl-PLAN.md
 Resume file: None
