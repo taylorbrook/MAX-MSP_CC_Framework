@@ -67,14 +67,14 @@ Before any generation:
 
 ### Pattern Application
 - Top-to-bottom signal flow (CLAUDE.md Rule #4)
-- Explicit `trigger` objects for fan-out (never multi-connect from one outlet)
-- Cold inlets first, hot inlet last (CLAUDE.md Rule #3)
+- **MUST** use `trigger` (t) for ALL control-rate fan-out -- connecting one outlet to 2+ destinations without trigger is a structural defect (see shared-capabilities.md "Control-Rate Fan-Out Rule")
+- **MUST** send to cold inlets FIRST, hot inlet LAST -- use `trigger` to guarantee ordering (CLAUDE.md Rule #3)
 - Named send/receive for long-distance connections
 - Subpatcher organization for complex logic
 - Comment objects on non-obvious connections
 - For dial, number, and control appearance, consult `.claude/skills/references/ui-presets.md`
 
-> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
+> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
 ## Editing Existing Patches (via /max-iterate)
 

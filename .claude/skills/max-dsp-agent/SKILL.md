@@ -97,7 +97,13 @@ gen_box.outlettype = ["signal"]  # Use ["signal", "signal"] for stereo
 - Feedback loops: tapin~/tapout~ pair (MSP) or History operator (gen~)
 - gen~ exempted from feedback loop warnings (History is the intended mechanism)
 
-> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
+### Control-Rate Fan-Out in DSP Patches
+- **MUST** use `trigger` (t) for any control-rate outlet that fans out to 2+ destinations
+- Signal-rate (~) fan-out is exempt -- MSP processes all signal connections simultaneously
+- Common case: a `loadbang` or `metro` feeding multiple control-rate destinations in a DSP patch still needs trigger
+- See shared-capabilities.md "Control-Rate Fan-Out Rule" for the full rule and examples
+
+> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
 ## Editing Existing Patches (via /max-iterate)
 

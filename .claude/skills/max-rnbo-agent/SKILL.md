@@ -23,7 +23,12 @@ Generate RNBO patches for VST3/AU plugin, Web Audio, and C++ embedded export tar
 - **Object compatibility**: Check RNBO compatibility of any object via `RNBODatabase`
 - **Semantic review**: Run RNBO critic to catch param naming issues, missing I/O, and duplicate params
 
-> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
+### Control-Rate Fan-Out in RNBO Patches
+- **MUST** use `trigger` (t) for any control-rate outlet that fans out to 2+ destinations in the wrapper patch around rnbo~
+- Signal-rate (~) fan-out is exempt inside and outside the rnbo~ container
+- See shared-capabilities.md "Control-Rate Fan-Out Rule" for the full rule and examples
+
+> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
 ## Domain Context Loading
 

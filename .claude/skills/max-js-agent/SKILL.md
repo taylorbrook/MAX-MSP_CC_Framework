@@ -60,7 +60,11 @@ Before any generation:
 | Patcher access | Via maxAPI | this.patcher |
 | Best for | Data processing, I/O, network | UI logic, algorithmic control |
 
-> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
+### Control-Rate Fan-Out
+- **MUST** use `trigger` (t) for any control-rate outlet that fans out to 2+ destinations in the .maxpat wiring around js/node.script boxes
+- See shared-capabilities.md "Control-Rate Fan-Out Rule" for the full rule and examples
+
+> **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
 ## Editing Existing Patches (via /max-iterate)
 
