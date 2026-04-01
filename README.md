@@ -159,7 +159,7 @@ The `patches/` directory contains example and user-created projects:
 
 The framework has four core layers:
 
-**Direct .maxpat Editing (v2.0)** — The `.maxpat` file is the single source of truth. Patches are loaded into `Patcher`/`Box`/`Patchline` objects, edited with search, mutation, and graph query methods, and written back with lossless round-trip preservation. All user state — positions, colors, varnames, custom attributes, manual edits made in MAX — survives the load-edit-save cycle. No intermediate code generation step.
+**Direct .maxpat Editing (v2.0)** — The `.maxpat` file is the single source of truth. Patches are loaded into `Patcher`/`Box`/`Patchline` objects, edited with search, mutation, and graph query methods, and written back with lossless round-trip preservation. All user state — positions, colors, varnames, custom attributes, manual edits made in MAX — survives the load-edit-save cycle. Every patch save auto-commits to git for safety. No intermediate code generation step.
 
 **Object Database** — A verified knowledge base of 2,015 MAX objects (`.claude/max-objects/`) with full inlet/outlet schemas, signal types, argument formats, variable I/O rules, and RNBO compatibility flags. Every object used in generation is looked up here — nothing is guessed.
 
@@ -175,10 +175,10 @@ For full technical documentation — agent internals, validation details, object
 MAX-MSP_CC_Framework/
 ├── .claude/
 │   ├── max-objects/        # Object database (2,015 objects across 8 domains)
-│   ├── skills/             # Agent definitions (10 specialist agents)
+│   ├── skills/             # Agent definitions (9 specialist agents)
 │   └── commands/           # Slash command definitions
-├── src/maxpat/             # Python editing, validation, and analysis engine (~11,900 LOC)
-├── tests/                  # Test suite (1,141 tests across 32 files)
+├── src/maxpat/             # Python editing, validation, and analysis engine (~13,200 LOC)
+├── tests/                  # Test suite (1,276 tests across 33 files)
 ├── patches/                # Your projects live here
 │   ├── .active-project.json
 │   └── {project-name}/
@@ -218,6 +218,7 @@ Planning artifacts live in `.planning/`:
 | **v2.0 Direct Editing** | 2026-03-17 | 7 | 19 | Lossless round-trip, search/mutation API, patch analysis, agent migration, v1.x cleanup |
 | **v2.1 Iteration & Polish** | 2026-03-20 | — | — | Interactive iterate modes, version tracking, project lifecycle improvements |
 | **v2.2 Gen~ Patterns & Hooks** | 2026-03-22 | — | — | Gen~ pattern library (19 .gendsp), finalize_patch hook, fsync reliability, gen-eq project |
+| **v2.3 Reliability & Validation** | 2026-03-31 | — | — | Z-order API, auto-commit safety hooks, MSP outlet type verification (202 objects), patcher decomposition (GraphMixin/AnalysisMixin), integration tests on real patches, trigger enforcement hardening, round-trip text bug fix, external .gendsp validation, maxclass validation |
 
 ## License
 

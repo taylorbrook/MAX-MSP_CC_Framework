@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-04-01 - Completed quick task 260331-vs8: Decompose patcher.py — extract graph/analysis mixins + maxclass validation
+Last activity: 2026-04-01 - Completed quick task 260331-w95: Update README and TECHNICAL.md for v2.3 release
 
 Progress: [██████████] 100%
 
@@ -189,7 +189,7 @@ None.
 | 260331-nps | Fix round-trip text:"" bug and xfail externally-modified round-trip tests | 2026-04-01 | ea844a1 | | [260331-nps-fix-round-trip-text-bug-and-xfail-extern](./quick/260331-nps-fix-round-trip-text-bug-and-xfail-extern/) |
 | 260331-o1y | Strengthen Rule #3 trigger enforcement across all specialist SKILL.md files | 2026-04-01 | 0642e94 | | [260331-o1y-strengthen-rule-3-trigger-enforcement-ac](./quick/260331-o1y-strengthen-rule-3-trigger-enforcement-ac/) |
 | 260331-vs8 | Decompose patcher.py — extract graph/analysis mixins + maxclass validation | 2026-04-01 | e3b0415 | | [260331-vs8-decompose-patcher-py-extract-graph-trave](./quick/260331-vs8-decompose-patcher-py-extract-graph-trave/) |
-| 260331-w95 | Review recent updates: fix tests and z-order doc consistency | 2026-04-01 | 0841a18 | | [260331-w95-review-the-recent-updates-to-the-repo-an](./quick/260331-w95-review-the-recent-updates-to-the-repo-an/) |
+| 260331-w95 | Update README and TECHNICAL.md for v2.3 release | 2026-04-01 | 0841a18 | Verified | [260331-w95-review-the-recent-updates-to-the-repo-an](./quick/260331-w95-review-the-recent-updates-to-the-repo-an/) |
 
 ### Blockers/Concerns
 

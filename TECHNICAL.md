@@ -217,7 +217,7 @@ Relationship types: `required_pair`, `common_pair`, `equivalent`, `required_grou
 
 ## Agent System
 
-The framework uses 10 specialist agents defined in `.claude/skills/`. Each agent has access to the object database and Python engine.
+The framework uses 9 specialist agents defined in `.claude/skills/`. Each agent has access to the object database and Python engine.
 
 ### Router (max-router)
 
@@ -258,13 +258,13 @@ After generation, the router passes output through the critic loop before writin
 |-------|------|----------|
 | **max-critic** | Quality assurance | Orchestrates generate-review-revise loop using Python critics. No hard round limit — loops until clean. |
 | **max-lifecycle** | Project management | Creates projects, tracks stages (ideation → discuss → research → build → verify), generates test checklists |
-| **max-memory-agent** | Pattern persistence | Auto-injects relevant memory before generation, writes back new patterns after successful generation |
+| **max-memory-agent** | Pattern persistence | *Retired in v2.2.* The MemoryStore API and `patterns.md` files remain, but auto-inject/write-back is now handled directly by generating agents rather than a dedicated memory agent. |
 
 ---
 
 ## Python Engine
 
-`src/maxpat/` contains the core Python library (~11,900 LOC).
+`src/maxpat/` contains the core Python library (~13,200 LOC).
 
 ### Core Classes (`patcher.py`)
 
@@ -293,6 +293,11 @@ After generation, the router passes output through the critic loop before writin
 | `downstream(box)` / `upstream(box)` | Graph traversal from a box |
 | `signal_path(box)` | Trace signal-only path from a box |
 | `connected_components()` | Find independent subgraphs |
+| `bring_to_front(box)` | Move box to index 0 (renders on top) |
+| `send_to_back(box)` | Move box to end of array (renders behind) |
+| `set_z_index(box, index)` | Set explicit z-order position |
+
+Patcher internals are decomposed into mixins for maintainability: `GraphMixin` (`graph.py`) handles adjacency/traversal and `AnalysisMixin` (`analysis.py`) handles patch analysis. `utils.py` provides shared helpers like `get_box_name()`. The public API is unchanged.
 
 **Box** — Individual MAX object:
 - Resolves object name through ObjectDatabase (enforces Rule #1)
@@ -367,6 +372,9 @@ Semantic checks for common MAX pitfalls:
 | Unterminated signal chains | MSP objects with signal outlets going nowhere | warning |
 | Missing gain staging | Oscillator → `dac~` without `*~` or `gain~` in between | warning |
 | Feedback loops | Signal cycles without delay objects (`tapin~`/`tapout~`/`gen~`) | warning |
+| Maxclass mismatch | `newobj` maxclass on non-UI objects that should use specific maxclass | warning |
+| External .gendsp I/O mismatch | Gen~ box I/O count doesn't match referenced .gendsp file | warning |
+| MC oscillator gain staging | MC oscillators reaching mc.dac~ without gain control | warning |
 
 ### Blocking Behavior
 
@@ -408,9 +416,9 @@ Additional validation for RNBO export patches (`src/maxpat/rnbo_validation.py`):
 
 | Function | Validates | Blocks on Error |
 |----------|-----------|----------------|
-| `save_patch_roundtrip(patcher, path)` | None (lossless round-trip, preserves key order and precision) | No |
-| `write_gendsp(code, path)` | None (write-only) | No |
-| `write_js(code, path)` | Code validation (report-only) | No |
+| `save_patch_roundtrip(patcher, path)` | Lossless round-trip; auto-commits to git via `auto_commit_patch()` | No |
+| `write_gendsp(code, path)` | Auto-commits to git | No |
+| `write_js(code, path)` | Code validation (report-only); auto-commits to git | No |
 
 Validation is run on demand via `validate_patch()` rather than automatically on every save — this avoids rejecting third-party objects on load-edit-save cycles.
 
@@ -449,6 +457,7 @@ Reviews signal flow semantics.
 | gen~ I/O mismatch | GenExpr code declares different I/O count than gen~ box | blocker |
 | Gain staging | Oscillator reaching `dac~` without gain control | warning |
 | Audio rate consistency | Control-rate object feeding signal inlet | warning |
+| MIDI-range gain values | Raw 0-127 values feeding `*~` or `gain~` without normalization | blocker |
 
 ### RNBO Critic (`rnbo_critic.py`)
 
@@ -658,7 +667,7 @@ Results are saved to `test-results/` for tracking.
 
 ## Test Suite
 
-The project includes 1,141 tests across 32 test files covering all modules. Run with:
+The project includes 1,276 tests across 33 test files covering all modules. Run with:
 
 ```bash
 python3 -m pytest tests/ -v
