@@ -101,6 +101,14 @@
       "files_changed": [
         "slot-engine.js"
       ]
+    },
+    {
+      "version": "0.2.15",
+      "description": "wire start dial directly to groove~ via info~ scaling",
+      "timestamp": "2026-04-01T18:59:48.120056+00:00",
+      "files_changed": [
+        "slot.maxpat"
+      ]
     }
   ]
 }
