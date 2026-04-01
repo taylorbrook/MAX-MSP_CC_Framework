@@ -3548,7 +3548,7 @@
     "domain": "MSP",
     "category": "MSP Operators",
     "digest": "Signal cosine function",
-    "description": "Use the cosx~ object to calculate and output a signal that is the cosine function of each sample of the input signal. The cosx~ object is a true π based function - it varies from the cos~ object, whose output is based around a value range of 0. - 1.0 and is intended for use as a lookup table with the phasor~ object.",
+    "description": "Use the cosx~ object to calculate and output a signal that is the cosine function of each sample of the input signal. The cosx~ object is a true \u03c0 based function - it varies from the cos~ object, whose output is based around a value range of 0. - 1.0 and is intended for use as a lookup table with the phasor~ object.",
     "inlets": [
       {
         "id": 0,
@@ -8573,8 +8573,8 @@
     "inlets": [
       {
         "id": 0,
-        "type": "signal",
-        "signal": true,
+        "type": "",
+        "signal": false,
         "digest": "bang Outputs the Information",
         "hot": true
       }
@@ -8582,63 +8582,63 @@
     "outlets": [
       {
         "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Sampling Rate"
+        "type": "float",
+        "signal": false,
+        "digest": "Sample rate (float)"
       },
       {
         "id": 1,
-        "type": "signal",
-        "signal": true,
-        "digest": "Sample Instrument Info (list)"
+        "type": "list",
+        "signal": false,
+        "digest": "Instrument info / MIDI pitch (list)"
       },
       {
         "id": 2,
-        "type": "signal",
-        "signal": true,
-        "digest": "Sustain Loop Start (msec)"
+        "type": "float",
+        "signal": false,
+        "digest": "Sustain loop start in ms (float)"
       },
       {
         "id": 3,
-        "type": "signal",
-        "signal": true,
-        "digest": "Sustain Loop End (msec)"
+        "type": "float",
+        "signal": false,
+        "digest": "Sustain loop end in ms (float)"
       },
       {
         "id": 4,
-        "type": "signal",
-        "signal": true,
-        "digest": "Release Loop Start (msec)"
+        "type": "float",
+        "signal": false,
+        "digest": "Release loop start in ms (float)"
       },
       {
         "id": 5,
-        "type": "signal",
-        "signal": true,
-        "digest": "Release Loop End (msec)"
+        "type": "float",
+        "signal": false,
+        "digest": "Release loop end in ms (float)"
       },
       {
         "id": 6,
-        "type": "signal",
-        "signal": true,
-        "digest": "Total Time (msec)"
+        "type": "float",
+        "signal": false,
+        "digest": "Total time of buffer in ms (float)"
       },
       {
         "id": 7,
-        "type": "signal",
-        "signal": true,
-        "digest": "Most Recent Filename"
+        "type": "",
+        "signal": false,
+        "digest": "Filename of most recently read audio file (symbol)"
       },
       {
         "id": 8,
-        "type": "signal",
-        "signal": true,
-        "digest": "Number of Channel(s)"
+        "type": "int",
+        "signal": false,
+        "digest": "Number of channels (int)"
       },
       {
         "id": 9,
-        "type": "signal",
-        "signal": true,
-        "digest": "Most Recent File Full Pathname"
+        "type": "",
+        "signal": false,
+        "digest": "State / valid flag"
       }
     ],
     "arguments": [
@@ -13632,8 +13632,8 @@
     "module": "msp",
     "domain": "MSP",
     "category": "MSP FFT",
-    "digest": "Wrap a signal between π and -π",
-    "description": "phasewrap~ takes any input signal and wrap it between π and -π values.",
+    "digest": "Wrap a signal between \u03c0 and -\u03c0",
+    "description": "phasewrap~ takes any input signal and wrap it between \u03c0 and -\u03c0 values.",
     "inlets": [
       {
         "id": 0,
@@ -17903,7 +17903,7 @@
     "domain": "MSP",
     "category": "MSP Operators",
     "digest": "Signal sine function",
-    "description": "sinx~ is a real sine function whose input expects values between 0 and 2π (similar to cosx~ but unlike cos~ which is designed to work with phasor~'s output from 0 to 1).",
+    "description": "sinx~ is a real sine function whose input expects values between 0 and 2\u03c0 (similar to cosx~ but unlike cos~ which is designed to work with phasor~'s output from 0 to 1).",
     "inlets": [
       {
         "id": 0,
@@ -19756,7 +19756,7 @@
     "domain": "MSP",
     "category": "MSP Operators",
     "digest": "Signal tangent function",
-    "description": "Use the tanx~ object to calculate and output a signal that is the tangent function of each sample of the input signal. The tanx~ object is a true π based function - it varies from the tanh~ object, whose output is based around 1 and is intended for use as a lookup table with the phasor~ object.",
+    "description": "Use the tanx~ object to calculate and output a signal that is the tangent function of each sample of the input signal. The tanx~ object is a true \u03c0 based function - it varies from the tanh~ object, whose output is based around 1 and is intended for use as a lookup table with the phasor~ object.",
     "inlets": [
       {
         "id": 0,

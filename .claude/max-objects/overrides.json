@@ -2949,87 +2949,89 @@
       }
     },
     "info~": {
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": "Sample frames (int)"
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": "Number of channels (int)"
-        },
-        {
-          "id": 2,
-          "type": "",
-          "signal": false,
-          "digest": "Sample rate (float)"
-        },
-        {
-          "id": 3,
-          "type": "",
-          "signal": false,
-          "digest": "Length in ms (float)"
-        },
-        {
-          "id": 4,
-          "type": "",
-          "signal": false,
-          "digest": "State (modified flag)"
-        }
-      ],
-      "_note": "info~ outlets are control (numbers), not signal.",
-      "_manual_original": {
-        "outlets": [
-          {
-            "id": 0,
-            "type": "",
-            "signal": false,
-            "digest": "Sample frames (int)"
-          },
-          {
-            "id": 1,
-            "type": "",
-            "signal": false,
-            "digest": "Number of channels (int)"
-          },
-          {
-            "id": 2,
-            "type": "",
-            "signal": false,
-            "digest": "Sample rate (float)"
-          },
-          {
-            "id": 3,
-            "type": "",
-            "signal": false,
-            "digest": "Length in ms (float)"
-          },
-          {
-            "id": 4,
-            "type": "",
-            "signal": false,
-            "digest": "State (modified flag)"
-          }
-        ],
-        "_note": "info~ outlets are control (numbers), not signal."
-      },
+      "_note": "info~ has 10 control outlets (not signal). Order per Cycling74 docs.",
       "inlets": [
         {
           "id": 0,
           "type": "",
           "signal": false,
-          "digest": ""
+          "digest": "bang Outputs the Information",
+          "hot": true
         }
       ],
-      "_audit": {
-        "confidence": "HIGH",
-        "instances": 6,
-        "agreement": 1.0,
-        "source": "io_count_finding"
+      "outlets": [
+        {
+          "id": 0,
+          "type": "float",
+          "signal": false,
+          "digest": "Sample rate (float)"
+        },
+        {
+          "id": 1,
+          "type": "list",
+          "signal": false,
+          "digest": "Instrument info / MIDI pitch (list)"
+        },
+        {
+          "id": 2,
+          "type": "float",
+          "signal": false,
+          "digest": "Sustain loop start in ms (float)"
+        },
+        {
+          "id": 3,
+          "type": "float",
+          "signal": false,
+          "digest": "Sustain loop end in ms (float)"
+        },
+        {
+          "id": 4,
+          "type": "float",
+          "signal": false,
+          "digest": "Release loop start in ms (float)"
+        },
+        {
+          "id": 5,
+          "type": "float",
+          "signal": false,
+          "digest": "Release loop end in ms (float)"
+        },
+        {
+          "id": 6,
+          "type": "float",
+          "signal": false,
+          "digest": "Total time of buffer in ms (float)"
+        },
+        {
+          "id": 7,
+          "type": "",
+          "signal": false,
+          "digest": "Filename of most recently read audio file (symbol)"
+        },
+        {
+          "id": 8,
+          "type": "int",
+          "signal": false,
+          "digest": "Number of channels (int)"
+        },
+        {
+          "id": 9,
+          "type": "",
+          "signal": false,
+          "digest": "State / valid flag"
+        }
+      ],
+      "_manual_original": {
+        "inlets": [
+          {
+            "id": 0,
+            "type": "signal",
+            "signal": true,
+            "digest": "bang Outputs the Information",
+            "hot": true
+          }
+        ],
+        "outlets_wrong_types": "All 10 outlets were incorrectly typed as signal. info~ outputs control data only."
       }
     },
     "in~": {
