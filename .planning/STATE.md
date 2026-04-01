@@ -5,7 +5,7 @@ milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260331-snl-PLAN.md
 last_updated: "2026-04-01T03:47:07.466Z"
-last_activity: "2026-04-01 - Completed quick task 260331-rzs: Add integration validation tests on real patches and extract _get_box_name helper"
+last_activity: "2026-04-01 - Completed quick task 260331-snl: Add external .gendsp validation and MC oscillator gain staging"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-04-01 - Completed quick task 260331-rzs: Add integration validation tests on real patches and extract _get_box_name helper
+Last activity: 2026-04-01 - Completed quick task 260331-snl: Add external .gendsp validation and MC oscillator gain staging
 
 Progress: [██████████] 100%
 
