@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260331-n24-PLAN.md
-last_updated: "2026-03-31T23:50:31.813Z"
-last_activity: "2026-03-31 - Completed quick task 260331-n24: Full repo analysis with prioritized improvements"
+stopped_at: Completed quick-260331-nps-PLAN.md
+last_updated: "2026-04-01T00:11:12Z"
+last_activity: "2026-04-01 - Completed quick task 260331-nps: Fix round-trip text bug and xfail externally-modified round-trip tests"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-03-31 - Completed quick task 260331-n24: Full repo analysis with prioritized improvements
+Last activity: 2026-04-01 - Completed quick task 260331-nps: Fix round-trip text bug and xfail externally-modified round-trip tests
 
 Progress: [██████████] 100%
 
@@ -139,6 +139,7 @@ Recent decisions for v2.0:
 - [Phase quick-260322-pxv]: Used open()+write()+flush()+fsync() instead of low-level os.open() for normal file permissions
 - [Phase quick-260331-eqh]: set_z_index clamps out-of-range indices rather than raising; ValueError for missing box consistent with list.remove
 - [Phase quick-260331-n24]: Round-trip text bug: from_dict() line 1950 defaults text to empty string for UI boxes without text key; fix is box_data.get('text') instead of box_data.get('text', '')
+- [Phase quick-260331-nps]: box_data.get("text") returns None (not "") when original box has no text key -- to_dict handles None correctly
 
 ### Pending Todos
 
@@ -180,6 +181,7 @@ None.
 | 260322-pxv | Fix patch file caching with os.fsync on all write paths | 2026-03-23 | 6b57e00 | Verified | [260322-pxv-investigate-and-fix-patch-file-caching-i](./quick/260322-pxv-investigate-and-fix-patch-file-caching-i/) |
 | 260331-eqh | Add z-order manipulation API and documentation | 2026-03-31 | adaa5ef | Verified | [260331-eqh-research-z-order-of-objects-in-max-and-a](./quick/260331-eqh-research-z-order-of-objects-in-max-and-a/) |
 | 260331-n24 | Full repo analysis: identify improvements for next milestone | 2026-03-31 | f02dfbd | Verified | [260331-n24-full-repo-analysis-identify-improvements](./quick/260331-n24-full-repo-analysis-identify-improvements/) |
+| 260331-nps | Fix round-trip text:"" bug and xfail externally-modified round-trip tests | 2026-04-01 | ea844a1 | | [260331-nps-fix-round-trip-text-bug-and-xfail-extern](./quick/260331-nps-fix-round-trip-text-bug-and-xfail-extern/) |
 
 ### Blockers/Concerns
 
@@ -190,6 +192,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-03-31T23:50:25.860Z
-Stopped at: Completed quick-260331-n24-PLAN.md
+Last session: 2026-04-01T00:11:12Z
+Stopped at: Completed quick-260331-nps-PLAN.md
 Resume file: None

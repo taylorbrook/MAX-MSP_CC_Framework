@@ -1947,7 +1947,7 @@ class Patcher:
             box = Box.__new__(Box)
             box.id = box_data.get("id", "obj-0")
             box.maxclass = box_data.get("maxclass", "newobj")
-            box.text = box_data.get("text", "")
+            box.text = box_data.get("text")
             box.numinlets = box_data.get("numinlets", 1)
             box.numoutlets = box_data.get("numoutlets", 0)
             box.outlettype = box_data.get("outlettype", [])
