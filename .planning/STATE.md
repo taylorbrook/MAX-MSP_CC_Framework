@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260401-j8z-PLAN.md
-last_updated: "2026-04-01T20:57:14.198Z"
+stopped_at: Completed quick-260401-l3t-PLAN.md
+last_updated: "2026-04-01T22:15:44.965Z"
 last_activity: "2026-04-01 - Completed quick task 260401-j8z: Fix info~ object outlets in MSP database"
 progress:
   total_phases: 12
@@ -67,6 +67,7 @@ Progress: [██████████] 100%
 | Phase quick-260331-vs8 P01 | 9min | 2 tasks | 5 files |
 | Phase quick-260331-w95 P01 | 3min | 2 tasks | 3 files |
 | Phase quick-260401-j8z P01 | 2min | 1 tasks | 2 files |
+| Phase quick-260401-l3t P01 | 1min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -147,6 +148,8 @@ Recent decisions for v2.0:
 - [Phase quick-260331-vs8]: Mixin pattern for Patcher decomposition: GraphMixin + AnalysisMixin, zero API changes
 - [Phase quick-260331-w95]: shared-capabilities.md z-order section was stale after user's 8feeebf fix; corrected to match CLAUDE.md and patcher.py
 - [Phase quick-260401-j8z]: get_outlet_types() returns maxpat-format strings (signal/''), not raw type fields; override includes _manual_original for audit trail
+- [Phase quick-260401-l3t]: Bucket/Uzi overrides renamed to lowercase to match domain JSON convention
+- [Phase quick-260401-l3t]: 5 non-object override entries removed (!, 1, 2, >p, ?) -- patch metadata artifacts
 
 ### Pending Todos
 
@@ -203,6 +206,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-01T20:57:06.598Z
-Stopped at: Completed quick-260401-j8z-PLAN.md
+Last session: 2026-04-01T22:15:44.886Z
+Stopped at: Completed quick-260401-l3t-PLAN.md
 Resume file: None
