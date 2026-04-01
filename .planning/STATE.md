@@ -5,7 +5,7 @@ milestone_name: Direct .maxpat Editing
 status: completed
 stopped_at: Completed quick-260331-rzs-PLAN.md
 last_updated: "2026-04-01T03:15:35.677Z"
-last_activity: "2026-04-01 - Completed quick task 260331-riy: Bulk-verify remaining MSP outlet types in overrides.json"
+last_activity: "2026-04-01 - Completed quick task 260331-rzs: Add integration validation tests on real patches and extract _get_box_name helper"
 progress:
   total_phases: 12
   completed_phases: 12
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
 Status: Complete
-Last activity: 2026-04-01 - Completed quick task 260331-riy: Bulk-verify remaining MSP outlet types in overrides.json
+Last activity: 2026-04-01 - Completed quick task 260331-rzs: Add integration validation tests on real patches and extract _get_box_name helper
 
 Progress: [██████████] 100%
 
@@ -194,6 +194,7 @@ None.
 | 260331-o1y | Strengthen Rule #3 trigger enforcement across all specialist SKILL.md files | 2026-04-01 | 0642e94 | | [260331-o1y-strengthen-rule-3-trigger-enforcement-ac](./quick/260331-o1y-strengthen-rule-3-trigger-enforcement-ac/) |
 | 260331-oua | Prevent MAX patch work loss with auto-commit and stash recovery | 2026-04-01 | 87f866a | Verified | [260331-oua-prevent-max-patch-work-loss-with-isolati](./quick/260331-oua-prevent-max-patch-work-loss-with-isolati/) |
 | 260331-riy | Bulk-verify remaining MSP outlet types in overrides.json | 2026-04-01 | 5b792f7 | | [260331-riy-bulk-verify-remaining-msp-outlet-types-i](./quick/260331-riy-bulk-verify-remaining-msp-outlet-types-i/) |
+| 260331-rzs | Add integration validation tests on real patches and extract duplicated _get_box_name helper | 2026-04-01 | 6b3f89f | | [260331-rzs-add-integration-validation-tests-on-real](./quick/260331-rzs-add-integration-validation-tests-on-real/) |
 
 ### Blockers/Concerns
 
