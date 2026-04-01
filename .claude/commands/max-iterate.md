@@ -107,7 +107,7 @@ After all flagged phases complete, proceed to the standard edit flow (steps 10+)
     - Run `review_patch(patcher.to_dict())` via the max-critic skill
     - Same quality gate as `/max-build` -- blockers require revision, warnings are annotated
 
-16. **Bump version** -- call `bump_version(project_dir, "patch", description)` where `description` is a short summary of the change. Use `"minor"` for significant reworks, `"major"` for breaking changes. Store the returned version string for the next step.
+16. **Bump version** -- call `bump_version(project_dir, "patch", description, files_changed=[path.name])` where `description` is a short summary of the change. Use `"minor"` for significant reworks, `"major"` for breaking changes. Store the returned version string for the next step.
 
 17. **Embed version comment** -- call `update_version_comment(patcher, new_version)` to add or update the version comment box in the patch. This MUST happen after bump (to get the new string) and before save (so the comment is in the saved file). The version comment is a visible `v0.1.0`-style comment placed in the top-right of the patch. Agents MUST NOT skip this step.
 
@@ -117,7 +117,13 @@ After all flagged phases complete, proceed to the standard edit flow (steps 10+)
     ```
     This preserves the original file's indentation, key ordering, and any metadata that the Patcher model does not explicitly track.
 
-19. **Update progress** -- increment progress via `update_status()`.
+19. **Commit to git** -- `save_patch_roundtrip()` auto-commits the .maxpat file, but also explicitly commit the version bump and any other changed files:
+    ```python
+    from src.maxpat.project import auto_commit_patch
+    auto_commit_patch(project_dir, base_dir, description=f"v{new_version}: {change_description}", files=[str(path), str(project_dir / "versions.json")])
+    ```
+
+20. **Update progress** -- increment progress via `update_status()`.
 
 ## Skills Referenced
 
@@ -129,7 +135,7 @@ After all flagged phases complete, proceed to the standard edit flow (steps 10+)
 
 ```python
 from src.maxpat import read_patch, save_patch_roundtrip, validate_patch, Patcher
-from src.maxpat.project import get_active_project, set_active_project, list_projects, update_status, bump_version, update_version_comment
+from src.maxpat.project import get_active_project, set_active_project, list_projects, update_status, bump_version, update_version_comment, auto_commit_patch
 from src.maxpat.critics import review_patch, CriticResult
 ```
 

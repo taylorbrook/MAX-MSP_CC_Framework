@@ -37,7 +37,14 @@ Generate MAX/MSP patches, Gen~ code, JavaScript, or other artifacts by routing t
 
 6. **Write output** -- save generated files via `save_patch_roundtrip(patcher.to_dict(), path)` to the project's `generated/` directory. No intermediary Python scripts are created at any point.
 
-7. **Update status** -- set stage to "build" and increment progress via `update_status()`.
+7. **Commit to git** -- after saving, `save_patch_roundtrip()` auto-commits the .maxpat file via `auto_commit_patch()`. If additional files were generated (e.g., .gendsp, .js) that were saved separately, run an explicit commit:
+   ```python
+   from src.maxpat.project import auto_commit_patch
+   auto_commit_patch(project_dir, base_dir, description="build: {brief description}", files=[...all generated file paths...])
+   ```
+   This ensures work is committed to git immediately and cannot be lost to stash operations or other instances.
+
+8. **Update status** -- set stage to "build" and increment progress via `update_status()`.
 
 ## Skills Referenced
 
@@ -49,7 +56,7 @@ Generate MAX/MSP patches, Gen~ code, JavaScript, or other artifacts by routing t
 
 ```python
 from src.maxpat import Patcher, Box, _apply_auto_styling, apply_layout, validate_patch, save_patch_roundtrip, LayoutOptions
-from src.maxpat.project import get_active_project, read_status, update_status
+from src.maxpat.project import get_active_project, read_status, update_status, auto_commit_patch
 from src.maxpat.critics import review_patch, CriticResult
 ```
 

@@ -132,3 +132,22 @@ The structure critic (`src/maxpat/critics/structure_critic.py`) detects fan-out 
 - `update_version_comment(patcher, version_string)` -- adds or updates a `vX.Y.Z` comment in top-right of patch
 - Existing version comments are updated in place (no duplicates)
 - Called automatically by `/max-iterate` after version bump, before save
+
+## Patch Safety -- Auto-Commit and Isolation
+
+Every `save_patch_roundtrip()`, `write_gendsp()`, and `write_js()` call automatically commits the saved file to git via `auto_commit_patch()`. This prevents work loss from stash operations, branch switches, or concurrent Claude instances.
+
+### Rules
+
+1. **Never use `git stash`** during patch work. Stash operations have caused orphaned work in the past (3 stashes with significant patch changes were found abandoned). If you need to switch context, commit first.
+2. **Commit scope isolation** -- `auto_commit_patch()` only stages files within the specific project directory. This allows multiple Claude instances to work on different patches simultaneously without conflicts.
+3. **Version entries track files** -- `bump_version()` accepts `files_changed` to record which files were modified in each version entry.
+4. **Manual commit for multi-file saves** -- if a build/iterate produces multiple files saved via separate calls, run one explicit `auto_commit_patch()` at the end with all file paths to create a single clean commit (the per-file auto-commits are fine too, just noisier).
+
+### Multi-Instance Safety
+
+Multiple Claude instances can work on different patches concurrently because:
+- Each instance commits only files under its active project's directory
+- `auto_commit_patch()` uses `git add {specific files}`, not `git add .`
+- No stash/merge/rebase operations are used during patch work
+- If a merge conflict occurs (unlikely with project isolation), the instance should stop and alert the user rather than attempting resolution

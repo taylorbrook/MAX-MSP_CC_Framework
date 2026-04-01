@@ -107,6 +107,14 @@ The overlay readout pattern (from gen-eq):
 4. Set `ignoreclick=1` on the readout so the dial remains interactive (omit for editable readouts)
 5. Position the readout overlapping the dial (same or overlapping coordinates)
 
+### Rule #7: Commit After Every Save
+
+Every patch save MUST be committed to git. The `save_patch_roundtrip()`, `write_gendsp()`, and `write_js()` functions auto-commit via `auto_commit_patch()`. Do NOT rely on disk-only saves -- uncommitted work is vulnerable to loss from stash operations, branch switches, or concurrent instances.
+
+**Prohibited:** `git stash` during any patch workflow. Three orphaned stashes containing significant patch work were discovered and recovered. Use `git commit` instead. If you need to context-switch, commit your current work first.
+
+**Multi-instance safety:** When multiple Claude instances work on the repo simultaneously, each MUST only commit files within its active project directory. Never use `git add .` or `git add -A` during patch work.
+
 ## Domain-Specific Rules
 
 ### MSP (Audio/Signal)
