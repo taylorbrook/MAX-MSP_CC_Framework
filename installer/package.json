@@ -1,6 +1,6 @@
 {
   "name": "create-max-framework",
-  "version": "1.0.0",
+  "version": "2.3.1",
   "description": "Create a MAX/MSP Claude Code Framework project",
   "bin": {
     "create-max-framework": "bin/create-max-framework.js"
