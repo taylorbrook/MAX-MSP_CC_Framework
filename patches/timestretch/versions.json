@@ -57,6 +57,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.1.7",
+      "description": "fix message box layout overlap",
+      "timestamp": "2026-04-04T04:20:41.451718+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }
