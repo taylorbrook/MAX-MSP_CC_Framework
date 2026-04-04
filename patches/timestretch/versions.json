@@ -49,6 +49,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.1.6",
+      "description": "widen message box spacing for no overlap",
+      "timestamp": "2026-04-04T04:18:48.139153+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }
