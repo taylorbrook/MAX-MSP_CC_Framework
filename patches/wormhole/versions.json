@@ -12,6 +12,22 @@
       "files_changed": [
         "wormhole-test.maxpat"
       ]
+    },
+    {
+      "version": "0.1.1",
+      "description": "remove redundant ezdac/toggle/meters, replace playlist~ with sfplay~ 2",
+      "timestamp": "2026-04-04T15:04:14.570156+00:00",
+      "files_changed": [
+        "wormhole-test.maxpat"
+      ]
+    },
+    {
+      "version": "0.1.2",
+      "description": "add waveform~ display and Play label",
+      "timestamp": "2026-04-04T15:10:22.334987+00:00",
+      "files_changed": [
+        "wormhole-test.maxpat"
+      ]
     }
   ]
 }
