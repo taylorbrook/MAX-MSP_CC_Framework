@@ -17,6 +17,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.1.2",
+      "description": "fix gain/jitter/sens dial unitstyle to float",
+      "timestamp": "2026-04-04T03:03:28.236833+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }
