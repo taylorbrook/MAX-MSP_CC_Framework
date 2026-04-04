@@ -9,6 +9,14 @@
       "version": "0.1.0",
       "description": "WSOLA granular time-stretch engine: gen~ codebox, dual-mode audio, full presentation UI",
       "timestamp": "2026-04-03T22:27:58.914419+00:00"
+    },
+    {
+      "version": "0.1.1",
+      "description": "source dropdown: none/live/buffer",
+      "timestamp": "2026-04-04T02:57:08.612905+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }
