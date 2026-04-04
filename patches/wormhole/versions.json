@@ -28,6 +28,15 @@
       "files_changed": [
         "wormhole-test.maxpat"
       ]
+    },
+    {
+      "version": "1.0.0",
+      "description": "v1.0.0 release",
+      "timestamp": "2026-04-04T15:11:47.687337+00:00",
+      "files_changed": [
+        "wormhole-test.maxpat",
+        "wormhole.maxpat"
+      ]
     }
   ]
 }
