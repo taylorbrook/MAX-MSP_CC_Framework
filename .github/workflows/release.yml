@@ -17,7 +17,7 @@ jobs:
           tar czf framework.tar.gz \
             --exclude-from=.release-ignore \
             --transform 's,^\./,MAX-MSP_CC_Framework/,' \
-            .
+            . || [[ $? -eq 1 ]]
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
