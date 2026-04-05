@@ -15,6 +15,31 @@ if TYPE_CHECKING:
     from src.maxpat.patcher import Box, Patcher
 
 
+def contrast_text_color(bg_color: list[float] | None) -> list[float]:
+    """Return a text color with good contrast against the given background.
+
+    Uses perceived brightness (luminance) to choose dark or light text.
+
+    Args:
+        bg_color: RGBA background color, or None for default canvas.
+
+    Returns:
+        RGBA color list suitable for readable text on the background.
+    """
+    if bg_color is None:
+        return list(AESTHETIC_PALETTE["annotation_color"])
+
+    # Perceived brightness: L = 0.299*R + 0.587*G + 0.114*B
+    luminance = 0.299 * bg_color[0] + 0.587 * bg_color[1] + 0.114 * bg_color[2]
+
+    if luminance > 0.5:
+        # Light background -> dark text
+        return [0.20, 0.20, 0.25, 1.0]
+    else:
+        # Dark background -> light text
+        return [0.80, 0.80, 0.82, 1.0]
+
+
 def set_canvas_background(
     patcher: Patcher,
     color: list[float] | None = None,

@@ -37,11 +37,18 @@ UI_MAXCLASSES: frozenset[str] = frozenset({
     "meter~", "levelmeter~", "spectroscope~", "scope~",
     "number~", "gain~", "ezdac~", "ezadc~",
     "filtergraph~", "waveform~",
-    # Max for Live UI
+    # Max for Live UI (visual widgets)
     "live.dial", "live.slider", "live.numbox",
     "live.toggle", "live.button", "live.text",
     "live.menu", "live.tab", "live.meter~", "live.gain~",
     "live.scope~",
+    "live.arrows", "live.banks", "live.colors", "live.comment",
+    "live.drop", "live.grid", "live.line", "live.step",
+    # Max for Live non-visual (use own maxclass but render as text boxes)
+    "live.observer", "live.thisdevice", "live.path", "live.object",
+    "live.map", "live.routing", "live.push",
+    "live.miditool.in", "live.miditool.out",
+    "live.remote~", "live.param~", "live.modulate~",
 })
 
 
