@@ -1,203 +1,182 @@
 # Project Research Summary
 
-**Project:** MaxSystem v2.0 -- Patcher Library Refactor to Read-Write Editor
-**Domain:** .maxpat file direct reading, surgical editing, and patch analysis
-**Researched:** 2026-03-15
+**Project:** MaxSystem v3.0 — M4L Device Creation
+**Domain:** Max for Live device authoring within existing Python patch generation framework
+**Researched:** 2026-04-05
 **Confidence:** HIGH
 
 ## Executive Summary
 
-The v2.0 milestone replaces the current write-only Python generation pipeline with a direct read-write editing model where the .maxpat file is the single source of truth. Research confirms this is both feasible and well-scoped: the existing codebase already contains 90% of what is needed. `Patcher.from_dict()` loads .maxpat JSON into structured Box/Patchline objects, the layout engine builds topology graphs, and the validation pipeline checks correctness. The critical missing pieces are (1) hardened round-trip fidelity for `from_dict()`/`to_dict()`, (2) surgical mutation methods on Patcher (remove, replace, rewire), (3) a query/search API, and (4) a patch analysis module for understanding unknown patches. No external dependencies are needed -- the entire v2.0 runs on Python 3.14 stdlib plus the existing codebase.
+This milestone adds first-class M4L device authoring support to the existing framework. The framework already proves it can generate valid M4L devices — kicksynth-m4l.maxpat (67 boxes, 24 automatable parameters, tabbed presentation UI) was built with it — but every M4L-specific convention required manual developer knowledge: device type selection, parameter metadata blocks, presentation mode flags, plugout~ instead of dac~, --- namespace scoping. v3.0 automates all of that. The stack requires no new dependencies; every addition is data structures, constants, and new functions in existing modules.
 
-The recommended approach is a strict load-edit-save cycle: read the .maxpat from disk into a Patcher, make targeted modifications via new edit methods, validate the changes, and write the full JSON back. This eliminates the `generate.py` scripts, the `.manifest.json` sidecar files, and the manifest-based merge system (`incremental.py`) that created the dual-source-of-truth problem v1.x suffered from. The .maxpat file becomes the only authoritative artifact. Agents call Patcher methods directly instead of generating intermediate Python scripts.
+The recommended approach is surgical integration at 6 insertion points: a new `m4l_constants.py` (data only), `create_m4l_project()` in `project.py`, `m4l_critic.py` following the rnbo_critic pattern, two additive fixes to `validation.py` and `dsp_critic.py`, an M4L-aware branch in `layout.py`, `write_amxd()` in `hooks.py`, and M4L keyword additions to dispatch rules and agent SKILL.md files. No new abstractions, no new agents, no architectural rewrites. The .amxd export — previously considered a deferred item due to a "partially opaque format" — is fully reverse-engineered from kicksynth-m4l.amxd: a 32-byte fixed header + identical JSON. 15 lines of Python. Ships in v3.0.
 
-The primary risk is round-trip data loss: loading a user's .maxpat and writing it back must not silently drop attributes that MAX or the user added. The current `from_dict()`/`to_dict()` cycle has verified bugs (patchline `color` attribute dropped, bpatcher attributes mishandled, `parameter_enable` conditionally lost). These must be fixed and tested against real MAX-saved patches before any edit functionality is built on top. The secondary risk is the migration period where some patches still use `generate.py` while others use direct editing -- this requires a clear per-project mode marker and fail-fast detection to prevent competing edit paths.
+The primary risks are structural. Duplicate `parameter_longname` values silently break Ableton automation (potential crash). `plugout~` is missing from the existing terminal-object sets, causing every M4L device to generate false-positive "unterminated chain" warnings while passing dangerous gain staging configurations unchecked. The 169px Ableton device height constraint will clip controls if the current grid layout runs unmodified for presentation mode. All three are caught by the M4L critic, but the terminal-set fix (adding `plugout~` to `_TERMINAL_NAMES` in two files) is a prerequisite that must land before any other M4L work.
 
 ## Key Findings
 
 ### Recommended Stack
 
-No new external dependencies. Every library evaluated (py2max, jsonpatch, deepdiff, NetworkX) was rejected because the existing codebase already provides equivalent or better functionality. py2max lacks object validation and uses incompatible naming conventions. JSON Patch (RFC 6902) operates on brittle array-index paths wrong for .maxpat's ID-based structure. DeepDiff is overkill for comparing objects with known structure. NetworkX would add a 10MB dependency to replace ~100 lines of existing graph code.
+No new dependencies. The entire v3.0 M4L feature set is achievable with the existing Python + JSON stack. The M4L parameter system, .amxd binary format, and device type conventions are fully documented in a new `m4l_constants.py` as `IntEnum` classes. Everything flows through the existing `extra_attrs` mechanism on Box objects — no new Box attributes, no subclasses.
 
-**Core technologies (all existing):**
-- **Python 3.14 stdlib (json, pathlib, collections):** .maxpat parsing, serialization, graph algorithms -- already working
-- **Patcher/Box/Patchline data model (patcher.py):** 1:1 mapping to .maxpat JSON structure -- extend with mutation methods
-- **ObjectDatabase (db_lookup.py):** 2,015-object knowledge base for creation-time validation -- unchanged
-- **4-layer validation pipeline (validation.py):** Already operates on dicts -- adapt for edit-time incremental checks
-- **Layout engine graph utilities (layout.py):** BFS, topological sort, component detection -- extract to shared topology module
-
-**New modules to create (all in-house, no deps):**
-- **query.py:** PatchQuery class for find/traverse/analyze operations on loaded patches
-- **topology.py:** Extracted graph utilities shared between layout and query modules
-- **analysis.py:** Patch summarization for /max-onboard command
-
-**Modules to remove:**
-- **incremental.py:** Manifest-based merge replaced by load-edit-save cycle
-- **generate.py scripts per patch:** Agents edit .maxpat directly
-- **versions.json / .manifest.json sidecars:** Version tracking via git, not custom files
-
-See [STACK.md](./STACK.md) for full analysis including detailed rejection rationale for every external library considered.
+**Core technologies:**
+- **Python + existing Patcher API** — all M4L device authoring, unchanged from today
+- **`m4l_constants.py` (new, data-only)** — `ParamType`, `UnitStyle`, `ModMode`, `ParamVisibility` IntEnums + `AMXD_*` binary format constants; verified against kicksynth-m4l ground truth
+- **`struct.pack`** — .amxd binary header (stdlib, 15 LOC total)
+- **`extra_attrs` + `configure_m4l_parameter()` convenience method** — parameter metadata without API fragmentation; keeps Box class generic
 
 ### Expected Features
 
 **Must have (table stakes):**
-- **TS-1: Load any .maxpat into structured objects** -- foundation of everything; enhance `from_dict()` for full-fidelity loading
-- **TS-2: Write back with minimal diff** -- byte-identical round-trip for unchanged portions; key ordering and numeric precision preservation
-- **TS-3: Add object to existing patch** -- existing `add_box()` should work once `from_dict()` properly initializes `_next_id`
-- **TS-4: Remove object** -- new `remove_box()` with cascade connection removal
-- **TS-5: Rewire connections** -- new `remove_connection()`, `find_connections()` methods
-- **TS-6: Preserve all user state on edit** -- never recompute positions, strip attributes, or reorder existing boxes
-- **TS-7: Find objects by name/ID/type/text** -- query methods enabling all editing operations
+- **TS-1: Device Type Scaffold** — eliminates all boilerplate for audio_effect/instrument/midi_effect
+- **TS-2: Automatic parameter_enable** — live.* controls are automatable in Ableton by default
+- **TS-3: Presentation Mode Setup** — `openinpresentation=1`, `devicewidth`, integer coordinates enforced
+- **TS-4: No gain~ Before plugout~ Rule** — critic check, prevents double-volume-control bug documented in project memory
+- **TS-5: Device Completeness Validation** — catches missing plugout~, midiin, midiout, live.thisdevice
+- **TS-6: Local Naming Convention** — auto-prefix `---` on all named objects for per-instance isolation
+- **TS-7: M4L Dispatch + Agent Routing** — router injects M4L context into existing agents
+- **TS-8: Device Type Detection** — confidence-scored heuristic (not single-object binary) to avoid false positives
+- **TS-9: .amxd Export** — trivial 15-LOC implementation; completes device creation loop
 
 **Should have (differentiators):**
-- **D-1: Modify object attributes in-place** -- change arguments/position/color without delete-recreate
-- **D-7: Insert object into existing connection** -- the most common surgical edit ("insert gain~ between osc and dac")
-- **D-5: Replace/swap object** -- preserve position and compatible connections
-- **D-2: Graph queries (upstream/downstream/path)** -- understand signal flow for intelligent editing
-- **D-4: Intelligent auto-positioning** -- place new objects sensibly near related content
-- **D-3: Patch summary/understanding** -- core of /max-onboard; object inventory, signal chains, parameters
-- **D-6: Batch operations with transactions** -- checkpoint/rollback for multi-step edits
+- **DF-2: Parameter Naming Intelligence** — auto-derive longname/shortname/varname/unitstyle from semantic context
+- **DF-4: Info Text / Annotations** — populates Ableton Info View tooltips; explicit quality marker in Ableton guidelines
+- **DF-5: M4L Relationships in DB** — plugin~/plugout~, live.path chains, live.dial/prepend pattern for gen~ routing
+- **DF-6: Missing M4L Objects** — live.adsrui, live.adsr~, live.scope~ domain correction (currently blocked by Rule #1)
+- **DF-1: Intelligent Presentation Layout** — M4L-aware layout replacing crude grid fallback
 
 **Defer (v2+):**
-- **D-8: Subpatcher extraction/inlining** -- high complexity (inlet/outlet mapping), lower frequency of use
-
-See [FEATURES.md](./FEATURES.md) for complete feature analysis with complexity estimates, dependency graph, and prior art comparison.
+- **DF-3: Push Controller Banks** — per-device customization, low universal demand
+- **AF-1: Live API path automation** — live.path strings require full Ableton object model knowledge; silent failures on wrong paths
+- **AF-2: Modulator device type** — custom Map-button paradigm, insufficient demand signal
+- **AF-5: Frozen device export** — requires Live's internal freeze process, not externally accessible
 
 ### Architecture Approach
 
-The v2.0 architecture follows a strict read-modify-write cycle centered on the .maxpat file as single source of truth. Components are cleanly separated: PatchReader (`from_dict`) handles loading, PatchEditor (new Patcher methods) handles mutation, PatchWriter (`write_patch_direct`) handles serialization without layout interference, and PatchAnalyzer (new module) handles read-only inspection. Only 3 of 10 slash commands need rewriting (build, iterate, new); the rest already operate on .maxpat files or are pipeline-independent.
+M4L integrates via 6 surgical insertion points in existing modules — no new abstractions or architectural layers. The pattern mirrors RNBO: a new critic file, a new constants file, additive changes to `critics/__init__.py` auto-detection, and small modifications to existing functions. `patcher.py` and `Box` are unchanged. The scaffold lives in `project.py` (alongside `create_project()`), the critic lives in `critics/m4l_critic.py` (following rnbo_critic.py shape exactly), and .amxd export is a single function in `hooks.py`.
 
 **Major components:**
-1. **Enhanced `Patcher.from_dict()`** -- full-fidelity loading with optional DB enrichment, permissive of unknown objects
-2. **PatchEditor methods on Patcher** -- `remove_box()`, `replace_box()`, `disconnect()`, `rewire()`, `move_box()`, `set_attr()`, `auto_position_near()`
-3. **PatchAnalyzer (analyzer.py)** -- inventory, signal chain tracing, parameter identification, purpose classification
-4. **Direct write path (write_patch_direct)** -- serializes without layout, preserves all loaded state
-5. **PatchQuery (query.py)** -- find by name/ID/type, upstream/downstream traversal, connected components
-
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for complete data flow diagrams (v1.x vs v2.0), anti-patterns to avoid, and suggested build order.
+1. **`m4l_constants.py`** — parameter enums, device type constants, .amxd binary format constants (new file, pure data, no logic)
+2. **`project.py` `create_m4l_project()`** — scaffold with correct boilerplate per device type; calls existing `create_project()` internally
+3. **`critics/m4l_critic.py`** — 6 checks: plugout~ presence, gain~/plugout~ chain, parameter_enable completeness, parameter_longname uniqueness, live.thisdevice presence, openinpresentation flag
+4. **`hooks.py` `write_amxd()`** — 32-byte header + JSON payload; device type encoded in bytes 8-11 as ASCII 4-char code
+5. **`layout.py` `_apply_m4l_presentation_layout()`** — 169px height cap, integer coordinates, group-by-varname-prefix positioning
+6. **`analysis.py` `detect_device_type()`** — confidence-scored heuristic; counter-signal from `dac~`/`ezdac~` presence
 
 ### Critical Pitfalls
 
-1. **Round-trip data loss in from_dict/to_dict** -- Verified bugs: Patchline drops `color` attribute, bpatcher attrs mishandled, `parameter_enable` conditionally lost. **Prevention:** Add `extra_attrs` to Patchline, treat ALL unknown keys as preservable, write round-trip diff tests before any API changes.
+1. **Duplicate parameter_longname** — two live.* controls with the same longname cause Ableton to crash on load or produce broken automation lanes with duplicate entries. M4L critic must enforce uniqueness as a blocker. Scaffold must never generate duplicate defaults.
 
-2. **Dual source of truth during migration** -- If some patches use `generate.py` while others use direct editing, agents can overwrite changes via the wrong pipeline. **Prevention:** Add per-project `editing_mode` marker, fail-fast if direct-edit is attempted on a generated patch or vice versa, migrate patches atomically.
+2. **`plugout~` missing from `_TERMINAL_NAMES`** — every M4L device generates false-positive "unterminated chain" warnings (trains developer to ignore warnings), and gain staging BFS never reaches plugout~ (oscillator at full volume passes silently). Add `"plugout~"` to `_TERMINAL_NAMES` in `validation.py` line 41 and `dsp_critic.py` line 33. Two-line additive fix, zero regression risk. Do this before any other M4L work.
 
-3. **ID collision when adding objects to loaded patches** -- Subpatcher IDs are scoped per patcher level; non-standard ID formats can break `_next_id` calculation. **Prevention:** Track all used IDs in a set, verify new IDs don't collide, handle non-numeric ID formats gracefully.
+3. **Missing `saved_attribute_attributes` block** — `parameter_enable=1` without the full valueof block silently disables automation in Ableton while appearing fully functional in MAX standalone. Scaffold must generate complete blocks including `parameter_longname`, `parameter_shortname`, `parameter_type`, `parameter_initial`, and `parameter_unitstyle`.
 
-4. **Breaking 283 patcher-related tests** -- Tests assume write-only API; adding read-write changes output shapes. **Prevention:** Expand-then-contract pattern (add new capabilities before removing old ones), categorize tests, keep CI green throughout.
+4. **169px height constraint** — current `_apply_presentation_layout` grid puts row 2 bottom edge at 244px for standard live.dial size: 75px past the Ableton clip boundary. M4L layout branch must hard-cap at 169px and prefer tabbed or wide horizontal layouts.
 
-5. **Layout engine interference on direct edits** -- Current `write_patch()` always calls `apply_layout()`, which would destroy user positioning. **Prevention:** New `write_patch_direct()` never auto-layouts; layout only runs on new objects or explicit request.
-
-See [PITFALLS.md](./PITFALLS.md) for all 11 pitfalls with evidence, consequences, phase-specific warnings, and detection strategies.
+5. **Router "live" keyword false positives** — "live" is massively overloaded in this domain. M4L dispatch keywords must be multi-word phrases: "Max for Live", "M4L", "Ableton device". Never add bare "live", "device", or "instrument" as standalone triggers.
 
 ## Implications for Roadmap
 
-Based on research, suggested phase structure:
+Based on the dependency graph in FEATURES.md and the integration analysis in ARCHITECTURE.md, the recommended structure is a mandatory prerequisite hotfix followed by 4 phases.
 
-### Phase 1: Round-Trip Foundation
-**Rationale:** Everything builds on loading and saving .maxpat files without data loss. Research identified 3 verified round-trip bugs that must be fixed before any editing code is written. This is the highest-risk phase -- if round-trip fidelity fails, the entire v2.0 approach fails.
-**Delivers:** A hardened `from_dict()`/`to_dict()` cycle that passes round-trip diff tests against all existing project .maxpat files and MAX-saved patches. `extra_attrs` on Patchline. bpatcher attr reconstruction. ID collision prevention.
-**Addresses:** TS-1 (Load), TS-2 (Write Back), TS-6 (Preserve State)
-**Avoids:** Pitfall 1 (round-trip data loss), Pitfall 3 (ID collision), Pitfall 7 (JSON key ordering)
-**Scope:** Modify `patcher.py` only. No new modules. No agent changes. All 913 existing tests must stay green.
+### Pre-Phase: Terminal Name Hotfix
+**Rationale:** Two additive lines unblock correct M4L validation and eliminate false positives before any M4L code is written. Zero risk. Must land first so the test suite starts with a clean baseline.
+**Delivers:** `plugout~` treated as terminal in both `validation.py` and `dsp_critic.py`; M4L signal chains stop generating false-positive warnings; gain staging BFS correctly traverses to plugout~.
+**Avoids:** Pitfall 2 (silent gain staging pass-through), training developers to ignore validator output.
 
-### Phase 2: Search and Query
-**Rationale:** Every editing operation starts with finding the target. Search methods are a prerequisite for remove, replace, and rewire operations. Extract topology utilities from `layout.py` into shared module.
-**Delivers:** `find_box()`, `find_boxes()`, `find_connections_from/to()` on Patcher. `read_patch()` convenience function in hooks.py. Shared `topology.py` module.
-**Addresses:** TS-7 (Find Objects), D-2 (Graph Queries) foundation
-**Avoids:** Pitfall 6 (over-engineering) -- keep queries simple, don't build full graph analysis yet
-**Scope:** New `query.py` and `topology.py` modules. Extend `hooks.py`. No agent changes yet.
+### Phase 1: Foundation (Data and Constants)
+**Rationale:** Pure data additions — no behavior changes. All downstream components (scaffold, critic, export) depend on these. All 4 tasks are fully parallelizable.
+**Delivers:** `m4l_constants.py` with typed enums; `live.adsrui`, `live.adsr~`, corrected `live.scope~` in `m4l/objects.json`; M4L relationship entries in `relationships.json`; `detect_device_type()` with confidence scoring in `analysis.py`; M4L rules added to CLAUDE.md; plugin~/plugout~ maxclass verified in MAX (resolve Pitfall 12 before touching DB).
+**Addresses:** TS-8, DF-5, DF-6
+**Avoids:** Pitfall 15 (magic number parameter_type errors), Pitfall 9 (false positive critic invocation), Pitfall 12 (accidental maxclass change)
+**Research flag:** Standard patterns, no additional research needed.
 
-### Phase 3: Surgical Edit Operations
-**Rationale:** With load and search working, add the mutation methods that replace the generation pipeline. These are the core operations agents will use.
-**Delivers:** `remove_box()`, `disconnect()`, `rewire()`, `replace_box()`, `move_box()`, `set_attr()`, `auto_position_near()`, `insert_into_connection()`. New `write_patch_direct()` in hooks.py.
-**Addresses:** TS-3 (Add Object), TS-4 (Remove Object), TS-5 (Rewire), D-1 (Modify Attrs), D-5 (Replace/Swap), D-7 (Insert Into Connection), D-4 (Auto-Position)
-**Avoids:** Pitfall 11 (layout interference) -- `write_patch_direct()` never auto-layouts
-**Scope:** Extend `patcher.py` with edit methods. New write path in `hooks.py`. No agent changes yet.
+### Phase 2: Scaffold and Routing
+**Rationale:** Creates the starting point for all M4L devices and routes agent tasks correctly. Depends on Phase 1 constants and device type detection. Scaffold and dispatch tasks are parallelizable.
+**Delivers:** `create_m4l_project()` generating per-type boilerplate (plugin~, plugout~, midiin/midiout, live.thisdevice, openinpresentation=1, devicewidth, --- prefixed named objects, complete saved_attribute_attributes blocks on all live.* controls with auto-generated unique parameter names); M4L dispatch keywords in router using multi-word phrases only; M4L sections in agent SKILL.md files.
+**Addresses:** TS-1, TS-2, TS-3, TS-6, TS-7
+**Avoids:** Pitfall 3 (missing saved_attribute_attributes), Pitfall 4 (missing openinpresentation), Pitfall 8 (namespace collision), Pitfall 10 (router false positives)
+**Research flag:** Established patterns. `create_project()` is the direct template. No research phase needed.
 
-### Phase 4: Patch Analysis
-**Rationale:** With read and edit working, add the understanding layer that powers /max-onboard. This is the differentiator that makes agents intelligent editors rather than blind mutation tools.
-**Delivers:** `analyzer.py` with object inventory, signal chain tracing, parameter identification, purpose classification, health check. /max-onboard output format.
-**Addresses:** D-3 (Patch Summary), D-6 (Transactions -- checkpoint/rollback for complex edits)
-**Scope:** New `analyzer.py` module. Graph query enhancements. No agent changes yet.
+### Phase 3: Validation and Export
+**Rationale:** Validates what Phase 2 scaffolds — requires scaffold output as test fixtures. .amxd export is trivial and belongs here to complete the creation loop. Critic module and `__init__.py` wiring are sequential; .amxd export is independent.
+**Delivers:** `critics/m4l_critic.py` with 6 checks (plugout~ presence, gain~ chain, parameter_enable completeness, parameter_longname uniqueness, live.thisdevice presence, openinpresentation); confidence-scored auto-detection wired into `critics/__init__.py`; `write_amxd()` in `hooks.py`; plugin~/plugout~ added to `_IO_OBJECT_NAMES` in `layout.py` line 1091.
+**Addresses:** TS-4, TS-5, TS-9
+**Avoids:** Pitfall 1 (duplicate longnames), Pitfall 5 (gain~/plugout~ double volume), Pitfall 14 (subpatcher extraction of plugout~)
+**Research flag:** Critic pattern from rnbo_critic.py is a direct template. .amxd format fully confirmed. No research phase needed.
 
-### Phase 5: Agent and Command Migration
-**Rationale:** All infrastructure is tested and working. Now rewire the agent workflows and slash commands to use read-edit-write instead of generate-merge-write. This is the phase where the user-facing behavior changes.
-**Delivers:** Rewritten `/max-build`, `/max-iterate`, `/max-new` commands. New `/max-onboard` command. Updated SKILL.md files for all 6 agents. Per-project `editing_mode` marker.
-**Addresses:** Agent integration, command rewrites
-**Avoids:** Pitfall 2 (dual source of truth), Pitfall 8 (stale agent skills) -- batch-update all skills and commands together
-**Scope:** Command and skill file rewrites. Public API updates in `__init__.py`. Integration tests.
-
-### Phase 6: v1.x Cleanup
-**Rationale:** After all commands work via direct editing, remove the generation pipeline artifacts. This must come last because existing generate.py scripts must keep working until commands are migrated.
-**Delivers:** Removal of `incremental.py`, `Manifest` class, `merge_and_write()`. Deletion of `generate.py`/`build_*.py` scripts and `.manifest.json` files per patch. Updated tests replacing the 23 incremental merge tests.
-**Addresses:** AF-4 (no manifest sidecars), AF-6 (no generate.py compatibility)
-**Avoids:** Pitfall 4 (test breakage) -- only remove after new tests cover the same scenarios, Pitfall 9 (manifest leftovers)
-**Scope:** Delete dead code and files. Update test suite. Final CI verification.
+### Phase 4: Polish (Layout and UX)
+**Rationale:** Most subjective components; require real devices built in Phases 2-3 as test inputs for layout tuning. Presentation layout is the highest-effort item and benefits from observing actual usage patterns before automation strategy is locked in.
+**Delivers:** M4L-aware `_apply_m4l_presentation_layout()` in `layout.py` with 169px hard cap, integer coordinate enforcement, group-by-varname-prefix layout, tabbed pattern support; parameter naming intelligence (auto-derive shortname, varname, unitstyle from semantic context); info text/annotations on live.* controls; end-to-end test suite (`tests/test_m4l_workflow.py`).
+**Addresses:** DF-1, DF-2, DF-4
+**Avoids:** Pitfall 6 (169px height overflow), Pitfall 13 (fractional pixel blurry rendering)
+**Research flag:** Layout automation strategy needs validation against 3-5 real devices built with the Phase 2 scaffold before the heuristics are coded. Run a mini research phase at the start of Phase 4 planning.
 
 ### Phase Ordering Rationale
 
-- **Phases 1-3 are a strict dependency chain:** You cannot edit what you cannot find, and you cannot find what you cannot load. Each phase builds directly on the previous.
-- **Phase 4 (Analysis) is semi-independent** but benefits from the graph queries in Phase 2 and the edit methods in Phase 3 (for the health check integration). Could theoretically start after Phase 2.
-- **Phase 5 must come after Phases 1-4** because agent commands must use tested, working infrastructure. Updating agent skills against unstable APIs wastes effort.
-- **Phase 6 must come last** because the expand-then-contract pattern requires the old pipeline to keep working until the new one is proven. Premature removal breaks existing workflows.
-- **The biggest pitfall (round-trip data loss) is addressed first** because it is the foundation of trust. A single dropped attribute in Phase 1 would invalidate all subsequent phases.
+- **Terminal fix before everything** — false-positive warnings corrupt developer trust in the validation signal; fixing it costs 2 lines and enables reliable test baselines.
+- **Constants before scaffold** — scaffold, critic, and export all import from `m4l_constants.py`; building in reverse requires refactoring.
+- **Scaffold before critic** — critic tests use `create_m4l_project()` as fixture factory; handcrafted JSON fixtures are fragile and miss edge cases.
+- **Critic before layout** — structural validity (plugout~ present, parameters complete) must be confirmed before visual polish is worth iterating.
+- **Layout last** — only component that benefits from a corpus of real devices built with the scaffold; crude grid fallback is functional in the interim.
 
 ### Research Flags
 
-Phases likely needing deeper research during planning:
-- **Phase 1 (Round-Trip Foundation):** Needs investigation of MAX-saved .maxpat files to discover all metadata keys that must be preserved. No official .maxpat spec exists. Create test fixtures by opening generated patches in MAX, editing, and saving.
-- **Phase 4 (Patch Analysis):** Heuristic quality for purpose classification and signal flow description is uncertain. The "identify what this patch does" problem is inherently fuzzy. May need iterative refinement based on real patches.
+Needs research during planning:
+- **Phase 4 (layout engine):** Optimal strategy for inferring layout pattern (single-page/tabbed/overlay) and control grouping from device structure is TBD. Build 3-5 real devices with Phase 2 scaffold first, then research layout heuristics.
 
-Phases with standard patterns (skip research-phase):
-- **Phase 2 (Search and Query):** Well-documented graph traversal patterns. py2max and MAX's JS API provide clear prior art for the query interface.
-- **Phase 3 (Surgical Edit Operations):** Standard mutable collection operations. The edit API design is well-understood from ARCHITECTURE.md analysis.
-- **Phase 5 (Agent Migration):** Prompt engineering and command rewriting. The new workflow is simple (read-edit-write) and the command structure already exists.
-- **Phase 6 (Cleanup):** Straightforward deletion. No design decisions needed.
+Standard patterns (skip research-phase):
+- **Pre-phase hotfix:** Two known lines in two known files.
+- **Phase 1:** All values verified against ground truth and official docs.
+- **Phase 2:** `create_project()` is the direct scaffold template; router dispatch is additive config.
+- **Phase 3:** rnbo_critic.py is the direct critic template; .amxd format fully reverse-engineered.
 
 ## Confidence Assessment
 
 | Area | Confidence | Notes |
 |------|------------|-------|
-| Stack | HIGH | All decisions based on direct codebase comparison. Zero new dependencies needed. Every rejected library has a clear rationale. |
-| Features | HIGH | Table stakes verified against existing codebase gaps. Dependency tree is clear. Complexity estimates grounded in existing code. |
-| Architecture | HIGH | All components are custom Python with no external dependencies to verify. Build order validated against dependency analysis. |
-| Pitfalls | HIGH (code-level), MEDIUM (MAX metadata) | Round-trip bugs confirmed by code reading. MAX-internal metadata behavior is partially unknown due to no official .maxpat specification. |
+| Stack | HIGH | No new dependencies confirmed. All M4L parameter enum values verified against kicksynth-m4l.maxpat ground truth and Cycling 74 official docs. |
+| Features | HIGH | Table stakes verified against official Cycling 74 docs + Ableton production guidelines. .amxd format upgraded from MEDIUM to HIGH after full reverse-engineering from working binary. |
+| Architecture | HIGH | Based on direct codebase analysis of all 8 affected modules with specific line numbers. RNBO integration provides proven template for every new component. |
+| Pitfalls | HIGH (critical 1-5), MEDIUM (moderate 6-12) | Critical pitfalls verified against framework source code line numbers and ground truth. Moderate pitfalls (device type false positives, router ambiguity) are architecturally predicted but not runtime-tested. |
 
 **Overall confidence:** HIGH
 
 ### Gaps to Address
 
-- **No official .maxpat specification:** MAX's JSON format is undocumented. All knowledge comes from reverse engineering examples. New MAX versions could add keys that break assumptions. **Mitigation:** The "preserve all unknown keys" strategy handles this defensively. Create MAX-saved test fixtures to discover undocumented keys.
-- **Zero existing tests for `Patcher.from_dict()`:** The read path has no test coverage despite being the foundation of v2.0. **Mitigation:** Phase 1 must begin by writing round-trip tests before modifying any code.
-- **Patch analysis heuristics are unvalidated:** The purpose classification and signal flow description features (Phase 4) are inherently heuristic. Quality depends on pattern matching against real-world patches. **Mitigation:** Start with simple, conservative heuristics. Iterate based on /max-onboard usage on real patches.
-- **Agent context window limits:** A 1000-box patch serialized to Python method calls is enormous. The analyzer must provide compact summaries that agents can work from without seeing every box. **Mitigation:** Design analyzer output for agent consumption from the start.
+- **Presentation layout automation strategy (Phase 4):** How to programmatically infer layout pattern and control grouping without explicit developer hints. Flag for mini research-phase before Phase 4 planning. Can be deferred until the scaffold produces a real device corpus.
+
+- **`parameter_modmode` omission consequences:** Omitting `parameter_modmode` from `saved_attribute_attributes` has LOW-confidence documented consequences. Scaffold should include it (value 0 is safe default) but specific failure modes are undocumented. Monitor during Phase 2 testing in Ableton.
+
+- **Patcher-level `parameters` dict necessity:** Kicksynth-m4l.maxpat has no patcher-level `parameters` dict and works correctly in Live. Forum reports suggest it may be needed for some Push/preset scenarios. Do not pre-build; validate during Phase 3 end-to-end testing.
+
+- **`plugin~/plugout~` maxclass:** DB says `maxclass: "plugout~"`, kicksynth-m4l shows `maxclass: "newobj"`. Current behavior works. Resolve with a 30-second MAX verification in Phase 1 before touching any plugin~/plugout~ DB entries.
+
+- **UnitStyle values 5-8, 10 verification:** Only values 1-4 and 9 are verified against ground truth. Values 5 (%), 6 (Pan), 7 (Semitones), 8 (MIDI) are from docs ordering only. Build a device using them and check Live display during Phase 2 testing.
 
 ## Sources
 
 ### Primary (HIGH confidence)
-- Direct codebase analysis: `src/maxpat/patcher.py` (1134 lines, `from_dict()` at L1012-1122, `to_dict()`, Box/Patchline classes)
-- Direct codebase analysis: `src/maxpat/incremental.py` (476 lines, manifest system, merge logic)
-- Direct codebase analysis: `src/maxpat/layout.py` (970 lines, graph algorithms, topological sort)
-- Direct codebase analysis: `src/maxpat/validation.py` (669 lines, 4-layer pipeline)
-- Direct codebase analysis: `src/maxpat/hooks.py` (269 lines, write_patch, validate_file)
-- Direct codebase analysis: `.claude/commands/max-*.md` (10 command files)
-- Real .maxpat file analysis: kicksynth (5,950 lines), performancepatchtest, scala-synth, minitaur
-- Verified: Patchline.to_dict() drops `color` attribute (data loss bug)
-- Verified: 913 existing tests, 283 patcher-related, 0 for from_dict()
-- Project memory: `feedback_iterate_via_generator.md`, `project_incremental_patching.md`
+- `patches/kicksynth/generated/kicksynth-m4l.maxpat` — ground truth: 67-box M4L instrument, 24 live.dials with complete saved_attribute_attributes, verified working in Live
+- `patches/kicksynth/generated/kicksynth-m4l.amxd` — reverse-engineered .amxd binary format (32-byte header + identical JSON confirmed)
+- [Cycling 74: Device Parameters in Max for Live](https://docs.cycling74.com/userguide/m4l/live_parameters/) — parameter_type, unitstyle, modmode
+- [Cycling 74: Creating Audio Effect Devices](https://docs.cycling74.com/userguide/m4l/live_audiodevices/) — plugin~/plugout~ requirements
+- [Cycling 74: Creating MIDI Effects](https://docs.cycling74.com/userguide/m4l/live_midieffects/) — midiin/midiout requirements, midiselect
+- [Ableton M4L Production Guidelines](https://github.com/Ableton/maxdevtools/blob/main/m4l-production-guidelines/m4l-production-guidelines.md) — --- naming, annotations, pixel-perfect layout, 169px height constraint
+- Framework source: `validation.py` (lines 41, 635), `dsp_critic.py` (lines 33, 235), `layout.py` (lines 1057, 1091), `patcher.py` (line 320), `project.py` (~93), `defaults.py` (lines 51-93), `critics/__init__.py`, `critics/rnbo_critic.py`
 
 ### Secondary (MEDIUM confidence)
-- [py2max GitHub](https://github.com/shakfu/py2max) -- round-trip editing reference, API patterns
-- [Cycling '74 Patcher JS API](https://docs.cycling74.com/apiref/js/patcher/) -- apply/applydeep patterns, connect/disconnect API
-- [Cycling '74 .maxpat format forum discussion](https://cycling74.com/forums/specification-for-maxpat-json-format) -- confirms no official spec
-- [jsonpatch on PyPI](https://pypi.org/project/jsonpatch/) -- v1.33, RFC 6902; rejected for array-index-based paths
-- [deepdiff on PyPI](https://pypi.org/project/deepdiff/) -- v8.6.1; rejected, overkill for known structure
-- [NetworkX on PyPI](https://pypi.org/project/networkx/) -- v3.6.1; rejected, 10MB for ~100 lines of existing code
+- [Cycling 74 Forum: .amxd file format](https://cycling74.com/forums/max-for-live-device-file-format) — community format analysis (confirmed by direct reverse-engineering)
+- [Cycling 74 Forum: Initialization order inconsistency](https://cycling74.com/forums/initialization-order-inconsistency) — live.thisdevice timing race conditions on project load
+- [Cycling 74: Parameter Mode](https://docs.cycling74.com/userguide/parameter_mode/) — parameter_visibility enum values
+- [Cycling 74 Forum: bPatchers creating duplicate automation lanes](https://cycling74.com/forums/bpatchers-creating-duplicate-automation-lanes-in-live) — parameter_longname collision consequences
+- `.planning/quick/260405-lne-review-m4l-device-creation-capabilities-/M4L-CAPABILITY-REVIEW.md` — gap analysis motivating this research
+- Project memory: `feedback_m4l_no_gain.md` — gain~/plugout~ rule documented from prior experience
 
 ### Tertiary (LOW confidence)
-- MAX-internal metadata behavior (editing_bgcolor, saved_attribute_attributes, dependency_cache) -- inferred from .maxpat file inspection, no documentation exists
+- Cycling 74 Forums: patcher-level `parameters` dict for preset/Push scenarios — not observed in kicksynth-m4l ground truth; validate during Phase 3 before building
+- Forum reports of .amxd checksums — not observed in reverse-engineered file; likely only applies to Live-frozen devices
 
 ---
-*Research completed: 2026-03-15*
+*Research completed: 2026-04-05*
 *Ready for roadmap: yes*

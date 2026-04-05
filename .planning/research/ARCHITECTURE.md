@@ -1,728 +1,480 @@
-# Architecture Patterns: v2.0 Direct .maxpat Editing
+# Architecture: M4L Device Creation Integration
 
-**Domain:** Refactoring from Python generation pipeline to direct .maxpat reading/editing
-**Researched:** 2026-03-15
-**Confidence:** HIGH (based on direct analysis of existing codebase -- all components are custom Python with no external dependencies to verify)
+**Domain:** Max for Live device authoring within existing MAX patch generation framework
+**Researched:** 2026-04-05
+**Confidence:** HIGH (based on direct codebase analysis and .amxd format reverse-engineering)
 
-## Current Architecture (v1.x)
+## Recommended Architecture
 
-The v1.x pipeline follows a write-only model where Python scripts are the source of truth:
+M4L device creation integrates into the existing framework through **6 surgical insertion points** -- no new modules, no architectural rewrites, no new abstractions. Every change either adds a function to an existing module or adds a new file that follows an established pattern (the critic pattern, the dispatch-rules pattern).
 
-```
-Agent -> generate.py (builds Patcher) -> apply_layout() -> validate_patch() -> merge_and_write() -> .maxpat
-```
-
-**Key friction:** The `.maxpat` file is an output, not a source. When users edit in MAX, their changes compete with `generate.py`. The `incremental.py` module partially addresses this via manifest-tracked merge, but the fundamental problem remains: agents think in Python, not in patches.
-
-### Component Inventory (What Exists)
-
-| Component | File(s) | Lines | Role | v2 Impact |
-|-----------|---------|-------|------|-----------|
-| Data Model | `patcher.py` | 1134 | Patcher/Box/Patchline + `from_dict()` + `to_dict()` | MAJOR: becomes read-write editor |
-| Layout | `layout.py` | 970 | Row-based topological positioning | MODERATE: selective re-layout only |
-| Validation | `validation.py` | 669 | 4-layer pipeline (JSON/objects/connections/domain) | MODERATE: adapt to edit-time use |
-| Hooks | `hooks.py` | 269 | `write_patch`, `validate_file` | MODERATE: add `read_patch`, `edit_patch` |
-| Incremental | `incremental.py` | 476 | Manifest-based merge | REMOVE: direct editing replaces merging |
-| Critics | `critics/` | 4 files | Semantic review (DSP, structure, RNBO, external) | MINOR: unchanged, operate on dicts |
-| DB Lookup | `db_lookup.py` | 287 | Object existence, I/O counts, alias resolution | UNCHANGED |
-| Aesthetics | `aesthetics.py` | ~100 | Canvas/object bg color, panel sizing | MINOR: works via extra_attrs |
-| Sizing | `sizing.py` | ~150 | Content-aware box dimensions | UNCHANGED |
-| Defaults | `defaults.py` | 133 | Constants, LayoutOptions | MINOR: add EditOptions |
-| Codegen | `codegen.py` | ~300 | GenExpr/N4M/js generation | UNCHANGED |
-| Code Validation | `code_validation.py` | ~300 | GenExpr/js syntax checks | UNCHANGED |
-| Maxclass Map | `maxclass_map.py` | ~70 | UI vs newobj resolution | UNCHANGED |
-| Project | `project.py` | ~400 | Project lifecycle, versioning | MODERATE: remove generate.py dependency |
-| Memory | `memory.py` | ~268 | Dual-scope pattern storage | UNCHANGED |
-| RNBO | `rnbo.py`, `rnbo_validation.py` | ~600 | RNBO generation/validation | UNCHANGED |
-| Externals | `externals.py`, `ext_*.py` | ~900 | C++ external scaffolding | UNCHANGED |
-| Commands | `.claude/commands/max-*.md` | 10 files | Slash command definitions | MAJOR: rewrite workflow |
-| Public API | `__init__.py` | 195 | Re-exports | MODERATE: add read/edit API |
-
----
-
-## Recommended Architecture (v2.0)
-
-### Core Principle: .maxpat as Single Source of Truth
-
-The .maxpat file IS the project. Agents read it, understand it, modify it, and write it back. No intermediate Python representation is authoritative.
+### Integration Map
 
 ```
-.maxpat (on disk)
-    |
-    v
-read_patch() -> Patcher (in-memory, hydrated from JSON)
-    |
-    v
-Agent analyzes / modifies Patcher (add_box, remove_box, rewire, etc.)
-    |
-    v
-validate_patch(patcher) -> ValidationResult[]
-    |
-    v
-write_patch_direct(patcher, path) -> .maxpat (on disk)
+User request: "Build me an M4L audio effect"
+       |
+       v
+[dispatch-rules.md]  <-- ADD: M4L keywords + intent patterns
+       |
+       v
+[Agents: DSP + UI]   <-- ADD: M4L sections to SKILL.md files
+       |
+       v
+[project.py]         <-- ADD: create_m4l_project() scaffold function
+       |
+       v
+[patcher.py]         <-- NO CHANGE (props dict already supports all M4L flags)
+       |
+       v
+[layout.py]          <-- MODIFY: _apply_presentation_layout() for M4L-aware grouping
+       |
+       v
+[critics/__init__.py] <-- ADD: _has_m4l_boxes() detection + review_m4l() invocation
+[critics/m4l_critic.py] <-- NEW FILE: M4L device completeness checks
+       |
+       v
+[analysis.py]        <-- ADD: detect_device_type() method + SECTION_SIGNATURES entries
+       |
+       v
+[hooks.py]           <-- ADD: write_amxd() for .amxd export (alongside save_patch_roundtrip)
 ```
 
 ### Component Boundaries
 
-| Component | Responsibility | Communicates With |
-|-----------|---------------|-------------------|
-| **PatchReader** (`patcher.py::from_dict()` -- enhanced) | Load .maxpat JSON into hydrated Patcher with full Box metadata | Hooks, Agents |
-| **PatchEditor** (new methods on Patcher) | Surgical operations: add/remove/replace boxes, rewire, modify attrs | Agents, Validation |
-| **PatchWriter** (`hooks.py::write_patch_direct()`) | Serialize Patcher back to .maxpat JSON, preserving unknown keys | PatchEditor |
-| **PatchAnalyzer** (new: `analyzer.py`) | Read-only inspection: signal chains, component graph, object inventory | /max-onboard, Agents |
-| **Validation Pipeline** (`validation.py` -- adapted) | Run on Patcher objects (not just dicts), edit-time incremental checks | PatchEditor |
-| **Layout Engine** (`layout.py` -- selective mode) | Selective re-layout: position only new/unpositioned boxes | PatchEditor |
-| **Object Database** (`db_lookup.py`) | Unchanged: existence, I/O counts, alias resolution | PatchReader, PatchEditor, Validation |
-| **Critics** (`critics/`) | Unchanged: semantic review on dict output | /max-verify |
-| **Commands** (`.claude/commands/`) | Rewritten workflows: read-modify-write cycle | All components |
-| **Project** (`project.py`) | Simplified: no generate.py, no manifest | Commands |
+| Component | Responsibility | Changes |
+|-----------|---------------|---------|
+| `project.py` | M4L device scaffold -- creates project with plugin~/plugout~, live.thisdevice, presentation mode enabled | ADD `create_m4l_project()` function |
+| `m4l_constants.py` | M4L parameter enums (ParamType, UnitStyle, ModMode), device type constants, .amxd binary format constants | NEW FILE |
+| `critics/m4l_critic.py` | Validates device completeness, gain~/plugout~ rule, parameter_enable on live.* controls | NEW FILE following RNBO critic pattern |
+| `critics/__init__.py` | Auto-detects M4L devices and invokes M4L critic | ADD `_has_m4l_boxes()` + conditional call in `review_patch()` |
+| `layout.py` | M4L presentation layout with functional grouping | MODIFY `_apply_presentation_layout()` |
+| `analysis.py` | Device type detection (audio_effect/instrument/midi_effect) | ADD `detect_device_type()` to AnalysisMixin |
+| `hooks.py` | .amxd file export | ADD `write_amxd()` function (~15 lines) |
+| `dispatch-rules.md` | M4L keywords route to correct agents | ADD M4L keyword section |
+| `CLAUDE.md` | M4L domain rules | ADD M4L section under Domain-Specific Rules |
+| Agent SKILL.md files | M4L-specific patterns and conventions | ADD M4L sections to DSP, UI, Patch agents |
+| `relationships.json` | M4L object pairings | ADD plugin~/plugout~, live.thisdevice/live.path entries |
+| `m4l/objects.json` | Missing M4L objects | ADD live.adsrui, live.adsr~; recategorize live.scope~ |
 
----
+### What Does NOT Change
 
-## New Components
+These components need zero modification:
 
-### 1. Enhanced `Patcher.from_dict()` -- The Read Path
+| Component | Why No Change |
+|-----------|---------------|
+| `patcher.py` Patcher class | `self.props` dict already has `openinpresentation` and `devicewidth` keys. Setting `patcher.props["openinpresentation"] = 1` works today. |
+| `patcher.py` Box class | `parameter_enable` already emitted in `to_dict()` for UI objects (default 0). Agents set to 1 via `box.extra_attrs["parameter_enable"] = 1`. `saved_attribute_attributes` flows through `extra_attrs` on creation and `_raw` on round-trip. |
+| `hooks.py` (existing functions) | `finalize_patch()` already calls `apply_layout()` which calls `_apply_presentation_layout()`. Chain is intact. |
+| `validation.py` | Mechanical validation doesn't need M4L-specific checks. The M4L critic handles semantic validation. |
+| `sizing.py` | All live.* objects already have correct sizes in UI_SIZES. |
+| `maxclass_map.py` | All live.* objects already in UI_MAXCLASSES. plugin~/plugout~ use maxclass="newobj" (confirmed by kicksynth-m4l.maxpat). |
 
-**Current state:** `from_dict()` already exists (lines 1012-1122 of patcher.py). It reconstructs boxes and lines but skips DB hydration (uses `Box.__new__` to bypass validation). This is correct for loading -- we trust the file.
+## Data Flow
 
-**What needs to change:**
+### M4L Project Creation Flow
 
+```
+create_m4l_project("my-effect", base_dir, device_type="audio_effect")
+  |
+  +-- create_project("my-effect", base_dir)    # existing, unchanged
+  |     Creates: patches/my-effect/{context.md, status.md, generated/, test-results/}
+  |
+  +-- scaffold_m4l_device(patcher, device_type)  # NEW helper
+        |
+        +-- patcher.props["openinpresentation"] = 1
+        +-- patcher.props["devicewidth"] = 250.0  (or per device_type)
+        +-- add plugin~ (if audio_effect or instrument)
+        +-- add plugout~ (if audio_effect or instrument)
+        +-- add live.thisdevice
+        +-- add loadbang -> live.thisdevice
+        +-- write to generated/{name}.maxpat via save_patch_roundtrip()
+        +-- write to generated/{name}.amxd via write_amxd()
+```
+
+### .amxd Export Flow
+
+```
+write_amxd(patch_dict, device_type, path)
+  |
+  +-- json_bytes = json.dumps(patch_dict, indent="    ").encode("utf-8")
+  +-- header = build_amxd_header(device_type, len(json_bytes))
+  +-- write header + json_bytes to path
+```
+
+The .amxd format is a 32-byte fixed binary header + identical JSON to .maxpat:
+```
+Offset  Size  Content
+0       4     "ampf" (magic)
+4       4     uint32le version (always 4)
+8       4     Device type: "aaaa"=audio_effect, "iiii"=instrument, "mmmm"=midi_effect
+12      4     "meta" (tag)
+16      4     uint32le meta size (always 4)
+20      4     4 zero bytes
+24      4     "ptch" (tag)
+28      4     uint32le JSON byte count
+32      N     JSON payload (identical to .maxpat)
+```
+
+### M4L Critic Auto-Detection Flow
+
+```
+review_patch(patch_dict)
+  |
+  +-- review_dsp(patch_dict)       # existing, always
+  +-- review_structure(patch_dict)  # existing, always
+  +-- review_layout(patch_dict)     # existing, always
+  |
+  +-- if _has_rnbo_boxes(patch_dict):   # existing pattern
+  |     review_rnbo(patch_dict)
+  |
+  +-- if _has_m4l_boxes(patch_dict):    # NEW, same pattern
+        review_m4l(patch_dict)
+```
+
+Detection logic for `_has_m4l_boxes()`:
 ```python
-# Current: Box created via __new__, minimal metadata
-box.name = box.text.split()[0]
-box.args = parts[1:]
-
-# Needed: Optional DB enrichment for analysis
-if db and db.exists(box.name):
-    obj_data = db.lookup(box.name)
-    box._db_inlets = obj_data.get("inlets", [])
-    box._db_outlets = obj_data.get("outlets", [])
-    box._db_variable_io = obj_data.get("variable_io", False)
+def _has_m4l_boxes(patch_dict: dict) -> bool:
+    """Check if a patch contains M4L-specific objects."""
+    patcher = patch_dict.get("patcher", {})
+    boxes = patcher.get("boxes", [])
+    for box_entry in boxes:
+        box = box_entry.get("box", {})
+        text = box.get("text", "")
+        name = text.split()[0] if text else ""
+        if name in ("plugout~", "plugin~") or name.startswith("live."):
+            return True
+        if box.get("maxclass", "").startswith("live."):
+            return True
+    return False
 ```
 
-The key insight: `from_dict()` must NOT validate or error on unknown objects. Files from any source may contain objects not in our database. But it SHOULD optionally enrich boxes with DB metadata when available -- this powers analysis and smart editing.
-
-**Specific enhancements:**
-
-| Enhancement | Why | Complexity |
-|-------------|-----|-----------|
-| bpatcher attr reconstruction | `_bpatcher_attrs` not populated from JSON; needed for round-trip fidelity | Low |
-| Unknown key preservation | `extra_attrs` already captures extras, but verify completeness | Low |
-| DB-optional enrichment | Attach DB metadata when available, skip when not | Low |
-| Nested patcher depth tracking | Know whether a box is top-level or inside a subpatcher | Low |
-| ID collision detection | Loaded patches may have ID conflicts; detect and report | Low |
-
-**What NOT to change:** Do not add DB validation to the read path. A .maxpat file loaded from disk is valid by definition (MAX created it). Our DB may be incomplete. The read path must never reject a file.
-
-### 2. PatchEditor Methods on Patcher
-
-New methods that perform surgical modifications on a loaded Patcher. These are the operations agents will use instead of building from scratch.
-
-```python
-class Patcher:
-    # --- Existing (keep) ---
-    def add_box(self, name, args, x, y) -> Box: ...
-    def add_connection(self, src, outlet, dst, inlet) -> Patchline: ...
-    def add_subpatcher(self, name, inlets, outlets) -> (Box, Patcher): ...
-    # etc.
-
-    # --- New: Read ---
-    @classmethod
-    def from_dict(cls, data, db=None) -> Patcher: ...       # Enhanced (exists)
-    def find_box(self, name=None, id=None, text=None) -> Box | None: ...
-    def find_boxes(self, name=None, maxclass=None) -> list[Box]: ...
-    def find_connections_from(self, box) -> list[Patchline]: ...
-    def find_connections_to(self, box) -> list[Patchline]: ...
-    def get_signal_chain(self, start_box) -> list[Box]: ...
-
-    # --- New: Edit ---
-    def remove_box(self, box_or_id) -> None: ...          # Also removes connected lines
-    def replace_box(self, old, new_name, new_args) -> Box: ...  # Preserves position + connections
-    def disconnect(self, src, outlet, dst, inlet) -> None: ...
-    def rewire(self, old_src, old_outlet, new_src, new_outlet, dst, inlet) -> None: ...
-    def move_box(self, box, x, y) -> None: ...
-    def set_attr(self, box, key, value) -> None: ...
-
-    # --- New: Layout ---
-    def layout_new_boxes(self, boxes) -> None: ...         # Position only newly added boxes
-    def auto_position_near(self, box, reference_box, direction="below") -> None: ...
-```
-
-**Design decisions:**
-
-1. **`remove_box()` cascades to connections.** When a box is removed, all patchlines referencing it are also removed. This matches MAX behavior and prevents dangling connections.
-
-2. **`replace_box()` preserves position and connections.** Swapping `cycle~ 440` for `saw~ 440` keeps the same x/y, reconnects existing cables where inlet/outlet counts allow. Excess connections are dropped with a warning.
-
-3. **`find_box()` searches by multiple criteria.** Agents need to locate boxes by name ("find the dac~"), by ID (from error messages), or by text content (for gen~ codeboxes).
-
-4. **No implicit layout.** Editing methods do NOT trigger automatic layout. Position is preserved from the file. New boxes are placed at a specified position or via explicit `auto_position_near()`.
-
-5. **ID stability.** All editing operations preserve existing box IDs. New boxes get IDs from `_next_id` (which `from_dict` already initializes past the highest existing ID). This means connections between existing boxes remain valid.
-
-### 3. PatchAnalyzer (`analyzer.py`)
-
-Read-only analysis of a loaded Patcher. Powers `/max-onboard` and gives agents structural understanding.
-
-```python
-class PatchAnalyzer:
-    def __init__(self, patcher: Patcher, db: ObjectDatabase): ...
-
-    # Structure
-    def inventory(self) -> dict:
-        """Count objects by domain (MSP, Max, Jitter, etc.)."""
-    def signal_chains(self) -> list[list[Box]]:
-        """Trace all signal paths from sources to sinks."""
-    def control_chains(self) -> list[list[Box]]:
-        """Trace control-rate message paths."""
-    def subpatcher_tree(self) -> dict:
-        """Nested dict of subpatcher hierarchy."""
-    def find_orphans(self) -> list[Box]:
-        """Boxes with no connections."""
-
-    # Semantic
-    def classify_purpose(self) -> str:
-        """Heuristic: 'synthesizer', 'effect', 'sequencer', 'utility', etc."""
-    def identify_parameters(self) -> list[dict]:
-        """Find user-facing controls (number, slider, dial + what they control)."""
-    def identify_signal_flow(self) -> str:
-        """Human-readable description: 'osc -> filter -> gain -> dac'."""
-
-    # Validation
-    def check_health(self) -> list[ValidationResult]:
-        """Run validation pipeline on the loaded patch."""
-    def diff(self, other: Patcher) -> list[str]:
-        """Compare two patches: added/removed/changed boxes and connections."""
-```
-
-**Why a separate class:** Analysis is read-only and stateless. Putting it on Patcher would bloat the class. The analyzer takes a Patcher and DB, uses them for inspection, returns results. Clean separation.
-
-### 4. Direct Write (`hooks.py::write_patch_direct()`)
-
-A new write function that skips layout and writes a Patcher directly to disk. For the edit workflow, layout has already been done (positions come from the loaded file), so re-running full layout would destroy user positioning.
-
-```python
-def write_patch_direct(
-    patcher: Patcher,
-    path: str | Path,
-    validate: bool = True,
-) -> list[ValidationResult]:
-    """Write a Patcher directly to .maxpat without applying layout.
-
-    Used for the edit workflow where positions are already set from the
-    loaded file. New boxes should be positioned before calling this.
-
-    Runs validation unless validate=False. Does NOT auto-fix -- reports only.
-    """
-```
-
-**Key difference from `write_patch()`:** No `apply_layout()` call. No `_apply_auto_styling()` on loaded boxes (only on new boxes the agent explicitly styles). Preserves the exact JSON structure from the loaded file with only targeted edits applied.
-
----
-
-## Integration Points: Agents and Commands
-
-### Current Agent Data Flow (v1.x)
+### M4L Presentation Layout Flow
 
 ```
-/max-build "kick synth"
-    -> max-router dispatches to max-dsp-agent
-    -> Agent writes generate.py (Python code that builds Patcher)
-    -> Agent runs generate.py
-    -> merge_and_write() outputs .maxpat
-```
-
-The agent never touches the .maxpat directly. It writes Python code that creates Python objects that serialize to JSON. Three layers of indirection.
-
-### New Agent Data Flow (v2.0)
-
-```
-/max-build "kick synth"
-    -> max-router dispatches to max-dsp-agent
-    -> Agent calls read_patch() if .maxpat exists (or creates empty Patcher)
-    -> Agent calls Patcher methods directly (add_box, add_connection, etc.)
-    -> Agent calls write_patch_direct()
-    -> .maxpat updated
-```
-
-```
-/max-iterate "add LFO to filter"
-    -> read_patch() loads existing .maxpat
-    -> PatchAnalyzer identifies the filter and its control inputs
-    -> Agent calls add_box("cycle~", ["0.5"]) for LFO
-    -> Agent calls add_connection(lfo, 0, filter_cutoff_inlet)
-    -> Agent calls auto_position_near(lfo, filter, "above")
-    -> validate_patch(patcher) checks the edit
-    -> write_patch_direct() saves
-```
-
-```
-/max-onboard
-    -> read_patch() loads unknown .maxpat
-    -> PatchAnalyzer runs full analysis
-    -> Output: inventory, signal chains, parameter map, health check
-    -> Findings written to project context.md
-```
-
-### Command Rewrites
-
-| Command | v1.x Behavior | v2.0 Behavior | Change Scope |
-|---------|--------------|---------------|-------------|
-| `/max-new` | Creates project dir + empty generate.py | Creates project dir + empty .maxpat (or no file) | MINOR |
-| `/max-build` | Agent writes generate.py, runs it | Agent reads/creates .maxpat, edits directly, writes | MAJOR |
-| `/max-iterate` | Agent edits generate.py, runs it | Agent reads .maxpat, edits directly, writes | MAJOR |
-| `/max-verify` | Runs validate_file + critics on .maxpat | Same -- unchanged (already reads .maxpat) | NONE |
-| `/max-research` | Looks up object DB | Same -- unchanged | NONE |
-| `/max-memory` | Read/write patterns | Same -- unchanged | NONE |
-| `/max-status` | Read project status | Same -- unchanged | NONE |
-| `/max-switch` | Switch active project | Same -- unchanged | NONE |
-| `/max-test` | Run test suite | Same -- unchanged | NONE |
-| `/max-discuss` | Conversational | Same -- unchanged | NONE |
-| `/max-onboard` | DOES NOT EXIST | NEW: analyze unknown .maxpat | NEW |
-
-**Key insight:** Only 3 commands change (build, iterate, new). The rest already work on .maxpat files or are independent of the generation pipeline. The /max-onboard command is entirely new.
-
-### Validation Hook Integration
-
-**Current:** Validation runs on the `dict` output of `patcher.to_dict()` inside `write_patch()`. It operates on raw JSON, not Patcher objects.
-
-**v2.0 changes:**
-
-1. **`validate_patch()` already accepts both Patcher and dict.** Lines 84-108 of validation.py show it converts Patcher to dict if needed. No change required for the entry point.
-
-2. **Edit-time validation (new).** For interactive editing, we want to validate specific changes without running the full pipeline:
-
-```python
-def validate_edit(patcher: Patcher, changed_boxes: list[Box]) -> list[ValidationResult]:
-    """Validate only the boxes and connections affected by recent edits.
-
-    Runs Layer 2 (object existence) and Layer 3 (connection bounds) only on
-    the changed boxes and their connections. Skips Layer 1 (JSON structure,
-    which is always valid for Patcher objects) and Layer 4 (domain rules,
-    which are best run as a full-patch check at write time).
-    """
-```
-
-3. **Validation on load (optional).** When `/max-onboard` loads an unknown patch, it should run validation to report health. This already works via `validate_file()` -- no change needed.
-
-4. **Critic review timing is unchanged.** Critics run on the final dict before the user sees results. They check semantics (gain staging, fan-out patterns, RNBO fitness), not structural validity. The `/max-verify` command continues to invoke them.
-
----
-
-## Data Flow Changes: Detailed
-
-### Before (v1.x): Build Flow
-
-```
-User: /max-build "kick drum synth"
+_apply_presentation_layout(boxes)
   |
-  v
-max-router -> max-dsp-agent
+  +-- Collect boxes with presentation=True
+  +-- if _is_m4l_device(boxes):     # detected via plugin~/plugout~/live.* presence
+  |     _apply_m4l_presentation_layout(boxes)
+  |       |
+  |       +-- Group controls by varname prefix or functional role
+  |       +-- Position groups in columns (knobs left, meters right)
+  |       +-- Respect devicewidth for horizontal bounds
+  |       +-- Place labels above controls
   |
-  v
-Agent generates generate.py:
-  from src.maxpat import Patcher, merge_and_write
-  p = Patcher()
-  osc = p.add_box("cycle~", ["440"])
-  dac = p.add_box("dac~")
-  p.add_connection(osc, 0, dac, 0)
-  merge_and_write(p, "patches/kick/generated/kick.maxpat")
-  |
-  v
-merge_and_write():
-  1. Load old manifest (sidecar .manifest.json)
-  2. Load existing .maxpat
-  3. Merge: keep user boxes, replace generator boxes, merge attrs
-  4. apply_layout() on merged patcher
-  5. validate_patch() on merged dict
-  6. Write .maxpat + manifest
+  +-- else:
+        existing grid fallback (unchanged)
 ```
-
-### After (v2.0): Build Flow
-
-```
-User: /max-build "kick drum synth"
-  |
-  v
-max-router -> max-dsp-agent
-  |
-  v
-Agent reads existing or creates new:
-  from src.maxpat import Patcher, read_patch, write_patch_direct
-  p = read_patch("patches/kick/kick.maxpat")  # or Patcher() if new
-  |
-  v
-Agent edits directly:
-  osc = p.add_box("cycle~", ["440"], x=100, y=50)
-  gain = p.add_box("*~", ["0.5"], x=100, y=80)
-  dac = p.add_box("dac~", x=100, y=110)
-  p.add_connection(osc, 0, gain, 0)
-  p.add_connection(gain, 0, dac, 0)
-  p.add_connection(gain, 0, dac, 1)
-  |
-  v
-write_patch_direct(p, "patches/kick/kick.maxpat"):
-  1. validate_patch(p)
-  2. p.to_dict()
-  3. Write JSON to disk
-  # No manifest. No merge. No layout (agent positioned boxes).
-```
-
-### Before (v1.x): Iterate Flow
-
-```
-User: /max-iterate "add reverb to output"
-  |
-  v
-Agent edits generate.py (adds reverb section)
-  |
-  v
-Agent runs generate.py
-  |
-  v
-merge_and_write() merges with existing .maxpat
-  (user changes preserved via manifest tracking)
-```
-
-### After (v2.0): Iterate Flow
-
-```
-User: /max-iterate "add reverb to output"
-  |
-  v
-p = read_patch("patches/kick/kick.maxpat")
-analyzer = PatchAnalyzer(p, db)
-  |
-  v
-Agent identifies: dac~ is the output, gain~ feeds it
-  chains = analyzer.signal_chains()
-  # Finds: [cycle~ -> *~ -> dac~]
-  |
-  v
-Agent inserts reverb between gain and dac:
-  rev = p.add_box("yafr2~")
-  p.auto_position_near(rev, gain_box, "below")
-  p.disconnect(gain_box, 0, dac_box, 0)
-  p.add_connection(gain_box, 0, rev, 0)
-  p.add_connection(rev, 0, dac_box, 0)
-  p.add_connection(rev, 1, dac_box, 1)
-  |
-  v
-write_patch_direct(p, "patches/kick/kick.maxpat")
-  # User's manual edits are FULLY preserved (we loaded them).
-  # No manifest needed -- we read the whole file and edited in place.
-```
-
-**The critical improvement:** User changes are preserved by default because we loaded them. No manifest tracking needed. No merge logic. The .maxpat file is the single source of truth at every step.
-
-### New: /max-onboard Flow
-
-```
-User: /max-onboard (with a .maxpat file present)
-  |
-  v
-p = read_patch("patches/imported/some-patch.maxpat")
-analyzer = PatchAnalyzer(p, db)
-  |
-  v
-report = {
-    "object_count": 47,
-    "domain_breakdown": {"MSP": 23, "Max": 18, "Jitter": 6},
-    "signal_chains": ["cycle~ -> svf~ -> *~ -> dac~"],
-    "parameters": [
-        {"name": "cutoff", "control": "dial", "target": "svf~", "inlet": 1},
-    ],
-    "health": [
-        "WARNING: Missing gain staging on cycle~ -> dac~ path",
-    ],
-    "subpatchers": {"p filter-section": 12, "p modulation": 8},
-    "purpose": "subtractive synthesizer with filter modulation",
-}
-  |
-  v
-Write report to project context.md
-Agent can now /max-iterate on this patch with full understanding
-```
-
----
-
-## Files to Remove (v2.0 cleanup)
-
-| File/Artifact | Why Remove |
-|---------------|-----------|
-| `patches/*/generated/generate.py` | Replaced by direct editing |
-| `patches/*/generated/build_*.py` | Same -- generation scripts |
-| `patches/*/generated/*.manifest.json` | Manifest tracking obsolete |
-| `src/maxpat/incremental.py` | Merge logic obsolete -- direct editing replaces it |
-| `Manifest` class and `merge_and_write()` | No longer needed |
-
-**Migration path:** Existing patches keep their .maxpat files. The .maxpat is already the authoritative output -- generation scripts and manifests were the infrastructure around it. Remove the infrastructure, keep the output.
-
----
 
 ## Patterns to Follow
 
-### Pattern 1: Round-Trip Fidelity
+### Pattern 1: Critic Module Structure (from rnbo_critic.py)
 
-**What:** Any .maxpat loaded via `from_dict()` and immediately saved via `to_dict()` must produce byte-identical JSON (modulo whitespace).
-
-**When:** Always. This is the foundation of trust in direct editing.
-
-**Implementation:** `from_dict()` already preserves unknown keys via `extra_attrs`. The enhancement needed is ensuring key ordering in `to_dict()` matches the original file. Use `collections.OrderedDict` or sort keys to match MAX's output order.
-
-**Test:** Load every existing project .maxpat, round-trip through from_dict/to_dict, assert JSON equality.
+Every critic module follows this exact shape:
 
 ```python
-def test_round_trip_fidelity(maxpat_path):
-    original = json.loads(Path(maxpat_path).read_text())
-    patcher = Patcher.from_dict(original)
-    roundtripped = patcher.to_dict()
-    assert roundtripped == original
+"""M4L critic -- semantic review of Max for Live device patches."""
+
+from __future__ import annotations
+from src.maxpat.critics.base import CriticResult
+
+def review_m4l(patch_dict: dict) -> list[CriticResult]:
+    """Review M4L aspects of a patch."""
+    results: list[CriticResult] = []
+    # ... checks ...
+    return results
 ```
 
-### Pattern 2: Defensive Loading
+The critic checks operate on `patch_dict` (raw JSON dict, NOT Patcher instances). This is important -- critics run on serialized output, not live objects. Checks scan `boxes` array for `text`, `maxclass`, and attribute presence.
 
-**What:** `from_dict()` never raises exceptions on valid .maxpat JSON, even if objects are unknown to our database.
+**M4L critic checks to implement:**
+1. **plugout~ presence** (blocker) -- audio_effect/instrument must have plugout~
+2. **No gain~ before plugout~** (blocker) -- Ableton channel strip handles volume
+3. **parameter_enable on live.* controls** (warning) -- live.dial/slider/numbox/toggle without parameter_enable=1 won't be automatable
+4. **live.thisdevice presence** (warning) -- devices should have initialization via live.thisdevice
+5. **Device type consistency** (warning) -- instrument without MIDI input, audio_effect with MIDI output, etc.
+6. **Duplicate parameter_longname** (blocker) -- causes silent automation collision in Live
 
-**When:** Always. Users import patches from anywhere.
+### Pattern 2: Scaffold Function in project.py
 
-**Implementation:** Already implemented -- `from_dict()` uses `Box.__new__` to bypass DB validation. The enhancement is to also gracefully handle:
-- Missing `text` fields on `newobj` boxes (corrupted but loadable)
-- Non-standard ID formats (e.g., "obj-0042", "mybox", UUID strings)
-- Recursive subpatcher depth > 10 (some patches nest deeply)
-- Extremely large patches (1000+ boxes -- memory-safe iteration)
+The scaffold function belongs in `project.py`, not `patcher.py`. Rationale:
 
-### Pattern 3: Preserve-by-Default
-
-**What:** Every attribute of every box is preserved unless explicitly changed by an edit operation.
-
-**When:** Always during edit operations.
-
-**Implementation:** Edit methods modify specific fields on Box objects. They never create new Box objects for existing boxes (which would lose extra_attrs). `replace_box()` copies position, extra_attrs, and presentation from the old box.
-
-### Pattern 4: Position-Aware Insertion
-
-**What:** When adding new boxes to an existing patch, position them intelligently relative to existing content.
-
-**When:** All add operations in edit context.
-
-**Implementation:**
+- `project.py` already handles project creation lifecycle (create_project, init_versions, etc.)
+- `patcher.py` is the data model -- it provides Box/Patcher primitives, not project templates
+- The scaffold calls `create_project()` then builds a Patcher with M4L boilerplate, then saves it
+- This mirrors how `create_project()` already creates an empty .maxpat at the end
 
 ```python
-def auto_position_near(self, box: Box, reference: Box, direction: str = "below") -> None:
-    """Position box relative to reference, avoiding overlaps."""
-    ref_rect = reference.patching_rect
-    if direction == "below":
-        box.patching_rect[0] = ref_rect[0]
-        box.patching_rect[1] = ref_rect[1] + ref_rect[3] + V_SPACING
-    elif direction == "right":
-        box.patching_rect[0] = ref_rect[0] + ref_rect[2] + H_GUTTER
-        box.patching_rect[1] = ref_rect[1]
-    elif direction == "above":
-        box.patching_rect[0] = ref_rect[0]
-        box.patching_rect[1] = ref_rect[1] - box.patching_rect[3] - V_SPACING
-    # Check for overlaps with existing boxes and shift if needed
-    self._resolve_overlaps(box)
+def create_m4l_project(
+    name: str,
+    base_dir: Path,
+    device_type: str = "audio_effect",
+) -> Path:
+    """Create an M4L device project with correct boilerplate.
+
+    Args:
+        name: Project name (lowercase-hyphenated).
+        base_dir: Root directory.
+        device_type: "audio_effect", "instrument", or "midi_effect".
+
+    Returns:
+        Path to created project directory.
+    """
+    # Validate device_type
+    if device_type not in ("audio_effect", "instrument", "midi_effect"):
+        raise ValueError(f"Invalid device_type: {device_type}")
+
+    # Create base project structure (reuse existing)
+    project_dir = create_project(name, base_dir)
+
+    # Build M4L scaffold patch (overwrites the empty .maxpat)
+    from src.maxpat.patcher import Patcher
+    p = Patcher()
+
+    # Enable presentation mode
+    p.props["openinpresentation"] = 1
+
+    # Device-type-specific scaffolding
+    if device_type in ("audio_effect", "instrument"):
+        plugin_in = p.add_box("plugin~")
+        plugout = p.add_box("plugout~")
+        p.add_connection(plugin_in, 0, plugout, 0)
+        p.add_connection(plugin_in, 1, plugout, 1)
+
+    thisdevice = p.add_box("live.thisdevice")
+    lb = p.add_box("loadbang")
+    p.add_connection(lb, 0, thisdevice, 0)
+
+    if device_type == "instrument":
+        p.add_box("notein")
+
+    # ... finalize, save .maxpat, and write .amxd ...
 ```
 
-### Pattern 5: Edit Transaction Idiom
+### Pattern 3: Dispatch Rules Extension
 
-**What:** Group related edits into logical transactions so validation runs once per transaction, not per operation.
+Add M4L as a **modifier** on existing agents, not a new agent. M4L tasks route to DSP + UI + Patch (same as today), but with M4L context injected.
 
-**When:** Complex edits that involve multiple add/remove/rewire operations.
+```markdown
+### M4L Device Context (modifier, not standalone agent)
 
-**Implementation:**
+**Primary keywords:** m4l, max for live, ableton, live device, audio effect,
+instrument, midi effect, plugin~, plugout~, live.thisdevice, parameter_enable
+
+**Secondary keywords:** live.dial, live.slider, live.numbox, live.toggle,
+live.button, live.menu, live.tab, live.gain~, live.meter~, live.scope~,
+live.path, live.object, live.observer, presentation mode, device width,
+automatable, automation
+
+**Effect:** When M4L keywords are detected, add M4L context flag to all
+dispatched agents. Agents check this flag and apply M4L-specific rules
+from their SKILL.md M4L sections.
+
+**Intent patterns:**
+- "Build me a Max for Live audio effect..."
+- "Create an M4L instrument..."
+- "Make a MIDI effect for Ableton..."
+- "Add automatable parameters..."
+```
+
+### Pattern 4: Analysis Device Type Detection
+
+Add to AnalysisMixin, following the existing `_classify_domain()` pattern:
 
 ```python
-# Agent code for adding a reverb section:
-p = read_patch(path)
+def detect_device_type(self) -> str | None:
+    """Detect M4L device type from object patterns.
 
-# Transaction: multiple edits, validate once at the end
-rev = p.add_box("yafr2~", x=200, y=300)
-wet = p.add_box("*~", ["0.3"], x=200, y=330)
-p.add_connection(rev, 0, wet, 0)
-p.disconnect(gain_box, 0, dac_box, 0)
-p.add_connection(gain_box, 0, rev, 0)
-p.add_connection(wet, 0, dac_box, 0)
+    Returns:
+        "audio_effect", "instrument", "midi_effect", or None.
+    """
+    has_plugin = any(b.name == "plugin~" for b in self.boxes)
+    has_plugout = any(b.name == "plugout~" for b in self.boxes)
+    has_notein = any(b.name == "notein" for b in self.boxes)
+    has_live = any(b.name.startswith("live.") for b in self.boxes)
 
-# Single validation at write time
-write_patch_direct(p, path)
+    if has_plugout and has_notein:
+        return "instrument"
+    if has_plugout or has_plugin:
+        return "audio_effect"
+    if has_live and not has_plugout:
+        return "midi_effect"
+    return None
 ```
-
----
 
 ## Anti-Patterns to Avoid
 
-### Anti-Pattern 1: Re-Layout on Edit
+### Anti-Pattern 1: New M4L Module (m4l.py)
+**What:** Creating a standalone `src/maxpat/m4l.py` module as a new abstraction layer
+**Why bad:** Adds an indirection layer that duplicates Patcher API calls. The scaffold is 30 lines of code, not a module. The critic is a file in critics/. The layout change is a function in layout.py. There is no coherent "M4L module" -- the M4L capability is distributed across existing modules by design.
+**Instead:** Add functions to existing modules where they naturally belong. Exception: `m4l_constants.py` is a data-only constants file, not a logic module.
 
-**What:** Running `apply_layout()` on a loaded-and-edited patch.
+### Anti-Pattern 2: M4L Patcher Subclass
+**What:** `class M4LPatcher(Patcher)` with M4L-specific methods
+**Why bad:** Violates the existing pattern where Patcher is domain-agnostic. RNBO doesn't have an RNBOPatcher. Gen~ doesn't have a GenPatcher. The Patcher class is a data model; domain intelligence lives in critics, layout, and project functions.
+**Instead:** Keep Patcher generic. Domain logic in critic + scaffold + layout functions.
 
-**Why bad:** Destroys all user positioning. A patch loaded from disk has positions that the user set in MAX. Re-laying out moves everything.
+### Anti-Pattern 3: M4L-Specific Agent
+**What:** Creating a `max-m4l-agent` specialist
+**Why bad:** M4L devices are DSP patches with presentation mode. They use the same objects, same signal flow, same layout. An M4L agent would duplicate 90% of DSP + UI agent capabilities. The real need is M4L context awareness in existing agents.
+**Instead:** Add M4L sections to existing agent SKILL.md files. Use dispatch-rules modifier pattern.
 
-**Instead:** Only position newly added boxes. Use `auto_position_near()` or explicit coordinates. Never call `apply_layout()` on a loaded Patcher.
+### Anti-Pattern 4: Presentation Layout as Separate Module
+**What:** Creating `src/maxpat/m4l_layout.py`
+**Why bad:** The presentation layout is called from `_apply_presentation_layout()` in layout.py. Splitting it into a separate module means layout.py would import m4l_layout.py for one function. The M4L-aware layout logic is ~50-80 lines -- not worth a module.
+**Instead:** Add `_apply_m4l_presentation_layout()` as a private function in layout.py, called from the existing `_apply_presentation_layout()`.
 
-### Anti-Pattern 2: Recreate-to-Edit
+### Anti-Pattern 5: Complex .amxd Export Pipeline
+**What:** Building a heavy abstraction layer or separate module for .amxd export
+**Why bad:** The .amxd format is a 32-byte fixed header + the same JSON as .maxpat. A "pipeline" for this is over-engineering. The entire export is `struct.pack` + `file.write`.
+**Instead:** Add `write_amxd(patch_dict, device_type, path)` as a single function in `hooks.py` alongside `save_patch_roundtrip()`. ~15 lines of code.
 
-**What:** Building a new Patcher from scratch to "edit" an existing patch (the v1.x approach).
+## Detailed Integration Points
 
-**Why bad:** Loses everything not captured in generate.py: user-added objects, manual position tweaks, presentation mode adjustments, extra attributes set in MAX.
+### 1. project.py: create_m4l_project()
 
-**Instead:** Load the existing .maxpat, modify it in place, write it back. The .maxpat file contains the complete truth.
+**Location:** After `create_project()` (line ~93), add `create_m4l_project()`.
+**Signature:** `create_m4l_project(name, base_dir, device_type="audio_effect") -> Path`
+**Depends on:** `create_project()` (calls it internally), `Patcher` class, `save_patch_roundtrip()`, `write_amxd()`
+**Tests:** Create audio_effect/instrument/midi_effect, verify plugin~/plugout~ presence, verify openinpresentation=1
 
-### Anti-Pattern 3: Validation-Gated Loading
+### 2. m4l_constants.py: Parameter Enums and Format Constants
 
-**What:** Refusing to load a .maxpat that fails validation.
+**Location:** New file `src/maxpat/m4l_constants.py`
+**Contents:** `ParamType`, `UnitStyle`, `ModMode`, `ParamVisibility` (IntEnum classes), `DeviceType` constants, `AMXD_*` binary format constants, `DEVICE_TYPE_SIGNALS` detection patterns
+**Depends on:** Nothing (pure data)
+**Tests:** Verify enum values match ground truth from kicksynth-m4l.maxpat
 
-**Why bad:** Any patch from the wild may have "errors" by our standards (objects not in our DB, unusual connections). Blocking load means we cannot analyze or edit these patches.
+### 3. critics/m4l_critic.py: review_m4l()
 
-**Instead:** Load everything, validate optionally, report issues without blocking.
+**Location:** New file in `src/maxpat/critics/`
+**Pattern:** Identical to `rnbo_critic.py` -- module-level function returning `list[CriticResult]`
+**Depends on:** `CriticResult` from base.py only
+**Checks:**
+- plugout~ missing (blocker for audio_effect/instrument)
+- gain~ directly connected to plugout~ (blocker)
+- live.* controls without parameter_enable=1 (warning)
+- missing live.thisdevice (warning)
+- device type inconsistency (warning)
+- duplicate parameter_longname (blocker)
 
-### Anti-Pattern 4: Agent Generates Python Code
+### 4. critics/__init__.py: Auto-detection
 
-**What:** v2.0 agents generating Python scripts that call Patcher methods.
+**Location:** Add `_has_m4l_boxes()` after `_has_rnbo_boxes()` (line ~25), add conditional call in `review_patch()` (line ~70)
+**Pattern:** Exact mirror of RNBO auto-detection
+**Import:** `from src.maxpat.critics.m4l_critic import review_m4l`
 
-**Why bad:** Adds an unnecessary indirection layer. The whole point of v2.0 is that agents edit patches directly.
+### 5. layout.py: M4L Presentation Layout
 
-**Instead:** Agents call Patcher methods directly in their execution context. No intermediate scripts.
+**Location:** Replace/extend `_apply_presentation_layout()` (line 1057)
+**Change:** Detect M4L device (plugin~/plugout~/live.* presence), branch to M4L-aware layout
+**Grouping strategy:**
+- Group by varname prefix (e.g., "osc_" controls together, "filter_" controls together)
+- If no varname prefixes, group by control type (dials together, sliders together)
+- Place meters/scopes on the right edge
+- Respect `devicewidth` from patcher props for horizontal bounds
+- Labels above controls (live.comment or comment boxes with presentation=True)
 
-### Anti-Pattern 5: Dual Source of Truth
+### 6. analysis.py: Device Type Detection
 
-**What:** Keeping generate.py alongside the .maxpat for the same project.
+**Location:** Add `detect_device_type()` to AnalysisMixin (after `_classify_domain()`)
+**Add to SECTION_SIGNATURES:**
+```python
+"plugin~": "Audio Input (M4L)",
+"plugout~": "Audio Output (M4L)",
+"live.thisdevice": "Device Init (M4L)",
+```
 
-**Why bad:** The exact problem v2.0 solves. Two sources = inevitable drift.
+### 7. hooks.py: write_amxd()
 
-**Instead:** One source: the .maxpat file. Period.
+**Location:** After `save_patch_roundtrip()` in hooks.py
+**Signature:** `write_amxd(patch_dict, device_type, path) -> None`
+**Depends on:** `m4l_constants.py` for AMXD_* constants
+**Implementation:** ~15 lines using `struct.pack` for header + `json.dumps` for payload
 
----
+### 8. dispatch-rules.md: M4L Keywords
+
+**Location:** Add new section after existing agent keyword sections
+**Type:** Modifier (context flag), not standalone agent dispatch
+**Keywords:** m4l, max for live, ableton, live device, audio effect, instrument, midi effect, plugin~, plugout~, live.thisdevice, parameter_enable, presentation mode
+
+### 9. Object Database Updates
+
+**relationships.json:** Add entries:
+- `plugin~` <-> `plugout~` (always paired)
+- `live.thisdevice` <-> `loadbang` (init pattern)
+- `live.path` <-> `live.object` <-> `live.observer` (API chain)
+- `live.dial` <-> `live.param~` (parameter modulation)
+
+**m4l/objects.json:** Add live.adsrui, live.adsr~. Move live.scope~ entry from packages/.
 
 ## Suggested Build Order
 
-Based on dependency analysis, the implementation should proceed in this order:
+Based on dependency analysis, build in this order:
 
-### Phase 1: Round-Trip Foundation (no agent changes yet)
+### Phase 1: Foundation (no dependencies, enables everything else)
 
-**Goal:** Prove that we can load any .maxpat and write it back unchanged.
+| Task | Module | Effort | Why First |
+|------|--------|--------|-----------|
+| Add M4L constants module | m4l_constants.py | Small | Enums referenced by scaffold, critic, and export |
+| Add M4L objects to DB | m4l/objects.json, relationships.json | Small | Agents need objects to exist before they can use them |
+| Add M4L rules to CLAUDE.md | CLAUDE.md | Small | Rules must exist before critic or agents can enforce them |
+| Add device type detection | analysis.py | Small | Critic and scaffold both need to know device type |
 
-**Components:**
-1. Enhance `Patcher.from_dict()` -- fix bpatcher attr reconstruction, verify key preservation
-2. Ensure `to_dict()` output matches input key order
-3. Write round-trip fidelity tests for all existing project .maxpat files
-4. Fix any round-trip failures (these are bugs in `from_dict()` or `to_dict()`)
+### Phase 2: Scaffold + Routing (depends on Phase 1)
 
-**Dependencies:** None. This is the foundation everything else builds on.
+| Task | Module | Effort | Why Second |
+|------|--------|--------|------------|
+| M4L device scaffold | project.py | Medium | Creates the starting point for all M4L devices |
+| M4L dispatch rules | dispatch-rules.md | Small | Routes M4L tasks correctly |
+| M4L agent instructions | SKILL.md files (3) | Small | Agents know what to do with M4L context |
 
-**Tests:** Round-trip every existing .maxpat (kicksynth, minitaur, scala-synth, etc.). JSON deep equality after load-save cycle.
+### Phase 3: Validation + Export (depends on Phase 1 device type detection)
 
-### Phase 2: Read Path + Search Methods
+| Task | Module | Effort | Why Third |
+|------|--------|--------|-----------|
+| M4L critic module | critics/m4l_critic.py | Medium | Catches problems after generation |
+| Critic auto-detection | critics/__init__.py | Small | Wires critic into review_patch() |
+| .amxd export | hooks.py | Small | Completes device creation loop (~15 LOC) |
 
-**Goal:** Agents can load a patch and find things in it.
+### Phase 4: Polish (depends on Phases 1-3)
 
-**Components:**
-1. `read_patch()` convenience function in hooks.py
-2. `find_box()`, `find_boxes()`, `find_connections_from()`, `find_connections_to()` on Patcher
-3. Optional DB enrichment during load (attach metadata to boxes)
+| Task | Module | Effort | Why Last |
+|------|--------|--------|----------|
+| M4L presentation layout | layout.py | Medium-Large | Needs real devices to test against; scaffold must exist first |
+| End-to-end tests | tests/test_m4l_workflow.py | Medium | Needs scaffold + critic to test the full loop |
 
-**Dependencies:** Phase 1 (from_dict must work correctly).
+**Critical path:** Phase 1 -> Phase 2 -> Phase 3 -> Phase 4
 
-**Tests:** Load a complex patch (kicksynth), find specific objects by name/id/text, verify connection queries return correct results.
+**Parallelizable within phases:**
+- Phase 1: All 4 tasks are independent
+- Phase 2: Scaffold and dispatch/skills are independent
+- Phase 3: Critic module and __init__.py wiring are sequential (module first); .amxd export is independent
+- Phase 4: Layout and tests are independent
 
-### Phase 3: Edit Methods
+### Why This Order
 
-**Goal:** Agents can modify a loaded patch surgically.
+1. **Constants + DB + rules first** because every other component references the parameter enums, object database, or CLAUDE.md rules. Building the critic before adding M4L constants means the critic can't use typed enums.
 
-**Components:**
-1. `remove_box()` with cascade connection removal
-2. `disconnect()` and `rewire()`
-3. `replace_box()` with position/connection preservation
-4. `move_box()` and `set_attr()`
-5. `auto_position_near()` for smart placement
-6. `write_patch_direct()` in hooks.py
+2. **Scaffold before critic** because the critic validates scaffolded devices. Without a scaffold to generate test fixtures, critic tests would require handcrafted JSON (fragile). With the scaffold, tests call `create_m4l_project()` and validate the output.
 
-**Dependencies:** Phase 2 (search methods needed by edit methods, e.g., `find_connections_from` for cascade removal).
+3. **Critic before layout** because the critic catches structural errors (missing plugout~, gain~ before plugout~) that would make layout testing meaningless. Fix structure first, then polish presentation.
 
-**Tests:** Load patch, remove a box, verify connections removed. Replace box, verify position preserved. Add box near reference, verify no overlaps.
+4. **.amxd export in Phase 3** because it depends on device type detection (Phase 1) and is trivial to implement. Shipping it with validation means the scaffold can output both .maxpat and .amxd from the start.
 
-### Phase 4: PatchAnalyzer
-
-**Goal:** `/max-onboard` can understand any patch.
-
-**Components:**
-1. `analyzer.py` with inventory, signal chain tracing, parameter identification
-2. `classify_purpose()` heuristic
-3. Health check (delegates to existing validation)
-
-**Dependencies:** Phase 2 (needs search methods for chain tracing).
-
-**Tests:** Analyze kicksynth -- verify it identifies gen~ as the core, finds all parameters, traces signal chain from click~ through gen~ to dac~.
-
-### Phase 5: Command Rewrites
-
-**Goal:** `/max-build`, `/max-iterate`, `/max-new` use the new read-write workflow.
-
-**Components:**
-1. Rewrite `max-build.md` -- agents call Patcher methods directly
-2. Rewrite `max-iterate.md` -- load-edit-save cycle
-3. Rewrite `max-new.md` -- create empty .maxpat or project-dir-only
-4. New `max-onboard.md` command
-5. Update agent skill files (the instructions that guide specialist agents)
-
-**Dependencies:** Phases 1-4 (all infrastructure must work before commands use it).
-
-**Tests:** Integration tests that simulate the command workflow: create project, build patch, iterate on patch, verify output is valid.
-
-### Phase 6: Cleanup
-
-**Goal:** Remove v1.x generation artifacts.
-
-**Components:**
-1. Delete `generate.py` / `build_*.py` from all projects
-2. Delete `.manifest.json` sidecar files
-3. Remove `incremental.py` module
-4. Remove `Manifest` and `merge_and_write` from public API
-5. Update tests that depend on removed code
-
-**Dependencies:** Phase 5 (commands must work without generate.py before we remove it).
-
-**Tests:** Full test suite passes after removal. All existing .maxpat files are still valid and loadable.
-
----
-
-## Scalability Considerations
-
-| Concern | Small Patch (20 boxes) | Medium Patch (200 boxes) | Large Patch (1000+ boxes) |
-|---------|----------------------|-------------------------|--------------------------|
-| Load time | <10ms (JSON parse) | <50ms | <200ms |
-| Memory | ~50KB (Patcher + Box objects) | ~500KB | ~2MB |
-| Analysis | Instant | <100ms graph traversal | <500ms |
-| Validation | <10ms | <50ms | <200ms |
-| Save time | <10ms (JSON serialize) | <50ms | <200ms |
-
-None of these are concerning. The largest existing patch (minitaur at 498KB JSON) loads in well under 100ms. Python's json module handles this scale trivially.
-
-The real scalability question is **agent context window**: a 1000-box patch serialized to Python method calls is enormous. Agents should operate via the analyzer's summaries, not by reading the entire .maxpat as context. The analyzer exists to give agents a compact understanding of the patch without needing to see every box.
-
----
-
-## Risk Assessment
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|-----------|
-| Round-trip fidelity failures | HIGH (first attempt) | HIGH (foundation breaks) | Phase 1 is entirely about this; fix before proceeding |
-| Key ordering in JSON output | MEDIUM | MEDIUM (cosmetic diffs confuse git) | Use OrderedDict or sorted keys matching MAX's order |
-| Agent prompt changes needed | HIGH | LOW (prompt engineering, not code) | Update skill files incrementally during Phase 5 |
-| Test suite disruption | MEDIUM | MEDIUM | Phase 6 cleanup is explicit; don't remove until commands work |
-| Unknown .maxpat edge cases | HIGH | LOW per case | Defensive loading (Pattern 2); log warnings, never crash |
-| Performance on large patches | LOW | LOW | Python JSON handling is adequate up to 10MB+ files |
-
----
+5. **Layout last** because it's the most subjective and least testable component. The capability review recommends deferring presentation layout intelligence until more real devices are built. The crude grid fallback works for now; M4L-aware layout benefits from learning from actual usage patterns.
 
 ## Sources
 
-- Direct codebase analysis: `src/maxpat/patcher.py` (1134 lines, from_dict at L1012)
-- Direct codebase analysis: `src/maxpat/hooks.py` (269 lines, write_patch/validate_file)
-- Direct codebase analysis: `src/maxpat/incremental.py` (476 lines, merge_and_write)
-- Direct codebase analysis: `src/maxpat/validation.py` (669 lines, 4-layer pipeline)
-- Direct codebase analysis: `src/maxpat/layout.py` (970 lines, apply_layout)
-- Direct codebase analysis: `.claude/commands/max-*.md` (10 command files)
-- Direct codebase analysis: `patches/kicksynth/generated/build_kicksynth.py` (553 lines, typical generate.py)
-- Confidence: HIGH -- all findings based on reading the actual code, no external sources needed
+All findings from direct codebase analysis + .amxd format reverse-engineering:
+- `src/maxpat/critics/__init__.py` -- RNBO auto-detection pattern (the pattern M4L critic will follow)
+- `src/maxpat/critics/rnbo_critic.py` -- Critic module structure template
+- `src/maxpat/project.py` -- Project creation lifecycle
+- `src/maxpat/patcher.py` -- Box/Patcher data model, props dict, parameter_enable handling, extra_attrs mechanism
+- `src/maxpat/layout.py` -- Presentation layout function (lines 1057-1083)
+- `src/maxpat/analysis.py` -- Domain classification, SECTION_SIGNATURES
+- `src/maxpat/defaults.py` -- DEFAULT_PATCHER_PROPS showing openinpresentation/devicewidth already present
+- `.claude/skills/max-router/references/dispatch-rules.md` -- Keyword routing pattern
+- `.planning/quick/260405-lne-review-m4l-device-creation-capabilities-/M4L-CAPABILITY-REVIEW.md` -- Gap analysis
+- `patches/kicksynth/generated/kicksynth-m4l.maxpat` -- Real M4L device proof point
+- `patches/kicksynth/generated/kicksynth-m4l.amxd` -- Reverse-engineered binary format (32-byte header + JSON)
