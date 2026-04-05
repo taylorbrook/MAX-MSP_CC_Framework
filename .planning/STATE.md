@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260401-lpk-PLAN.md
-last_updated: "2026-04-01T22:27:05.551Z"
+stopped_at: Completed quick-260405-aot-PLAN.md
+last_updated: "2026-04-05T15:02:01.712Z"
 last_activity: "2026-04-01 - Completed quick task 260401-lpk: Clean overrides.json, remove user abstractions, separate metadata-only"
 progress:
   total_phases: 12
@@ -68,6 +68,7 @@ Progress: [██████████] 100%
 | Phase quick-260331-w95 P01 | 3min | 2 tasks | 3 files |
 | Phase quick-260401-j8z P01 | 2min | 1 tasks | 2 files |
 | Phase quick-260401-l3t P01 | 1min | 2 tasks | 3 files |
+| Phase quick-260405-aot P01 | 6min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -153,6 +154,9 @@ Recent decisions for v2.0:
 - [Phase quick-260401-l3t]: 5 non-object override entries removed (!, 1, 2, >p, ?) -- patch metadata artifacts
 - [Phase quick-260401-lak]: maxclass=newobj for all 21 objects; I/O data from overrides.json _domain_other
 - [Phase quick-260401-lpk]: verified-objects.json is tracking-only, not loaded by ObjectDatabase
+- [Phase quick-260405-aot]: live.scope~ added to UI_SIZES (was in UI_MAXCLASSES but missing fixed dimensions)
+- [Phase quick-260405-aot]: Obstacle routing uses dog-leg pattern with corridor-center vs obstacle-center side selection
+- [Phase quick-260405-aot]: suggest_subpatchers is analysis-only: returns suggestions without modifying the patcher
 
 ### Pending Todos
 
@@ -213,6 +217,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-01T22:43:17Z
-Stopped at: Completed quick-260401-lpk-PLAN.md
+Last session: 2026-04-05T15:01:44.850Z
+Stopped at: Completed quick-260405-aot-PLAN.md
 Resume file: None
