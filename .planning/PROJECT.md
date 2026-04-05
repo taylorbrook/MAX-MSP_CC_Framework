@@ -34,17 +34,20 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 
 ### Active
 
-- [ ] Patcher library refactored to read-write editor — load, parse, edit, and write .maxpat files with .maxpat as single source of truth
-- [ ] Direct .maxpat editing replaces Python generation pipeline — no more generate.py intermediary
-- [ ] All agents and skills work directly with .maxpat files — read patch, understand structure, make surgical edits
-- [ ] /max-onboard command for analyzing and understanding existing .maxpat files from any source
-- [ ] Existing project patches cleaned up — Python generation scripts and manifests removed, patches standalone
-- [ ] Validation and hooks updated to work with direct .maxpat editing workflow
+- [ ] M4L device scaffold auto-generates plugin~/plugout~, live.thisdevice, parameter_enable boilerplate for audio_effect/instrument/midi_effect device types
+- [ ] M4L-aware router dispatch — M4L keywords trigger device-aware agent routing with M4L-specific instructions
+- [ ] M4L critic module validates device completeness, gain~/plugout~ rule, parameter_enable, and device type consistency
+- [ ] Presentation mode layout intelligence — M4L-optimized control grouping and positioning beyond crude grid
+- [ ] Missing M4L objects (live.adsrui, live.adsr~, live.scope~) and relationship entries added to database
+- [ ] M4L rules codified in CLAUDE.md and all relevant SKILL.md files
+- [ ] Device type detection identifies audio_effect/instrument/midi_effect from plugin~/plugout~/MIDI patterns
+- [ ] M4L end-to-end test coverage for device creation workflow
 
 ### Future
 
 - [ ] Template library for common MAX patterns (synthesis, sequencing, effects, control, Jitter)
-- [ ] MAX for Live integration (Live API, device types, parameter mapping)
+- [ ] .amxd export pipeline (pending feasibility research)
+- [ ] M4L parameter metadata (automation ranges, parameter types) in object DB
 - [ ] Deep Jitter support (specialized agents, validation, templates for video/GL)
 - [ ] Intelligent object selection — context-aware recommendations based on task
 - [ ] Patch-from-description natural language interface
@@ -65,16 +68,19 @@ Tech stack: Python (generation + validation), JSON (object DB + .maxpat), C++ (M
 Object database: 2,015 objects across 8 domains (Max, MSP, Jitter, MC, Gen, M4L, RNBO, Packages).
 Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-scope memory.
 
-## Current Milestone: v2.0 Direct .maxpat Editing
+## Current Milestone: v3.0 M4L Device Creation
 
-**Goal:** Replace the Python generation pipeline with direct .maxpat reading and editing, making the .maxpat file the single source of truth and enabling true back-and-forth between Claude and manual MAX editing.
+**Goal:** First-class Max for Live device authoring — from project creation through validated output, with M4L-aware scaffolding, routing, critics, and presentation layout.
 
 **Target features:**
-- Patcher library refactored from write-only generator to read-write editor
-- All agents/skills/hooks work directly with .maxpat files instead of Python generation scripts
-- /max-onboard command for analyzing and understanding existing patches from any source
-- Existing project patches cleaned up — generation scripts and manifests removed
-- Validation pipeline adapted for direct editing workflow
+- M4L device scaffold with plugin~/plugout~, live.thisdevice, parameter_enable boilerplate
+- M4L-aware router dispatch and agent instructions
+- M4L critic module (device completeness, gain~/plugout~ rule, parameter validation)
+- Presentation mode layout intelligence for M4L devices
+- Missing M4L objects and relationships added to database
+- M4L rules codified in CLAUDE.md and SKILL.md files
+- Device type detection (audio_effect / instrument / MIDI effect)
+- M4L end-to-end test coverage
 
 ## Key Decisions
 
@@ -103,4 +109,4 @@ Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-
 | .maxpat as single source of truth | Python generation creates two competing sources of truth; user edits get lost on regeneration | — Pending |
 
 ---
-*Last updated: 2026-03-15 after v2.0 milestone start*
+*Last updated: 2026-04-05 after v3.0 milestone start*
