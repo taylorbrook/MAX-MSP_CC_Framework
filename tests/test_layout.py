@@ -735,6 +735,100 @@ class TestLayoutOptions:
 # ---------------------------------------------------------------------------
 
 
+class TestObstacleAvoidance:
+    """Test obstacle-aware cord routing in midpoint generation."""
+
+    def test_cord_avoids_intermediate_object(self):
+        """Cord from row 0 to row 2 routes around row 1 obstacle."""
+        p = Patcher()
+        # Row 0: source at top-left
+        src = p.add_box("sig~")
+        src.patching_rect = [50.0, 50.0, 44.0, 22.0]
+        src.numinlets = 1
+        src.numoutlets = 1
+        # Row 1: obstacle in the middle of the cord's path
+        obstacle = p.add_box("*~", ["0.5"])
+        obstacle.patching_rect = [45.0, 120.0, 60.0, 22.0]
+        obstacle.numinlets = 2
+        obstacle.numoutlets = 1
+        # Row 2: destination below obstacle, offset horizontally to trigger midpoints
+        dst = p.add_box("dac~")
+        dst.patching_rect = [100.0, 200.0, 45.0, 45.0]
+        dst.numinlets = 2
+        dst.numoutlets = 0
+
+        p.add_connection(src, 0, dst, 0)
+
+        from src.maxpat.layout import _generate_midpoints
+        _generate_midpoints(p)
+
+        line = p.lines[0]
+        assert line.midpoints is not None, "Expected midpoints to route around obstacle"
+        # Verify midpoints don't pass through obstacle bounding box
+        obs_x = obstacle.patching_rect[0]
+        obs_y = obstacle.patching_rect[1]
+        obs_w = obstacle.patching_rect[2]
+        obs_h = obstacle.patching_rect[3]
+        # Check each midpoint segment doesn't intersect obstacle
+        for i in range(0, len(line.midpoints), 2):
+            mx = line.midpoints[i]
+            my = line.midpoints[i + 1]
+            inside_x = obs_x - 5.0 <= mx <= obs_x + obs_w + 5.0
+            inside_y = obs_y - 5.0 <= my <= obs_y + obs_h + 5.0
+            assert not (inside_x and inside_y), (
+                f"Midpoint ({mx}, {my}) is inside obstacle bounding box"
+            )
+
+    def test_no_obstacle_unchanged(self):
+        """Cord with no obstacle keeps simple L-shape midpoints."""
+        p = Patcher()
+        src = p.add_box("sig~")
+        src.patching_rect = [50.0, 50.0, 44.0, 22.0]
+        src.numinlets = 1
+        src.numoutlets = 1
+        dst = p.add_box("svf~")
+        dst.patching_rect = [200.0, 150.0, 44.0, 22.0]
+        dst.numinlets = 3
+        dst.numoutlets = 4
+
+        p.add_connection(src, 0, dst, 0)
+
+        from src.maxpat.layout import _generate_midpoints
+        _generate_midpoints(p)
+
+        line = p.lines[0]
+        # Should have simple L-shape (4 midpoint values = 2 midpoints)
+        assert line.midpoints is not None
+        assert len(line.midpoints) == 4
+
+    def test_vertical_cord_avoids_offset_obstacle(self):
+        """Near-vertical cord routes around slightly offset obstacle."""
+        p = Patcher()
+        src = p.add_box("sig~")
+        src.patching_rect = [100.0, 50.0, 44.0, 22.0]
+        src.numinlets = 1
+        src.numoutlets = 1
+        # Obstacle slightly overlapping the vertical corridor
+        obstacle = p.add_box("*~", ["0.5"])
+        obstacle.patching_rect = [95.0, 130.0, 60.0, 22.0]
+        obstacle.numinlets = 2
+        obstacle.numoutlets = 1
+        dst = p.add_box("dac~")
+        dst.patching_rect = [100.0, 220.0, 45.0, 45.0]
+        dst.numinlets = 2
+        dst.numoutlets = 0
+
+        p.add_connection(src, 0, dst, 0)
+
+        from src.maxpat.layout import _generate_midpoints
+        _generate_midpoints(p)
+
+        line = p.lines[0]
+        # Should get midpoints to route around obstacle
+        assert line.midpoints is not None
+        assert len(line.midpoints) >= 4
+
+
 class TestCommentPlacement:
     """Test that comments with target_id are placed near their target."""
 
