@@ -1081,3 +1081,132 @@ def _apply_presentation_layout(boxes: list[Box]) -> None:
         px = grid_x_start + col * (w + grid_h_spacing)
         py = grid_y_start + row * (h + grid_v_spacing)
         box.presentation_rect = [px, py, w, h]
+
+
+# ---------------------------------------------------------------------------
+# Subpatcher grouping heuristic (analytical, does not modify patcher)
+# ---------------------------------------------------------------------------
+
+# I/O objects that should stay at the top level of the patcher
+_IO_OBJECT_NAMES = frozenset({
+    "ezdac~", "ezadc~", "dac~", "adc~",
+    "inlet", "outlet",
+})
+
+
+def suggest_subpatchers(
+    patcher: Patcher,
+    min_group_size: int = 3,
+    max_external_connections: int = 3,
+) -> list[dict]:
+    """Identify connected subgraphs suitable for extraction into subpatchers.
+
+    Analyzes the patcher's connection graph to find groups of non-UI objects
+    that are internally well-connected but have few external connections --
+    good candidates for encapsulation into named subpatchers.
+
+    This is a SUGGESTION function -- it does not modify the patcher. Agents
+    call it to decide whether to group objects.
+
+    Args:
+        patcher: The Patcher instance to analyze.
+        min_group_size: Minimum number of boxes in a candidate group.
+        max_external_connections: Maximum total external connections allowed.
+
+    Returns:
+        List of candidate dicts with keys:
+        - boxes: list[str] of box IDs in the group
+        - name: suggested subpatcher name based on section signatures
+        - external_ins: number of incoming connections from outside the group
+        - external_outs: number of outgoing connections to outside the group
+    """
+    from src.maxpat.analysis import SECTION_SIGNATURES, _SECTION_NAME_PRIORITY
+
+    if not patcher.boxes or not patcher.lines:
+        return []
+
+    # Build box lookup and exclude UI/IO objects
+    box_map = {b.id: b for b in patcher.boxes}
+    excluded_ids: set[str] = set()
+    for box in patcher.boxes:
+        if box.name in _UI_CONTROL_NAMES or box.name in _IO_OBJECT_NAMES:
+            excluded_ids.add(box.id)
+        elif is_ui_object(box.name) and box.name not in _COMPANION_NAMES:
+            excluded_ids.add(box.id)
+
+    eligible_ids = {b.id for b in patcher.boxes if b.id not in excluded_ids}
+
+    # Build undirected adjacency among eligible boxes only
+    undirected: dict[str, set[str]] = defaultdict(set)
+    for line in patcher.lines:
+        src, dst = line.source_id, line.dest_id
+        if src in eligible_ids and dst in eligible_ids:
+            undirected[src].add(dst)
+            undirected[dst].add(src)
+
+    # Find connected subgraphs via BFS
+    visited: set[str] = set()
+    subgraphs: list[list[str]] = []
+
+    for box_id in eligible_ids:
+        if box_id in visited:
+            continue
+        if box_id not in undirected:
+            visited.add(box_id)
+            continue
+
+        component: list[str] = []
+        queue = deque([box_id])
+        while queue:
+            node = queue.popleft()
+            if node in visited:
+                continue
+            visited.add(node)
+            component.append(node)
+            for neighbor in undirected.get(node, set()):
+                if neighbor not in visited:
+                    queue.append(neighbor)
+
+        if len(component) >= min_group_size:
+            subgraphs.append(component)
+
+    # Evaluate each subgraph for external connections
+    candidates: list[dict] = []
+    for group_ids in subgraphs:
+        group_set = set(group_ids)
+        ext_ins = 0
+        ext_outs = 0
+
+        for line in patcher.lines:
+            src_in = line.source_id in group_set
+            dst_in = line.dest_id in group_set
+            if src_in and not dst_in:
+                ext_outs += 1
+            elif dst_in and not src_in:
+                ext_ins += 1
+
+        total_ext = ext_ins + ext_outs
+        if total_ext > max_external_connections:
+            continue
+
+        # Auto-name using SECTION_SIGNATURES with priority
+        best_name = "processing"
+        best_priority = -1
+        for bid in group_ids:
+            box = box_map.get(bid)
+            if box:
+                label = SECTION_SIGNATURES.get(box.name)
+                if label:
+                    priority = _SECTION_NAME_PRIORITY.get(label, 50)
+                    if priority > best_priority:
+                        best_priority = priority
+                        best_name = label.lower().replace(" ", "_").replace("/", "_")
+
+        candidates.append({
+            "boxes": group_ids,
+            "name": best_name,
+            "external_ins": ext_ins,
+            "external_outs": ext_outs,
+        })
+
+    return candidates

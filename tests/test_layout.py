@@ -855,19 +855,25 @@ class TestSubpatcherSuggestion:
         assert len(result) >= 1, "Expected at least 1 subpatcher candidate"
 
     def test_tightly_connected_no_candidates(self):
-        """Tightly connected patch returns empty list."""
+        """Patch with too many external connections returns empty list."""
         from src.maxpat.layout import suggest_subpatchers
         p = Patcher()
-        # All objects connected to each other via a hub
-        hub = p.add_box("*~", ["0.5"])
-        for i in range(5):
-            obj = p.add_box("sig~")
-            p.add_connection(obj, 0, hub, 0)
-            p.add_connection(hub, 0, obj, 0)
+        # 3 processing objects form a group
+        a = p.add_box("svf~")
+        b = p.add_box("biquad~")
+        c = p.add_box("lores~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+        # Many external connections from excluded I/O objects
+        dac = p.add_box("ezdac~")
+        adc = p.add_box("ezadc~")
+        p.add_connection(adc, 0, a, 0)
+        p.add_connection(adc, 1, b, 0)
+        p.add_connection(c, 0, dac, 0)
+        p.add_connection(b, 0, dac, 1)
 
+        # max_external=1 but group has 4 external connections -> no candidates
         result = suggest_subpatchers(p, min_group_size=3, max_external_connections=1)
-        # Everything is in one big cluster with many external connections
-        # or too small after UI exclusion -- should be empty
         assert result == []
 
     def test_candidates_respect_max_external(self):
