@@ -259,3 +259,61 @@ class TestOverrideFloorBehavior:
             assert override_w == 94.0
             assert w == 94.0
         assert h == DEFAULT_HEIGHT
+
+
+class TestLiveObjectSizes:
+    """Tests for live.* object sizing and maxclass completeness."""
+
+    # All live.* objects from m4l/objects.json
+    ALL_LIVE_OBJECTS = [
+        "live.arrows", "live.banks", "live.button", "live.colors",
+        "live.comment", "live.dial", "live.drop", "live.gain~",
+        "live.grid", "live.line", "live.map", "live.menu",
+        "live.meter~", "live.miditool.in", "live.miditool.out",
+        "live.modulate~", "live.numbox", "live.object", "live.observer",
+        "live.param~", "live.path", "live.push", "live.remote~",
+        "live.routing", "live.slider", "live.step", "live.tab",
+        "live.text", "live.thisdevice", "live.toggle",
+    ]
+
+    # Visual widgets with fixed sizes
+    VISUAL_WIDGETS = {
+        "live.arrows": (54.0, 15.0),
+        "live.banks": (315.0, 45.0),
+        "live.colors": (168.0, 45.0),
+        "live.comment": (150.0, 18.0),
+        "live.drop": (140.0, 50.0),
+        "live.grid": (240.0, 165.0),
+        "live.line": (100.0, 35.0),
+        "live.step": (240.0, 60.0),
+        "live.scope~": (131.0, 131.0),
+    }
+
+    # Non-visual utility objects (None = text-sized)
+    NON_VISUAL = [
+        "live.observer", "live.thisdevice", "live.path", "live.object",
+        "live.map", "live.routing", "live.push", "live.miditool.in",
+        "live.miditool.out", "live.remote~", "live.param~", "live.modulate~",
+    ]
+
+    def test_all_live_in_ui_maxclasses(self):
+        """All live.* objects from m4l DB are in UI_MAXCLASSES."""
+        from src.maxpat.maxclass_map import UI_MAXCLASSES
+        for obj_name in self.ALL_LIVE_OBJECTS:
+            assert obj_name in UI_MAXCLASSES, f"{obj_name} missing from UI_MAXCLASSES"
+
+    def test_visual_widgets_have_fixed_sizes(self):
+        """Visual live.* widgets return correct (w,h) from calculate_box_size."""
+        for obj_name, expected_size in self.VISUAL_WIDGETS.items():
+            w, h = calculate_box_size("", obj_name)
+            assert (w, h) == expected_size, (
+                f"{obj_name}: expected {expected_size}, got ({w}, {h})"
+            )
+
+    def test_non_visual_have_none_in_ui_sizes(self):
+        """Non-visual utility live.* objects have None in UI_SIZES."""
+        for obj_name in self.NON_VISUAL:
+            assert obj_name in UI_SIZES, f"{obj_name} missing from UI_SIZES"
+            assert UI_SIZES[obj_name] is None, (
+                f"{obj_name} should be None in UI_SIZES, got {UI_SIZES[obj_name]}"
+            )

@@ -651,6 +651,46 @@ class TestZOrder:
         assert p.boxes.index(flonum) < p.boxes.index(dial)
 
 
+class TestContrastText:
+    """Tests for contrast_text_color() function."""
+
+    def test_light_background_gets_dark_text(self):
+        """Light background (luminance > 0.5) returns dark text color."""
+        from src.maxpat.aesthetics import contrast_text_color
+        result = contrast_text_color([0.94, 0.94, 0.96, 1.0])
+        # Dark text
+        assert result == [0.20, 0.20, 0.25, 1.0]
+
+    def test_dark_background_gets_light_text(self):
+        """Dark background (luminance < 0.5) returns light text color."""
+        from src.maxpat.aesthetics import contrast_text_color
+        result = contrast_text_color([0.333, 0.333, 0.333, 1.0])
+        # Light text
+        assert result == [0.80, 0.80, 0.82, 1.0]
+
+    def test_none_returns_default_annotation(self):
+        """None background returns default annotation_color."""
+        from src.maxpat.aesthetics import contrast_text_color
+        result = contrast_text_color(None)
+        assert result == list(AESTHETIC_PALETTE["annotation_color"])
+
+    def test_returns_list(self):
+        """Return type is always a list of 4 floats."""
+        from src.maxpat.aesthetics import contrast_text_color
+        for bg in [[0.0, 0.0, 0.0, 1.0], [1.0, 1.0, 1.0, 1.0], None]:
+            result = contrast_text_color(bg)
+            assert isinstance(result, list)
+            assert len(result) == 4
+
+    def test_midpoint_luminance(self):
+        """Background at exactly 0.5 luminance returns light text (<=0.5 branch)."""
+        from src.maxpat.aesthetics import contrast_text_color
+        # L = 0.299*R + 0.587*G + 0.114*B = 0.5
+        # Use R=G=B=0.5 => L = 0.5
+        result = contrast_text_color([0.5, 0.5, 0.5, 1.0])
+        assert result == [0.80, 0.80, 0.82, 1.0]
+
+
 class TestComplexity:
     """Tests for is_complex_patch() heuristic."""
 
