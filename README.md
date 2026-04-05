@@ -18,7 +18,7 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 - **Node for Max & js scripting** — generate JavaScript for both V8 `js` objects and Node.js `node.script`
 - **C++ external development** — scaffold, generate, and build Min-DevKit externals with help patches
 - **Help patch audit pipeline** — offline tool that parses 973 .maxhelp files to extract ground truth object metadata and automatically correct database entries
-- **Professional patch aesthetics** — styled section comments, background panels, patcher colors, grid-snapped layout, and inlet-aligned cables for polished output
+- **Professional patch aesthetics** — styled section comments, background panels, contrast-aware text colors, obstacle-avoiding cord routing, grid-snapped layout, inlet-aligned cables, and intelligent subpatcher grouping suggestions for polished output
 - **Project lifecycle management** — structured workflow from ideation through build and verification with automatic version tracking
 
 ## Prerequisites
@@ -179,7 +179,7 @@ MAX-MSP_CC_Framework/
 │   ├── skills/             # Agent definitions (9 specialist agents)
 │   └── commands/           # Slash command definitions
 ├── src/maxpat/             # Python editing, validation, and analysis engine (~13,200 LOC)
-├── tests/                  # Test suite (1,276 tests across 33 files)
+├── tests/                  # Test suite (1,312 tests across 33 files)
 ├── patches/                # Your projects live here
 │   ├── .active-project.json
 │   └── {project-name}/
@@ -221,6 +221,7 @@ Planning artifacts live in `.planning/`:
 | **v2.2 Gen~ Patterns & Hooks** | 2026-03-22 | — | — | Gen~ pattern library (19 .gendsp), finalize_patch hook, fsync reliability, gen-eq project |
 | **v2.3 Reliability & Validation** | 2026-03-31 | — | — | Z-order API, auto-commit safety hooks, MSP outlet type verification (202 objects), patcher decomposition (GraphMixin/AnalysisMixin), integration tests on real patches, trigger enforcement hardening, round-trip text bug fix, external .gendsp validation, maxclass validation |
 | **v2.3.1 DB Cleanup & Patches** | 2026-04-01 | — | — | Object DB cleanup (21 missing objects added, alias normalization, overrides cleanup), tape-wobble patch, rhythmic-sampler iteration, scala-synth v1.0 |
+| **v2.4.0 Visual Organization** | 2026-04-05 | — | — | Obstacle-aware cord routing (dog-leg around intermediate objects), 21 live.* objects added to UI system, contrast-adaptive text colors, subpatcher grouping heuristic |
 
 ## License
 
