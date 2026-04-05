@@ -829,6 +829,123 @@ class TestObstacleAvoidance:
         assert len(line.midpoints) >= 4
 
 
+class TestSubpatcherSuggestion:
+    """Test suggest_subpatchers() grouping heuristic."""
+
+    def test_two_loose_clusters_found(self):
+        """Two loosely connected clusters are returned as candidates."""
+        from src.maxpat.layout import suggest_subpatchers
+        p = Patcher()
+        # Cluster 1: 3 connected processing objects
+        a1 = p.add_box("svf~")
+        a2 = p.add_box("biquad~")
+        a3 = p.add_box("lores~")
+        p.add_connection(a1, 0, a2, 0)
+        p.add_connection(a2, 0, a3, 0)
+        # Cluster 2: 3 connected processing objects
+        b1 = p.add_box("tapin~", ["1000"])
+        b2 = p.add_box("tapout~", ["250"])
+        b3 = p.add_box("*~", ["0.3"])
+        p.add_connection(b1, 0, b2, 0)
+        p.add_connection(b2, 0, b3, 0)
+        # One bridge between clusters (1 external connection each)
+        p.add_connection(a3, 0, b1, 0)
+
+        result = suggest_subpatchers(p, min_group_size=3, max_external_connections=3)
+        assert len(result) >= 1, "Expected at least 1 subpatcher candidate"
+
+    def test_tightly_connected_no_candidates(self):
+        """Tightly connected patch returns empty list."""
+        from src.maxpat.layout import suggest_subpatchers
+        p = Patcher()
+        # All objects connected to each other via a hub
+        hub = p.add_box("*~", ["0.5"])
+        for i in range(5):
+            obj = p.add_box("sig~")
+            p.add_connection(obj, 0, hub, 0)
+            p.add_connection(hub, 0, obj, 0)
+
+        result = suggest_subpatchers(p, min_group_size=3, max_external_connections=1)
+        # Everything is in one big cluster with many external connections
+        # or too small after UI exclusion -- should be empty
+        assert result == []
+
+    def test_candidates_respect_max_external(self):
+        """Each candidate has <= max_external_connections."""
+        from src.maxpat.layout import suggest_subpatchers
+        p = Patcher()
+        # Internal cluster
+        a = p.add_box("svf~")
+        b = p.add_box("biquad~")
+        c = p.add_box("lores~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+        # Single external connection
+        ext = p.add_box("cycle~", ["440"])
+        p.add_connection(ext, 0, a, 0)
+
+        result = suggest_subpatchers(p, min_group_size=3, max_external_connections=3)
+        for candidate in result:
+            total_ext = candidate["external_ins"] + candidate["external_outs"]
+            assert total_ext <= 3
+
+    def test_candidates_respect_min_size(self):
+        """Each candidate has >= min_group_size boxes."""
+        from src.maxpat.layout import suggest_subpatchers
+        p = Patcher()
+        a = p.add_box("svf~")
+        b = p.add_box("biquad~")
+        c = p.add_box("lores~")
+        d = p.add_box("onepole~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+        p.add_connection(c, 0, d, 0)
+
+        result = suggest_subpatchers(p, min_group_size=3, max_external_connections=5)
+        for candidate in result:
+            assert len(candidate["boxes"]) >= 3
+
+    def test_ui_objects_excluded(self):
+        """UI objects (toggle, slider, etc.) are excluded from candidates."""
+        from src.maxpat.layout import suggest_subpatchers
+        p = Patcher()
+        tog = p.add_box("toggle")
+        sl = p.add_box("slider")
+        dial = p.add_box("dial")
+        osc = p.add_box("cycle~", ["440"])
+        p.add_connection(tog, 0, osc, 0)
+        p.add_connection(sl, 0, osc, 0)
+        p.add_connection(dial, 0, osc, 0)
+
+        result = suggest_subpatchers(p, min_group_size=3, max_external_connections=5)
+        for candidate in result:
+            for box_id in candidate["boxes"]:
+                # Verify no UI control objects in candidates
+                box = next(b for b in p.boxes if b.id == box_id)
+                assert box.name not in ("toggle", "slider", "dial")
+
+    def test_return_structure(self):
+        """Returned candidates have correct dict keys."""
+        from src.maxpat.layout import suggest_subpatchers
+        p = Patcher()
+        a = p.add_box("svf~")
+        b = p.add_box("biquad~")
+        c = p.add_box("lores~")
+        p.add_connection(a, 0, b, 0)
+        p.add_connection(b, 0, c, 0)
+
+        result = suggest_subpatchers(p, min_group_size=3, max_external_connections=5)
+        for candidate in result:
+            assert "boxes" in candidate
+            assert "name" in candidate
+            assert "external_ins" in candidate
+            assert "external_outs" in candidate
+            assert isinstance(candidate["boxes"], list)
+            assert isinstance(candidate["name"], str)
+            assert isinstance(candidate["external_ins"], int)
+            assert isinstance(candidate["external_outs"], int)
+
+
 class TestCommentPlacement:
     """Test that comments with target_id are placed near their target."""
 
