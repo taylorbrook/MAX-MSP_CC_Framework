@@ -210,7 +210,7 @@ None.
 | 260401-lak | Add missing objects to domain files identified in audit report | 2026-04-01 | bfed726 | Verified | [260401-lak-add-missing-objects-to-domain-files-iden](./quick/260401-lak-add-missing-objects-to-domain-files-iden/) |
 | 260401-lpk | Clean overrides.json: remove user abstractions, separate metadata-only entries | 2026-04-01 | 2c0f9e4 | | [260401-lpk-clean-overrides-json-remove-user-abstrac](./quick/260401-lpk-clean-overrides-json-remove-user-abstrac/) |
 | 260405-aot | Improve visual organization: cord routing, GUI completeness, text contrast, subpatchers | 2026-04-05 | f086d65 | Verified | [260405-aot-improve-visual-organization-cord-routing](./quick/260405-aot-improve-visual-organization-cord-routing/) |
-| 260405-lne | Review M4L device creation capabilities | 2026-04-05 | 48cb80d | | [260405-lne-review-m4l-device-creation-capabilities-](./quick/260405-lne-review-m4l-device-creation-capabilities-/) |
+| 260405-lne | Review M4L device creation capabilities | 2026-04-05 | 48cb80d | Verified | [260405-lne-review-m4l-device-creation-capabilities-](./quick/260405-lne-review-m4l-device-creation-capabilities-/) |
 
 ### Blockers/Concerns
 
