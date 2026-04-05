@@ -750,22 +750,126 @@ def _inlet_x(box: Box, inlet_idx: int) -> float:
     return x + _IO_MARGIN + inlet_idx * spacing
 
 
+_COLLISION_PAD = 5.0  # Padding around obstacle bounding boxes
+
+
+def _boxes_between(
+    patcher: Patcher,
+    src_box: Box,
+    dst_box: Box,
+    src_ox: float,
+    dst_ix: float,
+) -> list[Box]:
+    """Find boxes whose bounding box overlaps the cord's corridor.
+
+    A box is an obstacle if:
+    - Its vertical span overlaps the cord's vertical range (src_oy to dst_iy)
+    - Its horizontal span overlaps the cord's horizontal corridor
+    - It is not the source or destination box
+    """
+    src_oy = src_box.patching_rect[1] + src_box.patching_rect[3]
+    dst_iy = dst_box.patching_rect[1]
+
+    # Vertical range of the cord (top to bottom)
+    cord_top = min(src_oy, dst_iy)
+    cord_bottom = max(src_oy, dst_iy)
+
+    # Horizontal corridor of the cord
+    cord_left = min(src_ox, dst_ix) - _COLLISION_PAD
+    cord_right = max(src_ox, dst_ix) + _COLLISION_PAD
+
+    obstacles: list[Box] = []
+    for box in patcher.boxes:
+        if box.id == src_box.id or box.id == dst_box.id:
+            continue
+        bx, by, bw, bh = box.patching_rect
+        # Expand box by collision pad
+        box_left = bx - _COLLISION_PAD
+        box_right = bx + bw + _COLLISION_PAD
+        box_top = by - _COLLISION_PAD
+        box_bottom = by + bh + _COLLISION_PAD
+
+        # Check overlap in both dimensions
+        h_overlap = box_left < cord_right and box_right > cord_left
+        v_overlap = box_top < cord_bottom and box_bottom > cord_top
+
+        if h_overlap and v_overlap:
+            obstacles.append(box)
+
+    return obstacles
+
+
+def _route_around_obstacles(
+    src_ox: float,
+    src_oy: float,
+    dst_ix: float,
+    dst_iy: float,
+    obstacles: list[Box],
+) -> list[float]:
+    """Generate midpoints that route around obstacles.
+
+    For each obstacle, determines whether to go left or right, then creates
+    a dog-leg path around it.
+    """
+    # Sort obstacles by y position (top to bottom)
+    obstacles.sort(key=lambda b: b.patching_rect[1])
+
+    # Corridor center for left/right decision
+    corridor_cx = (src_ox + dst_ix) * 0.5
+
+    midpoints: list[float] = []
+    current_x = src_ox
+    current_y = src_oy
+
+    for obs in obstacles:
+        bx, by, bw, bh = obs.patching_rect
+        obs_cx = bx + bw * 0.5
+
+        # Choose side: route away from obstacle center
+        if obs_cx >= corridor_cx:
+            # Obstacle is right of center -> route left
+            route_x = bx - _COLLISION_PAD - 3.0
+        else:
+            # Obstacle is left of center -> route right
+            route_x = bx + bw + _COLLISION_PAD + 3.0
+
+        pre_y = by - _COLLISION_PAD - 3.0
+        post_y = by + bh + _COLLISION_PAD + 3.0
+
+        # Dog-leg: go to pre-obstacle y, jog to route_x, pass obstacle, jog back
+        midpoints.extend([current_x, pre_y])
+        midpoints.extend([route_x, pre_y])
+        midpoints.extend([route_x, post_y])
+
+        current_x = route_x
+        current_y = post_y
+
+    # Final segment back toward destination
+    midpoints.extend([dst_ix, current_y])
+
+    return midpoints
+
+
 def _generate_midpoints(patcher: Patcher) -> None:
     """Add midpoints to patchlines for clean segmented cable routing.
 
-    Handles three routing patterns:
+    Handles four routing patterns:
 
     1. **Horizontal offset** (forward or backward): source and destination have
        significant horizontal distance. Creates a 2-midpoint horizontal segment
-       at the vertical midpoint between source and dest.
+       at the vertical midpoint between source and dest, OR obstacle-avoiding
+       dog-leg routing when intermediate objects block the path.
 
     2. **Upward bus routing**: source is far below destination (e.g., loadbang
        init cables). Routes cables along the right edge of the patcher in a
        vertical bus, then turns left to the target. Parallel bus cables are
        spaced apart to avoid visual overlap.
 
-    3. **Near-vertical**: cables with minimal horizontal offset get no midpoints
-       (clean straight lines).
+    3. **Near-vertical with obstacle**: vertical cables that pass through an
+       intermediate object get a horizontal jog around the obstacle.
+
+    4. **Near-vertical clean**: cables with minimal horizontal offset and no
+       obstacles get no midpoints (clean straight lines).
 
     Only adds midpoints to lines that don't already have them.
     """
@@ -803,7 +907,9 @@ def _generate_midpoints(patcher: Patcher) -> None:
         elif hdist > HORIZONTAL_THRESHOLD and vdist > UPWARD_BUS_THRESHOLD:
             upward_lines.append((line, src_ox, src_oy, dst_ix, dst_iy))
         else:
-            normal_lines.append((line, src_ox, src_oy, dst_ix, dst_iy))
+            normal_lines.append(
+                (line, src_box, dst_box, src_ox, src_oy, dst_ix, dst_iy),
+            )
 
     # Route companion cables with tight local loop
     for line, src_box, dst_box, src_ox, src_oy, dst_ix, dst_iy in companion_lines:
@@ -813,10 +919,18 @@ def _generate_midpoints(patcher: Patcher) -> None:
     if upward_lines:
         _route_bus_cables(upward_lines, patcher.boxes)
 
-    # Route normal cables with horizontal midpoints
-    for line, src_ox, src_oy, dst_ix, dst_iy in normal_lines:
+    # Route normal cables with obstacle detection
+    for line, src_box, dst_box, src_ox, src_oy, dst_ix, dst_iy in normal_lines:
         hdist = abs(src_ox - dst_ix)
-        if hdist > HORIZONTAL_THRESHOLD:
+        obstacles = _boxes_between(patcher, src_box, dst_box, src_ox, dst_ix)
+
+        if obstacles:
+            # Route around obstacles
+            line.midpoints = _route_around_obstacles(
+                src_ox, src_oy, dst_ix, dst_iy, obstacles,
+            )
+        elif hdist > HORIZONTAL_THRESHOLD:
+            # Simple L-shape at vertical midpoint (no obstacles)
             mid_y = (src_oy + dst_iy) * 0.5
             line.midpoints = [src_ox, mid_y, dst_ix, mid_y]
 
