@@ -315,7 +315,7 @@ Canonical refs: `src/maxpat/critics/rnbo_critic.py` (template), `src/maxpat/crit
 
 Plans:
 - [ ] 22-01-PLAN.md -- TDD M4L critic (gain~/plugout~, completeness, parameter uniqueness, quality, auto-detection wiring)
-- [ ] 22-02-PLAN.md -- TDD write_amxd() export with binary header per device type
+- [x] 22-02-PLAN.md -- TDD write_amxd() export with binary header per device type
 
 ### Phase 23: Polish
 **Goal**: Parameter metadata intelligence and UX polish — auto-derived naming, Push banks, and info text make devices feel professionally authored
@@ -381,7 +381,7 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 19. Tech Debt Cleanup | v2.0 | 1/1 | Complete | 2026-03-17 |
 | 20. Foundation (M4L) | v3.0 | 2/2 | Complete | 2026-04-06 |
 | 21. Scaffold and Routing | v3.0 | 2/2 | Complete    | 2026-04-06 |
-| 22. Validation and Export | v3.0 | 0/2 | Planned | - |
+| 22. Validation and Export | v3.0 | 1/2 | In Progress|  |
 | 23. Polish | v3.0 | 0/0 | Planned | - |
 | 24. Layout | v3.0 | 0/0 | Planned | - |
 | 25. Testing | v3.0 | 0/0 | Planned | - |

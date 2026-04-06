@@ -45,7 +45,7 @@ Requirements for M4L device creation milestone. Each maps to roadmap phases.
 
 ### Export
 
-- [ ] **EXPORT-01**: write_amxd() produces valid .amxd files with correct binary header per device type
+- [x] **EXPORT-01**: write_amxd() produces valid .amxd files with correct binary header per device type
 
 ### Polish
 
@@ -106,7 +106,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VALID-01 | Phase 22 | Pending |
 | VALID-02 | Phase 22 | Pending |
 | VALID-03 | Phase 22 | Pending |
-| EXPORT-01 | Phase 22 | Pending |
+| EXPORT-01 | Phase 22 | Complete |
 | POLISH-01 | Phase 23 | Pending |
 | POLISH-02 | Phase 23 | Pending |
 | POLISH-03 | Phase 23 | Pending |
