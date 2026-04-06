@@ -97,6 +97,16 @@ gen_box.outlettype = ["signal"]  # Use ["signal", "signal"] for stereo
 - Feedback loops: tapin~/tapout~ pair (MSP) or History operator (gen~)
 - gen~ exempted from feedback loop warnings (History is the intended mechanism)
 
+### M4L Signal Chain Rules
+
+When generating audio for M4L devices (audio_effect or instrument):
+
+- **plugin~/plugout~ are the audio I/O:** audio_effect uses plugin~ (stereo input) and plugout~ (stereo output). Instruments use plugout~ only (no plugin~). Both use maxclass="newobj" -- the Box constructor handles this correctly via add_box("plugin~").
+- **NEVER connect gain~ to plugout~:** Ableton's channel strip handles device volume. The M4L critic (Phase 22) will flag gain~->plugout~ as an error. Use gain~ for internal level control between processing stages only.
+- **Stereo convention:** plugin~ has 2 outlets (L/R), plugout~ has 2 inlets (L/R). Always connect both channels for stereo audio effects.
+- **No dac~ in M4L:** M4L devices use plugout~ instead of dac~. Do not add dac~ to M4L device patches.
+- **Signal chain pattern:** plugin~ -> [processing] -> plugout~ (audio_effect) or [synthesis] -> plugout~ (instrument).
+
 ### Control-Rate Fan-Out in DSP Patches
 - **MUST** use `trigger` (t) for any control-rate outlet that fans out to 2+ destinations
 - Signal-rate (~) fan-out is exempt -- MSP processes all signal connections simultaneously
