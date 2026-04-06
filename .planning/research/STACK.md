@@ -1,397 +1,355 @@
-# Technology Stack: M4L Device Creation
+# Technology Stack: v2.0 Direct .maxpat Reading & Surgical Editing
 
-**Project:** MaxSystem v3.0 -- M4L Device Creation
-**Researched:** 2026-04-05
-**Scope:** Stack additions/changes for M4L device authoring features ONLY
+**Project:** MaxSystem v2.0 -- Patcher Library Refactor to Read-Write Editor
+**Researched:** 2026-03-15
+**Overall Confidence:** HIGH
 
-## Existing Stack (NOT changing)
+## Executive Summary
 
-Python framework, 2,015-object knowledge base, Patcher API, 4-layer validation, 6 specialist agents. All validated.
+The v2.0 milestone replaces the Python generation pipeline with direct .maxpat reading and surgical editing. The core question: what stack additions are needed to load arbitrary .maxpat files, understand their structure, and make precise edits while preserving everything else?
 
-## New Stack Additions
+**Answer: Almost nothing.** The existing codebase already has 90% of what is needed. `Patcher.from_dict()` already loads .maxpat JSON into Box/Patchline objects. The .maxpat format is plain JSON with a stable, well-understood structure. The layout engine already builds topology graphs from boxes and lines. What is missing is (1) richer querying of loaded patches, (2) targeted mutation operations that work on Box/Patchline objects without full regeneration, and (3) a write-back path that serializes only changes.
 
-### No new libraries or dependencies needed.
+**No new external dependencies are needed.** Python's stdlib `json` module is sufficient for all .maxpat reading and writing. The existing `Patcher`, `Box`, `Patchline` data model already maps 1:1 to the .maxpat JSON structure. Adding external libraries (py2max, deepdiff, jsonpatch, networkx) would create parallel systems competing with the existing well-tested codebase.
 
-The M4L device creation feature is entirely achievable with the existing Python + JSON stack. All additions are data structures, constants, and format knowledge -- not new technology.
+## Recommended Stack: No New Libraries
 
-## M4L Parameter System
+### What Already Works
 
-### Data Structures Required
+| Capability | Current Module | Status | v2.0 Change Needed |
+|------------|---------------|--------|---------------------|
+| Load .maxpat JSON | `Patcher.from_dict()` | Working | Minor fixes (see below) |
+| Serialize to .maxpat JSON | `Patcher.to_dict()` | Working | None |
+| Box data model | `patcher.py` Box class | Working | Add mutation methods |
+| Connection data model | `patcher.py` Patchline class | Working | Add query methods |
+| Object database lookup | `db_lookup.py` ObjectDatabase | Working | None |
+| Graph topology | `layout.py` `_build_graph()` | Working | Extract to shared utility |
+| Validation pipeline | `validation.py` | Working | Works on dicts already |
+| File I/O | `hooks.py` | Working | Add `load_patch()` entry point |
 
-The M4L parameter system is the core new domain knowledge. Every `live.*` UI object requires `saved_attribute_attributes.valueof` in its box dict for Ableton automation.
+### What Needs to Be Added (All In-House)
 
-**Ground truth structure** (from kicksynth-m4l.maxpat, verified working in Live):
+| New Capability | Module | Purpose | Complexity |
+|----------------|--------|---------|------------|
+| Patch query API | New: `query.py` | Find boxes by name/type/connection, traverse topology | Medium |
+| Surgical edit operations | Extend: `patcher.py` | `remove_box()`, `replace_box()`, `reroute()` | Low |
+| Diff-aware write-back | Extend: `patcher.py` / `hooks.py` | Write only changed sections, preserve unknown keys | Medium |
+| `from_dict()` hardening | Fix: `patcher.py` | Handle all edge cases in real-world .maxpat files | Low |
+| `/max-onboard` analysis | New: `analysis.py` | Summarize patch structure, identify patterns | Medium |
 
-```json
-{
-    "box": {
-        "maxclass": "live.dial",
-        "id": "obj-17",
-        "numinlets": 1,
-        "numoutlets": 2,
-        "outlettype": ["", "float"],
-        "parameter_enable": 1,
-        "presentation": 1,
-        "presentation_rect": [50.0, 30.0, 50.0, 48.0],
-        "hidden": 1,
-        "patching_rect": [300.0, 400.0, 50.0, 48.0],
-        "saved_attribute_attributes": {
-            "valueof": {
-                "parameter_longname": "Pitch Start",
-                "parameter_shortname": "P.Start",
-                "parameter_type": 0,
-                "parameter_unitstyle": 3,
-                "parameter_mmin": 50.0,
-                "parameter_mmax": 1000.0,
-                "parameter_initial": [300.0],
-                "parameter_initial_enable": 1,
-                "parameter_modmode": 0
-            }
-        },
-        "varname": "d_pitch_start"
-    }
-}
-```
+## Detailed Stack Decisions
 
-### parameter_type Enum (HIGH confidence -- verified from ground truth + official docs)
+### Decision 1: Do NOT Adopt py2max
 
-| Value | Type | Notes |
-|-------|------|-------|
-| 0 | Float | Continuous values. M4L restricts Int to 0-255, so use Float + unitstyle=Int for wider integer ranges. |
-| 1 | Int | Integer values, 0-255 range in M4L. |
-| 2 | Enum | Enumerated list. Requires `parameter_enum` array. `parameter_mmax` = count - 1. |
-| 3 | Blob | Non-automatable. Preset storage only. Rare. |
+**Recommendation:** Do not use py2max. Continue with the existing custom Patcher model.
 
-### parameter_unitstyle Enum (HIGH confidence -- verified against ground truth)
+| Factor | py2max | Existing Patcher Model |
+|--------|--------|----------------------|
+| Round-trip support | Yes | Yes (via `from_dict()` / `to_dict()`) |
+| Object validation | None (any string accepted) | Full (2,015-object DB, Rule #1 enforcement) |
+| Variable I/O computation | None | Full (formula-based from overrides) |
+| Connection validation | None | 4-layer pipeline with auto-fix |
+| Layout engine | None (manual positioning) | Full topological layout with midpoints |
+| Test coverage | 418 tests | 624 tests |
+| Integration with agents | Would need adapter layer | Native |
+| Naming convention | `_tilde` suffix (`cycle_tilde`) | Native names (`cycle~`) |
 
-Cross-referenced official docs listing order with kicksynth-m4l parameter values:
-- ustyle=1 used for generic float ratios (0.01-1.0) = Float
-- ustyle=2 used for decay times = Time (ms)
-- ustyle=3 used for frequencies = Hertz (Hz)
-- ustyle=4 used for gain values = deciBel (dB)
-- ustyle=9 used for live.tab with enum items = Custom
+py2max solves a different problem: generating .maxpat files from scratch without any object knowledge. This project already has a more capable version of that with validation, layout, and domain-specific intelligence. Adopting py2max would mean maintaining two parallel object models, writing adapter code, and losing validation. The existing `from_dict()` already does what py2max's `from_file()` does.
 
-| Value | Unit Style | Display | Verified |
-|-------|------------|---------|----------|
-| 0 | Int | "42" | from docs order |
-| 1 | Float | "0.50" | ground truth (Body Level, Amp Curve) |
-| 2 | Time | "100 ms" | ground truth (Pitch Decay, Amp Decay) |
-| 3 | Hertz | "440 Hz" | ground truth (Pitch Start, Noise Tone) |
-| 4 | deciBel | "-6 dB" | ground truth (EQ Low Gain, Limiter Ceiling) |
-| 5 | Percentage | "50%" | from docs order |
-| 6 | Pan | "L/R" | from docs order |
-| 7 | Semitones | "3 st" | from docs order |
-| 8 | MIDI | "C4" | from docs order |
-| 9 | Custom | user-defined | ground truth (live.tab enum display) |
-| 10 | Native | default float | from docs order |
+**Confidence:** HIGH -- based on direct code comparison of both systems.
 
-### parameter_modmode Enum (MEDIUM confidence -- 0=None verified, rest from docs)
+### Decision 2: Do NOT Add jsonpatch/deepdiff for JSON Diff/Patch
 
-| Value | Mode | Use Case |
-|-------|------|----------|
-| 0 | None | No clip modulation. Default. |
-| 1 | Unipolar | 0-100% modulation range. |
-| 2 | Bipolar | -50% to +50%. Recommended for Float params. |
-| 3 | Additive | Like bipolar but clips at limits. |
-| 4 | Absolute | Fixed unit-based modulation. Recommended for Int params. |
+**Recommendation:** Do not use RFC 6902 JSON Patch or deepdiff. Work at the Patcher/Box/Patchline level, not the raw JSON level.
 
-### parameter_visibility (MEDIUM confidence -- from docs, not in ground truth)
+**Why not jsonpatch (v1.33):**
+- RFC 6902 patches operate on JSON paths like `/patcher/boxes/3/box/patching_rect/0`. These paths are brittle -- they break when array indices shift (adding/removing boxes changes every index after it).
+- .maxpat boxes are identified by their `id` field, not array position. Any useful diff/patch system needs to work by box ID, not JSON path.
+- The overhead of converting to/from JSON patch format adds complexity without benefit when we already have the Box/Patchline object model.
 
-| Value | Mode | Notes |
-|-------|------|-------|
-| 0 | Automated and Stored | Default. Appears in Live automation lanes. |
-| 1 | Stored Only | Saved in presets, not automatable. Multi-value supported. |
-| 2 | Hidden | Internal use only. Not exposed to Live. |
+**Why not deepdiff (v8.6.1):**
+- DeepDiff excels at comparing arbitrary Python objects. But .maxpat patches have known structure -- we do not need generic deep comparison.
+- DeepDiff's Delta feature has had security vulnerabilities (CVE-2025-58367 in deserialization). While patched in 8.6.1, this is unnecessary attack surface for a tool that reads/writes files to disk.
+- Comparing two Patcher objects at the Box/Patchline level is trivial with the existing model: boxes have IDs, connections have (source_id, outlet, dest_id, inlet) tuples. No library needed.
 
-### Complete valueof Attribute Set
+**The right approach:** Operate at the semantic level (Box/Patchline), not the syntactic level (JSON paths). When writing back, serialize the full Patcher to dict and write it. The `.maxpat` files are typically 2-10K lines -- full serialization is instantaneous.
 
-| Attribute | Type | Required | Notes |
-|-----------|------|----------|-------|
-| `parameter_longname` | string | YES | Unique within device. Used for automation lane names. |
-| `parameter_shortname` | string | YES | Display label on the control. Keep concise. |
-| `parameter_type` | int | YES | See enum above. |
-| `parameter_unitstyle` | int | YES | See enum above. |
-| `parameter_mmin` | float | NO | Minimum value. Default 0.0. |
-| `parameter_mmax` | float | NO | Maximum value. Default 1.0 (Float) or 127.0 (Int). |
-| `parameter_initial` | [float] | NO | Initial value as single-element array. |
-| `parameter_initial_enable` | int | NO | 1 to enable initial value recall. |
-| `parameter_modmode` | int | NO | See enum above. Default 0. |
-| `parameter_enum` | [string] | Enum only | List of enum item names. Required when type=2. |
-| `parameter_steps` | int | NO | Number of discrete steps. |
-| `parameter_exponent` | float | NO | Exponential scaling factor. |
-| `parameter_modrange` | [float] | NO | Modulation range bounds. |
-| `parameter_invisible` | int | NO | 1 to hide from automation. |
+**Confidence:** HIGH -- jsonpatch's array-index-based paths are fundamentally wrong for ID-based structures.
 
-### Patcher-Level Parameters Dict
+### Decision 3: Do NOT Add NetworkX for Graph Analysis
 
-M4L patches include a `parameters` key at patcher level mapping box IDs to parameter metadata:
+**Recommendation:** Do not add NetworkX. Extend the existing graph utilities in `layout.py`.
 
-```json
-{
-    "patcher": {
-        "parameters": {
-            "obj-17": ["Pitch Start", "P.Start", 0],
-            "obj-19": ["Pitch End", "P.End", 0],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": ["-", "-", "-", "-", "-", "-", "-", "-"],
-                    "buttons": ["-", "-", "-", "-", "-", "-", "-", "-"]
-                }
-            },
-            "inherited_shortname": 1
-        }
-    }
-}
-```
+The existing layout engine already implements:
+- Adjacency list construction from boxes and lines (`_build_graph()`)
+- Connected component detection via BFS (`_find_components()`)
+- Topological sort via Kahn's algorithm (`_topological_levels()`)
+- Reverse adjacency for parent lookups
 
-Format: `"obj-ID": ["longname", "shortname", initial_value]`
+These are the exact graph operations needed for patch analysis: "what connects to this object?", "what are the signal chains?", "what are the independent sub-circuits?". NetworkX (v3.6.1, requires Python 3.11+) would be a 10MB dependency to replace ~100 lines of existing, tested code.
 
-The `parameterbanks` sub-object configures Push controller bank mappings (8 params + 8 buttons per bank).
+**What to do instead:** Extract `_build_graph()`, `_find_components()`, and `_topological_levels()` from `layout.py` into a shared `topology.py` module that both the layout engine and the new query/analysis modules can use.
 
-### How This Maps to Existing API
+**Confidence:** HIGH -- the existing implementations cover the needed algorithms.
 
-All parameter metadata flows through the existing `Box.extra_attrs` mechanism:
+### Decision 4: Harden `Patcher.from_dict()` (Existing Code, No New Deps)
+
+**Recommendation:** Fix edge cases in the existing `from_dict()` classmethod.
+
+Current `from_dict()` (patcher.py lines 1012-1122) already handles:
+- Top-level patcher props extraction
+- Box reconstruction with maxclass, text, I/O counts
+- Name derivation from text field or maxclass
+- Patchline reconstruction from source/destination arrays
+- Recursive inner patcher loading
+- ID counter recovery for new box generation
+
+**Edge cases to fix for real-world .maxpat files:**
+
+1. **bpatcher attributes not restored.** Current `from_dict()` sets `_bpatcher_attrs = None` for all loaded boxes. Real .maxpat bpatchers have `args`, `name`, `bgmode`, `offset`, etc. that need to be captured into `_bpatcher_attrs` for faithful round-trip.
+
+2. **Unknown maxclasses.** MAX 9 introduces new maxclasses not in our UI set (e.g., `live.scope~`, `filtergraph~`, custom externals). `from_dict()` should not crash on unknown maxclasses -- it should load them permissively and flag unknowns.
+
+3. **Non-standard ID formats.** User-created or MAX-generated patches sometimes use IDs like `obj-1073741824` or UUID-style IDs. The ID counter recovery should handle these gracefully.
+
+4. **Deeply nested subpatchers.** Poly~ objects can contain multiple levels of nesting. The recursive `from_dict()` call already handles this, but the `_is_subpatcher` flag should be set correctly for inner patchers.
+
+5. **Extra patcher-level keys.** Real .maxpat files from MAX have keys not in `DEFAULT_PATCHER_PROPS` (e.g., `editing_bgcolor`, `locked_bgcolor`, `parameter_enable`, custom styles). These are already preserved via the `props` copy in `from_dict()` -- verify this works for all cases.
+
+**Complexity:** Low. These are targeted fixes to existing code, not new architecture.
+
+**Confidence:** HIGH -- verified by examining both `from_dict()` source and real .maxpat files.
+
+### Decision 5: Build Query API as New Module (`query.py`)
+
+**Recommendation:** Create `src/maxpat/query.py` for finding and traversing loaded patches.
+
+This is the main new capability needed. Once a patch is loaded via `from_dict()`, agents need to ask questions like:
+- "Find all `cycle~` objects in this patch"
+- "What connects to the input of this `*~` object?"
+- "Trace the signal chain from this `noise~` to `dac~`"
+- "What subpatchers exist and what do they contain?"
+- "Which objects have no connections?"
+
+**Proposed API (no external deps, pure Python):**
 
 ```python
-dial = p.add_box("live.dial")
-dial.extra_attrs["parameter_enable"] = 1
-dial.extra_attrs["varname"] = "d_pitch_start"
-dial.extra_attrs["saved_attribute_attributes"] = {
-    "valueof": {
-        "parameter_longname": "Pitch Start",
-        "parameter_shortname": "P.Start",
-        "parameter_type": 0,
-        "parameter_unitstyle": 3,
-        "parameter_mmin": 50.0,
-        "parameter_mmax": 1000.0,
-        "parameter_initial": [300.0],
-        "parameter_initial_enable": 1,
-        "parameter_modmode": 0,
-    }
-}
+class PatchQuery:
+    """Query interface for loaded Patcher objects."""
+
+    def __init__(self, patcher: Patcher): ...
+
+    # Find boxes
+    def find_by_name(self, name: str) -> list[Box]: ...
+    def find_by_maxclass(self, maxclass: str) -> list[Box]: ...
+    def find_by_text(self, pattern: str) -> list[Box]: ...  # regex
+    def find_by_id(self, box_id: str) -> Box | None: ...
+
+    # Topology queries (uses extracted graph utils)
+    def upstream(self, box: Box) -> list[Box]: ...  # all ancestors
+    def downstream(self, box: Box) -> list[Box]: ...  # all descendants
+    def direct_inputs(self, box: Box) -> list[tuple[Box, int, int]]: ...  # (src, outlet, inlet)
+    def direct_outputs(self, box: Box) -> list[tuple[Box, int, int]]: ...  # (dst, outlet, inlet)
+    def signal_chain(self, start: Box) -> list[Box]: ...  # follow signal connections
+    def components(self) -> list[list[Box]]: ...  # independent groups
+
+    # Subpatcher traversal
+    def subpatchers(self) -> list[tuple[Box, Patcher]]: ...
+    def walk_all_boxes(self) -> Iterator[tuple[Box, Patcher]]: ...  # deep recursive
+
+    # Summary/analysis
+    def summary(self) -> dict: ...  # counts, object types, signal chains
 ```
 
-**Recommendation:** Add a convenience method rather than a new Box attribute:
+**Why a separate module:** Query logic is conceptually distinct from mutation (patcher.py) and layout (layout.py). Keeping it separate enables clean testing and avoids bloating the core Patcher class.
+
+**Complexity:** Medium. Graph traversal reuses existing topology code. The novel work is the query interface design.
+
+**Confidence:** HIGH -- pattern proven by both py2max and the existing layout engine.
+
+### Decision 6: Add Surgical Edit Operations to Patcher
+
+**Recommendation:** Add mutation methods directly to the `Patcher` class.
+
+Current Patcher has: `add_box()`, `add_connection()`, `add_subpatcher()`, etc. (creation only).
+
+**New methods needed for editing:**
 
 ```python
-dial = p.add_box("live.dial")
-p.configure_m4l_parameter(dial,
-    longname="Pitch Start",
-    shortname="P.Start",
-    param_type=ParamType.FLOAT,
-    unitstyle=UnitStyle.HERTZ,
-    min_val=50.0,
-    max_val=1000.0,
-    initial=300.0,
-)
+class Patcher:
+    # Removal
+    def remove_box(self, box: Box | str) -> list[Patchline]: ...
+        # Remove box and all its connections, return removed connections
+
+    def remove_connection(self, src: Box, outlet: int, dst: Box, inlet: int) -> bool: ...
+
+    # Replacement
+    def replace_box(self, old: Box | str, new_name: str, new_args: list[str] | None = None) -> Box: ...
+        # Replace object, attempt to preserve connections where I/O counts match
+
+    # Reconnection
+    def insert_between(self, upstream: Box, downstream: Box, new_box: Box,
+                        src_outlet: int = 0, dst_inlet: int = 0) -> None: ...
+        # Insert a box in the middle of an existing connection
+
+    def reroute(self, old_src: Box, old_outlet: int, new_src: Box, new_outlet: int) -> None: ...
+        # Move all connections from one outlet to another
 ```
 
-This keeps Box clean and puts M4L-specific logic in a dedicated helper.
+**Why on Patcher, not a separate class:** These operations need to modify both `self.boxes` and `self.lines` atomically. Putting them on Patcher keeps the mutation boundary clear.
 
-## .amxd File Format
+**Complexity:** Low. Remove/replace are straightforward list operations with connection cleanup.
 
-### Structure (HIGH confidence -- reverse-engineered from ground truth)
+**Confidence:** HIGH -- standard mutable collection operations.
 
-The .amxd format is a trivial binary envelope around the same JSON as a .maxpat:
+### Decision 7: Write-Back Strategy -- Full Serialization, Not Incremental
 
+**Recommendation:** Write the full .maxpat JSON on every save. Do NOT attempt incremental JSON patching.
+
+**Rationale:**
+1. .maxpat files are small (typical: 2K-10K lines, max observed: ~6K lines for kicksynth). Full JSON serialization + write takes <10ms.
+2. The current `to_dict()` is already a correct full serializer.
+3. `from_dict()` already preserves all keys it does not recognize into `extra_attrs` and `props`, so unknown keys survive the round-trip.
+4. Incremental JSON patching (only writing changed bytes) is complex, error-prone, and saves negligible time.
+5. MAX does not watch .maxpat files for changes -- there is no file-locking or live-reload concern.
+
+**The write pipeline becomes:**
 ```
-Offset  Size  Content
-0       4     Magic: "ampf" (ASCII)
-4       4     Version: uint32le, always 4
-8       4     Device type: "iiii"=instrument, "aaaa"=audio_effect, "mmmm"=midi_effect
-12      4     Meta tag: "meta" (ASCII)
-16      4     Meta size: uint32le (always 4 in observed files)
-20      4     Meta data: 4 zero bytes
-24      4     Ptch tag: "ptch" (ASCII)
-28      4     Ptch size: uint32le (byte count of JSON that follows)
-32      N     Patch JSON: identical to .maxpat content, UTF-8 encoded
-```
-
-**Total header: 32 bytes.** JSON payload is byte-for-byte identical to the .maxpat file.
-
-### Verified against kicksynth-m4l.amxd
-
-- File size: 103,996 bytes (32 header + 103,964 JSON)
-- Device type: `b"iiii"` = instrument (correct -- kicksynth has MIDI input via notein)
-- JSON content: identical keys to the .maxpat file
-- Loaded successfully in Ableton Live
-
-### Implementation (trivial -- ~15 lines)
-
-```python
-import struct
-
-DEVICE_TYPE_CODES = {
-    "audio_effect": b"aaaa",
-    "instrument": b"iiii",
-    "midi_effect": b"mmmm",
-}
-
-def write_amxd(json_bytes: bytes, device_type: str, path: str) -> None:
-    """Write a .amxd file from .maxpat JSON bytes."""
-    header = b"ampf"
-    header += struct.pack("<I", 4)                          # version
-    header += DEVICE_TYPE_CODES[device_type]                # device type
-    header += b"meta"
-    header += struct.pack("<I", 4)                          # meta size
-    header += b"\x00\x00\x00\x00"                          # meta data
-    header += b"ptch"
-    header += struct.pack("<I", len(json_bytes))            # patch size
-    with open(path, "wb") as f:
-        f.write(header + json_bytes)
+Load:  json.loads(path.read_text()) -> Patcher.from_dict(data, db)
+Edit:  patcher.remove_box(...) / patcher.add_box(...) / etc.
+Save:  json.dumps(patcher.to_dict(), indent=2) -> path.write_text()
 ```
 
-**Verdict:** .amxd export is straightforward. NOT a future/deferred item -- can ship in v3.0.
+This replaces the entire `incremental.py` / `Manifest` system with a simpler approach: the .maxpat file IS the source of truth. No sidecar manifests needed.
 
-### Checksum Concern
+**Confidence:** HIGH -- performance verified (6K-line kicksynth.maxpat parses in <5ms).
 
-Forum posts mention a "checksum" in the .amxd header. Our analysis shows the meta block is just 4 zero bytes with no checksum. This may be a forum misunderstanding, or checksums may only appear in frozen devices created by Live's freeze process. Since we generate unfrozen devices, the simple format above is correct.
+## What to Remove from the Stack
 
-## Presentation Mode .maxpat Keys
+| Module | Status | Rationale |
+|--------|--------|-----------|
+| `incremental.py` | **Remove** | Manifest-based merge is replaced by load-edit-save cycle. No more sidecar `.manifest.json` files. |
+| `Manifest` class | **Remove** | The .maxpat file is the single source of truth. No need to track generator-owned vs user-owned objects. |
+| `merge_and_write()` | **Remove** | Replaced by `Patcher.from_dict()` -> edit -> `to_dict()` -> write. |
+| `generate.py` scripts per patch | **Remove** | Agents edit .maxpat directly. No Python generation scripts. |
+| `versions.json` per patch | **Remove** | Version tracking via git, not custom JSON sidecar. |
 
-### Patcher-Level Keys (already supported)
+## Existing Stack: Unchanged
 
-| Key | Value for M4L | Current Default | Change Needed |
-|-----|---------------|-----------------|---------------|
-| `openinpresentation` | 1 | 0 | Set to 1 for M4L devices |
-| `devicewidth` | e.g. 614.0 | 0.0 | Set to device width in pixels |
+| Technology | Version | Status |
+|------------|---------|--------|
+| Python | 3.14 | Keep -- runtime for all modules |
+| pytest | 9.0.2 | Keep -- test framework |
+| `json` (stdlib) | 3.14 | Keep -- .maxpat parsing and serialization |
+| `pathlib` (stdlib) | 3.14 | Keep -- file I/O |
+| `copy` (stdlib) | 3.14 | Keep -- deep copy for dict manipulation |
+| `collections` (stdlib) | 3.14 | Keep -- defaultdict, deque in graph algorithms |
+| `re` (stdlib) | 3.14 | Keep -- pattern matching in validation |
+| `patcher.py` (Box/Patchline/Patcher) | v1.1 | Keep + extend -- add mutation methods |
+| `layout.py` | v1.1 | Keep -- extract topology utils to shared module |
+| `validation.py` | v1.1 | Keep -- already works on raw dicts |
+| `db_lookup.py` (ObjectDatabase) | v1.1 | Keep -- object lookup for agent validation |
+| `maxclass_map.py` | v1.1 | Keep -- UI maxclass resolution |
+| `sizing.py` | v1.1 | Keep -- box size calculation |
+| `aesthetics.py` | v1.1 | Keep -- styling helpers |
+| `defaults.py` | v1.1 | Keep -- constants and LayoutOptions |
+| `hooks.py` | v1.1 | Keep + extend -- add `load_patch()` entry point |
+| `codegen.py` | v1.1 | Keep -- GenExpr/js/N4M code generation |
+| `code_validation.py` | v1.1 | Keep -- GenExpr/js syntax validation |
 
-Both already in `DEFAULT_PATCHER_PROPS` and directly accessible via `patcher.props["openinpresentation"] = 1`.
+## New Module Map
 
-### Box-Level Keys (already supported)
-
-| Key | Type | Notes |
-|-----|------|-------|
-| `presentation` | int (0/1) | Already a Box attribute: `box.presentation = True` |
-| `presentation_rect` | [x, y, w, h] | Already a Box attribute: `box.presentation_rect = [...]` |
-| `hidden` | int (0/1) | For tab-based visibility. Set via `extra_attrs["hidden"] = 1`. |
-
-### Presentation Layout Guidelines (from Ableton M4L Production Guidelines)
-
-| Guideline | Detail |
-|-----------|--------|
-| Whole pixels | Use integer coordinates for presentation_rect to avoid blurry rendering on non-retina |
-| Minimize width | Reference similar existing devices as benchmarks |
-| Dynamic colors | Use default live.* colors for theme compatibility |
-| Ableton Sans | Use Ableton Sans font for native look |
-| Tabbed UI | Reuse screen real estate with live.tab |
-| Device width | Set via devicewidth patcher prop |
-
-## What NOT to Add
-
-### Do NOT add per-object parameter metadata to DB
-`parameter_type`, `parameter_unitstyle` are per-instance, not per-class. A live.dial for frequency has unitstyle=3 (Hz); the same live.dial for gain has unitstyle=4 (dB). The object DB should NOT hardcode these.
-
-### Do NOT create a LiveBox subclass
-M4L boxes use the same Box class. Parameter metadata goes through `extra_attrs` and a convenience method. A subclass would fragment the API for no benefit.
-
-### Do NOT implement frozen device export
-Frozen .amxd files bundle all dependencies. This requires Live's internal freeze process. Our unfrozen .amxd export (32-byte header + JSON) is correct for development devices.
-
-### Do NOT add Push bank auto-configuration
-The `parameterbanks` structure is for Push controller mapping. Default to empty banks. Too device-specific to automate.
-
-### Do NOT add parameter validation against Live's limits
-Live accepts arbitrary parameter ranges. The 0-255 limit for Int type is a display limitation, not a hard constraint.
-
-## Python Constants to Add
-
-```python
-# src/maxpat/m4l_constants.py
-
-from enum import IntEnum
-
-class DeviceType:
-    AUDIO_EFFECT = "audio_effect"
-    INSTRUMENT = "instrument"
-    MIDI_EFFECT = "midi_effect"
-
-class ParamType(IntEnum):
-    FLOAT = 0
-    INT = 1
-    ENUM = 2
-    BLOB = 3
-
-class UnitStyle(IntEnum):
-    INT = 0
-    FLOAT = 1
-    TIME = 2        # ms
-    HERTZ = 3       # Hz
-    DECIBEL = 4     # dB
-    PERCENTAGE = 5  # %
-    PAN = 6         # L/R
-    SEMITONES = 7   # st
-    MIDI = 8        # note names
-    CUSTOM = 9      # user-defined
-    NATIVE = 10     # default float
-
-class ModMode(IntEnum):
-    NONE = 0
-    UNIPOLAR = 1
-    BIPOLAR = 2
-    ADDITIVE = 3
-    ABSOLUTE = 4
-
-class ParamVisibility(IntEnum):
-    AUTOMATED_AND_STORED = 0
-    STORED_ONLY = 1
-    HIDDEN = 2
-
-# .amxd binary header
-AMXD_MAGIC = b"ampf"
-AMXD_VERSION = 4
-AMXD_DEVICE_TYPES = {
-    DeviceType.AUDIO_EFFECT: b"aaaa",
-    DeviceType.INSTRUMENT: b"iiii",
-    DeviceType.MIDI_EFFECT: b"mmmm",
-}
-AMXD_META_TAG = b"meta"
-AMXD_PTCH_TAG = b"ptch"
-AMXD_META_DATA = b"\x00\x00\x00\x00"
-AMXD_HEADER_SIZE = 32
-
-# Default M4L patcher prop overrides
-M4L_PATCHER_DEFAULTS = {
-    "openinpresentation": 1,
-}
-
-# Device type detection patterns
-DEVICE_TYPE_SIGNALS = {
-    DeviceType.AUDIO_EFFECT: {
-        "requires": ["plugin~", "plugout~"],
-        "excludes": ["notein", "midiin"],
-    },
-    DeviceType.INSTRUMENT: {
-        "requires": ["plugout~"],
-        "optional": ["notein", "midiin", "plugin~"],
-        "has_midi_input": True,
-    },
-    DeviceType.MIDI_EFFECT: {
-        "requires": ["midiin", "midiout"],
-        "excludes": ["plugin~", "plugout~"],
-    },
-}
+```
+src/maxpat/
+  patcher.py        # Extended: add remove_box, replace_box, insert_between, reroute
+  query.py           # NEW: PatchQuery class for find/traverse/analyze
+  topology.py        # NEW: extracted from layout.py -- shared graph utilities
+  analysis.py        # NEW: patch summarization for /max-onboard
+  layout.py          # Modified: imports topology from topology.py
+  hooks.py           # Extended: add load_patch() entry point
+  validation.py      # Unchanged
+  db_lookup.py       # Unchanged
+  maxclass_map.py    # Unchanged
+  sizing.py          # Unchanged
+  aesthetics.py      # Unchanged
+  defaults.py        # Unchanged
+  codegen.py         # Unchanged
+  code_validation.py # Unchanged
+  incremental.py     # REMOVED (replaced by load-edit-save cycle)
 ```
 
-## Alternatives Considered
+## Integration Points
 
-| Category | Recommended | Alternative | Why Not |
-|----------|-------------|-------------|---------|
-| Parameter metadata | `extra_attrs` + convenience method | New Box attributes | Fragments API; parameters are M4L-specific |
-| Parameter metadata | `extra_attrs` + convenience method | New LiveBox subclass | Over-engineering; same Box handles all types |
-| .amxd export | Simple binary wrapper function | Use Live's freeze API | Freeze is for frozen devices; we make unfrozen dev devices |
-| Parameter enums | Python IntEnum constants | Dict lookups | IntEnum is type-safe, readable, debuggable |
-| M4L patcher defaults | Override `patcher.props` | New M4L Patcher subclass | Props dict is already the customization point |
+### Load Path (New)
+```
+hooks.py:load_patch(path)
+  -> json.loads(path.read_text())
+  -> Patcher.from_dict(data, db=ObjectDatabase())
+  -> Returns: Patcher instance with all boxes/lines/props populated
+```
+
+### Query Path (New)
+```
+query.py:PatchQuery(patcher)
+  -> topology.py:build_graph(patcher.boxes, patcher.lines)
+  -> Returns: query object with find/traverse/analyze methods
+```
+
+### Edit Path (Extended)
+```
+patcher.py:Patcher.remove_box(box)
+  -> Removes box from self.boxes
+  -> Removes all connections involving box from self.lines
+  -> Returns: removed connections (for undo)
+
+patcher.py:Patcher.replace_box(old, new_name, new_args)
+  -> Creates new Box with DB validation
+  -> Attempts to preserve compatible connections
+  -> Returns: new Box
+```
+
+### Save Path (Simplified)
+```
+hooks.py:save_patch(patcher, path)
+  -> patcher.to_dict()
+  -> json.dumps(result, indent=2)
+  -> path.write_text(json_str)
+  -> Optional: validate before write
+```
+
+### Agent Integration
+```
+Agent receives: path to .maxpat file
+Agent calls:    load_patch(path) -> patcher
+Agent queries:  PatchQuery(patcher).find_by_name("cycle~")
+Agent edits:    patcher.remove_box(old); patcher.add_box("saw~", ["440"])
+Agent saves:    save_patch(patcher, path)
+Agent validates: validate_patch(patcher)
+```
+
+## Installation
+
+```bash
+# No new packages to install. Zero new dependencies.
+# The entire v2.0 stack runs on Python 3.14 stdlib + existing codebase.
+```
 
 ## Sources
 
-- kicksynth-m4l.maxpat -- ground truth M4L device (framework-generated, working in Live)
-- kicksynth-m4l.amxd -- ground truth binary file (reverse-engineered format)
-- [Device Parameters in Max for Live](https://docs.cycling74.com/userguide/m4l/live_parameters/) -- parameter system overview
-- [Parameter Properties Reference (Max 5)](https://docs.cycling74.com/max5/refpages/m4l-ref/parameters.html) -- unitstyle/type listing
-- [Parameter Mode](https://docs.cycling74.com/userguide/parameter_mode/) -- parameter_enable, visibility
-- [M4L Production Guidelines](https://github.com/Ableton/maxdevtools/blob/main/m4l-production-guidelines/m4l-production-guidelines.md) -- Ableton's official device design guidelines
-- [Cycling '74 Forum: .amxd file format](https://cycling74.com/forums/max-for-live-device-file-format) -- community format analysis
-- [Cycling '74 Forum: amxd type conversion](https://cycling74.com/forums/amxd-midi-effect-to-audio-effect) -- device type bytes
+### Codebase Analysis (HIGH confidence)
+- `src/maxpat/patcher.py` -- Examined `from_dict()` (lines 1012-1122), `to_dict()`, Box class
+- `src/maxpat/layout.py` -- Examined `_build_graph()`, `_find_components()`, `_topological_levels()`
+- `src/maxpat/incremental.py` -- Examined full merge logic, manifest system
+- `src/maxpat/validation.py` -- Examined 4-layer pipeline, dict-based operation
+- `src/maxpat/hooks.py` -- Examined `write_patch()`, `validate_file()`
+- `src/maxpat/db_lookup.py` -- Examined ObjectDatabase, `lookup()`, `compute_io_counts()`
+- Real .maxpat files -- kicksynth.maxpat (5,950 lines), multiple patches examined
+
+### External Library Research (HIGH confidence)
+- [py2max on GitHub](https://github.com/shakfu/py2max) -- v0.2.x, pure Python, round-trip support but no object validation. Confirmed incompatible naming convention (`_tilde` suffix).
+- [jsonpatch on PyPI](https://pypi.org/project/jsonpatch/) -- v1.33, RFC 6902 implementation. Confirmed array-index-based paths are wrong for .maxpat's ID-based structure.
+- [python-json-patch docs](https://python-json-patch.readthedocs.io/en/latest/mod-jsonpatch.html) -- Full API reviewed: `make_patch()`, `JsonPatch.from_diff()`, `apply()`. Operations are add/remove/replace/copy/move/test.
+- [deepdiff on PyPI](https://pypi.org/project/deepdiff/) -- v8.6.1, generic deep comparison with Delta feature. CVE-2025-58367 security vulnerability in deserialization (patched in 8.6.1). Overkill for known-structure .maxpat comparison.
+- [jsonpointer docs](https://python-json-pointer.readthedocs.io/en/latest/tutorial.html) -- v3.0.0, RFC 6901 pointer resolution. Same array-index problem as jsonpatch.
+- [NetworkX on PyPI](https://pypi.org/project/networkx/) -- v3.6.1, requires Python 3.11+. 10MB dependency to replace ~100 lines of existing graph code.
+- [Cycling '74 .maxpat format discussion](https://cycling74.com/forums/specification-for-maxpat-json-format) -- No official spec exists. Format is reverse-engineered from examples.

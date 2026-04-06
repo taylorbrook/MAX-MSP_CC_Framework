@@ -38,7 +38,7 @@ _OSCILLATOR_NAMES = frozenset({
 _GAIN_NAMES = frozenset({"*~", "gain~"})
 
 # Terminal signal objects (signal chain ends here, not unterminated)
-_TERMINAL_NAMES = frozenset({"dac~", "ezdac~", "send~", "out~", "plugout~"})
+_TERMINAL_NAMES = frozenset({"dac~", "ezdac~", "send~", "out~"})
 
 # Objects that provide delay in a feedback loop
 _DELAY_NAMES = frozenset({"tapin~", "tapout~", "gen~"})

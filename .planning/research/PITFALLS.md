@@ -1,403 +1,301 @@
-# Domain Pitfalls: M4L Device Creation
+# Domain Pitfalls: v2.0 Direct .maxpat Editing
 
-**Domain:** Max for Live device authoring within existing patch generation framework
-**Researched:** 2026-04-05
-**Confidence:** HIGH for parameter system pitfalls (verified against kicksynth-m4l.maxpat ground truth + Cycling 74 docs + Ableton production guidelines), HIGH for validation/critic integration pitfalls (verified against framework source code), MEDIUM for presentation rendering differences (official docs + forum reports, no direct testing)
+**Domain:** Refactoring from Python generation pipeline to direct .maxpat reading/editing
+**Researched:** 2026-03-15
+**Confidence:** HIGH for round-trip data loss and ID scoping (verified against actual codebase and .maxpat files), HIGH for test migration (verified against 913 existing tests), MEDIUM for MAX-internal metadata handling (no official .maxpat spec exists)
 
 ## Critical Pitfalls
 
-Mistakes that cause devices to fail in Ableton, require structural rewrites, or silently break automation.
+Mistakes that cause rewrites, data loss, or major regressions.
 
-### Pitfall 1: Duplicate parameter_longname Crashes or Breaks Automation
+### Pitfall 1: Round-Trip Data Loss in from_dict/to_dict
 
-**What goes wrong:** Two or more live.* controls share the same `parameter_longname` value in their `saved_attribute_attributes.valueof` block. Ableton collects parameter longnames exactly once at device instantiation. Duplicate names cause Live and Max to desync, leading to crashes, broken automation lanes, or parameters that silently stop saving/restoring.
+**What goes wrong:** Loading a .maxpat with `Patcher.from_dict()` and writing it back with `to_dict()` silently drops attributes that MAX or the user added. Verified bugs in the current codebase:
 
-**Why it happens:** The Box creation path (`patcher.py` line 320) sets `parameter_enable: 0` on all UI objects by default. When an agent manually sets `parameter_enable: 1` via `extra_attrs`, it must also provide a unique `parameter_longname` inside `saved_attribute_attributes.valueof`. There is zero framework validation for longname uniqueness. If the agent copies a template and forgets to change the longname, or if a scaffold generates multiple dials from a loop with the same default name, the device will crash Live.
+1. **Patchline extra attributes lost.** `Patchline.to_dict()` only serializes `source`, `destination`, `order`, `hidden`, and `midpoints`. MAX adds `color` (per-cable coloring) and potentially other attributes to patchlines. These are silently dropped during round-trip. The `Patchline.__init__` has no `extra_attrs` mechanism.
 
-**Consequences:** Ableton crash on device load, or broken automation where two parameters fight for the same lane. Max auto-appends `[1]`, `[2]` suffixes to disambiguate, but these show up as duplicate entries in Live's automation dropdown. Cannot be fully fixed without editing the .maxpat JSON.
+2. **parameter_enable handled but conditionally re-emitted.** `from_dict()` lists `parameter_enable` in `_handled_keys`, stripping it from `extra_attrs`. But `Box.to_dict()` only emits `parameter_enable` for certain maxclass branches (UI objects that aren't `newobj`/`comment`/`message`). For edge cases where a newobj-based box has `parameter_enable`, it could be lost.
 
-**Prevention:**
-1. M4L critic must validate `parameter_longname` uniqueness across all boxes in the device (blocker-level)
-2. Scaffold must generate unique longnames from control labels, never reuse defaults
-3. Warn if any live.* object has `parameter_enable: 1` but no `saved_attribute_attributes.valueof.parameter_longname`
-4. Warn if any live.* object retains the MAX default name format (e.g., `"live.dial"`, `"live.dial[1]"`)
+3. **bpatcher attributes not reconstructed.** `from_dict()` doesn't set `box._bpatcher_attrs` for loaded bpatcher boxes. The bpatcher-specific keys (`args`, `bgmode`, `border`, `clickthrough`, `enablehscroll`, `enablevscroll`, `lockeddragscroll`, `offset`, `viewvisibility`, `name`) end up in `extra_attrs` instead of `_bpatcher_attrs`. This means `Box.to_dict()` emits them via `extra_attrs` rather than the dedicated `_bpatcher_attrs` path, which works but is structurally inconsistent and could cause issues if code checks `_bpatcher_attrs is not None`.
 
-**Detection:** Grep patch JSON for duplicate `parameter_longname` values. Check for live.* objects missing the `saved_attribute_attributes` block entirely.
+**Why it happens:** The current `from_dict()` was built as a minimal read path for `merge_and_write()`. It reconstructs enough structure to identify boxes by ID, but never aimed for lossless round-trip fidelity. The write path (`to_dict()`) was designed for generation, not for re-serializing loaded data.
 
-**Phase:** M4L critic (M4L-03) -- highest-priority critic check.
-
-**Confidence:** HIGH -- Cycling 74 forums document crashes; Ableton production guidelines explicitly require unique longnames.
-
----
-
-### Pitfall 2: Existing Validation Silently Ignores M4L Signal Chains
-
-**What goes wrong:** The validation pipeline (Layer 4) and DSP critic both check gain staging and unterminated chains, but they only recognize `dac~`/`ezdac~` as terminal objects. In M4L devices, `plugout~` IS the terminal. Result: every M4L signal chain gets flagged as "unterminated" (false positive), and gain staging checks never fire for M4L (false negative -- oscillator to plugout~ without attenuation passes unchecked).
-
-**Why it happens:** The `_TERMINAL_NAMES` sets are hardcoded:
-- `validation.py` line 41: `{"dac~", "ezdac~", "send~", "out~"}`
-- `dsp_critic.py` line 33: `{"dac~", "ezdac~"}`
-
-Nobody added `plugout~`. The gain staging BFS in `dsp_critic.py` line 235 only stops traversal at `_TERMINAL_NAMES`, so it never detects unsafe signal paths to `plugout~`.
-
-**Consequences:**
-- Every M4L device generates spurious "unterminated signal chain" warnings on `plugout~` (nuisance that trains developer to ignore warnings)
-- Oscillator connected directly to `plugout~` without `*~` attenuation passes both validation and DSP critic silently (dangerous -- full-volume audio)
-- Note: `gain~` should NOT be placed immediately before `plugout~` (Ableton channel strip handles volume, per `feedback_m4l_no_gain.md`). But gain staging for amplitude safety still matters.
+**Consequences:** Silent data corruption when loading a user's patch, editing it, and writing it back. The user opens their patch in MAX and discovers cable colors are gone, parameter mappings are broken, or bpatcher references behave differently. Worst case: the patch loads in MAX but sounds or behaves differently because a parameter_enable flag was dropped, causing gain~ to lose its parameter mapping.
 
 **Prevention:**
-1. Add `"plugout~"` to `_TERMINAL_NAMES` in BOTH `validation.py` and `dsp_critic.py`
-2. Add `"send~"` to the DSP critic's terminal set (already in validation.py but missing from dsp_critic.py)
-3. M4L critic separately enforces: `gain~` immediately before `plugout~` is a WARNING (redundant with Ableton channel strip)
-4. Gain staging BFS must traverse to `plugout~` the same way it traverses to `dac~`
+- Add comprehensive round-trip tests before any refactoring: load real .maxpat files (including MAX-saved ones with extra metadata), round-trip through from_dict/to_dict, and diff the JSON
+- Add `extra_attrs` dict to `Patchline` class, same pattern as `Box`
+- Make `from_dict()` treat ALL unknown keys as extra_attrs (for both Box and Patchline)
+- Make `to_dict()` emit all extra_attrs without filtering
+- Golden rule: **if a key exists in the input JSON, it must exist in the output JSON**
 
-**Detection:** Run existing validation on kicksynth-m4l.maxpat -- false positive unterminated warnings should exist right now.
+**Detection:** Round-trip diff tests. Load a .maxpat, serialize back, compare JSON structure key-by-key. Any key present in original but absent in output is a bug.
 
-**Phase:** Validation update (small additive fix, do early -- zero risk of breaking existing behavior).
+**Phase:** Must be fixed in Phase 1 (Patcher library refactoring) before any direct editing code is written.
 
-**Confidence:** HIGH -- verified by reading `validation.py` lines 41, 635 and `dsp_critic.py` lines 33, 235.
+### Pitfall 2: Dual Source of Truth During Migration
 
----
+**What goes wrong:** During the transition period, some patches still use `generate.py` while others use direct editing. An agent or skill file references the old `generate_patch()` / `write_patch()` / `merge_and_write()` pipeline for a patch that has been migrated to direct editing, or vice versa. The result: competing modifications where the generation pipeline overwrites direct edits, or direct edits are made to a patch that's still being regenerated.
 
-### Pitfall 3: Missing saved_attribute_attributes Makes Parameters Non-Functional
+This exact problem already happened in the project's history (documented in memory: `feedback_iterate_via_generator.md`): "subpatcher open buttons and comp-band bpatchers were lost" because changes were made directly to the .maxpat instead of through generate.py.
 
-**What goes wrong:** A `live.dial` has `parameter_enable: 1` but no `saved_attribute_attributes` block. The dial appears visually correct in MAX standalone, but in Ableton: no automation lane, no MIDI mapping, parameter values don't save with the Live Set, and the dial may revert to default on device reload.
+**Why it happens:** The project has 6 agent SKILL.md files, 10 slash commands, and multiple generate.py scripts across patches. All of them reference the generation pipeline API. During a phased migration, some will be updated and some won't, creating an inconsistent state where the system doesn't know whether a given patch is "generated" or "directly edited."
 
-**Why it happens:** The Box class has no first-class support for `saved_attribute_attributes`. It must be set via `extra_attrs`, which is a raw dict with no schema validation. The required structure (from kicksynth-m4l ground truth) is:
-
-```json
-{
-  "saved_attribute_attributes": {
-    "valueof": {
-      "parameter_longname": "Unique Name",
-      "parameter_shortname": "Short",
-      "parameter_type": 0,
-      "parameter_mmin": 0.0,
-      "parameter_mmax": 1.0,
-      "parameter_initial": [0.5],
-      "parameter_initial_enable": 1,
-      "parameter_modmode": 0,
-      "parameter_unitstyle": 1
-    }
-  }
-}
-```
-
-An agent might set `parameter_enable: 1` and forget `saved_attribute_attributes` entirely, or omit required fields. MAX standalone shows no error -- the failure only manifests in Ableton.
-
-**Consequences:** Parameters appear in device but cannot be automated, MIDI-mapped, or stored. User thinks device works in MAX, discovers it is broken in Ableton.
+**Consequences:** User loses manual work when an agent runs a stale generate.py. Or: an agent tries to directly edit a patch that's still managed by a generation script, and the next regeneration wipes the edit. The user experience is unpredictable -- sometimes changes stick, sometimes they vanish.
 
 **Prevention:**
-1. Scaffold must auto-generate complete `saved_attribute_attributes` for every live.* control
-2. M4L critic: if `parameter_enable == 1` then `saved_attribute_attributes.valueof` must exist with at minimum `parameter_longname`, `parameter_shortname`, `parameter_type`
-3. Consider adding a `set_m4l_parameter()` convenience method to Box that validates the structure
+- Add a clear marker to each patch project directory: either a `generate.py` exists (old pipeline) or it doesn't (new direct-edit mode)
+- Detect and fail-fast: if a direct-edit operation is attempted on a patch with a `generate.py`, warn the user
+- Migrate patches atomically: remove `generate.py` + manifest at the same time as switching the agent workflow
+- Update all 6 SKILL.md files simultaneously, not incrementally
+- Add a "mode" field to `.active-project.json` or equivalent: `"editing_mode": "direct"` vs `"editing_mode": "generated"`
 
-**Detection:** Grep for boxes with `parameter_enable: 1` that lack `saved_attribute_attributes`.
+**Detection:** Pre-edit check: does this patch directory contain a `generate.py`? If yes, refuse direct edits. If no, refuse generation-pipeline operations.
 
-**Phase:** Scaffold (M4L-01) + Critic (M4L-03).
+**Phase:** Must be addressed in Phase 2 (agent/skill migration) with a clear migration gate.
 
-**Confidence:** HIGH -- verified against kicksynth-m4l.maxpat where all 24 live.dials have complete `saved_attribute_attributes` blocks.
+### Pitfall 3: ID Collision When Adding Objects to Existing Patches
 
----
+**What goes wrong:** Adding new objects to a loaded patch creates box IDs that collide with existing ones. The current `Patcher._gen_id()` generates sequential IDs (`obj-1`, `obj-2`, ...). When loading an existing patch, `from_dict()` sets `_next_id` to `max_id_num + 1`, which works IF all existing IDs follow the `obj-N` pattern. But:
 
-### Pitfall 4: Missing openinpresentation and devicewidth Patcher Properties
+1. **MAX can renumber IDs when saving.** If a user opens and saves a patch in MAX, MAX may renumber some box IDs, potentially creating gaps or non-sequential numbers.
 
-**What goes wrong:** An M4L device .maxpat has `openinpresentation: 0` (the framework default in `DEFAULT_PATCHER_PROPS`, line 63 of `defaults.py`). When loaded in Ableton, the device shows patching mode instead of presentation mode -- exposing raw wiring to the user. Even if all UI objects have `presentation: 1` and `presentation_rect` set correctly, the patcher-level flag must be `1`.
+2. **Subpatcher IDs are scoped per patcher level** (verified: subpatcher inner objects reuse `obj-1`, `obj-2`, etc., independent of parent). The current `from_dict()` tracks only top-level max ID. Adding objects to an inner patcher loaded via `from_dict()` could collide if the inner `_next_id` isn't set correctly.
 
-Similarly, `devicewidth: 0.0` (default) means Ableton auto-sizes the device width, which may produce an unusably narrow or wide device.
+3. **User-created IDs might not follow `obj-N` pattern.** If a user creates objects via MAX's scripting interface or a third-party tool, IDs could be arbitrary strings. The `int(box.id.split("-")[-1])` extraction in `from_dict()` would silently fail and not advance `_next_id` past these.
 
-**Why it happens:** `DEFAULT_PATCHER_PROPS` sets `openinpresentation: 0` and `devicewidth: 0.0` -- correct for standalone MAX, wrong for M4L. No framework-level distinction exists between "this is an M4L device" and "this is a regular patch."
+**Why it happens:** The ID generation system was designed for write-only workflows where the generator controls all IDs from scratch. It doesn't account for the read-then-modify workflow where IDs come from an external source.
 
-**Consequences:** Device loads in Ableton showing raw patch cords. User sees internal wiring instead of polished UI.
+**Consequences:** Duplicate IDs within a patcher level. MAX may fail to load the patch, or worse, load it but route connections incorrectly (connecting to the wrong box because two boxes share an ID).
 
 **Prevention:**
-1. M4L scaffold must set `openinpresentation: 1` and a sensible `devicewidth` on `patcher.props`
-2. M4L critic: if patch contains `plugout~` or live.* UI controls, `openinpresentation` must be `1`
-3. Critic should warn if `devicewidth` is 0.0 in a detected M4L device
+- After `from_dict()`, scan ALL box IDs (including nested subpatchers) and set `_next_id` to one past the global maximum
+- Handle non-numeric IDs: track all existing ID strings in a set, generate IDs that don't collide
+- When adding objects to a loaded patcher, verify the new ID doesn't exist in the current box list
+- Add a `_used_ids: set[str]` field to Patcher that gets populated during `from_dict()` and checked during `_gen_id()`
+- Test: load a patch with gaps in ID sequence, add objects, verify no collisions
 
-**Detection:** Check `patcher.props["openinpresentation"]` value.
+**Detection:** Validation check after any add_box call on a loaded patcher: assert no two boxes share an ID at the same patcher level.
 
-**Phase:** Scaffold (M4L-01) + Critic (M4L-03).
+**Phase:** Must be fixed in Phase 1 alongside from_dict improvements.
 
-**Confidence:** HIGH -- verified against kicksynth-m4l.maxpat (`openinpresentation: 1`, `devicewidth: 614.0`). Cycling 74 docs confirm.
+### Pitfall 4: Breaking 283 Patcher-Related Tests During Migration
 
----
+**What goes wrong:** The existing 913 tests (283 in patcher-related files) all assume the write-only API. Changing `Patcher`, `Box`, or `Patchline` classes to support read-write operations risks breaking these tests in subtle ways:
 
-### Pitfall 5: gain~ Before plugout~ Duplicates Ableton Volume Control
+1. **Tests that check exact `to_dict()` output** will break if new fields are added to support round-trip fidelity (e.g., adding `extra_attrs` to Patchline changes its serialization).
 
-**What goes wrong:** A `gain~` or `live.gain~` is placed in the signal chain immediately before `plugout~`, creating a volume fader that duplicates Ableton's channel strip volume.
+2. **Tests that rely on deterministic IDs** (`obj-1`, `obj-2`) will break if ID generation logic changes to accommodate loaded patches.
 
-**Why it happens:** Standard MAX habit -- always put gain before output. In standalone MAX with `dac~`, this is correct. In M4L, the channel strip handles volume post-device.
+3. **Tests that use `Box.__new__(Box)` bypass** (structural objects like subpatchers, gen~ codebox) -- there are at least 8 such patterns in the generation scripts. These manually set all fields. If new fields are added to Box (like `_used_ids`), these bypasses won't set them, causing AttributeError.
 
-**Consequences:** Double volume control. Gain staging confusion. Possible clipping if user maxes both.
+4. **Tests in `test_incremental.py`** (23 tests) test the manifest-based merge workflow. If the migration removes manifests, all these tests become invalid.
 
-**Prevention:** M4L critic: trace signal connections backward from `plugout~` inlets. If `gain~` or `live.gain~` is directly connected (or within 1-2 hops), flag as warning. Exception: `*~` with a constant for mixing is fine; `live.gain~` as input gain (not output) is fine.
+**Why it happens:** Write-only tests assert specific output shapes. Making the system read-write changes what constitutes valid output (more keys preserved, different serialization paths).
 
-**Detection:** Graph traversal from plugout~ backward through signal connections.
+**Consequences:** Test suite goes red, blocking CI. Team spends time updating tests instead of building features. Risk of "fixing" tests by weakening assertions rather than fixing actual bugs.
 
-**Phase:** M4L critic (M4L-03).
+**Prevention:**
+- Run test suite BEFORE starting any refactoring, save as baseline
+- Categorize tests: (a) structural tests that should survive unchanged, (b) output-shape tests that need updating, (c) generation-pipeline tests that should be replaced
+- Use the "expand, then contract" pattern: add new read-write capabilities without removing old ones first, then deprecate old paths after new ones are tested
+- Add new tests for the read path BEFORE modifying existing code
+- For `Box.__new__(Box)` bypasses: add a `Box._init_defaults()` classmethod that sets all required fields, then use it in both `__init__` and bypass patterns
+- Keep `test_incremental.py` tests passing until manifests are explicitly removed; don't break them as a side effect
 
-**Confidence:** HIGH -- documented in project memory `feedback_m4l_no_gain.md`.
+**Detection:** CI must stay green throughout migration. Any test breakage is a signal to pause and fix before continuing.
+
+**Phase:** Addressed throughout all phases -- each phase must maintain green CI.
 
 ## Moderate Pitfalls
 
-### Pitfall 6: Presentation Layout Exceeds 169px Height
+### Pitfall 5: Losing MAX-Internal Metadata That Affects Behavior
 
-**What goes wrong:** A device looks correct in MAX's presentation mode (no height constraint) but clips when displayed in Ableton's device view, which is fixed at 169 pixels high. Controls positioned below y=169 are simply not visible.
+**What goes wrong:** MAX adds metadata to .maxpat files that affects runtime behavior but isn't part of the "user-visible" patch structure. Examples found in real patches:
 
-**Why it happens:** The current `_apply_presentation_layout` in `layout.py` uses a crude grid with `grid_y_start = 20.0` and `grid_v_spacing = 40.0`. For a `live.dial` (48px tall): row 2 bottom edge = 20 + 2*(48+40) + 48 = 244px. That is 75px past the 169px boundary -- invisible in Ableton.
+- `editing_bgcolor` / `locked_bgcolor`: Canvas colors for edit vs locked mode (affects visual appearance)
+- `saved_attribute_attributes`: Parameter mapping data (affects DAW integration, M4L parameter exposure)
+- `dependency_cache`: MAX's record of required externals (affects loading in standalone builds)
+- `varname`: Scripting name for pattr/autopattr (affects state saving)
+- `parameter_mappable`: Whether a parameter can be mapped to MIDI/automation
+- `saved_object_attributes` on subpatcher boxes: `globalpatchername`, `description`, etc.
 
-**Consequences:** Device UI works in MAX but large portions are clipped in Ableton. User sees incomplete controls.
-
-**Prevention:**
-1. M4L presentation layout must enforce: all `presentation_rect` y + height <= 169
-2. Prefer wide/horizontal layouts over tall/vertical ones
-3. Use tabbed interfaces (kicksynth's `live.tab` pattern) to fit many controls in limited vertical space
-4. Critic must warn if any presentation_rect exceeds 169px height boundary
-
-**Detection:** Check `max(presentation_rect[1] + presentation_rect[3])` across all presentation objects.
-
-**Phase:** Presentation layout (M4L-04) + Critic (M4L-03).
-
-**Confidence:** HIGH for the 169px constraint (documented in Cycling 74 docs). MEDIUM for the specific layout.py interaction (calculated, not runtime-tested).
-
----
-
-### Pitfall 7: varname Missing on Live.* Objects
-
-**What goes wrong:** `live.*` objects without a `varname` attribute cannot be reliably addressed by pattr, pattrstorage, or the Live API. The `varname` serves as the scripting name.
-
-**Why it happens:** The Box class has no `varname` in its creation path. The kicksynth-m4l.maxpat sets unique `varname` on every live.* object (e.g., `"d_pitch_start"`), but via `extra_attrs` manually.
-
-**Consequences:** Parameters work for basic automation but fail with preset systems, pattrstorage, and some Push integration features.
+**Why it happens:** The .maxpat format has no official specification (confirmed by Cycling '74 forum posts). MAX adds keys silently based on user actions (naming an object, enabling parameter mode, etc.). Without documentation, there's no way to enumerate all possible keys.
 
 **Prevention:**
-1. Scaffold must auto-generate unique `varname` for every live.* object
-2. Use naming convention: sanitized version of short name (e.g., `"Pitch Start"` -> `"d_pitch_start"`)
-3. Critic: all live.* objects with `parameter_enable: 1` must have a `varname`
+- Adopt a whitelist-inversion strategy: instead of listing known keys and dropping the rest, preserve ALL keys and only specifically handle the ones you need to modify
+- The `extra_attrs` pattern on Box already does this correctly -- extend it to Patchline and to patcher-level props
+- Never delete a key from loaded JSON unless explicitly instructed by the user
+- Test with patches that have been opened and saved by MAX (not just generator-produced patches)
 
-**Phase:** Scaffold (M4L-01).
+**Detection:** Create a "MAX-saved patch" test fixture: take a generated patch, open it in MAX, move some objects, save it, then use the MAX-saved version as a round-trip test fixture. Any key loss between original and round-tripped version is a bug.
 
-**Confidence:** HIGH -- verified against kicksynth-m4l ground truth (all 24 dials + tab + scope + meter have varname).
+**Phase:** Phase 1 (Patcher library refactoring).
 
----
+### Pitfall 6: Over-Engineering the Read Path
 
-### Pitfall 8: Instance Namespace Collision (Missing --- Prefix)
+**What goes wrong:** Building a full "patch understanding" system when all that's needed is surgical editing. Examples of over-engineering:
 
-**What goes wrong:** Named objects like `buffer~ mysample`, `send mydata`, `coll mydict` use global names. When two instances of the device are loaded on different tracks, they share the same namespace -- audio buffers get overwritten, send/receive messages cross between instances.
+1. **Building a complete object graph from loaded patches.** The direct-edit workflow only needs to find objects by ID or text, modify attributes, and add/remove objects. Building adjacency graphs, topological sorts, or signal flow analysis of LOADED patches is unnecessary -- the layout engine already handles that for NEW patches.
 
-**Why it happens:** In standalone MAX, name scoping is not an issue. In M4L, all devices share a single MAX universe. The `---` prefix (e.g., `send ---cutoff`) is replaced at runtime with a unique device ID.
+2. **Validating loaded patches against the object database.** Loaded patches may contain objects from packages, third-party externals, or MAX versions newer than the database covers. Validating loaded patches would produce false-positive errors. Validation should only apply to objects the tool adds, not to objects that already exist and work.
 
-**Consequences:** Multiple device instances interfere with each other. Extremely hard to debug -- only manifests with multiple instances.
+3. **Rebuilding Box objects with full DB lookup from loaded data.** The current `from_dict()` uses `Box.__new__()` to bypass DB validation, which is correct. Over-engineering would be to validate every loaded object against the DB and reject patches with unknown objects.
 
-**Prevention:**
-1. M4L scaffold should auto-prefix `---` on all send/receive/buffer~/coll names
-2. M4L critic: scan for `buffer~`, `coll`, `dict`, `send`, `receive`, `send~`, `receive~`, `value` objects with names not starting with `---`
-3. Document in CLAUDE.md M4L section
-
-**Phase:** CLAUDE.md rules (M4L-07) + Scaffold (M4L-01) + Critic (M4L-03).
-
-**Confidence:** HIGH -- documented in Ableton production guidelines and Cycling 74 docs.
-
----
-
-### Pitfall 9: Device Type Detection False Positives
-
-**What goes wrong:** A regular MAX patch that happens to contain `plugin~` (for sidechain input) or `live.dial` (aesthetics preference) gets incorrectly classified as M4L. The M4L critic fires on a non-M4L patch, producing spurious warnings.
-
-**Why it happens:** Device type detection based on single-object presence is ambiguous. `live.dial` appears in non-M4L patches. `plugin~` can be used in standalone MAX.
+**Why it happens:** The generation pipeline has a thorough validation system (4-layer pipeline, 913 tests). There's a natural temptation to apply the same rigor to the read path. But the read path's contract is different: the patch already works in MAX, the tool just needs to make targeted modifications without breaking it.
 
 **Prevention:**
-1. Use confidence scoring, not single-object detection:
-   - `plugout~` present: strong signal
-   - `plugin~` present: moderate signal
-   - `openinpresentation: 1`: moderate signal
-   - live.* with `parameter_enable: 1`: strong signal
-   - `dac~`/`ezdac~` present: counter-signal (likely standalone)
-   - Require 2+ strong signals OR 1 strong + 2 moderate
-2. Better: scaffold sets explicit M4L marker in patcher metadata
-3. M4L critic should only auto-invoke at high confidence
+- Define the read path's contract clearly: "preserve everything, modify only what's explicitly requested"
+- Validation applies to ADDED objects only, not loaded ones
+- Layout applies to ADDED objects only (or explicitly requested re-layout)
+- Keep `from_dict()` as a thin JSON-to-objects mapper, not a patch analyzer
+- The existing `Box.__new__()` bypass pattern for loaded objects is correct -- don't replace it with DB-validated construction
 
-**Phase:** Device type detection (M4L-08) + Critic auto-invoke.
+**Detection:** Code review question: "Does this read-path code need to understand the patch's semantics, or just its structure?" If the answer is semantics, it's probably over-engineering.
 
-**Confidence:** MEDIUM -- scenarios are architecturally predictable but hypothetical.
+**Phase:** Phase 1 design decision, enforced throughout.
 
----
+### Pitfall 7: JSON Key Ordering Sensitivity
 
-### Pitfall 10: Router Dispatch "live" Keyword Ambiguity
+**What goes wrong:** When writing .maxpat files, the key ordering in JSON matters for readability and diff-friendliness, but may also matter for MAX in edge cases. Observed patterns:
 
-**What goes wrong:** Adding M4L keywords to the router causes non-M4L tasks to get incorrectly routed. "Build a synthesizer with live controls" (meaning real-time, interactive) gets routed as M4L because "live" is a keyword.
+1. **MAX expects `boxes` before `lines`** in the patcher dict. The current `DEFAULT_PATCHER_PROPS` enforces this order.
+2. **Box keys follow a conventional order** in MAX-saved files: `maxclass`, `text`, `id`, `numinlets`, `numoutlets`, `outlettype`, `patching_rect`, then extras. Python dicts preserve insertion order (3.7+), but loading then re-serializing may reorder keys.
+3. **Patchline keys**: MAX writes `source` before `destination`. Reordering these shouldn't break MAX but creates noisy diffs.
+4. **After round-tripping through from_dict/to_dict**, the key order may change from what MAX saved, creating unnecessary diffs when the user saves again in MAX.
 
-**Why it happens:** "live" is massively overloaded: "live performance", "live coding", "live input" (adc~), vs. "Ableton Live". Words "device", "effect", "instrument" are also ambiguous in MAX context.
-
-**Prevention:**
-1. M4L dispatch keywords must be multi-word phrases:
-   - GOOD: "Max for Live", "M4L", "Ableton device", "audio effect device"
-   - BAD: "live", "device", "effect", "instrument"
-2. Require co-occurrence: "live" only triggers M4L routing when paired with "Ableton", "M4L", "Max for Live"
-3. Regression test existing dispatch paths
-
-**Phase:** Router dispatch (M4L-02).
-
-**Confidence:** MEDIUM -- standard disambiguation problem, but "live" is uniquely overloaded in this domain.
-
----
-
-### Pitfall 11: live.thisdevice Initialization Timing Race Conditions
-
-**What goes wrong:** Initialization logic uses `loadbang` but some operations need the Live API ready (which fires after `loadbang`). Using `delay` or `deferlow` to "fix" timing creates fragile race conditions. Known edge case: `live.thisdevice` bang fires BEFORE control surface init when Live opens a project file directly.
-
-**Why it happens:** `live.thisdevice` fires when device is "completely initialized" but this does NOT guarantee Live API control surfaces are ready. In MAX standalone, `live.thisdevice` acts like `loadbang` -- timing issues are invisible during development.
-
-**Consequences:** Device works when manually added but fails on project load. Intermittent bugs.
+**Why it happens:** JSON spec doesn't guarantee key ordering, but .maxpat files have a conventional order that MAX follows. Python dicts preserve insertion order, but `from_dict()` reconstructs dicts in code-order rather than preserving original ordering.
 
 **Prevention:**
-1. Scaffold includes `live.thisdevice` in every M4L device (currently absent from kicksynth-m4l)
-2. Init pattern: `live.thisdevice` -> `trigger` for ordered setup, NOT `loadbang` -> `delay`
-3. For Live API operations: defer until `live.thisdevice` bang
-4. Critic warning if `delay`/`deferlow` downstream of `loadbang` in M4L device
+- For patcher-level keys: use `OrderedDict` or careful insertion ordering that matches `DEFAULT_PATCHER_PROPS`
+- For box-level keys: preserve the original key order from the loaded JSON (store ordered dict or maintain insertion order)
+- The existing `merge_and_write()` already handles patcher-level key ordering via `DEFAULT_PATCHER_PROPS` -- the direct-edit path should use the same approach
+- For diff-friendliness: write JSON with `indent=2` and `sort_keys=False` (already done)
 
-**Phase:** Scaffold (M4L-01) + CLAUDE.md rules (M4L-07).
+**Detection:** Diff test: load a MAX-saved .maxpat, write it back without modifications, diff. Ideally zero structural changes (only whitespace differences are acceptable).
 
-**Confidence:** HIGH -- documented by Cycling 74, confirmed in forums with specific startup edge case.
+**Phase:** Phase 1, but lower priority than data loss bugs.
 
----
+### Pitfall 8: Stale Agent Skills and Slash Commands
 
-### Pitfall 12: plugout~ maxclass Ambiguity Between DB and Reality
+**What goes wrong:** The 6 agent SKILL.md files and slash commands reference the generation-pipeline API extensively:
+- `max-patch-agent/SKILL.md`: References `Patcher()`, `Box()`, `generate_patch()`, `write_patch()`, `merge_and_write()`, layout options, aesthetic helpers
+- `max-dsp-agent/SKILL.md`: References `build_genexpr()`, `generate_gendsp()`, `write_gendsp()`, `Patcher.add_gen()`
+- All agents reference the "Output Protocol" of create-generate-validate-write workflow
 
-**What goes wrong:** The MSP object database says `plugout~` has `maxclass: "plugout~"`. The kicksynth-m4l ground truth shows `maxclass: "newobj"`. If someone "fixes" `maxclass_map.py` to match the DB by adding plugin~/plugout~ to `UI_MAXCLASSES`, the generated output changes silently.
+If these SKILL files aren't updated atomically, agents will use the old API on patches that have been migrated to direct editing, or try to use new API on patches still using the generation pipeline.
 
-**Why it happens:** `plugin~`/`plugout~` are NOT in `UI_MAXCLASSES`, so `resolve_maxclass()` returns `"newobj"`. This accidentally matches working output. But the DB disagrees.
+**Why it happens:** SKILL files are documentation, not code. They don't break CI when they're wrong -- they cause agents to generate incorrect code at runtime. The failure mode is "agent writes a generate.py for a patch that no longer uses one."
 
 **Prevention:**
-1. Verify in MAX which maxclass is correct
-2. If `newobj` correct: update msp/objects.json DB entries
-3. Do NOT add plugin~/plugout~ to UI_MAXCLASSES without testing
-4. Current behavior (newobj) matches working output -- leave as-is until verified
+- Update all SKILL files in a single commit/phase, not incrementally
+- Add a "v2.0 API" section to each SKILL file that covers the new read-edit-write workflow
+- Remove references to `generate.py`, `merge_and_write()`, and `Manifest` when those concepts are retired
+- Test agent SKILL files: the existing `test_agent_skills.py` tests could be extended to verify API references are valid
 
-**Phase:** Early verification task (M4L-09) -- resolve before other work touches plugin~/plugout~.
+**Detection:** Grep SKILL files for deprecated API references after each phase.
 
-**Confidence:** MEDIUM -- current behavior works by accident.
+**Phase:** Phase 2 (agent/skill migration), done as a batch update.
 
 ## Minor Pitfalls
 
-### Pitfall 13: Fractional Pixel Coordinates in Presentation
+### Pitfall 9: Manifest Sidecar Files Left Behind
 
-**What goes wrong:** `presentation_rect` values like `[4.356, 30.7, 50.0, 48.0]` cause blurry rendering on non-Retina displays.
-
-**Prevention:** Round all presentation_rect values to integers. Ableton production guidelines explicitly state "whole-pixel dimensions."
-
-**Phase:** Presentation layout (M4L-04).
-
-**Confidence:** HIGH -- documented in Ableton production guidelines.
-
----
-
-### Pitfall 14: plugin~/plugout~ Missing from Layout _IO_OBJECT_NAMES
-
-**What goes wrong:** `suggest_subpatchers()` in `layout.py` uses `_IO_OBJECT_NAMES` to protect I/O objects from subpatcher extraction. This set only includes `dac~`, `ezdac~`, `adc~`, `ezadc~`, `inlet`, `outlet`. Missing: `plugin~`, `plugout~`. Subpatcher suggestion could recommend wrapping plugout~ into a subpatcher, breaking device audio routing.
-
-**Prevention:** Add `"plugin~"`, `"plugout~"` to `_IO_OBJECT_NAMES` in `layout.py` line 1091.
-
-**Phase:** Early fix alongside M4L-09.
-
-**Confidence:** HIGH -- verified by reading layout.py line 1091.
-
----
-
-### Pitfall 15: parameter_type Magic Numbers and Enum/Range Mismatches
-
-**What goes wrong:** `parameter_type` uses magic numbers: 0 = Float, 1 = Int, 2 = Enum, 3 = Blob. A typo (`parameter_type: 1` instead of `0` for continuous dial) produces stepped automation. `parameter_type: 2` (Enum) without matching `parameter_enum` array shows blank entries. Int type with `parameter_mmax > 255` exceeds Live's display limit.
+**What goes wrong:** When migrating from the generation pipeline to direct editing, `.manifest.json` sidecar files from the old system remain on disk. These are confusing artifacts that:
+- Suggest the patch is still using the generation pipeline
+- Could be accidentally read by old code paths, causing unexpected merge behavior
+- Clutter the project directory
 
 **Prevention:**
-1. Define named constants: `M4L_PARAM_FLOAT = 0`, `M4L_PARAM_INT = 1`, `M4L_PARAM_ENUM = 2`, `M4L_PARAM_BLOB = 3`
-2. Define `parameter_unitstyle` constants: 0=Int, 1=Float, 2=ms, 3=Hz, 4=dB, 5=%, 6=Pan, 7=Semitones, 8=MIDI, 9=Custom
-3. Critic: warn if Enum type but no `parameter_enum` list
+- Add a cleanup step to the migration process: delete `.manifest.json` files when converting a patch to direct-edit mode
+- Add a warning if a `.manifest.json` is found alongside a patch that's in direct-edit mode
 
-**Phase:** Constants module + Scaffold helpers (M4L-01).
+**Phase:** Phase 3 (existing project cleanup).
 
-**Confidence:** MEDIUM -- values verified against ground truth and docs.
+### Pitfall 10: Patcher.from_dict() Doesn't Handle MAX 8 vs MAX 9 Differences
 
----
+**What goes wrong:** The current `from_dict()` doesn't check `appversion`. A MAX 8 patch has `"major": 8` and may use different default properties or box formats. If someone loads a MAX 8 patch and the tool assumes MAX 9 conventions, subtle differences could cause issues.
 
-### Pitfall 16: live.text Output Mode Default
+**Prevention:**
+- Check `appversion.major` during `from_dict()` and log a warning if it's not 9
+- Don't reject MAX 8 patches, but flag them for the user's awareness
+- The tool already targets MAX 9 (documented in CLAUDE.md), so this is a documentation/warning issue, not a blocking one
 
-**What goes wrong:** `live.text` defaults to "Mouse Down" output mode, but M4L button behavior expects "Mouse Up" for most use cases. Triggers on mouse-down feel wrong in Ableton's UI.
+**Phase:** Phase 1, low priority.
 
-**Prevention:** Scaffold should set `live.text` output mode to "Mouse Up". Exception: performance controls needing timing accuracy.
+### Pitfall 11: Layout Engine Interference on Direct Edits
 
-**Phase:** CLAUDE.md rules (M4L-07).
+**What goes wrong:** The current `write_patch()` function always calls `apply_layout()` before writing. For direct edits, this would reposition ALL objects in the patch, destroying the user's carefully arranged layout.
 
-**Confidence:** HIGH -- documented in Ableton production guidelines.
+The `merge_and_write()` function already handles this correctly by skipping layout on merge runs. But if the migration introduces a new write path that doesn't have this protection, layouts could be destroyed.
 
----
+**Prevention:**
+- The new direct-edit write path must NEVER call `apply_layout()` by default
+- Layout should only run when explicitly requested (e.g., for newly added objects)
+- Consider a `layout_new_only()` function that positions only objects without existing positions (patching_rect at 0,0)
+- Test: load a patch, add one object, write back -- verify all existing object positions are unchanged
 
-### Pitfall 17: parameter_modmode Omission
+**Detection:** Position-preservation test: load a patch with known positions, add an object, save, verify original positions unchanged.
 
-**What goes wrong:** `parameter_modmode` (present on all 24 parameters in kicksynth-m4l) controls clip modulation behavior. Omitting it may cause unexpected default modulation mode. Guidelines recommend Bipolar for Float, Absolute for Int.
-
-**Prevention:** Include `parameter_modmode` in all `saved_attribute_attributes.valueof` blocks. Value 0 = Unipolar is safe default.
-
-**Phase:** Scaffold (M4L-01).
-
-**Confidence:** MEDIUM -- present in ground truth; consequences of omission not well-documented.
-
----
-
-### Pitfall 18: Patcher-Level parameters Dict Out of Sync
-
-**What goes wrong:** The patcher-level `parameters` dict (mapping box IDs to parameter metadata) gets out of sync with box-level `saved_attribute_attributes`. Live may show stale parameter names.
-
-**Prevention:** Auto-generate patcher-level `parameters` dict from box-level metadata on save. Never maintain manually.
-
-**Phase:** Scaffold (M4L-01) or save pipeline.
-
-**Confidence:** LOW -- not observed in ground truth (kicksynth-m4l has no patcher-level parameters dict), but documented in forums.
+**Phase:** Phase 1 (write path design).
 
 ## Phase-Specific Warnings
 
 | Phase Topic | Likely Pitfall | Mitigation |
 |-------------|---------------|------------|
-| M4L Scaffold (M4L-01) | Missing saved_attribute_attributes structure, forgetting openinpresentation, no varname, no --- scoping | Use kicksynth-m4l.maxpat as template; validate against Pitfalls 3-5, 7-8 |
-| Router Dispatch (M4L-02) | "live" keyword false positives, disrupting existing dispatch | Multi-word phrases only; regression test all existing dispatch paths (Pitfall 10) |
-| M4L Critic (M4L-03) | Too strict: blocking valid patches with live.dial; Too loose: missing parameter uniqueness | Confidence-scored device detection (Pitfall 9); parameter_longname uniqueness check (Pitfall 1) |
-| Presentation Layout (M4L-04) | Exceeding 169px height, fractional pixels, grid spacing too generous | Hard cap at 169px; round to integers; test with real device sizes (Pitfalls 6, 13) |
-| Validation Updates | Adding plugout~ to terminals might affect existing tests | Additive change -- existing tests should not break (Pitfall 2) |
-| Database Updates (M4L-05, M4L-06) | Wrong maxclass for plugin~/plugout~ | Resolve M4L-09 FIRST before adding relationships or changing maps (Pitfall 12) |
-| CLAUDE.md Rules (M4L-07) | Rules too detailed or too vague | Follow existing CLAUDE.md patterns; test with agent prompts |
-| Device Type Detection (M4L-08) | Single-object detection causing false positives | Confidence scoring not binary detection (Pitfall 9) |
+| Phase 1: Patcher library refactoring | Round-trip data loss (Pitfall 1) | Round-trip diff tests before any API changes |
+| Phase 1: Patcher library refactoring | ID collision (Pitfall 3) | Used-ID tracking set, scoped per patcher level |
+| Phase 1: Patcher library refactoring | Over-engineering read path (Pitfall 6) | Clear contract: preserve all, modify only requested |
+| Phase 2: Agent/skill migration | Dual source of truth (Pitfall 2) | Editing-mode marker per project, fail-fast detection |
+| Phase 2: Agent/skill migration | Stale SKILL files (Pitfall 8) | Batch update all 6 SKILLs + slash commands together |
+| Phase 3: Project cleanup | Manifest leftovers (Pitfall 9) | Automated cleanup of .manifest.json files |
+| All phases | Test breakage (Pitfall 4) | CI stays green, expand-then-contract pattern |
+| All phases | Layout interference (Pitfall 11) | Never auto-layout loaded patches |
 
-## Integration Risk Matrix
+## Integration Pitfalls Between Old and New Approaches
 
-| Existing Module | M4L Touchpoint | Risk | Specific Pitfall |
-|-----------------|----------------|------|------------------|
-| `validation.py` _TERMINAL_NAMES | Add plugout~ | LOW (additive) | #2 |
-| `dsp_critic.py` _TERMINAL_NAMES | Add plugout~ | LOW (additive) | #2 |
-| `dsp_critic.py` gain staging BFS | Traverse to plugout~ | LOW (additive) | #2 |
-| `layout.py` _IO_OBJECT_NAMES | Add plugin~/plugout~ | LOW (additive) | #14 |
-| `layout.py` presentation grid | Replace with M4L-aware layout | MEDIUM (behavior change) | #6, #13 |
-| `patcher.py` Box.to_dict() | Need varname, saved_attribute_attributes | MEDIUM (via extra_attrs) | #3, #7 |
-| `defaults.py` DEFAULT_PATCHER_PROPS | Override openinpresentation, devicewidth | LOW (scaffold sets props) | #4 |
-| `maxclass_map.py` UI_MAXCLASSES | Do NOT add plugin~/plugout~ until verified | MEDIUM (could break) | #12 |
-| `critics/__init__.py` auto-detect | Add M4L critic gating | MEDIUM (false positives) | #9 |
-| Router dispatch-rules.md | Add M4L keywords | MEDIUM (false positives) | #10 |
+### The Manifest Problem
+
+The manifest system (`Manifest` class, `.manifest.json` sidecars) is the bridge between old and new. During migration:
+
+1. **Old patches with manifests** should continue to work with `merge_and_write()` until they're migrated
+2. **New direct-edit patches** should not create manifests
+3. **The transition point** is when a patch's `generate.py` is deleted and its manifest is removed
+4. **Risk:** Code that checks for manifest existence to decide behavior. If the manifest is deleted but the code still expects it, the patch falls into a "fresh write" code path and gets fully regenerated, losing user changes.
+
+### The generate.py Dependency Chain
+
+Each `generate.py` imports from `src.maxpat`:
+```python
+from src.maxpat import Patcher, write_patch
+from src.maxpat.incremental import merge_and_write
+```
+
+If Phase 1 changes the Patcher API in a breaking way, ALL existing `generate.py` scripts break simultaneously. Since there are 7 generation scripts across 5 patch projects, this is a blast radius problem.
+
+**Mitigation:** Phase 1 must be additive-only. Add new methods (`load()`, `edit()`, `save()`) without removing existing ones. Existing `generate.py` scripts should keep working until they're explicitly retired in Phase 3.
+
+### Validation Pipeline Assumptions
+
+The 4-layer validation pipeline (`validation.py`) assumes it's validating a freshly-generated patch:
+- Layer 2 (objects): Checks all objects against ObjectDatabase. This will fail on loaded patches containing third-party objects.
+- Layer 3 (connections): Checks inlet/outlet bounds. This will fail on loaded objects whose I/O counts differ from the database (due to variable_io, packages, or DB inaccuracies).
+- Layer 4 (domain): Checks gain staging, unterminated chains. This will produce warnings for patterns the user intentionally chose.
+
+**Mitigation:** Validation on direct-edit operations should only validate the DIFF -- objects and connections that were added or modified, not the entire loaded patch.
 
 ## Sources
 
-- Cycling 74 Documentation: [Device Parameters in Max for Live](https://docs.cycling74.com/userguide/m4l/live_parameters/)
-- Cycling 74 Documentation: [live.thisdevice Reference](https://docs.cycling74.com/legacy/max8/refpages/live.thisdevice)
-- Cycling 74 Documentation: [Max for Live Limitations](https://docs.cycling74.com/max5/vignettes/core/live_limitations.html)
-- Cycling 74 Documentation: [User Interfaces in Max for Live](https://docs.cycling74.com/max5/vignettes/core/live_userinterfaces.html)
-- Ableton Official: [Max for Live Production Guidelines](https://github.com/Ableton/maxdevtools/blob/main/m4l-production-guidelines/m4l-production-guidelines.md)
-- Cycling 74 Forums: [bPatchers creating duplicate automation lanes](https://cycling74.com/forums/bpatchers-creating-duplicate-automation-lanes-in-live)
-- Cycling 74 Forums: [Difference between .amxd and .maxpat](https://cycling74.com/forums/difference-between-amxd-and-maxpat)
-- Cycling 74 Forums: [Initialization order inconsistency](https://cycling74.com/forums/initialization-order-inconsistency)
-- Cycling 74 Forums: [live.thisdevice bang before control_surface init](https://cycling74.com/forums/live-thisdevice-bang-comes-before-control_surface-init-on-live-exe-startup)
-- Framework source: `validation.py` lines 33-41, 616-654 (terminal names, unterminated chain check)
-- Framework source: `dsp_critic.py` lines 24-33, 171-249 (oscillator names, gain staging BFS)
-- Framework source: `patcher.py` lines 296-344 (Box.to_dict creation path, parameter_enable default)
-- Framework source: `layout.py` lines 1057-1083 (presentation grid), 1091-1094 (IO object names)
-- Framework source: `defaults.py` lines 51-93 (DEFAULT_PATCHER_PROPS)
-- Framework source: `maxclass_map.py` lines 12-52 (UI_MAXCLASSES)
-- Ground truth: `patches/kicksynth/generated/kicksynth-m4l.maxpat` (working M4L device)
-- Project memory: `feedback_m4l_no_gain.md` (gain~/plugout~ rule)
+- Codebase analysis: `src/maxpat/patcher.py` (Patcher.from_dict round-trip testing)
+- Codebase analysis: `src/maxpat/incremental.py` (merge logic, manifest system)
+- Codebase analysis: `tests/test_incremental.py` (23 existing merge tests)
+- Codebase analysis: `patches/performancepatchtest/generated/performancepatchtest.maxpat` (real .maxpat structure)
+- Project memory: `feedback_iterate_via_generator.md` (historical data loss from dual source of truth)
+- Project memory: `project_incremental_patching.md` (incremental patching architecture)
+- [Cycling '74 forum: Specification for .maxpat JSON format?](https://cycling74.com/forums/specification-for-maxpat-json-format) -- confirms no official spec
+- [py2max: Python library for .maxpat generation](https://github.com/shakfu/py2max) -- round-trip editing reference
+- [Cycling '74 docs: Saving State with pattr](https://docs.cycling74.com/userguide/pattr/) -- state vs structure distinction
+- Verified: Box IDs are scoped per patcher level (not globally unique) -- subpatchers reuse obj-1, obj-2 independently
+- Verified: Patchline.to_dict() drops `color` attribute (data loss bug)
+- Verified: from_dict() `_handled_keys` can silently swallow attributes
+- Verified: 913 existing tests, 283 in patcher-related files, 0 tests for Patcher.from_dict()
