@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
 status: completed
-stopped_at: Completed quick-260405-aot-PLAN.md
-last_updated: "2026-04-05T15:02:01.712Z"
+stopped_at: Completed 20-02-PLAN.md
+last_updated: "2026-04-06T05:19:59.401Z"
 last_activity: "2026-04-05 - Completed quick task 260405-aot: Improve visual organization: cord routing, GUI completeness, text contrast, subpatchers"
 progress:
   total_phases: 12
@@ -69,6 +69,7 @@ Progress: [██████████] 100%
 | Phase quick-260401-j8z P01 | 2min | 1 tasks | 2 files |
 | Phase quick-260401-l3t P01 | 1min | 2 tasks | 3 files |
 | Phase quick-260405-aot P01 | 6min | 3 tasks | 7 files |
+| Phase 20 P02 | 9min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -157,6 +158,8 @@ Recent decisions for v2.0:
 - [Phase quick-260405-aot]: live.scope~ added to UI_SIZES (was in UI_MAXCLASSES but missing fixed dimensions)
 - [Phase quick-260405-aot]: Obstacle routing uses dog-leg pattern with corridor-center vs obstacle-center side selection
 - [Phase quick-260405-aot]: suggest_subpatchers is analysis-only: returns suggestions without modifying the patcher
+- [Phase 20]: detect_device_type() as standalone function (not AnalysisMixin method) -- works on raw patch_dict without Patcher instantiation
+- [Phase 20]: M4L rules section placed between MSP and Gen~ in CLAUDE.md (M4L builds on MSP concepts)
 
 ### Pending Todos
 
@@ -218,6 +221,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-05T15:01:44.850Z
-Stopped at: Completed quick-260405-aot-PLAN.md
+Last session: 2026-04-06T05:19:48.029Z
+Stopped at: Completed 20-02-PLAN.md
 Resume file: None
