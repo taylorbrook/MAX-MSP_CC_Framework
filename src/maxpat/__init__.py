@@ -70,6 +70,7 @@ from src.maxpat.externals import (
     generate_help_patch,
 )
 from src.maxpat.ext_validation import validate_mxo, BuildResult
+from src.maxpat.m4l_export import write_amxd
 
 
 # Backward compat alias -- canonical location is src.maxpat.aesthetics
@@ -83,6 +84,7 @@ __all__ = [
     "Patchline",
     "EditResult",
     # File I/O
+    "write_amxd",
     "write_gendsp",
     "write_js",
     "validate_file",

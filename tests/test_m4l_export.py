@@ -206,7 +206,8 @@ class TestAmxdFileOps:
         from src.maxpat.m4l_export import write_amxd
 
         patch_path = _write_test_maxpat(tmp_path)
-        output_path = tmp_path / "commit" / "test.amxd"
+        # Path must contain patches/{name}/ to trigger auto_commit_patch
+        output_path = tmp_path / "patches" / "my-device" / "generated" / "test.amxd"
         with mock_patch("src.maxpat.m4l_export.auto_commit_patch") as mock_commit:
             write_amxd(patch_path, output_path, "audio_effect")
         mock_commit.assert_called_once()
