@@ -1,7 +1,7 @@
 # Requirements: MaxSystem v3.0 M4L Device Creation
 
 **Defined:** 2026-04-05
-**Core Value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work — with as much automated validation as possible before manual testing.
+**Core Value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
 
 ## v3.0 Requirements
 
@@ -88,13 +88,38 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| | | |
+| DB-01 | Phase 20 | Pending |
+| DB-02 | Phase 20 | Pending |
+| DB-03 | Phase 20 | Pending |
+| DB-04 | Phase 20 | Pending |
+| VALID-04 | Phase 20 | Pending |
+| VALID-05 | Phase 20 | Pending |
+| ROUTING-02 | Phase 20 | Pending |
+| SCAFFOLD-01 | Phase 21 | Pending |
+| SCAFFOLD-02 | Phase 21 | Pending |
+| SCAFFOLD-03 | Phase 21 | Pending |
+| SCAFFOLD-04 | Phase 21 | Pending |
+| SCAFFOLD-05 | Phase 21 | Pending |
+| SCAFFOLD-06 | Phase 21 | Pending |
+| ROUTING-01 | Phase 21 | Pending |
+| ROUTING-03 | Phase 21 | Pending |
+| VALID-01 | Phase 22 | Pending |
+| VALID-02 | Phase 22 | Pending |
+| VALID-03 | Phase 22 | Pending |
+| EXPORT-01 | Phase 22 | Pending |
+| POLISH-01 | Phase 23 | Pending |
+| POLISH-02 | Phase 23 | Pending |
+| POLISH-03 | Phase 23 | Pending |
+| LAYOUT-01 | Phase 24 | Pending |
+| LAYOUT-02 | Phase 24 | Pending |
+| LAYOUT-03 | Phase 24 | Pending |
+| TEST-01 | Phase 25 | Pending |
 
 **Coverage:**
-- v3.0 requirements: 24 total
-- Mapped to phases: 0
-- Unmapped: 24
+- v3.0 requirements: 26 total
+- Mapped to phases: 26
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-05*
-*Last updated: 2026-04-05 after initial definition*
+*Last updated: 2026-04-05 after roadmap creation (26/26 mapped)*
