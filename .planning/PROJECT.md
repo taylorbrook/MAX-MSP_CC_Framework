@@ -109,4 +109,4 @@ Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-
 | .maxpat as single source of truth | Python generation creates two competing sources of truth; user edits get lost on regeneration | — Pending |
 
 ---
-*Last updated: 2026-04-05 after v3.0 milestone start*
+*Last updated: 2026-04-06 — Phase 20 (Foundation) complete: M4L object DB entries, constants module, device detection, CLAUDE.md rules*
