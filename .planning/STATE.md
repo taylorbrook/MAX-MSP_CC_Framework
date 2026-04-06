@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
-status: completed
-stopped_at: Completed quick-260405-aot-PLAN.md
-last_updated: "2026-04-05T15:02:01.712Z"
-last_activity: "2026-04-05 - Completed quick task 260405-aot: Improve visual organization: cord routing, GUI completeness, text contrast, subpatchers"
+status: verifying
+stopped_at: Completed 20-01-PLAN.md
+last_updated: "2026-04-06T05:16:21.319Z"
+last_activity: 2026-04-06
 progress:
   total_phases: 12
   completed_phases: 12
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-03-15)
 
 Phase: 19 of 19 (Tech Debt Cleanup)
 Plan: 1 of 1
-Status: Complete
-Last activity: 2026-04-05 - Completed quick task 260405-aot: Improve visual organization: cord routing, GUI completeness, text contrast, subpatchers
+Status: Phase complete — ready for verification
+Last activity: 2026-04-06
 
 Progress: [██████████] 100%
 
@@ -69,6 +69,7 @@ Progress: [██████████] 100%
 | Phase quick-260401-j8z P01 | 2min | 1 tasks | 2 files |
 | Phase quick-260401-l3t P01 | 1min | 2 tasks | 3 files |
 | Phase quick-260405-aot P01 | 6min | 3 tasks | 7 files |
+| Phase 20-foundation P01 | 6min | 2 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -157,6 +158,9 @@ Recent decisions for v2.0:
 - [Phase quick-260405-aot]: live.scope~ added to UI_SIZES (was in UI_MAXCLASSES but missing fixed dimensions)
 - [Phase quick-260405-aot]: Obstacle routing uses dog-leg pattern with corridor-center vs obstacle-center side selection
 - [Phase quick-260405-aot]: suggest_subpatchers is analysis-only: returns suggestions without modifying the patcher
+- [Phase 20-foundation]: plugin~/plugout~ maxclass corrected via overrides.json (not direct msp/objects.json edit) per established pattern
+- [Phase 20-foundation]: live.adsrui set to 9 outlets (best-guess), marked verified=false per D-08
+- [Phase 20-foundation]: live.scope~ given signal inlet when moved from packages to m4l domain
 
 ### Pending Todos
 
@@ -218,6 +222,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-05T15:01:44.850Z
-Stopped at: Completed quick-260405-aot-PLAN.md
+Last session: 2026-04-06T05:16:21.315Z
+Stopped at: Completed 20-01-PLAN.md
 Resume file: None
