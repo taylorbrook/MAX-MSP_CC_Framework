@@ -19,6 +19,10 @@
     {"objects": ["line~", "*~"], "relationship": "common_pair", "note": "line~ for smoothing, *~ for gain control"},
     {"objects": ["snapshot~", "number"], "relationship": "common_pair", "note": "snapshot~ converts signal to control, number displays it"},
     {"objects": ["poly~", "thispoly~"], "relationship": "required_pair", "note": "thispoly~ must exist inside poly~ subpatcher for voice management"},
-    {"objects": ["pfft~", "fftin~", "fftout~"], "relationship": "required_group", "note": "fftin~/fftout~ must exist inside pfft~ subpatcher"}
+    {"objects": ["pfft~", "fftin~", "fftout~"], "relationship": "required_group", "note": "fftin~/fftout~ must exist inside pfft~ subpatcher"},
+    {"objects": ["plugin~", "plugout~"], "relationship": "required_pair", "note": "Audio I/O for M4L audio_effect and instrument devices -- always used together"},
+    {"objects": ["live.path", "live.object"], "relationship": "required_pair", "note": "live.path resolves Live API paths, live.object sends messages to the resolved path"},
+    {"objects": ["midiin", "midiout"], "relationship": "required_pair", "note": "MIDI passthrough for M4L instrument and midi_effect devices"},
+    {"objects": ["live.thisdevice", "loadbang"], "relationship": "common_pair", "note": "live.thisdevice often initialized via loadbang for device initialization"}
   ]
 }

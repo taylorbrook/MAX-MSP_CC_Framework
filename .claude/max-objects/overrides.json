@@ -5939,6 +5939,13 @@
         "source": "io_count_finding"
       }
     },
+    "_domain_msp_m4l": "--- MSP M4L Overrides ---",
+    "plugin~": {
+      "maxclass": "newobj"
+    },
+    "plugout~": {
+      "maxclass": "newobj"
+    },
     "_domain_other": "--- Other Objects (not in domain JSONs) ---",
     "M4L.api.ObserveTransport": {
       "inlets": [
