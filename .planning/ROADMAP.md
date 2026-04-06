@@ -61,7 +61,7 @@ Full details: see phase details below
 - Decimal phases (e.g., 21.1): Urgent insertions if needed (marked with INSERTED)
 
 - [x] **Phase 20: Foundation** — M4L constants, database entries, device type detection, CLAUDE.md rules (completed 2026-04-06)
-- [ ] **Phase 21: Scaffold and Routing** — create_m4l_project() with per-type boilerplate, M4L dispatch keywords, agent SKILL.md updates
+- [x] **Phase 21: Scaffold and Routing** — create_m4l_project() with per-type boilerplate, M4L dispatch keywords, agent SKILL.md updates (completed 2026-04-06)
 - [ ] **Phase 22: Validation and Export** — M4L critic module (6 checks), auto-detection wiring, .amxd export
 - [ ] **Phase 23: Polish** — Parameter naming intelligence, Push controller banks, info text/annotations
 - [ ] **Phase 24: Layout** — M4L presentation layout engine with 169px height cap, tabbed/overlay patterns
@@ -296,8 +296,8 @@ Plans:
 Canonical refs: `src/maxpat/project.py`, `src/maxpat/m4l_constants.py`, `.claude/skills/max-router/`, `patches/kicksynth/generated/kicksynth-m4l.maxpat`
 
 Plans:
-- [ ] 21-01-PLAN.md -- TDD create_m4l_project() for all 3 device types with tests
-- [ ] 21-02-PLAN.md -- M4L dispatch rules in router + M4L sections in 4 agent SKILL.md files
+- [x] 21-01-PLAN.md -- TDD create_m4l_project() for all 3 device types with tests
+- [x] 21-02-PLAN.md -- M4L dispatch rules in router + M4L sections in 4 agent SKILL.md files
 
 ### Phase 22: Validation and Export
 **Goal**: M4L critic validates device correctness and .amxd export completes the device creation loop — catches errors before the user opens in Ableton
@@ -376,7 +376,7 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 18. v1.x Cleanup | v2.0 | 2/2 | Complete | 2026-03-16 |
 | 19. Tech Debt Cleanup | v2.0 | 1/1 | Complete | 2026-03-17 |
 | 20. Foundation (M4L) | v3.0 | 2/2 | Complete | 2026-04-06 |
-| 21. Scaffold and Routing | v3.0 | 0/2 | Planned | - |
+| 21. Scaffold and Routing | v3.0 | 2/2 | Complete    | 2026-04-06 |
 | 22. Validation and Export | v3.0 | 0/0 | Planned | - |
 | 23. Polish | v3.0 | 0/0 | Planned | - |
 | 24. Layout | v3.0 | 0/0 | Planned | - |
