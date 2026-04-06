@@ -2,149 +2,254 @@
 
 ## Milestones
 
-- ✅ **v1.0 MVP** -- Phases 1-7 (shipped 2026-03-10)
-- ✅ **v1.1 Patch Quality & Aesthetics** -- Phases 8-12 (shipped 2026-03-14)
-- ✅ **v2.0 Direct .maxpat Editing** -- Phases 13-19 (shipped 2026-03-17)
-- 🚧 **v3.0 M4L Device Creation** -- Phases 20-25 (in progress)
+- ✅ **v1.0 MVP** — Phases 1-7 (shipped 2026-03-10)
+- ✅ **v1.1 Patch Quality & Aesthetics** — Phases 8-12 (shipped 2026-03-14)
+- 📋 **v2.0 Direct .maxpat Editing** — Phases 13-18 (planned)
 
 ## Phases
 
 <details>
-<summary>✅ v1.0 MVP (Phases 1-7) -- SHIPPED 2026-03-10</summary>
+<summary>✅ v1.0 MVP (Phases 1-7) — SHIPPED 2026-03-10</summary>
 
-- [x] Phase 1: Object Knowledge Base (3/3 plans) -- completed 2026-03-09
-- [x] Phase 2: Patch Generation and Validation (4/4 plans) -- completed 2026-03-10
-- [x] Phase 3: Code Generation (2/2 plans) -- completed 2026-03-10
-- [x] Phase 4: Agent System and Orchestration (6/6 plans) -- completed 2026-03-10
-- [x] Phase 5: RNBO and External Development (4/4 plans) -- completed 2026-03-10
-- [x] Phase 6: Fix Skill Documentation Signatures (1/1 plan) -- completed 2026-03-10
-- [x] Phase 7: Fix Stale Agent Documentation (1/1 plan) -- completed 2026-03-10
+- [x] Phase 1: Object Knowledge Base (3/3 plans) — completed 2026-03-09
+- [x] Phase 2: Patch Generation and Validation (4/4 plans) — completed 2026-03-10
+- [x] Phase 3: Code Generation (2/2 plans) — completed 2026-03-10
+- [x] Phase 4: Agent System and Orchestration (6/6 plans) — completed 2026-03-10
+- [x] Phase 5: RNBO and External Development (4/4 plans) — completed 2026-03-10
+- [x] Phase 6: Fix Skill Documentation Signatures (1/1 plan) — completed 2026-03-10
+- [x] Phase 7: Fix Stale Agent Documentation (1/1 plan) — completed 2026-03-10
 
 Full details: `.planning/milestones/v1.0-ROADMAP.md`
 
 </details>
 
 <details>
-<summary>✅ v1.1 Patch Quality & Aesthetics (Phases 8-12) -- SHIPPED 2026-03-14</summary>
+<summary>✅ v1.1 Patch Quality & Aesthetics (Phases 8-12) — SHIPPED 2026-03-14</summary>
 
-- [x] Phase 8: Help Patch Audit Pipeline (4/4 plans) -- completed 2026-03-13
-- [ ] Phase 9: Object DB Corrections (0/2 plans) -- deferred (low priority, audit data available for manual use)
-- [x] Phase 10: Aesthetic Foundations (2/2 plans) -- completed 2026-03-13
-- [x] Phase 11: Layout Refinements (3/3 plans) -- completed 2026-03-13
-- [x] Phase 12: Pipeline Integration & Agent Updates (2/2 plans) -- completed 2026-03-14
+- [x] Phase 8: Help Patch Audit Pipeline (4/4 plans) — completed 2026-03-13
+- [ ] Phase 9: Object DB Corrections (0/2 plans) — deferred (low priority, audit data available for manual use)
+- [x] Phase 10: Aesthetic Foundations (2/2 plans) — completed 2026-03-13
+- [x] Phase 11: Layout Refinements (3/3 plans) — completed 2026-03-13
+- [x] Phase 12: Pipeline Integration & Agent Updates (2/2 plans) — completed 2026-03-14
 
 Full details: see phase details below (archived in-place)
 
 </details>
 
-<details>
-<summary>✅ v2.0 Direct .maxpat Editing (Phases 13-19) -- SHIPPED 2026-03-17</summary>
+### 📋 v2.0 Direct .maxpat Editing (Planned)
 
-- [x] Phase 13: Round-Trip Foundation (3/3 plans) -- completed 2026-03-16
-- [x] Phase 14: Search and Mutation Primitives (2/2 plans) -- completed 2026-03-16
-- [x] Phase 15: Intelligent Editing (3/3 plans) -- completed 2026-03-16
-- [x] Phase 16: Patch Analysis (1/1 plan) -- completed 2026-03-16
-- [x] Phase 17: Agent and Command Migration (3/3 plans) -- completed 2026-03-16
-- [x] Phase 18: v1.x Cleanup (2/2 plans) -- completed 2026-03-16
-- [x] Phase 19: Tech Debt Cleanup (1/1 plan) -- completed 2026-03-17
-
-Full details: `.planning/milestones/v2.0-ROADMAP.md`
-
-</details>
-
-### 🚧 v3.0 M4L Device Creation (In Progress)
-
-**Milestone Goal:** First-class Max for Live device authoring -- from project creation through validated output, with M4L-aware scaffolding, routing, critics, and presentation layout.
+**Milestone Goal:** Replace the Python generation pipeline with direct .maxpat reading and editing, making the .maxpat file the single source of truth and enabling true back-and-forth between Claude and manual MAX editing.
 
 **Phase Numbering:**
-- Integer phases (20, 21, 22, 23, 24, 25): Planned milestone work
-- Decimal phases (e.g., 21.1): Urgent insertions if needed (marked with INSERTED)
+- Integer phases (13, 14, 15, 16, 17, 18): Planned milestone work
+- Decimal phases (e.g., 14.1): Urgent insertions if needed (marked with INSERTED)
 
-- [ ] **Phase 20: Foundation** -- M4L constants, DB objects, relationships, CLAUDE.md rules, terminal names hotfix, device type detection
-- [ ] **Phase 21: Scaffold & Routing** -- Device scaffold for 3 types, parameter_enable, local naming, presentation flags, dispatch rules, SKILL.md updates
-- [ ] **Phase 22: Validation & Export** -- M4L critic module, device completeness checks, gain~/plugout~ rule, parameter uniqueness, .amxd export
-- [ ] **Phase 23: Polish** -- Parameter naming intelligence, info text annotations, Push controller banks
-- [ ] **Phase 24: Layout** -- M4L presentation mode layout engine with grouping, tabbed/single/overlay patterns, whole pixel enforcement
-- [ ] **Phase 25: Testing** -- End-to-end M4L device tests for all device types
+- [x] **Phase 13: Round-Trip Foundation** — Harden from_dict/to_dict for lossless .maxpat load-save cycle (completed 2026-03-16)
+- [x] **Phase 14: Search and Mutation Primitives** — Find objects and make basic add/remove/connect edits on loaded patches (completed 2026-03-16)
+- [x] **Phase 15: Intelligent Editing** — Higher-level edit operations: modify-in-place, insert-into-connection, replace, graph queries, auto-position (completed 2026-03-16)
+- [x] **Phase 16: Patch Analysis** — Structured patch understanding for onboarding existing patches from any source (completed 2026-03-16)
+- [x] **Phase 17: Agent and Command Migration** — Rewire slash commands and agent skills to use direct .maxpat editing (completed 2026-03-16)
+- [x] **Phase 18: v1.x Cleanup** — Remove generation pipeline artifacts (incremental.py, generate.py, manifests) (completed 2026-03-16)
+- [x] **Phase 19: Tech Debt Cleanup** — Close integration gaps and tech debt from milestone audit (completed 2026-03-17)
 
 ## Phase Details
 
-### Phase 20: Foundation
-**Goal**: The framework has all M4L data structures, database entries, and detection logic needed before any M4L-specific code generation or validation can begin
-**Depends on**: Nothing (first phase in v3.0)
-**Requirements**: DB-01, DB-02, DB-03, DB-04, VALID-04, VALID-05, ROUTING-02
+### Phase 8: Help Patch Audit Pipeline
+**Goal**: The framework has a reliable, offline audit tool that extracts ground truth object metadata from MAX's own help patches and identifies every discrepancy in the current database
+**Depends on**: Nothing (first phase in v1.1)
+**Requirements**: AUDIT-01, AUDIT-02, AUDIT-03, AUDIT-04, AUDIT-05, AUDIT-06, AUDIT-07, AUDIT-08, AUDIT-09, AUDIT-10
 **Success Criteria** (what must be TRUE):
-  1. `m4l_constants.py` exists with IntEnum classes for parameter_type, parameter_unitstyle, parameter_modmode, and AMXD binary format constants -- importable by downstream scaffold, critic, and export code
-  2. `live.adsrui`, `live.adsr~` are in m4l/objects.json with verified inlet/outlet counts, and `live.scope~` has domain corrected to M4L
-  3. relationships.json contains M4L companion entries (plugin~/plugout~, live.path/live.object, midiin/midiout) so agents discover correct pairings
-  4. `detect_device_type()` returns audio_effect/instrument/midi_effect with confidence scores from patch structure analysis (plugin~/plugout~/midiin presence)
-  5. `plugout~` is in `_TERMINAL_NAMES` in both validation.py and dsp_critic.py -- M4L signal chains no longer generate false-positive unterminated warnings
-**Plans:** 2 plans
+  1. Running the audit tool against the MAX help patch directory parses all 973 .maxhelp files, including content inside subpatcher tabs, and reports per-file parse status
+  2. The audit report shows outlet type discrepancies between the DB and help patches, with confidence scores, for every object where they differ
+  3. The audit produces proposed overrides.json entries that preserve all existing manually corrected entries without overwriting them
+  4. Per-object box width measurements are extracted from help patches and available as data for downstream layout work
+  5. The 292 objects with empty inlet/outlet data in the current DB are identified, prioritized, and have proposed corrections where help patch data exists
+**Plans**: 4 plans
 
 Plans:
-- [ ] 20-01-PLAN.md -- Object DB entries (live.adsr~, live.adsrui, live.scope~), overrides (plugin~/plugout~ maxclass), M4L relationships, terminal names fix
-- [ ] 20-02-PLAN.md -- M4L constants module, device type detection, CLAUDE.md M4L rules
+- [x] 08-01-PLAN.md -- Data models, recursive help patch parser, and degenerate instance filtering
+- [x] 08-02-PLAN.md -- Analysis engine: outlet types, I/O counts, widths, arguments, connections
+- [x] 08-03-PLAN.md -- Report generation, override proposals, and empty I/O coverage tracker
+- [x] 08-04-PLAN.md -- CLI entry point and end-to-end verification against real MAX help patches
 
-### Phase 21: Scaffold & Routing
-**Goal**: Users can create M4L devices of any type with correct boilerplate auto-generated, and the agent system routes M4L tasks with device-aware context
-**Depends on**: Phase 20
-**Requirements**: SCAFFOLD-01, SCAFFOLD-02, SCAFFOLD-03, SCAFFOLD-04, SCAFFOLD-05, SCAFFOLD-06, ROUTING-01, ROUTING-03
+### Phase 9: Object DB Corrections
+**Goal**: The object database contains verified, help-patch-sourced corrections so that connection validation and patch generation use accurate outlet types, inlet/outlet counts, and argument formats
+**Depends on**: Phase 8
+**Requirements**: DBCX-01, DBCX-02, DBCX-03, DBCX-04
 **Success Criteria** (what must be TRUE):
-  1. Creating an audio_effect device produces a patch with plugin~, plugout~, live.thisdevice, openinpresentation=1, and devicewidth -- ready to open in Live
-  2. Creating an instrument device produces a patch with midiin, midiout, plugout~, and live.thisdevice -- MIDI passes through and audio outputs correctly
-  3. Creating a midi_effect device produces a patch with midiin, midiout, live.thisdevice, and no audio I/O objects
-  4. All live.* UI controls in scaffolded devices have parameter_enable=1 with complete saved_attribute_attributes blocks, and all named objects (buffer~, coll, send, receive, etc.) are prefixed with `---`
-  5. Router recognizes M4L keywords ("Max for Live", "M4L", "Ableton device") and dispatches with M4L-specific context; agent SKILL.md files contain M4L instruction sections
-**Plans**: TBD
-**UI hint**: yes
+  1. High-confidence outlet type corrections are merged into overrides.json and db_lookup.py returns the corrected data without any code changes
+  2. Objects that previously had empty inlet/outlet data now have help-patch-verified I/O definitions
+  3. All 624 existing tests pass after corrections are applied (zero regressions)
+  4. Corrections are organized by domain in the audit report so each domain's changes can be reviewed independently
+**Plans**: 2 plans
 
-### Phase 22: Validation & Export
-**Goal**: The framework catches M4L-specific errors before the user opens the device in Live, and can produce .amxd files directly
-**Depends on**: Phase 21
-**Requirements**: VALID-01, VALID-02, VALID-03, EXPORT-01
-**Success Criteria** (what must be TRUE):
-  1. M4L critic flags gain~ connected to plugout~ as an error (Ableton channel strip handles volume)
-  2. M4L critic validates device completeness per type -- missing plugout~, midiin, midiout, or live.thisdevice are flagged as errors
-  3. M4L critic detects duplicate parameter_longname values across the device and flags as error (prevents Ableton automation crashes)
-  4. `write_amxd()` produces a valid .amxd file with correct 32-byte binary header per device type, openable in Live
-**Plans**: TBD
+Plans:
+- [ ] 09-01-PLAN.md -- OverrideMerger class, unit tests, and CLI --merge flag integration
+- [ ] 09-02-PLAN.md -- Execute merge with conflict resolution, regression verification, and user approval
 
-### Phase 23: Polish
-**Goal**: M4L devices have professional parameter metadata and Ableton integration details auto-populated
-**Depends on**: Phase 21
-**Requirements**: POLISH-01, POLISH-02, POLISH-03
+### Phase 10: Aesthetic Foundations
+**Goal**: Generated patches include professional visual styling -- styled section comments, background panels, bubble annotations, patcher colors, and step markers -- so patches look authored rather than machine-generated
+**Depends on**: Nothing (can run in parallel with Phase 9; touches different files)
+**Requirements**: CMNT-01, CMNT-02, CMNT-03, CMNT-04, PANL-01, PANL-02, PANL-03, PANL-04, PANL-05, PTCH-01, PTCH-02
 **Success Criteria** (what must be TRUE):
-  1. Parameter naming intelligence auto-derives longname, shortname, and varname from object context (e.g., a live.dial connected to a filter cutoff gets "Filter Cutoff" / "Cutoff" / "filter_cutoff")
-  2. live.banks object is auto-generated with Push controller bank organization grouping related parameters
-  3. Info text / annotations are auto-populated on live.* controls so Ableton's Info View shows meaningful tooltips
-**Plans**: TBD
-**UI hint**: yes
+  1. A generated patch opened in MAX shows styled section header comments with configurable font size, bold face, and color -- visually distinct from inline annotations
+  2. Panel objects appear behind grouped objects (not covering them) with correct background layer placement, and gradient panels render without visual artifacts
+  3. Bubble comments with outlines and directional arrows appear next to annotated objects when opened in MAX
+  4. Patcher background color is set on generated patches, and key architectural objects (loadbang, dac~) have distinguishing background color
+  5. Numbered step markers using amber textbutton circles appear in the background layer for tutorial-style patches
+**Plans**: 2 plans
 
-### Phase 24: Layout
-**Goal**: M4L devices have professional presentation mode layouts that respect Ableton's constraints and organize controls intelligently
-**Depends on**: Phase 21
-**Requirements**: LAYOUT-01, LAYOUT-02, LAYOUT-03
-**Success Criteria** (what must be TRUE):
-  1. M4L presentation layout engine groups controls by function within the 169px height constraint -- no controls are clipped in Ableton's device view
-  2. Layout supports tabbed, single-page, and overlay patterns -- choosing the appropriate pattern based on control count and device complexity
-  3. All presentation coordinates are enforced as whole pixels -- no fractional values that cause blurry rendering in Live
-**Plans**: TBD
-**UI hint**: yes
+Plans:
+- [x] 10-01-PLAN.md -- Palette constants, comment tier styling (section/subsection/annotation/bubble), and patcher canvas/object background color API
+- [x] 10-02-PLAN.md -- Panel objects with gradient fill and z-order, step marker textbutton circles, auto-sizing, and complexity heuristic
 
-### Phase 25: Testing
-**Goal**: The complete M4L device creation workflow is verified end-to-end with automated tests
-**Depends on**: Phase 22, Phase 23, Phase 24
-**Requirements**: TEST-01
+### Phase 11: Layout Refinements
+**Goal**: Object positioning produces tighter, more professional layouts with accurate box sizing, aligned cables, grid-snapped positions, and configurable spacing parameters
+**Depends on**: Phase 8 (uses per-object width data from audit); layout tests refactored before any constant changes
+**Requirements**: LYOT-01, LYOT-02, LYOT-03, LYOT-04, LYOT-05, LYOT-06
 **Success Criteria** (what must be TRUE):
-  1. End-to-end tests create an audio_effect, instrument, and midi_effect device and validate all required components are present with correct attributes
-  2. Tests verify the full pipeline: scaffold produces valid device, critic catches intentional errors, .amxd export succeeds, and layout respects constraints
-**Plans**: TBD
+  1. Object box widths in generated patches closely match actual MAX rendering widths (using per-object override table from help patch measurements)
+  2. Child objects are positioned so their inlets align under parent outlet X positions, producing straighter vertical cables instead of diagonal ones
+  3. All object positions in generated patches snap to MAX's 15px native grid
+  4. Comments are placed near their target objects with consistent offset, and layout spacing is configurable via a LayoutOptions dataclass rather than hardcoded constants
+**Plans**: 3 plans
+
+Plans:
+- [x] 11-01-PLAN.md -- LayoutOptions dataclass and test assertion refactoring for resilient spacing tests
+- [x] 11-02-PLAN.md -- Width override table from audit data and sizing.py integration
+- [x] 11-03-PLAN.md -- Inlet alignment, grid snapping, comment association, and LayoutOptions integration into layout engine
+
+### Phase 12: Pipeline Integration & Agent Updates
+**Goal**: Aesthetic styling and layout improvements are wired into the main patch generation pipeline so users get polished patches by default, and agent documentation reflects all corrected object data and new capabilities
+**Depends on**: Phase 9, Phase 10, Phase 11
+**Requirements**: AGNT-01, AGNT-02
+**Success Criteria** (what must be TRUE):
+  1. generate_patch() produces patches with aesthetic styling applied (panels, styled comments, patcher colors) without requiring manual post-processing
+  2. Agent SKILL.md files reference corrected outlet types and connection patterns from audit findings, so agents generate valid connections for previously-broken objects
+  3. Agent documentation describes aesthetic capabilities (comment styling, panels, layout options) so agents can use them when generating patches
+**Plans**: 2 plans
+
+Plans:
+- [x] 12-01-PLAN.md -- Auto-styling in generate_patch(), LayoutOptions parameter and public API export
+- [x] 12-02-PLAN.md -- Aesthetic capabilities documentation in all 6 agent SKILL.md files
+
+### Phase 13: Round-Trip Foundation
+**Goal**: Any .maxpat file can be loaded into Patcher objects and written back with zero data loss -- the trust foundation for all direct editing
+**Depends on**: Nothing (first phase in v2.0)
+**Requirements**: RW-01, RW-02, RW-06
+**Success Criteria** (what must be TRUE):
+  1. User can load any project .maxpat file (kicksynth, scala-synth, performancepatchtest, minitaur) into Patcher/Box/Patchline objects and all objects are present including recursive subpatchers
+  2. Loading a .maxpat and immediately writing it back produces a file with minimal diff -- key ordering preserved, numeric precision maintained, unchanged portions identical
+  3. All user state survives the load-save cycle -- positions, colors, presentation rects, varnames, scripting names, custom attributes, and unknown keys are not dropped or reordered
+  4. Patchline attributes (color, midpoints, hidden) are preserved through round-trip -- the verified color-drop bug is fixed
+  5. Bpatcher attributes (offset, name, args, embed, lockeddragscroll) reconstruct correctly and are not lost or misplaced on save
+**Plans**: 3 plans
+
+Plans:
+- [x] 13-01-PLAN.md -- Round-trip test suite, fixtures, and Patchline model fix (color, extra_attrs, _raw)
+- [x] 13-02-PLAN.md -- Box _raw dict preservation and Patcher key-order fix
+- [x] 13-03-PLAN.md -- Golden file integration tests passing for all 10 project .maxpat files
+
+### Phase 14: Search and Mutation Primitives
+**Goal**: Users can find objects in loaded patches and make basic structural edits (add, remove, connect) without disturbing existing content
+**Depends on**: Phase 13
+**Requirements**: RW-03, RW-04, RW-05, RW-07
+**Success Criteria** (what must be TRUE):
+  1. User can find objects by ID, name, maxclass, or text substring -- including recursive search into subpatchers
+  2. User can add a new object to a loaded patch and it gets a unique ID, correct I/O counts from DB validation, and does not collide with any existing object
+  3. User can remove an object from a loaded patch and all connected patchlines are automatically cleaned up -- no dangling connections remain
+  4. User can add and remove connections between existing objects with inlet/outlet bounds checking that prevents invalid wiring
+  5. A read_patch() convenience function loads a .maxpat from disk into a Patcher ready for querying and editing
+**Plans**: 2 plans
+
+Plans:
+- [x] 14-01-PLAN.md -- Search methods (find_box, find_boxes) with alias resolution and recursive subpatcher search, plus read_patch() convenience function
+- [x] 14-02-PLAN.md -- Mutation methods (remove_box, remove_connection), bounds checking and duplicate prevention in add_connection, mutation-safe round-trip tests
+
+### Phase 15: Intelligent Editing
+**Goal**: Users can make sophisticated patch edits -- modify attributes in-place, insert objects into signal chains, swap objects, trace signal paths, and get smart auto-positioning
+**Depends on**: Phase 14
+**Requirements**: ED-01, ED-02, ED-03, ED-04, ED-05
+**Success Criteria** (what must be TRUE):
+  1. User can modify an object's arguments, position, color, or any attribute in-place without delete-and-recreate -- and I/O count recomputes when arguments change for variable_io objects
+  2. User can insert an object into an existing connection (e.g., "insert *~ 0.5 between cycle~ and dac~") -- original connection removed, new object wired in between, auto-positioned at midpoint
+  3. User can replace an object with a different one -- new object placed at same position, compatible connections remapped, incompatible connections listed in return value
+  4. User can query the patch graph -- upstream/downstream traversal from any object, signal path tracing, connected component detection, with signal and control graphs separated
+  5. New objects added near their connection context are auto-positioned intelligently -- below a source, above a target, between both, or in the nearest empty space
+**Plans**: 3 plans
+
+Plans:
+- [x] 15-01-PLAN.md -- EditResult dataclass, modify_box() in-place attribute editing, replace_box() object swap
+- [x] 15-02-PLAN.md -- Auto-positioning helpers (collision detection, grid snap) and insert_into_connection()
+- [x] 15-03-PLAN.md -- Graph queries: downstream, upstream, signal_path, connected_components with subpatcher traversal
+
+### Phase 16: Patch Analysis
+**Goal**: The framework can analyze any .maxpat file and produce a structured, human-readable summary of what the patch does -- enabling /max-onboard for existing patches
+**Depends on**: Phase 14 (uses search/query infrastructure), Phase 15 (uses graph traversal)
+**Requirements**: AN-01, AN-02, AN-03
+**Success Criteria** (what must be TRUE):
+  1. Patch analyzer produces a structured summary including: object inventory by domain, signal flow chains (audio source to dac~), control flow paths, subpatcher hierarchy map, parameter list, and complexity metrics
+  2. /max-onboard command takes any .maxpat file path, runs analysis, and outputs a human-readable summary that a user can review to understand the patch without opening MAX
+  3. Analyzer identifies functional sections by detecting connected components and spatial proximity -- grouping objects into logical units (e.g., "oscillator section", "filter chain", "envelope generator")
+**Plans**: 1 plan
+
+Plans:
+- [x] 16-01-PLAN.md -- analyze() method with all facets: section detection, signal chain trees, inventory, complexity, hierarchy, parameters, control flow
+
+### Phase 17: Agent and Command Migration
+**Goal**: All slash commands and agent skills use direct .maxpat editing instead of the Python generation pipeline -- the user-visible behavior change
+**Depends on**: Phase 13, Phase 14, Phase 15, Phase 16
+**Requirements**: MG-01, MG-02, MG-03, MG-04, MG-05, MG-06
+**Success Criteria** (what must be TRUE):
+  1. /max-build creates patches by directly constructing Patcher objects and writing .maxpat files -- no generate.py script is created
+  2. /max-iterate reads an existing .maxpat, understands its structure (via analyzer), makes surgical edits (via edit methods), and writes back -- no generate.py modification
+  3. /max-new creates project structure with direct .maxpat workflow -- project scaffolding produces .maxpat files, not Python generation scripts
+  4. /max-onboard is implemented as a working slash command that runs patch analysis and produces onboarding output
+  5. All 6 specialist agent SKILL.md files reference the direct editing API (Patcher.from_dict, add_box, remove_box, find_box, etc.) instead of the generate.py workflow
+  6. Validation hooks work with direct editing -- validate on demand after edits, do not reject unknown objects on load, write_patch_direct() never auto-layouts
+**Plans**: 3 plans
+
+Plans:
+- [x] 17-01-PLAN.md -- Validation warning for unknown objects, empty .maxpat creation in create_project
+- [x] 17-02-PLAN.md -- Rewrite 4 slash commands for v2.0 workflow (build, iterate, new, onboard)
+- [x] 17-03-PLAN.md -- Update 9 agent SKILL.md files with dual workflow documentation
+
+### Phase 18: v1.x Cleanup
+**Goal**: The old generation pipeline is fully removed -- no generate.py scripts, no manifests, no incremental.py -- the .maxpat file is the only artifact
+**Depends on**: Phase 17
+**Requirements**: CL-01, CL-02, CL-03, CL-04, CL-05
+**Success Criteria** (what must be TRUE):
+  1. incremental.py is deleted and its Manifest class, merge logic, and all imports are removed from the codebase -- no code references the manifest system
+  2. All .manifest.json sidecar files are deleted from every patch directory in the project
+  3. All generate.py and build_*.py scripts are deleted from patch directories -- .maxpat files stand alone without generation scripts
+  4. Test suite covers the read-write path -- from_dict() has dedicated tests, write-only assumptions are replaced with round-trip tests, and the expand-then-contract migration keeps CI green throughout
+  5. hooks.py write_patch uses the direct save path and merge_and_write is removed or raises a clear deprecation error
+**Plans**: 2 plans
+
+Plans:
+- [ ] 18-01-PLAN.md -- Delete all patch artifacts (scripts, manifests, versions.json)
+- [ ] 18-02-PLAN.md -- Remove incremental.py, clean __init__.py/hooks.py, update tests and SKILL.md files
+
+### Phase 19: Tech Debt Cleanup
+**Goal**: Close minor integration gaps and tech debt identified by the v2.0 milestone audit — subpatcher round-trip test coverage, stale docstring, and leftover script
+**Depends on**: Phase 18
+**Requirements**: RW-02 (gap closure), CL-05 (gap closure)
+**Gap Closure:** Closes gaps from v2.0-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+  1. A byte-identical round-trip test exists for at least one subpatcher-containing .maxpat file, proving JSON key order is preserved through load-save for embedded patchers
+  2. The stale docstring in `src/maxpat/externals.py` line 112 no longer references `write_patch`
+  3. `patches/rhythmic-sampler/generated/_fix2.py` is deleted
+  4. All existing tests continue to pass (zero regressions)
+**Plans**: 1 plan
+
+Plans:
+- [ ] 19-01-PLAN.md -- Fix subpatcher key ordering bug, add byte-identical round-trip test, fix stale docstring, delete leftover script
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 20 -> 21 -> 22 -> 23 -> 24 -> 25
-Phase 23 (Polish) and Phase 24 (Layout) can run in parallel after Phase 21. Phase 25 depends on all prior phases.
+Phases execute in numeric order: 13 -> 14 -> 15 -> 16 -> 17 -> 18
+Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 15 for graph traversal.
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -166,14 +271,9 @@ Phase 23 (Polish) and Phase 24 (Layout) can run in parallel after Phase 21. Phas
 | 16. Patch Analysis | v2.0 | 1/1 | Complete | 2026-03-16 |
 | 17. Agent and Command Migration | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 18. v1.x Cleanup | v2.0 | 2/2 | Complete | 2026-03-16 |
-| 19. Tech Debt Cleanup | v2.0 | 1/1 | Complete | 2026-03-17 |
-| 20. Foundation | v3.0 | 0/2 | Not started | - |
-| 21. Scaffold & Routing | v3.0 | 0/TBD | Not started | - |
-| 22. Validation & Export | v3.0 | 0/TBD | Not started | - |
-| 23. Polish | v3.0 | 0/TBD | Not started | - |
-| 24. Layout | v3.0 | 0/TBD | Not started | - |
-| 25. Testing | v3.0 | 0/TBD | Not started | - |
+| 19. Tech Debt Cleanup | 1/1 | Complete    | 2026-03-17 | - |
+| 20. Foundation (M4L) | v3.0 | 1/2 | In Progress | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-05 -- Phase 20 planned (2 plans, 1 wave)*
+*Last updated: 2026-04-05 -- Phase 20 plan 02 complete (M4L constants + detection + CLAUDE.md rules)*

@@ -2,12 +2,12 @@
 phase: 20
 slug: foundation
 status: draft
-nyquist_compliant: false
-wave_0_complete: false
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-05
 ---
 
-# Phase 20 — Validation Strategy
+# Phase 20 -- Validation Strategy
 
 > Per-phase validation contract for feedback sampling during execution.
 
@@ -45,14 +45,18 @@ created: 2026-04-05
 | 20-01-05 | 01 | 1 | VALID-04 | unit | `python3 -m pytest tests/test_m4l_foundation.py -x -k "detect"` | ❌ W0 | ⬜ pending |
 | 20-01-06 | 01 | 1 | VALID-05 | unit | `python3 -m pytest tests/test_validation.py tests/test_critics.py -x -k "terminal or plugout"` | Partial | ⬜ pending |
 | 20-01-07 | 01 | 1 | ROUTING-02 | smoke | `python3 -m pytest tests/test_claude_md.py -x` | Partial | ⬜ pending |
+| 20-02-01 | 02 | 1 | DB-04 | unit | `python3 -m pytest tests/test_m4l_detection.py -x -k "ParamType or UnitStyle or ModMode or ParamVisibility"` | Yes | ⬜ pending |
+| 20-02-02 | 02 | 1 | VALID-04 | unit | `python3 -m pytest tests/test_m4l_detection.py -x -k "detect"` | Yes | ⬜ pending |
+| 20-02-03 | 02 | 1 | ROUTING-02 | smoke | `grep "Max for Live (M4L)" CLAUDE.md` | Yes | ⬜ pending |
 
-*Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
+*Status: ⬜ pending / ✅ green / ❌ red / ⚠️ flaky*
 
 ---
 
 ## Wave 0 Requirements
 
-- [ ] `tests/test_m4l_foundation.py` — stubs for DB-03, DB-04, VALID-04 (new test file for Phase 20 deliverables)
+- [x] `tests/test_m4l_detection.py` -- covers DB-04 constants, VALID-04 detect_device_type
+- [ ] `tests/test_m4l_foundation.py` -- stubs for DB-03 (relationships), remaining DB-04, VALID-04
 - [ ] Add test cases to existing `test_validation.py` for plugout~ in _TERMINAL_NAMES (VALID-05)
 - [ ] Add test cases to existing `test_critics.py` for plugout~ in dsp_critic _TERMINAL_NAMES (VALID-05)
 - [ ] Add test cases to existing `test_object_schema.py` for live.adsrui, live.adsr~, live.scope~ domain (DB-01, DB-02)
@@ -69,11 +73,11 @@ created: 2026-04-05
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
 - [ ] No watch-mode flags
-- [ ] Feedback latency < 15s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] Feedback latency < 15s
+- [x] `nyquist_compliant: true` set in frontmatter
 
 **Approval:** pending
