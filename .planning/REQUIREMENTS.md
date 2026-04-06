@@ -24,9 +24,9 @@ Requirements for M4L device creation milestone. Each maps to roadmap phases.
 
 ### Validation
 
-- [ ] **VALID-01**: M4L critic detects gain~ connected to plugout~ and flags as error
-- [ ] **VALID-02**: M4L critic validates device completeness (required objects per device type)
-- [ ] **VALID-03**: M4L critic validates unique parameter_longname across device
+- [x] **VALID-01**: M4L critic detects gain~ connected to plugout~ and flags as error
+- [x] **VALID-02**: M4L critic validates device completeness (required objects per device type)
+- [x] **VALID-03**: M4L critic validates unique parameter_longname across device
 - [ ] **VALID-04**: Device type detection identifies audio_effect/instrument/midi_effect from patch structure
 - [ ] **VALID-05**: plugout~ added to _TERMINAL_NAMES in validation.py and dsp_critic.py
 
@@ -103,9 +103,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SCAFFOLD-06 | Phase 21 | Pending |
 | ROUTING-01 | Phase 21 | Pending |
 | ROUTING-03 | Phase 21 | Pending |
-| VALID-01 | Phase 22 | Pending |
-| VALID-02 | Phase 22 | Pending |
-| VALID-03 | Phase 22 | Pending |
+| VALID-01 | Phase 22 | Complete |
+| VALID-02 | Phase 22 | Complete |
+| VALID-03 | Phase 22 | Complete |
 | EXPORT-01 | Phase 22 | Pending |
 | POLISH-01 | Phase 23 | Pending |
 | POLISH-02 | Phase 23 | Pending |
