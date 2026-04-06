@@ -13,7 +13,7 @@ The object knowledge base lives at `.claude/max-objects/` with one subdirectory 
   jitter/objects.json    # Video, matrix, OpenGL (210 objects)
   mc/objects.json        # Multichannel wrappers (215 objects)
   gen/objects.json       # Gen~ DSP and Jitter operators (189 objects)
-  m4l/objects.json       # Max for Live objects (36 objects)
+  m4l/objects.json       # Max for Live objects (33 objects)
   rnbo/objects.json      # RNBO export-compatible objects (560 objects)
   packages/objects.json  # Package objects (87 objects)
 ```
@@ -126,22 +126,6 @@ Every patch save MUST be committed to git. The `save_patch_roundtrip()`, `write_
 - Use `snapshot~` to convert signal values to control rate for display
 - Use `meter~` or `levelmeter~` for audio level monitoring
 - Multichannel: `mc.` prefix objects handle multiple channels -- use `mc.pack~`/`mc.unpack~` to convert between MC and individual channels
-
-### Max for Live (M4L)
-
-- **Device types:** audio_effect (plugin~/plugout~), instrument (midiin/plugout~), midi_effect (midiin/midiout, no audio I/O). Each type has required boilerplate objects.
-- **Never connect gain~ to plugout~** -- Ableton's channel strip handles volume. The M4L critic will flag this as an error.
-- **Local naming with `---` prefix:** All named objects (buffer~, coll, dict, send, receive, send~, receive~, value) in M4L devices MUST use `---` prefix (e.g., `buffer~ ---mybuffer`). MAX replaces `---` with a unique device instance ID at runtime, preventing name collisions when multiple instances of the same device are loaded.
-- **parameter_enable=1:** Every live.* UI control (live.dial, live.slider, live.numbox, live.menu, live.toggle, live.tab, live.text, live.adsrui) MUST have `parameter_enable: 1` in its box attributes and a complete `saved_attribute_attributes` block with parameter_longname, parameter_shortname, and parameter_type. Without this, the control won't save state or be automatable in Live.
-- **plugin~/plugout~ boilerplate:** audio_effect devices use `plugin~` (stereo audio input) and `plugout~` (stereo audio output). Instrument devices use `plugout~` only (audio output). Both objects use `maxclass: "newobj"` in .maxpat JSON (not "plugin~"/"plugout~").
-- **live.thisdevice:** Every M4L device should include `live.thisdevice` for device initialization. It outputs device ID and state on load.
-- **Presentation mode:** M4L devices must set `openinpresentation: 1` on the top-level patcher. All user-facing controls need `presentation: 1` and `presentation_rect` attributes. The `devicewidth` attribute on the top-level patcher sets the device width in Ableton.
-- **169px height constraint:** Ableton's device view is 169px tall. All presentation-mode controls must fit within this height. Controls placed below 169px will be clipped and invisible.
-- **live.path / live.object:** Used together to interact with the Live API. `live.path` resolves an API path string (e.g., `live_set tracks 0`), `live.object` sends messages to the resolved object. They are a required pair.
-- **live.banks:** Organizes parameters into banks for Push controller layout. Groups of 8 parameters per bank. Auto-generated in Phase 23.
-- **Parameter metadata:** Each live.* parameter has: `parameter_longname` (unique, shown in automation), `parameter_shortname` (8 chars max, shown on Push), `parameter_type` (0=int, 1=float, 2=enum), `parameter_unitstyle` (display units), `parameter_modmode` (modulation behavior). Values defined in `src/maxpat/m4l_constants.py`.
-- **MIDI passthrough:** Instrument and midi_effect devices use `midiin`/`midiout` for MIDI data. MIDI flows through even if the device doesn't process it -- always include both objects.
-- **.amxd export:** M4L devices are saved as .maxpat (JSON) but exported as .amxd (binary header + JSON). The binary header identifies device type. Use `write_amxd()` for export (Phase 22).
 
 ### Gen~ (GenExpr DSP Code)
 

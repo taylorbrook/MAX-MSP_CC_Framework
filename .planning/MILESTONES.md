@@ -22,22 +22,3 @@
 
 ---
 
-## v2.0 Direct .maxpat Editing (Shipped: 2026-03-17)
-
-**Phases completed:** 7 phases (13-19), 15 plans
-**Timeline:** 2 days (2026-03-15 to 2026-03-17)
-**Requirements:** 6/6 satisfied
-
-**Delivered:** Read-write Patcher API replacing the Python generation pipeline. .maxpat files are now the single source of truth — load, parse, edit, and write with full round-trip fidelity.
-
-**Key accomplishments:**
-1. Round-trip read/write with indent detection, key ordering, and trailing newline preservation
-2. Search and mutation primitives — find_box, find_boxes, add/remove connections, replace_box, insert_into_connection
-3. Intelligent editing — collision detection, graph traversal, signal path analysis, connected components
-4. Patch analysis — domain classification, section signatures, parameter detection, signal chain tracing
-5. Agent and command migration — /max-build, /max-iterate, /max-onboard all work directly with .maxpat
-6. 40+ quick tasks for polish, DB cleanup, gen~ patterns, z-order API, and documentation
-
-**Git range:** 0245247 → 4234af7
-
----

@@ -10829,6 +10829,141 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "live.scope~": {
+    "name": "live.scope~",
+    "maxclass": "live.scope~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ui",
+    "digest": "Visualize an audio signal",
+    "description": "Use live.scope~ to visualize an audio signal. This object can be used as an alternative to scope~.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "signal"
+    ],
+    "attributes": {
+      "active": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "line_width": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "grid_line_width": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "vertical_divisions": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "grid": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "smooth": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "trigger_direction": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "trigger_threshold": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "samples": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "decay_time": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "interval": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "horizontal_divisions": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "rounded": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "activebgcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "linecolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "activelinecolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "activegridcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "scope~",
+      "meter~",
+      "live.meter~"
+    ],
+    "tags": [
+      "ui"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "mira.motion": {
     "name": "mira.motion",
     "maxclass": "mira.motion",

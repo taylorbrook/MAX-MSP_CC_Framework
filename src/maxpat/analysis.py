@@ -8,7 +8,6 @@ and parameter inventory. Extracted from patcher.py for maintainability.
 from __future__ import annotations
 
 from collections import Counter, deque
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from src.maxpat.maxclass_map import UI_MAXCLASSES
@@ -103,85 +102,6 @@ _SECTION_NAME_PRIORITY: dict[str, int] = {
     "OpenGL Render": 75,
     "Matrix Processing": 70,
 }
-
-
-@dataclass
-class DeviceTypeResult:
-    """Result of M4L device type detection.
-
-    Attributes:
-        device_type: One of "audio_effect", "instrument", "midi_effect", "uncertain"
-        confidence: 0.0-1.0, where 1.0 = unambiguous detection (per D-03)
-        evidence: Which key objects were found in the patch
-    """
-    device_type: str
-    confidence: float
-    evidence: dict[str, bool]
-
-
-def detect_device_type(patch_dict: dict) -> DeviceTypeResult:
-    """Detect M4L device type from patch structure.
-
-    Scans top-level boxes for plugin~, plugout~, midiin, midiout, dac~, ezdac~.
-    Returns definitive type for unambiguous patterns, "uncertain" for ambiguous.
-
-    Per D-01: Unambiguous patterns return definitive type. Ambiguous patterns
-    (e.g., plugin~ + midiin) return "uncertain" so the system asks the user.
-    Per D-02: Works on raw patch_dict (both /max-onboard and /max-new flows).
-    Per D-03: Confidence is numeric 0.0-1.0 for downstream threshold setting.
-    """
-    patcher = patch_dict.get("patcher", {})
-    boxes = patcher.get("boxes", [])
-
-    has_plugin = False
-    has_plugout = False
-    has_midiin = False
-    has_midiout = False
-    has_dac = False
-
-    for box_entry in boxes:
-        box = box_entry.get("box", {})
-        text = box.get("text", "")
-        if not text:
-            continue
-        obj_name = text.split()[0]
-        if obj_name == "plugin~":
-            has_plugin = True
-        elif obj_name == "plugout~":
-            has_plugout = True
-        elif obj_name == "midiin":
-            has_midiin = True
-        elif obj_name == "midiout":
-            has_midiout = True
-        elif obj_name in ("dac~", "ezdac~"):
-            has_dac = True
-
-    evidence = {
-        "plugin~": has_plugin,
-        "plugout~": has_plugout,
-        "midiin": has_midiin,
-        "midiout": has_midiout,
-        "dac~": has_dac,
-    }
-
-    # Unambiguous patterns (per D-01)
-    if has_midiin and has_midiout and not has_plugin and not has_plugout:
-        return DeviceTypeResult("midi_effect", 1.0, evidence)
-    if has_plugin and has_plugout and not has_midiin and not has_midiout:
-        return DeviceTypeResult("audio_effect", 1.0, evidence)
-    if has_plugout and has_midiin and not has_plugin:
-        return DeviceTypeResult("instrument", 0.9, evidence)
-
-    # Counter-signal: dac~ without plugout~ suggests non-M4L patch
-    if has_dac and not has_plugout:
-        return DeviceTypeResult("uncertain", 0.3, evidence)
-
-    # Ambiguous: mixed signals -- ask user (per D-01)
-    if has_plugin and has_midiin:
-        return DeviceTypeResult("uncertain", 0.5, evidence)
-
-    # No M4L objects found
-    return DeviceTypeResult("uncertain", 0.0, evidence)
 
 
 class AnalysisMixin:

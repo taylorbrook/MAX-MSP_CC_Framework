@@ -37,6 +37,9 @@ Analyze the user's task description for domain keywords and intent. See `referen
 | JavaScript | max-js-agent | javascript, node, n4m, script, node.script, js object, max-api, handler |
 | Externals | max-ext-agent | external, sdk, c++, compile, mxo, min-devkit |
 | UI/Layout | max-ui-agent | layout, presentation, ui, controls, dial, slider, panel, display, visual |
+| M4L/Ableton | (multi-agent) | Max for Live, M4L, Ableton device, live.dial, plugin~, plugout~, parameter_enable |
+
+**M4L dispatch:** When M4L keywords are detected, dispatch to the relevant domain agent(s) with M4L context injected. M4L is not a separate agent -- it augments existing agents. See `references/dispatch-rules.md` M4L section for full keyword list and context injection details.
 
 ## Multi-Domain Dispatch
 
