@@ -310,6 +310,9 @@ def create_m4l_project(
     maxpat_path = project_dir / "generated" / f"{name}.maxpat"
     maxpat_path.write_text(json.dumps(patch_dict, indent=2) + "\n")
     
+    # Commit per CLAUDE.md Rule #7
+    auto_commit_patch(project_dir, base_dir, description=f"scaffold {device_type} device")
+    
     return project_dir
 ```
 
@@ -370,17 +373,19 @@ When generating audio for M4L devices (audio_effect or instrument):
 
 **Mitigation for A1:** The maxclass_map.py UI_MAXCLASSES set does NOT contain "midiin" or "midiout". `resolve_maxclass()` returns "newobj" for anything not in that set. This is the same behavior as notein, noteout, ctlin, etc., which are confirmed "newobj" in kicksynth-m4l.maxpat. HIGH confidence this is correct.
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **midiin/midiout I/O Count Verification**
+1. **midiin/midiout I/O Count Verification** -- RESOLVED
    - What we know: Database says midiin has 1 inlet, 1 outlet; midiout has 1 inlet, 1 outlet
    - What's unclear: Whether midiout has any outlets (some MIDI objects have status outlets)
    - Recommendation: Trust ObjectDatabase.compute_io_counts() -- it's verified. LOW risk.
+   - Resolution: Using ObjectDatabase as source of truth. If midiout has additional outlets they are unused in the scaffold (only inlet 0 is connected).
 
-2. **Should scaffold include a `---` prefixed object?**
+2. **Should scaffold include a `---` prefixed object?** -- RESOLVED
    - What we know: D-04 says prefix applied at scaffold-time, but D-01 says minimal boilerplate only
    - What's unclear: The scaffold boilerplate (plugin~, plugout~, midiin, midiout, live.thisdevice) doesn't include any named objects that need `---` prefix (no buffer~, coll, dict, send, receive, etc.)
    - Recommendation: SCAFFOLD-05 is satisfied by the `create_m4l_project()` function being M4L-aware. The actual `---` prefixing happens when agents add named objects during /max-build. The scaffold itself has no objects that need the prefix. Document this clearly.
+   - Resolution: No `---` prefixed objects in scaffold. SCAFFOLD-05 satisfied by M4L-aware context (openinpresentation=1) that signals downstream agents to apply `---` prefix when adding named objects. Tests verify the precondition: scaffold contains no named objects that would need the prefix.
 
 ## Validation Architecture
 
@@ -398,11 +403,11 @@ When generating audio for M4L devices (audio_effect or instrument):
 | SCAFFOLD-01 | audio_effect scaffold has plugin~, plugout~, live.thisdevice, openinpresentation=1, devicewidth | unit | `python -m pytest tests/test_m4l_scaffold.py::TestAudioEffect -x` | Wave 0 |
 | SCAFFOLD-02 | instrument scaffold has midiin, midiout, plugout~, live.thisdevice, midiin->midiout connection | unit | `python -m pytest tests/test_m4l_scaffold.py::TestInstrument -x` | Wave 0 |
 | SCAFFOLD-03 | midi_effect scaffold has midiin, midiout, live.thisdevice, no audio I/O, midiin->midiout connection | unit | `python -m pytest tests/test_m4l_scaffold.py::TestMidiEffect -x` | Wave 0 |
-| SCAFFOLD-04 | live.* controls get parameter_enable=1 + saved_attribute_attributes | unit | `python -m pytest tests/test_m4l_scaffold.py::TestParameterEnable -x` | Wave 0 |
-| SCAFFOLD-05 | Named objects auto-prefixed with `---` in M4L context | unit | `python -m pytest tests/test_m4l_scaffold.py::TestTripleDashPrefix -x` | Wave 0 |
+| SCAFFOLD-04 | Scaffold contains no live.* UI controls (precondition: parameter_enable applies at /max-build time) | unit | `python -m pytest tests/test_m4l_scaffold.py::TestParameterEnable -x` | Wave 0 |
+| SCAFFOLD-05 | Scaffold contains no named objects needing `---` prefix (precondition: prefix applies at /max-build time) | unit | `python -m pytest tests/test_m4l_scaffold.py::TestTripleDashPrefix -x` | Wave 0 |
 | SCAFFOLD-06 | Presentation flags set on user-facing objects | unit | `python -m pytest tests/test_m4l_scaffold.py::TestPresentation -x` | Wave 0 |
-| ROUTING-01 | Router M4L keywords in dispatch-rules.md | unit | `python -m pytest tests/test_agent_skills.py -x -k m4l` | Wave 0 |
-| ROUTING-03 | Agent SKILL.md files contain M4L sections | unit | `python -m pytest tests/test_agent_skills.py -x -k m4l` | Wave 0 |
+| ROUTING-01 | Router M4L keywords in dispatch-rules.md | grep | `grep "M4L Dispatch" .claude/skills/max-router/references/dispatch-rules.md` | N/A |
+| ROUTING-03 | Agent SKILL.md files contain M4L sections | grep | `grep -l "M4L" .claude/skills/max-dsp-agent/SKILL.md .claude/skills/max-patch-agent/SKILL.md .claude/skills/max-ui-agent/SKILL.md .claude/skills/max-critic/SKILL.md` | N/A |
 
 ### Sampling Rate
 - **Per task commit:** `python -m pytest tests/test_m4l_scaffold.py -x`
@@ -411,7 +416,6 @@ When generating audio for M4L devices (audio_effect or instrument):
 
 ### Wave 0 Gaps
 - [ ] `tests/test_m4l_scaffold.py` -- covers SCAFFOLD-01 through SCAFFOLD-06
-- [ ] M4L routing tests in `tests/test_agent_skills.py` -- covers ROUTING-01, ROUTING-03
 
 ## Project Constraints (from CLAUDE.md)
 
