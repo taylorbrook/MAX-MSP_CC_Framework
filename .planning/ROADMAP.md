@@ -79,7 +79,11 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
   3. relationships.json contains M4L companion entries (plugin~/plugout~, live.path/live.object, midiin/midiout) so agents discover correct pairings
   4. `detect_device_type()` returns audio_effect/instrument/midi_effect with confidence scores from patch structure analysis (plugin~/plugout~/midiin presence)
   5. `plugout~` is in `_TERMINAL_NAMES` in both validation.py and dsp_critic.py -- M4L signal chains no longer generate false-positive unterminated warnings
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 20-01-PLAN.md -- Object DB entries (live.adsr~, live.adsrui, live.scope~), overrides (plugin~/plugout~ maxclass), M4L relationships, terminal names fix
+- [ ] 20-02-PLAN.md -- M4L constants module, device type detection, CLAUDE.md M4L rules
 
 ### Phase 21: Scaffold & Routing
 **Goal**: Users can create M4L devices of any type with correct boilerplate auto-generated, and the agent system routes M4L tasks with device-aware context
@@ -163,7 +167,7 @@ Phase 23 (Polish) and Phase 24 (Layout) can run in parallel after Phase 21. Phas
 | 17. Agent and Command Migration | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 18. v1.x Cleanup | v2.0 | 2/2 | Complete | 2026-03-16 |
 | 19. Tech Debt Cleanup | v2.0 | 1/1 | Complete | 2026-03-17 |
-| 20. Foundation | v3.0 | 0/TBD | Not started | - |
+| 20. Foundation | v3.0 | 0/2 | Not started | - |
 | 21. Scaffold & Routing | v3.0 | 0/TBD | Not started | - |
 | 22. Validation & Export | v3.0 | 0/TBD | Not started | - |
 | 23. Polish | v3.0 | 0/TBD | Not started | - |
@@ -172,4 +176,4 @@ Phase 23 (Polish) and Phase 24 (Layout) can run in parallel after Phase 21. Phas
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-05 -- v3.0 M4L Device Creation roadmap added (6 phases, 26 requirements)*
+*Last updated: 2026-04-05 -- Phase 20 planned (2 plans, 1 wave)*
