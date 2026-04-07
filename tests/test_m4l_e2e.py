@@ -158,14 +158,14 @@ AUDIO_EFFECT_CONTROLS = [
 
 INSTRUMENT_CONTROLS = [
     _make_control("obj-in-1", "live.dial", "pitch_tune"),          # Pitch group
-    _make_control("obj-in-2", "live.dial", "pitch_detune"),        # Pitch group
+    _make_control("obj-in-2", "live.numbox", "pitch_detune"),      # Pitch group (numbox to fit 169px)
     _make_control("obj-in-3", "live.dial", "filter_cutoff"),       # Filter group
-    _make_control("obj-in-4", "live.dial", "filter_resonance"),    # Filter group
+    _make_control("obj-in-4", "live.numbox", "filter_resonance"),  # Filter group (numbox to fit 169px)
     _make_control("obj-in-5", "live.dial", "amp_volume"),          # Amp group
-    _make_control("obj-in-6", "live.dial", "attack"),              # Envelope group
-    _make_control("obj-in-7", "live.dial", "decay"),               # Envelope group
-    _make_control("obj-in-8", "live.dial", "sustain"),             # Envelope group
-    _make_control("obj-in-9", "live.dial", "release"),             # Envelope group
+    _make_control("obj-in-6", "live.numbox", "attack"),             # Envelope group (numbox to fit 169px)
+    _make_control("obj-in-7", "live.numbox", "decay"),             # Envelope group (numbox to fit 169px)
+    _make_control("obj-in-8", "live.numbox", "sustain"),           # Envelope group (numbox to fit 169px)
+    _make_control("obj-in-9", "live.numbox", "release"),           # Envelope group (numbox to fit 169px)
     _make_control("obj-in-10", "live.dial", "mod_depth"),          # Mod group
 ]
 
@@ -175,6 +175,122 @@ MIDI_EFFECT_CONTROLS = [
     _make_control("obj-me-1", "live.dial", "pitch_transpose"),     # Pitch group
     _make_control("obj-me-2", "live.dial", "velocity"),            # Amp group
 ]
+
+
+# ---------------------------------------------------------------------------
+# TestInstrumentE2E
+# ---------------------------------------------------------------------------
+
+class TestInstrumentE2E:
+    """E2E tests for instrument device (10 controls, 5 groups, tabbed layout)."""
+
+    def test_scaffold_has_required_objects(self, tmp_path):
+        """Post-scaffold checkpoint: required instrument objects present."""
+        patch_dict, _, _ = _build_device(
+            "instrument", "in-test", tmp_path, INSTRUMENT_CONTROLS,
+        )
+        boxes = patch_dict["patcher"]["boxes"]
+        texts = [b["box"].get("text", "") for b in boxes]
+        maxclasses = [b["box"].get("maxclass", "") for b in boxes]
+
+        assert any("plugout~" in t for t in texts), "Missing plugout~"
+        assert any("midiin" == t for t in texts), "Missing midiin"
+        assert any("midiout" == t for t in texts), "Missing midiout"
+        assert "live.thisdevice" in maxclasses, "Missing live.thisdevice"
+        # Instruments do NOT have plugin~ (no audio input)
+        assert not any("plugin~" in t for t in texts), "Instrument should not have plugin~"
+
+    def test_full_pipeline_no_blockers(self, tmp_path):
+        """Post-critic checkpoint: no blocker findings."""
+        patch_dict, _, patch_path = _build_device(
+            "instrument", "in-pipe", tmp_path, INSTRUMENT_CONTROLS,
+        )
+        critic_results, _, _ = _run_pipeline(
+            patch_dict, patch_path, "instrument", tmp_path,
+        )
+        blockers = [r for r in critic_results if r.severity == "blocker"]
+        assert blockers == [], f"Blockers found: {blockers}"
+
+    def test_presentation_within_169px(self, tmp_path):
+        """All controls fit within Ableton's 169px device height."""
+        from src.maxpat.m4l_polish import polish_m4l_device
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch_dict, _, _ = _build_device(
+            "instrument", "in-height", tmp_path, INSTRUMENT_CONTROLS,
+        )
+        polish_m4l_device(patch_dict)
+        layout_m4l_presentation(patch_dict)
+        _assert_within_height(patch_dict)
+
+    def test_export_valid_amxd(self, tmp_path):
+        """Full pipeline produces valid AMXD binary with instrument header."""
+        patch_dict, _, patch_path = _build_device(
+            "instrument", "in-export", tmp_path, INSTRUMENT_CONTROLS,
+        )
+        _, _, amxd_bytes = _run_pipeline(
+            patch_dict, patch_path, "instrument", tmp_path,
+        )
+        _assert_valid_amxd(amxd_bytes, "instrument")
+        assert amxd_bytes[8:12] == AMXD_TYPE_INSTRUMENT
+
+
+# ---------------------------------------------------------------------------
+# TestMidiEffectE2E
+# ---------------------------------------------------------------------------
+
+class TestMidiEffectE2E:
+    """E2E tests for midi_effect device (2 controls, 2 groups, single-page layout)."""
+
+    def test_scaffold_has_required_objects(self, tmp_path):
+        """Post-scaffold checkpoint: required MIDI effect objects present."""
+        patch_dict, _, _ = _build_device(
+            "midi_effect", "me-test", tmp_path, MIDI_EFFECT_CONTROLS,
+        )
+        boxes = patch_dict["patcher"]["boxes"]
+        texts = [b["box"].get("text", "") for b in boxes]
+        maxclasses = [b["box"].get("maxclass", "") for b in boxes]
+
+        assert any("midiin" == t for t in texts), "Missing midiin"
+        assert any("midiout" == t for t in texts), "Missing midiout"
+        assert "live.thisdevice" in maxclasses, "Missing live.thisdevice"
+        # MIDI effects have no audio I/O
+        assert not any("plugin~" in t for t in texts), "MIDI effect should not have plugin~"
+        assert not any("plugout~" in t for t in texts), "MIDI effect should not have plugout~"
+
+    def test_full_pipeline_no_blockers(self, tmp_path):
+        """Post-critic checkpoint: no blocker findings."""
+        patch_dict, _, patch_path = _build_device(
+            "midi_effect", "me-pipe", tmp_path, MIDI_EFFECT_CONTROLS,
+        )
+        critic_results, _, _ = _run_pipeline(
+            patch_dict, patch_path, "midi_effect", tmp_path,
+        )
+        blockers = [r for r in critic_results if r.severity == "blocker"]
+        assert blockers == [], f"Blockers found: {blockers}"
+
+    def test_presentation_within_169px(self, tmp_path):
+        """All controls fit within Ableton's 169px device height."""
+        from src.maxpat.m4l_polish import polish_m4l_device
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch_dict, _, _ = _build_device(
+            "midi_effect", "me-height", tmp_path, MIDI_EFFECT_CONTROLS,
+        )
+        polish_m4l_device(patch_dict)
+        layout_m4l_presentation(patch_dict)
+        _assert_within_height(patch_dict)
+
+    def test_export_valid_amxd(self, tmp_path):
+        """Full pipeline produces valid AMXD binary with MIDI effect header."""
+        patch_dict, _, patch_path = _build_device(
+            "midi_effect", "me-export", tmp_path, MIDI_EFFECT_CONTROLS,
+        )
+        _, _, amxd_bytes = _run_pipeline(
+            patch_dict, patch_path, "midi_effect", tmp_path,
+        )
+        _assert_valid_amxd(amxd_bytes, "midi_effect")
+        assert amxd_bytes[8:12] == AMXD_TYPE_MIDI_EFFECT
 
 
 # ---------------------------------------------------------------------------
