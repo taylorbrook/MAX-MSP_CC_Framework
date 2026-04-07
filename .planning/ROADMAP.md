@@ -325,8 +325,13 @@ Plans:
   1. Parameter naming intelligence auto-derives longname, shortname (8 chars max), and varname from semantic context (e.g., "Filter Cutoff" → shortname "Cutoff", varname "filter_cutoff")
   2. Push controller bank organization via live.banks groups parameters into banks of 8
   3. Info text / annotations auto-populated on live.* controls for Ableton Info View tooltips
-**Plans**: 0 plans
+**Plans**: 3 plans
 Canonical refs: `src/maxpat/m4l_constants.py`, `patches/kicksynth/generated/kicksynth-m4l.maxpat`
+
+Plans:
+- [ ] 23-01-PLAN.md -- TDD parameter naming intelligence (POLISH-01)
+- [ ] 23-02-PLAN.md -- TDD Push banks and info text (POLISH-02, POLISH-03)
+- [ ] 23-03-PLAN.md -- TDD critic polish warnings (D-13)
 
 ### Phase 24: Layout
 **Goal**: M4L presentation layout engine positions controls intelligently within Ableton's 169px device height constraint — replacing crude grid fallback with device-aware layout
@@ -382,10 +387,10 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 20. Foundation (M4L) | v3.0 | 2/2 | Complete | 2026-04-06 |
 | 21. Scaffold and Routing | v3.0 | 2/2 | Complete    | 2026-04-06 |
 | 22. Validation and Export | v3.0 | 2/2 | Complete    | 2026-04-06 |
-| 23. Polish | v3.0 | 0/0 | Planned | - |
+| 23. Polish | v3.0 | 0/3 | Planned | - |
 | 24. Layout | v3.0 | 0/0 | Planned | - |
 | 25. Testing | v3.0 | 0/0 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-06 -- Phase 22 planned: 2 plans in 1 wave*
+*Last updated: 2026-04-06 -- Phase 23 planned: 3 plans in 3 waves*
