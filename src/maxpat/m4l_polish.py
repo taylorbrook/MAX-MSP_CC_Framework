@@ -190,6 +190,116 @@ def derive_parameter_names(patch_dict: dict) -> dict:
     return patch_dict
 
 
+# ---------------------------------------------------------------------------
+# Push bank organization (POLISH-02)
+# ---------------------------------------------------------------------------
+
+_BANK_KEYWORDS: dict[str, set[str]] = {
+    "Pitch": {"pitch", "tune", "tuning", "detune", "transpose", "semitone", "cent", "octave"},
+    "Amp": {"amp", "amplitude", "volume", "level", "gain", "velocity", "body"},
+    "Filter": {"filter", "cutoff", "resonance", "reso", "freq", "tone", "drive", "hp", "lp", "bp"},
+    "Envelope": {"envelope", "env", "attack", "decay", "sustain", "release", "adsr", "curve"},
+    "Mod": {"modulation", "mod", "lfo", "rate", "depth", "amount", "speed"},
+    "FX": {"delay", "reverb", "chorus", "flanger", "phaser", "distortion", "comp", "eq"},
+    "Noise": {"noise", "sub"},
+    "Mix": {"mix", "dry", "wet", "send", "return", "pan", "width"},
+}
+
+
+def _classify_parameter(longname_or_varname: str) -> str:
+    """Classify a parameter into a semantic group by keywords.
+
+    Splits on spaces and underscores, scores against _BANK_KEYWORDS.
+    First word (prefix) gets +2 bonus if found in any keyword set.
+    Returns group name with highest score, or "Main" if no match.
+    """
+    parts = set(longname_or_varname.lower().replace("_", " ").split())
+    # Prefix is the first word
+    tokens = longname_or_varname.lower().replace("_", " ").split()
+    prefix = tokens[0] if tokens else ""
+
+    best_group = "Main"
+    best_score = 0
+    for group_name, keywords in _BANK_KEYWORDS.items():
+        score = len(parts & keywords)
+        # Bonus for prefix match
+        if prefix in keywords:
+            score += 2
+        if score > best_score:
+            best_score = score
+            best_group = group_name
+
+    return best_group
+
+
+def organize_push_banks(patch_dict: dict) -> dict:
+    """Organize parameters into semantic Push banks of 8.
+
+    Mutates patch_dict in place. Returns the same dict.
+
+    - Collects all live.* controls via _collect_live_controls
+    - Classifies each parameter into a semantic group
+    - Chunks each group into banks of 8, padding partial banks with "-"
+    - Creates or reuses the live.banks box
+    - Sets _parameter_banks attribute with bank data
+    """
+    patcher = patch_dict.get("patcher", {})
+    boxes = patcher.get("boxes", [])
+    controls = _collect_live_controls(boxes)
+
+    if not controls:
+        return patch_dict
+
+    # Collect longnames and classify into groups
+    groups: dict[str, list[str]] = {}
+    for box in controls:
+        saa = box.get("saved_attribute_attributes", {})
+        valueof = saa.get("valueof", {})
+        longname = valueof.get("parameter_longname", "")
+        if not longname:
+            continue
+        group = _classify_parameter(longname)
+        groups.setdefault(group, []).append(longname)
+
+    if not groups:
+        return patch_dict
+
+    # Build bank dicts: chunk each group into banks of 8
+    bank_dicts: list[dict] = []
+    for group_name, longnames in groups.items():
+        for chunk_idx in range(0, len(longnames), 8):
+            chunk = longnames[chunk_idx : chunk_idx + 8]
+            # Pad to 8
+            padded = chunk + ["-"] * (8 - len(chunk))
+            # Name: "Filter", "Filter 2", etc.
+            bank_num = chunk_idx // 8
+            name = group_name if bank_num == 0 else f"{group_name} {bank_num + 1}"
+            bank_dicts.append({"name": name, "parameters": padded})
+
+    # Find or create live.banks box
+    banks_box = None
+    for entry in boxes:
+        box = entry.get("box", entry)
+        if box.get("maxclass") == "live.banks":
+            banks_box = box
+            break
+
+    if banks_box is None:
+        banks_box = {
+            "id": "obj-live-banks",
+            "maxclass": "live.banks",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [""],
+            "patching_rect": [20.0, 20.0, 315.0, 45.0],
+        }
+        boxes.append({"box": banks_box})
+
+    banks_box["_parameter_banks"] = {"banks": bank_dicts}
+
+    return patch_dict
+
+
 def _resolve_duplicate_longnames(controls: list[dict]) -> None:
     """Append index suffix to duplicate longnames."""
     # Collect all longnames with their box refs
