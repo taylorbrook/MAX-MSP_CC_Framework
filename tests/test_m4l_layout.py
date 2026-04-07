@@ -1132,3 +1132,272 @@ class TestTabSpecialCases:
                 break
         else:
             pytest.fail("live.gain~ not found in patch")
+
+
+# ===========================================================================
+# TestReadoutOverlay
+# ===========================================================================
+
+class TestReadoutOverlay:
+    """Readout overlay pattern: live.numbox overlaid on live.dial/slider."""
+
+    def _make_control_with_rect(
+        self, maxclass: str = "live.dial", rect: list | None = None,
+    ) -> tuple[list[dict], dict]:
+        """Create a boxes list with one control that has presentation_rect set.
+
+        Returns (boxes, control_box_inner).
+        """
+        if rect is None:
+            # Default: dial at (10, 26, 44, 66) matching plan spec
+            if maxclass == "live.dial":
+                rect = [10, 26, 44, 66]
+            elif maxclass == "live.slider":
+                rect = [10, 26, 39, 87]
+            else:
+                rect = [10, 26, 44, 66]
+        box = {
+            "id": "obj-ctrl-1",
+            "maxclass": maxclass,
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": ["", "float"],
+            "parameter_enable": 1,
+            "presentation": 1,
+            "presentation_rect": list(rect),
+        }
+        boxes: list[dict] = [{"box": box}]
+        return boxes, box
+
+    def test_creates_live_numbox(self):
+        """add_readout_overlay creates a live.numbox dict."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        assert readout["maxclass"] == "live.numbox"
+
+    def test_ignoreclick_set(self):
+        """Readout has ignoreclick=1 (D-06a) so dial remains interactive."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        assert readout.get("ignoreclick") == 1
+
+    def test_presentation_enabled(self):
+        """Readout has presentation=1."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        assert readout.get("presentation") == 1
+        assert "presentation_rect" in readout
+
+    def test_readout_x_matches_control(self):
+        """Readout x matches dial x (aligned horizontally)."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        ctrl_x = ctrl["presentation_rect"][0]
+        assert readout["presentation_rect"][0] == ctrl_x
+
+    def test_readout_y_at_bottom_of_control(self):
+        """Readout y = dial_y + dial_h - readout_h (bottom of dial area)."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        ctrl_rect = ctrl["presentation_rect"]
+        ctrl_y = ctrl_rect[1]
+        ctrl_h = ctrl_rect[3]
+        readout_h = readout["presentation_rect"][3]
+        expected_y = ctrl_y + ctrl_h - readout_h
+        assert readout["presentation_rect"][1] == expected_y, \
+            f"Readout y={readout['presentation_rect'][1]}, expected {expected_y}"
+
+    def test_inserted_at_index_0(self):
+        """Readout box inserted at index 0 in boxes list (CLAUDE.md Rule #6)."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        # boxes[0] should be the readout wrapper
+        assert boxes[0]["box"] is readout, \
+            "Readout must be at index 0 of boxes list for z-order"
+
+    def test_readout_id_unique(self):
+        """Readout has a unique id to avoid collision."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        assert "id" in readout
+        assert readout["id"] != ctrl["id"]
+
+    def test_readout_id_from_parameter(self):
+        """readout_id parameter overrides auto-generated id."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl, readout_id="my-readout")
+        assert readout["id"] == "my-readout"
+
+    def test_readout_width_matches_control_width(self):
+        """Readout width matches dial width (44px), not default numbox 56px."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect("live.dial", [10, 26, 44, 66])
+        readout = add_readout_overlay(boxes, ctrl)
+        assert readout["presentation_rect"][2] == 44, \
+            f"Readout width should match dial width 44, got {readout['presentation_rect'][2]}"
+
+    def test_works_for_live_slider(self):
+        """add_readout_overlay works for live.slider (different dimensions)."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect("live.slider", [20, 28, 39, 87])
+        readout = add_readout_overlay(boxes, ctrl)
+        assert readout["maxclass"] == "live.numbox"
+        assert readout["presentation_rect"][0] == 20  # matches slider x
+        assert readout["presentation_rect"][2] == 39  # matches slider width
+        expected_y = 28 + 87 - readout["presentation_rect"][3]
+        assert readout["presentation_rect"][1] == expected_y
+
+    def test_all_coords_whole_integers(self):
+        """All overlay coordinates are whole integers (D-10)."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        for i, val in enumerate(readout["presentation_rect"]):
+            assert isinstance(val, int), \
+                f"presentation_rect[{i}] = {val} ({type(val).__name__}) must be int"
+
+    def test_readout_height_is_15(self):
+        """Readout height is 15px (live.numbox standard height)."""
+        from src.maxpat.m4l_layout import add_readout_overlay
+
+        boxes, ctrl = self._make_control_with_rect()
+        readout = add_readout_overlay(boxes, ctrl)
+        assert readout["presentation_rect"][3] == 15
+
+
+# ===========================================================================
+# TestPopupPanel
+# ===========================================================================
+
+class TestPopupPanel:
+    """Popup panel pattern: hidden panel with show/hide toggle button."""
+
+    def test_panel_created_with_hidden(self):
+        """create_popup_panel creates a panel box with hidden=1."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300)
+        assert panel["maxclass"] == "panel"
+        assert panel.get("hidden") == 1
+
+    def test_panel_has_presentation(self):
+        """Panel has presentation=1 and presentation_rect covering device area."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300, 169)
+        assert panel.get("presentation") == 1
+        rect = panel.get("presentation_rect")
+        assert rect is not None
+        assert rect[0] == 0  # covers full width from x=0
+        assert rect[1] == 0  # from top
+        assert rect[2] == 300  # device_width
+        assert rect[3] == 169  # device_height
+
+    def test_panel_has_varname_with_prefix(self):
+        """Panel varname uses _layout_ prefix for scripting."""
+        from src.maxpat.m4l_layout import create_popup_panel, LAYOUT_VARNAME_PREFIX
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300)
+        vn = panel.get("varname", "")
+        assert vn.startswith(LAYOUT_VARNAME_PREFIX), \
+            f"Panel varname '{vn}' should start with '{LAYOUT_VARNAME_PREFIX}'"
+        assert "Advanced" in vn or "advanced" in vn.lower()
+
+    def test_toggle_button_created(self):
+        """create_popup_panel creates a live.text toggle button."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300)
+        assert button["maxclass"] == "live.text"
+
+    def test_toggle_button_mode(self):
+        """Toggle button has mode=1 (toggle) and parameter_enable=1."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300)
+        assert button.get("mode") == 1
+        assert button.get("parameter_enable") == 1
+
+    def test_toggle_button_has_presentation(self):
+        """Toggle button has presentation=1 and presentation_rect."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300)
+        assert button.get("presentation") == 1
+        assert "presentation_rect" in button
+
+    def test_all_coords_whole_integers(self):
+        """All popup panel coordinates are whole integers."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300, 169)
+        for label, obj in [("panel", panel), ("button", button)]:
+            rect = obj.get("presentation_rect", [])
+            for i, val in enumerate(rect):
+                assert isinstance(val, int), \
+                    f"{label} presentation_rect[{i}] = {val} ({type(val).__name__}) must be int"
+
+    def test_custom_button_rect(self):
+        """button_rect parameter sets the toggle button's position."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        custom_rect = [10, 5, 60, 20]
+        panel, button = create_popup_panel(
+            boxes, "Settings", 300, button_rect=custom_rect,
+        )
+        assert button["presentation_rect"] == custom_rect
+
+    def test_both_appended_to_boxes(self):
+        """Panel and button are both appended to boxes list."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300)
+        assert len(boxes) == 2
+        # Verify they are wrapped in {"box": ...} format
+        box_inners = [b["box"] for b in boxes]
+        assert panel in box_inners
+        assert button in box_inners
+
+    def test_panel_text_on_button(self):
+        """Toggle button text reflects panel name."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Advanced", 300)
+        assert button.get("text") == "Advanced"
+
+    def test_default_device_height(self):
+        """Default device_height is 169 when not specified."""
+        from src.maxpat.m4l_layout import create_popup_panel
+
+        boxes: list[dict] = []
+        panel, button = create_popup_panel(boxes, "Opts", 400)
+        assert panel["presentation_rect"][3] == 169
