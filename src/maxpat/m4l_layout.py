@@ -542,6 +542,131 @@ def _apply_tabbed_layout(
 
 
 # ---------------------------------------------------------------------------
+# Overlay patterns (Plan 03)
+# ---------------------------------------------------------------------------
+
+# Readout height from UI_SIZES["live.numbox"]
+_READOUT_HEIGHT = int(UI_SIZES["live.numbox"][1])  # 15px
+
+_readout_counter = 0
+
+
+def add_readout_overlay(
+    boxes: list[dict],
+    control_box: dict,
+    readout_id: str | None = None,
+) -> dict:
+    """Create a live.numbox overlay on a live.dial or live.slider.
+
+    The readout is positioned at the bottom of the control, matching the
+    control's width (not the default live.numbox 56px). It has ignoreclick=1
+    so the underlying control remains interactive, and is inserted at index 0
+    of boxes for correct z-order (CLAUDE.md Rule #6).
+
+    Args:
+        boxes: The boxes list to insert the readout into.
+        control_box: The inner box dict of the control (must have presentation_rect).
+        readout_id: Optional custom id for the readout box.
+
+    Returns:
+        The created readout box dict (inner dict, not wrapper).
+    """
+    global _readout_counter
+
+    ctrl_rect = control_box["presentation_rect"]
+    x = int(ctrl_rect[0])
+    y = int(ctrl_rect[1])
+    w = int(ctrl_rect[2])
+    h = int(ctrl_rect[3])
+
+    readout_y = y + h - _READOUT_HEIGHT
+
+    if readout_id is None:
+        _readout_counter += 1
+        readout_id = f"obj-layout-readout-{_readout_counter}"
+
+    readout_box: dict = {
+        "id": readout_id,
+        "maxclass": "live.numbox",
+        "numinlets": 1,
+        "numoutlets": 2,
+        "outlettype": ["", "float"],
+        "ignoreclick": 1,
+        "presentation": 1,
+        "presentation_rect": [
+            int(x), int(readout_y), int(w), int(_READOUT_HEIGHT),
+        ],
+    }
+
+    # Insert at index 0 for z-order (renders on top)
+    boxes.insert(0, {"box": readout_box})
+
+    return readout_box
+
+
+def create_popup_panel(
+    boxes: list[dict],
+    panel_name: str,
+    device_width: int,
+    device_height: int = 169,
+    button_rect: list[int] | None = None,
+) -> tuple[dict, dict]:
+    """Create a hidden popup panel and toggle button.
+
+    The panel covers the full device area with hidden=1, and a live.text
+    toggle button allows showing/hiding it. The panel gets a varname with
+    the _layout_ prefix for scripting via thispatcher.
+
+    Args:
+        boxes: The boxes list to append panel and button to.
+        panel_name: Name for the panel (used in varname and button text).
+        device_width: Device width in pixels.
+        device_height: Device height in pixels (default 169).
+        button_rect: Optional [x, y, w, h] for the toggle button position.
+
+    Returns:
+        (panel_dict, button_dict) tuple of inner box dicts.
+    """
+    panel_box: dict = {
+        "id": f"obj-layout-panel-{panel_name.lower()}",
+        "maxclass": "panel",
+        "numinlets": 1,
+        "numoutlets": 0,
+        "outlettype": [],
+        "hidden": 1,
+        "presentation": 1,
+        "presentation_rect": [
+            0, 0, int(device_width), int(device_height),
+        ],
+        "varname": f"{LAYOUT_VARNAME_PREFIX}panel_{panel_name.lower()}",
+    }
+
+    if button_rect is None:
+        button_rect = [int(device_width) - 50, 4, 44, 15]
+
+    button_box: dict = {
+        "id": f"obj-layout-btn-{panel_name.lower()}",
+        "maxclass": "live.text",
+        "numinlets": 1,
+        "numoutlets": 2,
+        "outlettype": ["", ""],
+        "text": panel_name,
+        "mode": 1,
+        "parameter_enable": 1,
+        "presentation": 1,
+        "presentation_rect": [
+            int(button_rect[0]), int(button_rect[1]),
+            int(button_rect[2]), int(button_rect[3]),
+        ],
+    }
+
+    boxes.append({"box": panel_box})
+    boxes.append({"box": button_box})
+
+    return (panel_box, button_box)
+
+
+# ---------------------------------------------------------------------------
 # Main entry point
 # ---------------------------------------------------------------------------
 
