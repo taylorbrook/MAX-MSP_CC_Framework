@@ -63,7 +63,7 @@ Full details: see phase details below
 - [x] **Phase 20: Foundation** — M4L constants, database entries, device type detection, CLAUDE.md rules (completed 2026-04-06)
 - [x] **Phase 21: Scaffold and Routing** — create_m4l_project() with per-type boilerplate, M4L dispatch keywords, agent SKILL.md updates (completed 2026-04-06)
 - [x] **Phase 22: Validation and Export** — M4L critic module (6 checks), auto-detection wiring, .amxd export (completed 2026-04-06)
-- [ ] **Phase 23: Polish** — Parameter naming intelligence, Push controller banks, info text/annotations
+- [x] **Phase 23: Polish** — Parameter naming intelligence, Push controller banks, info text/annotations (completed 2026-04-07)
 - [ ] **Phase 24: Layout** — M4L presentation layout engine with 169px height cap, tabbed/overlay patterns
 - [ ] **Phase 25: Testing** — End-to-end M4L workflow test suite
 
@@ -329,9 +329,9 @@ Plans:
 Canonical refs: `src/maxpat/m4l_constants.py`, `patches/kicksynth/generated/kicksynth-m4l.maxpat`
 
 Plans:
-- [ ] 23-01-PLAN.md -- TDD parameter naming intelligence (POLISH-01)
-- [ ] 23-02-PLAN.md -- TDD Push banks and info text (POLISH-02, POLISH-03)
-- [ ] 23-03-PLAN.md -- TDD critic polish warnings (D-13)
+- [x] 23-01-PLAN.md -- TDD parameter naming intelligence (POLISH-01)
+- [x] 23-02-PLAN.md -- TDD Push banks and info text (POLISH-02, POLISH-03)
+- [x] 23-03-PLAN.md -- TDD critic polish warnings (D-13)
 
 ### Phase 24: Layout
 **Goal**: M4L presentation layout engine positions controls intelligently within Ableton's 169px device height constraint — replacing crude grid fallback with device-aware layout
@@ -342,8 +342,13 @@ Plans:
   1. M4L presentation layout engine groups controls by function within 169px height constraint
   2. Layout supports tabbed, single-page, and overlay patterns — auto-selected based on control count and device complexity
   3. All presentation coordinates enforced as whole pixels (no fractional values causing blurry rendering)
-**Plans**: 0 plans
+**Plans**: 3 plans
 Canonical refs: `src/maxpat/layout.py`, `src/maxpat/m4l_constants.py`
+
+Plans:
+- [ ] 24-01-PLAN.md — TDD core layout engine (grouping, column packing, whole-pixel enforcement)
+- [ ] 24-02-PLAN.md — TDD tabbed layout (live.tab, script hide/show, threshold detection)
+- [ ] 24-03-PLAN.md — TDD overlay patterns (readout overlays, popup panels)
 
 ### Phase 25: Testing
 **Goal**: End-to-end M4L workflow test suite validates the complete device creation pipeline from scaffold through export
@@ -355,7 +360,7 @@ Canonical refs: `src/maxpat/layout.py`, `src/maxpat/m4l_constants.py`
   3. Tests verify .amxd export produces valid binary for each device type
   4. Tests verify presentation layout respects 169px height cap
   5. All existing tests continue to pass (zero regressions)
-**Plans**: 0 plans
+**Plans**: 3 plans
 Canonical refs: `tests/test_m4l_db.py`, `tests/test_m4l_detection.py`
 
 ## Progress
@@ -387,10 +392,10 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 20. Foundation (M4L) | v3.0 | 2/2 | Complete | 2026-04-06 |
 | 21. Scaffold and Routing | v3.0 | 2/2 | Complete    | 2026-04-06 |
 | 22. Validation and Export | v3.0 | 2/2 | Complete    | 2026-04-06 |
-| 23. Polish | v3.0 | 0/3 | Planned | - |
-| 24. Layout | v3.0 | 0/0 | Planned | - |
+| 23. Polish | v3.0 | 3/3 | Complete   | 2026-04-07 |
+| 24. Layout | v3.0 | 0/3 | Planned | - |
 | 25. Testing | v3.0 | 0/0 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-06 -- Phase 23 planned: 3 plans in 3 waves*
+*Last updated: 2026-04-07 -- Phase 24 planned: 3 plans in 2 waves*
