@@ -1,7 +1,8 @@
 """Tests for M4L presentation layout engine.
 
-Covers LAYOUT-01, LAYOUT-03: column-packing algorithm that groups controls
-by semantic function and positions them within Ableton's 169px device height.
+Covers LAYOUT-01, LAYOUT-02, LAYOUT-03: column-packing algorithm that groups controls
+by semantic function and positions them within Ableton's 169px device height,
+plus tabbed layout pattern with live.tab and script hide/show wiring.
 
 Test classes:
   TestLayoutBasics -- empty patch, returns same dict, presentation flag
@@ -11,6 +12,10 @@ Test classes:
   TestWholePixels -- all coords are int type
   TestPreserveExisting -- controls with presentation_rect untouched
   TestSpecialCases -- live.gain~ tall control handling
+  TestLayoutPatternSelection -- threshold detection: single vs tabbed
+  TestTabbedLayout -- full tabbed layout: live.tab creation, page visibility, positioning
+  TestTabWiring -- wiring chain: live.tab -> select -> messages -> thispatcher
+  TestTabSpecialCases -- live.gain~ on first page, varname handling
 """
 
 from __future__ import annotations
@@ -637,3 +642,499 @@ class TestSpecialCases:
                 bottom = rect[1] + rect[3]
                 assert bottom <= 169, \
                     f"{box.get('maxclass')} bottom at {bottom} exceeds 169px"
+
+
+# ---------------------------------------------------------------------------
+# Helper for tabbed layout tests
+# ---------------------------------------------------------------------------
+
+def _make_many_controls(n: int, groups: list[str]) -> list[tuple[str, str]]:
+    """Create N control specs distributed across specified groups.
+
+    Returns list of (maxclass, longname) tuples suitable for _make_m4l_patch.
+    """
+    specs = []
+    for i in range(n):
+        group = groups[i % len(groups)]
+        specs.append(("live.dial", f"{group} Param {i}"))
+    return specs
+
+
+# ===========================================================================
+# TestLayoutPatternSelection
+# ===========================================================================
+
+class TestLayoutPatternSelection:
+    """Threshold detection: single vs tabbed based on control/group count."""
+
+    def test_single_for_few_controls(self):
+        """<= 8 total controls returns 'single'."""
+        from src.maxpat.m4l_layout import _select_layout_pattern, _group_controls
+
+        patch = _make_m4l_patch([
+            ("live.dial", "Filter Cutoff"),
+            ("live.dial", "Filter Resonance"),
+            ("live.dial", "Amp Volume"),
+        ])
+        controls = []
+        for entry in patch["patcher"]["boxes"]:
+            controls.append(entry["box"])
+        groups = _group_controls(controls)
+        result = _select_layout_pattern(groups, patch["patcher"])
+        assert result == "single"
+
+    def test_tabbed_for_many_controls(self):
+        """More than 8 total controls returns 'tabbed' (D-05)."""
+        from src.maxpat.m4l_layout import _select_layout_pattern, _group_controls
+
+        specs = _make_many_controls(12, ["Filter", "Amp", "Mod"])
+        patch = _make_m4l_patch(specs)
+        controls = [entry["box"] for entry in patch["patcher"]["boxes"]]
+        groups = _group_controls(controls)
+        result = _select_layout_pattern(groups, patch["patcher"])
+        assert result == "tabbed"
+
+    def test_tabbed_for_many_groups(self):
+        """More than 3 groups returns 'tabbed' (research recommendation)."""
+        from src.maxpat.m4l_layout import _select_layout_pattern, _group_controls
+
+        # 4 groups with 2 controls each = 8 controls but 4 groups
+        specs = [
+            ("live.dial", "Pitch Tune"),
+            ("live.dial", "Pitch Detune"),
+            ("live.dial", "Filter Cutoff"),
+            ("live.dial", "Filter Resonance"),
+            ("live.dial", "Amp Volume"),
+            ("live.dial", "Amp Velocity"),
+            ("live.dial", "Mod Depth"),
+            ("live.dial", "Mod Rate"),
+        ]
+        patch = _make_m4l_patch(specs)
+        controls = [entry["box"] for entry in patch["patcher"]["boxes"]]
+        groups = _group_controls(controls)
+        result = _select_layout_pattern(groups, patch["patcher"])
+        assert result == "tabbed"
+
+    def test_exactly_8_controls_is_single(self):
+        """Exactly 8 controls stays single (threshold is >8)."""
+        from src.maxpat.m4l_layout import _select_layout_pattern, _group_controls
+
+        specs = _make_many_controls(8, ["Filter", "Amp"])
+        patch = _make_m4l_patch(specs)
+        controls = [entry["box"] for entry in patch["patcher"]["boxes"]]
+        groups = _group_controls(controls)
+        result = _select_layout_pattern(groups, patch["patcher"])
+        assert result == "single"
+
+    def test_exactly_3_groups_is_single(self):
+        """Exactly 3 groups stays single (threshold is >3)."""
+        from src.maxpat.m4l_layout import _select_layout_pattern, _group_controls
+
+        specs = [
+            ("live.dial", "Pitch Tune"),
+            ("live.dial", "Filter Cutoff"),
+            ("live.dial", "Amp Volume"),
+        ]
+        patch = _make_m4l_patch(specs)
+        controls = [entry["box"] for entry in patch["patcher"]["boxes"]]
+        groups = _group_controls(controls)
+        result = _select_layout_pattern(groups, patch["patcher"])
+        assert result == "single"
+
+
+# ===========================================================================
+# TestTabbedLayout
+# ===========================================================================
+
+class TestTabbedLayout:
+    """Full tabbed layout: live.tab creation, page visibility, positioning."""
+
+    def _make_tabbed_patch(self):
+        """Create a patch that triggers tabbed layout (>8 controls, 4 groups)."""
+        specs = [
+            ("live.dial", "Pitch Tune"),
+            ("live.dial", "Pitch Detune"),
+            ("live.dial", "Pitch Fine"),
+            ("live.dial", "Filter Cutoff"),
+            ("live.dial", "Filter Resonance"),
+            ("live.dial", "Filter Drive"),
+            ("live.dial", "Amp Volume"),
+            ("live.dial", "Amp Velocity"),
+            ("live.dial", "Amp Pan"),
+            ("live.dial", "Mod Depth"),
+            ("live.dial", "Mod Rate"),
+            ("live.dial", "Mod Shape"),
+        ]
+        return _make_m4l_patch(specs)
+
+    def test_adds_live_tab_box(self):
+        """Tabbed layout adds a live.tab box with maxclass='live.tab'."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        tab_boxes = [
+            entry["box"] for entry in patch["patcher"]["boxes"]
+            if entry["box"].get("maxclass") == "live.tab"
+        ]
+        assert len(tab_boxes) == 1, f"Expected 1 live.tab, found {len(tab_boxes)}"
+
+    def test_live_tab_livemode(self):
+        """live.tab has livemode=1 for pixel snapping (Pitfall 6)."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        tab = None
+        for entry in patch["patcher"]["boxes"]:
+            if entry["box"].get("maxclass") == "live.tab":
+                tab = entry["box"]
+                break
+        assert tab is not None
+        assert tab.get("livemode") == 1
+
+    def test_live_tab_at_top(self):
+        """live.tab presentation_rect y=TOP_MARGIN (at top of device)."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation, TOP_MARGIN
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        tab = None
+        for entry in patch["patcher"]["boxes"]:
+            if entry["box"].get("maxclass") == "live.tab":
+                tab = entry["box"]
+                break
+        assert tab is not None
+        rect = tab.get("presentation_rect")
+        assert rect is not None
+        assert rect[1] == TOP_MARGIN, f"Tab y should be {TOP_MARGIN}, got {rect[1]}"
+
+    def test_live_tab_parameter_enable(self):
+        """live.tab has parameter_enable=1, parameter_type=2 (ENUM), parameter_enum=group names."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        tab = None
+        for entry in patch["patcher"]["boxes"]:
+            if entry["box"].get("maxclass") == "live.tab":
+                tab = entry["box"]
+                break
+        assert tab is not None
+        assert tab.get("parameter_enable") == 1
+        saa = tab.get("saved_attribute_attributes", {})
+        valueof = saa.get("valueof", {})
+        assert valueof.get("parameter_type") == 2, "parameter_type should be 2 (ENUM)"
+        enum = valueof.get("parameter_enum", [])
+        assert len(enum) >= 2, f"Expected at least 2 enum values, got {len(enum)}"
+
+    def test_live_tab_parameter_names(self):
+        """live.tab has parameter_longname='Page' and parameter_shortname='Page'."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        tab = None
+        for entry in patch["patcher"]["boxes"]:
+            if entry["box"].get("maxclass") == "live.tab":
+                tab = entry["box"]
+                break
+        assert tab is not None
+        saa = tab.get("saved_attribute_attributes", {})
+        valueof = saa.get("valueof", {})
+        assert valueof.get("parameter_longname") == "Page"
+        assert valueof.get("parameter_shortname") == "Page"
+
+    def test_first_page_visible_others_hidden(self):
+        """First tab page controls have hidden=0, other pages have hidden=1."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        # Collect controls by group
+        first_page_found = False
+        other_page_hidden = False
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            maxclass = box.get("maxclass", "")
+            if not maxclass.startswith("live.") or maxclass in ("live.tab", "live.comment"):
+                continue
+            saa = box.get("saved_attribute_attributes", {})
+            ln = saa.get("valueof", {}).get("parameter_longname", "")
+            if not ln:
+                continue
+            hidden = box.get("hidden", 0)
+            # Find which page this control is on by checking group
+            if "Pitch" in ln:
+                # Pitch should be on the first page (lowest GROUP_PRIORITY)
+                first_page_found = True
+                assert hidden == 0, f"First page control {ln} should have hidden=0, got {hidden}"
+            else:
+                # Other pages should have hidden=1 (at least some)
+                if hidden == 1:
+                    other_page_hidden = True
+
+        assert first_page_found, "No first-page (Pitch) controls found"
+        assert other_page_hidden, "No hidden controls found on non-first pages"
+
+    def test_all_controls_have_presentation(self):
+        """All tab page controls still have presentation=1 and valid presentation_rect."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            maxclass = box.get("maxclass", "")
+            if not maxclass.startswith("live.") or maxclass in ("live.tab", "live.comment"):
+                continue
+            saa = box.get("saved_attribute_attributes", {})
+            if not saa.get("valueof", {}).get("parameter_longname"):
+                continue
+            assert box.get("presentation") == 1, \
+                f"{box.get('id')} missing presentation=1"
+            assert "presentation_rect" in box, \
+                f"{box.get('id')} missing presentation_rect"
+
+    def test_controls_positioned_below_tab(self):
+        """Tab page controls positioned below live.tab (y starts after tab height + gap)."""
+        from src.maxpat.m4l_layout import (
+            layout_m4l_presentation, TOP_MARGIN, TAB_HEIGHT, TAB_GAP,
+        )
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        min_control_y = TOP_MARGIN + TAB_HEIGHT + TAB_GAP
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            maxclass = box.get("maxclass", "")
+            if not maxclass.startswith("live.") or maxclass in ("live.tab", "live.comment"):
+                continue
+            saa = box.get("saved_attribute_attributes", {})
+            if not saa.get("valueof", {}).get("parameter_longname"):
+                continue
+            rect = box["presentation_rect"]
+            # Control y must be at or below the tab + gap
+            assert rect[1] >= min_control_y, \
+                f"Control at y={rect[1]} overlaps tab area (min y={min_control_y})"
+
+    def test_all_coords_whole_integers_tabbed(self):
+        """All presentation_rect values in tabbed layout are whole integers (D-10)."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            if "presentation_rect" in box:
+                rect = box["presentation_rect"]
+                for i, val in enumerate(rect):
+                    assert isinstance(val, int), \
+                        f"presentation_rect[{i}] = {val} ({type(val).__name__}) " \
+                        f"on {box.get('id', '?')} -- must be int"
+
+    def test_devicewidth_updated_for_tab_content(self):
+        """devicewidth updated to fit tab content."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        # All controls must fit within devicewidth
+        dw = patch["patcher"].get("devicewidth", 300)
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            if "presentation_rect" in box:
+                rect = box["presentation_rect"]
+                right = rect[0] + rect[2]
+                assert right <= dw, \
+                    f"Control right edge {right} exceeds devicewidth {dw}"
+
+
+# ===========================================================================
+# TestTabWiring
+# ===========================================================================
+
+class TestTabWiring:
+    """Wiring chain: live.tab -> select -> messages -> thispatcher."""
+
+    def _make_tabbed_patch(self):
+        """Create a patch that triggers tabbed layout."""
+        specs = _make_many_controls(12, ["Pitch", "Filter", "Amp", "Mod"])
+        return _make_m4l_patch(specs)
+
+    def test_thispatcher_added(self):
+        """Tabbed layout adds thispatcher box to the patch."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        tp_boxes = [
+            entry["box"] for entry in patch["patcher"]["boxes"]
+            if entry["box"].get("maxclass") == "thispatcher"
+        ]
+        assert len(tp_boxes) == 1, f"Expected 1 thispatcher, found {len(tp_boxes)}"
+
+    def test_select_added(self):
+        """Tabbed layout creates select object with N outputs for N tab pages."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        select_boxes = [
+            entry["box"] for entry in patch["patcher"]["boxes"]
+            if entry["box"].get("maxclass") == "newobj"
+            and "select" in (entry["box"].get("text", ""))
+        ]
+        assert len(select_boxes) >= 1, "No select object found in patch"
+
+    def test_message_boxes_contain_script_commands(self):
+        """Message boxes contain 'script show' / 'script hide' text."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        messages = [
+            entry["box"] for entry in patch["patcher"]["boxes"]
+            if entry["box"].get("maxclass") == "message"
+        ]
+        show_found = any("script show" in m.get("text", "") for m in messages)
+        hide_found = any("script hide" in m.get("text", "") for m in messages)
+        assert show_found, "No 'script show' message found"
+        assert hide_found, "No 'script hide' message found"
+
+    def test_wiring_chain_exists(self):
+        """Patchlines connect live.tab -> select -> messages -> thispatcher."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        patch = self._make_tabbed_patch()
+        layout_m4l_presentation(patch)
+
+        lines = patch["patcher"].get("lines", [])
+        # Must have patchlines connecting the wiring chain
+        assert len(lines) >= 3, f"Expected at least 3 patchlines for wiring, got {len(lines)}"
+
+        # Verify chain by collecting source->dest pairs
+        box_ids = {}
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            box_ids[box.get("id")] = box.get("maxclass", "")
+
+        # Check that live.tab connects to something
+        tab_id = None
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            if box.get("maxclass") == "live.tab":
+                tab_id = box.get("id")
+                break
+
+        assert tab_id is not None, "live.tab not found"
+        tab_connects = [
+            l for l in lines
+            if l.get("patchline", {}).get("source", [None])[0] == tab_id
+        ]
+        assert len(tab_connects) >= 1, "live.tab has no outgoing connections"
+
+    def test_varnames_with_layout_prefix(self):
+        """Each tab page's controls get varname with _layout_ prefix if no existing varname."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation, LAYOUT_VARNAME_PREFIX
+
+        # Create controls without varnames
+        controls = []
+        for i in range(12):
+            group = ["Pitch", "Filter", "Amp", "Mod"][i % 4]
+            controls.append(_make_live_control(
+                box_id=f"obj-{i + 1}",
+                maxclass="live.dial",
+                longname=f"{group} Param {i}",
+                # No varname set
+            ))
+        patch = _make_patch_with_controls(controls)
+        layout_m4l_presentation(patch)
+
+        # Controls should now have varnames with _layout_ prefix
+        varnames = []
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            vn = box.get("varname", "")
+            if vn and box.get("maxclass") == "live.dial":
+                varnames.append(vn)
+
+        assert len(varnames) > 0, "No varnames assigned to controls"
+        for vn in varnames:
+            assert vn.startswith(LAYOUT_VARNAME_PREFIX), \
+                f"Varname '{vn}' should start with '{LAYOUT_VARNAME_PREFIX}'"
+
+    def test_existing_varnames_preserved(self):
+        """Controls with existing varname keep it (Pitfall 3)."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        # Create enough controls to trigger tabbed, some with varnames
+        controls = []
+        for i in range(12):
+            group = ["Pitch", "Filter", "Amp", "Mod"][i % 4]
+            vn = f"my_param_{i}" if i < 3 else None
+            controls.append(_make_live_control(
+                box_id=f"obj-{i + 1}",
+                maxclass="live.dial",
+                longname=f"{group} Param {i}",
+                varname=vn,
+            ))
+        patch = _make_patch_with_controls(controls)
+        layout_m4l_presentation(patch)
+
+        # First 3 controls should keep original varnames
+        for i in range(3):
+            box = patch["patcher"]["boxes"][i]["box"]
+            assert box.get("varname") == f"my_param_{i}", \
+                f"Existing varname overwritten: {box.get('varname')}"
+
+
+# ===========================================================================
+# TestTabSpecialCases
+# ===========================================================================
+
+class TestTabSpecialCases:
+    """live.gain~ on first page, special control handling."""
+
+    def test_gain_always_first_page(self):
+        """live.gain~ always placed on first page, never hidden (Pitfall 1)."""
+        from src.maxpat.m4l_layout import layout_m4l_presentation
+
+        # Put live.gain~ in "Amp" group, which may not be the first tab page
+        specs = [
+            ("live.dial", "Pitch Tune"),
+            ("live.dial", "Pitch Detune"),
+            ("live.dial", "Pitch Fine"),
+            ("live.dial", "Filter Cutoff"),
+            ("live.dial", "Filter Resonance"),
+            ("live.dial", "Filter Drive"),
+            ("live.gain~", "Amp Volume"),
+            ("live.dial", "Mod Depth"),
+            ("live.dial", "Mod Rate"),
+            ("live.dial", "Mod Shape"),
+        ]
+        patch = _make_m4l_patch(specs)
+        layout_m4l_presentation(patch)
+
+        # live.gain~ should NOT be hidden
+        for entry in patch["patcher"]["boxes"]:
+            box = entry["box"]
+            if box.get("maxclass") == "live.gain~":
+                assert box.get("hidden", 0) == 0, \
+                    "live.gain~ should never be hidden (always first page)"
+                break
+        else:
+            pytest.fail("live.gain~ not found in patch")
