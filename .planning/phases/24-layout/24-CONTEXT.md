@@ -19,7 +19,7 @@ M4L presentation layout engine positions controls intelligently within Ableton's
 - **D-03:** Groups flow left-to-right as vertical columns within the device. Each group is a column: label on top, controls stacked below. Device widens if needed to fit all groups.
 
 ### Layout Patterns
-- **D-04:** Tabbed layout uses live.tab + bpatcher swap pattern. live.tab at top selects which bpatcher is visible. Each tab page is a separate bpatcher with its own controls. Standard M4L pattern used by Ableton stock devices.
+- **D-04:** ~~UNLOCKED~~ Tabbed layout uses live.tab + script hide/show pattern. live.tab at top outputs tab index, wired through thispatcher to script show/hide individual controls by varname. Simpler than bpatcher swap, avoids subpatcher complexity.
 - **D-05:** Tab trigger threshold: >8 controls per group, or total controls exceed what fits in devicewidth at 169px height. Auto-selected based on control count and device complexity.
 - **D-06:** Overlay pattern covers two cases: (a) readout overlays — flonum/live.numbox overlaid on live.dial with ignoreclick=1, and (b) popup panels — hidden panels that slide over device for advanced settings (Show/Hide button pattern).
 

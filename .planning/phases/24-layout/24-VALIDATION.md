@@ -2,8 +2,8 @@
 phase: 24
 slug: layout
 status: draft
-nyquist_compliant: false
-wave_0_complete: false
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-07
 ---
 
@@ -38,14 +38,14 @@ created: 2026-04-07
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 24-01-01 | 01 | 1 | LAYOUT-01 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestGroupLayout -x` | ❌ W0 | ⬜ pending |
-| 24-01-02 | 01 | 1 | LAYOUT-01 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestColumnPacking -x` | ❌ W0 | ⬜ pending |
-| 24-01-03 | 01 | 1 | LAYOUT-01 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestDeviceWidth -x` | ❌ W0 | ⬜ pending |
-| 24-01-04 | 01 | 1 | LAYOUT-03 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestWholePixels -x` | ❌ W0 | ⬜ pending |
-| 24-01-05 | 01 | 1 | LAYOUT-03 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestPreserveExisting -x` | ❌ W0 | ⬜ pending |
-| 24-02-01 | 02 | 2 | LAYOUT-02 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestSinglePage -x` | ❌ W0 | ⬜ pending |
-| 24-02-02 | 02 | 2 | LAYOUT-02 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestTabbedLayout -x` | ❌ W0 | ⬜ pending |
-| 24-02-03 | 02 | 2 | LAYOUT-02 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestOverlay -x` | ❌ W0 | ⬜ pending |
+| 24-01-01 | 01 | 1 | LAYOUT-01 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestGroupLayout -x` | Plan 01 RED | ⬜ pending |
+| 24-01-02 | 01 | 1 | LAYOUT-01 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestColumnPacking -x` | Plan 01 RED | ⬜ pending |
+| 24-01-03 | 01 | 1 | LAYOUT-01 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestDeviceWidth -x` | Plan 01 RED | ⬜ pending |
+| 24-01-04 | 01 | 1 | LAYOUT-03 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestWholePixels -x` | Plan 01 RED | ⬜ pending |
+| 24-01-05 | 01 | 1 | LAYOUT-03 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestPreserveExisting -x` | Plan 01 RED | ⬜ pending |
+| 24-02-01 | 02 | 2 | LAYOUT-02 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestSinglePage -x` | Plan 01 RED | ⬜ pending |
+| 24-02-02 | 02 | 2 | LAYOUT-02 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestTabbedLayout -x` | Plan 02 RED | ⬜ pending |
+| 24-02-03 | 02 | 2 | LAYOUT-02 | — | N/A | unit | `python3 -m pytest tests/test_m4l_layout.py::TestOverlay -x` | Plan 03 RED | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -53,8 +53,7 @@ created: 2026-04-07
 
 ## Wave 0 Requirements
 
-- [ ] `tests/test_m4l_layout.py` — test file with stubs for LAYOUT-01, LAYOUT-02, LAYOUT-03
-- [ ] `_make_m4l_patch()` fixture — creates minimal M4L patch_dict with live.* controls for testing
+Wave 0 satisfied by TDD RED phases: Plan 01 RED creates `tests/test_m4l_layout.py` with test classes and `_make_m4l_patch()` fixture before any implementation code. Plans 02/03 RED add test classes to the same file. TDD cycle guarantees tests exist before GREEN implementation.
 
 *Existing infrastructure (pytest, conftest) covers framework requirements.*
 
