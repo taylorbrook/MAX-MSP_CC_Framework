@@ -64,7 +64,7 @@ Full details: see phase details below
 - [x] **Phase 21: Scaffold and Routing** — create_m4l_project() with per-type boilerplate, M4L dispatch keywords, agent SKILL.md updates (completed 2026-04-06)
 - [x] **Phase 22: Validation and Export** — M4L critic module (6 checks), auto-detection wiring, .amxd export (completed 2026-04-06)
 - [x] **Phase 23: Polish** — Parameter naming intelligence, Push controller banks, info text/annotations (completed 2026-04-07)
-- [ ] **Phase 24: Layout** — M4L presentation layout engine with 169px height cap, tabbed/overlay patterns
+- [x] **Phase 24: Layout** — M4L presentation layout engine with 169px height cap, tabbed/overlay patterns (completed 2026-04-07)
 - [ ] **Phase 25: Testing** — End-to-end M4L workflow test suite
 
 ## Phase Details
@@ -346,9 +346,9 @@ Plans:
 Canonical refs: `src/maxpat/layout.py`, `src/maxpat/m4l_constants.py`
 
 Plans:
-- [ ] 24-01-PLAN.md — TDD core layout engine (grouping, column packing, whole-pixel enforcement)
-- [ ] 24-02-PLAN.md — TDD tabbed layout (live.tab, script hide/show, threshold detection)
-- [ ] 24-03-PLAN.md — TDD overlay patterns (readout overlays, popup panels)
+- [x] 24-01-PLAN.md — TDD core layout engine (grouping, column packing, whole-pixel enforcement)
+- [x] 24-02-PLAN.md — TDD tabbed layout (live.tab, script hide/show, threshold detection)
+- [x] 24-03-PLAN.md — TDD overlay patterns (readout overlays, popup panels)
 
 ### Phase 25: Testing
 **Goal**: End-to-end M4L workflow test suite validates the complete device creation pipeline from scaffold through export
@@ -393,7 +393,7 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 21. Scaffold and Routing | v3.0 | 2/2 | Complete    | 2026-04-06 |
 | 22. Validation and Export | v3.0 | 2/2 | Complete    | 2026-04-06 |
 | 23. Polish | v3.0 | 3/3 | Complete   | 2026-04-07 |
-| 24. Layout | v3.0 | 0/3 | Planned | - |
+| 24. Layout | v3.0 | 3/3 | Complete   | 2026-04-07 |
 | 25. Testing | v3.0 | 0/0 | Planned | - |
 
 ---
