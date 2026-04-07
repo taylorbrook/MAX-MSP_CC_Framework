@@ -509,24 +509,18 @@ class TestDeviceWidth:
         assert patch["patcher"]["devicewidth"] <= 300
 
     def test_auto_expands_when_needed(self):
-        """devicewidth expands when groups don't fit in 300px."""
+        """devicewidth expands when groups don't fit in 300px (single-page)."""
         from src.maxpat.m4l_layout import layout_m4l_presentation
 
-        # Create many groups to exceed 300px
-        # Each live.dial is 44px wide, plus gaps and labels
+        # Use wide controls in 3 groups (stays within single-page threshold)
+        # Each live.menu is 100px wide, 3 groups * (100 + 10 gap) + margins > 300
         patch = _make_m4l_patch([
-            ("live.dial", "Pitch Tune"),
-            ("live.dial", "Pitch Detune"),
-            ("live.dial", "Filter Cutoff"),
-            ("live.dial", "Filter Resonance"),
-            ("live.dial", "Amp Volume"),
-            ("live.dial", "Amp Velocity"),
-            ("live.dial", "Envelope Attack"),
-            ("live.dial", "Envelope Decay"),
-            ("live.dial", "Mod Depth"),
-            ("live.dial", "Mod Rate"),
-            ("live.dial", "FX Delay"),
-            ("live.dial", "Mix Dry"),
+            ("live.menu", "Pitch Type"),
+            ("live.menu", "Pitch Mode"),
+            ("live.menu", "Filter Type"),
+            ("live.menu", "Filter Mode"),
+            ("live.menu", "Amp Type"),
+            ("live.menu", "Amp Mode"),
         ])
         layout_m4l_presentation(patch)
 
