@@ -427,17 +427,19 @@ box["annotation"] = "Controls the lowpass filter cutoff. Range: 20-20000 Hz"  # 
 | A2 | Bank parameters are referenced by `parameter_longname` (not varname or shortname) | Architecture Patterns, Pitfall 3 | High -- banks would reference wrong names, Push shows empty slots |
 | A3 | `annotation` and `annotation_name` are stored as direct box attributes (not inside saved_attribute_attributes) | Code Examples, Example 4 | Low -- verified against objects.json attribute listings but not against a live patch file |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **live.banks `_parameter_banks` exact JSON format**
    - What we know: live.banks stores bank data persistently with the device. Banks have name + up to 8 parameter slots. Empty slots use "-". [CITED: docs.cycling74.com/reference/live.banks]
    - What's unclear: The exact JSON key name and structure in the .maxpat file. No public documentation exists for this internal format.
    - Recommendation: Start with the assumed `_parameter_banks` format. If it doesn't work when loaded in MAX, fall back to generating `loadbang -> new` message chains instead. Both approaches should be tested manually.
+   - RESOLVED: Proceed with assumed `_parameter_banks` format per A1; fallback to `loadbang → new` if format incorrect at runtime.
 
 2. **Parameter name field used by live.banks**
    - What we know: Banks reference parameters by "symbol names" per docs. In practice this is the parameter_longname.
    - What's unclear: 100% confirmation that it's longname vs varname.
    - Recommendation: Use longname (most likely correct per training data and docs). If Push shows empty slots, switch to varname.
+   - RESOLVED: Use parameter_longname per A2 and existing docs reference.
 
 ## Validation Architecture
 

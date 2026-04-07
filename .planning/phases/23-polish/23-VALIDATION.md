@@ -2,8 +2,8 @@
 phase: 23
 slug: polish
 status: draft
-nyquist_compliant: false
-wave_0_complete: false
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-06
 ---
 
@@ -43,7 +43,7 @@ created: 2026-04-06
 | 23-01-03 | 01 | 1 | POLISH-01 | — | N/A | unit | `python -m pytest tests/test_m4l_polish.py -k "test_varname_derivation" -v` | ❌ W0 | ⬜ pending |
 | 23-02-01 | 02 | 1 | POLISH-02 | — | N/A | unit | `python -m pytest tests/test_m4l_polish.py -k "test_push_bank" -v` | ❌ W0 | ⬜ pending |
 | 23-03-01 | 03 | 1 | POLISH-03 | — | N/A | unit | `python -m pytest tests/test_m4l_polish.py -k "test_info_text" -v` | ❌ W0 | ⬜ pending |
-| 23-04-01 | 04 | 1 | POLISH-01 | — | N/A | integration | `python -m pytest tests/test_m4l_polish.py -k "test_polish_full_device" -v` | ❌ W0 | ⬜ pending |
+| 23-03-02 | 03 | 3 | POLISH-01, POLISH-02, POLISH-03 | — | N/A | unit | `python -m pytest tests/test_m4l_critic.py -k "TestPolishWarnings" -v` | ❌ W0 | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
