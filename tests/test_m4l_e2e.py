@@ -399,6 +399,38 @@ class TestAudioEffectE2E:
         ctrl_ids = {c["id"] for c in AUDIO_EFFECT_CONTROLS}
         _assert_all_coords_int(patch_dict, control_ids=ctrl_ids)
 
+    def test_push_banks_organized(self, tmp_path):
+        """Post-polish: live.banks box exists with valid bank structure."""
+        from src.maxpat.m4l_polish import polish_m4l_device
+
+        patch_dict, _, _ = _build_device(
+            "audio_effect", "ae-banks", tmp_path, AUDIO_EFFECT_CONTROLS,
+        )
+        polish_m4l_device(patch_dict)
+
+        # Find live.banks box
+        banks_box = None
+        for entry in patch_dict["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            if box.get("maxclass") == "live.banks":
+                banks_box = box
+                break
+
+        assert banks_box is not None, "Missing live.banks box after polish"
+        assert "_parameter_banks" in banks_box, "live.banks missing _parameter_banks"
+
+        param_banks = banks_box["_parameter_banks"]
+        banks = param_banks.get("banks", [])
+        assert len(banks) > 0, "No banks defined"
+
+        for bank in banks:
+            assert isinstance(bank.get("name"), str), f"Bank missing name: {bank}"
+            params = bank.get("parameters", [])
+            assert isinstance(params, list), f"Bank missing parameters list: {bank}"
+            assert len(params) == 8, (
+                f"Bank '{bank['name']}' has {len(params)} params, expected 8 (padded)"
+            )
+
     def test_export_valid_amxd(self, tmp_path):
         """Full pipeline produces valid AMXD binary."""
         patch_dict, _, patch_path = _build_device(
