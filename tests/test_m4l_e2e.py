@@ -408,3 +408,146 @@ class TestAudioEffectE2E:
             patch_dict, patch_path, "audio_effect", tmp_path,
         )
         _assert_valid_amxd(amxd_bytes, "audio_effect")
+
+
+# ---------------------------------------------------------------------------
+# TestViolationE2E
+# ---------------------------------------------------------------------------
+
+class TestViolationE2E:
+    """Intentionally broken devices to verify critic catches violations through full pipeline.
+
+    Per D-04: these E2E tests exercise violations through the complete pipeline
+    flow, complementing the unit tests in test_m4l_critic.py (which remain untouched).
+    """
+
+    def test_gain_plugout_violation_caught(self, tmp_path):
+        """Build device with gain~->plugout~ through full pipeline, verify blocker."""
+        patch_dict, _, patch_path = _build_device(
+            "audio_effect", "violation-gain", tmp_path, [],
+        )
+
+        # Inject gain~ box
+        gain_box = {
+            "box": {
+                "id": "obj-gain-violation",
+                "maxclass": "newobj",
+                "text": "gain~",
+                "numinlets": 2,
+                "numoutlets": 2,
+                "outlettype": ["signal", ""],
+                "patching_rect": [200.0, 200.0, 42.0, 22.0],
+            }
+        }
+        patch_dict["patcher"]["boxes"].append(gain_box)
+
+        # Find plugout~ box id
+        plugout_id = None
+        for entry in patch_dict["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            text = box.get("text", "")
+            if text.startswith("plugout~"):
+                plugout_id = box["id"]
+                break
+        assert plugout_id is not None, "Scaffold missing plugout~"
+
+        # Add patchline from gain~ to plugout~
+        patch_dict["patcher"]["lines"].append({
+            "patchline": {
+                "source": ["obj-gain-violation", 0],
+                "destination": [plugout_id, 0],
+            }
+        })
+
+        # Run full pipeline
+        critic_results, _, _ = _run_pipeline(
+            patch_dict, patch_path, "audio_effect", tmp_path,
+        )
+
+        # Assert gain~/plugout~ blocker is caught
+        gain_blockers = [
+            r for r in critic_results
+            if r.severity == "blocker"
+            and "gain~" in r.finding
+            and "plugout~" in r.finding
+        ]
+        assert len(gain_blockers) >= 1, (
+            f"Expected gain~/plugout~ blocker, got: {critic_results}"
+        )
+
+    def test_duplicate_longname_caught(self, tmp_path):
+        """Build device with duplicate longnames -- verify critic detects them before polish resolves them.
+
+        polish_m4l_device's _resolve_duplicate_longnames auto-fixes duplicates during
+        the polish step. So this test verifies BOTH:
+        1. Pre-polish: review_patch catches raw duplicates as a blocker
+        2. Post-polish: duplicates are resolved (no duplicate blocker remains)
+        This tests the critic detection AND the polish fix in pipeline sequence.
+        """
+        from src.maxpat.critics import review_patch
+        from src.maxpat.m4l_polish import polish_m4l_device
+
+        dup_controls = [
+            _make_control("obj-dup-1", "live.dial", "cutoff_a", longname="Filter Cutoff"),
+            _make_control("obj-dup-2", "live.dial", "cutoff_b", longname="Filter Cutoff"),
+        ]
+        patch_dict, _, patch_path = _build_device(
+            "audio_effect", "violation-dup", tmp_path, dup_controls,
+        )
+
+        # Pre-polish: critic should catch duplicates
+        pre_results = review_patch(patch_dict)
+        dup_blockers = [
+            r for r in pre_results
+            if r.severity == "blocker"
+            and "duplicate" in r.finding.lower()
+        ]
+        assert len(dup_blockers) >= 1, (
+            f"Expected duplicate longname blocker before polish, got: {pre_results}"
+        )
+
+        # Post-polish: duplicates should be resolved
+        polish_m4l_device(patch_dict)
+        post_results = review_patch(patch_dict)
+        post_dup_blockers = [
+            r for r in post_results
+            if r.severity == "blocker"
+            and "duplicate" in r.finding.lower()
+        ]
+        assert post_dup_blockers == [], (
+            f"Polish should resolve duplicates, but found: {post_dup_blockers}"
+        )
+
+    def test_missing_parameter_enable_warning(self, tmp_path):
+        """Build device with live.dial missing parameter_enable, verify critic warns."""
+        bad_control = {
+            "id": "obj-no-param",
+            "maxclass": "live.dial",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": ["", "float"],
+            "varname": "broken_dial",
+            "saved_attribute_attributes": {
+                "valueof": {
+                    "parameter_longname": "Broken Dial",
+                }
+            },
+            # NOTE: no parameter_enable key at all
+        }
+        patch_dict, _, patch_path = _build_device(
+            "audio_effect", "violation-param", tmp_path, [bad_control],
+        )
+
+        # Run full pipeline
+        critic_results, _, _ = _run_pipeline(
+            patch_dict, patch_path, "audio_effect", tmp_path,
+        )
+
+        # Critic should warn about missing parameter_enable
+        param_warnings = [
+            r for r in critic_results
+            if "parameter_enable" in r.finding
+        ]
+        assert len(param_warnings) >= 1, (
+            f"Expected parameter_enable warning, got: {critic_results}"
+        )
