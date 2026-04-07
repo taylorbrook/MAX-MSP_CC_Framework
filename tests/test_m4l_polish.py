@@ -259,3 +259,269 @@ class TestNameDerivation:
         assert ln1 != ln2
         # One should be base name, other should have suffix
         assert "Filter Cutoff" in ln1 or "Filter Cutoff" in ln2
+
+
+# ===========================================================================
+# TestPushBanks -- POLISH-02
+# ===========================================================================
+
+def _make_named_control(
+    box_id: str,
+    longname: str,
+    maxclass: str = "live.dial",
+    unitstyle: int | None = None,
+    mmin: float | None = None,
+    mmax: float | None = None,
+) -> dict:
+    """Build a live.* control with parameter_longname already set.
+
+    Used for bank tests where naming has already run.
+    """
+    valueof: dict = {"parameter_longname": longname}
+    if unitstyle is not None:
+        valueof["parameter_unitstyle"] = unitstyle
+    if mmin is not None:
+        valueof["parameter_mmin"] = mmin
+    if mmax is not None:
+        valueof["parameter_mmax"] = mmax
+    return {
+        "id": box_id,
+        "maxclass": maxclass,
+        "numinlets": 1,
+        "numoutlets": 2,
+        "outlettype": ["", "float"],
+        "parameter_enable": 1,
+        "saved_attribute_attributes": {"valueof": valueof},
+    }
+
+
+class TestPushBanks:
+    """Test organize_push_banks groups parameters into semantic Push banks."""
+
+    def test_semantic_grouping(self):
+        """D-05: 3 pitch params + 2 filter params -> 2 separate banks."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        controls = [
+            _make_named_control("obj-1", "Pitch Start"),
+            _make_named_control("obj-2", "Pitch End"),
+            _make_named_control("obj-3", "Pitch Decay"),
+            _make_named_control("obj-4", "Filter Cutoff"),
+            _make_named_control("obj-5", "Filter Resonance"),
+        ]
+        patch = _make_patch_with_controls(controls)
+        organize_push_banks(patch)
+
+        # Find live.banks box
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            if box.get("maxclass") == "live.banks":
+                banks_box = box
+                break
+        assert banks_box is not None, "live.banks box not found"
+
+        banks = banks_box["_parameter_banks"]["banks"]
+        bank_names = [b["name"] for b in banks]
+        assert "Pitch" in bank_names
+        assert "Filter" in bank_names
+        # Pitch and Filter in different banks
+        pitch_bank = next(b for b in banks if b["name"] == "Pitch")
+        filter_bank = next(b for b in banks if b["name"] == "Filter")
+        assert "Pitch Start" in pitch_bank["parameters"]
+        assert "Filter Cutoff" in filter_bank["parameters"]
+
+    def test_bank_padding(self):
+        """D-07: bank with 3 params -> padded with 5 '-' slots to fill 8."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        controls = [
+            _make_named_control("obj-1", "Pitch Start"),
+            _make_named_control("obj-2", "Pitch End"),
+            _make_named_control("obj-3", "Pitch Decay"),
+        ]
+        patch = _make_patch_with_controls(controls)
+        organize_push_banks(patch)
+
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            if box.get("maxclass") == "live.banks":
+                banks_box = box
+                break
+        assert banks_box is not None
+
+        bank = banks_box["_parameter_banks"]["banks"][0]
+        assert len(bank["parameters"]) == 8
+        assert bank["parameters"].count("-") == 5
+
+    def test_bank_naming(self):
+        """D-06: bank containing Cutoff/Resonance/Drive -> name 'Filter'."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        controls = [
+            _make_named_control("obj-1", "Cutoff"),
+            _make_named_control("obj-2", "Resonance"),
+            _make_named_control("obj-3", "Drive"),
+        ]
+        patch = _make_patch_with_controls(controls)
+        organize_push_banks(patch)
+
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            if box.get("maxclass") == "live.banks":
+                banks_box = box
+                break
+        assert banks_box is not None
+
+        bank = banks_box["_parameter_banks"]["banks"][0]
+        assert bank["name"] == "Filter"
+
+    def test_bank_naming_amp(self):
+        """Bank containing Amp Decay/Amp Curve/Body Level -> name 'Amp'."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        controls = [
+            _make_named_control("obj-1", "Amp Decay"),
+            _make_named_control("obj-2", "Amp Curve"),
+            _make_named_control("obj-3", "Body Level"),
+        ]
+        patch = _make_patch_with_controls(controls)
+        organize_push_banks(patch)
+
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            if box.get("maxclass") == "live.banks":
+                banks_box = box
+                break
+        assert banks_box is not None
+
+        bank = banks_box["_parameter_banks"]["banks"][0]
+        assert bank["name"] == "Amp"
+
+    def test_banks_of_eight(self):
+        """10 params in same group -> split into 2 banks (8 + 2 padded)."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        controls = [
+            _make_named_control(f"obj-{i}", f"Filter Param {i}")
+            for i in range(10)
+        ]
+        patch = _make_patch_with_controls(controls)
+        organize_push_banks(patch)
+
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            if box.get("maxclass") == "live.banks":
+                banks_box = box
+                break
+        assert banks_box is not None
+
+        banks = banks_box["_parameter_banks"]["banks"]
+        filter_banks = [b for b in banks if b["name"].startswith("Filter")]
+        assert len(filter_banks) == 2
+        assert len(filter_banks[0]["parameters"]) == 8
+        assert len(filter_banks[1]["parameters"]) == 8
+        # Second bank should be padded
+        non_dash = [p for p in filter_banks[1]["parameters"] if p != "-"]
+        assert len(non_dash) == 2
+
+    def test_main_fallback(self):
+        """Params with no keyword match -> bank named 'Main'."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        controls = [
+            _make_named_control("obj-1", "Brightness"),
+            _make_named_control("obj-2", "Warmth"),
+        ]
+        patch = _make_patch_with_controls(controls)
+        organize_push_banks(patch)
+
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            if box.get("maxclass") == "live.banks":
+                banks_box = box
+                break
+        assert banks_box is not None
+
+        bank = banks_box["_parameter_banks"]["banks"][0]
+        assert bank["name"] == "Main"
+
+    def test_live_banks_box_created(self):
+        """If no live.banks box exists, one is added to patch."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        controls = [_make_named_control("obj-1", "Filter Cutoff")]
+        patch = _make_patch_with_controls(controls)
+        # Verify no live.banks exists before
+        for entry in patch["patcher"]["boxes"]:
+            assert entry["box"].get("maxclass") != "live.banks"
+
+        organize_push_banks(patch)
+
+        found = any(
+            entry.get("box", entry).get("maxclass") == "live.banks"
+            for entry in patch["patcher"]["boxes"]
+        )
+        assert found, "live.banks box should have been created"
+
+    def test_live_banks_box_reused(self):
+        """If live.banks already exists, its _parameter_banks is updated."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        existing_banks_box = {
+            "id": "obj-banks",
+            "maxclass": "live.banks",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [""],
+            "patching_rect": [20.0, 20.0, 315.0, 45.0],
+            "_parameter_banks": {"banks": []},
+        }
+        controls = [_make_named_control("obj-1", "Filter Cutoff")]
+        patch = _make_patch_with_controls(controls + [existing_banks_box])
+        organize_push_banks(patch)
+
+        # Should still have only one live.banks box
+        banks_boxes = [
+            entry.get("box", entry)
+            for entry in patch["patcher"]["boxes"]
+            if entry.get("box", entry).get("maxclass") == "live.banks"
+        ]
+        assert len(banks_boxes) == 1
+        assert len(banks_boxes[0]["_parameter_banks"]["banks"]) > 0
+
+    def test_params_referenced_by_longname(self):
+        """A2: bank parameter entries use parameter_longname values."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        controls = [_make_named_control("obj-1", "Filter Cutoff")]
+        patch = _make_patch_with_controls(controls)
+        organize_push_banks(patch)
+
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            if box.get("maxclass") == "live.banks":
+                banks_box = box
+                break
+        assert banks_box is not None
+
+        bank = banks_box["_parameter_banks"]["banks"][0]
+        assert "Filter Cutoff" in bank["parameters"]
+
+    def test_empty_device_no_banks(self):
+        """Device with zero parameters -> no banks created."""
+        from src.maxpat.m4l_polish import organize_push_banks
+
+        patch = _make_patch_with_controls([])
+        organize_push_banks(patch)
+
+        # Should not have created a live.banks box
+        for entry in patch["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            assert box.get("maxclass") != "live.banks"
