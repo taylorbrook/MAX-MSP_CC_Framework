@@ -6,6 +6,8 @@ does not detect:
   - Missing required objects per device type
   - Duplicate parameter_longname across device (including subpatchers)
   - Device quality: openinpresentation, devicewidth, parameter_enable
+  - Missing info text (annotation) on parameter controls
+  - Missing live.banks for Push controller bank organization
 """
 
 from __future__ import annotations
@@ -54,6 +56,8 @@ def review_m4l(
     results.extend(_check_device_completeness(boxes, device_type))
     results.extend(_check_parameter_uniqueness(boxes))
     results.extend(_check_device_quality(patcher, boxes))
+    results.extend(_check_missing_info_text(boxes))
+    results.extend(_check_missing_live_banks(boxes))
 
     return results
 
@@ -274,3 +278,81 @@ def _check_device_quality(
             ))
 
     return results
+
+
+# ---------------------------------------------------------------------------
+# Check 5: Missing info text (annotation) on parameter controls
+# ---------------------------------------------------------------------------
+
+def _check_missing_info_text(
+    boxes: list[dict],
+) -> list[CriticResult]:
+    """Warn when parameterized live.* controls lack annotation text.
+
+    Without annotation, Ableton's Info View shows no description when
+    the user hovers over the control.  This is a polish warning (not a
+    blocker) -- the device still works, but looks unprofessional.
+    """
+    results: list[CriticResult] = []
+
+    for box_entry in boxes:
+        box = box_entry.get("box", box_entry)
+        maxclass = box.get("maxclass", "")
+
+        if maxclass.startswith("live.") and maxclass not in _LIVE_NO_PARAM:
+            if box.get("parameter_enable") and not box.get("annotation"):
+                box_id = box.get("id", "?")
+                results.append(CriticResult(
+                    "warning",
+                    f"{maxclass} ({box_id}) missing info text -- "
+                    f"Ableton Info View will show no description",
+                    "Run polish_m4l_device() or set annotation attribute "
+                    "manually",
+                ))
+
+        # Recurse into subpatcher boxes
+        inner_patcher = box.get("patcher")
+        if inner_patcher:
+            inner_boxes = inner_patcher.get("boxes", [])
+            results.extend(_check_missing_info_text(inner_boxes))
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Check 6: Missing live.banks for Push controller bank organization
+# ---------------------------------------------------------------------------
+
+def _check_missing_live_banks(
+    boxes: list[dict],
+) -> list[CriticResult]:
+    """Warn when a device has parameter controls but no live.banks.
+
+    Without live.banks, Ableton/Push uses default bank layout which
+    may not match the intended parameter grouping.
+    """
+    has_param_controls = False
+    has_live_banks = False
+
+    for box_entry in boxes:
+        box = box_entry.get("box", box_entry)
+        maxclass = box.get("maxclass", "")
+
+        if maxclass == "live.banks":
+            has_live_banks = True
+
+        if (maxclass.startswith("live.")
+                and maxclass not in _LIVE_NO_PARAM
+                and box.get("parameter_enable")):
+            has_param_controls = True
+
+    if has_param_controls and not has_live_banks:
+        return [CriticResult(
+            "warning",
+            "M4L device has parameter controls but no live.banks -- "
+            "Push controller layout will use Ableton defaults",
+            "Run polish_m4l_device() or add live.banks for explicit "
+            "Push bank control",
+        )]
+
+    return []
