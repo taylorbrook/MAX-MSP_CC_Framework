@@ -54,9 +54,6 @@ GROUP_PRIORITY: dict[str, int] = {
     "Main": 8,
 }
 
-# Counter for generating unique label box IDs
-_label_counter: int = 0
-
 
 # ---------------------------------------------------------------------------
 # Internal helpers
