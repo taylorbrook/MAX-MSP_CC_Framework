@@ -577,3 +577,218 @@ class TestDeviceQuality:
         results = review_m4l(patch, device_type="audio_effect")
         warnings = [r for r in results if r.severity == "warning" and "parameter_enable" in r.finding.lower()]
         assert len(warnings) >= 1
+
+
+# ===========================================================================
+# TestPolishWarnings -- D-13
+# ===========================================================================
+
+class TestPolishWarnings:
+    """Tests for polish gap warnings: missing info text and absent live.banks."""
+
+    def test_missing_info_text_warning(self):
+        """live.dial with parameter_enable=1 but no annotation -> warning."""
+        from src.maxpat.critics.m4l_critic import review_m4l
+
+        patch = _make_m4l_patch(
+            ["plugin~", "plugout~", "live.thisdevice"],
+            extra_boxes=[
+                {
+                    "id": "obj-dial-1",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": ["", "float"],
+                    "parameter_enable": 1,
+                    # No annotation attribute
+                },
+            ],
+            openinpresentation=1,
+            devicewidth=300.0,
+        )
+        results = review_m4l(patch, device_type="audio_effect")
+        info_warnings = [r for r in results if r.severity == "warning" and "info text" in r.finding.lower()]
+        assert len(info_warnings) >= 1, f"Expected info text warning, got: {results}"
+
+    def test_info_text_present_no_warning(self):
+        """live.dial with annotation='Controls cutoff' -> no info text warning."""
+        from src.maxpat.critics.m4l_critic import review_m4l
+
+        patch = _make_m4l_patch(
+            ["plugin~", "plugout~", "live.thisdevice"],
+            extra_boxes=[
+                {
+                    "id": "obj-dial-1",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": ["", "float"],
+                    "parameter_enable": 1,
+                    "annotation": "Controls cutoff",
+                },
+            ],
+            openinpresentation=1,
+            devicewidth=300.0,
+        )
+        results = review_m4l(patch, device_type="audio_effect")
+        info_warnings = [r for r in results if r.severity == "warning" and "info text" in r.finding.lower()]
+        assert len(info_warnings) == 0, f"Expected no info text warning, got: {info_warnings}"
+
+    def test_missing_info_text_suggestion(self):
+        """Warning suggestion contains 'polish_m4l_device' or 'annotation'."""
+        from src.maxpat.critics.m4l_critic import review_m4l
+
+        patch = _make_m4l_patch(
+            ["plugin~", "plugout~", "live.thisdevice"],
+            extra_boxes=[
+                {
+                    "id": "obj-dial-1",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": ["", "float"],
+                    "parameter_enable": 1,
+                },
+            ],
+            openinpresentation=1,
+            devicewidth=300.0,
+        )
+        results = review_m4l(patch, device_type="audio_effect")
+        info_warnings = [r for r in results if r.severity == "warning" and "info text" in r.finding.lower()]
+        assert len(info_warnings) >= 1
+        suggestion = info_warnings[0].suggestion.lower()
+        assert "polish_m4l_device" in suggestion or "annotation" in suggestion, (
+            f"Expected suggestion to mention polish_m4l_device or annotation, got: {info_warnings[0].suggestion}"
+        )
+
+    def test_missing_live_banks_warning(self):
+        """M4L device with live.dial (parameter) but no live.banks -> warning."""
+        from src.maxpat.critics.m4l_critic import review_m4l
+
+        patch = _make_m4l_patch(
+            ["plugin~", "plugout~", "live.thisdevice"],
+            extra_boxes=[
+                {
+                    "id": "obj-dial-1",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": ["", "float"],
+                    "parameter_enable": 1,
+                    "annotation": "Has info text",
+                },
+            ],
+            openinpresentation=1,
+            devicewidth=300.0,
+        )
+        results = review_m4l(patch, device_type="audio_effect")
+        banks_warnings = [r for r in results if r.severity == "warning" and "live.banks" in r.finding.lower()]
+        assert len(banks_warnings) >= 1, f"Expected live.banks warning, got: {results}"
+
+    def test_live_banks_present_no_warning(self):
+        """Device with live.banks box -> no warning about banks."""
+        from src.maxpat.critics.m4l_critic import review_m4l
+
+        patch = _make_m4l_patch(
+            ["plugin~", "plugout~", "live.thisdevice"],
+            maxclass_overrides={"live.thisdevice": "live.thisdevice"},
+            extra_boxes=[
+                {
+                    "id": "obj-dial-1",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": ["", "float"],
+                    "parameter_enable": 1,
+                    "annotation": "Has info text",
+                },
+                {
+                    "id": "obj-banks-1",
+                    "maxclass": "live.banks",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [""],
+                },
+            ],
+            openinpresentation=1,
+            devicewidth=300.0,
+        )
+        results = review_m4l(patch, device_type="audio_effect")
+        banks_warnings = [r for r in results if r.severity == "warning" and "live.banks" in r.finding.lower()]
+        assert len(banks_warnings) == 0, f"Expected no live.banks warning, got: {banks_warnings}"
+
+    def test_live_banks_warning_only_when_params_exist(self):
+        """Device with zero parameter controls (only live.thisdevice) -> no banks warning."""
+        from src.maxpat.critics.m4l_critic import review_m4l
+
+        patch = _make_m4l_patch(
+            ["plugin~", "plugout~", "live.thisdevice"],
+            openinpresentation=1,
+            devicewidth=300.0,
+        )
+        results = review_m4l(patch, device_type="audio_effect")
+        banks_warnings = [r for r in results if r.severity == "warning" and "live.banks" in r.finding.lower()]
+        assert len(banks_warnings) == 0, f"Expected no live.banks warning when no params, got: {banks_warnings}"
+
+    def test_warnings_not_blockers(self):
+        """All polish warnings have severity 'warning', never 'blocker'."""
+        from src.maxpat.critics.m4l_critic import review_m4l
+
+        patch = _make_m4l_patch(
+            ["plugin~", "plugout~", "live.thisdevice"],
+            extra_boxes=[
+                {
+                    "id": "obj-dial-1",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": ["", "float"],
+                    "parameter_enable": 1,
+                    # No annotation -> info text warning
+                },
+                # No live.banks -> banks warning
+            ],
+            openinpresentation=1,
+            devicewidth=300.0,
+        )
+        results = review_m4l(patch, device_type="audio_effect")
+        info_warnings = [r for r in results if "info text" in r.finding.lower()]
+        banks_warnings = [r for r in results if "live.banks" in r.finding.lower()]
+        for w in info_warnings + banks_warnings:
+            assert w.severity == "warning", f"Expected severity 'warning', got '{w.severity}' for: {w.finding}"
+
+    def test_skips_non_param_live_objects(self):
+        """live.thisdevice, live.path etc. do not trigger info text warning."""
+        from src.maxpat.critics.m4l_critic import review_m4l
+
+        patch = _make_m4l_patch(
+            ["plugin~", "plugout~", "live.thisdevice"],
+            extra_boxes=[
+                {
+                    "id": "obj-path-1",
+                    "maxclass": "live.path",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": ["", "", ""],
+                },
+                {
+                    "id": "obj-observer-1",
+                    "maxclass": "live.observer",
+                    "numinlets": 2,
+                    "numoutlets": 3,
+                    "outlettype": ["", "", ""],
+                },
+                {
+                    "id": "obj-scope-1",
+                    "maxclass": "live.scope~",
+                    "numinlets": 2,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                },
+            ],
+            openinpresentation=1,
+            devicewidth=300.0,
+        )
+        results = review_m4l(patch, device_type="audio_effect")
+        info_warnings = [r for r in results if r.severity == "warning" and "info text" in r.finding.lower()]
+        assert len(info_warnings) == 0, f"Non-param live objects should not trigger info text warning, got: {info_warnings}"
