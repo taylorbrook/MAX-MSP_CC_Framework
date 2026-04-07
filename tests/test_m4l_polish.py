@@ -525,3 +525,209 @@ class TestPushBanks:
         for entry in patch["patcher"]["boxes"]:
             box = entry.get("box", entry)
             assert box.get("maxclass") != "live.banks"
+
+
+# ===========================================================================
+# TestInfoText -- POLISH-03
+# ===========================================================================
+
+class TestInfoText:
+    """Test populate_info_text sets annotation and annotation_name."""
+
+    def test_annotation_set(self):
+        """D-08: control with longname, no annotation -> annotation set."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control("obj-1", "Filter Cutoff")
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert box.get("annotation"), "annotation should be set"
+        assert "Filter Cutoff" in box["annotation"]
+
+    def test_annotation_name_set(self):
+        """Control with longname -> annotation_name set to longname."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control("obj-1", "Filter Cutoff")
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert box.get("annotation_name") == "Filter Cutoff"
+
+    def test_range_formatting_hertz(self):
+        """D-09: unitstyle=3 (HERTZ), mmin=20, mmax=20000 -> 'Range: 20-20000 Hz'."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control(
+            "obj-1", "Filter Cutoff", unitstyle=3, mmin=20.0, mmax=20000.0,
+        )
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert "Range: 20-20000 Hz" in box["annotation"]
+
+    def test_range_formatting_decibel(self):
+        """unitstyle=4 (DECIBEL), mmin=-70, mmax=6 -> 'Range: -70-6 dB'."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control(
+            "obj-1", "Volume", unitstyle=4, mmin=-70.0, mmax=6.0,
+        )
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert "Range: -70-6 dB" in box["annotation"]
+
+    def test_range_formatting_percent(self):
+        """unitstyle=5 (PERCENT), mmin=0, mmax=100 -> 'Range: 0-100 %'."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control(
+            "obj-1", "Mix Level", unitstyle=5, mmin=0.0, mmax=100.0,
+        )
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert "Range: 0-100 %" in box["annotation"]
+
+    def test_range_formatting_midi(self):
+        """unitstyle=8 (MIDI) -> 'Range: 0-127 (MIDI)'."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control(
+            "obj-1", "Note", unitstyle=8, mmin=0.0, mmax=127.0,
+        )
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert "Range: 0-127 (MIDI)" in box["annotation"]
+
+    def test_no_range_when_missing(self):
+        """No mmin/mmax -> no 'Range:' in annotation."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control("obj-1", "Filter Cutoff")
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert "Range:" not in box.get("annotation", "")
+
+    def test_preserves_existing_annotation(self):
+        """D-10: box with annotation already set -> not overridden."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control("obj-1", "Filter Cutoff")
+        ctrl["annotation"] = "My custom info text"
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert box["annotation"] == "My custom info text"
+
+    def test_preserves_existing_annotation_name(self):
+        """Box with annotation_name set -> not overridden."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control("obj-1", "Filter Cutoff")
+        ctrl["annotation_name"] = "Custom Header"
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert box["annotation_name"] == "Custom Header"
+
+    def test_annotation_is_top_level_box_attr(self):
+        """Annotation set on box dict, NOT inside saved_attribute_attributes."""
+        from src.maxpat.m4l_polish import populate_info_text
+
+        ctrl = _make_named_control("obj-1", "Filter Cutoff")
+        patch = _make_patch_with_controls([ctrl])
+        populate_info_text(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        # Should be top-level
+        assert "annotation" in box
+        assert "annotation_name" in box
+        # Should NOT be inside saved_attribute_attributes
+        saa = box.get("saved_attribute_attributes", {})
+        valueof = saa.get("valueof", {})
+        assert "annotation" not in valueof
+        assert "annotation_name" not in valueof
+
+
+# ===========================================================================
+# TestPolishCompositor -- polish_m4l_device
+# ===========================================================================
+
+class TestPolishCompositor:
+    """Test polish_m4l_device composes naming, banks, and info text."""
+
+    def test_polish_calls_all_three(self):
+        """Patch with unnamed controls -> after polish, longname derived, banks created, annotation set."""
+        from src.maxpat.m4l_polish import polish_m4l_device
+
+        ctrl = _make_live_control(varname="filter_cutoff")
+        patch = _make_patch_with_controls([ctrl])
+        polish_m4l_device(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        # Naming should have run
+        valueof = box["saved_attribute_attributes"]["valueof"]
+        assert valueof.get("parameter_longname") == "Filter Cutoff"
+        # Banks should have been created
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            b = entry.get("box", entry)
+            if b.get("maxclass") == "live.banks":
+                banks_box = b
+                break
+        assert banks_box is not None
+        # Info text should have been set
+        assert box.get("annotation")
+
+    def test_polish_ordering(self):
+        """Naming runs before banks (so banks reference correct longnames)."""
+        from src.maxpat.m4l_polish import polish_m4l_device
+
+        ctrl = _make_live_control(varname="filter_cutoff")
+        patch = _make_patch_with_controls([ctrl])
+        polish_m4l_device(patch)
+
+        # Banks should reference "Filter Cutoff" (derived longname)
+        banks_box = None
+        for entry in patch["patcher"]["boxes"]:
+            b = entry.get("box", entry)
+            if b.get("maxclass") == "live.banks":
+                banks_box = b
+                break
+        assert banks_box is not None
+        bank = banks_box["_parameter_banks"]["banks"][0]
+        assert "Filter Cutoff" in bank["parameters"]
+
+    def test_polish_returns_patch_dict(self):
+        """Return value is the same dict (mutated in place)."""
+        from src.maxpat.m4l_polish import polish_m4l_device
+
+        patch = _make_patch_with_controls([])
+        result = polish_m4l_device(patch)
+        assert result is patch
+
+    def test_polish_empty_patch(self):
+        """Patch with no live.* controls -> no error, returns unchanged."""
+        from src.maxpat.m4l_polish import polish_m4l_device
+
+        patch = _make_patch_with_controls([])
+        result = polish_m4l_device(patch)
+        assert result is patch
+        # No banks created
+        for entry in result["patcher"]["boxes"]:
+            box = entry.get("box", entry)
+            assert box.get("maxclass") != "live.banks"
