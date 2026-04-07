@@ -360,8 +360,12 @@ Plans:
   3. Tests verify .amxd export produces valid binary for each device type
   4. Tests verify presentation layout respects 169px height cap
   5. All existing tests continue to pass (zero regressions)
-**Plans**: 3 plans
+**Plans**: 2 plans
 Canonical refs: `tests/test_m4l_db.py`, `tests/test_m4l_detection.py`
+
+Plans:
+- [ ] 25-01-PLAN.md — Happy path E2E tests for all 3 device types (scaffold->polish->layout->critic->export)
+- [ ] 25-02-PLAN.md — Violation E2E tests and Push bank assertion
 
 ## Progress
 
@@ -394,8 +398,8 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 22. Validation and Export | v3.0 | 2/2 | Complete    | 2026-04-06 |
 | 23. Polish | v3.0 | 3/3 | Complete   | 2026-04-07 |
 | 24. Layout | v3.0 | 3/3 | Complete   | 2026-04-07 |
-| 25. Testing | v3.0 | 0/0 | Planned | - |
+| 25. Testing | v3.0 | 0/2 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-07 -- Phase 24 planned: 3 plans in 2 waves*
+*Last updated: 2026-04-07 -- Phase 25 planned: 2 plans in 2 waves*
