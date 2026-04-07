@@ -455,19 +455,9 @@ def _apply_tabbed_layout(
                 max_w = w
         group_widths[gn] = max(max_w, 44)
 
-    # Compute device width needed for the widest tab page
-    # Each page's groups get laid out as columns; the widest page determines devicewidth
-    # But for simplicity, lay out ALL groups as columns (controls overlap by page)
-    # Device width = sum of all group widths + gaps
-    # Actually: each tab page shows only ONE group's controls. But the tab
-    # itself spans the device. So device width = max(single group width) + margins
-    # Wait -- the plan says groups become tab pages. Each tab page shows one group.
-
-    # First-page extras (live.gain~) are always visible alongside the first page
+    # Each tab page shows one group as a column. Device width = widest page + margins.
+    # First-page extras (live.gain~) sit alongside the first page's column.
     first_page_name = group_names[0] if group_names else None
-
-    # Compute max content width across pages
-    # Each page is a single group column (+ first_page_extras alongside)
     extra_width = 0
     if first_page_extras:
         for c in first_page_extras:
@@ -512,8 +502,6 @@ def _apply_tabbed_layout(
                 _ensure_varname(c, global_ctrl_index)
                 global_ctrl_index += 1
                 ey += h + CONTROL_V_GAP
-                if w > extra_width - GROUP_H_GAP:
-                    pass  # already accounted for
             x += extra_width
 
         # Position group controls in a column
