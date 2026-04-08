@@ -83,29 +83,6 @@ Detailed keyword-to-agent mapping for the router agent. The router scans the use
 - "Arrange knobs and sliders..."
 - "Create a control panel..."
 
-### M4L Dispatch (Max for Live Devices)
-
-**Primary keywords:** Max for Live, M4L, Ableton device, audio effect device, instrument device, MIDI effect, amxd, live device
-
-**Secondary keywords:** live.dial, live.slider, live.numbox, live.toggle, live.menu, live.tab, live.text, live.adsrui, plugin~, plugout~, parameter_enable, presentation mode, devicewidth, live.thisdevice, live.path, live.object, live.banks, push controller, --- prefix
-
-**Dispatch strategy:** M4L tasks dispatch to existing agents with M4L context injected (per D-07, no dedicated M4L agent):
-- DSP tasks in M4L context -> max-dsp-agent + M4L signal chain rules
-- UI tasks in M4L context -> max-ui-agent + M4L presentation rules
-- MIDI routing in M4L context -> max-patch-agent + M4L MIDI rules
-- Multi-domain M4L -> standard multi-agent dispatch with M4L context on all agents
-
-**Context injection:** When M4L detected, inject into agent dispatch:
-- Device type (audio_effect / instrument / midi_effect) if known
-- Reminder: read CLAUDE.md M4L section for authoritative rules
-- Key constraints: --- prefix on named objects, parameter_enable=1 on live.* controls, 169px height cap, no gain~ to plugout~
-
-**Intent patterns:**
-- "Create a Max for Live audio effect..."
-- "Build an M4L instrument that..."
-- "Make an Ableton device..."
-- "Add live.dial controls to the device..."
-
 ## Ambiguity Resolution
 
 When keywords match multiple domains:
@@ -134,9 +111,6 @@ Some terms are ambiguous between data/control operations and audio/signal operat
 | "gen~ buffer" / "Buffer operator" | DSP | DSP | Gen~ Buffer/Data operators for sample access inside gen~ |
 | "delay messages" / "delayed bang" | Patch | Patch | Control-rate delay = delay/pipe objects |
 | "delay effect" / "audio delay" | DSP | DSP | Signal delay = tapin~/tapout~ or gen~ Delay operator |
-| "M4L audio effect" | DSP + UI | DSP | M4L context injected on both agents |
-| "Ableton device with knobs" | UI (lead) + DSP | UI | M4L presentation layout is primary |
-| "M4L MIDI processor" | Patch | Patch | M4L context injected, MIDI routing domain |
 
 ## Single vs Multi-Agent Decision
 

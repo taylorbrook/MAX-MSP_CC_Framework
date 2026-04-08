@@ -70,8 +70,6 @@ from src.maxpat.externals import (
     generate_help_patch,
 )
 from src.maxpat.ext_validation import validate_mxo, BuildResult
-from src.maxpat.m4l_export import write_amxd
-from src.maxpat.critics import detect_device_type
 
 
 # Backward compat alias -- canonical location is src.maxpat.aesthetics
@@ -85,7 +83,6 @@ __all__ = [
     "Patchline",
     "EditResult",
     # File I/O
-    "write_amxd",
     "write_gendsp",
     "write_js",
     "validate_file",
@@ -108,8 +105,6 @@ __all__ = [
     "validate_patch",
     "has_blocking_errors",
     "ValidationResult",
-    # M4L detection
-    "detect_device_type",
     # Errors
     "PatchGenerationError",
     "PatchValidationError",

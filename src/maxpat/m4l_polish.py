@@ -5,6 +5,8 @@ organizes parameters into Push controller banks, and populates info text
 annotations for Ableton Info View.
 
 Rules:
+  SCAFFOLD-04: ensure_parameter_enable sets parameter_enable=1 + saved_attribute_attributes
+  SCAFFOLD-05: ensure_m4l_prefixes adds --- prefix to named objects
   D-01: Never override existing non-empty values
   D-02: Derive longname from varname (snake_case -> Title Case)
   D-03: Derive shortname from longname via abbreviation table (max 8 chars)
@@ -15,13 +17,13 @@ Rules:
   D-08: Info text describes what the parameter does
   D-09: Info text includes range from unitstyle and mmin/mmax
   D-10: Existing annotations not overridden
-  D-11: polish_m4l_device composes naming, banks, info text in order
+  D-11: polish_m4l_device composes all passes in order
 """
 
 from __future__ import annotations
 
 from src.maxpat.critics.m4l_critic import _LIVE_NO_PARAM
-from src.maxpat.m4l_constants import UnitStyle
+from src.maxpat.m4l_constants import ParamType, UnitStyle
 
 
 # ---------------------------------------------------------------------------
@@ -141,7 +143,76 @@ def _collect_live_controls(boxes: list[dict]) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Main entry point
+# SCAFFOLD-04: Parameter enable enforcement
+# ---------------------------------------------------------------------------
+
+def ensure_parameter_enable(patch_dict: dict) -> dict:
+    """Set parameter_enable=1 and saved_attribute_attributes on live.* controls.
+
+    Fills gaps only -- never overrides existing values (D-05).
+    Excludes non-parameter live objects per _LIVE_NO_PARAM.
+
+    Must run BEFORE derive_parameter_names() so the valueof dict exists
+    when the naming pass fills in parameter_longname.
+    """
+    patcher = patch_dict.get("patcher", {})
+    boxes = patcher.get("boxes", [])
+    controls = _collect_live_controls(boxes)
+
+    for box in controls:
+        if not box.get("parameter_enable"):
+            box["parameter_enable"] = 1
+
+        saa = box.setdefault("saved_attribute_attributes", {})
+        valueof = saa.setdefault("valueof", {})
+        valueof.setdefault("parameter_type", int(ParamType.FLOAT))
+        valueof.setdefault("parameter_unitstyle", int(UnitStyle.FLOAT))
+
+    return patch_dict
+
+
+# ---------------------------------------------------------------------------
+# SCAFFOLD-05: M4L --- prefix enforcement
+# ---------------------------------------------------------------------------
+
+_NAMED_OBJECTS = frozenset({
+    "buffer~", "coll", "dict", "send", "receive", "send~", "receive~", "value"
+})
+
+
+def ensure_m4l_prefixes(patch_dict: dict) -> dict:
+    """Add --- prefix to named objects in M4L devices.
+
+    Scans all boxes recursively. Targets objects whose first argument
+    is a name (not #N substitution or empty). Idempotent (D-05).
+    """
+    patcher = patch_dict.get("patcher", {})
+    boxes = patcher.get("boxes", [])
+    _prefix_boxes(boxes)
+    return patch_dict
+
+
+def _prefix_boxes(boxes: list[dict]) -> None:
+    """Recursively scan and prefix named objects."""
+    for box_entry in boxes:
+        box = box_entry.get("box", box_entry)
+        text = box.get("text", "")
+        if text:
+            tokens = text.split()
+            if (len(tokens) >= 2
+                    and tokens[0] in _NAMED_OBJECTS
+                    and not tokens[1].startswith("---")
+                    and not tokens[1].startswith("#")):
+                tokens[1] = "---" + tokens[1]
+                box["text"] = " ".join(tokens)
+
+        inner_patcher = box.get("patcher")
+        if inner_patcher:
+            _prefix_boxes(inner_patcher.get("boxes", []))
+
+
+# ---------------------------------------------------------------------------
+# POLISH-01: Parameter name derivation
 # ---------------------------------------------------------------------------
 
 def derive_parameter_names(patch_dict: dict) -> dict:
@@ -424,16 +495,21 @@ def populate_info_text(patch_dict: dict) -> dict:
 def polish_m4l_device(patch_dict: dict) -> dict:
     """Apply full M4L polish pipeline to a device patch.
 
-    Composes all three polish passes in correct order:
-    1. derive_parameter_names -- fills longname/shortname/varname gaps
-    2. organize_push_banks -- groups params into semantic Push banks
-    3. populate_info_text -- sets annotation/annotation_name
+    Composes all five polish passes in correct order:
+    1. ensure_parameter_enable -- sets parameter_enable=1 + saa defaults (SCAFFOLD-04)
+    2. ensure_m4l_prefixes -- adds --- prefix to named objects (SCAFFOLD-05)
+    3. derive_parameter_names -- fills longname/shortname/varname gaps
+    4. organize_push_banks -- groups params into semantic Push banks
+    5. populate_info_text -- sets annotation/annotation_name
 
+    Enforcement MUST run before naming (naming needs valueof dict).
     Naming MUST run before banks (banks reference longnames).
     Called explicitly by agents after build, before export (D-12).
 
     Mutates patch_dict in place. Returns the same dict.
     """
+    ensure_parameter_enable(patch_dict)
+    ensure_m4l_prefixes(patch_dict)
     derive_parameter_names(patch_dict)
     organize_push_banks(patch_dict)
     populate_info_text(patch_dict)

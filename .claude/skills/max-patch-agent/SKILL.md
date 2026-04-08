@@ -74,16 +74,6 @@ Before any generation:
 - Comment objects on non-obvious connections
 - For dial, number, and control appearance, consult `.claude/skills/references/ui-presets.md`
 
-### M4L MIDI Routing
-
-When generating control/MIDI flow for M4L devices (instrument or midi_effect):
-
-- **MIDI passthrough:** Instrument and midi_effect devices MUST have midiin connected to midiout. MIDI flows through even when the device doesn't process it -- prevents silent MIDI drops in Ableton.
-- **midiin/midiout use maxclass="newobj":** They are NOT UI objects. Use add_box("midiin") and add_box("midiout") -- the Box constructor resolves maxclass correctly.
-- **live.path / live.object:** Used together to interact with the Live API. live.path resolves an API path string (e.g., "live_set tracks 0"), live.object sends messages to the resolved object. They are a required pair -- never use one without the other.
-- **--- prefix on named objects:** All named objects (buffer~, coll, dict, send, receive, send~, receive~, value) in M4L devices MUST use --- prefix (e.g., buffer~ ---mybuffer). MAX replaces --- with a unique device instance ID at runtime, preventing name collisions when multiple instances are loaded.
-- **live.thisdevice:** Every M4L device includes live.thisdevice for device initialization. It outputs device ID and state on load.
-
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
 ## Editing Existing Patches (via /max-iterate)

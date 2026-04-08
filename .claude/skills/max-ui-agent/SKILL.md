@@ -77,32 +77,6 @@ Before any generation:
 - `fontsize` -- font size for text
 - `fontname` -- font family
 
-### M4L Presentation Mode and Controls
-
-When designing UI for M4L devices:
-
-- **Presentation mode required:** M4L devices must set openinpresentation=1 on the top-level patcher. All user-facing controls need presentation=1 and presentation_rect attributes.
-- **169px height constraint:** Ableton's device view is 169px tall. ALL presentation-mode controls must fit within this height. Controls placed below 169px are clipped and invisible.
-- **devicewidth:** Set on the patcher (not rect[2]). Default is 300px. This controls the device width in Ableton's device chain.
-- **live.* controls:** Use live.dial, live.slider, live.numbox, live.toggle, live.menu, live.tab, live.text instead of standard MAX UI objects for Ableton integration.
-- **parameter_enable=1 required:** Every live.* UI control MUST have parameter_enable=1 in its box attributes and a complete saved_attribute_attributes block:
-  ```json
-  {
-    "saved_attribute_attributes": {
-      "valueof": {
-        "parameter_longname": "Unique Name",
-        "parameter_shortname": "8CharMax",
-        "parameter_type": 1,
-        "parameter_unitstyle": 0,
-        "parameter_modmode": 0
-      }
-    }
-  }
-  ```
-  parameter_type: 0=INT, 1=FLOAT, 2=ENUM. parameter_unitstyle: 0=INT, 1=FLOAT, 2=TIME(ms), 3=HERTZ, 4=DECIBEL, 5=PERCENT. See src/maxpat/m4l_constants.py for all values.
-- **parameter_longname must be unique** across the entire device. Duplicate longnames cause Ableton to silently merge parameters.
-- **parameter_shortname max 8 chars:** Displayed on Push controller. Truncate or abbreviate.
-
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Assistance Comments, Z-Order Manipulation, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
 ## Editing Existing Patches (via /max-iterate)
