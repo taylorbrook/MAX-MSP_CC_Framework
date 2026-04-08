@@ -4,8 +4,7 @@
 
 - ✅ **v1.0 MVP** — Phases 1-7 (shipped 2026-03-10)
 - ✅ **v1.1 Patch Quality & Aesthetics** — Phases 8-12 (shipped 2026-03-14)
-- ✅ **v2.0 Direct .maxpat Editing** — Phases 13-19 (shipped 2026-03-17)
-- 📋 **v3.0 M4L Device Creation** — Phases 20-28 (planned)
+- 📋 **v2.0 Direct .maxpat Editing** — Phases 13-18 (planned)
 
 ## Phases
 
@@ -37,38 +36,21 @@ Full details: see phase details below (archived in-place)
 
 </details>
 
-<details>
-<summary>✅ v2.0 Direct .maxpat Editing (Phases 13-19) — SHIPPED 2026-03-17</summary>
+### 📋 v2.0 Direct .maxpat Editing (Planned)
 
-- [x] Phase 13: Round-Trip Foundation (3/3 plans) — completed 2026-03-16
-- [x] Phase 14: Search and Mutation Primitives (2/2 plans) — completed 2026-03-16
-- [x] Phase 15: Intelligent Editing (3/3 plans) — completed 2026-03-16
-- [x] Phase 16: Patch Analysis (1/1 plan) — completed 2026-03-16
-- [x] Phase 17: Agent and Command Migration (3/3 plans) — completed 2026-03-16
-- [x] Phase 18: v1.x Cleanup (2/2 plans) — completed 2026-03-16
-- [x] Phase 19: Tech Debt Cleanup (1/1 plan) — completed 2026-03-17
-
-Full details: see phase details below
-
-</details>
-
-### 📋 v3.0 M4L Device Creation (Planned)
-
-**Milestone Goal:** First-class Max for Live device authoring — scaffolding, validation, export, and layout intelligence so M4L conventions are automated rather than requiring manual developer knowledge.
+**Milestone Goal:** Replace the Python generation pipeline with direct .maxpat reading and editing, making the .maxpat file the single source of truth and enabling true back-and-forth between Claude and manual MAX editing.
 
 **Phase Numbering:**
-- Integer phases (20-25): Planned milestone work
-- Decimal phases (e.g., 21.1): Urgent insertions if needed (marked with INSERTED)
+- Integer phases (13, 14, 15, 16, 17, 18): Planned milestone work
+- Decimal phases (e.g., 14.1): Urgent insertions if needed (marked with INSERTED)
 
-- [x] **Phase 20: Foundation** — M4L constants, database entries, device type detection, CLAUDE.md rules (completed 2026-04-06)
-- [x] **Phase 21: Scaffold and Routing** — create_m4l_project() with per-type boilerplate, M4L dispatch keywords, agent SKILL.md updates (completed 2026-04-06)
-- [x] **Phase 22: Validation and Export** — M4L critic module (6 checks), auto-detection wiring, .amxd export (completed 2026-04-06)
-- [x] **Phase 23: Polish** — Parameter naming intelligence, Push controller banks, info text/annotations (completed 2026-04-07)
-- [x] **Phase 24: Layout** — M4L presentation layout engine with 169px height cap, tabbed/overlay patterns (completed 2026-04-07)
-- [x] **Phase 25: Testing** — End-to-end M4L workflow test suite (completed 2026-04-07)
-- [x] **Phase 26: Phase 20 Data Fixes & Governance** — Fix DB/detection gaps, verify orphaned requirements (gap closure) (completed 2026-04-08)
-- [ ] **Phase 27: Scaffold Auto-Enforcement** — Code automation for parameter_enable and --- prefix (gap closure)
-- [ ] **Phase 28: Verification & Integration Cleanup** — Missing verifications, stale docs, API re-exports (gap closure)
+- [x] **Phase 13: Round-Trip Foundation** — Harden from_dict/to_dict for lossless .maxpat load-save cycle (completed 2026-03-16)
+- [x] **Phase 14: Search and Mutation Primitives** — Find objects and make basic add/remove/connect edits on loaded patches (completed 2026-03-16)
+- [x] **Phase 15: Intelligent Editing** — Higher-level edit operations: modify-in-place, insert-into-connection, replace, graph queries, auto-position (completed 2026-03-16)
+- [x] **Phase 16: Patch Analysis** — Structured patch understanding for onboarding existing patches from any source (completed 2026-03-16)
+- [x] **Phase 17: Agent and Command Migration** — Rewire slash commands and agent skills to use direct .maxpat editing (completed 2026-03-16)
+- [x] **Phase 18: v1.x Cleanup** — Remove generation pipeline artifacts (incremental.py, generate.py, manifests) (completed 2026-03-16)
+- [x] **Phase 19: Tech Debt Cleanup** — Close integration gaps and tech debt from milestone audit (completed 2026-03-17)
 
 ## Phase Details
 
@@ -263,159 +245,11 @@ Plans:
 Plans:
 - [ ] 19-01-PLAN.md -- Fix subpatcher key ordering bug, add byte-identical round-trip test, fix stale docstring, delete leftover script
 
-### Phase 20: Foundation (M4L)
-**Goal**: All M4L data structures, database entries, detection logic, and CLAUDE.md rules needed before any M4L-specific code generation or validation can begin — the data foundation for v3.0
-**Depends on**: Nothing (first phase in v3.0)
-**Requirements**: DB-01, DB-02, DB-03, DB-04, VALID-04, VALID-05, ROUTING-02
-**Success Criteria** (what must be TRUE):
-  1. `ObjectDatabase.lookup('live.adsrui')` and `lookup('live.adsr~')` return valid dicts with correct I/O
-  2. `live.scope~` domain corrected to M4L in m4l/objects.json
-  3. `relationships.json` contains plugin~/plugout~, live.path/live.object, midiin/midiout pairs
-  4. `plugin~` and `plugout~` resolve to `maxclass='newobj'` via overrides
-  5. `plugout~` in `_TERMINAL_NAMES` in both `validation.py` and `dsp_critic.py`
-  6. `m4l_constants.py` exports ParamType, UnitStyle, ModMode, ParamVisibility IntEnums with correct values
-  7. `detect_device_type()` identifies audio_effect, instrument, midi_effect with confidence scoring
-  8. CLAUDE.md contains M4L domain-specific rules section
-**Plans**: 2 plans
-
-Plans:
-- [x] 20-01-PLAN.md -- M4L database entries (objects, relationships, overrides), terminal name hotfix
-- [x] 20-02-PLAN.md -- M4L constants, device type detection, CLAUDE.md rules
-
-### Phase 21: Scaffold and Routing
-**Goal**: Framework scaffolds complete M4L devices per type and routes agent tasks with M4L-specific context — the starting point for all M4L device creation
-**Depends on**: Phase 20
-**Requirements**: SCAFFOLD-01, SCAFFOLD-02, SCAFFOLD-03, SCAFFOLD-04, SCAFFOLD-05, SCAFFOLD-06, ROUTING-01, ROUTING-03
-**Success Criteria** (what must be TRUE):
-  1. `create_m4l_project('audio_effect')` generates a valid .maxpat with plugin~, plugout~, live.thisdevice, openinpresentation=1, and devicewidth
-  2. `create_m4l_project('instrument')` generates a valid .maxpat with plugout~, midiin, midiout, live.thisdevice
-  3. `create_m4l_project('midi_effect')` generates a valid .maxpat with midiin, midiout, live.thisdevice (no audio I/O)
-  4. All live.* UI controls in scaffolded devices have parameter_enable=1 with complete saved_attribute_attributes blocks (longname, shortname, type, unitstyle)
-  5. Named objects (buffer~, coll, dict, send, receive, send~, receive~, value) are auto-prefixed with `---` in M4L context
-  6. All user-facing controls have presentation=1 and presentation_rect set
-  7. Router recognizes M4L keywords ("Max for Live", "M4L", "Ableton device") and dispatches with M4L-specific context
-  8. Agent SKILL.md files contain M4L-specific instruction sections
-**Plans**: 2 plans
-Canonical refs: `src/maxpat/project.py`, `src/maxpat/m4l_constants.py`, `.claude/skills/max-router/`, `patches/kicksynth/generated/kicksynth-m4l.maxpat`
-
-Plans:
-- [x] 21-01-PLAN.md -- TDD create_m4l_project() for all 3 device types with tests
-- [x] 21-02-PLAN.md -- M4L dispatch rules in router + M4L sections in 4 agent SKILL.md files
-
-### Phase 22: Validation and Export
-**Goal**: M4L critic validates device correctness and .amxd export completes the device creation loop — catches errors before the user opens in Ableton
-**Depends on**: Phase 21
-**Requirements**: VALID-01, VALID-02, VALID-03, EXPORT-01
-**Success Criteria** (what must be TRUE):
-  1. M4L critic detects gain~ connected to plugout~ and flags as error
-  2. M4L critic validates device completeness (required objects per device type: plugout~ for audio_effect/instrument, midiin/midiout for instrument/midi_effect, live.thisdevice for all)
-  3. M4L critic validates unique parameter_longname across entire device (duplicate = blocker)
-  4. Confidence-scored auto-detection wired into `critics/__init__.py` — M4L critic runs automatically when device type is detected
-  5. `write_amxd()` produces valid .amxd files with correct 32-byte binary header per device type
-  6. `plugin~` and `plugout~` added to `_IO_OBJECT_NAMES` in layout.py
-**Plans**: 2 plans
-Canonical refs: `src/maxpat/critics/rnbo_critic.py` (template), `src/maxpat/critics/__init__.py`, `src/maxpat/hooks.py`, `patches/kicksynth/generated/kicksynth-m4l.amxd`
-
-Plans:
-- [x] 22-01-PLAN.md -- TDD M4L critic (gain~/plugout~, completeness, parameter uniqueness, quality, auto-detection wiring)
-- [x] 22-02-PLAN.md -- TDD write_amxd() export with binary header per device type
-
-### Phase 23: Polish
-**Goal**: Parameter metadata intelligence and UX polish — auto-derived naming, Push banks, and info text make devices feel professionally authored
-**Depends on**: Phase 21
-**Requirements**: POLISH-01, POLISH-02, POLISH-03
-**Success Criteria** (what must be TRUE):
-  1. Parameter naming intelligence auto-derives longname, shortname (8 chars max), and varname from semantic context (e.g., "Filter Cutoff" → shortname "Cutoff", varname "filter_cutoff")
-  2. Push controller bank organization via live.banks groups parameters into banks of 8
-  3. Info text / annotations auto-populated on live.* controls for Ableton Info View tooltips
-**Plans**: 3 plans
-Canonical refs: `src/maxpat/m4l_constants.py`, `patches/kicksynth/generated/kicksynth-m4l.maxpat`
-
-Plans:
-- [x] 23-01-PLAN.md -- TDD parameter naming intelligence (POLISH-01)
-- [x] 23-02-PLAN.md -- TDD Push banks and info text (POLISH-02, POLISH-03)
-- [x] 23-03-PLAN.md -- TDD critic polish warnings (D-13)
-
-### Phase 24: Layout
-**Goal**: M4L presentation layout engine positions controls intelligently within Ableton's 169px device height constraint — replacing crude grid fallback with device-aware layout
-**Depends on**: Phase 21
-**Requirements**: LAYOUT-01, LAYOUT-02, LAYOUT-03
-**Research flag**: Layout heuristics need validation against 3-5 real devices built with Phase 21 scaffold before coding
-**Success Criteria** (what must be TRUE):
-  1. M4L presentation layout engine groups controls by function within 169px height constraint
-  2. Layout supports tabbed, single-page, and overlay patterns — auto-selected based on control count and device complexity
-  3. All presentation coordinates enforced as whole pixels (no fractional values causing blurry rendering)
-**Plans**: 3 plans
-Canonical refs: `src/maxpat/layout.py`, `src/maxpat/m4l_constants.py`
-
-Plans:
-- [x] 24-01-PLAN.md — TDD core layout engine (grouping, column packing, whole-pixel enforcement)
-- [x] 24-02-PLAN.md — TDD tabbed layout (live.tab, script hide/show, threshold detection)
-- [x] 24-03-PLAN.md — TDD overlay patterns (readout overlays, popup panels)
-
-### Phase 25: Testing
-**Goal**: End-to-end M4L workflow test suite validates the complete device creation pipeline from scaffold through export
-**Depends on**: Phase 21, Phase 22, Phase 23, Phase 24
-**Requirements**: TEST-01
-**Success Criteria** (what must be TRUE):
-  1. End-to-end tests create M4L devices of each type (audio_effect, instrument, midi_effect) and validate all required components are present
-  2. Tests verify critic catches known violations (gain~/plugout~, missing parameter_enable, duplicate longnames)
-  3. Tests verify .amxd export produces valid binary for each device type
-  4. Tests verify presentation layout respects 169px height cap
-  5. All existing tests continue to pass (zero regressions)
-**Plans**: 2 plans
-Canonical refs: `tests/test_m4l_db.py`, `tests/test_m4l_detection.py`
-
-Plans:
-- [x] 25-01-PLAN.md — Happy path E2E tests for all 3 device types (scaffold->polish->layout->critic->export)
-- [x] 25-02-PLAN.md — Violation E2E tests and Push bank assertion
-
-### Phase 26: Phase 20 Data Fixes & Governance
-**Goal:** Fix remaining Phase 20 data gaps and create governance artifacts for all 7 orphaned/unsatisfied Phase 20 requirements
-**Depends on**: Phase 20
-**Requirements:** DB-01, DB-02, DB-03, DB-04, VALID-04, VALID-05, ROUTING-02
-**Gap Closure:** Closes gaps from v3.0-MILESTONE-AUDIT.md
-**Success Criteria** (what must be TRUE):
-  1. live.scope~ domain corrected to M4L in m4l/objects.json (DB-02)
-  2. relationships.json contains plugin~/plugout~, live.path/live.object, midiin/midiout pairs (DB-03)
-  3. detect_device_type() exported as standalone public function with test coverage (VALID-04)
-  4. Orphaned requirements verified: live.adsrui/live.adsr~ in DB (DB-01), m4l_constants enums (DB-04), plugout~ in terminal names (VALID-05), CLAUDE.md M4L rules (ROUTING-02)
-**Plans:** 2/2 plans complete
-
-Plans:
-- [x] 26-01-PLAN.md — M4L database fixes (DB-01, DB-02, DB-03) and CLAUDE.md rules (ROUTING-02)
-- [x] 26-02-PLAN.md — Public detect_device_type() export (VALID-04) and verifications (VALID-05, DB-04)
-
-
-### Phase 27: Scaffold Auto-Enforcement
-**Goal:** Add code automation for parameter_enable and --- prefix so scaffold requirements are satisfied by code, not just agent instructions
-**Depends on**: Phase 21
-**Requirements:** SCAFFOLD-04, SCAFFOLD-05
-**Gap Closure:** Closes gaps from v3.0-MILESTONE-AUDIT.md
-**Success Criteria** (what must be TRUE):
-  1. create_m4l_project() or polish_m4l_device() auto-sets parameter_enable=1 with saved_attribute_attributes on all live.* UI controls (SCAFFOLD-04)
-  2. Named objects (buffer~, coll, dict, send, receive, send~, receive~, value) auto-prefixed with `---` in M4L context (SCAFFOLD-05)
-  3. Tests verify both behaviors
-**Plans:** 1 plan
-
-Plans:
-- [ ] 27-01-PLAN.md — TDD ensure_parameter_enable() and ensure_m4l_prefixes() in polish pipeline
-
-### Phase 28: Verification & Integration Cleanup
-**Goal:** Create missing verification artifacts for Phases 23/25, fix stale docs, and complete public API exports
-**Depends on**: Phase 23, Phase 25
-**Requirements:** POLISH-01, POLISH-02, POLISH-03, TEST-01
-**Gap Closure:** Closes gaps from v3.0-MILESTONE-AUDIT.md
-**Success Criteria** (what must be TRUE):
-  1. Phase 23 VERIFICATION.md confirms POLISH-01/02/03 satisfied with evidence
-  2. Phase 25 VERIFICATION.md confirms TEST-01 satisfied with evidence
-  3. max-critic/SKILL.md updated — no stale "planned for Phase 22" references (integration fix)
-  4. polish_m4l_device, layout_m4l_presentation, create_m4l_project re-exported from src.maxpat.__init__ (integration fix)
-
 ## Progress
 
 **Execution Order:**
-Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in parallel after Phase 21. Phase 25 (Testing) depends on all prior phases.
+Phases execute in numeric order: 13 -> 14 -> 15 -> 16 -> 17 -> 18
+Phase 16 (Analysis) could begin after Phase 14 completes, but depends on Phase 15 for graph traversal.
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -437,17 +271,8 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 16. Patch Analysis | v2.0 | 1/1 | Complete | 2026-03-16 |
 | 17. Agent and Command Migration | v2.0 | 3/3 | Complete | 2026-03-16 |
 | 18. v1.x Cleanup | v2.0 | 2/2 | Complete | 2026-03-16 |
-| 19. Tech Debt Cleanup | v2.0 | 1/1 | Complete | 2026-03-17 |
-| 20. Foundation (M4L) | v3.0 | 2/2 | Complete | 2026-04-06 |
-| 21. Scaffold and Routing | v3.0 | 2/2 | Complete    | 2026-04-06 |
-| 22. Validation and Export | v3.0 | 2/2 | Complete    | 2026-04-06 |
-| 23. Polish | v3.0 | 3/3 | Complete   | 2026-04-07 |
-| 24. Layout | v3.0 | 3/3 | Complete   | 2026-04-07 |
-| 25. Testing | v3.0 | 2/2 | Complete   | 2026-04-07 |
-| 26. Phase 20 Data Fixes & Governance | v3.0 | 2/2 | Complete    | 2026-04-08 |
-| 27. Scaffold Auto-Enforcement | v3.0 | 0/1 | Planned | - |
-| 28. Verification & Integration Cleanup | v3.0 | 0/0 | Planned | - |
+| 19. Tech Debt Cleanup | 1/1 | Complete    | 2026-03-17 | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-08 -- Phase 27 plans created (1 plan, 1 wave)*
+*Last updated: 2026-03-16 -- Phase 19 plan created (1 plan in 1 wave)*

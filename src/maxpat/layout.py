@@ -1091,7 +1091,6 @@ def _apply_presentation_layout(boxes: list[Box]) -> None:
 _IO_OBJECT_NAMES = frozenset({
     "ezdac~", "ezadc~", "dac~", "adc~",
     "inlet", "outlet",
-    "plugin~", "plugout~",
 })
 
 

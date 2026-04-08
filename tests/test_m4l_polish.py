@@ -731,3 +731,355 @@ class TestPolishCompositor:
         for entry in result["patcher"]["boxes"]:
             box = entry.get("box", entry)
             assert box.get("maxclass") != "live.banks"
+
+
+# ===========================================================================
+# TestParameterEnableEnforcement -- SCAFFOLD-04
+# ===========================================================================
+
+class TestParameterEnableEnforcement:
+    """Test ensure_parameter_enable sets parameter_enable=1 and saa defaults."""
+
+    def test_sets_parameter_enable_when_missing(self):
+        """Control with parameter_enable=0 -> after ensure_parameter_enable() -> 1."""
+        from src.maxpat.m4l_polish import ensure_parameter_enable
+
+        ctrl = _make_live_control(parameter_enable=0)
+        patch = _make_patch_with_controls([ctrl])
+        ensure_parameter_enable(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert box["parameter_enable"] == 1
+
+    def test_creates_saved_attribute_attributes(self):
+        """Control with parameter_enable=0, no saa -> saa.valueof has type and unitstyle."""
+        from src.maxpat.m4l_polish import ensure_parameter_enable
+
+        ctrl = _make_live_control(parameter_enable=0)
+        # Remove any saa that _make_live_control may have created
+        ctrl.pop("saved_attribute_attributes", None)
+        patch = _make_patch_with_controls([ctrl])
+        ensure_parameter_enable(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        saa = box.get("saved_attribute_attributes", {})
+        valueof = saa.get("valueof", {})
+        assert valueof.get("parameter_type") == 1  # ParamType.FLOAT
+        assert valueof.get("parameter_unitstyle") == 1  # UnitStyle.FLOAT
+
+    def test_preserves_existing_parameter_enable(self):
+        """Control already has parameter_enable=1 and custom saa -> unchanged."""
+        from src.maxpat.m4l_polish import ensure_parameter_enable
+
+        ctrl = _make_live_control(parameter_enable=1, longname="My Param")
+        ctrl["saved_attribute_attributes"]["valueof"]["parameter_type"] = 2
+        ctrl["saved_attribute_attributes"]["valueof"]["parameter_unitstyle"] = 3
+        patch = _make_patch_with_controls([ctrl])
+        ensure_parameter_enable(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert box["parameter_enable"] == 1
+        valueof = box["saved_attribute_attributes"]["valueof"]
+        assert valueof["parameter_type"] == 2
+        assert valueof["parameter_unitstyle"] == 3
+
+    def test_preserves_existing_saa_values(self):
+        """Control with parameter_enable=0 but has saa.valueof.parameter_type=0 -> type stays 0."""
+        from src.maxpat.m4l_polish import ensure_parameter_enable
+
+        ctrl = _make_live_control(parameter_enable=0, longname="My Param")
+        ctrl["saved_attribute_attributes"]["valueof"]["parameter_type"] = 0
+        patch = _make_patch_with_controls([ctrl])
+        ensure_parameter_enable(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert box["parameter_enable"] == 1
+        valueof = box["saved_attribute_attributes"]["valueof"]
+        assert valueof["parameter_type"] == 0  # Preserved, not overridden to 1
+
+    def test_skips_non_parameter_live_objects(self):
+        """live.thisdevice -> not modified (no parameter_enable set, no saa created)."""
+        from src.maxpat.m4l_polish import ensure_parameter_enable
+
+        thisdevice = {
+            "id": "obj-1",
+            "maxclass": "live.thisdevice",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": ["", ""],
+        }
+        patch = _make_patch_with_controls([thisdevice])
+        ensure_parameter_enable(patch)
+
+        box = patch["patcher"]["boxes"][0]["box"]
+        assert "parameter_enable" not in box
+        assert "saved_attribute_attributes" not in box
+
+    def test_idempotent(self):
+        """Running twice produces the same result as running once."""
+        from src.maxpat.m4l_polish import ensure_parameter_enable
+        import copy
+
+        ctrl = _make_live_control(parameter_enable=0)
+        ctrl.pop("saved_attribute_attributes", None)
+        patch = _make_patch_with_controls([ctrl])
+        ensure_parameter_enable(patch)
+        snapshot = copy.deepcopy(patch)
+        ensure_parameter_enable(patch)
+        assert patch == snapshot
+
+    def test_recurses_into_subpatchers(self):
+        """live.dial inside a subpatcher -> gets parameter_enable=1."""
+        from src.maxpat.m4l_polish import ensure_parameter_enable
+
+        inner_ctrl = _make_live_control(box_id="sub-obj-1", parameter_enable=0)
+        inner_ctrl.pop("saved_attribute_attributes", None)
+        subpatcher_box = {
+            "id": "obj-2",
+            "maxclass": "newobj",
+            "text": "p effects",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [""],
+            "patcher": {
+                "boxes": [{"box": inner_ctrl}],
+                "lines": [],
+            },
+        }
+        patch = {
+            "patcher": {
+                "boxes": [{"box": subpatcher_box}],
+                "lines": [],
+            },
+        }
+        ensure_parameter_enable(patch)
+
+        inner_box = patch["patcher"]["boxes"][0]["box"]["patcher"]["boxes"][0]["box"]
+        assert inner_box["parameter_enable"] == 1
+        saa = inner_box.get("saved_attribute_attributes", {})
+        valueof = saa.get("valueof", {})
+        assert valueof.get("parameter_type") == 1
+        assert valueof.get("parameter_unitstyle") == 1
+
+
+# ===========================================================================
+# TestM4LPrefixEnforcement -- SCAFFOLD-05
+# ===========================================================================
+
+class TestM4LPrefixEnforcement:
+    """Test ensure_m4l_prefixes adds --- prefix to named objects."""
+
+    def test_adds_prefix_to_named_objects(self):
+        """Box with text='send myname' -> text=='send ---myname'."""
+        from src.maxpat.m4l_polish import ensure_m4l_prefixes
+
+        box = {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "send myname",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        }
+        patch = _make_patch_with_controls([box])
+        ensure_m4l_prefixes(patch)
+
+        result_box = patch["patcher"]["boxes"][0]["box"]
+        assert result_box["text"] == "send ---myname"
+
+    def test_all_named_object_types(self):
+        """One box for each named type -> all get --- prefix."""
+        from src.maxpat.m4l_polish import ensure_m4l_prefixes
+
+        named_types = ["buffer~", "coll", "dict", "send", "receive",
+                       "send~", "receive~", "value"]
+        boxes = []
+        for i, obj_type in enumerate(named_types):
+            boxes.append({
+                "id": f"obj-{i}",
+                "maxclass": "newobj",
+                "text": f"{obj_type} myname{i}",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            })
+        patch = _make_patch_with_controls(boxes)
+        ensure_m4l_prefixes(patch)
+
+        for i, entry in enumerate(patch["patcher"]["boxes"]):
+            box = entry["box"]
+            tokens = box["text"].split()
+            assert tokens[1].startswith("---"), f"{named_types[i]} not prefixed: {box['text']}"
+
+    def test_skips_already_prefixed(self):
+        """Box with text='send ---myname' -> text unchanged."""
+        from src.maxpat.m4l_polish import ensure_m4l_prefixes
+
+        box = {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "send ---myname",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        }
+        patch = _make_patch_with_controls([box])
+        ensure_m4l_prefixes(patch)
+
+        result_box = patch["patcher"]["boxes"][0]["box"]
+        assert result_box["text"] == "send ---myname"
+
+    def test_skips_hash_substitution(self):
+        """Box with text='buffer~ #1' -> text unchanged."""
+        from src.maxpat.m4l_polish import ensure_m4l_prefixes
+
+        box = {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "buffer~ #1",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": ["float", "bang"],
+        }
+        patch = _make_patch_with_controls([box])
+        ensure_m4l_prefixes(patch)
+
+        result_box = patch["patcher"]["boxes"][0]["box"]
+        assert result_box["text"] == "buffer~ #1"
+
+    def test_skips_unnamed_objects(self):
+        """Box with text='coll' (no name arg) -> text unchanged."""
+        from src.maxpat.m4l_polish import ensure_m4l_prefixes
+
+        box = {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "coll",
+            "numinlets": 1,
+            "numoutlets": 4,
+            "outlettype": ["", "", "", ""],
+        }
+        patch = _make_patch_with_controls([box])
+        ensure_m4l_prefixes(patch)
+
+        result_box = patch["patcher"]["boxes"][0]["box"]
+        assert result_box["text"] == "coll"
+
+    def test_preserves_extra_arguments(self):
+        """Box with text='buffer~ mybuf 1000' -> text=='buffer~ ---mybuf 1000'."""
+        from src.maxpat.m4l_polish import ensure_m4l_prefixes
+
+        box = {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "buffer~ mybuf 1000",
+            "numinlets": 1,
+            "numoutlets": 2,
+            "outlettype": ["float", "bang"],
+        }
+        patch = _make_patch_with_controls([box])
+        ensure_m4l_prefixes(patch)
+
+        result_box = patch["patcher"]["boxes"][0]["box"]
+        assert result_box["text"] == "buffer~ ---mybuf 1000"
+
+    def test_idempotent(self):
+        """Running twice -> same result."""
+        from src.maxpat.m4l_polish import ensure_m4l_prefixes
+        import copy
+
+        box = {
+            "id": "obj-1",
+            "maxclass": "newobj",
+            "text": "send myname",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        }
+        patch = _make_patch_with_controls([box])
+        ensure_m4l_prefixes(patch)
+        snapshot = copy.deepcopy(patch)
+        ensure_m4l_prefixes(patch)
+        assert patch == snapshot
+
+    def test_recurses_into_subpatchers(self):
+        """send inside subpatcher -> gets --- prefix."""
+        from src.maxpat.m4l_polish import ensure_m4l_prefixes
+
+        inner_box = {
+            "id": "sub-obj-1",
+            "maxclass": "newobj",
+            "text": "send myname",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        }
+        subpatcher_box = {
+            "id": "obj-2",
+            "maxclass": "newobj",
+            "text": "p effects",
+            "numinlets": 1,
+            "numoutlets": 1,
+            "outlettype": [""],
+            "patcher": {
+                "boxes": [{"box": inner_box}],
+                "lines": [],
+            },
+        }
+        patch = {
+            "patcher": {
+                "boxes": [{"box": subpatcher_box}],
+                "lines": [],
+            },
+        }
+        ensure_m4l_prefixes(patch)
+
+        result_box = patch["patcher"]["boxes"][0]["box"]["patcher"]["boxes"][0]["box"]
+        assert result_box["text"] == "send ---myname"
+
+
+# ===========================================================================
+# TestEnforcementIntegration -- SCAFFOLD-04 + SCAFFOLD-05 via polish_m4l_device
+# ===========================================================================
+
+class TestEnforcementIntegration:
+    """Test ensure_parameter_enable and ensure_m4l_prefixes via polish_m4l_device."""
+
+    def test_scaffold_polish_integration(self):
+        """polish_m4l_device enforces parameter_enable and --- prefix."""
+        from src.maxpat.m4l_polish import polish_m4l_device
+
+        dial = _make_live_control(
+            box_id="obj-1",
+            parameter_enable=0,
+            varname="filter_cutoff",
+        )
+        # Remove saa so ensure_parameter_enable must create it
+        dial.pop("saved_attribute_attributes", None)
+
+        send_box = {
+            "id": "obj-2",
+            "maxclass": "newobj",
+            "text": "send myname",
+            "numinlets": 1,
+            "numoutlets": 0,
+            "outlettype": [],
+        }
+
+        patch = _make_patch_with_controls([dial, send_box])
+        polish_m4l_device(patch)
+
+        # SCAFFOLD-04: parameter_enable set and saa created
+        dial_box = patch["patcher"]["boxes"][0]["box"]
+        assert dial_box["parameter_enable"] == 1
+        saa = dial_box.get("saved_attribute_attributes", {})
+        valueof = saa.get("valueof", {})
+        assert "parameter_type" in valueof
+        assert "parameter_unitstyle" in valueof
+
+        # SCAFFOLD-05: send box prefixed
+        send_result = patch["patcher"]["boxes"][1]["box"]
+        assert send_result["text"] == "send ---myname"
+
+        # POLISH-01: longname derived from varname
+        assert valueof.get("parameter_longname") == "Filter Cutoff"

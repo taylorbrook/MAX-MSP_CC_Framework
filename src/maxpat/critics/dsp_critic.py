@@ -30,7 +30,7 @@ _OSCILLATOR_NAMES = frozenset({
 _GAIN_NAMES = frozenset({"*~", "gain~", "mc.*~", "mc.gain~"})
 
 # Terminal signal objects
-_TERMINAL_NAMES = frozenset({"dac~", "ezdac~", "plugout~"})
+_TERMINAL_NAMES = frozenset({"dac~", "ezdac~"})
 
 # Objects known to output MIDI-range (0-127) or UI-range values
 _MIDI_RANGE_SOURCES = frozenset({

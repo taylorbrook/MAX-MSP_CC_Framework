@@ -30,15 +30,6 @@ Before running the critic loop:
 - The RNBO critic (`review_rnbo`) auto-invokes when rnbo~ boxes are detected in the patch
 - The external critic (`review_external`) invokes when `ext_code` is provided
 
-### M4L Device Awareness
-
-When reviewing M4L devices (patches with openinpresentation=1 and plugin~/plugout~ or live.thisdevice):
-
-- **Do NOT flag plugin~/plugout~ as unknown objects** -- they are valid M4L audio I/O objects using maxclass="newobj".
-- **Do NOT flag missing dac~** -- M4L devices use plugout~ instead of dac~.
-- **Do NOT flag live.* objects as non-standard** -- live.dial, live.slider, etc. are M4L-specific controls.
-- **A dedicated M4L critic module is planned for Phase 22** -- it will handle gain~/plugout~ detection, parameter_enable validation, and device completeness checks. Until then, the general critic should not flag M4L-specific patterns as errors.
-
 ## Critic Loop Protocol
 
 See `references/critic-protocol.md` for the full loop specification.
