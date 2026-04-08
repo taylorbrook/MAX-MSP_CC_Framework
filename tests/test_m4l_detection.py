@@ -55,3 +55,46 @@ class TestDetectDeviceType:
         from src.maxpat import detect_device_type as dt
 
         assert callable(dt)
+
+
+class TestVALID05TerminalNames:
+    """Verify plugout~ is in _TERMINAL_NAMES (VALID-05)."""
+
+    def test_plugout_in_validation_terminal_names(self):
+        from src.maxpat.validation import _TERMINAL_NAMES
+
+        assert "plugout~" in _TERMINAL_NAMES
+
+    def test_plugout_in_dsp_critic_terminal_names(self):
+        from src.maxpat.critics.dsp_critic import _TERMINAL_NAMES
+
+        assert "plugout~" in _TERMINAL_NAMES
+
+
+class TestDB04Constants:
+    """Verify m4l_constants.py has all required IntEnums (DB-04)."""
+
+    def test_param_type_enum(self):
+        from src.maxpat.m4l_constants import ParamType
+
+        assert ParamType.INT == 0
+        assert ParamType.FLOAT == 1
+        assert ParamType.ENUM == 2
+
+    def test_unit_style_enum(self):
+        from src.maxpat.m4l_constants import UnitStyle
+
+        assert UnitStyle.INT == 0
+        assert hasattr(UnitStyle, "CUSTOM")
+
+    def test_mod_mode_enum(self):
+        from src.maxpat.m4l_constants import ModMode
+
+        assert ModMode.UNIPOLAR == 0
+        assert ModMode.ABSOLUTE == 3
+
+    def test_param_visibility_enum(self):
+        from src.maxpat.m4l_constants import ParamVisibility
+
+        assert ParamVisibility.AUTOMATED_AND_STORED == 0
+        assert ParamVisibility.HIDDEN == 2
