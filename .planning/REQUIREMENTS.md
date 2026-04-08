@@ -88,18 +88,18 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DB-01 | Phase 20 | Pending |
-| DB-02 | Phase 20 | Pending |
-| DB-03 | Phase 20 | Pending |
-| DB-04 | Phase 20 | Pending |
-| VALID-04 | Phase 20 | Pending |
-| VALID-05 | Phase 20 | Pending |
-| ROUTING-02 | Phase 20 | Pending |
+| DB-01 | Phase 26 | Pending |
+| DB-02 | Phase 26 | Pending |
+| DB-03 | Phase 26 | Pending |
+| DB-04 | Phase 26 | Pending |
+| VALID-04 | Phase 26 | Pending |
+| VALID-05 | Phase 26 | Pending |
+| ROUTING-02 | Phase 26 | Pending |
 | SCAFFOLD-01 | Phase 21 | Pending |
 | SCAFFOLD-02 | Phase 21 | Pending |
 | SCAFFOLD-03 | Phase 21 | Pending |
-| SCAFFOLD-04 | Phase 21 | Pending |
-| SCAFFOLD-05 | Phase 21 | Pending |
+| SCAFFOLD-04 | Phase 27 | Pending |
+| SCAFFOLD-05 | Phase 27 | Pending |
 | SCAFFOLD-06 | Phase 21 | Pending |
 | ROUTING-01 | Phase 21 | Pending |
 | ROUTING-03 | Phase 21 | Pending |
@@ -107,13 +107,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VALID-02 | Phase 22 | Complete |
 | VALID-03 | Phase 22 | Complete |
 | EXPORT-01 | Phase 22 | Pending |
-| POLISH-01 | Phase 23 | Pending |
-| POLISH-02 | Phase 23 | Pending |
-| POLISH-03 | Phase 23 | Pending |
+| POLISH-01 | Phase 28 | Pending |
+| POLISH-02 | Phase 28 | Pending |
+| POLISH-03 | Phase 28 | Pending |
 | LAYOUT-01 | Phase 24 | Pending |
 | LAYOUT-02 | Phase 24 | Pending |
 | LAYOUT-03 | Phase 24 | Pending |
-| TEST-01 | Phase 25 | Pending |
+| TEST-01 | Phase 28 | Pending |
 
 **Coverage:**
 - v3.0 requirements: 26 total
@@ -122,4 +122,4 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 ---
 *Requirements defined: 2026-04-05*
-*Last updated: 2026-04-05 after roadmap creation (26/26 mapped)*
+*Last updated: 2026-04-07 after gap closure phases 26-28 added (26/26 mapped, 13 reassigned)*

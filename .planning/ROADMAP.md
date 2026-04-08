@@ -5,7 +5,7 @@
 - ✅ **v1.0 MVP** — Phases 1-7 (shipped 2026-03-10)
 - ✅ **v1.1 Patch Quality & Aesthetics** — Phases 8-12 (shipped 2026-03-14)
 - ✅ **v2.0 Direct .maxpat Editing** — Phases 13-19 (shipped 2026-03-17)
-- 📋 **v3.0 M4L Device Creation** — Phases 20-25 (planned)
+- 📋 **v3.0 M4L Device Creation** — Phases 20-28 (planned)
 
 ## Phases
 
@@ -65,7 +65,10 @@ Full details: see phase details below
 - [x] **Phase 22: Validation and Export** — M4L critic module (6 checks), auto-detection wiring, .amxd export (completed 2026-04-06)
 - [x] **Phase 23: Polish** — Parameter naming intelligence, Push controller banks, info text/annotations (completed 2026-04-07)
 - [x] **Phase 24: Layout** — M4L presentation layout engine with 169px height cap, tabbed/overlay patterns (completed 2026-04-07)
-- [ ] **Phase 25: Testing** — End-to-end M4L workflow test suite
+- [x] **Phase 25: Testing** — End-to-end M4L workflow test suite (completed 2026-04-07)
+- [ ] **Phase 26: Phase 20 Data Fixes & Governance** — Fix DB/detection gaps, verify orphaned requirements (gap closure)
+- [ ] **Phase 27: Scaffold Auto-Enforcement** — Code automation for parameter_enable and --- prefix (gap closure)
+- [ ] **Phase 28: Verification & Integration Cleanup** — Missing verifications, stale docs, API re-exports (gap closure)
 
 ## Phase Details
 
@@ -364,8 +367,40 @@ Plans:
 Canonical refs: `tests/test_m4l_db.py`, `tests/test_m4l_detection.py`
 
 Plans:
-- [ ] 25-01-PLAN.md — Happy path E2E tests for all 3 device types (scaffold->polish->layout->critic->export)
-- [ ] 25-02-PLAN.md — Violation E2E tests and Push bank assertion
+- [x] 25-01-PLAN.md — Happy path E2E tests for all 3 device types (scaffold->polish->layout->critic->export)
+- [x] 25-02-PLAN.md — Violation E2E tests and Push bank assertion
+
+### Phase 26: Phase 20 Data Fixes & Governance
+**Goal:** Fix remaining Phase 20 data gaps and create governance artifacts for all 7 orphaned/unsatisfied Phase 20 requirements
+**Depends on**: Phase 20
+**Requirements:** DB-01, DB-02, DB-03, DB-04, VALID-04, VALID-05, ROUTING-02
+**Gap Closure:** Closes gaps from v3.0-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+  1. live.scope~ domain corrected to M4L in m4l/objects.json (DB-02)
+  2. relationships.json contains plugin~/plugout~, live.path/live.object, midiin/midiout pairs (DB-03)
+  3. detect_device_type() exported as standalone public function with test coverage (VALID-04)
+  4. Orphaned requirements verified: live.adsrui/live.adsr~ in DB (DB-01), m4l_constants enums (DB-04), plugout~ in terminal names (VALID-05), CLAUDE.md M4L rules (ROUTING-02)
+
+### Phase 27: Scaffold Auto-Enforcement
+**Goal:** Add code automation for parameter_enable and --- prefix so scaffold requirements are satisfied by code, not just agent instructions
+**Depends on**: Phase 21
+**Requirements:** SCAFFOLD-04, SCAFFOLD-05
+**Gap Closure:** Closes gaps from v3.0-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+  1. create_m4l_project() or polish_m4l_device() auto-sets parameter_enable=1 with saved_attribute_attributes on all live.* UI controls (SCAFFOLD-04)
+  2. Named objects (buffer~, coll, dict, send, receive, send~, receive~, value) auto-prefixed with `---` in M4L context (SCAFFOLD-05)
+  3. Tests verify both behaviors
+
+### Phase 28: Verification & Integration Cleanup
+**Goal:** Create missing verification artifacts for Phases 23/25, fix stale docs, and complete public API exports
+**Depends on**: Phase 23, Phase 25
+**Requirements:** POLISH-01, POLISH-02, POLISH-03, TEST-01
+**Gap Closure:** Closes gaps from v3.0-MILESTONE-AUDIT.md
+**Success Criteria** (what must be TRUE):
+  1. Phase 23 VERIFICATION.md confirms POLISH-01/02/03 satisfied with evidence
+  2. Phase 25 VERIFICATION.md confirms TEST-01 satisfied with evidence
+  3. max-critic/SKILL.md updated — no stale "planned for Phase 22" references (integration fix)
+  4. polish_m4l_device, layout_m4l_presentation, create_m4l_project re-exported from src.maxpat.__init__ (integration fix)
 
 ## Progress
 
@@ -398,8 +433,11 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 22. Validation and Export | v3.0 | 2/2 | Complete    | 2026-04-06 |
 | 23. Polish | v3.0 | 3/3 | Complete   | 2026-04-07 |
 | 24. Layout | v3.0 | 3/3 | Complete   | 2026-04-07 |
-| 25. Testing | v3.0 | 0/2 | Planned | - |
+| 25. Testing | v3.0 | 2/2 | Complete   | 2026-04-07 |
+| 26. Phase 20 Data Fixes & Governance | v3.0 | 0/0 | Planned | - |
+| 27. Scaffold Auto-Enforcement | v3.0 | 0/0 | Planned | - |
+| 28. Verification & Integration Cleanup | v3.0 | 0/0 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-07 -- Phase 25 planned: 2 plans in 2 waves*
+*Last updated: 2026-04-07 -- Gap closure phases 26-28 added from v3.0 milestone audit*
