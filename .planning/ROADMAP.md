@@ -396,6 +396,10 @@ Plans:
   1. create_m4l_project() or polish_m4l_device() auto-sets parameter_enable=1 with saved_attribute_attributes on all live.* UI controls (SCAFFOLD-04)
   2. Named objects (buffer~, coll, dict, send, receive, send~, receive~, value) auto-prefixed with `---` in M4L context (SCAFFOLD-05)
   3. Tests verify both behaviors
+**Plans:** 1 plan
+
+Plans:
+- [ ] 27-01-PLAN.md — TDD ensure_parameter_enable() and ensure_m4l_prefixes() in polish pipeline
 
 ### Phase 28: Verification & Integration Cleanup
 **Goal:** Create missing verification artifacts for Phases 23/25, fix stale docs, and complete public API exports
@@ -441,9 +445,9 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 24. Layout | v3.0 | 3/3 | Complete   | 2026-04-07 |
 | 25. Testing | v3.0 | 2/2 | Complete   | 2026-04-07 |
 | 26. Phase 20 Data Fixes & Governance | v3.0 | 2/2 | Complete    | 2026-04-08 |
-| 27. Scaffold Auto-Enforcement | v3.0 | 0/0 | Planned | - |
+| 27. Scaffold Auto-Enforcement | v3.0 | 0/1 | Planned | - |
 | 28. Verification & Integration Cleanup | v3.0 | 0/0 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-07 -- Phase 26 plans created (2 plans, 1 wave)*
+*Last updated: 2026-04-08 -- Phase 27 plans created (1 plan, 1 wave)*
