@@ -225,15 +225,15 @@ Note: `test_m4l_db.py` appears to exist already (untracked .pyc in git status). 
 | A2 | live.adsr~ has 1-2 signal inlets, 1 signal outlet | DB-01 analysis | Wrong I/O in database; mitigated by keeping verified=false |
 | A3 | M4L rules section content (device types, no gain~ before plugout~, etc.) | ROUTING-02 analysis | Incomplete rules; mitigated by deriving from existing codebase patterns |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **live.adsrui / live.adsr~ exact I/O counts**
    - What we know: Web docs confirm they exist; the objects are in packages/objects.json with 0/0 I/O
    - What's unclear: Exact inlet/outlet count and types
-   - Recommendation: Add best-guess I/O from training knowledge, keep verified=false. User can verify in MAX later.
+   - RESOLVED: Add best-guess I/O from training knowledge, keep verified=false. User can verify in MAX later.
 
 2. **Should DB-01 entries move to m4l/objects.json or stay in packages/ with domain override?**
-   - Recommendation: Use domain override in overrides.json (consistent with live.scope~ fix pattern)
+   - RESOLVED: Use domain override in overrides.json (consistent with live.scope~ fix pattern)
 
 ## Sources
 
