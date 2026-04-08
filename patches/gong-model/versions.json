@@ -1,0 +1,14 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-04-08T00:27:53.495463+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "Initial gong physical model - gen~ engine + MAX patch",
+      "timestamp": "2026-04-08T21:10:10.535889+00:00"
+    }
+  ]
+}
