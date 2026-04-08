@@ -160,6 +160,22 @@ inner.add_connection(some_box, 0, inlets[2], 0)
 - Some RNBO objects have different behavior than their MAX counterparts (e.g., different outlet count) -- check the `rnbo/` domain objects for RNBO-specific definitions
 - `param` objects in RNBO map to plugin parameters for VST3/AU export
 
+### M4L (Max for Live)
+
+- Three device types: audio_effect (plugin~/plugout~), instrument (plugout~/midiin/midiout), midi_effect (midiin/midiout, no audio I/O)
+- Every M4L device MUST contain `live.thisdevice` -- it reports device state and is the detection signal
+- Use `plugin~` / `plugout~` for audio I/O (not `dac~` / `adc~`) -- these are Ableton's audio bus interface
+- NO `gain~` before `plugout~` -- Ableton's channel strip handles volume control; adding gain~ causes double-volume issues
+- `plugout~` is a valid terminal (like `dac~`) for DSP chain validation
+- All `live.*` UI controls MUST have `parameter_enable=1` with complete `saved_attribute_attributes` (longname, shortname, type, unitstyle)
+- Parameter longnames MUST be unique across the entire device -- duplicates cause Ableton crashes
+- Named objects (`buffer~`, `coll`, `dict`, `send`, `receive`, `send~`, `receive~`, `value`) MUST be prefixed with `---` in M4L to avoid namespace collisions between devices
+- Set `openinpresentation=1` on the patcher and `presentation=1` + `presentation_rect` on all user-facing controls
+- M4L presentation view height capped at 169px -- all controls must fit within this constraint
+- Use `live.banks` to organize parameters into Push controller banks (groups of 8)
+- Use `create_m4l_project()` from `src.maxpat.project` to scaffold devices -- handles all boilerplate per device type
+- Use `write_amxd()` from `src.maxpat.m4l_export` to export `.amxd` files with correct binary headers
+
 ### Node for Max (N4M / node.script)
 
 - `node.script` objects run Node.js -- use `const maxAPI = require('max-api')` for MAX communication
