@@ -103,4 +103,4 @@ Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-
 | .maxpat as single source of truth | Python generation creates two competing sources of truth; user edits get lost on regeneration | — Pending |
 
 ---
-*Last updated: 2026-03-15 after v2.0 milestone start*
+*Last updated: 2026-04-08 after Phase 27 (Scaffold Auto-Enforcement) complete*
