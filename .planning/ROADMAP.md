@@ -380,6 +380,12 @@ Plans:
   2. relationships.json contains plugin~/plugout~, live.path/live.object, midiin/midiout pairs (DB-03)
   3. detect_device_type() exported as standalone public function with test coverage (VALID-04)
   4. Orphaned requirements verified: live.adsrui/live.adsr~ in DB (DB-01), m4l_constants enums (DB-04), plugout~ in terminal names (VALID-05), CLAUDE.md M4L rules (ROUTING-02)
+**Plans:** 2 plans
+
+Plans:
+- [ ] 26-01-PLAN.md — M4L database fixes (DB-01, DB-02, DB-03) and CLAUDE.md rules (ROUTING-02)
+- [ ] 26-02-PLAN.md — Public detect_device_type() export (VALID-04) and verifications (VALID-05, DB-04)
+
 
 ### Phase 27: Scaffold Auto-Enforcement
 **Goal:** Add code automation for parameter_enable and --- prefix so scaffold requirements are satisfied by code, not just agent instructions
@@ -434,10 +440,10 @@ Phases 20-22 are sequential. Phases 23 (Polish) and 24 (Layout) can run in paral
 | 23. Polish | v3.0 | 3/3 | Complete   | 2026-04-07 |
 | 24. Layout | v3.0 | 3/3 | Complete   | 2026-04-07 |
 | 25. Testing | v3.0 | 2/2 | Complete   | 2026-04-07 |
-| 26. Phase 20 Data Fixes & Governance | v3.0 | 0/0 | Planned | - |
+| 26. Phase 20 Data Fixes & Governance | v3.0 | 0/2 | Planned | - |
 | 27. Scaffold Auto-Enforcement | v3.0 | 0/0 | Planned | - |
 | 28. Verification & Integration Cleanup | v3.0 | 0/0 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-07 -- Gap closure phases 26-28 added from v3.0 milestone audit*
+*Last updated: 2026-04-07 -- Phase 26 plans created (2 plans, 1 wave)*
