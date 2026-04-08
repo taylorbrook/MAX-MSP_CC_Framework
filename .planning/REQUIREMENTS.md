@@ -19,7 +19,7 @@ Requirements for M4L device creation milestone. Each maps to roadmap phases.
 ### Routing
 
 - [ ] **ROUTING-01**: Router recognizes M4L keywords and dispatches with M4L-specific context
-- [ ] **ROUTING-02**: CLAUDE.md has M4L domain-specific rules section
+- [x] **ROUTING-02**: CLAUDE.md has M4L domain-specific rules section
 - [ ] **ROUTING-03**: Agent SKILL.md files have M4L-specific instruction sections
 
 ### Validation
@@ -27,15 +27,15 @@ Requirements for M4L device creation milestone. Each maps to roadmap phases.
 - [x] **VALID-01**: M4L critic detects gain~ connected to plugout~ and flags as error
 - [x] **VALID-02**: M4L critic validates device completeness (required objects per device type)
 - [x] **VALID-03**: M4L critic validates unique parameter_longname across device
-- [ ] **VALID-04**: Device type detection identifies audio_effect/instrument/midi_effect from patch structure
-- [ ] **VALID-05**: plugout~ added to _TERMINAL_NAMES in validation.py and dsp_critic.py
+- [x] **VALID-04**: Device type detection identifies audio_effect/instrument/midi_effect from patch structure
+- [x] **VALID-05**: plugout~ added to _TERMINAL_NAMES in validation.py and dsp_critic.py
 
 ### Database
 
-- [ ] **DB-01**: live.adsrui and live.adsr~ added to m4l/objects.json with verified I/O
-- [ ] **DB-02**: live.scope~ domain corrected to M4L
-- [ ] **DB-03**: M4L relationship entries added (plugin~/plugout~, live.path/live.object, midiin/midiout)
-- [ ] **DB-04**: m4l_constants.py created with IntEnum classes for parameter_type, parameter_unitstyle, parameter_modmode
+- [x] **DB-01**: live.adsrui and live.adsr~ added to m4l/objects.json with verified I/O
+- [x] **DB-02**: live.scope~ domain corrected to M4L
+- [x] **DB-03**: M4L relationship entries added (plugin~/plugout~, live.path/live.object, midiin/midiout)
+- [x] **DB-04**: m4l_constants.py created with IntEnum classes for parameter_type, parameter_unitstyle, parameter_modmode
 
 ### Layout
 
@@ -88,13 +88,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DB-01 | Phase 26 | Pending |
-| DB-02 | Phase 26 | Pending |
-| DB-03 | Phase 26 | Pending |
-| DB-04 | Phase 26 | Pending |
-| VALID-04 | Phase 26 | Pending |
-| VALID-05 | Phase 26 | Pending |
-| ROUTING-02 | Phase 26 | Pending |
+| DB-01 | Phase 26 | Complete |
+| DB-02 | Phase 26 | Complete |
+| DB-03 | Phase 26 | Complete |
+| DB-04 | Phase 26 | Complete |
+| VALID-04 | Phase 26 | Complete |
+| VALID-05 | Phase 26 | Complete |
+| ROUTING-02 | Phase 26 | Complete |
 | SCAFFOLD-01 | Phase 21 | Pending |
 | SCAFFOLD-02 | Phase 21 | Pending |
 | SCAFFOLD-03 | Phase 21 | Pending |
