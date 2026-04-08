@@ -5797,6 +5797,64 @@
         "confidence": "HIGH",
         "source": "manual_correction",
         "note": "live.scope~ matches scope~ I/O: 2 signal inlets, 0 outlets"
+      },
+      "domain": "M4L"
+    },
+    "live.adsrui": {
+      "domain": "M4L",
+      "inlets": [
+        {
+          "id": 0,
+          "type": "list",
+          "signal": false,
+          "digest": "(list) ADSR values (attack, decay, sustain, release)",
+          "hot": true
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "list",
+          "signal": false,
+          "digest": "(list) ADSR parameter values"
+        }
+      ],
+      "_audit": {
+        "confidence": "LOW",
+        "source": "training_knowledge",
+        "note": "live.adsrui I/O from training data -- verify in MAX. 1 inlet (list/float/bang), 1 outlet (list)"
+      }
+    },
+    "live.adsr~": {
+      "domain": "M4L",
+      "inlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Gate/trigger input",
+          "hot": true
+        },
+        {
+          "id": 1,
+          "type": "float",
+          "signal": false,
+          "digest": "(float) Retrigger mode",
+          "hot": false
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Envelope output"
+        }
+      ],
+      "_audit": {
+        "confidence": "LOW",
+        "source": "training_knowledge",
+        "note": "live.adsr~ I/O from training data -- verify in MAX. 1 signal inlet (gate), 1 float inlet (retrigger), 1 signal outlet (envelope)"
       }
     },
     "_domain_rnbo": "--- RNBO Objects ---",
