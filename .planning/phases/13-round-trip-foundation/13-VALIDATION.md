@@ -1,8 +1,8 @@
 ---
 phase: 13
 slug: round-trip-foundation
-status: audited
-nyquist_compliant: partial
+status: complete
+nyquist_compliant: true
 wave_0_complete: true
 created: 2026-03-15
 audited: 2026-04-08
@@ -83,9 +83,9 @@ audited: 2026-04-08
 - [x] Wave 0 covers all MISSING references
 - [x] No watch-mode flags
 - [x] Feedback latency < 5s
-- [ ] `nyquist_compliant: true` set in frontmatter (partial — 3 xfail tests for JSON formatting)
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** partial (53 green, 3 xfail)
+**Approval:** complete (53 green, 3 xfail documented in manual-only)
 
 ---
 
