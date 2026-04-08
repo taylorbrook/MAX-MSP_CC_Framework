@@ -301,7 +301,7 @@
                         58.0,
                         22.0
                     ],
-                    "text": "*~ 0.5",
+                    "text": "*~ 0.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
