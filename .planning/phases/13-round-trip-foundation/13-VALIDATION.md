@@ -1,10 +1,11 @@
 ---
 phase: 13
 slug: round-trip-foundation
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: audited
+nyquist_compliant: partial
+wave_0_complete: true
 created: 2026-03-15
+audited: 2026-04-08
 ---
 
 # Phase 13 -- Validation Strategy
@@ -38,18 +39,18 @@ created: 2026-03-15
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 13-01-01 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestFromDict -x` | W0 | pending |
-| 13-01-02 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestSubpatcherLoading -x` | W0 | pending |
-| 13-01-03 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestBpatcherLoading -x` | W0 | pending |
-| 13-01-04 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestUnknownObjects -x` | W0 | pending |
-| 13-01-05 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestStructuralErrors -x` | W0 | pending |
-| 13-02-01 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestRoundTripIdentity -x` | W0 | pending |
-| 13-02-02 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestKeyOrdering -x` | W0 | pending |
-| 13-02-03 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestNumericPrecision -x` | W0 | pending |
-| 13-03-01 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestPatchlineAttrs -x` | W0 | pending |
-| 13-03-02 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestUserState -x` | W0 | pending |
-| 13-03-03 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestExtraAttrs -x` | W0 | pending |
-| 13-03-04 | 03 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestFileLevelRoundTrip -x` | W0 | pending |
+| 13-01-01 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestFromDict -x` | YES | green |
+| 13-01-02 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestSubpatcherLoading -x` | YES | green |
+| 13-01-03 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestBpatcherLoading -x` | YES | green |
+| 13-01-04 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestUnknownObjects -x` | YES | green |
+| 13-01-05 | 01 | 0 | RW-01 | unit | `python3 -m pytest tests/test_round_trip.py::TestStructuralErrors -x` | YES | green |
+| 13-02-01 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestRoundTripIdentity -x` | YES | green |
+| 13-02-02 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestKeyOrdering -x` | YES | green |
+| 13-02-03 | 02 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestNumericPrecision -x` | YES | green |
+| 13-03-01 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestPatchlineAttrs -x` | YES | green |
+| 13-03-02 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestUserState -x` | YES | green |
+| 13-03-03 | 03 | 0 | RW-06 | unit | `python3 -m pytest tests/test_round_trip.py::TestExtraAttrs -x` | YES | green |
+| 13-03-04 | 03 | 0 | RW-02 | unit | `python3 -m pytest tests/test_round_trip.py::TestFileLevelRoundTrip -x` | YES | green |
 
 *Status: pending / green / red / flaky*
 
@@ -57,9 +58,9 @@ created: 2026-03-15
 
 ## Wave 0 Requirements
 
-- [ ] `tests/test_round_trip.py` -- stubs for RW-01, RW-02, RW-06 (including TestStructuralErrors and TestFileLevelRoundTrip)
-- [ ] `tests/fixtures/colored_patchlines.maxpat` -- synthetic .maxpat with colored patchlines for RW-06 color test
-- [ ] Project .maxpat files read directly from `patches/` directory via `_load_project_patch()` helper -- no fixture copy needed (MAX-saved files like comp-band.maxpat, FDNVerb.maxpat, granularsynthtest.maxpat are tested in-place)
+- [x] `tests/test_round_trip.py` -- stubs for RW-01, RW-02, RW-06 (including TestStructuralErrors and TestFileLevelRoundTrip)
+- [x] `tests/fixtures/colored_patchlines.maxpat` -- synthetic .maxpat with colored patchlines for RW-06 color test
+- [x] Project .maxpat files read directly from `patches/` directory via `_load_project_patch()` helper -- no fixture copy needed (MAX-saved files like comp-band.maxpat, FDNVerb.maxpat, granularsynthtest.maxpat are tested in-place)
 
 *Existing pytest infrastructure covers framework needs.*
 
@@ -67,17 +68,36 @@ created: 2026-03-15
 
 ## Manual-Only Verifications
 
-*All phase behaviors have automated verification.*
+| Test | Reason |
+|------|--------|
+| `TestFileLevelRoundTrip::test_max_saved_file_byte_identical` | xfail: MAX uses compact single-line array formatting that `json.dumps` cannot reproduce |
+| `TestFileLevelRoundTrip::test_framework_file_byte_identical` | xfail: same JSON array formatting limitation |
+| `TestSubpatcherByteIdentity::test_byte_identical_round_trip[minitaur]` | xfail: same JSON array formatting limitation |
 
 ---
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 5s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 5s
+- [ ] `nyquist_compliant: true` set in frontmatter (partial — 3 xfail tests for JSON formatting)
 
-**Approval:** pending
+**Approval:** partial (53 green, 3 xfail)
+
+---
+
+## Validation Audit 2026-04-08
+
+| Metric | Count |
+|--------|-------|
+| Gaps found | 3 |
+| Resolved | 3 |
+| Escalated | 0 |
+
+**Details:**
+- Gap 1 (RED): Fixed renamed file path `performancepatchtest.maxpat` → `performance-patch-template.maxpat` (2 tests)
+- Gap 2 (MISSING): Added `TestFromDict` class with 3 tests for basic from_dict contract (RW-01)
+- Gap 3 (xfail): Confirmed 3 xfails valid — MAX compact JSON array formatting unrepresentable by `json.dumps`
