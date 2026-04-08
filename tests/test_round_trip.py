@@ -45,7 +45,7 @@ _PROJECT_PATCHES = [
     "kicksynth/generated/kicksynth.maxpat",
     "scala-synth/generated/scala-synth.maxpat",
     "scala-synth/generated/scala-synth-voice.maxpat",
-    "performancepatchtest/generated/performancepatchtest.maxpat",
+    "performancepatchtest/generated/performance-patch-template.maxpat",
     "performancepatchtest/generated/comp-band.maxpat",
     "rhythmic-sampler/generated/rhythmic-sampler.maxpat",
     "rhythmic-sampler/generated/slot.maxpat",
@@ -53,6 +53,151 @@ _PROJECT_PATCHES = [
     "FDNVerb/generated/FDNVerb.maxpat",
     "granularsynthtest/generated/granularsynthtest.maxpat",
 ]
+
+# ---------------------------------------------------------------------------
+# TestFromDict -- RW-01: Basic from_dict loading of valid .maxpat JSON
+# ---------------------------------------------------------------------------
+
+
+class TestFromDict:
+    """Given valid .maxpat JSON, from_dict returns a Patcher with correct boxes,
+    connections, and properties (task 13-01-01)."""
+
+    def test_from_dict_box_count(self):
+        """from_dict loads all boxes from a valid .maxpat dict."""
+        data = {
+            "patcher": {
+                "fileversion": 1,
+                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                "classnamespace": "box",
+                "rect": [100.0, 100.0, 640.0, 480.0],
+                "boxes": [
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "cycle~ 440",
+                            "id": "obj-1",
+                            "numinlets": 2,
+                            "numoutlets": 1,
+                            "outlettype": ["signal"],
+                            "patching_rect": [100.0, 100.0, 80.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                        }
+                    },
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "dac~",
+                            "id": "obj-2",
+                            "numinlets": 2,
+                            "numoutlets": 0,
+                            "outlettype": [],
+                            "patching_rect": [100.0, 150.0, 45.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                        }
+                    },
+                ],
+                "lines": [],
+            }
+        }
+        p = Patcher.from_dict(data)
+        assert len(p.boxes) == 2, f"Expected 2 boxes, got {len(p.boxes)}"
+
+    def test_from_dict_connection_count(self):
+        """from_dict loads all connections (patchlines) from a valid .maxpat dict."""
+        data = {
+            "patcher": {
+                "fileversion": 1,
+                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                "classnamespace": "box",
+                "rect": [100.0, 100.0, 640.0, 480.0],
+                "boxes": [
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "cycle~ 440",
+                            "id": "obj-1",
+                            "numinlets": 2,
+                            "numoutlets": 1,
+                            "outlettype": ["signal"],
+                            "patching_rect": [100.0, 100.0, 80.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                        }
+                    },
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "dac~",
+                            "id": "obj-2",
+                            "numinlets": 2,
+                            "numoutlets": 0,
+                            "outlettype": [],
+                            "patching_rect": [100.0, 150.0, 45.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                        }
+                    },
+                ],
+                "lines": [
+                    {
+                        "patchline": {
+                            "source": ["obj-1", 0],
+                            "destination": ["obj-2", 0],
+                        }
+                    }
+                ],
+            }
+        }
+        p = Patcher.from_dict(data)
+        assert len(p.lines) == 1, f"Expected 1 connection, got {len(p.lines)}"
+
+    def test_from_dict_box_text_values(self):
+        """from_dict preserves box text values ('cycle~ 440', 'dac~')."""
+        data = {
+            "patcher": {
+                "fileversion": 1,
+                "appversion": {"major": 9, "minor": 0, "revision": 0},
+                "classnamespace": "box",
+                "rect": [100.0, 100.0, 640.0, 480.0],
+                "boxes": [
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "cycle~ 440",
+                            "id": "obj-1",
+                            "numinlets": 2,
+                            "numoutlets": 1,
+                            "outlettype": ["signal"],
+                            "patching_rect": [100.0, 100.0, 80.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                        }
+                    },
+                    {
+                        "box": {
+                            "maxclass": "newobj",
+                            "text": "dac~",
+                            "id": "obj-2",
+                            "numinlets": 2,
+                            "numoutlets": 0,
+                            "outlettype": [],
+                            "patching_rect": [100.0, 150.0, 45.0, 22.0],
+                            "fontname": "Arial",
+                            "fontsize": 12.0,
+                        }
+                    },
+                ],
+                "lines": [],
+            }
+        }
+        p = Patcher.from_dict(data)
+        texts = {b.text for b in p.boxes}
+        assert "cycle~ 440" in texts, f"'cycle~ 440' not found in box texts: {texts}"
+        assert "dac~" in texts, f"'dac~' not found in box texts: {texts}"
+
 
 # ---------------------------------------------------------------------------
 # TestPatchlineAttrs -- RW-06: Patchline color and extra attrs
@@ -1165,7 +1310,7 @@ class TestSubpatcherByteIdentity:
                 strict=False,
             ),
         ),
-        "performancepatchtest/generated/performancepatchtest.maxpat",
+        "performancepatchtest/generated/performance-patch-template.maxpat",
         "scala-synth/generated/scala-synth.maxpat",
     ])
     def test_byte_identical_round_trip(self, relpath):
@@ -1177,7 +1322,7 @@ class TestSubpatcherByteIdentity:
         p = Patcher.from_dict(original)
         result = p.to_dict()
 
-        result_text = json.dumps(result, indent=detect_indent(original_text))
+        result_text = json.dumps(result, indent=detect_indent(original_text), ensure_ascii=False)
         if original_text.endswith("\n"):
             result_text += "\n"
 
