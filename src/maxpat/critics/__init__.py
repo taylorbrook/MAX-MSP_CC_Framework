@@ -24,8 +24,8 @@ from src.maxpat.critics.m4l_critic import review_m4l
 from src.maxpat.utils import get_box_name
 
 
-def _detect_m4l_device(patch_dict: dict) -> str | None:
-    """Detect whether a patch is an M4L device and return its type.
+def detect_device_type(patch_dict: dict) -> str | None:
+    """Public API for M4L device type detection.
 
     Scans boxes for M4L indicator objects (live.thisdevice, plugin~,
     plugout~, midiin, midiout). Must have live.thisdevice to be M4L.
@@ -74,6 +74,10 @@ def _detect_m4l_device(patch_dict: dict) -> str | None:
         return "audio_effect"
 
     return None
+
+
+# Backward-compat alias -- old private name still works
+_detect_m4l_device = detect_device_type
 
 
 def _has_rnbo_boxes(patch_dict: dict) -> bool:
@@ -131,7 +135,7 @@ def review_patch(
         results.extend(review_external(ext_code, archetype=ext_archetype))
 
     # M4L critic: auto-invoke when M4L device detected
-    device_type = _detect_m4l_device(patch_dict)
+    device_type = detect_device_type(patch_dict)
     if device_type is not None:
         results.extend(review_m4l(patch_dict, device_type=device_type))
 
@@ -146,6 +150,7 @@ __all__ = [
     "review_rnbo",
     "review_external",
     "review_m4l",
+    "detect_device_type",
     "_detect_m4l_device",
     "CriticResult",
 ]
