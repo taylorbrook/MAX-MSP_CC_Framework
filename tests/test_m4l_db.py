@@ -55,3 +55,38 @@ class TestM4LDatabase:
         obj = self.db.lookup("live.adsr~")
         assert obj is not None
         assert obj["domain"] == "M4L"
+
+
+class TestM4LRelationships:
+    """DB-03: M4L object relationship pairs in relationships.json."""
+
+    @pytest.fixture(autouse=True)
+    def load_relationships(self):
+        rel_path = DB_ROOT / "relationships.json"
+        data = json.loads(rel_path.read_text())
+        self.pairs = data["pairs"]
+
+    def _find_pair(self, obj_a: str, obj_b: str) -> dict | None:
+        for entry in self.pairs:
+            objs = entry["objects"]
+            if obj_a in objs and obj_b in objs:
+                return entry
+        return None
+
+    def test_plugin_plugout_pair(self):
+        """DB-03: plugin~/plugout~ should be a required_pair."""
+        pair = self._find_pair("plugin~", "plugout~")
+        assert pair is not None, "plugin~/plugout~ pair not found in relationships.json"
+        assert pair["relationship"] == "required_pair"
+
+    def test_live_path_live_object_pair(self):
+        """DB-03: live.path/live.object should be a required_pair."""
+        pair = self._find_pair("live.path", "live.object")
+        assert pair is not None, "live.path/live.object pair not found in relationships.json"
+        assert pair["relationship"] == "required_pair"
+
+    def test_midiin_midiout_pair(self):
+        """DB-03: midiin/midiout should be a common_pair."""
+        pair = self._find_pair("midiin", "midiout")
+        assert pair is not None, "midiin/midiout pair not found in relationships.json"
+        assert pair["relationship"] == "common_pair"
