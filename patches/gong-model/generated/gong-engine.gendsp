@@ -1,0 +1,174 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 0,
+      "revision": 0,
+      "architecture": "x64",
+      "modernui": 1
+    },
+    "classnamespace": "box",
+    "rect": [
+      100.0,
+      100.0,
+      600.0,
+      450.0
+    ],
+    "bglocked": 0,
+    "openinpresentation": 0,
+    "default_fontsize": 12.0,
+    "default_fontface": 0,
+    "default_fontname": "Arial",
+    "gridonopen": 1,
+    "gridsize": [
+      15.0,
+      15.0
+    ],
+    "gridsnaponopen": 1,
+    "objectsnaponopen": 1,
+    "statusbarvisible": 2,
+    "toolbarvisible": 1,
+    "lefttoolbarpinned": 0,
+    "toptoolbarpinned": 0,
+    "righttoolbarpinned": 0,
+    "bottomtoolbarpinned": 0,
+    "toolbars_unpinned_last_save": 0,
+    "tallnewobj": 0,
+    "boxanimatetime": 200,
+    "enablehscroll": 1,
+    "enablevscroll": 1,
+    "devicewidth": 0.0,
+    "description": "",
+    "digest": "",
+    "tags": "",
+    "style": "",
+    "subpatcher_template": "",
+    "assistshowspatchername": 0,
+    "boxes": [
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "in 1",
+          "id": "obj-1",
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            20.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "codebox",
+          "id": "obj-2",
+          "code": "// Gong Physical Model Engine v0.1\n// Modal synthesis: 32 resonators, 5-point structure morph,\n// nonlinear coupling, bloom, amplitude-dependent pitch glide\n\n// =====================================================\n// DECLARATIONS (all must precede expressions)\n// =====================================================\n\nParam base_freq(110, min=20, max=2000);\nParam structure(0.5, min=0, max=1);\nParam brightness(0.5, min=0, max=1);\nParam decay_time(4, min=0.1, max=30);\nParam position(0.5, min=0, max=1);\nParam nonlinearity(0.1, min=0, max=1);\nParam num_modes(16, min=4, max=32);\nParam mallet_hardness(0.5, min=0, max=1);\nParam bloom_amount(0.1, min=0, max=1);\nParam bloom_speed(1, min=0.1, max=5);\nParam velocity(0, min=0, max=1);\nParam aftertouch(0, min=0, max=1);\nParam output_gain(0.5, min=0, max=1);\n\nData mode_y1(32);\nData mode_y2(32);\nData mode_a1(32);\nData mode_a2(32);\nData mode_freq(32);\nData mode_output(32);\nData ratio_table(32, 5);\nData coupling_map(16, 4);\nData current_ratios(32);\nData pos_gain(32);\nData init_flag(1);\n\nHistory s_freq(110);\nHistory s_struct(0.5);\nHistory s_bright(0.5);\nHistory s_decay(4);\nHistory s_pos(0.5);\nHistory s_nonlin(0.2);\nHistory s_hard(0.5);\nHistory s_bloom(0.3);\nHistory s_bspd(1);\nHistory s_at(0);\nHistory s_gain(0.5);\nHistory prev_vel(0);\nHistory burst_env(0);\nHistory burst_vel(0);\nHistory burst_lp(0);\nHistory low_rms(0);\nHistory bloom_env(0);\nHistory dcx0(0);\nHistory dcy0(0);\nHistory dcx1(0);\nHistory dcy1(0);\nHistory update_idx(0);\nHistory prev_struct(-1);\nHistory prev_pos(-1);\n\n\n// =====================================================\n// INITIALIZATION (runs once on first sample)\n// =====================================================\nif (peek(init_flag, 0, 0) < 0.5) {\n    for (i = 0; i < 32; i += 1) {\n        poke(mode_y1, 0, i, 0);\n        poke(mode_y2, 0, i, 0);\n        poke(mode_a1, 0, i, 0);\n        poke(mode_a2, 0, i, 0);\n        poke(mode_freq, 440, i, 0);\n        poke(mode_output, 0, i, 0);\n        poke(current_ratios, i + 1, i, 0);\n        poke(pos_gain, 0.5, i, 0);\n    }\n\n    // --- Ratio tables (5 structure types x 32 modes) ---\n\n    // Channel 0: Harmonic\n    poke(ratio_table, 1.000, 0, 0);\n    poke(ratio_table, 2.000, 1, 0);\n    poke(ratio_table, 3.000, 2, 0);\n    poke(ratio_table, 4.000, 3, 0);\n    poke(ratio_table, 5.000, 4, 0);\n    poke(ratio_table, 6.000, 5, 0);\n    poke(ratio_table, 7.000, 6, 0);\n    poke(ratio_table, 8.000, 7, 0);\n    poke(ratio_table, 9.000, 8, 0);\n    poke(ratio_table, 10.000, 9, 0);\n    poke(ratio_table, 11.000, 10, 0);\n    poke(ratio_table, 12.000, 11, 0);\n    poke(ratio_table, 13.000, 12, 0);\n    poke(ratio_table, 14.000, 13, 0);\n    poke(ratio_table, 15.000, 14, 0);\n    poke(ratio_table, 16.000, 15, 0);\n    poke(ratio_table, 17.000, 16, 0);\n    poke(ratio_table, 18.000, 17, 0);\n    poke(ratio_table, 19.000, 18, 0);\n    poke(ratio_table, 20.000, 19, 0);\n    poke(ratio_table, 21.000, 20, 0);\n    poke(ratio_table, 22.000, 21, 0);\n    poke(ratio_table, 23.000, 22, 0);\n    poke(ratio_table, 24.000, 23, 0);\n    poke(ratio_table, 25.000, 24, 0);\n    poke(ratio_table, 26.000, 25, 0);\n    poke(ratio_table, 27.000, 26, 0);\n    poke(ratio_table, 28.000, 27, 0);\n    poke(ratio_table, 29.000, 28, 0);\n    poke(ratio_table, 30.000, 29, 0);\n    poke(ratio_table, 31.000, 30, 0);\n    poke(ratio_table, 32.000, 31, 0);\n    // Channel 1: Gamelan (ombak beating)\n    poke(ratio_table, 1.000, 0, 1);\n    poke(ratio_table, 1.005, 1, 1);\n    poke(ratio_table, 2.010, 2, 1);\n    poke(ratio_table, 2.035, 3, 1);\n    poke(ratio_table, 3.050, 4, 1);\n    poke(ratio_table, 3.085, 5, 1);\n    poke(ratio_table, 4.120, 6, 1);\n    poke(ratio_table, 4.170, 7, 1);\n    poke(ratio_table, 5.220, 8, 1);\n    poke(ratio_table, 5.285, 9, 1);\n    poke(ratio_table, 6.360, 10, 1);\n    poke(ratio_table, 6.440, 11, 1);\n    poke(ratio_table, 7.530, 12, 1);\n    poke(ratio_table, 7.625, 13, 1);\n    poke(ratio_table, 8.730, 14, 1);\n    poke(ratio_table, 8.845, 15, 1);\n    poke(ratio_table, 9.960, 16, 1);\n    poke(ratio_table, 10.090, 17, 1);\n    poke(ratio_table, 11.220, 18, 1);\n    poke(ratio_table, 11.370, 19, 1);\n    poke(ratio_table, 12.510, 20, 1);\n    poke(ratio_table, 12.680, 21, 1);\n    poke(ratio_table, 13.830, 22, 1);\n    poke(ratio_table, 14.020, 23, 1);\n    poke(ratio_table, 15.180, 24, 1);\n    poke(ratio_table, 15.390, 25, 1);\n    poke(ratio_table, 16.560, 26, 1);\n    poke(ratio_table, 16.790, 27, 1);\n    poke(ratio_table, 17.970, 28, 1);\n    poke(ratio_table, 18.220, 29, 1);\n    poke(ratio_table, 19.410, 30, 1);\n    poke(ratio_table, 19.680, 31, 1);\n    // Channel 2: Nipple gong\n    poke(ratio_table, 1.000, 0, 2);\n    poke(ratio_table, 1.483, 1, 2);\n    poke(ratio_table, 1.986, 2, 2);\n    poke(ratio_table, 2.514, 3, 2);\n    poke(ratio_table, 2.998, 4, 2);\n    poke(ratio_table, 3.523, 5, 2);\n    poke(ratio_table, 4.011, 6, 2);\n    poke(ratio_table, 4.524, 7, 2);\n    poke(ratio_table, 5.033, 8, 2);\n    poke(ratio_table, 5.571, 9, 2);\n    poke(ratio_table, 6.092, 10, 2);\n    poke(ratio_table, 6.631, 11, 2);\n    poke(ratio_table, 7.098, 12, 2);\n    poke(ratio_table, 7.645, 13, 2);\n    poke(ratio_table, 8.153, 14, 2);\n    poke(ratio_table, 8.691, 15, 2);\n    poke(ratio_table, 9.210, 16, 2);\n    poke(ratio_table, 9.748, 17, 2);\n    poke(ratio_table, 10.267, 18, 2);\n    poke(ratio_table, 10.805, 19, 2);\n    poke(ratio_table, 11.324, 20, 2);\n    poke(ratio_table, 11.862, 21, 2);\n    poke(ratio_table, 12.381, 22, 2);\n    poke(ratio_table, 12.919, 23, 2);\n    poke(ratio_table, 13.438, 24, 2);\n    poke(ratio_table, 13.976, 25, 2);\n    poke(ratio_table, 14.495, 26, 2);\n    poke(ratio_table, 15.033, 27, 2);\n    poke(ratio_table, 15.552, 28, 2);\n    poke(ratio_table, 16.090, 29, 2);\n    poke(ratio_table, 16.609, 30, 2);\n    poke(ratio_table, 17.147, 31, 2);\n    // Channel 3: Church bell\n    poke(ratio_table, 0.500, 0, 3);\n    poke(ratio_table, 1.000, 1, 3);\n    poke(ratio_table, 1.183, 2, 3);\n    poke(ratio_table, 1.506, 3, 3);\n    poke(ratio_table, 2.000, 4, 3);\n    poke(ratio_table, 2.514, 5, 3);\n    poke(ratio_table, 2.662, 6, 3);\n    poke(ratio_table, 3.011, 7, 3);\n    poke(ratio_table, 3.520, 8, 3);\n    poke(ratio_table, 4.065, 9, 3);\n    poke(ratio_table, 4.190, 10, 3);\n    poke(ratio_table, 5.255, 11, 3);\n    poke(ratio_table, 5.398, 12, 3);\n    poke(ratio_table, 6.009, 13, 3);\n    poke(ratio_table, 6.584, 14, 3);\n    poke(ratio_table, 7.223, 15, 3);\n    poke(ratio_table, 7.890, 16, 3);\n    poke(ratio_table, 8.541, 17, 3);\n    poke(ratio_table, 9.245, 18, 3);\n    poke(ratio_table, 9.912, 19, 3);\n    poke(ratio_table, 10.628, 20, 3);\n    poke(ratio_table, 11.312, 21, 3);\n    poke(ratio_table, 12.043, 22, 3);\n    poke(ratio_table, 12.750, 23, 3);\n    poke(ratio_table, 13.489, 24, 3);\n    poke(ratio_table, 14.208, 25, 3);\n    poke(ratio_table, 14.960, 26, 3);\n    poke(ratio_table, 15.697, 27, 3);\n    poke(ratio_table, 16.462, 28, 3);\n    poke(ratio_table, 17.213, 29, 3);\n    poke(ratio_table, 17.989, 30, 3);\n    poke(ratio_table, 18.754, 31, 3);\n    // Channel 4: Tam-tam\n    poke(ratio_table, 1.000, 0, 4);\n    poke(ratio_table, 1.593, 1, 4);\n    poke(ratio_table, 2.136, 2, 4);\n    poke(ratio_table, 2.296, 3, 4);\n    poke(ratio_table, 2.653, 4, 4);\n    poke(ratio_table, 2.917, 5, 4);\n    poke(ratio_table, 3.156, 6, 4);\n    poke(ratio_table, 3.501, 7, 4);\n    poke(ratio_table, 3.600, 8, 4);\n    poke(ratio_table, 4.060, 9, 4);\n    poke(ratio_table, 4.154, 10, 4);\n    poke(ratio_table, 4.480, 11, 4);\n    poke(ratio_table, 4.715, 12, 4);\n    poke(ratio_table, 5.193, 13, 4);\n    poke(ratio_table, 5.500, 14, 4);\n    poke(ratio_table, 5.956, 15, 4);\n    poke(ratio_table, 6.350, 16, 4);\n    poke(ratio_table, 6.780, 17, 4);\n    poke(ratio_table, 7.150, 18, 4);\n    poke(ratio_table, 7.580, 19, 4);\n    poke(ratio_table, 7.960, 20, 4);\n    poke(ratio_table, 8.400, 21, 4);\n    poke(ratio_table, 8.810, 22, 4);\n    poke(ratio_table, 9.260, 23, 4);\n    poke(ratio_table, 9.680, 24, 4);\n    poke(ratio_table, 10.130, 25, 4);\n    poke(ratio_table, 10.570, 26, 4);\n    poke(ratio_table, 11.040, 27, 4);\n    poke(ratio_table, 11.490, 28, 4);\n    poke(ratio_table, 11.970, 29, 4);\n    poke(ratio_table, 12.430, 30, 4);\n    poke(ratio_table, 12.920, 31, 4);\n\n    // Coupling triplets [modeA, modeB, modeC, strength]\n    poke(coupling_map, 0, 0, 0); poke(coupling_map, 0, 0, 1); poke(coupling_map, 1, 0, 2); poke(coupling_map, 0, 0, 3);\n    poke(coupling_map, 0, 1, 0); poke(coupling_map, 1, 1, 1); poke(coupling_map, 2, 1, 2); poke(coupling_map, 0, 1, 3);\n    poke(coupling_map, 0, 2, 0); poke(coupling_map, 1, 2, 1); poke(coupling_map, 3, 2, 2); poke(coupling_map, 0, 2, 3);\n    poke(coupling_map, 0, 3, 0); poke(coupling_map, 2, 3, 1); poke(coupling_map, 4, 3, 2); poke(coupling_map, 0, 3, 3);\n    poke(coupling_map, 1, 4, 0); poke(coupling_map, 1, 4, 1); poke(coupling_map, 3, 4, 2); poke(coupling_map, 0, 4, 3);\n    poke(coupling_map, 0, 5, 0); poke(coupling_map, 3, 5, 1); poke(coupling_map, 5, 5, 2); poke(coupling_map, 0, 5, 3);\n    poke(coupling_map, 1, 6, 0); poke(coupling_map, 2, 6, 1); poke(coupling_map, 5, 6, 2); poke(coupling_map, 0, 6, 3);\n    poke(coupling_map, 1, 7, 0); poke(coupling_map, 3, 7, 1); poke(coupling_map, 6, 7, 2); poke(coupling_map, 0, 7, 3);\n    poke(coupling_map, 2, 8, 0); poke(coupling_map, 2, 8, 1); poke(coupling_map, 6, 8, 2); poke(coupling_map, 0, 8, 3);\n    poke(coupling_map, 0, 9, 0); poke(coupling_map, 4, 9, 1); poke(coupling_map, 7, 9, 2); poke(coupling_map, 0, 9, 3);\n    poke(coupling_map, 2, 10, 0); poke(coupling_map, 3, 10, 1); poke(coupling_map, 7, 10, 2); poke(coupling_map, 0, 10, 3);\n    poke(coupling_map, 1, 11, 0); poke(coupling_map, 4, 11, 1); poke(coupling_map, 8, 11, 2); poke(coupling_map, 0, 11, 3);\n    poke(coupling_map, 3, 12, 0); poke(coupling_map, 3, 12, 1); poke(coupling_map, 8, 12, 2); poke(coupling_map, 0, 12, 3);\n    poke(coupling_map, 2, 13, 0); poke(coupling_map, 4, 13, 1); poke(coupling_map, 9, 13, 2); poke(coupling_map, 0, 13, 3);\n    poke(coupling_map, 3, 14, 0); poke(coupling_map, 4, 14, 1); poke(coupling_map, 10, 14, 2); poke(coupling_map, 0, 14, 3);\n    poke(coupling_map, 0, 15, 0); poke(coupling_map, 5, 15, 1); poke(coupling_map, 9, 15, 2); poke(coupling_map, 0, 15, 3);\n\n    poke(init_flag, 1, 0, 0);\n}\n\n\n// =====================================================\n// 1. PARAMETER SMOOTHING (one-pole, ~1ms convergence)\n// =====================================================\nsm = 0.001;\ns_freq = s_freq + (base_freq - s_freq) * sm;\ns_struct = s_struct + (structure - s_struct) * sm;\ns_bright = s_bright + (brightness - s_bright) * sm;\ns_decay = s_decay + (decay_time - s_decay) * sm;\ns_pos = s_pos + (position - s_pos) * sm;\ns_nonlin = s_nonlin + (nonlinearity - s_nonlin) * sm;\ns_hard = s_hard + (mallet_hardness - s_hard) * sm;\ns_bloom = s_bloom + (bloom_amount - s_bloom) * sm;\ns_bspd = s_bspd + (bloom_speed - s_bspd) * sm;\ns_at = s_at + (aftertouch - s_at) * sm;\ns_gain = s_gain + (output_gain - s_gain) * sm;\n\n\n// =====================================================\n// 2. RATIO TABLE INTERPOLATION (when structure changes)\n// =====================================================\nif (abs(s_struct - prev_struct) > 0.0001) {\n    prev_struct = s_struct;\n\n    frac_idx = s_struct * 4.0;\n    row_lo = floor(frac_idx);\n    row_hi = min(row_lo + 1, 4);\n    frac = frac_idx - row_lo;\n\n    for (m = 0; m < 32; m += 1) {\n        r_lo = peek(ratio_table, m, row_lo);\n        r_hi = peek(ratio_table, m, row_hi);\n        poke(current_ratios, r_lo + (r_hi - r_lo) * frac, m, 0);\n    }\n\n    // Update coupling strengths from frequency proximity\n    for (t = 0; t < 16; t += 1) {\n        a_idx = peek(coupling_map, t, 0);\n        b_idx = peek(coupling_map, t, 1);\n        c_idx = peek(coupling_map, t, 2);\n        ra = peek(current_ratios, a_idx, 0);\n        rb = peek(current_ratios, b_idx, 0);\n        rc = peek(current_ratios, c_idx, 0);\n        sum_ab = ra + rb;\n        prox = abs(rc - sum_ab) / max(sum_ab, 0.001);\n        poke(coupling_map, max(1.0 - prox * 33.33, 0) * 0.00005, t, 3);\n    }\n}\n\n\n// =====================================================\n// 3. POSITION GAIN UPDATE (when position changes)\n// =====================================================\nif (abs(s_pos - prev_pos) > 0.0001) {\n    prev_pos = s_pos;\n    for (m = 0; m < 32; m += 1) {\n        poke(pos_gain, sin(PI * s_pos * (m + 1)), m, 0);\n    }\n}\n\n\n// =====================================================\n// 4. COEFFICIENT UPDATE (1 mode per sample, cycles continuously)\n// =====================================================\nm_upd = floor(update_idx);\nupdate_idx = update_idx + 1;\nif (update_idx >= 32) {\n    update_idx = 0;\n}\n\nratio = peek(current_ratios, m_upd, 0);\nfreq = s_freq * ratio;\nfreq = min(freq, samplerate * 0.49);\npoke(mode_freq, freq, m_upd, 0);\n\n// Frequency-dependent decay: higher modes decay faster\n// brightness controls slope: 0.5 (gentle) to 2.0 (aggressive)\ndamp_slope = 0.5 + s_bright * 1.5;\nt60 = s_decay * pow(max(ratio, 0.1), -damp_slope);\nt60 = max(t60, 0.01);\n\nr = exp(-6.9078 / (t60 * samplerate));\ntheta = TWOPI * freq / samplerate;\n\n// Apply nonlinear pitch glide (amplitude-dependent frequency shift)\namp = abs(peek(mode_y1, m_upd, 0));\nnl_mod = 1.0 + s_nonlin * amp * amp * 100;\ntheta_nl = TWOPI * min(freq * nl_mod, samplerate * 0.49) / samplerate;\n\npoke(mode_a1, 2.0 * r * cos(theta_nl), m_upd, 0);\npoke(mode_a2, -(r * r), m_upd, 0);\n\n\n// =====================================================\n// 5. TRIGGER DETECTION + REARTICULATION\n// =====================================================\nvel = velocity;\nvel_changed = (abs(vel - prev_vel) > 0.01) ? 1 : 0;\nonset = (vel > 0.01 && vel_changed > 0.5) ? 1 : 0;\nprev_vel = vel;\n\nif (onset > 0.5) {\n    // Rearticulation: damp existing resonance\n    // Soft mallet preserves more ringing, hard mallet kills more\n    reartic_damp = 0.05 + (1.0 - s_hard) * 0.75;\n\n    for (md = 0; md < 32; md += 1) {\n        y1_old = peek(mode_y1, md, 0);\n        y2_old = peek(mode_y2, md, 0);\n        poke(mode_y1, y1_old * reartic_damp, md, 0);\n        poke(mode_y2, y2_old * reartic_damp, md, 0);\n    }\n\n    burst_vel = vel;\n    burst_env = 1.0;\n}\n\n\n// =====================================================\n// 6. EXCITATION (filtered noise burst + audio input)\n// =====================================================\n// Burst duration: 1ms (hard) to 5ms (soft)\ndecay_samps = (1.0 + (1.0 - s_hard) * 4.0) * 0.001 * samplerate;\ndecay_coeff = exp(-1.0 / max(decay_samps, 1));\nburst_env = burst_env * decay_coeff;\n\nraw_burst = noise() * burst_env * burst_vel;\n\n// Velocity-dependent LPF: harder mallet = brighter (500-8000 Hz)\ncutoff = 500 + s_hard * 7500;\nlp_coeff = 1.0 - exp(-TWOPI * cutoff / samplerate);\nburst_lp = burst_lp + lp_coeff * (raw_burst - burst_lp);\n\naudio_in = in1;\nexcitation = burst_lp + audio_in;\n\n\n// =====================================================\n// 7. RESONATOR BANK (32 parallel 2nd-order resonators)\n// =====================================================\nsum_L = 0;\nsum_R = 0;\nnm = floor(num_modes);\n\n// Aftertouch damping coefficient (per-sample)\nat_damp = s_at > 0.005 ? (1.0 - s_at * 0.0003) : 1.0;\n\nfor (m = 0; m < 32; m += 1) {\n    a1 = peek(mode_a1, m, 0);\n    a2 = peek(mode_a2, m, 0);\n    y1 = peek(mode_y1, m, 0);\n    y2 = peek(mode_y2, m, 0);\n\n    // Excitation gain: position pattern * active flag\n    g = peek(pos_gain, m, 0) * (m < nm ? 1.0 : 0.0);\n\n    // 2nd-order resonator\n    y = a1 * y1 + a2 * y2 + excitation * g;\n\n    // Aftertouch hand-damping\n    y = y * at_damp;\n\n    poke(mode_y1, y, m, 0);\n    poke(mode_y2, y1, m, 0);\n    poke(mode_output, y, m, 0);\n\n    // Stereo: even modes left, odd modes right\n    is_even = 1.0 - (m % 2);\n    sum_L = sum_L + y * is_even;\n    sum_R = sum_R + y * (1.0 - is_even);\n}\n\n\n// =====================================================\n// 8. NONLINEAR COUPLING (sparse resonant triplets)\n// =====================================================\nnl_scale = s_nonlin;\nfor (t = 0; t < 16; t += 1) {\n    a_idx = peek(coupling_map, t, 0);\n    b_idx = peek(coupling_map, t, 1);\n    c_idx = peek(coupling_map, t, 2);\n    strength = peek(coupling_map, t, 3) * nl_scale;\n\n    ya = peek(mode_output, a_idx, 0);\n    yb = peek(mode_output, b_idx, 0);\n\n    // Energy-conserving quadratic coupling\n    coupling_term = ya * yb * strength;\n\n    // Add to target mode C\n    yc1 = peek(mode_y1, c_idx, 0);\n    poke(mode_y1, yc1 + coupling_term, c_idx, 0);\n    // Subtract from source modes (energy conservation)\n    ya1 = peek(mode_y1, a_idx, 0);\n    yb1 = peek(mode_y1, b_idx, 0);\n    poke(mode_y1, ya1 - coupling_term * 0.5, a_idx, 0);\n    poke(mode_y1, yb1 - coupling_term * 0.5, b_idx, 0);\n}\n\n\n// =====================================================\n// 9. BLOOM (phenomenological energy cascade)\n// =====================================================\n// Monitor RMS of low modes (0-7)\nlow_sum_sq = 0;\nfor (mb = 0; mb < 8; mb += 1) {\n    y_mb = peek(mode_output, mb, 0);\n    low_sum_sq = low_sum_sq + y_mb * y_mb;\n}\nrms_coeff = exp(-1.0 / (0.01 * samplerate));\nlow_rms = sqrt(low_rms * low_rms * rms_coeff + low_sum_sq / 8.0 * (1.0 - rms_coeff));\n\n// Bloom envelope: rises when low-mode energy exceeds threshold\nbloom_thresh = 0.005;\nbloom_target = (low_rms > bloom_thresh) ? 1.0 : 0.0;\nbloom_rate = 1.0 / (s_bspd * samplerate);\nif (bloom_target > bloom_env) {\n    bloom_env = min(bloom_env + bloom_rate, 1.0);\n} else {\n    bloom_env = max(bloom_env - bloom_rate * 2, 0);\n}\n\n// Inject bloom energy into high modes (16-31)\nbloom_gain_val = bloom_env * s_bloom * low_rms;\n// Only inject bloom energy when there is real resonator activity\nif (low_rms > 0.001) {\n    for (mh = 16; mh < 32; mh += 1) {\n        boost = bloom_gain_val * (mh - 15.0) / 16.0;\n        y1_mh = peek(mode_y1, mh, 0);\n        poke(mode_y1, y1_mh + boost * noise() * 0.001, mh, 0);\n    }\n}\n\n\n// =====================================================\n// 10. OUTPUT (scaling + DC blocker)\n// =====================================================\nscale = s_gain / max(sqrt(nm), 1.0);\nwet_L = sum_L * scale;\nwet_R = sum_R * scale;\n\n// DC blocker (same as FDN reverb pattern)\nw0 = wet_L - dcx0 + 0.995 * dcy0;\ndcx0 = wet_L;\ndcy0 = w0;\nw1 = wet_R - dcx1 + 0.995 * dcy1;\ndcx1 = wet_R;\ndcy1 = w1;\n\n// Soft limiter (tanh saturation)\nout1 = tanh(w0);\nout2 = tanh(w1);\n",
+          "numinlets": 1,
+          "numoutlets": 2,
+          "outlettype": [
+            "",
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            80.0,
+            400.0,
+            200.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 1",
+          "id": "obj-3",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            50.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 2",
+          "id": "obj-4",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            130.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": [
+            "obj-1",
+            0
+          ],
+          "destination": [
+            "obj-2",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            0
+          ],
+          "destination": [
+            "obj-3",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            1
+          ],
+          "destination": [
+            "obj-4",
+            0
+          ]
+        }
+      }
+    ],
+    "dependency_cache": [],
+    "autosave": 0,
+    "bgcolor": [
+      0.9,
+      0.9,
+      0.9,
+      1.0
+    ]
+  }
+}
