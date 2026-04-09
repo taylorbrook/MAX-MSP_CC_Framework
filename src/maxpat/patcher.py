@@ -229,6 +229,16 @@ class Box:
         # Raw dict for lossless round-trip (None for newly created boxes)
         self._raw: dict | None = None
 
+    @property
+    def right_edge(self) -> float:
+        """X coordinate of the box's right edge (x + width)."""
+        return self.patching_rect[0] + self.patching_rect[2]
+
+    @property
+    def bottom_edge(self) -> float:
+        """Y coordinate of the box's bottom edge (y + height)."""
+        return self.patching_rect[1] + self.patching_rect[3]
+
     @staticmethod
     def _derive_outlet_types(obj_data: dict) -> list[str]:
         """Derive outlettype array from object database outlets."""

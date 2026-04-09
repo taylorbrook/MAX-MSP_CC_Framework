@@ -42,6 +42,14 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "0.4.2",
+      "description": "Two-column layout with text_width-based spacing, no overlaps",
+      "timestamp": "2026-04-09T04:50:28.097325+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }

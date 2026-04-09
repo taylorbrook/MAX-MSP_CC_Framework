@@ -126,6 +126,20 @@ UI_SIZES: dict[str, tuple[float, float] | None] = {
 COMMENT_HEIGHT = 20.0
 
 
+def text_width(text: str, maxclass: str = "newobj") -> float:
+    """Return the rendered width of a MAX object given its full text.
+
+    Use this to compute layout positions that account for actual object widths.
+    Works for newobj, comment, message, and any text-based box.
+
+    Example:
+        w = text_width("prepend mallet_hardness")  # -> 177.0
+        next_col_x = prev_col_x + w + H_GUTTER
+    """
+    w, _ = calculate_box_size(text, maxclass)
+    return w
+
+
 def calculate_box_size(text: str, maxclass: str) -> tuple[float, float]:
     """Calculate box dimensions for a MAX object.
 

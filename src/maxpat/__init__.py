@@ -26,6 +26,7 @@ from src.maxpat.aesthetics import (
     _AUTO_HIGHLIGHT,
 )
 from src.maxpat.defaults import LayoutOptions
+from src.maxpat.sizing import text_width
 from src.maxpat.hooks import (
     write_gendsp,
     write_js,
@@ -127,6 +128,8 @@ __all__ = [
     "BuildResult",
     # Layout
     "LayoutOptions",
+    # Sizing
+    "text_width",
     # Hooks
     "finalize_patch",
     # Aesthetics
