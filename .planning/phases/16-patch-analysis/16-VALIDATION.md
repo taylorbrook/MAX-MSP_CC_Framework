@@ -1,9 +1,9 @@
 ---
 phase: 16
 slug: patch-analysis
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: complete
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-03-16
 ---
 
@@ -38,18 +38,18 @@ created: 2026-03-16
 
 | Task ID | Plan | Wave | Requirement | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|-----------|-------------------|-------------|--------|
-| 16-01-01 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestComplexity -x` | ❌ W0 | ⬜ pending |
-| 16-01-02 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestInventory -x` | ❌ W0 | ⬜ pending |
-| 16-01-03 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestSignalChains -x` | ❌ W0 | ⬜ pending |
-| 16-01-04 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestParameters -x` | ❌ W0 | ⬜ pending |
-| 16-01-05 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestHierarchy -x` | ❌ W0 | ⬜ pending |
-| 16-02-01 | 02 | 1 | AN-03 | unit | `python3 -m pytest tests/test_analysis.py::TestSections -x` | ❌ W0 | ⬜ pending |
-| 16-02-02 | 02 | 1 | AN-03 | unit | `python3 -m pytest tests/test_analysis.py::TestSendReceiveMerge -x` | ❌ W0 | ⬜ pending |
-| 16-02-03 | 02 | 1 | AN-03 | unit | `python3 -m pytest tests/test_analysis.py::TestSectionNaming -x` | ❌ W0 | ⬜ pending |
-| 16-02-04 | 02 | 1 | AN-03 | unit | `python3 -m pytest tests/test_analysis.py::TestAliasResolution -x` | ❌ W0 | ⬜ pending |
-| 16-03-01 | 03 | 2 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestAnalyze -x` | ❌ W0 | ⬜ pending |
-| 16-03-02 | 03 | 2 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestControlPaths -x` | ❌ W0 | ⬜ pending |
-| 16-03-03 | 03 | 2 | AN-02 | integration | `python3 -m pytest tests/test_analysis.py::TestOnboard -x` | ❌ W0 | ⬜ pending |
+| 16-01-01 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestComplexity -x` | ✅ | ✅ green |
+| 16-01-02 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestInventory -x` | ✅ | ✅ green |
+| 16-01-03 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestSignalChains -x` | ✅ | ✅ green |
+| 16-01-04 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestParameters -x` | ✅ | ✅ green |
+| 16-01-05 | 01 | 1 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestHierarchy -x` | ✅ | ✅ green |
+| 16-02-01 | 02 | 1 | AN-03 | unit | `python3 -m pytest tests/test_analysis.py::TestSections -x` | ✅ | ✅ green |
+| 16-02-02 | 02 | 1 | AN-03 | unit | `python3 -m pytest tests/test_analysis.py::TestSendReceiveMerge -x` | ✅ | ✅ green |
+| 16-02-03 | 02 | 1 | AN-03 | unit | `python3 -m pytest tests/test_analysis.py::TestSectionNaming -x` | ✅ | ✅ green |
+| 16-02-04 | 02 | 1 | AN-03 | unit | `python3 -m pytest tests/test_analysis.py::TestSendReceivePairs -x` | ✅ | ✅ green |
+| 16-03-01 | 03 | 2 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestAnalyze -x` | ✅ | ✅ green |
+| 16-03-02 | 03 | 2 | AN-01 | unit | `python3 -m pytest tests/test_analysis.py::TestControlPaths -x` | ✅ | ✅ green |
+| 16-03-03 | 03 | 2 | AN-02 | integration | `python3 -m pytest tests/test_analysis.py::TestOnboard -x` | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -75,11 +75,23 @@ created: 2026-03-16
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 5s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 5s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved
+
+---
+
+## Validation Audit 2026-04-08
+
+| Metric | Count |
+|--------|-------|
+| Gaps found | 1 |
+| Resolved | 1 |
+| Escalated | 0 |
+
+Fix: Updated TestOnboard fixture path (performancepatchtest.maxpat → performance-patch-template.maxpat).
