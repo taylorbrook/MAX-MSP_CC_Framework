@@ -1,0 +1,97 @@
+{
+	"pattrstorage" : {
+		"name" : "gong-presets",
+		"slots" : {
+			"1" : {
+				"id" : 1,
+				"data" : {
+					"d_structure" : [ 127 ],
+					"d_brightness" : [ 83 ],
+					"d_decay" : [ 81 ],
+					"d_position" : [ 44 ],
+					"d_nonlinearity" : [ 51 ],
+					"d_hardness" : [ 76 ],
+					"d_bloom" : [ 64 ],
+					"d_bloom_speed" : [ 68 ],
+					"d_modes" : [ 127 ],
+					"d_gain" : [ 76 ]
+				}
+			},
+			"2" : {
+				"id" : 2,
+				"data" : {
+					"d_structure" : [ 64 ],
+					"d_brightness" : [ 95 ],
+					"d_decay" : [ 69 ],
+					"d_position" : [ 64 ],
+					"d_nonlinearity" : [ 89 ],
+					"d_hardness" : [ 89 ],
+					"d_bloom" : [ 19 ],
+					"d_bloom_speed" : [ 79 ],
+					"d_modes" : [ 91 ],
+					"d_gain" : [ 70 ]
+				}
+			},
+			"3" : {
+				"id" : 3,
+				"data" : {
+					"d_structure" : [ 95 ],
+					"d_brightness" : [ 108 ],
+					"d_decay" : [ 93 ],
+					"d_position" : [ 38 ],
+					"d_nonlinearity" : [ 19 ],
+					"d_hardness" : [ 102 ],
+					"d_bloom" : [ 6 ],
+					"d_bloom_speed" : [ 36 ],
+					"d_modes" : [ 109 ],
+					"d_gain" : [ 64 ]
+				}
+			},
+			"4" : {
+				"id" : 4,
+				"data" : {
+					"d_structure" : [ 32 ],
+					"d_brightness" : [ 89 ],
+					"d_decay" : [ 74 ],
+					"d_position" : [ 57 ],
+					"d_nonlinearity" : [ 13 ],
+					"d_hardness" : [ 83 ],
+					"d_bloom" : [ 0 ],
+					"d_bloom_speed" : [ 54 ],
+					"d_modes" : [ 73 ],
+					"d_gain" : [ 70 ]
+				}
+			},
+			"5" : {
+				"id" : 5,
+				"data" : {
+					"d_structure" : [ 114 ],
+					"d_brightness" : [ 38 ],
+					"d_decay" : [ 101 ],
+					"d_position" : [ 76 ],
+					"d_nonlinearity" : [ 76 ],
+					"d_hardness" : [ 51 ],
+					"d_bloom" : [ 89 ],
+					"d_bloom_speed" : [ 48 ],
+					"d_modes" : [ 127 ],
+					"d_gain" : [ 64 ]
+				}
+			},
+			"6" : {
+				"id" : 6,
+				"data" : {
+					"d_structure" : [ 19 ],
+					"d_brightness" : [ 114 ],
+					"d_decay" : [ 111 ],
+					"d_position" : [ 32 ],
+					"d_nonlinearity" : [ 6 ],
+					"d_hardness" : [ 38 ],
+					"d_bloom" : [ 3 ],
+					"d_bloom_speed" : [ 26 ],
+					"d_modes" : [ 54 ],
+					"d_gain" : [ 76 ]
+				}
+			}
+		}
+	}
+}

@@ -50,6 +50,15 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "0.5.0",
+      "description": "add 6 gong presets with pattrstorage",
+      "timestamp": "2026-04-09T05:29:38.408841+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-presets.json"
+      ]
     }
   ]
 }
