@@ -1645,34 +1645,34 @@
                     ],
                     "restore": {
                         "d_bloom": [
-                            1.0
+                            0.0079
                         ],
                         "d_bloom_speed": [
-                            2.0
+                            0.1012
                         ],
                         "d_brightness": [
-                            1.0
+                            0.0079
                         ],
                         "d_decay": [
-                            3.0
+                            0.1004
                         ],
                         "d_gain": [
-                            1.0
+                            0.0079
                         ],
                         "d_hardness": [
-                            1.0
+                            0.0079
                         ],
                         "d_modes": [
-                            1.0
+                            4.2205
                         ],
                         "d_nonlinearity": [
-                            1.0
+                            0.0079
                         ],
                         "d_position": [
-                            1.0
+                            0.0079
                         ],
                         "d_structure": [
-                            1.0
+                            0.0079
                         ]
                     },
                     "text": "autopattr",
