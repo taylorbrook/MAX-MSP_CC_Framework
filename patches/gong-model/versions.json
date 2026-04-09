@@ -95,6 +95,14 @@
         "gong-engine.gendsp",
         "gong-presets.json"
       ]
+    },
+    {
+      "version": "1.0.1",
+      "description": "linear curves for decay time and bloom speed dials",
+      "timestamp": "2026-04-09T06:42:16.586509+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
