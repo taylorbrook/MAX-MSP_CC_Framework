@@ -1,9 +1,9 @@
 ---
 phase: 27
 slug: scaffold-auto-enforcement
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: complete
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-08
 ---
 
@@ -38,14 +38,14 @@ created: 2026-04-08
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| 27-01-01 | 01 | 1 | SCAFFOLD-04 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestParameterEnableEnforcement -x` | ❌ W0 | ⬜ pending |
-| 27-01-02 | 01 | 1 | SCAFFOLD-04 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestParameterEnableEnforcement::test_creates_saved_attribute_attributes -x` | ❌ W0 | ⬜ pending |
-| 27-01-03 | 01 | 1 | SCAFFOLD-04 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestParameterEnableEnforcement::test_skips_non_param -x` | ❌ W0 | ⬜ pending |
-| 27-01-04 | 01 | 1 | SCAFFOLD-04 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestParameterEnableEnforcement::test_idempotent -x` | ❌ W0 | ⬜ pending |
-| 27-02-01 | 02 | 1 | SCAFFOLD-05 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestM4LPrefixEnforcement -x` | ❌ W0 | ⬜ pending |
-| 27-02-02 | 02 | 1 | SCAFFOLD-05 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestM4LPrefixEnforcement::test_skips_hash_sub -x` | ❌ W0 | ⬜ pending |
-| 27-02-03 | 02 | 1 | SCAFFOLD-05 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestM4LPrefixEnforcement::test_idempotent -x` | ❌ W0 | ⬜ pending |
-| 27-03-01 | 03 | 1 | SCAFFOLD-04+05 | — | N/A | integration | `python3 -m pytest tests/test_m4l_polish.py::TestEnforcementIntegration -x` | ❌ W0 | ⬜ pending |
+| 27-01-01 | 01 | 1 | SCAFFOLD-04 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestParameterEnableEnforcement -x` | ✅ | ✅ green |
+| 27-01-02 | 01 | 1 | SCAFFOLD-04 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestParameterEnableEnforcement::test_creates_saved_attribute_attributes -x` | ✅ | ✅ green |
+| 27-01-03 | 01 | 1 | SCAFFOLD-04 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestParameterEnableEnforcement::test_skips_non_param -x` | ✅ | ✅ green |
+| 27-01-04 | 01 | 1 | SCAFFOLD-04 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestParameterEnableEnforcement::test_idempotent -x` | ✅ | ✅ green |
+| 27-02-01 | 02 | 1 | SCAFFOLD-05 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestM4LPrefixEnforcement -x` | ✅ | ✅ green |
+| 27-02-02 | 02 | 1 | SCAFFOLD-05 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestM4LPrefixEnforcement::test_skips_hash_sub -x` | ✅ | ✅ green |
+| 27-02-03 | 02 | 1 | SCAFFOLD-05 | — | N/A | unit | `python3 -m pytest tests/test_m4l_polish.py::TestM4LPrefixEnforcement::test_idempotent -x` | ✅ | ✅ green |
+| 27-03-01 | 03 | 1 | SCAFFOLD-04+05 | — | N/A | integration | `python3 -m pytest tests/test_m4l_polish.py::TestEnforcementIntegration -x` | ✅ | ✅ green |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -65,11 +65,11 @@ All phase behaviors have automated verification.
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 5s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 5s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved (2026-04-08)
