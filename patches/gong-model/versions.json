@@ -59,6 +59,15 @@
         "gong-model.maxpat",
         "gong-presets.json"
       ]
+    },
+    {
+      "version": "0.6.0",
+      "description": "metallic decay: longer sustain, gentler high-mode damping",
+      "timestamp": "2026-04-09T05:43:15.244715+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
