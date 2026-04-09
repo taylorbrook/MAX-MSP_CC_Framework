@@ -136,6 +136,15 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.2.0",
+      "description": "two-stage mallet model: material morph, noise level, click-free excitation",
+      "timestamp": "2026-04-09T17:15:00.292202+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
