@@ -1644,35 +1644,35 @@
                         22.0
                     ],
                     "restore": {
-                        "d_bloom": [
-                            0.0079
-                        ],
-                        "d_bloom_speed": [
-                            0.1012
+                        "d_structure": [
+                            0.5039
                         ],
                         "d_brightness": [
-                            0.0079
+                            0.5039
                         ],
                         "d_decay": [
-                            0.1004
-                        ],
-                        "d_gain": [
-                            0.0079
-                        ],
-                        "d_hardness": [
-                            0.0079
-                        ],
-                        "d_modes": [
-                            4.2205
-                        ],
-                        "d_nonlinearity": [
-                            0.0079
+                            3.9265
                         ],
                         "d_position": [
-                            0.0079
+                            0.5039
                         ],
-                        "d_structure": [
-                            0.0079
+                        "d_nonlinearity": [
+                            0.1024
+                        ],
+                        "d_hardness": [
+                            0.5039
+                        ],
+                        "d_bloom": [
+                            0.1024
+                        ],
+                        "d_bloom_speed": [
+                            0.9859
+                        ],
+                        "d_modes": [
+                            24.063
+                        ],
+                        "d_gain": [
+                            0.5039
                         ]
                     },
                     "text": "autopattr",
