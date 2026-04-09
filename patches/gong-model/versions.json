@@ -85,6 +85,16 @@
         "gong-engine.gendsp",
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.0.0",
+      "description": "replace dial+scale+flonum with live.dial \u2014 direct param range output, no scale intermediary",
+      "timestamp": "2026-04-09T06:32:20.740914+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-engine.gendsp",
+        "gong-presets.json"
+      ]
     }
   ]
 }

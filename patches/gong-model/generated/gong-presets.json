@@ -1,95 +1,215 @@
 {
-	"pattrstorage" : {
-		"name" : "gong-presets",
-		"slots" : {
-			"1" : {
-				"id" : 1,
-				"data" : {
-					"d_structure" : [ 127 ],
-					"d_brightness" : [ 83 ],
-					"d_decay" : [ 81 ],
-					"d_position" : [ 44 ],
-					"d_nonlinearity" : [ 51 ],
-					"d_hardness" : [ 76 ],
-					"d_bloom" : [ 64 ],
-					"d_bloom_speed" : [ 68 ],
-					"d_modes" : [ 127 ],
-					"d_gain" : [ 76 ]
+	"pattrstorage": {
+		"name": "gong-presets",
+		"slots": {
+			"1": {
+				"id": 1,
+				"data": {
+					"d_structure": [
+						1.0
+					],
+					"d_brightness": [
+						0.6535
+					],
+					"d_decay": [
+						7.8574
+					],
+					"d_position": [
+						0.3465
+					],
+					"d_nonlinearity": [
+						0.4016
+					],
+					"d_hardness": [
+						0.5984
+					],
+					"d_bloom": [
+						0.5039
+					],
+					"d_bloom_speed": [
+						1.5048
+					],
+					"d_modes": [
+						32.0
+					],
+					"d_gain": [
+						0.5984
+					]
 				}
 			},
-			"2" : {
-				"id" : 2,
-				"data" : {
-					"d_structure" : [ 64 ],
-					"d_brightness" : [ 95 ],
-					"d_decay" : [ 69 ],
-					"d_position" : [ 64 ],
-					"d_nonlinearity" : [ 89 ],
-					"d_hardness" : [ 89 ],
-					"d_bloom" : [ 19 ],
-					"d_bloom_speed" : [ 79 ],
-					"d_modes" : [ 91 ],
-					"d_gain" : [ 70 ]
+			"2": {
+				"id": 2,
+				"data": {
+					"d_structure": [
+						0.5039
+					],
+					"d_brightness": [
+						0.748
+					],
+					"d_decay": [
+						4.8952
+					],
+					"d_position": [
+						0.5039
+					],
+					"d_nonlinearity": [
+						0.7008
+					],
+					"d_hardness": [
+						0.7008
+					],
+					"d_bloom": [
+						0.1496
+					],
+					"d_bloom_speed": [
+						1.996
+					],
+					"d_modes": [
+						24.063
+					],
+					"d_gain": [
+						0.5512
+					]
 				}
 			},
-			"3" : {
-				"id" : 3,
-				"data" : {
-					"d_structure" : [ 95 ],
-					"d_brightness" : [ 108 ],
-					"d_decay" : [ 93 ],
-					"d_position" : [ 38 ],
-					"d_nonlinearity" : [ 19 ],
-					"d_hardness" : [ 102 ],
-					"d_bloom" : [ 6 ],
-					"d_bloom_speed" : [ 36 ],
-					"d_modes" : [ 109 ],
-					"d_gain" : [ 64 ]
+			"3": {
+				"id": 3,
+				"data": {
+					"d_structure": [
+						0.748
+					],
+					"d_brightness": [
+						0.8504
+					],
+					"d_decay": [
+						11.8411
+					],
+					"d_position": [
+						0.2992
+					],
+					"d_nonlinearity": [
+						0.1496
+					],
+					"d_hardness": [
+						0.8031
+					],
+					"d_bloom": [
+						0.0472
+					],
+					"d_bloom_speed": [
+						0.4937
+					],
+					"d_modes": [
+						28.0315
+					],
+					"d_gain": [
+						0.5039
+					]
 				}
 			},
-			"4" : {
-				"id" : 4,
-				"data" : {
-					"d_structure" : [ 32 ],
-					"d_brightness" : [ 89 ],
-					"d_decay" : [ 74 ],
-					"d_position" : [ 57 ],
-					"d_nonlinearity" : [ 13 ],
-					"d_hardness" : [ 83 ],
-					"d_bloom" : [ 0 ],
-					"d_bloom_speed" : [ 54 ],
-					"d_modes" : [ 73 ],
-					"d_gain" : [ 70 ]
+			"4": {
+				"id": 4,
+				"data": {
+					"d_structure": [
+						0.252
+					],
+					"d_brightness": [
+						0.7008
+					],
+					"d_decay": [
+						6.015
+					],
+					"d_position": [
+						0.4488
+					],
+					"d_nonlinearity": [
+						0.1024
+					],
+					"d_hardness": [
+						0.6535
+					],
+					"d_bloom": [
+						0.0
+					],
+					"d_bloom_speed": [
+						0.9859
+					],
+					"d_modes": [
+						20.0945
+					],
+					"d_gain": [
+						0.5512
+					]
 				}
 			},
-			"5" : {
-				"id" : 5,
-				"data" : {
-					"d_structure" : [ 114 ],
-					"d_brightness" : [ 38 ],
-					"d_decay" : [ 101 ],
-					"d_position" : [ 76 ],
-					"d_nonlinearity" : [ 76 ],
-					"d_hardness" : [ 51 ],
-					"d_bloom" : [ 89 ],
-					"d_bloom_speed" : [ 48 ],
-					"d_modes" : [ 127 ],
-					"d_gain" : [ 64 ]
+			"5": {
+				"id": 5,
+				"data": {
+					"d_structure": [
+						0.8976
+					],
+					"d_brightness": [
+						0.2992
+					],
+					"d_decay": [
+						15.1392
+					],
+					"d_position": [
+						0.5984
+					],
+					"d_nonlinearity": [
+						0.5984
+					],
+					"d_hardness": [
+						0.4016
+					],
+					"d_bloom": [
+						0.7008
+					],
+					"d_bloom_speed": [
+						0.8
+					],
+					"d_modes": [
+						32.0
+					],
+					"d_gain": [
+						0.5039
+					]
 				}
 			},
-			"6" : {
-				"id" : 6,
-				"data" : {
-					"d_structure" : [ 19 ],
-					"d_brightness" : [ 114 ],
-					"d_decay" : [ 111 ],
-					"d_position" : [ 32 ],
-					"d_nonlinearity" : [ 6 ],
-					"d_hardness" : [ 38 ],
-					"d_bloom" : [ 3 ],
-					"d_bloom_speed" : [ 26 ],
-					"d_modes" : [ 54 ],
-					"d_gain" : [ 76 ]
+			"6": {
+				"id": 6,
+				"data": {
+					"d_structure": [
+						0.1496
+					],
+					"d_brightness": [
+						0.8976
+					],
+					"d_decay": [
+						20.0631
+					],
+					"d_position": [
+						0.252
+					],
+					"d_nonlinearity": [
+						0.0472
+					],
+					"d_hardness": [
+						0.2992
+					],
+					"d_bloom": [
+						0.0236
+					],
+					"d_bloom_speed": [
+						0.3054
+					],
+					"d_modes": [
+						15.9055
+					],
+					"d_gain": [
+						0.5984
+					]
 				}
 			}
 		}
