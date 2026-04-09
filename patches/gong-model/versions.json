@@ -9,6 +9,14 @@
       "version": "0.1.0",
       "description": "Initial gong physical model - gen~ engine + MAX patch",
       "timestamp": "2026-04-08T21:10:10.535889+00:00"
+    },
+    {
+      "version": "0.2.0",
+      "description": "Fix nonlinear pitch glide, brightness direction, amplitude envelope",
+      "timestamp": "2026-04-09T01:14:23.685628+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
