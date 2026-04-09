@@ -17,6 +17,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "Fix coupling NaN explosion, init coefficients, bloom amplitude, burst order, History defaults",
+      "timestamp": "2026-04-09T01:29:49.323324+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
