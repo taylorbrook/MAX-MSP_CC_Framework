@@ -34,6 +34,14 @@
         "gong-engine.gendsp",
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "0.4.1",
+      "description": "Reorganize controls: 2 columns with flonum readouts",
+      "timestamp": "2026-04-09T04:43:09.838199+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
