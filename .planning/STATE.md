@@ -2,15 +2,15 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Direct .maxpat Editing
-status: executing
-stopped_at: Phase 27 context gathered
-last_updated: "2026-04-08T17:42:18.628Z"
-last_activity: 2026-04-08
+status: complete
+stopped_at: Milestone v2.0 archived
+last_updated: "2026-04-09"
+last_activity: 2026-04-09
 progress:
-  total_phases: 12
-  completed_phases: 12
-  total_plans: 28
-  completed_plans: 28
+  total_phases: 7
+  completed_phases: 7
+  total_plans: 15
+  completed_plans: 15
   percent: 100
 ---
 
@@ -18,39 +18,19 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-05)
+See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Phase 27 — scaffold-auto-enforcement
+**Current focus:** Planning next milestone
 
 ## Current Position
 
-Phase: 27
-Plan: Not started
-Status: Executing Phase 27
-Last activity: 2026-04-08
+Phase: --
+Plan: --
+Status: v2.0 complete, next milestone pending
+Last activity: 2026-04-09
 
-Progress: [█████████░] 97%
-
-## Performance Metrics
-
-**Velocity:**
-
-- Total plans completed: 7 (v3.0) / 39 (lifetime)
-- Average duration: -- (v3.0) / 4min (lifetime)
-- Total execution time: 0min (v3.0)
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| 21 | 2 | - | - |
-| 22 | 2 | - | - |
-| 25 | 2 | - | - |
-| 26 | 2 | - | - |
-| 27 | 1 | - | - |
-
-*Updated after each plan completion*
+Progress: [██████████] 100%
 
 ## Accumulated Context
 
@@ -58,27 +38,10 @@ Progress: [█████████░] 97%
 
 Decisions archived in PROJECT.md Key Decisions table.
 
-Recent decisions for v3.0:
-
-- [Roadmap]: 6 phases derived from research dependency chain: data first, scaffold second, critic third, polish/layout parallel, testing last
-- [Roadmap]: Terminal names hotfix (VALID-05) included in Phase 20 Foundation as prerequisite for all M4L validation
-- [Roadmap]: ROUTING-02 (CLAUDE.md rules) in Phase 20 since it's pure documentation, no code dependency
-- [Roadmap]: Phase 23 (Polish) and Phase 24 (Layout) can run in parallel after Phase 21 -- independent concerns
-- [Roadmap]: Phase 25 (Testing) depends on all prior phases -- validates complete pipeline
-- [22-01]: plugin~ alone classifies as audio_effect in _detect_m4l_device() since plugin~ only exists in M4L audio effects
-- [22-01]: live.thisdevice, live.banks, live.path, etc. excluded from parameter_enable check (non-parameter objects)
-
 ### Pending Todos
 
 None.
 
 ### Blockers/Concerns
 
-- Phase 24 layout heuristics need validation against 3-5 real devices built with Phase 21 scaffold before coding (research flag from SUMMARY.md)
-- plugin~/plugout~ maxclass needs 30-second MAX verification in Phase 20 (DB says "plugout~", ground truth shows "newobj")
-
-## Session Continuity
-
-Last session: 2026-04-08T17:07:43.478Z
-Stopped at: Phase 27 context gathered
-Resume file: .planning/phases/27-scaffold-auto-enforcement/27-CONTEXT.md
+None.

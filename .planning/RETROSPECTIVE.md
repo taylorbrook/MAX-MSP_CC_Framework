@@ -48,6 +48,48 @@
 
 ---
 
+## Milestone: v2.0 — Direct .maxpat Editing
+
+**Shipped:** 2026-04-09
+**Phases:** 7 | **Plans:** 15
+
+### What Was Built
+- Lossless .maxpat round-trip via Box._raw preservation — all 10 project patches byte-identical through load-save
+- Full editing API: find_box, modify_box, insert_into_connection, replace_box, auto-positioning with collision detection
+- Graph query engine: BFS upstream/downstream, signal_path tracing, connected_components with subpatcher crossing
+- Patch analysis: 7-facet structured summaries (complexity, inventory, sections, signal chains, control flow, hierarchy, parameters)
+- All slash commands and 9 agent SKILL.md files migrated to v2.0 workflow
+- Old pipeline removed: incremental.py, 8 generate.py scripts, 6 manifests, 7 versions.json (4,254 lines deleted)
+
+### What Worked
+- Box._raw dual-path serialization — one architectural change eliminated 5 categories of round-trip bugs simultaneously
+- TDD approach: xfail tests written first, promoted to hard passes as fixes landed
+- Expand-then-contract test migration: added v2.0 read-write tests before removing v1.x write-only tests, CI stayed green throughout
+- Dependency-ordered phases: round-trip -> search -> editing -> analysis -> migration -> cleanup — each phase had solid foundation
+
+### What Was Inefficient
+- Phase 19 tech debt (subpatcher key ordering) could have been caught during Phase 13 if golden file tests included subpatcher-heavy patches
+- SUMMARY frontmatter requirements_completed field inconsistently populated across 4 phases — documentation gap carried through to audit
+- v1.1 phase directories (8-12) not archived at v1.1 milestone completion — had to carry them through v2.0
+
+### Patterns Established
+- Box._raw / Patchline._raw dual-path to_dict: any new model classes should follow this pattern for round-trip fidelity
+- read_patch() -> edit -> save_patch_roundtrip() as the canonical edit workflow
+- Validation warns (not errors) on unknown objects — load anything, validate on demand
+- Phase details moved to milestone archive after completion, keeping ROADMAP.md constant-size
+
+### Key Lessons
+1. One architectural change (Box._raw) can fix entire categories of bugs — worth investing in the right abstraction rather than patching individual symptoms
+2. Expand-then-contract is the safe way to migrate tests — never delete old tests before new ones prove the same invariants
+3. Golden file tests should cover the hardest cases early (subpatchers, nested gen~) not just the simple cases
+
+### Cost Observations
+- Model mix: primarily Opus for execution
+- Plans averaged ~5 minutes each — fast iteration from clear phase dependencies
+- Notable: Phases 13-18 all completed on 2026-03-16 (single day); Phase 19 tech debt on 2026-03-17
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -55,13 +97,17 @@
 | Milestone | Phases | Plans | Key Change |
 |-----------|--------|-------|------------|
 | v1.0 | 7 | 21 | Initial framework build — established all patterns |
+| v2.0 | 7 | 15 | Write-only to read-write editor — .maxpat as single source of truth |
 
 ### Cumulative Quality
 
 | Milestone | Tests | Requirements | Audit Score |
 |-----------|-------|--------------|-------------|
 | v1.0 | 624 | 40/40 | passed |
+| v2.0 | 700+ | 26/26 | passed (76/76 must-haves) |
 
 ### Top Lessons (Verified Across Milestones)
 
-1. (Awaiting v1.1 for cross-validation)
+1. TDD with xfail-to-pass promotion works well for both gap closure (v1.0) and architectural changes (v2.0)
+2. Dependency-ordered phases consistently deliver — each phase has a solid foundation from the previous one
+3. Documentation accuracy should be verified at plan completion, not deferred — both milestones had doc gaps caught at audit time

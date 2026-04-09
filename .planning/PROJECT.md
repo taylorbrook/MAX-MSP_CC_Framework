@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A Claude Code development framework for MAX/MSP that generates valid `.maxpat` patches, Gen~/RNBO~/js/Node for Max code, and C/C++ externals. Provides 2,015-object knowledge base, 4-layer validation pipeline, 6 specialist agents with critic loops, persistent memory, and project lifecycle management via 10 slash commands.
+A Claude Code development framework for MAX/MSP that directly reads, edits, and writes `.maxpat` files — plus Gen~/RNBO~/js/Node for Max code and C/C++ externals. Provides 2,015-object knowledge base, 4-layer validation pipeline, 6 specialist agents with critic loops, patch analysis engine, persistent memory, and project lifecycle management via 10 slash commands. The .maxpat file is the single source of truth — no generation scripts, no manifests.
 
 ## Core Value
 
@@ -31,15 +31,16 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - ✓ Patch aesthetics — panels, background colors, comment styling, auto-highlighting — v1.1
 - ✓ Refined layout engine — width overrides, inlet alignment, grid snap, comment association — v1.1
 - ✓ Agent accuracy improvements — audit corrections fed back to specialist agents — v1.1
+- ✓ Lossless .maxpat round-trip — any patch loads and saves back with zero diff — v2.0
+- ✓ Direct .maxpat editing replaces Python generation pipeline — no generate.py intermediary — v2.0
+- ✓ Full editing API — find, modify, insert-into-connection, replace, graph queries, auto-positioning — v2.0
+- ✓ Patch analysis engine — 7-facet structured summaries for onboarding existing patches — v2.0
+- ✓ All agents and slash commands migrated to direct .maxpat editing workflow — v2.0
+- ✓ Old pipeline removed — incremental.py, generate.py scripts, manifests all deleted — v2.0
 
 ### Active
 
-- [ ] Patcher library refactored to read-write editor — load, parse, edit, and write .maxpat files with .maxpat as single source of truth
-- [ ] Direct .maxpat editing replaces Python generation pipeline — no more generate.py intermediary
-- [ ] All agents and skills work directly with .maxpat files — read patch, understand structure, make surgical edits
-- [ ] /max-onboard command for analyzing and understanding existing .maxpat files from any source
-- [ ] Existing project patches cleaned up — Python generation scripts and manifests removed, patches standalone
-- [ ] Validation and hooks updated to work with direct .maxpat editing workflow
+(Next milestone requirements TBD — run `/gsd-new-milestone`)
 
 ### Future
 
@@ -59,22 +60,12 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 
 ## Context
 
-Shipped v1.0 with 16,557 LOC Python across 183 files.
-Tech stack: Python (generation + validation), JSON (object DB + .maxpat), C++ (Min-DevKit externals), GenExpr (DSP code), JavaScript (js/N4M).
-624 tests passing covering all 40 requirements.
+Shipped v2.0 with 33,430 LOC Python.
+Tech stack: Python (editing + validation), JSON (object DB + .maxpat), C++ (Min-DevKit externals), GenExpr (DSP code), JavaScript (js/N4M).
 Object database: 2,015 objects across 8 domains (Max, MSP, Jitter, MC, Gen, M4L, RNBO, Packages).
 Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-scope memory.
-
-## Current Milestone: v2.0 Direct .maxpat Editing
-
-**Goal:** Replace the Python generation pipeline with direct .maxpat reading and editing, making the .maxpat file the single source of truth and enabling true back-and-forth between Claude and manual MAX editing.
-
-**Target features:**
-- Patcher library refactored from write-only generator to read-write editor
-- All agents/skills/hooks work directly with .maxpat files instead of Python generation scripts
-- /max-onboard command for analyzing and understanding existing patches from any source
-- Existing project patches cleaned up — generation scripts and manifests removed
-- Validation pipeline adapted for direct editing workflow
+v2.0 shipped direct .maxpat editing — read_patch, find/modify/insert/replace, graph queries, patch analysis.
+Old generation pipeline fully removed — no generate.py, no manifests, no incremental.py.
 
 ## Key Decisions
 
@@ -100,7 +91,10 @@ Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-
 - **External SDK:** Min-DevKit (C++) — CMake build system, Apple Silicon support
 - **No MAX automation:** Claude cannot launch or control MAX — all validation is offline
 
-| .maxpat as single source of truth | Python generation creates two competing sources of truth; user edits get lost on regeneration | — Pending |
+| .maxpat as single source of truth | Python generation creates two competing sources of truth; user edits get lost on regeneration | ✓ Good — v2.0 eliminated generation pipeline |
+| Box._raw preservation for round-trip | Dual-path to_dict (raw-based round-trip vs scratch creation) eliminates all data loss categories | ✓ Good — zero-diff on all 10 project patches |
+| Expand-then-contract test migration | Add v2.0 read-write tests before removing v1.x write-only tests; CI stays green throughout | ✓ Good — 60+ tests rewritten without breakage |
+| Validation warns (not errors) on unknown objects | DB rejection on load would block third-party packages and user objects | ✓ Good — unknown objects load cleanly |
 
 ---
-*Last updated: 2026-04-08 after Phase 27 (Scaffold Auto-Enforcement) complete*
+*Last updated: 2026-04-09 after v2.0 milestone*
