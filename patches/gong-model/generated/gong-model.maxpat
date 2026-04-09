@@ -1832,8 +1832,7 @@
                             "parameter_initial_enable": 1,
                             "parameter_initial": [
                                 8.0
-                            ],
-                            "parameter_exponent": 3.0
+                            ]
                         }
                     },
                     "varname": "d_decay"
@@ -2003,8 +2002,7 @@
                             "parameter_initial_enable": 1,
                             "parameter_initial": [
                                 1.0
-                            ],
-                            "parameter_exponent": 2.0
+                            ]
                         }
                     },
                     "varname": "d_bloom_speed"
