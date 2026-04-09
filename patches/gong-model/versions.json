@@ -145,6 +145,14 @@
         "gong-engine.gendsp",
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.2.1",
+      "description": "mallet model tuning: direct impact output, exponential mode rolloff, wider material LPF ranges",
+      "timestamp": "2026-04-09T17:55:17.337431+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
