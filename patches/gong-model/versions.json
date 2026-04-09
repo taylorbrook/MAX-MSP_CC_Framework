@@ -76,6 +76,15 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "0.7.0",
+      "description": "DIAGNOSTIC: minimal resonator engine to isolate decay issue",
+      "timestamp": "2026-04-09T06:18:45.378061+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
