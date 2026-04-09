@@ -68,6 +68,14 @@
         "gong-engine.gendsp",
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "0.6.1",
+      "description": "embed gen~ patcher in maxpat to fix external file loading",
+      "timestamp": "2026-04-09T06:03:53.601786+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
