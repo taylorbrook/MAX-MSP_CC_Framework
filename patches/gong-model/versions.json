@@ -25,6 +25,15 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "0.4.0",
+      "description": "Fix re-trigger: counter-based strike detection for both test button and MIDI",
+      "timestamp": "2026-04-09T02:23:21.497151+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
