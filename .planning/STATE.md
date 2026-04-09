@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 Phase: --
 Plan: --
 Status: v3.0.0 complete, next milestone pending
-Last activity: 2026-04-09
+Last activity: 2026-04-09 - Completed quick task 260408-wm1: Replace dial+scale+readout combos with live.dial objects
 
 Progress: [██████████] 100%
 
@@ -45,3 +45,9 @@ None.
 ### Blockers/Concerns
 
 None.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260408-wm1 | Replace dial+scale+readout combos with live.dial objects | 2026-04-09 | (already done) | [260408-wm1-replace-dial-scale-readout-combos-with-l](./quick/260408-wm1-replace-dial-scale-readout-combos-with-l/) |
