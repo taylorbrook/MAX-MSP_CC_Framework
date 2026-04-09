@@ -103,6 +103,15 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.1.0",
+      "description": "frequency-normalized excitation: consistent decay across all pitches",
+      "timestamp": "2026-04-09T13:38:17.819656+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
