@@ -676,7 +676,7 @@ class TestOnboard:
     def test_performancepatchtest(self):
         from src.maxpat.hooks import read_patch
         patcher, _ = read_patch(
-            "patches/performancepatchtest/generated/performancepatchtest.maxpat"
+            "patches/performancepatchtest/generated/performance-patch-template.maxpat"
         )
         result = patcher.analyze()
         assert isinstance(result, str)
