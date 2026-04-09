@@ -1,6 +1,6 @@
 # Milestones
 
-## v2.0 Direct .maxpat Editing (Shipped: 2026-04-09)
+## v3.0.0 Direct .maxpat Editing (Shipped: 2026-04-09)
 
 **Phases completed:** 7 phases (13-19), 15 plans
 **Timeline:** 23 days (2026-03-16 to 2026-04-08)

@@ -4,7 +4,7 @@
 
 - ✅ **v1.0 MVP** — Phases 1-7 (shipped 2026-03-10)
 - ✅ **v1.1 Patch Quality & Aesthetics** — Phases 8-12 (shipped 2026-03-14)
-- ✅ **v2.0 Direct .maxpat Editing** — Phases 13-19 (shipped 2026-04-09)
+- ✅ **v3.0.0 Direct .maxpat Editing** — Phases 13-19 (shipped 2026-04-09)
 
 ## Phases
 
@@ -37,7 +37,7 @@ Full details: see phase details below (archived in-place)
 </details>
 
 <details>
-<summary>✅ v2.0 Direct .maxpat Editing (Phases 13-19) — SHIPPED 2026-04-09</summary>
+<summary>✅ v3.0.0 Direct .maxpat Editing (Phases 13-19) — SHIPPED 2026-04-09</summary>
 
 - [x] Phase 13: Round-Trip Foundation (3/3 plans) — completed 2026-03-16
 - [x] Phase 14: Search and Mutation Primitives (2/2 plans) — completed 2026-03-16
@@ -67,13 +67,13 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 | 10. Aesthetic Foundations | v1.1 | 2/2 | Complete | 2026-03-13 |
 | 11. Layout Refinements | v1.1 | 3/3 | Complete | 2026-03-13 |
 | 12. Pipeline Integration & Agent Updates | v1.1 | 2/2 | Complete | 2026-03-14 |
-| 13. Round-Trip Foundation | v2.0 | 3/3 | Complete | 2026-03-16 |
-| 14. Search and Mutation Primitives | v2.0 | 2/2 | Complete | 2026-03-16 |
-| 15. Intelligent Editing | v2.0 | 3/3 | Complete | 2026-03-16 |
-| 16. Patch Analysis | v2.0 | 1/1 | Complete | 2026-03-16 |
-| 17. Agent and Command Migration | v2.0 | 3/3 | Complete | 2026-03-16 |
-| 18. v1.x Cleanup | v2.0 | 2/2 | Complete | 2026-03-16 |
-| 19. Tech Debt Cleanup | v2.0 | 1/1 | Complete | 2026-03-17 |
+| 13. Round-Trip Foundation | v3.0.0 | 3/3 | Complete | 2026-03-16 |
+| 14. Search and Mutation Primitives | v3.0.0 | 2/2 | Complete | 2026-03-16 |
+| 15. Intelligent Editing | v3.0.0 | 3/3 | Complete | 2026-03-16 |
+| 16. Patch Analysis | v3.0.0 | 1/1 | Complete | 2026-03-16 |
+| 17. Agent and Command Migration | v3.0.0 | 3/3 | Complete | 2026-03-16 |
+| 18. v1.x Cleanup | v3.0.0 | 2/2 | Complete | 2026-03-16 |
+| 19. Tech Debt Cleanup | v3.0.0 | 1/1 | Complete | 2026-03-17 |
 
 ---
 *Roadmap created: 2026-03-08*

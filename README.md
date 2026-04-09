@@ -160,7 +160,7 @@ The `patches/` directory contains example and user-created projects:
 
 The framework has four core layers:
 
-**Direct .maxpat Editing (v2.0)** — The `.maxpat` file is the single source of truth. Patches are loaded into `Patcher`/`Box`/`Patchline` objects, edited with search, mutation, and graph query methods, and written back with lossless round-trip preservation. All user state — positions, colors, varnames, custom attributes, manual edits made in MAX — survives the load-edit-save cycle. Every patch save auto-commits to git for safety. No intermediate code generation step.
+**Direct .maxpat Editing (v3.0)** — The `.maxpat` file is the single source of truth. Patches are loaded into `Patcher`/`Box`/`Patchline` objects, edited with search, mutation, and graph query methods, and written back with lossless round-trip preservation. All user state — positions, colors, varnames, custom attributes, manual edits made in MAX — survives the load-edit-save cycle. Every patch save auto-commits to git for safety. No intermediate code generation step.
 
 **Object Database** — A verified knowledge base of 2,015 MAX objects (`.claude/max-objects/`) with full inlet/outlet schemas, signal types, argument formats, variable I/O rules, and RNBO compatibility flags. Every object used in generation is looked up here — nothing is guessed.
 
@@ -218,10 +218,11 @@ Planning artifacts live in `.planning/`:
 | **v1.1 Patch Quality** | 2026-03-14 | 5 | 13 | Help patch audit, aesthetic styling, layout refinements |
 | **v2.0 Direct Editing** | 2026-03-17 | 7 | 19 | Lossless round-trip, search/mutation API, patch analysis, agent migration, v1.x cleanup |
 | **v2.1 Iteration & Polish** | 2026-03-20 | — | — | Interactive iterate modes, version tracking, project lifecycle improvements |
-| **v2.2 Gen~ Patterns & Hooks** | 2026-03-22 | — | — | Gen~ pattern library (19 .gendsp), finalize_patch hook, fsync reliability, gen-eq project |
+| **v2.2 Gen~ Patterns & Hooks** | 2026-03-22 | ��� | — | Gen~ pattern library (19 .gendsp), finalize_patch hook, fsync reliability, gen-eq project |
 | **v2.3 Reliability & Validation** | 2026-03-31 | — | — | Z-order API, auto-commit safety hooks, MSP outlet type verification (202 objects), patcher decomposition (GraphMixin/AnalysisMixin), integration tests on real patches, trigger enforcement hardening, round-trip text bug fix, external .gendsp validation, maxclass validation |
 | **v2.3.1 DB Cleanup & Patches** | 2026-04-01 | — | — | Object DB cleanup (21 missing objects added, alias normalization, overrides cleanup), tape-wobble patch, rhythmic-sampler iteration, scala-synth v1.0 |
-| **v2.4.0 Visual Organization** | 2026-04-05 | — | — | Obstacle-aware cord routing (dog-leg around intermediate objects), 21 live.* objects added to UI system, contrast-adaptive text colors, subpatcher grouping heuristic |
+| **v2.4.0 Visual Organization** | 2026-04-05 | — | �� | Obstacle-aware cord routing (dog-leg around intermediate objects), 21 live.* objects added to UI system, contrast-adaptive text colors, subpatcher grouping heuristic |
+| **v3.0.0 Milestone Archive** | 2026-04-09 | 7 | 15 | v2.0 milestone archived — 26/26 requirements verified, full PROJECT.md evolution, retrospective |
 
 ## License
 

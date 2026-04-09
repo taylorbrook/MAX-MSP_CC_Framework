@@ -48,7 +48,7 @@
 
 ---
 
-## Milestone: v2.0 — Direct .maxpat Editing
+## Milestone: v3.0.0 — Direct .maxpat Editing
 
 **Shipped:** 2026-04-09
 **Phases:** 7 | **Plans:** 15
@@ -97,14 +97,14 @@
 | Milestone | Phases | Plans | Key Change |
 |-----------|--------|-------|------------|
 | v1.0 | 7 | 21 | Initial framework build — established all patterns |
-| v2.0 | 7 | 15 | Write-only to read-write editor — .maxpat as single source of truth |
+| v3.0.0 | 7 | 15 | Write-only to read-write editor — .maxpat as single source of truth |
 
 ### Cumulative Quality
 
 | Milestone | Tests | Requirements | Audit Score |
 |-----------|-------|--------------|-------------|
 | v1.0 | 624 | 40/40 | passed |
-| v2.0 | 700+ | 26/26 | passed (76/76 must-haves) |
+| v3.0.0 | 700+ | 26/26 | passed (76/76 must-haves) |
 
 ### Top Lessons (Verified Across Milestones)
 

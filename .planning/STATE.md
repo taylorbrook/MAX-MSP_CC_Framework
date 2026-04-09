@@ -1,9 +1,9 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
+milestone: v3.0.0
 milestone_name: Direct .maxpat Editing
 status: complete
-stopped_at: Milestone v2.0 archived
+stopped_at: Milestone v3.0.0 archived
 last_updated: "2026-04-09"
 last_activity: 2026-04-09
 progress:
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 
 Phase: --
 Plan: --
-Status: v2.0 complete, next milestone pending
+Status: v3.0.0 complete, next milestone pending
 Last activity: 2026-04-09
 
 Progress: [██████████] 100%
