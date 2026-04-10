@@ -177,6 +177,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.4.0",
+      "description": "Hertzian mallet model with body resonance, pink noise blend, velocity-dependent contact",
+      "timestamp": "2026-04-10T00:45:08.011733+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
