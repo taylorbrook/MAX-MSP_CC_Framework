@@ -218,6 +218,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.1",
+      "description": "3-stage Paul Kellet pink noise filter replaces single-pole approximation",
+      "timestamp": "2026-04-10T15:27:06.639039+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
