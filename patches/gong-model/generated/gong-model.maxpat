@@ -1561,7 +1561,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v1.5.1"
+                    "text": "v1.5.2"
                 }
             },
             {
@@ -2064,6 +2064,78 @@
                         18.0
                     ],
                     "text": "Wool  Felt  Rubber  Wood  Metal"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-317",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        717.0,
+                        329.0,
+                        44.0,
+                        66.0
+                    ],
+                    "parameter_enable": 1,
+                    "varname": "d_bloom_persist",
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                0.0
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "Bloom Persist",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 0,
+                            "parameter_shortname": "BlmPst",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-318",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        772.0,
+                        371.0,
+                        163.0,
+                        22.0
+                    ],
+                    "text": "prepend bloom_persist",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-319",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        772.0,
+                        395.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "send gong-ctrl",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
                 }
             }
         ],
@@ -3413,6 +3485,30 @@
                     ],
                     "source": [
                         "obj-98",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-317",
+                        1
+                    ],
+                    "destination": [
+                        "obj-318",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-318",
+                        0
+                    ],
+                    "destination": [
+                        "obj-319",
                         0
                     ]
                 }
