@@ -304,6 +304,14 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.5.11",
+      "description": "curated preset values for bloom_persist, stereo_width, vel_curve, detune across all 6 presets",
+      "timestamp": "2026-04-10T22:28:49.564389+00:00",
+      "files_changed": [
+        "gong-presets.json"
+      ]
     }
   ]
 }
