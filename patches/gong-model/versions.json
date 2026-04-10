@@ -312,6 +312,14 @@
       "files_changed": [
         "gong-presets.json"
       ]
+    },
+    {
+      "version": "1.5.12",
+      "description": "fix Buffer.poke arg order in mode-gains.js (channel, frame, value)",
+      "timestamp": "2026-04-10T23:23:52.172513+00:00",
+      "files_changed": [
+        "mode-gains.js"
+      ]
     }
   ]
 }
