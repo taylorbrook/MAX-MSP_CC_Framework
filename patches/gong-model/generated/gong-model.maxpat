@@ -1561,7 +1561,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v1.5.2"
+                    "text": "v1.5.3"
                 }
             },
             {
@@ -2130,6 +2130,78 @@
                     "patching_rect": [
                         772.0,
                         395.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "send gong-ctrl",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-320",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        "float"
+                    ],
+                    "patching_rect": [
+                        717.0,
+                        681.0,
+                        50.0,
+                        48.0
+                    ],
+                    "parameter_enable": 1,
+                    "varname": "d_stereo_width",
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                1.0
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "Stereo Width",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 0,
+                            "parameter_shortname": "Width",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-321",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        772.0,
+                        723.0,
+                        156.0,
+                        22.0
+                    ],
+                    "text": "prepend stereo_width",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-322",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        772.0,
+                        747.0,
                         114.0,
                         22.0
                     ],
@@ -3509,6 +3581,30 @@
                     ],
                     "destination": [
                         "obj-319",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-320",
+                        0
+                    ],
+                    "destination": [
+                        "obj-321",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-321",
+                        0
+                    ],
+                    "destination": [
+                        "obj-322",
                         0
                     ]
                 }
