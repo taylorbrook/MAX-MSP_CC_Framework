@@ -287,6 +287,15 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.5.9",
+      "description": "add XY strike position pad with excitation_angle",
+      "timestamp": "2026-04-10T17:10:08.360141+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
