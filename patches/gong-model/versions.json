@@ -234,6 +234,15 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.3",
+      "description": "golden-ratio stereo distribution + stereo_width param",
+      "timestamp": "2026-04-10T15:36:13.869661+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
