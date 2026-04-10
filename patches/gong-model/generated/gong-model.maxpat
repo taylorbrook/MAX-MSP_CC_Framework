@@ -1561,7 +1561,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v1.5.3"
+                    "text": "v1.5.4"
                 }
             },
             {
@@ -2202,6 +2202,79 @@
                     "patching_rect": [
                         772.0,
                         747.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "send gong-ctrl",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-323",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        484,
+                        505,
+                        44.0,
+                        66.0
+                    ],
+                    "parameter_enable": 1,
+                    "varname": "d_vel_curve",
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                1.0
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "Vel Curve",
+                            "parameter_mmin": 0.3,
+                            "parameter_mmax": 3.0,
+                            "parameter_modmode": 0,
+                            "parameter_shortname": "VelCrv",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-324",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        539,
+                        547,
+                        135.0,
+                        22.0
+                    ],
+                    "text": "prepend vel_curve",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-325",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        539,
+                        571,
                         114.0,
                         22.0
                     ],
@@ -3605,6 +3678,30 @@
                     ],
                     "destination": [
                         "obj-322",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-323",
+                        0
+                    ],
+                    "destination": [
+                        "obj-324",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-324",
+                        0
+                    ],
+                    "destination": [
+                        "obj-325",
                         0
                     ]
                 }
