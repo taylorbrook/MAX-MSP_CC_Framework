@@ -193,6 +193,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.4.2",
+      "description": "add d_noise_level and d_material to all 6 presets",
+      "timestamp": "2026-04-10T14:52:01.438651+00:00",
+      "files_changed": [
+        "gong-presets.json"
+      ]
     }
   ]
 }
