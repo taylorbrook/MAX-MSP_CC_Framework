@@ -1345,10 +1345,10 @@ class TestReplaceBox:
         """New box has same patching_rect[0:2] as old box (position preserved)."""
         from src.maxpat.patcher import EditResult
         p = Patcher()
-        old = p.add_box("cycle~", args=["440"], x=150.0, y=250.0)
+        old = p.add_box("cycle~", args=["440"], x=150.0, y=255.0)
         result = p.replace_box(old, "saw~")
         assert result.box.patching_rect[0] == 150.0
-        assert result.box.patching_rect[1] == 250.0
+        assert result.box.patching_rect[1] == 255.0
 
     def test_replace_returns_all_connections_as_orphaned(self):
         """replace_box returns ALL old connections as orphaned (no auto-remap)."""
