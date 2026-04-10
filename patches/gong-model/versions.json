@@ -153,6 +153,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.2.2",
+      "description": "click-free attack: crossfade rearticulation, longer body ramp, Hann impact envelope",
+      "timestamp": "2026-04-10T00:04:45.537084+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
