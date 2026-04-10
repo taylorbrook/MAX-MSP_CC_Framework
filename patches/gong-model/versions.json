@@ -226,6 +226,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.2",
+      "description": "bloom accumulation: bloom_persist param controls bloom_env preservation on new strike",
+      "timestamp": "2026-04-10T15:29:08.962389+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
