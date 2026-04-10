@@ -2288,6 +2288,79 @@
                     ],
                     "text": "send gong-ctrl"
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-326",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        "float"
+                    ],
+                    "patching_rect": [
+                        484.0,
+                        593.0,
+                        44.0,
+                        48.0
+                    ],
+                    "parameter_enable": 1,
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                0.0
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "Detune",
+                            "parameter_mmax": 1.0,
+                            "parameter_mmin": 0.0,
+                            "parameter_modmode": 0,
+                            "parameter_shortname": "Detune",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "d_detune"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-327",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        539.0,
+                        635.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "prepend detune",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-328",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        539.0,
+                        659.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "send gong-ctrl",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
@@ -3708,6 +3781,30 @@
                     ],
                     "source": [
                         "obj-98",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-326",
+                        1
+                    ],
+                    "destination": [
+                        "obj-327",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-327",
+                        0
+                    ],
+                    "destination": [
+                        "obj-328",
                         0
                     ]
                 }
