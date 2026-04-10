@@ -396,6 +396,7 @@ class Patcher(GraphMixin, AnalysisMixin):
         args: list[str] | None = None,
         x: float = 0.0,
         y: float = 0.0,
+        skip_overlap_check: bool = False,
     ) -> Box:
         """Add a MAX object box to the patcher.
 
@@ -404,6 +405,10 @@ class Patcher(GraphMixin, AnalysisMixin):
             args: Object arguments (e.g., ["440"]).
             x: Horizontal position (default 0, set by layout engine later).
             y: Vertical position (default 0, set by layout engine later).
+            skip_overlap_check: If False (default), automatically nudges the
+                box to avoid overlapping pre-existing boxes. Set True when the
+                caller handles its own positioning (e.g., replace_box,
+                insert_into_connection, add_subpatcher).
 
         Returns:
             The created Box instance.
@@ -413,6 +418,15 @@ class Patcher(GraphMixin, AnalysisMixin):
         """
         box_id = self._gen_id()
         box = Box(name=name, args=args, box_id=box_id, db=self.db, x=x, y=y)
+
+        if not skip_overlap_check:
+            w = box.patching_rect[2]
+            h = box.patching_rect[3]
+            new_x, new_y = self._find_clear_position(x, y, w, h)
+            if new_x != x or new_y != y:
+                box.patching_rect[0] = new_x
+                box.patching_rect[1] = new_y
+
         self.boxes.append(box)
         return box
 
@@ -1010,8 +1024,8 @@ class Patcher(GraphMixin, AnalysisMixin):
         # Remove old box and its patchlines
         self.remove_box(old_box)
 
-        # Create replacement box at old position
-        new_box = self.add_box(new_name, args=args, x=old_x, y=old_y)
+        # Create replacement box at old position (skip overlap -- intentional placement)
+        new_box = self.add_box(new_name, args=args, x=old_x, y=old_y, skip_overlap_check=True)
 
         return EditResult(box=new_box, orphaned=orphaned)
 
@@ -1061,8 +1075,8 @@ class Patcher(GraphMixin, AnalysisMixin):
                 f"No connection found between {source.id} and {dest.id}"
             )
 
-        # Create the new box
-        new_box = self.add_box(name, args=args)
+        # Create the new box (skip overlap -- _auto_position handles positioning)
+        new_box = self.add_box(name, args=args, skip_overlap_check=True)
 
         # Auto-position below source
         self._auto_position(new_box, near_box=source)
@@ -1105,7 +1119,8 @@ class Patcher(GraphMixin, AnalysisMixin):
     ) -> tuple[float, float]:
         """Find a non-overlapping position starting from (x, y), snapped to 15px grid.
 
-        Nudges right by 15px on collision; wraps to the next row when x > 1200.
+        Nudges down by 15px on collision to preserve horizontal signal flow.
+        Wraps to the next column (x += 15, y resets) when y > 2400.
 
         Args:
             x: Starting x position.
@@ -1120,9 +1135,9 @@ class Patcher(GraphMixin, AnalysisMixin):
         # Snap to 15px grid
         x = round(x / 15.0) * 15.0
         y = round(y / 15.0) * 15.0
-        start_x = x
+        start_y = y
 
-        for _ in range(50):
+        for _ in range(200):
             collision = False
             for box in self.boxes:
                 if box is exclude_box:
@@ -1139,11 +1154,11 @@ class Patcher(GraphMixin, AnalysisMixin):
                     break
             if not collision:
                 return (x, y)
-            # Nudge right
-            x += 15.0
-            if x > 1200:
-                x = start_x
-                y += 15.0
+            # Nudge down first (preserves horizontal signal flow)
+            y += 15.0
+            if y > 2400:
+                y = start_y
+                x += 15.0
         return (x, y)
 
     def _auto_position(self, box: Box, near_box: Box | None = None) -> None:
@@ -1372,7 +1387,7 @@ class Patcher(GraphMixin, AnalysisMixin):
         # Add inlet objects inside the subpatcher
         inlet_spacing = 80.0
         for i in range(inlets):
-            inlet_box = inner.add_box("inlet", x=50.0 + i * inlet_spacing, y=30.0)
+            inlet_box = inner.add_box("inlet", x=50.0 + i * inlet_spacing, y=30.0, skip_overlap_check=True)
             comment = ""
             if inlet_comments and i < len(inlet_comments):
                 comment = inlet_comments[i]
@@ -1380,7 +1395,7 @@ class Patcher(GraphMixin, AnalysisMixin):
 
         # Add outlet objects inside the subpatcher
         for i in range(outlets):
-            outlet_box = inner.add_box("outlet", x=50.0 + i * inlet_spacing, y=250.0)
+            outlet_box = inner.add_box("outlet", x=50.0 + i * inlet_spacing, y=250.0, skip_overlap_check=True)
             comment = ""
             if outlet_comments and i < len(outlet_comments):
                 comment = outlet_comments[i]
