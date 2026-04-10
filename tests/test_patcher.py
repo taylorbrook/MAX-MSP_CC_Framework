@@ -1438,31 +1438,31 @@ class TestAutoPosition:
         assert box.patching_rect[0] == 315.0  # round(320/15)*15 = 315
         assert box.patching_rect[1] == 240.0  # round(240/15)*15 = 240
 
-    def test_collision_nudge_right(self):
-        """Overlapping box causes rightward nudge."""
+    def test_collision_nudge_down(self):
+        """Overlapping box causes downward nudge (down-first, not right-first)."""
         p = Patcher()
-        existing = p.add_box("toggle", x=60.0, y=60.0)
+        existing = p.add_box("toggle", x=60.0, y=60.0, skip_overlap_check=True)
         # Place a blocker at the exact near_box target position
         target_y = existing.patching_rect[1] + existing.patching_rect[3] + 20
-        blocker = p.add_box("button", x=60.0, y=target_y)
+        blocker = p.add_box("button", x=60.0, y=target_y, skip_overlap_check=True)
         # Snap blocker to grid to match where _auto_position would try
         blocker.patching_rect[0] = round(60.0 / 15.0) * 15.0
         blocker.patching_rect[1] = round(target_y / 15.0) * 15.0
-        new_box = p.add_box("toggle", x=0.0, y=0.0)
+        new_box = p.add_box("toggle", x=0.0, y=0.0, skip_overlap_check=True)
         p._auto_position(new_box, near_box=existing)
-        # Should have nudged to avoid blocker
-        assert new_box.patching_rect[0] != blocker.patching_rect[0] or new_box.patching_rect[1] != blocker.patching_rect[1]
+        # Should have nudged DOWN to avoid blocker (y changed, not x)
+        assert new_box.patching_rect[1] != blocker.patching_rect[1]
 
-    def test_collision_wrap_to_next_row(self):
-        """When x exceeds 1200, wraps to next row."""
+    def test_collision_wrap_to_next_column(self):
+        """When y exceeds 2400, wraps to next column (x shifts right, y resets)."""
         p = Patcher()
-        # Place a wide box near the 1200 boundary to force wrap
-        wide = p.add_box("toggle", x=1185.0, y=60.0)
-        wide.patching_rect = [1185.0, 60.0, 100.0, 24.0]
-        # Start searching from just before it -- nudging right crosses 1200
-        fx, fy = p._find_clear_position(1185.0, 60.0, 24.0, 24.0)
-        # Should have wrapped to next row since 1185 overlaps and nudge to 1200+ wraps
-        assert fy > 60.0
+        # Fill a vertical column with blockers near y=2400 to force wrap
+        blocker = p.add_box("toggle", x=60.0, y=2400.0, skip_overlap_check=True)
+        blocker.patching_rect = [60.0, 2400.0, 24.0, 24.0]
+        # Start searching at a position that collides with blocker
+        fx, fy = p._find_clear_position(60.0, 2400.0, 24.0, 24.0)
+        # After nudge down past 2400 threshold, should wrap to next column (x changes)
+        assert fx > 60.0
 
     def test_exclude_box_self_collision(self):
         """exclude_box prevents collision with itself."""
@@ -1495,6 +1495,64 @@ class TestAutoPosition:
         # existing extends to 60+24+5=89 with pad, so 84 < 89 = overlap
         # Should nudge
         assert fx > 84.0 or fy > 60.0
+
+
+class TestAddBoxOverlapDetection:
+    """Overlap detection in add_box() with down-first nudge."""
+
+    def test_add_box_nudges_on_overlap(self):
+        """add_box at occupied position nudges the new box downward."""
+        p = Patcher()
+        box_a = p.add_box("toggle", x=60.0, y=60.0)
+        box_b = p.add_box("toggle", x=60.0, y=60.0)
+        # box_b should have been nudged away from box_a
+        assert box_b.patching_rect[:2] != box_a.patching_rect[:2]
+        # Nudged downward (y increased)
+        assert box_b.patching_rect[1] > box_a.patching_rect[1]
+
+    def test_add_box_no_overlap_exact_position(self):
+        """add_box with no collision returns exact position (on grid)."""
+        p = Patcher()
+        box = p.add_box("toggle", x=60.0, y=60.0)
+        assert box.patching_rect[0] == 60.0
+        assert box.patching_rect[1] == 60.0
+
+    def test_add_box_skip_overlap_check(self):
+        """add_box with skip_overlap_check=True allows overlap."""
+        p = Patcher()
+        box_a = p.add_box("toggle", x=60.0, y=60.0)
+        box_b = p.add_box("toggle", x=60.0, y=60.0, skip_overlap_check=True)
+        # Exact same position -- overlap allowed
+        assert box_b.patching_rect[0] == 60.0
+        assert box_b.patching_rect[1] == 60.0
+
+    def test_add_box_multiple_same_position(self):
+        """Multiple add_box calls at same position get different y positions."""
+        p = Patcher()
+        boxes = [p.add_box("toggle", x=60.0, y=60.0) for _ in range(5)]
+        y_positions = [b.patching_rect[1] for b in boxes]
+        # All unique
+        assert len(set(y_positions)) == 5
+        # Ascending y order (each nudged further down)
+        assert y_positions == sorted(y_positions)
+
+    def test_add_box_snaps_to_grid(self):
+        """add_box snaps position to 15px grid via overlap detection."""
+        p = Patcher()
+        box = p.add_box("toggle", x=67.0, y=53.0)
+        # Should snap to nearest 15px grid
+        assert box.patching_rect[0] % 15 == 0
+        assert box.patching_rect[1] % 15 == 0
+
+    def test_find_clear_position_nudges_down_not_right(self):
+        """_find_clear_position nudges DOWN first (y += 15), not right."""
+        p = Patcher()
+        blocker = p.add_box("toggle", x=60.0, y=60.0, skip_overlap_check=True)
+        blocker.patching_rect = [60.0, 60.0, 24.0, 24.0]
+        fx, fy = p._find_clear_position(60.0, 60.0, 24.0, 24.0)
+        # x should stay the same (no rightward nudge), y should increase
+        assert fx == 60.0
+        assert fy > 60.0
 
 
 class TestInsertIntoConnection:
