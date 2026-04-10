@@ -279,6 +279,14 @@
         "gong-engine.gendsp",
         "mode-gains.js"
       ]
+    },
+    {
+      "version": "1.5.8",
+      "description": "fix all overlapping objects in layout",
+      "timestamp": "2026-04-10T17:02:28.812062+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
