@@ -260,6 +260,15 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.5.6",
+      "description": "add mode detuning param",
+      "timestamp": "2026-04-10T16:38:36.217733+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
