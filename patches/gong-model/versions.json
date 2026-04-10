@@ -243,6 +243,15 @@
         "gong-model.maxpat",
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.4",
+      "description": "velocity curve: vel_curve param for exponential/log response shaping",
+      "timestamp": "2026-04-10T16:23:13.127518+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
