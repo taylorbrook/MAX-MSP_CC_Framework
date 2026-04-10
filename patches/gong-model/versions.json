@@ -185,6 +185,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.4.1",
+      "description": "fix smoothing comment: sm=0.001 is ~23ms not ~1ms",
+      "timestamp": "2026-04-10T14:50:29.234074+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
