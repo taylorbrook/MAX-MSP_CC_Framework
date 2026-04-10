@@ -269,6 +269,16 @@
         "gong-model.maxpat",
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.7",
+      "description": "add mode spectrum multislider with per-mode gain control via buffer~ + gen~",
+      "timestamp": "2026-04-10T16:51:55.879344+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-engine.gendsp",
+        "mode-gains.js"
+      ]
     }
   ]
 }
