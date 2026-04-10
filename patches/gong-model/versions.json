@@ -252,6 +252,14 @@
         "gong-engine.gendsp",
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.5.5",
+      "description": "fix modes/bloom_persist overlap",
+      "timestamp": "2026-04-10T16:28:45.940335+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
