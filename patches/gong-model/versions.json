@@ -201,6 +201,15 @@
       "files_changed": [
         "gong-presets.json"
       ]
+    },
+    {
+      "version": "1.4.3",
+      "description": "fix coupling_map init: compute initial coupling strengths explicitly",
+      "timestamp": "2026-04-10T14:55:12.706609+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
