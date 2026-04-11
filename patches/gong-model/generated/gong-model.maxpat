@@ -52,7 +52,31 @@
                         258.0
                     ],
                     "proportion": 0.39,
-                    "rounded": 7
+                    "rounded": 7,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "color2": [
+                            0.22,
+                            0.22,
+                            0.25,
+                            1.0
+                        ],
+                        "color": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
                 }
             },
             {
@@ -90,7 +114,31 @@
                         120.0
                     ],
                     "proportion": 0.39,
-                    "rounded": 7
+                    "rounded": 7,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "color2": [
+                            0.22,
+                            0.22,
+                            0.25,
+                            1.0
+                        ],
+                        "color": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
                 }
             },
             {
@@ -128,7 +176,31 @@
                         92.0
                     ],
                     "proportion": 0.39,
-                    "rounded": 7
+                    "rounded": 7,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "color2": [
+                            0.22,
+                            0.22,
+                            0.25,
+                            1.0
+                        ],
+                        "color": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
                 }
             },
             {
@@ -166,7 +238,31 @@
                         92.0
                     ],
                     "proportion": 0.39,
-                    "rounded": 7
+                    "rounded": 7,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "color2": [
+                            0.22,
+                            0.22,
+                            0.25,
+                            1.0
+                        ],
+                        "color": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
                 }
             },
             {
@@ -204,7 +300,31 @@
                         92.0
                     ],
                     "proportion": 0.39,
-                    "rounded": 7
+                    "rounded": 7,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "color2": [
+                            0.22,
+                            0.22,
+                            0.25,
+                            1.0
+                        ],
+                        "color": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
                 }
             },
             {
@@ -242,7 +362,31 @@
                         92.0
                     ],
                     "proportion": 0.39,
-                    "rounded": 7
+                    "rounded": 7,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "color2": [
+                            0.22,
+                            0.22,
+                            0.25,
+                            1.0
+                        ],
+                        "color": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
                 }
             },
             {
@@ -280,7 +424,31 @@
                         92.0
                     ],
                     "proportion": 0.39,
-                    "rounded": 7
+                    "rounded": 7,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "color2": [
+                            0.22,
+                            0.22,
+                            0.25,
+                            1.0
+                        ],
+                        "color": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
                 }
             },
             {
@@ -318,7 +486,31 @@
                         36.0
                     ],
                     "proportion": 0.39,
-                    "rounded": 7
+                    "rounded": 7,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "color2": [
+                            0.22,
+                            0.22,
+                            0.25,
+                            1.0
+                        ],
+                        "color": [
+                            0.18,
+                            0.18,
+                            0.2,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
                 }
             },
             {
@@ -2569,7 +2761,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v1.6.1"
+                    "text": "v1.6.2"
                 }
             },
             {
@@ -2610,13 +2802,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_structure",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_structure"
                 }
             },
             {
@@ -2657,13 +2843,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_brightness",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_brightness"
                 }
             },
             {
@@ -2705,13 +2885,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_decay",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_decay"
                 }
             },
             {
@@ -2752,13 +2926,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_nonlinearity",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_nonlinearity"
                 }
             },
             {
@@ -2799,13 +2967,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_hardness",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_hardness"
                 }
             },
             {
@@ -2846,13 +3008,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_bloom",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_bloom"
                 }
             },
             {
@@ -2894,13 +3050,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_bloom_speed",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_bloom_speed"
                 }
             },
             {
@@ -2942,13 +3092,7 @@
                             "parameter_unitstyle": 0
                         }
                     },
-                    "varname": "d_modes",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_modes"
                 }
             },
             {
@@ -2989,13 +3133,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_gain",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_gain"
                 }
             },
             {
@@ -3036,13 +3174,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_noise_level",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_noise_level"
                 }
             },
             {
@@ -3120,13 +3252,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_material",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_material"
                 }
             },
             {
@@ -3221,13 +3347,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_bloom_persist",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_bloom_persist"
                 }
             },
             {
@@ -3305,13 +3425,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_stereo_width",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_stereo_width"
                 }
             },
             {
@@ -3390,13 +3504,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_vel_curve",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_vel_curve"
                 }
             },
             {
@@ -3474,13 +3582,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "d_detune",
-                    "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
+                    "varname": "d_detune"
                 }
             },
             {
@@ -4284,9 +4386,9 @@
                     ],
                     "text": "Structure",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4314,9 +4416,9 @@
                     ],
                     "text": "Brightness",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4344,9 +4446,9 @@
                     ],
                     "text": "Decay",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4374,9 +4476,9 @@
                     ],
                     "text": "Nonlinearity",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4404,9 +4506,9 @@
                     ],
                     "text": "Hardness",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4434,9 +4536,9 @@
                     ],
                     "text": "Bloom",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4464,9 +4566,9 @@
                     ],
                     "text": "Bloom Speed",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4494,9 +4596,9 @@
                     ],
                     "text": "Bloom Persist",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4524,9 +4626,9 @@
                     ],
                     "text": "Noise Level",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4554,9 +4656,9 @@
                     ],
                     "text": "Material",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4584,9 +4686,9 @@
                     ],
                     "text": "Stereo Width",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4614,9 +4716,9 @@
                     ],
                     "text": "Vel Curve",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4644,9 +4746,9 @@
                     ],
                     "text": "Detune",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4674,9 +4776,9 @@
                     ],
                     "text": "Modes",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4728,9 +4830,9 @@
                     ],
                     "text": "Tone",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4758,9 +4860,9 @@
                     ],
                     "text": "Bloom",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4788,9 +4890,9 @@
                     ],
                     "text": "Exciter",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4818,9 +4920,9 @@
                     ],
                     "text": "Output",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4848,9 +4950,9 @@
                     ],
                     "text": "Mode Spectrum",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4878,9 +4980,9 @@
                     ],
                     "text": "Visualization",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4908,9 +5010,9 @@
                     ],
                     "text": "Drift",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4938,9 +5040,9 @@
                     ],
                     "text": "Gong Physical Model",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4968,9 +5070,9 @@
                     ],
                     "text": "On/Off",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -4998,9 +5100,9 @@
                     ],
                     "text": "Speed:",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -5028,9 +5130,9 @@
                     ],
                     "text": "ms",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -5058,9 +5160,9 @@
                     ],
                     "text": "Enable",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -5088,9 +5190,9 @@
                     ],
                     "text": "Range",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
@@ -5118,9 +5220,9 @@
                     ],
                     "text": "Rate",
                     "textcolor": [
-                        0.0,
-                        0.0,
-                        0.0,
+                        0.87,
+                        0.87,
+                        0.87,
                         1.0
                     ]
                 }
