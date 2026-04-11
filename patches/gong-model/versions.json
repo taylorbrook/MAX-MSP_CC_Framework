@@ -344,6 +344,14 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.5.16",
+      "description": "add strike XY to presentation mode",
+      "timestamp": "2026-04-11T19:28:56.916577+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
