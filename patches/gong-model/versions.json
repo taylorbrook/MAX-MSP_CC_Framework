@@ -336,6 +336,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.15",
+      "description": "subtle pitch bend: reduce glide multiplier 0.5\u21920.08",
+      "timestamp": "2026-04-11T04:28:05.328366+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
