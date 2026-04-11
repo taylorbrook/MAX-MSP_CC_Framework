@@ -1430,31 +1430,31 @@
                     ],
                     "restore": {
                         "d_bloom": [
-                            0.0
-                        ],
-                        "d_bloom_persist": [
-                            0.1
-                        ],
-                        "d_bloom_speed": [
-                            0.9859
-                        ],
-                        "d_brightness": [
                             0.7008
                         ],
+                        "d_bloom_persist": [
+                            0.6
+                        ],
+                        "d_bloom_speed": [
+                            0.8
+                        ],
+                        "d_brightness": [
+                            0.2992
+                        ],
                         "d_decay": [
-                            6.015
+                            15.1392
                         ],
                         "d_detune": [
-                            0.45
+                            0.3
                         ],
                         "d_gain": [
-                            1.0
+                            0.5039
                         ],
                         "d_hardness": [
-                            0.6535
+                            0.4016
                         ],
                         "d_material": [
-                            0.3
+                            0.2
                         ],
                         "d_mode_spectrum": [
                             1.0,
@@ -1476,19 +1476,31 @@
                             1.0,
                             1.0,
                             1.0,
-                            1.0
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0
                         ],
                         "d_modes": [
-                            20.0
+                            32.0
                         ],
                         "d_noise_level": [
-                            0.3
+                            0.6
                         ],
                         "d_nonlinearity": [
-                            0.10239999999999999
+                            0.5984
                         ],
                         "d_stereo_width": [
-                            0.55
+                            1.0
                         ],
                         "d_strike_xy": [
                             0.08333333333333333,
@@ -1497,10 +1509,10 @@
                             1
                         ],
                         "d_structure": [
-                            0.252
+                            0.8976
                         ],
                         "d_vel_curve": [
-                            0.85
+                            2.0
                         ]
                     },
                     "text": "autopattr",
@@ -1561,7 +1573,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v1.5.16"
+                    "text": "v1.5.17"
                 }
             },
             {
@@ -2383,7 +2395,7 @@
                         1.0
                     ],
                     "setstyle": 1,
-                    "size": 20,
+                    "size": 32,
                     "varname": "d_mode_spectrum"
                 }
             },
@@ -2670,76 +2682,61 @@
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-345",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
-                        20,
-                        870,
+                        20.0,
+                        870.0,
                         58.0,
                         20.0
                     ],
-                    "text": "Random",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
+                    "text": "Random"
                 }
             },
             {
                 "box": {
-                    "maxclass": "button",
                     "id": "obj-346",
+                    "maxclass": "button",
                     "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [
-                        ""
+                        "bang"
                     ],
+                    "parameter_enable": 0,
                     "patching_rect": [
-                        15.0,
-                        900.0,
+                        20.0,
+                        888.0,
                         24.0,
                         24.0
-                    ],
-                    "parameter_enable": 0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "newobj",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-347",
+                    "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [
                         ""
                     ],
                     "patching_rect": [
-                        20,
-                        920,
+                        20.0,
+                        920.0,
                         135.0,
                         22.0
                     ],
-                    "text": "js randomize.js",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-348",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [
-                        15.0,
-                        960.0,
-                        114.0,
-                        22.0
-                    ],
-                    "text": "send gong-ctrl",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
+                    "saved_object_attributes": {
+                        "filename": "randomize.js",
+                        "parameter_enable": 0
+                    },
+                    "text": "js randomize.js"
                 }
             }
         ],
@@ -3985,6 +3982,18 @@
             {
                 "patchline": {
                     "destination": [
+                        "obj-347",
+                        0
+                    ],
+                    "source": [
+                        "obj-346",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
                         "obj-5",
                         0
                     ],
@@ -4482,30 +4491,6 @@
                         0
                     ]
                 }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-346",
-                        0
-                    ],
-                    "destination": [
-                        "obj-347",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-347",
-                        0
-                    ],
-                    "destination": [
-                        "obj-348",
-                        0
-                    ]
-                }
             }
         ],
         "parameters": {
@@ -4584,32 +4569,6 @@
                 "Detune",
                 0
             ],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": [
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-"
-                    ],
-                    "buttons": [
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-"
-                    ]
-                }
-            },
             "inherited_shortname": 1
         },
         "autosave": 0,
