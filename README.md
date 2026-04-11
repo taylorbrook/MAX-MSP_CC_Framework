@@ -145,6 +145,7 @@ The `patches/` directory contains example and user-created projects:
 |---------|-------------|-------|
 | **FDNVerb** | Feedback delay network reverb with 8 delay lines, Hadamard matrix, decay/diffusion/damping/freeze controls | `.maxpat`, `.gendsp` |
 | **gen-eq** | 5-band parametric EQ with TPT SVF filters in gen~, Neve-warm asymmetric saturation, and SSL-style horizontal UI | `.maxpat`, `.gendsp` |
+| **gong-model** | Physical model of a gong using gen~ modal synthesis with pitch/timbre control, MIDI and audio excitation, drift engine | `.maxpat`, `.gendsp`, `.js` |
 | **granularsynthtest** | Granular synthesizer with Gen~ DSP engine and MC multichannel output for flexible speaker arrays | `.maxpat`, `.gendsp` |
 | **kicksynth** | Kick drum synthesizer with Gen~ pitch envelopes, click/sub/noise layers, and drive/saturation | `.maxpat`, `.js` |
 | **minitaur** | Digital recreation of the Moog Minitaur bass synthesizer with dual VCOs, Moog ladder filter, and LFO modulation | `.maxpat` |
@@ -154,6 +155,7 @@ The `patches/` directory contains example and user-created projects:
 | **scala-synth** | 16-voice polyphonic additive synthesizer with Scala (.scl) file support for microtonal playback | `.maxpat`, `.js` |
 | **stutter** | Glitchy stutter effect with rhythmic and chaotic modes, built around a Gen~ stutter engine | `.maxpat` |
 | **tape-wobble** | Stereo tape wobble effect with wow/flutter, saturation, and degradation controls | `.maxpat` |
+| **timestretch** | Granular time-stretching instrument in gen~ with real-time and offline modes, WSOLA-enhanced overlap-add engine | `.maxpat` |
 | **wormhole** | Spectral effects processor with warp, pitch/frequency shifting, dual reverb, and stereo delay | `.maxpat` |
 
 ## How It Works
