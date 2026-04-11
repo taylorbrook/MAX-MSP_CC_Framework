@@ -344,6 +344,15 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.16",
+      "description": "add random button for parameter randomization",
+      "timestamp": "2026-04-11T04:36:29.869149+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "randomize.js"
+      ]
     }
   ]
 }
