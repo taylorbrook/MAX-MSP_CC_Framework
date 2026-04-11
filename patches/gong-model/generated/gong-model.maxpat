@@ -19,6 +19,21 @@
         "boxes": [
             {
                 "box": {
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
+                    "id": "obj-16",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 617.0, 63.0, 59.0, 19.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 610.0, 64.0, 55.5, 19.0 ],
+                    "text": "test strike",
+                    "textcolor": [ 0.87, 0.87, 0.87, 1.0 ]
+                }
+            },
+            {
+                "box": {
                     "id": "obj-17",
                     "maxclass": "button",
                     "numinlets": 1,
@@ -329,12 +344,16 @@
                         10.0
                     ],
                     "presentation": 1,
+<<<<<<< Updated upstream
                     "presentation_rect": [
                         0.0,
                         0.0,
                         680.0,
                         36.0
                     ],
+=======
+                    "presentation_rect": [ 0.0, 0.0, 670.0, 36.0 ],
+>>>>>>> Stashed changes
                     "proportion": 0.39,
                     "rounded": 7
                 }
@@ -1576,12 +1595,16 @@
                         24.0
                     ],
                     "presentation": 1,
+<<<<<<< Updated upstream
                     "presentation_rect": [
                         615.2000091671944,
                         79.9999994635582,
                         36.0000005364418,
                         36.0000005364418
                     ]
+=======
+                    "presentation_rect": [ 623.25, 87.0, 29.0, 29.0 ]
+>>>>>>> Stashed changes
                 }
             },
             {
@@ -2411,6 +2434,7 @@
                         22.0
                     ],
                     "restore": {
+<<<<<<< Updated upstream
                         "d_bloom": [
                             0.46027862701160965
                         ],
@@ -2533,6 +2557,28 @@
                             0.5,
                             0.5
                         ]
+=======
+                        "d_bloom": [ 0.7517962282316838 ],
+                        "d_bloom_persist": [ 0.03960445052765926 ],
+                        "d_bloom_speed": [ 1.223334558809864 ],
+                        "d_brightness": [ 0.7396427395225352 ],
+                        "d_decay": [ 7.816106173569985 ],
+                        "d_detune": [ 0.788119874151323 ],
+                        "d_gain": [ 0.5512 ],
+                        "d_hardness": [ 0.6646789099823971 ],
+                        "d_material": [ 0.32262255902118964 ],
+                        "d_mode_spectrum": [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0 ],
+                        "d_modes": [ 17.0 ],
+                        "d_noise_level": [ 0.10617963668851582 ],
+                        "d_nonlinearity": [ 0.16242838092029677 ],
+                        "d_stereo_width": [ 0.4534434598237551 ],
+                        "d_strike_xy": [ 0.08333333333333333, 0.08333333333333333, 0.2, 1 ],
+                        "d_structure": [ 0.9108400929326639 ],
+                        "d_vel_curve": [ 2.9053784510639438 ],
+                        "drift_enables": [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ],
+                        "drift_ranges": [ 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 ],
+                        "drift_rates": [ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 ]
+>>>>>>> Stashed changes
                     },
                     "text": "autopattr",
                     "varname": "u063001597"
@@ -3526,7 +3572,7 @@
                         1.0
                     ],
                     "setstyle": 1,
-                    "size": 21,
+                    "size": 17,
                     "varname": "d_mode_spectrum"
                 }
             },
@@ -7157,6 +7203,7 @@
             }
         ],
         "parameters": {
+<<<<<<< Updated upstream
             "obj-300": [
                 "Structure",
                 "Struct",
@@ -7258,6 +7305,23 @@
                     ]
                 }
             },
+=======
+            "obj-300": [ "Structure", "Struct", 0 ],
+            "obj-301": [ "Brightness", "Bright", 0 ],
+            "obj-302": [ "Decay Time", "Decay", 0 ],
+            "obj-304": [ "Nonlinearity", "Nonlin", 0 ],
+            "obj-305": [ "Mallet Hardness", "Hard", 0 ],
+            "obj-306": [ "Bloom Amount", "Bloom", 0 ],
+            "obj-307": [ "Bloom Speed", "BlmSpd", 0 ],
+            "obj-308": [ "Number of Modes", "Modes", 0 ],
+            "obj-309": [ "Output Gain", "Gain", 0 ],
+            "obj-310": [ "Noise Level", "Noise", 0 ],
+            "obj-313": [ "Material", "Material", 0 ],
+            "obj-317": [ "Bloom Persist", "BlmPst", 0 ],
+            "obj-320": [ "Stereo Width", "Width", 0 ],
+            "obj-323": [ "Vel Curve", "VelCrv", 0 ],
+            "obj-326": [ "Detune", "Detune", 0 ],
+>>>>>>> Stashed changes
             "inherited_shortname": 1
         },
         "autosave": 0,

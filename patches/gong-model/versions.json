@@ -336,6 +336,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.15",
+      "description": "add float freq input for test strike",
+      "timestamp": "2026-04-11T19:19:26.019269+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
