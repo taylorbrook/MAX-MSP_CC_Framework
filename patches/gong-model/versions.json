@@ -360,6 +360,14 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.5.18",
+      "description": "fix drift.js patcher reference for subpatcher context",
+      "timestamp": "2026-04-11T19:38:40.955934+00:00",
+      "files_changed": [
+        "drift.js"
+      ]
     }
   ]
 }
