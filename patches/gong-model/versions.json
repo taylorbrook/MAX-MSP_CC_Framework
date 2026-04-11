@@ -336,41 +336,6 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
-    },
-    {
-      "version": "1.5.15",
-      "description": "subtle pitch bend: reduce glide multiplier 0.5\u21920.08",
-      "timestamp": "2026-04-11T04:28:05.328366+00:00",
-      "files_changed": [
-        "gong-engine.gendsp"
-      ]
-    },
-    {
-      "version": "1.5.16",
-      "description": "add random button for parameter randomization",
-      "timestamp": "2026-04-11T04:36:29.869149+00:00",
-      "files_changed": [
-        "gong-model.maxpat",
-        "randomize.js"
-      ]
-    },
-    {
-      "version": "1.5.17",
-      "description": "random button sets dials directly",
-      "timestamp": "2026-04-11T04:51:03.266494+00:00",
-      "files_changed": [
-        "gong-model.maxpat",
-        "randomize.js"
-      ]
-    },
-    {
-      "version": "1.6.0",
-      "description": "add continuous random drift with per-param enable/range/rate controls",
-      "timestamp": "2026-04-11T05:35:35.654979+00:00",
-      "files_changed": [
-        "gong-model.maxpat",
-        "drift.js"
-      ]
     }
   ]
 }

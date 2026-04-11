@@ -85,6 +85,18 @@ Getting this wrong causes silent bugs where objects compute with stale values. A
 - Use `patcher` (subpatchers) to organize complex logic into named sections
 - Standard object spacing: ~20px vertical, ~15px horizontal gutter (matches defaults.py; user-confirmed tight spacing)
 
+#### Multislider as Labeled Parameter Bank
+
+When multislider bars represent labeled parameters (with comment labels alongside):
+- Set `orientation: 0` (horizontal bars stacked vertically) explicitly
+- Bar-to-label alignment formula: multislider height = `size * label_spacing` where label_spacing matches comment spacing (typically 24px for fontsize=10 labels)
+- Comment labels start at the same Y as the multislider top, spaced at `ms_height / ms_size` intervals
+- For fontsize=10 labels: use height=18, spacing=24px, so multislider height = size * 24
+- Always set `contdata: 1` for real-time feedback during drag
+- Always set `setstyle: 1` for bar display
+- When adding utility/routing objects (prepend chains, init messages, js engines), encapsulate them in named subpatchers (`p drift`, `p settings`, etc.) to keep top-level patch clean
+- Example extra_attrs for a 14-param bank: `{"size": 14, "setminmax": [0.0, 1.0], "orientation": 0, "contdata": 1, "setstyle": 1}`
+
 ### Rule #5: No Generator Scripts
 
 Never create `generate.py` or similar intermediary Python scripts that regenerate `.maxpat` files from scratch. The Patcher API (`src.maxpat`) is the only sanctioned way to create and edit patches. Agents build Patcher instances in-memory during the `/max-build` or `/max-iterate` commands, then write via `save_patch_roundtrip()`. There is no separate generator script to maintain or re-run.

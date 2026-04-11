@@ -17,6 +17,13 @@ DEFAULT_HEIGHT = 22.0   # Standard text box height (newobj, message)
 V_SPACING = 20          # Vertical gap between rows (~16-20px matches real MAX patches)
 H_GUTTER = 15           # Horizontal gap between objects in a row
 
+# Multislider labeled parameter bank layout constants
+MS_BAR_HEIGHT = 24.0       # Height per bar for labeled multislider banks
+MS_LABEL_FONTSIZE = 10.0   # Font size for multislider row labels
+MS_LABEL_HEIGHT = 18.0     # Comment box height for multislider row labels
+MS_LABEL_WIDTH = 85.0      # Comment box width for multislider row labels
+MS_GAP = 8.0               # Horizontal gap between adjacent multisliders in a bank
+
 # Midpoint generation thresholds
 HORIZONTAL_THRESHOLD = 20.0   # Min horizontal offset to trigger midpoint generation
 UPWARD_BUS_THRESHOLD = 60.0   # Min upward distance to use right-edge bus routing
