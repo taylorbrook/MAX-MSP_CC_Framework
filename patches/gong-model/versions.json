@@ -320,6 +320,14 @@
       "files_changed": [
         "mode-gains.js"
       ]
+    },
+    {
+      "version": "1.5.13",
+      "description": "floor angle_mod at 0.15 to prevent modal nulls at XY positions",
+      "timestamp": "2026-04-11T01:58:43.059247+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
