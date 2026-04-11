@@ -971,6 +971,13 @@ class Patcher(GraphMixin, AnalysisMixin):
                 box._raw["bgcolor"] = color
 
         if extra_attrs is not None:
+            # Sync presentation attrs to Python fields so to_dict()
+            # round-trip path (which reads box.presentation /
+            # box.presentation_rect) stays consistent with _raw.
+            if "presentation" in extra_attrs:
+                box.presentation = bool(extra_attrs["presentation"])
+            if "presentation_rect" in extra_attrs:
+                box.presentation_rect = list(extra_attrs["presentation_rect"])
             box.extra_attrs.update(extra_attrs)
             if box._raw is not None:
                 box._raw.update(extra_attrs)
