@@ -23,6 +23,7 @@ from src.maxpat.aesthetics import (
     auto_size_panel,
     is_complex_patch,
     apply_auto_styling,
+    ensure_text_contrast,
     _AUTO_HIGHLIGHT,
 )
 from src.maxpat.defaults import LayoutOptions
@@ -137,4 +138,5 @@ __all__ = [
     "set_object_bgcolor",
     "auto_size_panel",
     "is_complex_patch",
+    "ensure_text_contrast",
 ]

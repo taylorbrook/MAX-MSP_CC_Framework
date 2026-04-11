@@ -714,3 +714,174 @@ class TestComplexity:
         p.add_box("toggle")
         p.add_subpatcher("mysub")
         assert is_complex_patch(p) is True
+
+
+class TestEnsureTextContrast:
+    """Tests for ensure_text_contrast() -- automatic font vs background contrast."""
+
+    def test_comment_on_dark_canvas_gets_light_text(self):
+        """Comment on dark canvas (no panels) gets light textcolor."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)  # dark gray canvas
+        c = p.add_comment("hello", 50.0, 50.0)
+        ensure_text_contrast(p)
+        assert c.extra_attrs["textcolor"] == [0.80, 0.80, 0.82, 1.0]
+
+    def test_comment_inside_light_panel_gets_dark_text(self):
+        """Comment spatially inside a light panel gets dark textcolor."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        p.add_panel(0, 0, 200, 200)  # light panel
+        c = p.add_comment("on panel", 50.0, 50.0)
+        ensure_text_contrast(p)
+        assert c.extra_attrs["textcolor"] == [0.20, 0.20, 0.25, 1.0]
+
+    def test_comment_outside_panel_gets_light_text(self):
+        """Comment outside any panel on dark canvas gets light textcolor."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        p.add_panel(0, 0, 100, 100)
+        c = p.add_comment("outside", 300.0, 300.0)
+        ensure_text_contrast(p)
+        assert c.extra_attrs["textcolor"] == [0.80, 0.80, 0.82, 1.0]
+
+    def test_section_header_on_dark_canvas(self):
+        """Section header on dark canvas gets light text."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        h = p.add_section_header("Header")
+        ensure_text_contrast(p)
+        assert h.extra_attrs["textcolor"] == [0.80, 0.80, 0.82, 1.0]
+
+    def test_section_header_on_light_panel(self):
+        """Section header on light panel gets dark text."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        p.add_panel(0, 0, 400, 400)
+        h = p.add_section_header("Header")
+        h.patching_rect = [50.0, 50.0, h.patching_rect[2], h.patching_rect[3]]
+        ensure_text_contrast(p)
+        assert h.extra_attrs["textcolor"] == [0.20, 0.20, 0.25, 1.0]
+
+    def test_annotation_on_dark_canvas(self):
+        """Annotation on dark canvas gets light text."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        a = p.add_annotation("note")
+        ensure_text_contrast(p)
+        assert a.extra_attrs["textcolor"] == [0.80, 0.80, 0.82, 1.0]
+
+    def test_annotation_on_light_panel(self):
+        """Annotation on light panel gets dark text."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        p.add_panel(0, 0, 400, 400)
+        a = p.add_annotation("note")
+        a.patching_rect = [50.0, 50.0, a.patching_rect[2], a.patching_rect[3]]
+        ensure_text_contrast(p)
+        assert a.extra_attrs["textcolor"] == [0.20, 0.20, 0.25, 1.0]
+
+    def test_subsection_on_dark_canvas(self):
+        """Subsection on dark canvas gets light text."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        s = p.add_subsection("Sub")
+        ensure_text_contrast(p)
+        assert s.extra_attrs["textcolor"] == [0.80, 0.80, 0.82, 1.0]
+
+    def test_non_comment_boxes_untouched(self):
+        """Non-comment boxes are not touched by ensure_text_contrast."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        box = p.add_box("toggle")
+        ensure_text_contrast(p)
+        assert "textcolor" not in box.extra_attrs
+
+    def test_panel_with_custom_bgcolor(self):
+        """Panel with custom (non-palette) bgcolor is respected for contrast."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        # Create panel with very dark solid color
+        panel = p.add_panel(0, 0, 200, 200, gradient=False)
+        panel.extra_attrs["bgcolor"] = [0.1, 0.1, 0.1, 1.0]
+        c = p.add_comment("on dark panel", 50.0, 50.0)
+        ensure_text_contrast(p)
+        # Dark panel -> light text
+        assert c.extra_attrs["textcolor"] == [0.80, 0.80, 0.82, 1.0]
+
+    def test_gradient_panel_uses_color1(self):
+        """Gradient panel uses color1 for contrast calculation."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+        p = Patcher()
+        set_canvas_background(p)
+        # Default gradient panel has light color1 (panel_fill)
+        p.add_panel(0, 0, 200, 200)
+        c = p.add_comment("on gradient", 50.0, 50.0)
+        ensure_text_contrast(p)
+        # Light panel_fill -> dark text
+        assert c.extra_attrs["textcolor"] == [0.20, 0.20, 0.25, 1.0]
+
+
+class TestContrastCritic:
+    """Tests for layout critic _check_text_contrast."""
+
+    def test_dark_text_on_dark_canvas_triggers_warning(self):
+        """Comment with dark text on dark canvas triggers a warning."""
+        from src.maxpat.critics.layout_critic import review_layout
+        patch_dict = {
+            "patcher": {
+                "boxes": [
+                    {"box": {
+                        "id": "obj-1",
+                        "maxclass": "comment",
+                        "text": "hard to read",
+                        "textcolor": [0.20, 0.25, 0.42, 1.0],  # dark slate
+                        "patching_rect": [50, 50, 100, 22],
+                        "numinlets": 1,
+                        "numoutlets": 0,
+                    }},
+                ],
+                "lines": [],
+            }
+        }
+        results = review_layout(patch_dict)
+        contrast_warnings = [
+            r for r in results if "Low contrast" in r.finding
+        ]
+        assert len(contrast_warnings) == 1
+        assert "hard to read" in contrast_warnings[0].finding
+
+    def test_light_text_on_dark_canvas_no_warning(self):
+        """Comment with light text on dark canvas does NOT trigger warning."""
+        from src.maxpat.critics.layout_critic import review_layout
+        patch_dict = {
+            "patcher": {
+                "boxes": [
+                    {"box": {
+                        "id": "obj-1",
+                        "maxclass": "comment",
+                        "text": "readable",
+                        "textcolor": [0.80, 0.80, 0.82, 1.0],  # light text
+                        "patching_rect": [50, 50, 100, 22],
+                        "numinlets": 1,
+                        "numoutlets": 0,
+                    }},
+                ],
+                "lines": [],
+            }
+        }
+        results = review_layout(patch_dict)
+        contrast_warnings = [
+            r for r in results if "Low contrast" in r.finding
+        ]
+        assert len(contrast_warnings) == 0
