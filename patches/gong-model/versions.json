@@ -336,6 +336,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.6.0",
+      "description": "presentation mode with grouped panels",
+      "timestamp": "2026-04-11T16:18:22.276178+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
