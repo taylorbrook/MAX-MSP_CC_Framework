@@ -1430,31 +1430,31 @@
                     ],
                     "restore": {
                         "d_bloom": [
-                            0.7008
+                            0.0
                         ],
                         "d_bloom_persist": [
-                            0.6
+                            0.1
                         ],
                         "d_bloom_speed": [
-                            0.8
+                            0.9859
                         ],
                         "d_brightness": [
-                            0.2992
+                            0.7008
                         ],
                         "d_decay": [
-                            15.1392
+                            6.015
                         ],
                         "d_detune": [
-                            0.3
+                            0.45
                         ],
                         "d_gain": [
-                            0.5039
+                            1.0
                         ],
                         "d_hardness": [
-                            0.4016
+                            0.6535
                         ],
                         "d_material": [
-                            0.2
+                            0.3
                         ],
                         "d_mode_spectrum": [
                             1.0,
@@ -1465,42 +1465,30 @@
                             1.0,
                             1.0,
                             1.0,
-                            0.9886363636363636,
-                            0.9431818181818182,
-                            0.8977272727272727,
-                            0.8636363636363636,
-                            0.8181818181818182,
-                            0.7840909090909091,
-                            0.7272727272727273,
-                            0.6704545454545454,
-                            0.6136363636363636,
-                            0.5681818181818182,
-                            0.5340909090909091,
-                            0.5113636363636364,
-                            0.48863636363636365,
-                            0.48863636363636365,
-                            0.4659090909090909,
-                            0.4431818181818182,
-                            0.42045454545454547,
-                            0.40909090909090906,
-                            0.3977272727272727,
-                            0.36363636363636365,
-                            0.34659090909090906,
-                            0.32954545454545453,
-                            0.3125,
-                            0.0
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
                         ],
                         "d_modes": [
-                            32.0
+                            20.0
                         ],
                         "d_noise_level": [
-                            0.6
+                            0.3
                         ],
                         "d_nonlinearity": [
-                            0.5984
+                            0.10239999999999999
                         ],
                         "d_stereo_width": [
-                            1.0
+                            0.55
                         ],
                         "d_strike_xy": [
                             0.08333333333333333,
@@ -1509,10 +1497,10 @@
                             1
                         ],
                         "d_structure": [
-                            0.8976
+                            0.252
                         ],
                         "d_vel_curve": [
-                            2.0
+                            0.85
                         ]
                     },
                     "text": "autopattr",
@@ -1573,7 +1561,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v1.5.15"
+                    "text": "v1.5.16"
                 }
             },
             {
@@ -2395,7 +2383,7 @@
                         1.0
                     ],
                     "setstyle": 1,
-                    "size": 32,
+                    "size": 20,
                     "varname": "d_mode_spectrum"
                 }
             },
@@ -2678,6 +2666,80 @@
                         20.0
                     ],
                     "text": "Strike XY"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-345",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        20,
+                        870,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "Random",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "button",
+                    "id": "obj-346",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        15.0,
+                        900.0,
+                        24.0,
+                        24.0
+                    ],
+                    "parameter_enable": 0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-347",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        20,
+                        920,
+                        135.0,
+                        22.0
+                    ],
+                    "text": "js randomize.js",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-348",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        15.0,
+                        960.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "send gong-ctrl",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
                 }
             }
         ],
@@ -4420,6 +4482,30 @@
                         0
                     ]
                 }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-346",
+                        0
+                    ],
+                    "destination": [
+                        "obj-347",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-347",
+                        0
+                    ],
+                    "destination": [
+                        "obj-348",
+                        0
+                    ]
+                }
             }
         ],
         "parameters": {
@@ -4498,6 +4584,32 @@
                 "Detune",
                 0
             ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ],
+                    "buttons": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0,
