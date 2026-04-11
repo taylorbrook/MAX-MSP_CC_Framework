@@ -344,6 +344,14 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.6.1",
+      "description": "black text for presentation readability",
+      "timestamp": "2026-04-11T16:23:37.238309+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
