@@ -15,421 +15,310 @@
             1027.0,
             880.0
         ],
+        "openinpresentation": 1,
         "boxes": [
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
                     "id": "obj-389",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
                         10.0,
                         10.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        10,
-                        372,
-                        660,
-                        258
+                        10.0,
+                        372.0,
+                        660.0,
+                        258.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
                     "id": "obj-388",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
                         10.0,
                         10.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        10,
-                        244,
-                        660,
-                        120
+                        10.0,
+                        244.0,
+                        660.0,
+                        120.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
                     "id": "obj-387",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
                         10.0,
                         10.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        308,
-                        144,
-                        362,
-                        92
+                        308.0,
+                        144.0,
+                        362.0,
+                        92.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
                     "id": "obj-386",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
                         10.0,
                         10.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        10,
-                        144,
-                        290,
-                        92
+                        10.0,
+                        144.0,
+                        290.0,
+                        92.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
                     "id": "obj-385",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
                         10.0,
                         10.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        494,
-                        44,
-                        176,
-                        92
+                        494.0,
+                        44.0,
+                        176.0,
+                        92.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
                     "id": "obj-384",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
                         10.0,
                         10.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        308,
-                        44,
-                        178,
-                        92
+                        308.0,
+                        44.0,
+                        178.0,
+                        92.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
                     "id": "obj-383",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
                         10.0,
                         10.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        10,
-                        44,
-                        290,
-                        92
+                        10.0,
+                        44.0,
+                        290.0,
+                        92.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
                     "id": "obj-382",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
                         10.0,
                         10.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        0,
-                        0,
-                        680,
-                        36
+                        0.0,
+                        0.0,
+                        680.0,
+                        36.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
@@ -567,7 +456,7 @@
                                     "numinlets": 0,
                                     "numoutlets": 1,
                                     "outlettype": [
-                                        "int"
+                                        "bang"
                                     ],
                                     "patching_rect": [
                                         145.0,
@@ -1411,10 +1300,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        634,
-                        4,
-                        28,
-                        28
+                        634.0,
+                        4.0,
+                        28.0,
+                        28.0
                     ]
                 }
             },
@@ -1435,10 +1324,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        534,
-                        266,
-                        15,
-                        90
+                        534.0,
+                        266.0,
+                        15.0,
+                        90.0
                     ]
                 }
             },
@@ -1459,10 +1348,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        556,
-                        266,
-                        15,
-                        90
+                        556.0,
+                        266.0,
+                        15.0,
+                        90.0
                     ]
                 }
             },
@@ -1500,10 +1389,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
-                        266,
-                        300,
-                        90
+                        18.0,
+                        266.0,
+                        300.0,
+                        90.0
                     ]
                 }
             },
@@ -1614,10 +1503,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        618,
-                        82,
-                        20,
-                        20
+                        618.0,
+                        82.0,
+                        20.0,
+                        20.0
                     ]
                 }
             },
@@ -2395,10 +2284,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        460,
-                        8,
-                        140,
-                        22
+                        460.0,
+                        8.0,
+                        140.0,
+                        22.0
                     ]
                 }
             },
@@ -2489,31 +2378,31 @@
                     ],
                     "restore": {
                         "d_bloom": [
-                            0.26311903675993176
+                            0.5039
                         ],
                         "d_bloom_persist": [
-                            0.08043608412586735
+                            0.35
                         ],
                         "d_bloom_speed": [
-                            2.977470563997262
+                            1.5048
                         ],
                         "d_brightness": [
-                            0.16677494865817555
+                            0.6535
                         ],
                         "d_decay": [
-                            27.883927185746572
+                            7.857399999999998
                         ],
                         "d_detune": [
-                            0.20780649000013937
+                            0.2
                         ],
                         "d_gain": [
                             0.5984
                         ],
                         "d_hardness": [
-                            0.6390037160694254
+                            0.5984
                         ],
                         "d_material": [
-                            0.8733344246801906
+                            0.5
                         ],
                         "d_mode_spectrum": [
                             1.0,
@@ -2531,20 +2420,35 @@
                             1.0,
                             1.0,
                             1.0,
+                            1.0,
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
+                            0.0,
                             0.0,
                             0.0
                         ],
                         "d_modes": [
-                            17.0
+                            32.0
                         ],
                         "d_noise_level": [
-                            0.9237880836184501
+                            0.4
                         ],
                         "d_nonlinearity": [
-                            0.715912158159338
+                            0.4016
                         ],
                         "d_stereo_width": [
-                            0.19593918500353913
+                            1.0
                         ],
                         "d_strike_xy": [
                             0.08333333333333333,
@@ -2553,42 +2457,42 @@
                             1
                         ],
                         "d_structure": [
-                            0.33051143954411183
+                            1.0
                         ],
                         "d_vel_curve": [
-                            1.9601402134981
+                            1.3
                         ],
                         "drift_enables": [
-                            0.3141025641025641,
-                            0.5192307692307693,
-                            0.5192307692307693,
-                            0.532051282051282,
-                            0.5448717948717948,
-                            0.5705128205128205,
-                            0.5448717948717948,
-                            0.391025641025641,
-                            0.25,
-                            0.16025641025641027,
-                            0.4935897435897436,
-                            0.9551282051282052,
-                            0.967948717948718,
-                            0.25
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
                         ],
                         "drift_ranges": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.6220238095238095
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2,
+                            0.2
                         ],
                         "drift_rates": [
                             0.5,
@@ -2665,7 +2569,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v1.6.0"
+                    "text": "v1.6.1"
                 }
             },
             {
@@ -2685,6 +2589,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        18.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -2700,12 +2611,11 @@
                         }
                     },
                     "varname": "d_structure",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        18,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -2726,6 +2636,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        74.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -2741,12 +2658,11 @@
                         }
                     },
                     "varname": "d_brightness",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        74,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -2767,6 +2683,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        130.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -2783,12 +2706,11 @@
                         }
                     },
                     "varname": "d_decay",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        130,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -2809,6 +2731,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        186.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -2824,12 +2753,11 @@
                         }
                     },
                     "varname": "d_nonlinearity",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        186,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -2850,6 +2778,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        502.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -2865,12 +2800,11 @@
                         }
                     },
                     "varname": "d_hardness",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        502,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -2891,6 +2825,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        316.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -2906,12 +2847,11 @@
                         }
                     },
                     "varname": "d_bloom",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        316,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -2932,6 +2872,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        372.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -2948,12 +2895,11 @@
                         }
                     },
                     "varname": "d_bloom_speed",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        372,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -2974,6 +2920,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        186.0,
+                        168.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -2990,12 +2943,11 @@
                         }
                     },
                     "varname": "d_modes",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        186,
-                        168,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -3016,6 +2968,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        18.0,
+                        168.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -3031,12 +2990,11 @@
                         }
                     },
                     "varname": "d_gain",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        18,
-                        168,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -3057,6 +3015,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        74.0,
+                        168.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -3072,12 +3037,11 @@
                         }
                     },
                     "varname": "d_noise_level",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        74,
-                        168,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -3135,6 +3099,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        242.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -3150,12 +3121,11 @@
                         }
                     },
                     "varname": "d_material",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        242,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -3230,6 +3200,13 @@
                         44.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        428.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -3245,12 +3222,11 @@
                         }
                     },
                     "varname": "d_bloom_persist",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        428,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -3308,6 +3284,13 @@
                         50.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        130.0,
+                        168.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -3323,12 +3306,11 @@
                         }
                     },
                     "varname": "d_stereo_width",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        130,
-                        168,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -3386,6 +3368,13 @@
                         44.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        558.0,
+                        68.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -3402,12 +3391,11 @@
                         }
                     },
                     "varname": "d_vel_curve",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        558,
-                        68,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -3465,6 +3453,13 @@
                         44.0,
                         48.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        242.0,
+                        168.0,
+                        50.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -3480,12 +3475,11 @@
                         }
                     },
                     "varname": "d_detune",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        242,
-                        168,
-                        50,
-                        48
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -3587,20 +3581,20 @@
                         180.0,
                         88.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        316.0,
+                        168.0,
+                        346.0,
+                        60.0
+                    ],
                     "setminmax": [
                         0.0,
                         1.0
                     ],
                     "setstyle": 1,
-                    "size": 17,
-                    "varname": "d_mode_spectrum",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        316,
-                        168,
-                        346,
-                        60
-                    ]
+                    "size": 32,
+                    "varname": "d_mode_spectrum"
                 }
             },
             {
@@ -3919,10 +3913,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        430,
-                        8,
-                        20,
-                        20
+                        430.0,
+                        8.0,
+                        20.0,
+                        20.0
                     ]
                 }
             },
@@ -3985,10 +3979,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
-                        380,
-                        20,
-                        20
+                        18.0,
+                        380.0,
+                        20.0,
+                        20.0
                     ]
                 }
             },
@@ -4047,10 +4041,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        146,
-                        380,
-                        45,
-                        22
+                        146.0,
+                        380.0,
+                        45.0,
+                        22.0
                     ]
                 }
             },
@@ -4181,20 +4175,20 @@
                         78.0,
                         330.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        112.0,
+                        416.0,
+                        164.0,
+                        210.0
+                    ],
                     "setminmax": [
                         0.0,
                         1.0
                     ],
                     "setstyle": 1,
                     "size": 14,
-                    "varname": "drift_enables",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        112,
-                        416,
-                        164,
-                        210
-                    ]
+                    "varname": "drift_enables"
                 }
             },
             {
@@ -4216,20 +4210,20 @@
                         75.0,
                         330.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        284.0,
+                        416.0,
+                        164.0,
+                        210.0
+                    ],
                     "setminmax": [
                         0.0,
                         1.0
                     ],
                     "setstyle": 1,
                     "size": 14,
-                    "varname": "drift_ranges",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        284,
-                        416,
-                        164,
-                        210
-                    ]
+                    "varname": "drift_ranges"
                 }
             },
             {
@@ -4251,20 +4245,20 @@
                         70.0,
                         326.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        456.0,
+                        416.0,
+                        164.0,
+                        210.0
+                    ],
                     "setminmax": [
                         0.0,
                         1.0
                     ],
                     "setstyle": 1,
                     "size": 14,
-                    "varname": "drift_rates",
-                    "presentation": 1,
-                    "presentation_rect": [
-                        456,
-                        416,
-                        164,
-                        210
-                    ]
+                    "varname": "drift_rates"
                 }
             },
             {
@@ -4281,13 +4275,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Structure",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         417.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Structure",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4305,13 +4305,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Brightness",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         432.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Brightness",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4329,13 +4335,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Decay",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         447.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Decay",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4353,13 +4365,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Nonlinearity",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         462.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Nonlinearity",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4377,13 +4395,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Hardness",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         477.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Hardness",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4401,13 +4425,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Bloom",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         492.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Bloom",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4425,13 +4455,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Bloom Speed",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         507.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Bloom Speed",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4449,13 +4485,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Bloom Persist",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         522.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Bloom Persist",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4473,13 +4515,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Noise Level",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         537.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Noise Level",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4497,13 +4545,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Material",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         552.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Material",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4521,13 +4575,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Stereo Width",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         567.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Stereo Width",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4545,13 +4605,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Vel Curve",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         582.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Vel Curve",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4569,13 +4635,19 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Detune",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         597.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Detune",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
@@ -4593,394 +4665,463 @@
                         85.0,
                         18.0
                     ],
-                    "text": "Modes",
                     "presentation": 1,
                     "presentation_rect": [
-                        18,
+                        18.0,
                         612.0,
-                        90,
-                        16
+                        90.0,
+                        18.0
+                    ],
+                    "text": "Modes",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "live.scope~",
                     "id": "obj-381",
+                    "maxclass": "live.scope~",
                     "numinlets": 2,
-                    "numoutlets": 0,
-                    "outlettype": [],
+                    "numoutlets": 1,
+                    "outlettype": [
+                        "bang"
+                    ],
                     "patching_rect": [
                         220.0,
                         517.0,
                         180.0,
                         80.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        326,
-                        274,
-                        200,
-                        74
+                        326.0,
+                        274.0,
+                        200.0,
+                        74.0
                     ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
                     "id": "obj-390",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        38,
-                        18
+                        38.0,
+                        19.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        18.0,
+                        48.0,
+                        36.0,
+                        19.0
                     ],
                     "text": "Tone",
-                    "fontname": "Arial",
-                    "fontsize": 11,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        18,
-                        48,
-                        36.0,
-                        18
-                    ],
-                    "textjustification": 0
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
                     "id": "obj-391",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        45,
-                        18
+                        45.0,
+                        19.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        316.0,
+                        48.0,
+                        42.5,
+                        19.0
                     ],
                     "text": "Bloom",
-                    "fontname": "Arial",
-                    "fontsize": 11,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        316,
-                        48,
-                        42.5,
-                        18
-                    ],
-                    "textjustification": 0
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
                     "id": "obj-392",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        59,
-                        18
+                        59.0,
+                        19.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        502.0,
+                        48.0,
+                        55.5,
+                        19.0
                     ],
                     "text": "Exciter",
-                    "fontname": "Arial",
-                    "fontsize": 11,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        502,
-                        48,
-                        55.5,
-                        18
-                    ],
-                    "textjustification": 0
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
                     "id": "obj-393",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        52,
-                        18
+                        52.0,
+                        19.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        18.0,
+                        148.0,
+                        49.0,
+                        19.0
                     ],
                     "text": "Output",
-                    "fontname": "Arial",
-                    "fontsize": 11,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        18,
-                        148,
-                        49.0,
-                        18
-                    ],
-                    "textjustification": 0
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
                     "id": "obj-394",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        101,
-                        18
+                        101.0,
+                        19.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        316.0,
+                        148.0,
+                        94.5,
+                        19.0
                     ],
                     "text": "Mode Spectrum",
-                    "fontname": "Arial",
-                    "fontsize": 11,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        316,
-                        148,
-                        94.5,
-                        18
-                    ],
-                    "textjustification": 0
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
                     "id": "obj-395",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        101,
-                        18
+                        101.0,
+                        19.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        18.0,
+                        248.0,
+                        94.5,
+                        19.0
                     ],
                     "text": "Visualization",
-                    "fontname": "Arial",
-                    "fontsize": 11,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        18,
-                        248,
-                        94.5,
-                        18
-                    ],
-                    "textjustification": 0
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
                     "id": "obj-396",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        45,
-                        18
+                        45.0,
+                        19.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        18.0,
+                        376.0,
+                        42.5,
+                        19.0
                     ],
                     "text": "Drift",
-                    "fontname": "Arial",
-                    "fontsize": 11,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        18,
-                        376,
-                        42.5,
-                        18
-                    ],
-                    "textjustification": 0
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 13.0,
                     "id": "obj-397",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        180,
-                        22
+                        180.0,
+                        21.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        12.0,
+                        8.0,
+                        180.0,
+                        21.0
                     ],
                     "text": "Gong Physical Model",
-                    "fontname": "Arial",
-                    "fontsize": 13,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        12,
-                        8,
-                        180,
-                        22
-                    ],
-                    "textjustification": 0
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
                     "id": "obj-398",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        40,
-                        18
+                        40.0,
+                        18.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        42.0,
+                        382.0,
+                        40.0,
+                        18.0
                     ],
                     "text": "On/Off",
-                    "fontname": "Arial",
-                    "fontsize": 10,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        42,
-                        382,
-                        40,
-                        18
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
                     "id": "obj-399",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        45,
-                        18
+                        45.0,
+                        18.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        98.0,
+                        382.0,
+                        45.0,
+                        18.0
                     ],
                     "text": "Speed:",
-                    "fontname": "Arial",
-                    "fontsize": 10,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        98,
-                        382,
-                        45,
-                        18
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
                     "id": "obj-400",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        22,
-                        18
+                        22.0,
+                        18.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        194.0,
+                        382.0,
+                        22.0,
+                        18.0
                     ],
                     "text": "ms",
-                    "fontname": "Arial",
-                    "fontsize": 10,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        194,
-                        382,
-                        22,
-                        18
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
                     "id": "obj-401",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        50,
-                        18
+                        50.0,
+                        18.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        112.0,
+                        400.0,
+                        50.0,
+                        18.0
                     ],
                     "text": "Enable",
-                    "fontname": "Arial",
-                    "fontsize": 10,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        112,
-                        400,
-                        50,
-                        18
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
                     "id": "obj-402",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        50,
-                        18
+                        50.0,
+                        18.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        284.0,
+                        400.0,
+                        50.0,
+                        18.0
                     ],
                     "text": "Range",
-                    "fontname": "Arial",
-                    "fontsize": 10,
-                    "presentation": 1,
-                    "presentation_rect": [
-                        284,
-                        400,
-                        50,
-                        18
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
                     "id": "obj-403",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         900.0,
                         900.0,
-                        40,
-                        18
+                        40.0,
+                        18.0
                     ],
-                    "text": "Rate",
-                    "fontname": "Arial",
-                    "fontsize": 10,
                     "presentation": 1,
                     "presentation_rect": [
-                        456,
-                        400,
-                        40,
-                        18
+                        456.0,
+                        400.0,
+                        40.0,
+                        18.0
+                    ],
+                    "text": "Rate",
+                    "textcolor": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
                     ]
                 }
             }
@@ -6539,6 +6680,19 @@
             {
                 "patchline": {
                     "destination": [
+                        "obj-381",
+                        0
+                    ],
+                    "order": 0,
+                    "source": [
+                        "obj-57",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
                         "obj-60",
                         0
                     ],
@@ -6977,18 +7131,6 @@
                         0
                     ]
                 }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-57",
-                        0
-                    ],
-                    "destination": [
-                        "obj-381",
-                        0
-                    ]
-                }
             }
         ],
         "parameters": {
@@ -7067,6 +7209,32 @@
                 "Detune",
                 0
             ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ],
+                    "buttons": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0,
@@ -7075,7 +7243,6 @@
             0.333,
             0.333,
             1.0
-        ],
-        "openinpresentation": 1
+        ]
     }
 }
