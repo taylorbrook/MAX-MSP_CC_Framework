@@ -13,7 +13,7 @@ own concern and handled recursively by their own review_patch() call.
 from __future__ import annotations
 
 from src.maxpat.critics.base import CriticResult
-from src.maxpat.defaults import HORIZONTAL_THRESHOLD, UPWARD_BUS_THRESHOLD
+from src.maxpat.defaults import AESTHETIC_PALETTE, HORIZONTAL_THRESHOLD, UPWARD_BUS_THRESHOLD
 
 # Collision padding from Phase 15-02 decision: 5px around all boxes
 COLLISION_PAD = 5.0
@@ -59,6 +59,7 @@ def review_layout(patch_dict: dict) -> list[CriticResult]:
     results.extend(_check_overlapping_boxes(box_list))
     results.extend(_check_missing_midpoints(box_lookup, lines))
     results.extend(_check_out_of_bounds(box_list))
+    results.extend(_check_text_contrast(box_list))
 
     return results
 
@@ -272,6 +273,46 @@ def _check_out_of_bounds(box_list: list[dict]) -> list[CriticResult]:
                 f"Out-of-bounds placement: '{label}' ({box_id}) at "
                 f"position ({x:.1f}, {y:.1f}) is outside the visible canvas",
                 "Move the object to a position with x >= 0 and y >= 0",
+            ))
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Check 4: Low-contrast text
+# ---------------------------------------------------------------------------
+
+# Minimum luminance difference for readable text
+_MIN_CONTRAST = 0.3
+
+
+def _check_text_contrast(box_list: list[dict]) -> list[CriticResult]:
+    """Detect comment boxes with poor text contrast against the default canvas.
+
+    Checks textcolor luminance vs canvas_bg luminance. Flags comments
+    where the absolute difference is below _MIN_CONTRAST.
+    """
+    results: list[CriticResult] = []
+
+    canvas_bg = AESTHETIC_PALETTE["canvas_bg"]
+    canvas_lum = 0.299 * canvas_bg[0] + 0.587 * canvas_bg[1] + 0.114 * canvas_bg[2]
+
+    for box in box_list:
+        if box.get("maxclass") != "comment":
+            continue
+
+        textcolor = box.get("textcolor", [0.0, 0.0, 0.0, 1.0])
+        text_lum = 0.299 * textcolor[0] + 0.587 * textcolor[1] + 0.114 * textcolor[2]
+
+        if abs(text_lum - canvas_lum) < _MIN_CONTRAST:
+            text = box.get("text", "")
+            label = text[:40] if text else "(empty)"
+            results.append(CriticResult(
+                "warning",
+                f"Low contrast text: comment '{label}' has textcolor "
+                f"luminance {text_lum:.2f} on canvas luminance {canvas_lum:.2f}",
+                "Set textcolor for better readability, or use "
+                "ensure_text_contrast() in the styling pipeline",
             ))
 
     return results

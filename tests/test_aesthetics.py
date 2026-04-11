@@ -830,3 +830,58 @@ class TestEnsureTextContrast:
         ensure_text_contrast(p)
         # Light panel_fill -> dark text
         assert c.extra_attrs["textcolor"] == [0.20, 0.20, 0.25, 1.0]
+
+
+class TestContrastCritic:
+    """Tests for layout critic _check_text_contrast."""
+
+    def test_dark_text_on_dark_canvas_triggers_warning(self):
+        """Comment with dark text on dark canvas triggers a warning."""
+        from src.maxpat.critics.layout_critic import review_layout
+        patch_dict = {
+            "patcher": {
+                "boxes": [
+                    {"box": {
+                        "id": "obj-1",
+                        "maxclass": "comment",
+                        "text": "hard to read",
+                        "textcolor": [0.20, 0.25, 0.42, 1.0],  # dark slate
+                        "patching_rect": [50, 50, 100, 22],
+                        "numinlets": 1,
+                        "numoutlets": 0,
+                    }},
+                ],
+                "lines": [],
+            }
+        }
+        results = review_layout(patch_dict)
+        contrast_warnings = [
+            r for r in results if "Low contrast" in r.finding
+        ]
+        assert len(contrast_warnings) == 1
+        assert "hard to read" in contrast_warnings[0].finding
+
+    def test_light_text_on_dark_canvas_no_warning(self):
+        """Comment with light text on dark canvas does NOT trigger warning."""
+        from src.maxpat.critics.layout_critic import review_layout
+        patch_dict = {
+            "patcher": {
+                "boxes": [
+                    {"box": {
+                        "id": "obj-1",
+                        "maxclass": "comment",
+                        "text": "readable",
+                        "textcolor": [0.80, 0.80, 0.82, 1.0],  # light text
+                        "patching_rect": [50, 50, 100, 22],
+                        "numinlets": 1,
+                        "numoutlets": 0,
+                    }},
+                ],
+                "lines": [],
+            }
+        }
+        results = review_layout(patch_dict)
+        contrast_warnings = [
+            r for r in results if "Low contrast" in r.finding
+        ]
+        assert len(contrast_warnings) == 0
