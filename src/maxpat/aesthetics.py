@@ -136,6 +136,78 @@ def apply_auto_styling(patcher: Patcher) -> None:
         palette_key = _AUTO_HIGHLIGHT.get(box.name)
         if palette_key and "bgcolor" not in box.extra_attrs:
             set_object_bgcolor(box, palette_key=palette_key)
+    ensure_text_contrast(patcher)
+
+
+def _point_in_rect(px: float, py: float, rect: list[float]) -> bool:
+    """Check if point (px, py) is inside [x, y, w, h] rect."""
+    x, y, w, h = rect
+    return x <= px <= x + w and y <= py <= y + h
+
+
+def _get_panel_bgcolor(panel: Box) -> list[float] | None:
+    """Extract effective background color from a panel box.
+
+    For gradient panels, uses color1 (the primary fill).
+    For solid panels, uses bgcolor.
+    Returns None if no color can be determined.
+    """
+    ea = panel.extra_attrs
+    # Gradient panel: bgfillcolor.color1
+    bgfill = ea.get("bgfillcolor")
+    if bgfill and isinstance(bgfill, dict):
+        color1 = bgfill.get("color1")
+        if color1:
+            return list(color1)
+    # Solid panel: bgcolor
+    bgcolor = ea.get("bgcolor")
+    if bgcolor:
+        return list(bgcolor)
+    return None
+
+
+def ensure_text_contrast(patcher: Patcher) -> None:
+    """Set textcolor on all comment boxes for readability against their background.
+
+    For each comment box, determines the effective background color:
+    - If the comment center falls inside a panel, uses the panel's color
+    - Otherwise uses the canvas background color
+
+    Then sets textcolor via contrast_text_color() for maximum readability.
+    Overrides semantic tier colors (header, subsection, annotation) because
+    readability trumps cosmetic coloring on dark canvases.
+
+    Args:
+        patcher: The Patcher instance to process.
+    """
+    # Collect panels (maxclass == "panel")
+    panels = [b for b in patcher.boxes if b.maxclass == "panel"]
+
+    # Get canvas background color
+    canvas_bg = (
+        patcher.props.get("editing_bgcolor")
+        or patcher.props.get("locked_bgcolor")
+        or AESTHETIC_PALETTE["canvas_bg"]
+    )
+
+    for box in patcher.boxes:
+        if box.maxclass != "comment":
+            continue
+
+        # Compute center point of comment box
+        rect = box.patching_rect
+        cx = rect[0] + rect[2] * 0.5
+        cy = rect[1] + rect[3] * 0.5
+
+        # Find the effective background: last panel whose rect contains the center
+        effective_bg = list(canvas_bg)
+        for panel in panels:
+            if _point_in_rect(cx, cy, panel.patching_rect):
+                panel_color = _get_panel_bgcolor(panel)
+                if panel_color is not None:
+                    effective_bg = panel_color
+
+        box.extra_attrs["textcolor"] = contrast_text_color(effective_bg)
 
 
 def is_complex_patch(patcher: Patcher) -> bool:
