@@ -40,6 +40,8 @@ UI_SIZES: dict[str, tuple[float, float] | None] = {
     "flonum":        (50.0, 22.0),
     "led":           (24.0, 24.0),
     "rslider":       (20.0, 140.0),
+    # For labeled parameter banks, override patching_rect height with MS_BAR_HEIGHT * size
+    # (see defaults.py MS_BAR_HEIGHT and CLAUDE.md Rule #4 subsection)
     "multislider":   (200.0, 100.0),
     "kslider":       (336.0, 53.0),
     "nslider":       (40.0, 140.0),
