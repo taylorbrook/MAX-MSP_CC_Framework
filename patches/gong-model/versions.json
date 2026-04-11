@@ -352,6 +352,14 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.6.2",
+      "description": "dark panels + light text for live.dial contrast",
+      "timestamp": "2026-04-11T16:29:31.578491+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
