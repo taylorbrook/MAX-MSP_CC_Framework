@@ -362,6 +362,15 @@
         "gong-model.maxpat",
         "randomize.js"
       ]
+    },
+    {
+      "version": "1.6.0",
+      "description": "add continuous random drift with per-param enable/range/rate controls",
+      "timestamp": "2026-04-11T05:35:35.654979+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "drift.js"
+      ]
     }
   ]
 }
