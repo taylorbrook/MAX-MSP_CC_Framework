@@ -344,16 +344,7 @@
                         10.0
                     ],
                     "presentation": 1,
-<<<<<<< Updated upstream
-                    "presentation_rect": [
-                        0.0,
-                        0.0,
-                        680.0,
-                        36.0
-                    ],
-=======
                     "presentation_rect": [ 0.0, 0.0, 670.0, 36.0 ],
->>>>>>> Stashed changes
                     "proportion": 0.39,
                     "rounded": 7
                 }
@@ -1595,16 +1586,7 @@
                         24.0
                     ],
                     "presentation": 1,
-<<<<<<< Updated upstream
-                    "presentation_rect": [
-                        615.2000091671944,
-                        79.9999994635582,
-                        36.0000005364418,
-                        36.0000005364418
-                    ]
-=======
                     "presentation_rect": [ 623.25, 87.0, 29.0, 29.0 ]
->>>>>>> Stashed changes
                 }
             },
             {
@@ -2434,130 +2416,6 @@
                         22.0
                     ],
                     "restore": {
-<<<<<<< Updated upstream
-                        "d_bloom": [
-                            0.46027862701160965
-                        ],
-                        "d_bloom_persist": [
-                            0.5019498932461903
-                        ],
-                        "d_bloom_speed": [
-                            2.766607724925229
-                        ],
-                        "d_brightness": [
-                            0.5935048407032458
-                        ],
-                        "d_decay": [
-                            17.71948782324502
-                        ],
-                        "d_detune": [
-                            0.507620146239948
-                        ],
-                        "d_gain": [
-                            0.5984
-                        ],
-                        "d_hardness": [
-                            0.4179861145905119
-                        ],
-                        "d_material": [
-                            0.43799785239356254
-                        ],
-                        "d_mode_spectrum": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "d_modes": [
-                            21.0
-                        ],
-                        "d_noise_level": [
-                            0.46552481195111367
-                        ],
-                        "d_nonlinearity": [
-                            0.43705625476395177
-                        ],
-                        "d_stereo_width": [
-                            0.4696855281571427
-                        ],
-                        "d_strike_xy": [
-                            0.08333333333333333,
-                            0.08333333333333333,
-                            0.2,
-                            1
-                        ],
-                        "d_structure": [
-                            0.589419309296305
-                        ],
-                        "d_vel_curve": [
-                            1.38
-                        ],
-                        "drift_enables": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "drift_ranges": [
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2,
-                            0.2
-                        ],
-                        "drift_rates": [
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5,
-                            0.5
-                        ]
-=======
                         "d_bloom": [ 0.7517962282316838 ],
                         "d_bloom_persist": [ 0.03960445052765926 ],
                         "d_bloom_speed": [ 1.223334558809864 ],
@@ -2578,7 +2436,6 @@
                         "drift_enables": [ 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 ],
                         "drift_ranges": [ 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2 ],
                         "drift_rates": [ 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5 ]
->>>>>>> Stashed changes
                     },
                     "text": "autopattr",
                     "varname": "u063001597"
@@ -7203,109 +7060,6 @@
             }
         ],
         "parameters": {
-<<<<<<< Updated upstream
-            "obj-300": [
-                "Structure",
-                "Struct",
-                0
-            ],
-            "obj-301": [
-                "Brightness",
-                "Bright",
-                0
-            ],
-            "obj-302": [
-                "Decay Time",
-                "Decay",
-                0
-            ],
-            "obj-304": [
-                "Nonlinearity",
-                "Nonlin",
-                0
-            ],
-            "obj-305": [
-                "Mallet Hardness",
-                "Hard",
-                0
-            ],
-            "obj-306": [
-                "Bloom Amount",
-                "Bloom",
-                0
-            ],
-            "obj-307": [
-                "Bloom Speed",
-                "BlmSpd",
-                0
-            ],
-            "obj-308": [
-                "Number of Modes",
-                "Modes",
-                0
-            ],
-            "obj-309": [
-                "Output Gain",
-                "Gain",
-                0
-            ],
-            "obj-310": [
-                "Noise Level",
-                "Noise",
-                0
-            ],
-            "obj-313": [
-                "Material",
-                "Material",
-                0
-            ],
-            "obj-317": [
-                "Bloom Persist",
-                "BlmPst",
-                0
-            ],
-            "obj-320": [
-                "Stereo Width",
-                "Width",
-                0
-            ],
-            "obj-323": [
-                "Vel Curve",
-                "VelCrv",
-                0
-            ],
-            "obj-326": [
-                "Detune",
-                "Detune",
-                0
-            ],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": [
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-"
-                    ],
-                    "buttons": [
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-"
-                    ]
-                }
-            },
-=======
             "obj-300": [ "Structure", "Struct", 0 ],
             "obj-301": [ "Brightness", "Bright", 0 ],
             "obj-302": [ "Decay Time", "Decay", 0 ],
@@ -7321,7 +7075,6 @@
             "obj-320": [ "Stereo Width", "Width", 0 ],
             "obj-323": [ "Vel Curve", "VelCrv", 0 ],
             "obj-326": [ "Detune", "Detune", 0 ],
->>>>>>> Stashed changes
             "inherited_shortname": 1
         },
         "autosave": 0,
