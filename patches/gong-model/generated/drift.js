@@ -24,7 +24,7 @@ var params = [
 ];
 
 var N = params.length;
-var _p = null; // patcher reference (lazy init)
+var _p = null; // parent patcher reference (lazy init, needs parentpatcher since js is in subpatcher)
 
 // Per-parameter state
 var enabled = [];
@@ -46,13 +46,13 @@ for (var i = 0; i < N; i++) {
 var master = 0;
 
 function loadbang() {
-	_p = this.patcher;
+	_p = this.patcher.parentpatcher;
 }
 
 function bang() {
 	// Tick from metro — step all drifting parameters
 	if (!master) return;
-	if (!_p) _p = this.patcher;
+	if (!_p) _p = this.patcher.parentpatcher;
 
 	for (var i = 0; i < N; i++) {
 		if (!enabled[i]) continue;
@@ -94,7 +94,7 @@ function bang() {
 function msg_int(v) {
 	// Master on/off from toggle
 	master = v ? 1 : 0;
-	if (!_p) _p = this.patcher;
+	if (!_p) _p = this.patcher.parentpatcher;
 
 	if (master) {
 		// Capture current dial positions as drift centers
