@@ -167,3 +167,24 @@ Applied during coefficient computation.
 **A/B compare:** `pattrstorage` with 2 preset slots (A=1, B=2). `autopattr` registers all UI objects. Tab object toggles between slot 1/2. `pattrstorage::recallmulti` for instant A/B switching with optional interpolation.
 
 **Primary controls:** `dial` objects for Pitch, Structure, Brightness, Decay, Position, Nonlinearity, Mallet Hardness. Each connected via appropriate scaling to gen~ Param inputs.
+
+## Decisions — Presentation Mode (v1.7.0)
+
+### Panel grouping (by function):
+1. **Tone** — Structure, Brightness, Decay, Nonlinearity, Material (5 dials)
+2. **Exciter** — Hardness, Vel Curve (2 dials) + Strike button + audio input controls
+3. **Bloom** — Bloom, Bloom Speed, Bloom Persist (3 dials)
+4. **Output** — Gain, Noise Level, Stereo Width, Modes, Detune (5 dials)
+
+### Visualization:
+- Spectroscope~ + live.scope~ (replacing scope~) + meters (L/R)
+
+### Drift section:
+- Full: toggle + speed number + 3 labeled multisliders (enables/ranges/rates)
+
+### Mode spectrum:
+- Compact multislider
+
+### Utility split:
+- **Top bar**: ezdac~ + preset umenu + random button
+- **With exciter panel**: Strike button + audio input controls
