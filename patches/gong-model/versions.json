@@ -328,6 +328,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.5.14",
+      "description": "floor pos_gain at 0.12 to eliminate dead XY positions",
+      "timestamp": "2026-04-11T02:01:22.188681+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
