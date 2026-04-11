@@ -353,6 +353,15 @@
         "gong-model.maxpat",
         "randomize.js"
       ]
+    },
+    {
+      "version": "1.5.17",
+      "description": "random button sets dials directly",
+      "timestamp": "2026-04-11T04:51:03.266494+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "randomize.js"
+      ]
     }
   ]
 }
