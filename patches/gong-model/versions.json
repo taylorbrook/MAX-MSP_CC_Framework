@@ -336,38 +336,6 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
-    },
-    {
-      "version": "1.6.0",
-      "description": "presentation mode with grouped panels",
-      "timestamp": "2026-04-11T16:18:22.276178+00:00",
-      "files_changed": [
-        "gong-model.maxpat"
-      ]
-    },
-    {
-      "version": "1.6.1",
-      "description": "black text for presentation readability",
-      "timestamp": "2026-04-11T16:23:37.238309+00:00",
-      "files_changed": [
-        "gong-model.maxpat"
-      ]
-    },
-    {
-      "version": "1.6.2",
-      "description": "dark panels + light text for live.dial contrast",
-      "timestamp": "2026-04-11T16:29:31.578491+00:00",
-      "files_changed": [
-        "gong-model.maxpat"
-      ]
-    },
-    {
-      "version": "1.6.3",
-      "description": "fix drift dials not moving when js moved into subpatcher",
-      "timestamp": "2026-04-11T16:33:23.323758+00:00",
-      "files_changed": [
-        "drift.js"
-      ]
     }
   ]
 }
