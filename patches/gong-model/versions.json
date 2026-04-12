@@ -443,6 +443,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.12.0",
+      "description": "pitch stability: mode-0 gain floor 0.4, pitch_track param with ratio0 compensation",
+      "timestamp": "2026-04-12T04:00:41.616523+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
