@@ -475,6 +475,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.13.2",
+      "description": "drift enable binary toggle",
+      "timestamp": "2026-04-12T05:49:01.266757+00:00",
+      "files_changed": [
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
