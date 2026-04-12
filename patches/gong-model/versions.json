@@ -376,6 +376,15 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.7.0",
+      "description": "velocity-dependent brightness + hard-mallet contact impulse",
+      "timestamp": "2026-04-12T02:16:08.796539+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
