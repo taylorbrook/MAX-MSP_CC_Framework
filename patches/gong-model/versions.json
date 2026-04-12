@@ -393,6 +393,15 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.8.0",
+      "description": "v1.8.0: mallet bounce secondary contact for hard strikes",
+      "timestamp": "2026-04-12T02:34:46.215336+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
