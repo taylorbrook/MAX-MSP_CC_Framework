@@ -483,6 +483,15 @@
       "files_changed": [
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.13.3",
+      "description": "add 4 presets: Wind Chime, Thunder Sheet, Temple Bell, Frozen Cymbal",
+      "timestamp": "2026-04-12T15:24:57.915833+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-presets.json"
+      ]
     }
   ]
 }
