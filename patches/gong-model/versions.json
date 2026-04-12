@@ -402,6 +402,15 @@
         "gong-engine.gendsp",
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.9.0",
+      "description": "v1.9.0: dynamic bloom coupling triplets + amplitude-dependent section 8 coupling",
+      "timestamp": "2026-04-12T02:41:26.934364+00:00",
+      "files_changed": [
+        "gong-engine.gendsp",
+        "gong-model.maxpat"
+      ]
     }
   ]
 }
