@@ -427,6 +427,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.10.2",
+      "description": "drop decay/bright gain comp; keep struct_comp only",
+      "timestamp": "2026-04-12T03:25:35.555799+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
