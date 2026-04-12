@@ -451,6 +451,22 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.12.1",
+      "description": "fix bloom num_modes gate + DC blocker cutoff",
+      "timestamp": "2026-04-12T05:07:35.580440+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
+    },
+    {
+      "version": "1.13.0",
+      "description": "cross-modulation bloom replaces noise injection + Kirchhoff coupling + stability protocol",
+      "timestamp": "2026-04-12T05:33:54.377278+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
