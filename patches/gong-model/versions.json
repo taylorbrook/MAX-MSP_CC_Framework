@@ -411,6 +411,14 @@
         "gong-engine.gendsp",
         "gong-model.maxpat"
       ]
+    },
+    {
+      "version": "1.10.0",
+      "description": "v1.10.0: coupling-based bloom cascade replaces noise injection",
+      "timestamp": "2026-04-12T02:59:21.849658+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
