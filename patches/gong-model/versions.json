@@ -368,6 +368,14 @@
       "files_changed": [
         "drift.js"
       ]
+    },
+    {
+      "version": "1.6.0",
+      "description": "Hertzian pulse envelope + mal_exp material column",
+      "timestamp": "2026-04-12T00:25:42.537737+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
