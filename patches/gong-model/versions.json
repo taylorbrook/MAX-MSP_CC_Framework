@@ -435,6 +435,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.11.0",
+      "description": "revert bloom/coupling architecture to v1.8.0 baseline (randomize runaway)",
+      "timestamp": "2026-04-12T03:53:45.342378+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
