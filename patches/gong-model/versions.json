@@ -467,6 +467,14 @@
       "files_changed": [
         "gong-engine.gendsp"
       ]
+    },
+    {
+      "version": "1.13.1",
+      "description": "bloom gain fix: remove q_comp scaling, widen saturation, raise injection ceiling",
+      "timestamp": "2026-04-12T05:42:37.741757+00:00",
+      "files_changed": [
+        "gong-engine.gendsp"
+      ]
     }
   ]
 }
