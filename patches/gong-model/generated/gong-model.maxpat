@@ -5197,6 +5197,46 @@
                     ],
                     "text": "330"
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "flonum",
+                    "id": "obj-407",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        234.0,
+                        612.0,
+                        50.0,
+                        22.0
+                    ],
+                    "parameter_enable": 0,
+                    "minimum": 0.0,
+                    "maximum": 1.0,
+                    "triscale": 0.5
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-408",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        234.0,
+                        590.0,
+                        80.0,
+                        18.0
+                    ],
+                    "text": "vel (test)",
+                    "fontname": "Arial",
+                    "fontsize": 10
+                }
             }
         ],
         "lines": [
@@ -7226,6 +7266,18 @@
                     "source": [
                         "obj-98",
                         0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-407",
+                        0
+                    ],
+                    "destination": [
+                        "obj-97",
+                        1
                     ]
                 }
             }
