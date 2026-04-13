@@ -5,6 +5,7 @@
 - ✅ **v1.0 MVP** — Phases 1-7 (shipped 2026-03-10)
 - ✅ **v1.1 Patch Quality & Aesthetics** — Phases 8-12 (shipped 2026-03-14)
 - ✅ **v3.0.0 Direct .maxpat Editing** — Phases 13-19 (shipped 2026-04-09)
+- **v4.0 Package Integration** — Phases 20-25 (proposed)
 
 ## Phases
 
@@ -51,6 +52,19 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 
 </details>
 
+### v4.0 Package Integration (Proposed)
+
+**Milestone Goal:** Integrate MAX packages (bundled + community) into the framework at full parity with core domains -- object DB entries, extraction pipelines, package-gated generation, agent intelligence, and starter templates.
+
+**Proposal:** `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
+
+- [ ] Phase 20: DB Schema + Package Field
+- [ ] Phase 21: Bundled Package Extraction (BEAP + Vizzie)
+- [ ] Phase 22: Package-Gated Generation
+- [ ] Phase 23: Agent Package Intelligence
+- [ ] Phase 24: Community Package Support
+- [ ] Phase 25: Templates + Critics
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -74,6 +88,12 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 | 17. Agent and Command Migration | v3.0.0 | 3/3 | Complete | 2026-03-16 |
 | 18. v1.x Cleanup | v3.0.0 | 2/2 | Complete | 2026-03-16 |
 | 19. Tech Debt Cleanup | v3.0.0 | 1/1 | Complete | 2026-03-17 |
+| 20. DB Schema + Package Field | v4.0 | 0/0 | Proposed | - |
+| 21. Bundled Package Extraction (BEAP + Vizzie) | v4.0 | 0/0 | Proposed | - |
+| 22. Package-Gated Generation | v4.0 | 0/0 | Proposed | - |
+| 23. Agent Package Intelligence | v4.0 | 0/0 | Proposed | - |
+| 24. Community Package Support | v4.0 | 0/0 | Proposed | - |
+| 25. Templates + Critics | v4.0 | 0/0 | Proposed | - |
 
 ---
 *Roadmap created: 2026-03-08*

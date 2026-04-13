@@ -40,11 +40,17 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 
 ### Active
 
-(Next milestone requirements TBD — run `/gsd-new-milestone`)
+- [ ] Package Integration milestone (v4.0) -- integrate MAX packages at full parity with core domains
+  - Object DB entries with validation, aliases, connection checking for all bundled + community packages
+  - Abstraction extraction pipeline for bpatcher-based packages (BEAP, Vizzie)
+  - Package-gated generation: `/max-new` and `/max-build` prompt for package selection
+  - Agent-specific guidance per package (modular patterns, signal conventions, workflow templates)
+  - Community package support with stub entries and extraction commands
+  - Dedicated critics and starter templates per package
+  - See `.planning/milestones/v4.0-package-integration-PROPOSAL.md` for full proposal
 
 ### Future
 
-- [ ] Template library for common MAX patterns (synthesis, sequencing, effects, control, Jitter)
 - [ ] MAX for Live integration (Live API, device types, parameter mapping)
 - [ ] Deep Jitter support (specialized agents, validation, templates for video/GL)
 - [ ] Intelligent object selection — context-aware recommendations based on task
