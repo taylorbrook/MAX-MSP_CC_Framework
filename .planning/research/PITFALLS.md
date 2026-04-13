@@ -1,301 +1,335 @@
-# Domain Pitfalls: v2.0 Direct .maxpat Editing
+# Domain Pitfalls: MAX Package Integration
 
-**Domain:** Refactoring from Python generation pipeline to direct .maxpat reading/editing
-**Researched:** 2026-03-15
-**Confidence:** HIGH for round-trip data loss and ID scoping (verified against actual codebase and .maxpat files), HIGH for test migration (verified against 913 existing tests), MEDIUM for MAX-internal metadata handling (no official .maxpat spec exists)
+**Domain:** Adding package/plugin ecosystem support to an existing MAX/MSP object framework
+**Researched:** 2026-04-12
+**Confidence:** HIGH (based on direct inspection of installed BEAP/Vizzie/RNBO packages and existing codebase)
 
 ## Critical Pitfalls
 
-Mistakes that cause rewrites, data loss, or major regressions.
+Mistakes that cause rewrites or major issues.
 
-### Pitfall 1: Round-Trip Data Loss in from_dict/to_dict
+### Pitfall 1: bpatcher Identity Blindness -- `get_box_name()` Returns "bpatcher" for All Modules
 
-**What goes wrong:** Loading a .maxpat with `Patcher.from_dict()` and writing it back with `to_dict()` silently drops attributes that MAX or the user added. Verified bugs in the current codebase:
+**What goes wrong:** The existing `get_box_name()` utility in `utils.py` handles two cases: `maxclass == "newobj"` returns `text.split()[0]`, everything else returns the `maxclass` itself. For bpatcher boxes, there IS no `text` field. Every single BEAP module (168), every Vizzie module (110), and every custom bpatcher returns the name "bpatcher". The framework cannot distinguish `bp.Oscillator` from `bp.LPF` from `vz.scrubbr`.
 
-1. **Patchline extra attributes lost.** `Patchline.to_dict()` only serializes `source`, `destination`, `order`, `hidden`, and `midpoints`. MAX adds `color` (per-cable coloring) and potentially other attributes to patchlines. These are silently dropped during round-trip. The `Patchline.__init__` has no `extra_attrs` mechanism.
+**Why it happens:** The original DB assumed two object categories: `maxclass="newobj"` (named via `text` field) and UI widgets (maxclass IS the name). Bpatchers are a third category: `maxclass="bpatcher"` with identity stored in either the `name` field (file reference) or embedded patcher metadata. The framework was never designed for this third category.
 
-2. **parameter_enable handled but conditionally re-emitted.** `from_dict()` lists `parameter_enable` in `_handled_keys`, stripping it from `extra_attrs`. But `Box.to_dict()` only emits `parameter_enable` for certain maxclass branches (UI objects that aren't `newobj`/`comment`/`message`). For edge cases where a newobj-based box has `parameter_enable`, it could be lost.
+**Consequences:**
+- Validation pipeline (`_extract_object_name`) skips ALL bpatcher boxes via `_STRUCTURAL_MAXCLASSES` -- no existence checking
+- Graph traversal (`_is_signal_object`) checks if `get_box_name(box).endswith("~")` -- always false for bpatchers, even BEAP signal modules
+- Structure critic cannot warn about hot/cold issues involving bpatcher modules
+- Connection validation cannot verify I/O bounds on bpatcher boxes (doesn't know the module's inlet/outlet count)
+- The `ObjectDatabase.lookup()` call returns nothing useful for "bpatcher"
 
-3. **bpatcher attributes not reconstructed.** `from_dict()` doesn't set `box._bpatcher_attrs` for loaded bpatcher boxes. The bpatcher-specific keys (`args`, `bgmode`, `border`, `clickthrough`, `enablehscroll`, `enablevscroll`, `lockeddragscroll`, `offset`, `viewvisibility`, `name`) end up in `extra_attrs` instead of `_bpatcher_attrs`. This means `Box.to_dict()` emits them via `extra_attrs` rather than the dedicated `_bpatcher_attrs` path, which works but is structurally inconsistent and could cause issues if code checks `_bpatcher_attrs is not None`.
+**Prevention:** Create a `resolve_bpatcher_identity()` function that extracts module identity from:
+1. `name` field (file-referenced bpatchers, e.g., `"name": "bp.Stereo.maxpat"`)
+2. `varname` field (BEAP embedded bpatchers consistently set this, e.g., `"varname": "pitch_to_cv"`)
+3. Embedded patcher analysis (count inlet/outlet objects to determine I/O)
 
-**Why it happens:** The current `from_dict()` was built as a minimal read path for `merge_and_write()`. It reconstructs enough structure to identify boxes by ID, but never aimed for lossless round-trip fidelity. The write path (`to_dict()`) was designed for generation, not for re-serializing loaded data.
+Update `get_box_name()` to call this for `maxclass == "bpatcher"`. Remove "bpatcher" from `_STRUCTURAL_MAXCLASSES` in validation.py once identity resolution works.
 
-**Consequences:** Silent data corruption when loading a user's patch, editing it, and writing it back. The user opens their patch in MAX and discovers cable colors are gone, parameter mappings are broken, or bpatcher references behave differently. Worst case: the patch loads in MAX but sounds or behaves differently because a parameter_enable flag was dropped, causing gain~ to lose its parameter mapping.
+**Detection:** Any code path using `get_box_name()` or `_extract_object_name()` silently ignores bpatchers. Grep for `_STRUCTURAL_MAXCLASSES` and `maxclass == "newobj"` to find all affected code paths.
 
-**Prevention:**
-- Add comprehensive round-trip tests before any refactoring: load real .maxpat files (including MAX-saved ones with extra metadata), round-trip through from_dict/to_dict, and diff the JSON
-- Add `extra_attrs` dict to `Patchline` class, same pattern as `Box`
-- Make `from_dict()` treat ALL unknown keys as extra_attrs (for both Box and Patchline)
-- Make `to_dict()` emit all extra_attrs without filtering
-- Golden rule: **if a key exists in the input JSON, it must exist in the output JSON**
+**Phase:** Must be addressed in the FIRST phase of package integration. Everything downstream depends on being able to identify which module a bpatcher box represents.
 
-**Detection:** Round-trip diff tests. Load a .maxpat, serialize back, compare JSON structure key-by-key. Any key present in original but absent in output is a bug.
+---
 
-**Phase:** Must be fixed in Phase 1 (Patcher library refactoring) before any direct editing code is written.
+### Pitfall 2: Embedded vs. File-Referenced Bpatchers Have Completely Different JSON Structures
 
-### Pitfall 2: Dual Source of Truth During Migration
+**What goes wrong:** The DB schema for package objects needs to handle two fundamentally different bpatcher representations in `.maxpat` JSON, and the extraction pipeline must handle both:
 
-**What goes wrong:** During the transition period, some patches still use `generate.py` while others use direct editing. An agent or skill file references the old `generate_patch()` / `write_patch()` / `merge_and_write()` pipeline for a patch that has been migrated to direct editing, or vice versa. The result: competing modifications where the generation pipeline overwrites direct edits, or direct edits are made to a patch that's still being regenerated.
+**File-referenced** (rare in bundled packages, common in user patches):
+```json
+{
+  "maxclass": "bpatcher",
+  "name": "bp.Oscillator.maxpat",
+  "numinlets": 2,
+  "numoutlets": 3,
+  "outlettype": ["signal", "signal", ""]
+}
+```
 
-This exact problem already happened in the project's history (documented in memory: `feedback_iterate_via_generator.md`): "subpatcher open buttons and comp-band bpatchers were lost" because changes were made directly to the .maxpat instead of through generate.py.
+**Embedded** (167 of 168 BEAP clippings use this):
+```json
+{
+  "maxclass": "bpatcher",
+  "embed": 1,
+  "numinlets": 2,
+  "numoutlets": 3,
+  "outlettype": ["signal", "signal", ""],
+  "patcher": { "...entire inner patcher dict..." }
+}
+```
 
-**Why it happens:** The project has 6 agent SKILL.md files, 10 slash commands, and multiple generate.py scripts across patches. All of them reference the generation pipeline API. During a phased migration, some will be updated and some won't, creating an inconsistent state where the system doesn't know whether a given patch is "generated" or "directly edited."
+If you only handle file-referenced bpatchers, you miss 99% of BEAP modules. If you only handle embedded, you miss user-created bpatcher workflows.
 
-**Consequences:** User loses manual work when an agent runs a stale generate.py. Or: an agent tries to directly edit a patch that's still managed by a generation script, and the next regeneration wipes the edit. The user experience is unpredictable -- sometimes changes stick, sometimes they vanish.
+**Why it happens:** BEAP and Vizzie were designed as "paste from clipboard" clipping modules. They embed everything to be self-contained. But when users create their own bpatcher abstractions, they typically use file references. Both patterns must work.
 
-**Prevention:**
-- Add a clear marker to each patch project directory: either a `generate.py` exists (old pipeline) or it doesn't (new direct-edit mode)
-- Detect and fail-fast: if a direct-edit operation is attempted on a patch with a `generate.py`, warn the user
-- Migrate patches atomically: remove `generate.py` + manifest at the same time as switching the agent workflow
-- Update all 6 SKILL.md files simultaneously, not incrementally
-- Add a "mode" field to `.active-project.json` or equivalent: `"editing_mode": "direct"` vs `"editing_mode": "generated"`
+**Consequences:**
+- Extraction pipeline that only parses `name` field finds no BEAP modules
+- Extraction pipeline that only parses embedded `patcher` dict fails on file-referenced bpatchers
+- I/O count detection differs: embedded bpatchers have `numinlets`/`numoutlets` on the box AND inlet/outlet objects inside; file-referenced bpatchers only have the box-level counts until the file is loaded
 
-**Detection:** Pre-edit check: does this patch directory contain a `generate.py`? If yes, refuse direct edits. If no, refuse generation-pipeline operations.
+**Prevention:** The extraction/audit pipeline needs a dual-mode parser:
+1. For embedded bpatchers: parse the inner `patcher` dict to extract internal object usage, signal types, and I/O
+2. For file-referenced bpatchers: resolve the filename via MAX's search path, load and parse that file
+3. Both modes should produce identical DB entries with the same schema
 
-**Phase:** Must be addressed in Phase 2 (agent/skill migration) with a clear migration gate.
+**Phase:** Extraction pipeline work, Phase 1-2.
 
-### Pitfall 3: ID Collision When Adding Objects to Existing Patches
+---
 
-**What goes wrong:** Adding new objects to a loaded patch creates box IDs that collide with existing ones. The current `Patcher._gen_id()` generates sequential IDs (`obj-1`, `obj-2`, ...). When loading an existing patch, `from_dict()` sets `_next_id` to `max_id_num + 1`, which works IF all existing IDs follow the `obj-N` pattern. But:
+### Pitfall 3: Signal Type Detection for Bpatcher Outlets is Non-Trivial
 
-1. **MAX can renumber IDs when saving.** If a user opens and saves a patch in MAX, MAX may renumber some box IDs, potentially creating gaps or non-sequential numbers.
+**What goes wrong:** The existing framework determines signal vs. control type from the `outlettype` array in the DB entry (e.g., `["signal"]` for `cycle~`, `[""]` for `counter`). For bpatcher modules, outlet types are NOT deterministic from the module name -- a `bp.Oscillator` has signal outlets, but a `bp.Drum Sequencer` has control outlets. Real BEAP modules mix types: `bp.Pitch to CV` has `outlettype: ["", "signal"]` (control on outlet 0, signal on outlet 1).
 
-2. **Subpatcher IDs are scoped per patcher level** (verified: subpatcher inner objects reuse `obj-1`, `obj-2`, etc., independent of parent). The current `from_dict()` tracks only top-level max ID. Adding objects to an inner patcher loaded via `from_dict()` could collide if the inner `_next_id` isn't set correctly.
+The existing `get_outlet_types()` method in `ObjectDatabase` won't work for bpatcher objects because it relies on the DB's `outlets` array with `signal: true/false` flags. Package bpatcher entries don't follow the same extraction path.
 
-3. **User-created IDs might not follow `obj-N` pattern.** If a user creates objects via MAX's scripting interface or a third-party tool, IDs could be arbitrary strings. The `int(box.id.split("-")[-1])` extraction in `from_dict()` would silently fail and not advance `_next_id` past these.
+**Why it happens:** Core objects have signal types extracted from XML help files. Bpatcher modules get their outlet types from the `outlettype` array on the box itself in the `.maxpat` JSON, or by analyzing the outlet objects inside the inner patcher.
 
-**Why it happens:** The ID generation system was designed for write-only workflows where the generator controls all IDs from scratch. It doesn't account for the read-then-modify workflow where IDs come from an external source.
-
-**Consequences:** Duplicate IDs within a patcher level. MAX may fail to load the patch, or worse, load it but route connections incorrectly (connecting to the wrong box because two boxes share an ID).
-
-**Prevention:**
-- After `from_dict()`, scan ALL box IDs (including nested subpatchers) and set `_next_id` to one past the global maximum
-- Handle non-numeric IDs: track all existing ID strings in a set, generate IDs that don't collide
-- When adding objects to a loaded patcher, verify the new ID doesn't exist in the current box list
-- Add a `_used_ids: set[str]` field to Patcher that gets populated during `from_dict()` and checked during `_gen_id()`
-- Test: load a patch with gaps in ID sequence, add objects, verify no collisions
-
-**Detection:** Validation check after any add_box call on a loaded patcher: assert no two boxes share an ID at the same patcher level.
-
-**Phase:** Must be fixed in Phase 1 alongside from_dict improvements.
-
-### Pitfall 4: Breaking 283 Patcher-Related Tests During Migration
-
-**What goes wrong:** The existing 913 tests (283 in patcher-related files) all assume the write-only API. Changing `Patcher`, `Box`, or `Patchline` classes to support read-write operations risks breaking these tests in subtle ways:
-
-1. **Tests that check exact `to_dict()` output** will break if new fields are added to support round-trip fidelity (e.g., adding `extra_attrs` to Patchline changes its serialization).
-
-2. **Tests that rely on deterministic IDs** (`obj-1`, `obj-2`) will break if ID generation logic changes to accommodate loaded patches.
-
-3. **Tests that use `Box.__new__(Box)` bypass** (structural objects like subpatchers, gen~ codebox) -- there are at least 8 such patterns in the generation scripts. These manually set all fields. If new fields are added to Box (like `_used_ids`), these bypasses won't set them, causing AttributeError.
-
-4. **Tests in `test_incremental.py`** (23 tests) test the manifest-based merge workflow. If the migration removes manifests, all these tests become invalid.
-
-**Why it happens:** Write-only tests assert specific output shapes. Making the system read-write changes what constitutes valid output (more keys preserved, different serialization paths).
-
-**Consequences:** Test suite goes red, blocking CI. Team spends time updating tests instead of building features. Risk of "fixing" tests by weakening assertions rather than fixing actual bugs.
+**Consequences:**
+- Validation Layer 3 (connection type checking) silently skips bpatcher connections or misclassifies signal connections as control
+- Graph traversal `signal_only=True` mode misses signal paths through bpatcher modules
+- The DSP critic's unterminated signal chain detection fails to trace through bpatcher modules
 
 **Prevention:**
-- Run test suite BEFORE starting any refactoring, save as baseline
-- Categorize tests: (a) structural tests that should survive unchanged, (b) output-shape tests that need updating, (c) generation-pipeline tests that should be replaced
-- Use the "expand, then contract" pattern: add new read-write capabilities without removing old ones first, then deprecate old paths after new ones are tested
-- Add new tests for the read path BEFORE modifying existing code
-- For `Box.__new__(Box)` bypasses: add a `Box._init_defaults()` classmethod that sets all required fields, then use it in both `__init__` and bypass patterns
-- Keep `test_incremental.py` tests passing until manifests are explicitly removed; don't break them as a side effect
+- During extraction: read `outlettype` from BEAP/Vizzie clipping files directly -- it's right there on the box
+- For embedded bpatchers: also verify by checking outlet objects inside the inner patcher (`outlet` vs signal outlet)
+- Store outlet types in the package DB entry using the same `outlets` array format as core objects
+- Flag mixed-type bpatchers (like `bp.Pitch to CV`) for special handling
 
-**Detection:** CI must stay green throughout migration. Any test breakage is a signal to pause and fix before continuing.
+**Phase:** Phase 1 extraction must capture outlet types. Validation updates in Phase 2.
 
-**Phase:** Addressed throughout all phases -- each phase must maintain green CI.
+---
+
+### Pitfall 4: Package DB Entries Need a Different Schema Than Core Objects
+
+**What goes wrong:** Treating BEAP/Vizzie bpatcher modules as if they have the same DB schema as `cycle~` or `counter`. The current schema assumes `maxclass`, `module`, `domain`, `inlets`, `outlets`, `arguments`, `messages`, `variable_io`. Bpatcher modules need additional fields and different semantics for existing fields.
+
+**Why it happens:** The 87 objects currently in `packages/objects.json` are all `abl.*` compiled externals that genuinely use their own maxclass name (e.g., `maxclass: "abl.device.autofilter~"`). They fit the existing schema. BEAP/Vizzie modules are fundamentally different -- they use `maxclass: "bpatcher"` and need:
+- `source_package`: which package provides this module (BEAP, Vizzie, Bach, etc.)
+- `source_file`: the `.maxpat` filename or clipping path
+- `presentation_size`: display dimensions (bpatchers have UI that must fit)
+- `args_schema`: what `#1`, `#2` etc. expect (type, purpose)
+- `embed_default`: whether the module is typically embedded or file-referenced
+- `category`: BEAP categorizes modules (Oscillator, Filter, Envelope, LFO, etc.)
+- `internal_objects`: list of core objects used inside (for dependency tracking)
+
+**Consequences:**
+- If you force bpatcher modules into the current schema, you lose critical metadata needed for correct patch generation
+- The `add_bpatcher()` method needs to know the correct display dimensions, but the DB doesn't store them
+- Agents generating patches with BEAP modules won't know which `args` to pass
+
+**Prevention:** Define a `PackageObjectEntry` schema that extends the base object schema with bpatcher-specific fields. Store package objects in per-package subdirectories (`.claude/max-objects/beap/objects.json`, `.claude/max-objects/vizzie/objects.json`) rather than cramming everything into `packages/objects.json`.
+
+**Phase:** Schema design must happen before any extraction work. Phase 0 / architecture.
+
+---
+
+### Pitfall 5: MAX Search Path Resolution Makes "Installed" Detection Fragile
+
+**What goes wrong:** You build package DB entries by scanning the local MAX installation, but MAX resolves files through a layered search path: project folder > user Packages > system Packages > search path preferences. A package object that exists on your machine may not exist on the user's machine, and vice versa.
+
+MAX's own warning: "you have multiple files in your search path with the same name" -- when this happens, MAX uses the first one found. Path ordering is non-deterministic across installations.
+
+**Why it happens:** The extraction pipeline runs on one machine and produces a DB. That DB gets committed to git. Other developers using the framework may not have the same packages installed, or may have different versions.
+
+**Consequences:**
+- DB claims `bp.Oscillator` exists, but user doesn't have BEAP installed -- patch generation fails silently in MAX
+- Community package updated with new objects -- DB is stale, objects that exist aren't usable
+- Two packages provide objects with similar names but different behaviors -- DB has wrong one
+
+**Prevention:**
+- Separate bundled packages (BEAP, Vizzie, Gen -- always present) from optional packages (Bach, IRCAM Spat, RNBO add-on)
+- For bundled: extract from `{Max.app}/Contents/Resources/C74/packages/` -- safe to commit, always present
+- For optional: use stub entries with `"installed": false, "stub": true` that document expected I/O but flag as needing local verification
+- Add a `package_availability` field: `"bundled"` (always present), `"package_manager"` (installable via PM), `"external"` (manual install), `"licensed"` (requires purchase)
+- Implement `db.is_available(name)` that checks stub status
+
+**Phase:** Architecture decision needed early. Stub system should be Phase 1; local verification can be Phase 3.
 
 ## Moderate Pitfalls
 
-### Pitfall 5: Losing MAX-Internal Metadata That Affects Behavior
+### Pitfall 6: Bach's llll Data Type Breaks Standard Message Assumptions
 
-**What goes wrong:** MAX adds metadata to .maxpat files that affects runtime behavior but isn't part of the "user-visible" patch structure. Examples found in real patches:
-
-- `editing_bgcolor` / `locked_bgcolor`: Canvas colors for edit vs locked mode (affects visual appearance)
-- `saved_attribute_attributes`: Parameter mapping data (affects DAW integration, M4L parameter exposure)
-- `dependency_cache`: MAX's record of required externals (affects loading in standalone builds)
-- `varname`: Scripting name for pattr/autopattr (affects state saving)
-- `parameter_mappable`: Whether a parameter can be mapped to MIDI/automation
-- `saved_object_attributes` on subpatcher boxes: `globalpatchername`, `description`, etc.
-
-**Why it happens:** The .maxpat format has no official specification (confirmed by Cycling '74 forum posts). MAX adds keys silently based on user actions (naming an object, enabling parameter mode, etc.). Without documentation, there's no way to enumerate all possible keys.
+**What goes wrong:** Bach library introduces `llll` (Lisp-like linked lists) -- a data type that doesn't exist in standard MAX. Standard MAX lists have a ~32K element limit; lllls have no limit and support arbitrary nesting depth. Bach objects communicate via llll, not standard MAX messages. Connecting a standard MAX object's outlet to a Bach object's inlet (or vice versa) may silently produce wrong results.
 
 **Prevention:**
-- Adopt a whitelist-inversion strategy: instead of listing known keys and dropping the rest, preserve ALL keys and only specifically handle the ones you need to modify
-- The `extra_attrs` pattern on Box already does this correctly -- extend it to Patchline and to patcher-level props
-- Never delete a key from loaded JSON unless explicitly instructed by the user
-- Test with patches that have been opened and saved by MAX (not just generator-produced patches)
+- Bach objects need a `data_type: "llll"` field in their DB entries
+- Connection validation should warn when connecting llll outlets to standard MAX inlets
+- Add Bach-specific relationships to `relationships.json` (e.g., `bach.roll` + `bach.quantize` + `bach.score`)
+- Do NOT try to validate llll data flow with the standard signal/control type checker
 
-**Detection:** Create a "MAX-saved patch" test fixture: take a generated patch, open it in MAX, move some objects, save it, then use the MAX-saved version as a round-trip test fixture. Any key loss between original and round-tripped version is a bug.
+**Phase:** Phase 2+ when Bach support is added. NOT Phase 1.
 
-**Phase:** Phase 1 (Patcher library refactoring).
+---
 
-### Pitfall 6: Over-Engineering the Read Path
+### Pitfall 7: Per-Patch Permission Gating Can Create Confusing Validation Failures
 
-**What goes wrong:** Building a full "patch understanding" system when all that's needed is surgical editing. Examples of over-engineering:
-
-1. **Building a complete object graph from loaded patches.** The direct-edit workflow only needs to find objects by ID or text, modify attributes, and add/remove objects. Building adjacency graphs, topological sorts, or signal flow analysis of LOADED patches is unnecessary -- the layout engine already handles that for NEW patches.
-
-2. **Validating loaded patches against the object database.** Loaded patches may contain objects from packages, third-party externals, or MAX versions newer than the database covers. Validating loaded patches would produce false-positive errors. Validation should only apply to objects the tool adds, not to objects that already exist and work.
-
-3. **Rebuilding Box objects with full DB lookup from loaded data.** The current `from_dict()` uses `Box.__new__()` to bypass DB validation, which is correct. Over-engineering would be to validate every loaded object against the DB and reject patches with unknown objects.
-
-**Why it happens:** The generation pipeline has a thorough validation system (4-layer pipeline, 913 tests). There's a natural temptation to apply the same rigor to the read path. But the read path's contract is different: the patch already works in MAX, the tool just needs to make targeted modifications without breaking it.
+**What goes wrong:** The milestone plan calls for per-patch permission gating (not per-project). If patch A uses BEAP and patch B doesn't, the validation pipeline needs to know which packages are "allowed" per-patch. Without this, either: (a) all packages are always available, making Rule #1 "Never Guess Objects" meaningless for packages, or (b) unlisted package objects produce false "unknown object" errors.
 
 **Prevention:**
-- Define the read path's contract clearly: "preserve everything, modify only what's explicitly requested"
-- Validation applies to ADDED objects only, not loaded ones
-- Layout applies to ADDED objects only (or explicitly requested re-layout)
-- Keep `from_dict()` as a thin JSON-to-objects mapper, not a patch analyzer
-- The existing `Box.__new__()` bypass pattern for loaded objects is correct -- don't replace it with DB-validated construction
+- Define a simple permission header format: metadata in the `.maxpat` or a sidecar file listing allowed packages
+- Validation pipeline reads permissions FIRST, loads only relevant package DB entries
+- Clear error messages: "bp.Oscillator requires BEAP package -- add to patch permissions or install BEAP"
+- Default to bundled packages allowed, optional packages require explicit opt-in
 
-**Detection:** Code review question: "Does this read-path code need to understand the patch's semantics, or just its structure?" If the answer is semantics, it's probably over-engineering.
+**Phase:** Phase 2 after extraction works. Must come before validation pipeline updates.
 
-**Phase:** Phase 1 design decision, enforced throughout.
+---
 
-### Pitfall 7: JSON Key Ordering Sensitivity
+### Pitfall 8: RNBO as Package vs. RNBO as Export Target -- Dual Role Confusion
 
-**What goes wrong:** When writing .maxpat files, the key ordering in JSON matters for readability and diff-friendliness, but may also matter for MAX in edge cases. Observed patterns:
+**What goes wrong:** RNBO objects already exist in `rnbo/objects.json` (560 objects) with their own domain. The milestone plans to treat RNBO as a "paid add-on (Tier 2)" package. But RNBO is simultaneously:
+1. A package with its own externals and patchers (installed at `{Max.app}/packages/RNBO/`)
+2. An export target that restricts which objects can be used (the `rnbo_compatible` flag)
+3. A container object (`rnbo~`) that appears inside normal patches
 
-1. **MAX expects `boxes` before `lines`** in the patcher dict. The current `DEFAULT_PATCHER_PROPS` enforces this order.
-2. **Box keys follow a conventional order** in MAX-saved files: `maxclass`, `text`, `id`, `numinlets`, `numoutlets`, `outlettype`, `patching_rect`, then extras. Python dicts preserve insertion order (3.7+), but loading then re-serializing may reorder keys.
-3. **Patchline keys**: MAX writes `source` before `destination`. Reordering these shouldn't break MAX but creates noisy diffs.
-4. **After round-tripping through from_dict/to_dict**, the key order may change from what MAX saved, creating unnecessary diffs when the user saves again in MAX.
-
-**Why it happens:** JSON spec doesn't guarantee key ordering, but .maxpat files have a conventional order that MAX follows. Python dicts preserve insertion order, but `from_dict()` reconstructs dicts in code-order rather than preserving original ordering.
+These three roles must not be conflated in the package integration system.
 
 **Prevention:**
-- For patcher-level keys: use `OrderedDict` or careful insertion ordering that matches `DEFAULT_PATCHER_PROPS`
-- For box-level keys: preserve the original key order from the loaded JSON (store ordered dict or maintain insertion order)
-- The existing `merge_and_write()` already handles patcher-level key ordering via `DEFAULT_PATCHER_PROPS` -- the direct-edit path should use the same approach
-- For diff-friendliness: write JSON with `indent=2` and `sort_keys=False` (already done)
+- Keep `rnbo/objects.json` as-is for the export compatibility checker
+- Add RNBO-specific package objects (the `rnbo~` container, RNBO-specific externals) to a `packages/rnbo/` subdirectory
+- License gating applies to the PACKAGE (can you use `rnbo~`?), not to the object compatibility list (which objects work inside `rnbo~`?)
+- Do NOT merge the two RNBO DB files -- they serve different purposes
 
-**Detection:** Diff test: load a MAX-saved .maxpat, write it back without modifications, diff. Ideally zero structural changes (only whitespace differences are acceptable).
+**Phase:** Architecture decision, Phase 0. Implementation Phase 2+.
 
-**Phase:** Phase 1, but lower priority than data loss bugs.
+---
 
-### Pitfall 8: Stale Agent Skills and Slash Commands
+### Pitfall 9: Object Loading Order in `ObjectDatabase._load()` Causes Silent Override
 
-**What goes wrong:** The 6 agent SKILL.md files and slash commands reference the generation-pipeline API extensively:
-- `max-patch-agent/SKILL.md`: References `Patcher()`, `Box()`, `generate_patch()`, `write_patch()`, `merge_and_write()`, layout options, aesthetic helpers
-- `max-dsp-agent/SKILL.md`: References `build_genexpr()`, `generate_gendsp()`, `write_gendsp()`, `Patcher.add_gen()`
-- All agents reference the "Output Protocol" of create-generate-validate-write workflow
+**What goes wrong:** The current `DOMAIN_LOAD_ORDER` loads domains in sequence, and later domains silently override earlier ones for same-named objects. This is intentional for the RNBO/MSP `cycle~` case (MSP's 1-outlet version overrides RNBO's 2-outlet version). But adding per-package subdirectories creates a namespace risk: if BEAP includes a helper abstraction named `classic-channel` and another package uses the same name, the load order determines which wins -- with no warning.
 
-If these SKILL files aren't updated atomically, agents will use the old API on patches that have been migrated to direct editing, or try to use new API on patches still using the generation pipeline.
-
-**Why it happens:** SKILL files are documentation, not code. They don't break CI when they're wrong -- they cause agents to generate incorrect code at runtime. The failure mode is "agent writes a generate.py for a patch that no longer uses one."
+**Why it happens:** The `_load()` method iterates domains in `DOMAIN_LOAD_ORDER` and does `self._objects[name] = obj` -- pure last-write-wins. There's no collision detection.
 
 **Prevention:**
-- Update all SKILL files in a single commit/phase, not incrementally
-- Add a "v2.0 API" section to each SKILL file that covers the new read-edit-write workflow
-- Remove references to `generate.py`, `merge_and_write()`, and `Manifest` when those concepts are retired
-- Test agent SKILL files: the existing `test_agent_skills.py` tests could be extended to verify API references are valid
+- Add collision detection during loading: if a name already exists and the new entry comes from a different package, log a warning
+- Use package-qualified names in the DB: `beap:bp.Oscillator`, `vizzie:vz.scrubbr` internally, with unqualified lookup as convenience
+- Or: use separate DB dicts per package, merge only at lookup time with explicit priority rules
 
-**Detection:** Grep SKILL files for deprecated API references after each phase.
+**Phase:** Must be addressed when extending `DOMAIN_LOAD_ORDER` to include package subdirectories. Phase 1.
 
-**Phase:** Phase 2 (agent/skill migration), done as a batch update.
+---
+
+### Pitfall 10: Extraction from Compiled Externals (XML) vs. Abstractions (maxpat) Requires Two Pipelines
+
+**What goes wrong:** The milestone mentions "dual extraction: XML for compiled externals, new abstraction parser for BEAP/Vizzie bpatchers." These are genuinely two completely different parsing tasks:
+
+- **XML extraction** (existing): Parse `.maxref.xml` help files from `{Max.app}/Contents/Resources/C74/ref/`. Works for `abl.*`, core objects.
+- **Abstraction parsing** (new): Parse `.maxpat` JSON files that ARE the module (BEAP clippings, Vizzie patchers). Must count inlet/outlet objects, read `outlettype`, extract internal object dependencies.
+
+If you try to use one parser for both, you'll get garbage for whichever case it wasn't designed for.
+
+**Prevention:**
+- `XMLExtractor` for compiled externals (`.mxo` bundles with `.maxref.xml` docs)
+- `AbstractionExtractor` for `.maxpat`-based modules: walk the inner patcher, count inlet/outlet objects, read `outlettype`, catalog internal objects
+- Both extractors produce the same output schema (possibly the extended `PackageObjectEntry`)
+- Detection heuristic: if package has `externals/` folder with `.mxo` files, use XML path. If package has `patchers/` or `clippings/` with `.maxpat` files, use abstraction path. Many packages will need both.
+
+**Phase:** Phase 1. The abstraction parser is the higher priority because BEAP (168 modules) and Vizzie (110 modules) are the most requested.
 
 ## Minor Pitfalls
 
-### Pitfall 9: Manifest Sidecar Files Left Behind
+### Pitfall 11: BEAP Clippings Live in `clippings/BEAP/` Not `patchers/`
 
-**What goes wrong:** When migrating from the generation pipeline to direct editing, `.manifest.json` sidecar files from the old system remain on disk. These are confusing artifacts that:
-- Suggest the patch is still using the generation pipeline
-- Could be accidentally read by old code paths, causing unexpected merge behavior
-- Clutter the project directory
+**What goes wrong:** The extraction pipeline scans `patchers/` (where Vizzie lives) but BEAP stores its modules in `clippings/BEAP/`. BEAP's `patchers/` directory only contains 5 serialosc-related files, not the 168 synth modules.
 
-**Prevention:**
-- Add a cleanup step to the migration process: delete `.manifest.json` files when converting a patch to direct-edit mode
-- Add a warning if a `.manifest.json` is found alongside a patch that's in direct-edit mode
+**Prevention:** Package scanner must check both `patchers/` AND `clippings/` directories. BEAP's category structure (`clippings/BEAP/Oscillator/`, `clippings/BEAP/Filter/`, etc.) is also useful metadata to extract.
 
-**Phase:** Phase 3 (existing project cleanup).
+**Phase:** Phase 1 extraction.
 
-### Pitfall 10: Patcher.from_dict() Doesn't Handle MAX 8 vs MAX 9 Differences
+---
 
-**What goes wrong:** The current `from_dict()` doesn't check `appversion`. A MAX 8 patch has `"major": 8` and may use different default properties or box formats. If someone loads a MAX 8 patch and the tool assumes MAX 9 conventions, subtle differences could cause issues.
+### Pitfall 12: Vizzie Uses `vz.` Prefix but BEAP Uses `bp.` With Spaces in Names
+
+**What goes wrong:** BEAP module filenames contain spaces: `bp.Pitch to CV.maxpat`, `bp.Drum Sequencer.maxpat`. The existing `parse_object_text()` function splits on whitespace, which would mangle these names. Vizzie avoids this with concatenated names: `vz.scrubbr.maxpat`, `vz.moviefoldr.maxpat`.
 
 **Prevention:**
-- Check `appversion.major` during `from_dict()` and log a warning if it's not 9
-- Don't reject MAX 8 patches, but flag them for the user's awareness
-- The tool already targets MAX 9 (documented in CLAUDE.md), so this is a documentation/warning issue, not a blocking one
+- DB keys for BEAP modules should use the full filename stem as the canonical name: `"bp.Pitch to CV"`
+- Lookup must handle spaces: `db.lookup("bp.Pitch to CV")`
+- The alias system could map spaceless versions: `"bp.PitchtoCV" -> "bp.Pitch to CV"`
+- File path handling must quote filenames with spaces
 
-**Phase:** Phase 1, low priority.
+**Phase:** Phase 1 extraction and DB key design.
 
-### Pitfall 11: Layout Engine Interference on Direct Edits
+---
 
-**What goes wrong:** The current `write_patch()` function always calls `apply_layout()` before writing. For direct edits, this would reposition ALL objects in the patch, destroying the user's carefully arranged layout.
+### Pitfall 13: `add_bpatcher()` Already Exists but Sets All Outlet Types to Control
 
-The `merge_and_write()` function already handles this correctly by skipping layout on merge runs. But if the migration introduces a new write path that doesn't have this protection, layouts could be destroyed.
+**What goes wrong:** The existing `add_bpatcher()` method in patcher.py (line 1510) sets `outlettype = [""] * numoutlets` -- ALL outlets as control type. This is wrong for signal-outputting BEAP modules like `bp.Oscillator` which have signal outlets. The caller must manually override `outlettype`, but nothing in the current API guides them to do so.
 
 **Prevention:**
-- The new direct-edit write path must NEVER call `apply_layout()` by default
-- Layout should only run when explicitly requested (e.g., for newly added objects)
-- Consider a `layout_new_only()` function that positions only objects without existing positions (patching_rect at 0,0)
-- Test: load a patch, add one object, write back -- verify all existing object positions are unchanged
+- When a bpatcher module is in the package DB, `add_bpatcher()` should auto-populate `outlettype` from the DB entry
+- Add a `module_name` parameter to `add_bpatcher()` that triggers DB lookup
+- If module is not in DB, keep current behavior (caller provides types manually)
 
-**Detection:** Position-preservation test: load a patch with known positions, add an object, save, verify original positions unchanged.
+**Phase:** Phase 2 after DB has bpatcher entries.
 
-**Phase:** Phase 1 (write path design).
+---
+
+### Pitfall 14: IRCAM Spat Has Architecture-Specific Externals (Intel vs. Apple Silicon)
+
+**What goes wrong:** IRCAM Spat 5.2.6 marks Apple Silicon support as "experimental." The package's `.mxo` externals may be Intel-only on some installations, requiring Rosetta. The DB extraction pipeline doesn't capture architecture compatibility, so a DB entry might exist for an object that won't load on Apple Silicon.
+
+**Prevention:**
+- Add `architecture` field to package entries: `["x64", "aarch64"]` or `["x64"]`
+- Read this from `package-info.json`'s `os` field: `{"macintosh": {"platform": ["ia32", "x64", "aarch64"]}}`
+- Warn users when generating patches with architecture-restricted package objects
+
+**Phase:** Phase 3+ when IRCAM Spat support is added.
+
+---
+
+### Pitfall 15: Package Version Skew Between DB and Installation
+
+**What goes wrong:** BEAP is at version 1.0.4 (unchanged for years), but RNBO is at 1.4.2 and actively updated. A user's installed RNBO version may differ from the version the DB was extracted against. Objects may have been added, removed, or changed behavior between versions.
+
+**Prevention:**
+- Store `extracted_from_version` in each package's DB metadata
+- At validation time, optionally check local `package-info.json` version against DB version
+- For actively-updated packages (RNBO), include version ranges for objects that changed
+- For stable packages (BEAP 1.0.4), this is low risk
+
+**Phase:** Phase 3, nice-to-have. Low priority for stable packages.
+
+---
+
+### Pitfall 16: 12 BEAP-Internal Objects Not in Core DB
+
+**What goes wrong:** BEAP modules internally reference 212 unique MAX objects. 12 of these are NOT in the current 2,015-object core DB: `0`, `M4L.bal1~`, `M4L.bal2~`, `M4L.cross1~`, `M4L.pan1~`, `bp.arc.accum-2`, `bp.arc.knob`, `classic-channel`, `fswap`, `pastebang`, `sigmund~`, `yafr2`. These are BEAP-internal helper abstractions and M4L-specific objects. If the framework tries to validate the internals of a BEAP module against the core DB, these will produce false "unknown object" errors.
+
+**Prevention:**
+- Do NOT recursively validate internal objects of package bpatchers against the core DB
+- Package bpatchers are black boxes: validate I/O at the boundary (inlet/outlet counts, signal types), not internal wiring
+- If internal object tracking is needed for dependency analysis, store it as metadata, not as a validation check
+
+**Phase:** Phase 2 validation updates.
 
 ## Phase-Specific Warnings
 
 | Phase Topic | Likely Pitfall | Mitigation |
 |-------------|---------------|------------|
-| Phase 1: Patcher library refactoring | Round-trip data loss (Pitfall 1) | Round-trip diff tests before any API changes |
-| Phase 1: Patcher library refactoring | ID collision (Pitfall 3) | Used-ID tracking set, scoped per patcher level |
-| Phase 1: Patcher library refactoring | Over-engineering read path (Pitfall 6) | Clear contract: preserve all, modify only requested |
-| Phase 2: Agent/skill migration | Dual source of truth (Pitfall 2) | Editing-mode marker per project, fail-fast detection |
-| Phase 2: Agent/skill migration | Stale SKILL files (Pitfall 8) | Batch update all 6 SKILLs + slash commands together |
-| Phase 3: Project cleanup | Manifest leftovers (Pitfall 9) | Automated cleanup of .manifest.json files |
-| All phases | Test breakage (Pitfall 4) | CI stays green, expand-then-contract pattern |
-| All phases | Layout interference (Pitfall 11) | Never auto-layout loaded patches |
-
-## Integration Pitfalls Between Old and New Approaches
-
-### The Manifest Problem
-
-The manifest system (`Manifest` class, `.manifest.json` sidecars) is the bridge between old and new. During migration:
-
-1. **Old patches with manifests** should continue to work with `merge_and_write()` until they're migrated
-2. **New direct-edit patches** should not create manifests
-3. **The transition point** is when a patch's `generate.py` is deleted and its manifest is removed
-4. **Risk:** Code that checks for manifest existence to decide behavior. If the manifest is deleted but the code still expects it, the patch falls into a "fresh write" code path and gets fully regenerated, losing user changes.
-
-### The generate.py Dependency Chain
-
-Each `generate.py` imports from `src.maxpat`:
-```python
-from src.maxpat import Patcher, write_patch
-from src.maxpat.incremental import merge_and_write
-```
-
-If Phase 1 changes the Patcher API in a breaking way, ALL existing `generate.py` scripts break simultaneously. Since there are 7 generation scripts across 5 patch projects, this is a blast radius problem.
-
-**Mitigation:** Phase 1 must be additive-only. Add new methods (`load()`, `edit()`, `save()`) without removing existing ones. Existing `generate.py` scripts should keep working until they're explicitly retired in Phase 3.
-
-### Validation Pipeline Assumptions
-
-The 4-layer validation pipeline (`validation.py`) assumes it's validating a freshly-generated patch:
-- Layer 2 (objects): Checks all objects against ObjectDatabase. This will fail on loaded patches containing third-party objects.
-- Layer 3 (connections): Checks inlet/outlet bounds. This will fail on loaded objects whose I/O counts differ from the database (due to variable_io, packages, or DB inaccuracies).
-- Layer 4 (domain): Checks gain staging, unterminated chains. This will produce warnings for patterns the user intentionally chose.
-
-**Mitigation:** Validation on direct-edit operations should only validate the DIFF -- objects and connections that were added or modified, not the entire loaded patch.
+| DB Schema Design | Pitfall 4 (wrong schema) | Define `PackageObjectEntry` with bpatcher-specific fields before any extraction |
+| Extraction Pipeline | Pitfall 1 (identity), Pitfall 2 (embed vs ref), Pitfall 10 (dual pipeline), Pitfall 11 (wrong directory) | Start with BEAP embedded bpatcher parsing; it covers 99% of modules |
+| ObjectDatabase Extension | Pitfall 9 (silent override) | Add collision detection before extending `DOMAIN_LOAD_ORDER` |
+| Validation Updates | Pitfall 3 (signal types), Pitfall 7 (permissions), Pitfall 16 (internal objects) | Requires working DB entries first; don't attempt validation changes until extraction is stable |
+| Bach Integration | Pitfall 6 (llll types) | Defer entirely until core bpatcher support works |
+| RNBO Package Layer | Pitfall 8 (dual role) | Architectural decision only; keep existing `rnbo/objects.json` untouched |
+| Community Packages | Pitfall 5 (installed detection) | Stub system with local verification; never assume installation state |
 
 ## Sources
 
-- Codebase analysis: `src/maxpat/patcher.py` (Patcher.from_dict round-trip testing)
-- Codebase analysis: `src/maxpat/incremental.py` (merge logic, manifest system)
-- Codebase analysis: `tests/test_incremental.py` (23 existing merge tests)
-- Codebase analysis: `patches/performancepatchtest/generated/performancepatchtest.maxpat` (real .maxpat structure)
-- Project memory: `feedback_iterate_via_generator.md` (historical data loss from dual source of truth)
-- Project memory: `project_incremental_patching.md` (incremental patching architecture)
-- [Cycling '74 forum: Specification for .maxpat JSON format?](https://cycling74.com/forums/specification-for-maxpat-json-format) -- confirms no official spec
-- [py2max: Python library for .maxpat generation](https://github.com/shakfu/py2max) -- round-trip editing reference
-- [Cycling '74 docs: Saving State with pattr](https://docs.cycling74.com/userguide/pattr/) -- state vs structure distinction
-- Verified: Box IDs are scoped per patcher level (not globally unique) -- subpatchers reuse obj-1, obj-2 independently
-- Verified: Patchline.to_dict() drops `color` attribute (data loss bug)
-- Verified: from_dict() `_handled_keys` can silently swallow attributes
-- Verified: 913 existing tests, 283 in patcher-related files, 0 tests for Patcher.from_dict()
+- Direct inspection of installed packages at `/Applications/Max.app/Contents/Resources/C74/packages/`
+- BEAP: 168 clipping modules analyzed, 167 embedded bpatchers confirmed, 12 internal objects not in core DB
+- Vizzie: 110 patcher abstractions analyzed
+- Existing codebase: `db_lookup.py`, `validation.py`, `maxclass_map.py`, `patcher.py`, `utils.py`, `graph.py`, `structure_critic.py`
+- [Cycling '74 Package Documentation](https://docs.cycling74.com/userguide/packages/)
+- [bpatcher Reference - Max 8](https://docs.cycling74.com/legacy/max8/refpages/bpatcher)
+- [Bach Project](https://www.bachproject.net/)
+- [RNBO Authorization](https://support.cycling74.com/hc/en-us/articles/10500185155603-RNBO-Authorization)
+- [IRCAM Spat 5 Forum](https://discussion.forum.ircam.fr/t/spat-5-for-max-read-this-first/21628)
+- [MAX Search Path Documentation](https://docs.cycling74.com/userguide/search_path/)
+- BEAP `package-info.json`: version 1.0.4, min_version 6.1.10, extensible=1
+- RNBO `package-info.json`: version 1.4.2, min_version 8.6.0, forcerestart=1
+- Zero namespace collisions between BEAP `bp.*`, Vizzie `vz.*`, and core DB (verified)

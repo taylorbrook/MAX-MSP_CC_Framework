@@ -1,728 +1,538 @@
-# Architecture Patterns: v2.0 Direct .maxpat Editing
+# Architecture Patterns
 
-**Domain:** Refactoring from Python generation pipeline to direct .maxpat reading/editing
-**Researched:** 2026-03-15
-**Confidence:** HIGH (based on direct analysis of existing codebase -- all components are custom Python with no external dependencies to verify)
+**Domain:** MAX/MSP Package Integration into existing AI-assisted patch generation framework
+**Researched:** 2026-04-12
 
-## Current Architecture (v1.x)
+## Existing Architecture Snapshot
 
-The v1.x pipeline follows a write-only model where Python scripts are the source of truth:
-
-```
-Agent -> generate.py (builds Patcher) -> apply_layout() -> validate_patch() -> merge_and_write() -> .maxpat
-```
-
-**Key friction:** The `.maxpat` file is an output, not a source. When users edit in MAX, their changes compete with `generate.py`. The `incremental.py` module partially addresses this via manifest-tracked merge, but the fundamental problem remains: agents think in Python, not in patches.
-
-### Component Inventory (What Exists)
-
-| Component | File(s) | Lines | Role | v2 Impact |
-|-----------|---------|-------|------|-----------|
-| Data Model | `patcher.py` | 1134 | Patcher/Box/Patchline + `from_dict()` + `to_dict()` | MAJOR: becomes read-write editor |
-| Layout | `layout.py` | 970 | Row-based topological positioning | MODERATE: selective re-layout only |
-| Validation | `validation.py` | 669 | 4-layer pipeline (JSON/objects/connections/domain) | MODERATE: adapt to edit-time use |
-| Hooks | `hooks.py` | 269 | `write_patch`, `validate_file` | MODERATE: add `read_patch`, `edit_patch` |
-| Incremental | `incremental.py` | 476 | Manifest-based merge | REMOVE: direct editing replaces merging |
-| Critics | `critics/` | 4 files | Semantic review (DSP, structure, RNBO, external) | MINOR: unchanged, operate on dicts |
-| DB Lookup | `db_lookup.py` | 287 | Object existence, I/O counts, alias resolution | UNCHANGED |
-| Aesthetics | `aesthetics.py` | ~100 | Canvas/object bg color, panel sizing | MINOR: works via extra_attrs |
-| Sizing | `sizing.py` | ~150 | Content-aware box dimensions | UNCHANGED |
-| Defaults | `defaults.py` | 133 | Constants, LayoutOptions | MINOR: add EditOptions |
-| Codegen | `codegen.py` | ~300 | GenExpr/N4M/js generation | UNCHANGED |
-| Code Validation | `code_validation.py` | ~300 | GenExpr/js syntax checks | UNCHANGED |
-| Maxclass Map | `maxclass_map.py` | ~70 | UI vs newobj resolution | UNCHANGED |
-| Project | `project.py` | ~400 | Project lifecycle, versioning | MODERATE: remove generate.py dependency |
-| Memory | `memory.py` | ~268 | Dual-scope pattern storage | UNCHANGED |
-| RNBO | `rnbo.py`, `rnbo_validation.py` | ~600 | RNBO generation/validation | UNCHANGED |
-| Externals | `externals.py`, `ext_*.py` | ~900 | C++ external scaffolding | UNCHANGED |
-| Commands | `.claude/commands/max-*.md` | 10 files | Slash command definitions | MAJOR: rewrite workflow |
-| Public API | `__init__.py` | 195 | Re-exports | MODERATE: add read/edit API |
-
----
-
-## Recommended Architecture (v2.0)
-
-### Core Principle: .maxpat as Single Source of Truth
-
-The .maxpat file IS the project. Agents read it, understand it, modify it, and write it back. No intermediate Python representation is authoritative.
+The current system (33,430 LOC Python) has these key components:
 
 ```
-.maxpat (on disk)
-    |
-    v
-read_patch() -> Patcher (in-memory, hydrated from JSON)
-    |
-    v
-Agent analyzes / modifies Patcher (add_box, remove_box, rewire, etc.)
-    |
-    v
-validate_patch(patcher) -> ValidationResult[]
-    |
-    v
-write_patch_direct(patcher, path) -> .maxpat (on disk)
+.claude/max-objects/
+  {domain}/objects.json     8 domain files (max, msp, jitter, mc, gen, m4l, rnbo, packages)
+  aliases.json              Shorthand -> canonical name
+  overrides.json            Expert corrections, variable_io_rules
+  relationships.json        Object pairs (tapin~/tapout~, etc.)
+  pd-blocklist.json         PD objects -> MAX equivalents
+
+src/maxpat/
+  db_lookup.py              ObjectDatabase -- single source of truth (302 LOC)
+  patcher.py                Patcher/Box/Patchline data model (2048 LOC)
+  validation.py             4-layer validation pipeline (1020 LOC)
+  layout.py                 Row-based layout engine (1212 LOC)
+  critics/                  DSP, structure, layout, M4L, ext, RNBO critics
+  audit/                    Help patch parser, override merger
+  externals.py              Min-DevKit scaffolding + build
+  project.py                Project lifecycle (patches/{name}/)
+  maxclass_map.py           UI_MAXCLASSES set + resolve_maxclass()
+
+.claude/skills/             6 specialist agents + router
 ```
+
+## Recommended Architecture for Package Integration
 
 ### Component Boundaries
 
 | Component | Responsibility | Communicates With |
 |-----------|---------------|-------------------|
-| **PatchReader** (`patcher.py::from_dict()` -- enhanced) | Load .maxpat JSON into hydrated Patcher with full Box metadata | Hooks, Agents |
-| **PatchEditor** (new methods on Patcher) | Surgical operations: add/remove/replace boxes, rewire, modify attrs | Agents, Validation |
-| **PatchWriter** (`hooks.py::write_patch_direct()`) | Serialize Patcher back to .maxpat JSON, preserving unknown keys | PatchEditor |
-| **PatchAnalyzer** (new: `analyzer.py`) | Read-only inspection: signal chains, component graph, object inventory | /max-onboard, Agents |
-| **Validation Pipeline** (`validation.py` -- adapted) | Run on Patcher objects (not just dicts), edit-time incremental checks | PatchEditor |
-| **Layout Engine** (`layout.py` -- selective mode) | Selective re-layout: position only new/unpositioned boxes | PatchEditor |
-| **Object Database** (`db_lookup.py`) | Unchanged: existence, I/O counts, alias resolution | PatchReader, PatchEditor, Validation |
-| **Critics** (`critics/`) | Unchanged: semantic review on dict output | /max-verify |
-| **Commands** (`.claude/commands/`) | Rewritten workflows: read-modify-write cycle | All components |
-| **Project** (`project.py`) | Simplified: no generate.py, no manifest | Commands |
+| `PackageRegistry` (NEW) | Package metadata, tier, install status, discovery | ObjectDatabase, validation, agents |
+| `ObjectDatabase` (MODIFIED) | Object lookup with package-aware filtering | PackageRegistry, validation, Patcher/Box |
+| `AbstractionExtractor` (NEW) | Parse bpatcher .maxpat files for I/O metadata | PackageRegistry, ObjectDatabase (write) |
+| `PackageDetector` (NEW) | Scan filesystem for installed packages | PackageRegistry |
+| `validation.py` (MODIFIED) | Package gating warnings in Layer 2 | ObjectDatabase, project config |
+| `patcher.py` (MODIFIED) | Route package objects to add_bpatcher() vs add_box() | ObjectDatabase |
+| `maxclass_map.py` (MODIFIED) | Recognize package bpatcher abstractions | ObjectDatabase |
+| Per-agent SKILL.md (MODIFIED) | Package-specific generation guidance | PackageRegistry |
+| `package_critic.py` (NEW) | Package convention validation (BEAP CV, Bach llll) | ObjectDatabase, PackageRegistry |
 
----
-
-## New Components
-
-### 1. Enhanced `Patcher.from_dict()` -- The Read Path
-
-**Current state:** `from_dict()` already exists (lines 1012-1122 of patcher.py). It reconstructs boxes and lines but skips DB hydration (uses `Box.__new__` to bypass validation). This is correct for loading -- we trust the file.
-
-**What needs to change:**
-
-```python
-# Current: Box created via __new__, minimal metadata
-box.name = box.text.split()[0]
-box.args = parts[1:]
-
-# Needed: Optional DB enrichment for analysis
-if db and db.exists(box.name):
-    obj_data = db.lookup(box.name)
-    box._db_inlets = obj_data.get("inlets", [])
-    box._db_outlets = obj_data.get("outlets", [])
-    box._db_variable_io = obj_data.get("variable_io", False)
-```
-
-The key insight: `from_dict()` must NOT validate or error on unknown objects. Files from any source may contain objects not in our database. But it SHOULD optionally enrich boxes with DB metadata when available -- this powers analysis and smart editing.
-
-**Specific enhancements:**
-
-| Enhancement | Why | Complexity |
-|-------------|-----|-----------|
-| bpatcher attr reconstruction | `_bpatcher_attrs` not populated from JSON; needed for round-trip fidelity | Low |
-| Unknown key preservation | `extra_attrs` already captures extras, but verify completeness | Low |
-| DB-optional enrichment | Attach DB metadata when available, skip when not | Low |
-| Nested patcher depth tracking | Know whether a box is top-level or inside a subpatcher | Low |
-| ID collision detection | Loaded patches may have ID conflicts; detect and report | Low |
-
-**What NOT to change:** Do not add DB validation to the read path. A .maxpat file loaded from disk is valid by definition (MAX created it). Our DB may be incomplete. The read path must never reject a file.
-
-### 2. PatchEditor Methods on Patcher
-
-New methods that perform surgical modifications on a loaded Patcher. These are the operations agents will use instead of building from scratch.
-
-```python
-class Patcher:
-    # --- Existing (keep) ---
-    def add_box(self, name, args, x, y) -> Box: ...
-    def add_connection(self, src, outlet, dst, inlet) -> Patchline: ...
-    def add_subpatcher(self, name, inlets, outlets) -> (Box, Patcher): ...
-    # etc.
-
-    # --- New: Read ---
-    @classmethod
-    def from_dict(cls, data, db=None) -> Patcher: ...       # Enhanced (exists)
-    def find_box(self, name=None, id=None, text=None) -> Box | None: ...
-    def find_boxes(self, name=None, maxclass=None) -> list[Box]: ...
-    def find_connections_from(self, box) -> list[Patchline]: ...
-    def find_connections_to(self, box) -> list[Patchline]: ...
-    def get_signal_chain(self, start_box) -> list[Box]: ...
-
-    # --- New: Edit ---
-    def remove_box(self, box_or_id) -> None: ...          # Also removes connected lines
-    def replace_box(self, old, new_name, new_args) -> Box: ...  # Preserves position + connections
-    def disconnect(self, src, outlet, dst, inlet) -> None: ...
-    def rewire(self, old_src, old_outlet, new_src, new_outlet, dst, inlet) -> None: ...
-    def move_box(self, box, x, y) -> None: ...
-    def set_attr(self, box, key, value) -> None: ...
-
-    # --- New: Layout ---
-    def layout_new_boxes(self, boxes) -> None: ...         # Position only newly added boxes
-    def auto_position_near(self, box, reference_box, direction="below") -> None: ...
-```
-
-**Design decisions:**
-
-1. **`remove_box()` cascades to connections.** When a box is removed, all patchlines referencing it are also removed. This matches MAX behavior and prevents dangling connections.
-
-2. **`replace_box()` preserves position and connections.** Swapping `cycle~ 440` for `saw~ 440` keeps the same x/y, reconnects existing cables where inlet/outlet counts allow. Excess connections are dropped with a warning.
-
-3. **`find_box()` searches by multiple criteria.** Agents need to locate boxes by name ("find the dac~"), by ID (from error messages), or by text content (for gen~ codeboxes).
-
-4. **No implicit layout.** Editing methods do NOT trigger automatic layout. Position is preserved from the file. New boxes are placed at a specified position or via explicit `auto_position_near()`.
-
-5. **ID stability.** All editing operations preserve existing box IDs. New boxes get IDs from `_next_id` (which `from_dict` already initializes past the highest existing ID). This means connections between existing boxes remain valid.
-
-### 3. PatchAnalyzer (`analyzer.py`)
-
-Read-only analysis of a loaded Patcher. Powers `/max-onboard` and gives agents structural understanding.
-
-```python
-class PatchAnalyzer:
-    def __init__(self, patcher: Patcher, db: ObjectDatabase): ...
-
-    # Structure
-    def inventory(self) -> dict:
-        """Count objects by domain (MSP, Max, Jitter, etc.)."""
-    def signal_chains(self) -> list[list[Box]]:
-        """Trace all signal paths from sources to sinks."""
-    def control_chains(self) -> list[list[Box]]:
-        """Trace control-rate message paths."""
-    def subpatcher_tree(self) -> dict:
-        """Nested dict of subpatcher hierarchy."""
-    def find_orphans(self) -> list[Box]:
-        """Boxes with no connections."""
-
-    # Semantic
-    def classify_purpose(self) -> str:
-        """Heuristic: 'synthesizer', 'effect', 'sequencer', 'utility', etc."""
-    def identify_parameters(self) -> list[dict]:
-        """Find user-facing controls (number, slider, dial + what they control)."""
-    def identify_signal_flow(self) -> str:
-        """Human-readable description: 'osc -> filter -> gain -> dac'."""
-
-    # Validation
-    def check_health(self) -> list[ValidationResult]:
-        """Run validation pipeline on the loaded patch."""
-    def diff(self, other: Patcher) -> list[str]:
-        """Compare two patches: added/removed/changed boxes and connections."""
-```
-
-**Why a separate class:** Analysis is read-only and stateless. Putting it on Patcher would bloat the class. The analyzer takes a Patcher and DB, uses them for inspection, returns results. Clean separation.
-
-### 4. Direct Write (`hooks.py::write_patch_direct()`)
-
-A new write function that skips layout and writes a Patcher directly to disk. For the edit workflow, layout has already been done (positions come from the loaded file), so re-running full layout would destroy user positioning.
-
-```python
-def write_patch_direct(
-    patcher: Patcher,
-    path: str | Path,
-    validate: bool = True,
-) -> list[ValidationResult]:
-    """Write a Patcher directly to .maxpat without applying layout.
-
-    Used for the edit workflow where positions are already set from the
-    loaded file. New boxes should be positioned before calling this.
-
-    Runs validation unless validate=False. Does NOT auto-fix -- reports only.
-    """
-```
-
-**Key difference from `write_patch()`:** No `apply_layout()` call. No `_apply_auto_styling()` on loaded boxes (only on new boxes the agent explicitly styles). Preserves the exact JSON structure from the loaded file with only targeted edits applied.
-
----
-
-## Integration Points: Agents and Commands
-
-### Current Agent Data Flow (v1.x)
+### Data Flow
 
 ```
-/max-build "kick synth"
-    -> max-router dispatches to max-dsp-agent
-    -> Agent writes generate.py (Python code that builds Patcher)
-    -> Agent runs generate.py
-    -> merge_and_write() outputs .maxpat
+                    +-----------------------+
+                    |  PackageDetector      |
+                    |  (filesystem scan)    |
+                    +----------+------------+
+                               |
+                               v
++-------------------+    +-----+-------+    +---------------------+
+| AbstractionParser |    | Package     |    | XML Extraction      |
+| (BEAP, Vizzie     |--->| Registry    |<---| (existing pipeline) |
+|  .maxpat parsing) |    | package_    |    | (FluCoMa, CNMAT...) |
++-------------------+    | info.json   |    +---------------------+
+                         +------+------+
+                                |
+                                v
+                    +-----------+-----------+
+                    |   ObjectDatabase      |
+                    |   (MODIFIED)          |
+                    |   - package field     |
+                    |   - allowed_packages  |
+                    |   - per-package dirs  |
+                    +-----------+-----------+
+                         |     |      |
+              +----------+     |      +-----------+
+              v                v                  v
+     +--------+-----+  +------+------+   +-------+-------+
+     | Patcher/Box  |  | validation  |   | Agent Skills   |
+     | (route to    |  | (Layer 2    |   | (package       |
+     |  add_bpatcher|  |  gating)    |   |  guidance)     |
+     |  vs add_box) |  +------+------+   +-------+-------+
+     +--------------+         |                   |
+                              v                   v
+                    +---------+--------+  +-------+-------+
+                    | package_critic   |  | Starter       |
+                    | (BEAP CV, Bach   |  | Templates     |
+                    |  llll, etc.)     |  | (per-package) |
+                    +------------------+  +---------------+
 ```
 
-The agent never touches the .maxpat directly. It writes Python code that creates Python objects that serialize to JSON. Three layers of indirection.
+## New Components -- Detailed Design
 
-### New Agent Data Flow (v2.0)
+### 1. PackageRegistry (`package_info.json` + methods on ObjectDatabase)
 
-```
-/max-build "kick synth"
-    -> max-router dispatches to max-dsp-agent
-    -> Agent calls read_patch() if .maxpat exists (or creates empty Patcher)
-    -> Agent calls Patcher methods directly (add_box, add_connection, etc.)
-    -> Agent calls write_patch_direct()
-    -> .maxpat updated
-```
+**What:** Central metadata store for all known packages. A JSON file loaded by ObjectDatabase, with accessor methods added to the class.
 
-```
-/max-iterate "add LFO to filter"
-    -> read_patch() loads existing .maxpat
-    -> PatchAnalyzer identifies the filter and its control inputs
-    -> Agent calls add_box("cycle~", ["0.5"]) for LFO
-    -> Agent calls add_connection(lfo, 0, filter_cutoff_inlet)
-    -> Agent calls auto_position_near(lfo, filter, "above")
-    -> validate_patch(patcher) checks the edit
-    -> write_patch_direct() saves
-```
+**Location:** `.claude/max-objects/package_info.json`
 
-```
-/max-onboard
-    -> read_patch() loads unknown .maxpat
-    -> PatchAnalyzer runs full analysis
-    -> Output: inventory, signal chains, parameter map, health check
-    -> Findings written to project context.md
-```
-
-### Command Rewrites
-
-| Command | v1.x Behavior | v2.0 Behavior | Change Scope |
-|---------|--------------|---------------|-------------|
-| `/max-new` | Creates project dir + empty generate.py | Creates project dir + empty .maxpat (or no file) | MINOR |
-| `/max-build` | Agent writes generate.py, runs it | Agent reads/creates .maxpat, edits directly, writes | MAJOR |
-| `/max-iterate` | Agent edits generate.py, runs it | Agent reads .maxpat, edits directly, writes | MAJOR |
-| `/max-verify` | Runs validate_file + critics on .maxpat | Same -- unchanged (already reads .maxpat) | NONE |
-| `/max-research` | Looks up object DB | Same -- unchanged | NONE |
-| `/max-memory` | Read/write patterns | Same -- unchanged | NONE |
-| `/max-status` | Read project status | Same -- unchanged | NONE |
-| `/max-switch` | Switch active project | Same -- unchanged | NONE |
-| `/max-test` | Run test suite | Same -- unchanged | NONE |
-| `/max-discuss` | Conversational | Same -- unchanged | NONE |
-| `/max-onboard` | DOES NOT EXIST | NEW: analyze unknown .maxpat | NEW |
-
-**Key insight:** Only 3 commands change (build, iterate, new). The rest already work on .maxpat files or are independent of the generation pipeline. The /max-onboard command is entirely new.
-
-### Validation Hook Integration
-
-**Current:** Validation runs on the `dict` output of `patcher.to_dict()` inside `write_patch()`. It operates on raw JSON, not Patcher objects.
-
-**v2.0 changes:**
-
-1. **`validate_patch()` already accepts both Patcher and dict.** Lines 84-108 of validation.py show it converts Patcher to dict if needed. No change required for the entry point.
-
-2. **Edit-time validation (new).** For interactive editing, we want to validate specific changes without running the full pipeline:
-
-```python
-def validate_edit(patcher: Patcher, changed_boxes: list[Box]) -> list[ValidationResult]:
-    """Validate only the boxes and connections affected by recent edits.
-
-    Runs Layer 2 (object existence) and Layer 3 (connection bounds) only on
-    the changed boxes and their connections. Skips Layer 1 (JSON structure,
-    which is always valid for Patcher objects) and Layer 4 (domain rules,
-    which are best run as a full-patch check at write time).
-    """
-```
-
-3. **Validation on load (optional).** When `/max-onboard` loads an unknown patch, it should run validation to report health. This already works via `validate_file()` -- no change needed.
-
-4. **Critic review timing is unchanged.** Critics run on the final dict before the user sees results. They check semantics (gain staging, fan-out patterns, RNBO fitness), not structural validity. The `/max-verify` command continues to invoke them.
-
----
-
-## Data Flow Changes: Detailed
-
-### Before (v1.x): Build Flow
-
-```
-User: /max-build "kick drum synth"
-  |
-  v
-max-router -> max-dsp-agent
-  |
-  v
-Agent generates generate.py:
-  from src.maxpat import Patcher, merge_and_write
-  p = Patcher()
-  osc = p.add_box("cycle~", ["440"])
-  dac = p.add_box("dac~")
-  p.add_connection(osc, 0, dac, 0)
-  merge_and_write(p, "patches/kick/generated/kick.maxpat")
-  |
-  v
-merge_and_write():
-  1. Load old manifest (sidecar .manifest.json)
-  2. Load existing .maxpat
-  3. Merge: keep user boxes, replace generator boxes, merge attrs
-  4. apply_layout() on merged patcher
-  5. validate_patch() on merged dict
-  6. Write .maxpat + manifest
-```
-
-### After (v2.0): Build Flow
-
-```
-User: /max-build "kick drum synth"
-  |
-  v
-max-router -> max-dsp-agent
-  |
-  v
-Agent reads existing or creates new:
-  from src.maxpat import Patcher, read_patch, write_patch_direct
-  p = read_patch("patches/kick/kick.maxpat")  # or Patcher() if new
-  |
-  v
-Agent edits directly:
-  osc = p.add_box("cycle~", ["440"], x=100, y=50)
-  gain = p.add_box("*~", ["0.5"], x=100, y=80)
-  dac = p.add_box("dac~", x=100, y=110)
-  p.add_connection(osc, 0, gain, 0)
-  p.add_connection(gain, 0, dac, 0)
-  p.add_connection(gain, 0, dac, 1)
-  |
-  v
-write_patch_direct(p, "patches/kick/kick.maxpat"):
-  1. validate_patch(p)
-  2. p.to_dict()
-  3. Write JSON to disk
-  # No manifest. No merge. No layout (agent positioned boxes).
-```
-
-### Before (v1.x): Iterate Flow
-
-```
-User: /max-iterate "add reverb to output"
-  |
-  v
-Agent edits generate.py (adds reverb section)
-  |
-  v
-Agent runs generate.py
-  |
-  v
-merge_and_write() merges with existing .maxpat
-  (user changes preserved via manifest tracking)
-```
-
-### After (v2.0): Iterate Flow
-
-```
-User: /max-iterate "add reverb to output"
-  |
-  v
-p = read_patch("patches/kick/kick.maxpat")
-analyzer = PatchAnalyzer(p, db)
-  |
-  v
-Agent identifies: dac~ is the output, gain~ feeds it
-  chains = analyzer.signal_chains()
-  # Finds: [cycle~ -> *~ -> dac~]
-  |
-  v
-Agent inserts reverb between gain and dac:
-  rev = p.add_box("yafr2~")
-  p.auto_position_near(rev, gain_box, "below")
-  p.disconnect(gain_box, 0, dac_box, 0)
-  p.add_connection(gain_box, 0, rev, 0)
-  p.add_connection(rev, 0, dac_box, 0)
-  p.add_connection(rev, 1, dac_box, 1)
-  |
-  v
-write_patch_direct(p, "patches/kick/kick.maxpat")
-  # User's manual edits are FULLY preserved (we loaded them).
-  # No manifest needed -- we read the whole file and edited in place.
-```
-
-**The critical improvement:** User changes are preserved by default because we loaded them. No manifest tracking needed. No merge logic. The .maxpat file is the single source of truth at every step.
-
-### New: /max-onboard Flow
-
-```
-User: /max-onboard (with a .maxpat file present)
-  |
-  v
-p = read_patch("patches/imported/some-patch.maxpat")
-analyzer = PatchAnalyzer(p, db)
-  |
-  v
-report = {
-    "object_count": 47,
-    "domain_breakdown": {"MSP": 23, "Max": 18, "Jitter": 6},
-    "signal_chains": ["cycle~ -> svf~ -> *~ -> dac~"],
-    "parameters": [
-        {"name": "cutoff", "control": "dial", "target": "svf~", "inlet": 1},
-    ],
-    "health": [
-        "WARNING: Missing gain staging on cycle~ -> dac~ path",
-    ],
-    "subpatchers": {"p filter-section": 12, "p modulation": 8},
-    "purpose": "subtractive synthesizer with filter modulation",
+**Schema:**
+```json
+{
+  "packages": {
+    "beap": {
+      "name": "BEAP",
+      "tier": "bundled",
+      "prefix": "bp.",
+      "version": "1.0",
+      "object_type": "bpatcher_abstraction",
+      "install_method": "bundled_with_max",
+      "install_paths": [
+        "/Applications/Max.app/Contents/Resources/C74/packages/BEAP",
+        "~/Documents/Max 9/Packages/BEAP"
+      ],
+      "description": "Berlin Experimental Audio Patches -- modular synth toolkit",
+      "db_file": "packages/beap/objects.json",
+      "extracted": true,
+      "object_count": 172
+    },
+    "flucoma": {
+      "name": "FluCoMa",
+      "tier": "community",
+      "prefix": "fluid.",
+      "version": "1.0.8",
+      "object_type": "compiled_external",
+      "install_method": "package_manager",
+      "install_paths": [
+        "~/Documents/Max 9/Packages/FluidCorpusManipulation"
+      ],
+      "description": "Fluid Corpus Manipulation -- audio analysis and ML",
+      "db_file": "packages/flucoma/objects.json",
+      "extracted": false,
+      "object_count": 0,
+      "stub_objects": ["fluid.hpss~", "fluid.nmf~", "fluid.mfcc~"]
+    }
+  }
 }
-  |
-  v
-Write report to project context.md
-Agent can now /max-iterate on this patch with full understanding
 ```
 
----
+**Why a separate file (not embedded in ObjectDatabase):** Package metadata (install paths, tiers, install instructions) is orthogonal to object data. ObjectDatabase should stay focused on object lookup. The registry is the single source of truth for "what packages exist and where they live."
 
-## Files to Remove (v2.0 cleanup)
+**Integration:** ObjectDatabase constructor reads `package_info.json` once. Methods query it for package-level decisions. No new class needed -- add methods directly to ObjectDatabase.
 
-| File/Artifact | Why Remove |
-|---------------|-----------|
-| `patches/*/generated/generate.py` | Replaced by direct editing |
-| `patches/*/generated/build_*.py` | Same -- generation scripts |
-| `patches/*/generated/*.manifest.json` | Manifest tracking obsolete |
-| `src/maxpat/incremental.py` | Merge logic obsolete -- direct editing replaces it |
-| `Manifest` class and `merge_and_write()` | No longer needed |
+### 2. Per-Package DB Directories
 
-**Migration path:** Existing patches keep their .maxpat files. The .maxpat is already the authoritative output -- generation scripts and manifests were the infrastructure around it. Remove the infrastructure, keep the output.
+**What:** Split the monolithic `packages/objects.json` (87 objects, all abl.* and jit.mo.*) into per-package subdirectories.
 
----
+**Structure:**
+```
+.claude/max-objects/packages/
+  beap/
+    objects.json         # ~172 bpatcher abstraction entries
+  vizzie/
+    objects.json         # ~110 bpatcher abstraction entries
+  ableton-dsp/
+    objects.json         # 74 objects (moved from monolithic file)
+  jit-mo/
+    objects.json         # 8 objects (moved from monolithic file)
+  flucoma/
+    objects.json         # Stubs initially, full entries after extraction
+  cnmat/
+    objects.json
+  bach/
+    objects.json
+  ...
+```
+
+**Loading strategy:** The current `DOMAIN_LOAD_ORDER` includes `"packages"` as a single slot. Change `_load()` to iterate over subdirectories under `packages/` instead of loading a single `packages/objects.json`. Each subdirectory's `objects.json` loads into the same namespace. Core domains still shadow duplicates.
+
+**Critical detail:** The existing 87 objects in `packages/objects.json` are `abl.*` (74) + `jit.mo.*` (8) + misc (5). These must be migrated to `packages/ableton-dsp/objects.json` and `packages/jit-mo/objects.json` respectively before the split. This is a data migration, not a code change.
+
+### 3. AbstractionExtractor (NEW: `src/maxpat/extract_abstractions.py`)
+
+**What:** Extraction pipeline for bpatcher-based packages (BEAP, Vizzie, Jitter Tools abstractions). The existing XML pipeline (`audit/parser.py`, `extract_objects.py`) cannot handle these because bpatcher abstractions have no XML refpages.
+
+**Approach:**
+1. Scan package directory for `.maxpat` files in `patchers/` subdirectory
+2. For each `.maxpat` file, open and parse the JSON
+3. Count `inlet`/`outlet` objects at the top patcher level
+4. Determine signal types by tracing connections from inlets to first downstream objects:
+   - If inlet connects to a signal object's signal inlet -> signal inlet
+   - If outlet receives from a signal object's signal outlet -> signal outlet
+   - Otherwise -> control
+5. Extract name from filename, category from directory structure, description from patcher description field
+6. Write per-package `objects.json` in the standard format
+
+**Signal type inference is the hard part.** The existing `traverse_patcher()` in `audit/parser.py` already handles recursive descent into subpatchers and extracts connections. Reuse that infrastructure.
+
+**Fallback:** If signal type inference fails for an object, default to control type and add `"signal_inferred": false` flag. Agent guidance can note "signal type unverified" for these entries.
+
+**Integration with existing code:** This reuses `audit/parser.py`'s `traverse_patcher()` and `parse_object_text()` for the heavy lifting. The new module is a thin orchestrator that:
+- Finds .maxpat files in a package directory
+- Calls traverse_patcher to extract the structure
+- Applies signal type inference logic
+- Writes the DB JSON
+
+### 4. PackageDetector (simple filesystem scanner)
+
+**What:** Detects which packages are actually installed on the user's machine by checking standard MAX package paths.
+
+**Location:** Function in `db_lookup.py` or standalone `package_detect.py`.
+
+**Paths to check (macOS):**
+```python
+PACKAGE_SEARCH_PATHS = [
+    Path("/Applications/Max.app/Contents/Resources/C74/packages"),  # Bundled
+    Path.home() / "Documents" / "Max 9" / "Packages",               # User-installed
+    Path("/Users/Shared/Max 9/Packages"),                            # System-wide
+]
+```
+
+**Behavior:** Returns dict of `{package_name: Path}` for installed packages. Used by extraction commands and for install status display. NOT called on every ObjectDatabase init -- only when explicitly requested (e.g., extraction command, package status check).
+
+### 5. ObjectDatabase Modifications
+
+**Current state:** `ObjectDatabase._load()` iterates `DOMAIN_LOAD_ORDER` and loads one `objects.json` per domain. Package objects already load from `packages/objects.json`.
+
+**Required changes:**
+
+```python
+# db_lookup.py modifications
+
+class ObjectDatabase:
+    def __init__(self, db_root=None, allowed_packages=None):
+        # NEW: allowed_packages filter
+        self._allowed_packages: set[str] | None = allowed_packages
+        self._package_info: dict = {}
+        # ... existing init ...
+
+    def _load(self, db_root):
+        # ... existing alias, override, PD blocklist loading ...
+
+        # MODIFIED: Load package_info.json
+        pkg_info_path = db_root / "package_info.json"
+        if pkg_info_path.exists():
+            self._package_info = json.loads(pkg_info_path.read_text())
+
+        # MODIFIED: packages slot now loads per-package subdirectories
+        for domain_dir in DOMAIN_LOAD_ORDER:
+            if domain_dir == "packages":
+                self._load_packages(db_root / "packages")
+            else:
+                # existing single-file loading
+                json_path = db_root / domain_dir / "objects.json"
+                if json_path.exists():
+                    data = json.loads(json_path.read_text())
+                    for name, obj in data.items():
+                        self._objects[name] = obj
+
+    def _load_packages(self, packages_dir: Path):
+        """Load per-package subdirectories."""
+        if not packages_dir.exists():
+            return
+        for pkg_dir in sorted(packages_dir.iterdir()):
+            if not pkg_dir.is_dir():
+                continue
+            json_path = pkg_dir / "objects.json"
+            if json_path.exists():
+                data = json.loads(json_path.read_text())
+                for name, obj in data.items():
+                    if "package" not in obj:
+                        obj["package"] = pkg_dir.name
+                    self._objects[name] = obj
+
+    def lookup(self, name, check_allowed=False):
+        """Look up object, optionally checking package permission."""
+        canonical = self._aliases.get(name, name)
+        obj = self._objects.get(canonical)
+        if obj is None:
+            return None
+        if check_allowed and self._allowed_packages is not None:
+            pkg = obj.get("package")
+            if pkg and pkg not in self._allowed_packages:
+                return None
+        return obj
+
+    def is_package_object(self, name):
+        """Check if an object belongs to a package (not a core domain)."""
+        obj = self.lookup(name)
+        return obj is not None and obj.get("package") is not None
+
+    def get_package(self, name):
+        """Get the package name for an object, or None if core."""
+        obj = self.lookup(name)
+        return obj.get("package") if obj else None
+
+    def list_packages(self):
+        """List all known package names."""
+        return list(self._package_info.get("packages", {}).keys())
+
+    def get_package_info(self, package_name):
+        """Get metadata for a specific package."""
+        return self._package_info.get("packages", {}).get(package_name)
+
+    def get_package_objects(self, package_name):
+        """Get all objects belonging to a specific package."""
+        return {
+            name: obj for name, obj in self._objects.items()
+            if obj.get("package") == package_name
+        }
+```
+
+**Key design decisions:**
+- `allowed_packages` is constructor-level, not per-lookup. Per-project gating means creating an ObjectDatabase with the right filter for each generation context.
+- The existing `lookup()` signature stays backward compatible (check_allowed defaults to False).
+- Package info is lazy -- loaded once, queried as needed.
+
+### 6. Validation Pipeline Modifications
+
+**Current state:** `validation.py` Layer 2 (`_validate_objects_exist`) checks if objects exist in DB and flags unknown objects as warnings. PD objects get errors.
+
+**Required change:** Add package gating check after the existence check.
+
+```python
+# In _validate_objects_exist(), after confirming db.exists(name):
+pkg = db.get_package(name)
+if pkg and project_packages is not None:
+    if pkg not in project_packages:
+        results.append(ValidationResult(
+            "objects", "warning",
+            f"'{name}' requires package '{pkg}' which is not "
+            f"enabled for this project.",
+        ))
+```
+
+**Package gating is warnings, not errors.** The patch is structurally valid even with package objects. The user may have the package installed. Warnings surface the issue without preventing work.
+
+### 7. Patcher/Box Modifications for Bpatcher Abstractions
+
+**Current state:** `Box.__init__()` looks up the object in ObjectDatabase, resolves maxclass via `maxclass_map.py`, and raises ValueError if unknown. Bpatcher creation uses the separate `Patcher.add_bpatcher()` method.
+
+**Problem:** Package bpatcher abstractions (BEAP, Vizzie) are in the DB with `"maxclass": "bpatcher"`, but `Box.__init__()` would try to create them as `newobj` boxes. The agent would need to know to call `add_bpatcher()` instead.
+
+**Solution -- Smart routing in Patcher.add_box():**
+
+```python
+def add_box(self, name, args=None, x=0.0, y=0.0, **kwargs):
+    """Add a box, auto-routing bpatcher abstractions."""
+    obj_data = self.db.lookup(name) if self.db else None
+
+    if obj_data and obj_data.get("maxclass") == "bpatcher":
+        # Route to add_bpatcher for package abstractions
+        filename = obj_data.get("abstraction_file", name + ".maxpat")
+        numinlets = len(obj_data.get("inlets", []))
+        numoutlets = len(obj_data.get("outlets", []))
+        return self.add_bpatcher(
+            filename=filename,
+            args=args or [],
+            x=x, y=y,
+            numinlets=numinlets,
+            numoutlets=numoutlets,
+            **kwargs,
+        )
+
+    # Normal path
+    box = Box(name, args=args, box_id=self._gen_id(), db=self.db, x=x, y=y)
+    self.boxes.append(box)
+    return box
+```
+
+**This is the highest-leverage architectural improvement.** Agents should not need to know whether an object is a compiled external or a bpatcher abstraction. `add_box("bp.Oscillator")` should just work. The DB metadata drives the routing decision. This makes package objects feel like native objects from the agent's perspective.
+
+### 8. Package-Aware Critics (NEW: `src/maxpat/critics/package_critic.py`)
+
+**What:** Domain-specific validation for package conventions.
+
+**BEAP critic:**
+- Check CV signal range: values fed to BEAP CV inputs should be in 0-5V range
+- Check bpatcher sizing matches BEAP module dimensions
+- Warn on mixing BEAP and non-BEAP in same signal chain without conversion
+
+**Bach critic:**
+- Check llll connections: Bach objects expect llll data types, not standard MAX lists
+- Warn when connecting non-Bach objects to Bach inlets (data type mismatch)
+- Verify bach.roll/bach.score have required supporting objects
+
+**Pattern:** Same as existing critics -- functions returning `list[CriticResult]`.
+
+### 9. Project Config for Package Selection
+
+**Current state:** Projects have `context.md` and `status.md`. No structured config.
+
+**New file:** `patches/{project}/config.json`
+
+```json
+{
+  "packages": ["beap", "vizzie"],
+  "max_version": 9
+}
+```
+
+**Why separate from status.md:** Status is lifecycle state. Config is project parameters. Different update patterns.
+
+**Integration:** `project.py`'s `create_project()` gets an optional `packages` parameter. The router reads `config.json` to determine allowed packages, passes to ObjectDatabase constructor.
 
 ## Patterns to Follow
 
-### Pattern 1: Round-Trip Fidelity
+### Pattern 1: DB-Driven Routing (the core insight)
 
-**What:** Any .maxpat loaded via `from_dict()` and immediately saved via `to_dict()` must produce byte-identical JSON (modulo whitespace).
+**What:** All object metadata -- including how to instantiate them in a patch -- is determined by the object DB entry, not by agent knowledge.
 
-**When:** Always. This is the foundation of trust in direct editing.
+**When:** Always, for all objects (core and package).
 
-**Implementation:** `from_dict()` already preserves unknown keys via `extra_attrs`. The enhancement needed is ensuring key ordering in `to_dict()` matches the original file. Use `collections.OrderedDict` or sort keys to match MAX's output order.
-
-**Test:** Load every existing project .maxpat, round-trip through from_dict/to_dict, assert JSON equality.
-
+**Example:**
 ```python
-def test_round_trip_fidelity(maxpat_path):
-    original = json.loads(Path(maxpat_path).read_text())
-    patcher = Patcher.from_dict(original)
-    roundtripped = patcher.to_dict()
-    assert roundtripped == original
+# Agent code for both core and package objects:
+box = patcher.add_box("cycle~", args=["440"])     # Core object -> Box()
+box = patcher.add_box("bp.Oscillator")             # BEAP -> add_bpatcher()
+# Agent doesn't need to know the difference. DB drives routing.
 ```
 
-### Pattern 2: Defensive Loading
+### Pattern 2: Layered Package Loading
 
-**What:** `from_dict()` never raises exceptions on valid .maxpat JSON, even if objects are unknown to our database.
+**What:** Packages load within the existing domain load order. Core domains shadow package duplicates.
 
-**When:** Always. Users import patches from anywhere.
+**When:** At ObjectDatabase initialization.
 
-**Implementation:** Already implemented -- `from_dict()` uses `Box.__new__` to bypass DB validation. The enhancement is to also gracefully handle:
-- Missing `text` fields on `newobj` boxes (corrupted but loadable)
-- Non-standard ID formats (e.g., "obj-0042", "mybox", UUID strings)
-- Recursive subpatcher depth > 10 (some patches nest deeply)
-- Extremely large patches (1000+ boxes -- memory-safe iteration)
+### Pattern 3: Warn, Don't Block
 
-### Pattern 3: Preserve-by-Default
+**What:** Package gating produces warnings, never errors. Structural validation still blocks.
 
-**What:** Every attribute of every box is preserved unless explicitly changed by an edit operation.
+**When:** Validation layer 2 (object existence).
 
-**When:** Always during edit operations.
+### Pattern 4: Stub-to-Full Upgrade Path
 
-**Implementation:** Edit methods modify specific fields on Box objects. They never create new Box objects for existing boxes (which would lose extra_attrs). `replace_box()` copies position, extra_attrs, and presentation from the old box.
-
-### Pattern 4: Position-Aware Insertion
-
-**What:** When adding new boxes to an existing patch, position them intelligently relative to existing content.
-
-**When:** All add operations in edit context.
-
-**Implementation:**
-
-```python
-def auto_position_near(self, box: Box, reference: Box, direction: str = "below") -> None:
-    """Position box relative to reference, avoiding overlaps."""
-    ref_rect = reference.patching_rect
-    if direction == "below":
-        box.patching_rect[0] = ref_rect[0]
-        box.patching_rect[1] = ref_rect[1] + ref_rect[3] + V_SPACING
-    elif direction == "right":
-        box.patching_rect[0] = ref_rect[0] + ref_rect[2] + H_GUTTER
-        box.patching_rect[1] = ref_rect[1]
-    elif direction == "above":
-        box.patching_rect[0] = ref_rect[0]
-        box.patching_rect[1] = ref_rect[1] - box.patching_rect[3] - V_SPACING
-    # Check for overlaps with existing boxes and shift if needed
-    self._resolve_overlaps(box)
-```
-
-### Pattern 5: Edit Transaction Idiom
-
-**What:** Group related edits into logical transactions so validation runs once per transaction, not per operation.
-
-**When:** Complex edits that involve multiple add/remove/rewire operations.
-
-**Implementation:**
-
-```python
-# Agent code for adding a reverb section:
-p = read_patch(path)
-
-# Transaction: multiple edits, validate once at the end
-rev = p.add_box("yafr2~", x=200, y=300)
-wet = p.add_box("*~", ["0.3"], x=200, y=330)
-p.add_connection(rev, 0, wet, 0)
-p.disconnect(gain_box, 0, dac_box, 0)
-p.add_connection(gain_box, 0, rev, 0)
-p.add_connection(wet, 0, dac_box, 0)
-
-# Single validation at write time
-write_patch_direct(p, path)
-```
-
----
+**What:** Community packages start as stubs (name, package, prefix, install instructions). When the user runs extraction on an installed package, stubs are replaced with full entries.
 
 ## Anti-Patterns to Avoid
 
-### Anti-Pattern 1: Re-Layout on Edit
+### Anti-Pattern 1: Per-Agent Package Knowledge
 
-**What:** Running `apply_layout()` on a loaded-and-edited patch.
+**What:** Embedding package-specific instantiation logic in agent SKILL.md files.
+**Why bad:** 6+ agents all need updating when a package changes. Inconsistencies between agents.
+**Instead:** Agents use `add_box()` uniformly. DB drives routing. Agent SKILL.md contains only usage guidance (when to use BEAP vs hand-built, Bach data type conventions), not instantiation mechanics.
 
-**Why bad:** Destroys all user positioning. A patch loaded from disk has positions that the user set in MAX. Re-laying out moves everything.
+### Anti-Pattern 2: Monolithic Package DB
 
-**Instead:** Only position newly added boxes. Use `auto_position_near()` or explicit coordinates. Never call `apply_layout()` on a loaded Patcher.
+**What:** Keeping all package objects in one `packages/objects.json`.
+**Why bad:** Currently 87 objects. With all target packages, this becomes 700+ objects in one file.
+**Instead:** Per-package subdirectories.
 
-### Anti-Pattern 2: Recreate-to-Edit
+### Anti-Pattern 3: Global Package Permissions
 
-**What:** Building a new Patcher from scratch to "edit" an existing patch (the v1.x approach).
+**What:** Setting allowed packages globally rather than per-project.
+**Why bad:** A modular synth project (BEAP) and a notation project (Bach) have completely different needs.
+**Instead:** Per-project `config.json` with package list.
 
-**Why bad:** Loses everything not captured in generate.py: user-added objects, manual position tweaks, presentation mode adjustments, extra attributes set in MAX.
+### Anti-Pattern 4: Blocking on Stubs
 
-**Instead:** Load the existing .maxpat, modify it in place, write it back. The .maxpat file contains the complete truth.
+**What:** Refusing to generate patches that reference stub (unextracted) package objects.
+**Why bad:** User may have the package installed even though stubs haven't been upgraded.
+**Instead:** Generate with best-effort I/O counts from stubs. Warn that validation is limited.
 
-### Anti-Pattern 3: Validation-Gated Loading
+## Integration Points -- Existing Components Requiring Changes
 
-**What:** Refusing to load a .maxpat that fails validation.
+### Changes Ranked by Impact
 
-**Why bad:** Any patch from the wild may have "errors" by our standards (objects not in our DB, unusual connections). Blocking load means we cannot analyze or edit these patches.
+| Priority | Component | File(s) | Change Type | LOC Estimate |
+|----------|-----------|---------|-------------|--------------|
+| 1 | ObjectDatabase | `db_lookup.py` | Modify _load(), add package methods | +80 LOC |
+| 2 | Package Registry | `package_info.json` (NEW) | New data file | ~200 LOC JSON |
+| 3 | Per-Package DB Split | `packages/*/objects.json` | Data migration | ~0 code, data move |
+| 4 | Patcher.add_box() | `patcher.py` | Add bpatcher routing | +20 LOC |
+| 5 | Validation Layer 2 | `validation.py` | Add package gating | +15 LOC |
+| 6 | Abstraction Extractor | `extract_abstractions.py` (NEW) | New module | ~250 LOC |
+| 7 | Project Config | `project.py` | Add packages to create_project() | +30 LOC |
+| 8 | Package Detector | `package_detect.py` or in `db_lookup.py` | New function | +40 LOC |
+| 9 | Package Critic | `critics/package_critic.py` (NEW) | New module | ~150 LOC |
+| 10 | Agent Skills | `.claude/skills/*/SKILL.md` | Add package guidance sections | ~200 LOC markdown |
+| 11 | Relationships | `relationships.json` | Add package pairs | ~50 LOC JSON |
+| 12 | Router Skill | `.claude/skills/max-router/SKILL.md` | Package-aware dispatch | +20 LOC |
+| 13 | Starter Templates | `.claude/skills/references/` | New template files | ~300 LOC |
 
-**Instead:** Load everything, validate optionally, report issues without blocking.
+**Total new code estimate: ~500 LOC Python + ~450 LOC JSON + ~520 LOC markdown**
 
-### Anti-Pattern 4: Agent Generates Python Code
+### Files NOT Needing Changes
 
-**What:** v2.0 agents generating Python scripts that call Patcher methods.
-
-**Why bad:** Adds an unnecessary indirection layer. The whole point of v2.0 is that agents edit patches directly.
-
-**Instead:** Agents call Patcher methods directly in their execution context. No intermediate scripts.
-
-### Anti-Pattern 5: Dual Source of Truth
-
-**What:** Keeping generate.py alongside the .maxpat for the same project.
-
-**Why bad:** The exact problem v2.0 solves. Two sources = inevitable drift.
-
-**Instead:** One source: the .maxpat file. Period.
-
----
-
-## Suggested Build Order
-
-Based on dependency analysis, the implementation should proceed in this order:
-
-### Phase 1: Round-Trip Foundation (no agent changes yet)
-
-**Goal:** Prove that we can load any .maxpat and write it back unchanged.
-
-**Components:**
-1. Enhance `Patcher.from_dict()` -- fix bpatcher attr reconstruction, verify key preservation
-2. Ensure `to_dict()` output matches input key order
-3. Write round-trip fidelity tests for all existing project .maxpat files
-4. Fix any round-trip failures (these are bugs in `from_dict()` or `to_dict()`)
-
-**Dependencies:** None. This is the foundation everything else builds on.
-
-**Tests:** Round-trip every existing .maxpat (kicksynth, minitaur, scala-synth, etc.). JSON deep equality after load-save cycle.
-
-### Phase 2: Read Path + Search Methods
-
-**Goal:** Agents can load a patch and find things in it.
-
-**Components:**
-1. `read_patch()` convenience function in hooks.py
-2. `find_box()`, `find_boxes()`, `find_connections_from()`, `find_connections_to()` on Patcher
-3. Optional DB enrichment during load (attach metadata to boxes)
-
-**Dependencies:** Phase 1 (from_dict must work correctly).
-
-**Tests:** Load a complex patch (kicksynth), find specific objects by name/id/text, verify connection queries return correct results.
-
-### Phase 3: Edit Methods
-
-**Goal:** Agents can modify a loaded patch surgically.
-
-**Components:**
-1. `remove_box()` with cascade connection removal
-2. `disconnect()` and `rewire()`
-3. `replace_box()` with position/connection preservation
-4. `move_box()` and `set_attr()`
-5. `auto_position_near()` for smart placement
-6. `write_patch_direct()` in hooks.py
-
-**Dependencies:** Phase 2 (search methods needed by edit methods, e.g., `find_connections_from` for cascade removal).
-
-**Tests:** Load patch, remove a box, verify connections removed. Replace box, verify position preserved. Add box near reference, verify no overlaps.
-
-### Phase 4: PatchAnalyzer
-
-**Goal:** `/max-onboard` can understand any patch.
-
-**Components:**
-1. `analyzer.py` with inventory, signal chain tracing, parameter identification
-2. `classify_purpose()` heuristic
-3. Health check (delegates to existing validation)
-
-**Dependencies:** Phase 2 (needs search methods for chain tracing).
-
-**Tests:** Analyze kicksynth -- verify it identifies gen~ as the core, finds all parameters, traces signal chain from click~ through gen~ to dac~.
-
-### Phase 5: Command Rewrites
-
-**Goal:** `/max-build`, `/max-iterate`, `/max-new` use the new read-write workflow.
-
-**Components:**
-1. Rewrite `max-build.md` -- agents call Patcher methods directly
-2. Rewrite `max-iterate.md` -- load-edit-save cycle
-3. Rewrite `max-new.md` -- create empty .maxpat or project-dir-only
-4. New `max-onboard.md` command
-5. Update agent skill files (the instructions that guide specialist agents)
-
-**Dependencies:** Phases 1-4 (all infrastructure must work before commands use it).
-
-**Tests:** Integration tests that simulate the command workflow: create project, build patch, iterate on patch, verify output is valid.
-
-### Phase 6: Cleanup
-
-**Goal:** Remove v1.x generation artifacts.
-
-**Components:**
-1. Delete `generate.py` / `build_*.py` from all projects
-2. Delete `.manifest.json` sidecar files
-3. Remove `incremental.py` module
-4. Remove `Manifest` and `merge_and_write` from public API
-5. Update tests that depend on removed code
-
-**Dependencies:** Phase 5 (commands must work without generate.py before we remove it).
-
-**Tests:** Full test suite passes after removal. All existing .maxpat files are still valid and loadable.
-
----
+| Component | File | Why No Change |
+|-----------|------|---------------|
+| Layout engine | `layout.py` | Bpatcher boxes already handled (treated as fixed-size) |
+| Aesthetics | `aesthetics.py` | Package objects get standard styling |
+| Code generation | `codegen.py` | No GenExpr for package objects |
+| Sizing | `sizing.py` | Bpatcher sizing comes from DB entry |
+| Hooks | `hooks.py` | save_patch_roundtrip, finalize_patch work unchanged |
+| Audit parser | `audit/parser.py` | Already handles subpatcher descent -- reused |
+| Override merger | `audit/merger.py` | Already handles packages domain |
+| RNBO validation | `rnbo_validation.py` | RNBO is already in DB |
+| External scaffolding | `externals.py` | External build is separate concern |
 
 ## Scalability Considerations
 
-| Concern | Small Patch (20 boxes) | Medium Patch (200 boxes) | Large Patch (1000+ boxes) |
-|---------|----------------------|-------------------------|--------------------------|
-| Load time | <10ms (JSON parse) | <50ms | <200ms |
-| Memory | ~50KB (Patcher + Box objects) | ~500KB | ~2MB |
-| Analysis | Instant | <100ms graph traversal | <500ms |
-| Validation | <10ms | <50ms | <200ms |
-| Save time | <10ms (JSON serialize) | <50ms | <200ms |
+| Concern | Current (87 pkg) | After Bundled (~500) | After Community (~1000+) |
+|---------|-------------------|----------------------|--------------------------|
+| DB load time | <10ms | ~30ms | ~50ms |
+| Memory | <1MB | ~3MB | ~5MB |
+| Lookup speed | O(1) dict | O(1) unchanged | O(1) unchanged |
+| Validation speed | No pkg checks | +1 dict lookup/object | +1 dict lookup/object |
 
-None of these are concerning. The largest existing patch (minitaur at 498KB JSON) loads in well under 100ms. Python's json module handles this scale trivially.
+**No lazy loading needed.** Even 1000+ package objects is a small dict.
 
-The real scalability question is **agent context window**: a 1000-box patch serialized to Python method calls is enormous. Agents should operate via the analyzer's summaries, not by reading the entire .maxpat as context. The analyzer exists to give agents a compact understanding of the patch without needing to see every box.
+## Suggested Build Order
 
----
+```
+Phase 20 (Schema Foundation)
+  Plan 1: package_info.json + data migration (split packages/objects.json)
+  Plan 2: ObjectDatabase modifications (_load_packages, package methods)
+  Plan 3: Validation Layer 2 package gating + Patcher.add_box() routing
 
-## Risk Assessment
+Phase 21 (Bundled Extraction)           Phase 22 (Generation Gating)
+  Plan 1: AbstractionExtractor            Plan 1: Project config.json
+  Plan 2: BEAP extraction                 Plan 2: /max-new package prompt
+  Plan 3: Vizzie extraction
+  Plan 4: Jitter Geometry/Tools
 
-| Risk | Likelihood | Impact | Mitigation |
-|------|-----------|--------|-----------|
-| Round-trip fidelity failures | HIGH (first attempt) | HIGH (foundation breaks) | Phase 1 is entirely about this; fix before proceeding |
-| Key ordering in JSON output | MEDIUM | MEDIUM (cosmetic diffs confuse git) | Use OrderedDict or sorted keys matching MAX's order |
-| Agent prompt changes needed | HIGH | LOW (prompt engineering, not code) | Update skill files incrementally during Phase 5 |
-| Test suite disruption | MEDIUM | MEDIUM | Phase 6 cleanup is explicit; don't remove until commands work |
-| Unknown .maxpat edge cases | HIGH | LOW per case | Defensive loading (Pattern 2); log warnings, never crash |
-| Performance on large patches | LOW | LOW | Python JSON handling is adequate up to 10MB+ files |
+Phase 23 (Agent Intelligence)           Phase 24 (Community Support)
+  Plan 1: Agent SKILL.md updates          Plan 1: Stub entries for all Tier 2
+  Plan 2: relationships.json              Plan 2: Extraction CLI commands
+  Plan 3: Layout overrides                Plan 3: Install guidance in agents
 
----
+Phase 25 (Templates + Critics)
+  Plan 1: Package critics (BEAP, Bach)
+  Plan 2: Starter templates
+  Plan 3: /max-new template integration
+```
+
+**Critical path:** Phase 20 -> Phase 21 -> Phase 25.
+
+**The single most important piece:** DB-driven routing in `Patcher.add_box()` (Phase 20 Plan 3). Without it, extraction is useless -- agents can't use the objects. With it, every subsequent phase's objects are immediately usable.
 
 ## Sources
 
-- Direct codebase analysis: `src/maxpat/patcher.py` (1134 lines, from_dict at L1012)
-- Direct codebase analysis: `src/maxpat/hooks.py` (269 lines, write_patch/validate_file)
-- Direct codebase analysis: `src/maxpat/incremental.py` (476 lines, merge_and_write)
-- Direct codebase analysis: `src/maxpat/validation.py` (669 lines, 4-layer pipeline)
-- Direct codebase analysis: `src/maxpat/layout.py` (970 lines, apply_layout)
-- Direct codebase analysis: `.claude/commands/max-*.md` (10 command files)
-- Direct codebase analysis: `patches/kicksynth/generated/build_kicksynth.py` (553 lines, typical generate.py)
-- Confidence: HIGH -- all findings based on reading the actual code, no external sources needed
+- [MAX Package Structure (Cycling '74 docs)](https://docs.cycling74.com/max7/vignettes/packages)
+- [MAX Package Manager](https://docs.cycling74.com/userguide/package_manager/)
+- [bpatcher Reference](https://docs.cycling74.com/legacy/max8/refpages/bpatcher)
+- [FluCoMa MAX Installation](https://learn.flucoma.org/installation/max/)
+- [FluCoMa GitHub](https://github.com/flucoma/flucoma-max)
+- [CNMAT Externals](https://github.com/CNMAT/CNMAT-Externs)
+- [Bach Project](https://www.bachproject.net/)
+- [MAX Reference Page XML format](https://cycling74.com/tutorials/writing-reference-pages)
+- [maxref.xml schema discussion](https://cycling74.com/forums/reference-schema-description-maxref-xml-files)
+- Existing codebase: `db_lookup.py`, `validation.py`, `patcher.py`, `audit/parser.py`, `audit/merger.py`, `project.py`, `maxclass_map.py`, `critics/*.py`
