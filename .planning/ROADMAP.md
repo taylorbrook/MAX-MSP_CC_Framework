@@ -75,7 +75,10 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
   3. `db.lookup("bp.Oscillator", allowed_packages=["beap"])` succeeds while `db.lookup("bp.Oscillator", allowed_packages=[])` returns None
   4. Per-package subdirectories exist (`packages/beap/objects.json`, `packages/vizzie/objects.json`, etc.) and existing 87 abl.*/mira.* objects are migrated there
   5. `package_info.json` exists with name, tier, version, install method, prefix, and description for every known package
-**Plans**: TBD
+**Plans:** 2 plans
+Plans:
+- [ ] 20-01-PLAN.md -- Data migration: package registry, per-package subdirectories, object splitting
+- [ ] 20-02-PLAN.md -- API extensions: ObjectDatabase package-aware loading, filtering, query methods, tests
 
 ### Phase 21: Bundled Package Extraction
 **Goal**: All bundled MAX packages have complete, verified DB entries with correct inlet/outlet counts and signal types
@@ -159,7 +162,7 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 | 17. Agent and Command Migration | v3.0.0 | 3/3 | Complete | 2026-03-16 |
 | 18. v1.x Cleanup | v3.0.0 | 2/2 | Complete | 2026-03-16 |
 | 19. Tech Debt Cleanup | v3.0.0 | 1/1 | Complete | 2026-03-17 |
-| 20. DB Schema Foundation | v4.0 | 0/0 | Not started | - |
+| 20. DB Schema Foundation | v4.0 | 0/2 | Not started | - |
 | 21. Bundled Package Extraction | v4.0 | 0/0 | Not started | - |
 | 22. Generation & Gating | v4.0 | 0/0 | Not started | - |
 | 23. Agent Intelligence | v4.0 | 0/0 | Not started | - |
@@ -168,4 +171,4 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-13 -- v4.0 Package Integration roadmap finalized*
+*Last updated: 2026-04-13 -- Phase 20 planned (2 plans)*
