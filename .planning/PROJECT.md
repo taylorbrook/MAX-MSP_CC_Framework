@@ -38,16 +38,20 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - ✓ All agents and slash commands migrated to direct .maxpat editing workflow — v3.0.0
 - ✓ Old pipeline removed — incremental.py, generate.py scripts, manifests all deleted — v3.0.0
 
-### Active
+## Current Milestone: v4.0 Package Integration
 
-- [ ] Package Integration milestone (v4.0) -- integrate MAX packages at full parity with core domains
-  - Object DB entries with validation, aliases, connection checking for all bundled + community packages
-  - Abstraction extraction pipeline for bpatcher-based packages (BEAP, Vizzie)
-  - Package-gated generation: `/max-new` and `/max-build` prompt for package selection
-  - Agent-specific guidance per package (modular patterns, signal conventions, workflow templates)
-  - Community package support with stub entries and extraction commands
-  - Dedicated critics and starter templates per package
-  - See `.planning/milestones/v4.0-package-integration-PROPOSAL.md` for full proposal
+**Goal:** Integrate MAX packages (bundled + community) into the framework at full parity with core domains — object DB, validation, agent guidance, templates, critics, and per-patch package gating.
+
+**Target features:**
+- DB schema with per-package tagging and filtering (every object knows its source package)
+- New abstraction extraction pipeline for BEAP (~172) and Vizzie (~110) bpatcher modules
+- Per-patch package gating: `/max-build`, `/max-iterate` require explicit user permission to use package objects for each specific patch
+- `/max-new` captures project-level package awareness, but actual usage confirmed per-patch
+- Agent intelligence per package (BEAP modular patterns, Bach lllls, FluCoMa ML workflows)
+- Community/licensed package support with stub entries (FluCoMa, CNMAT, Bach, Odot, ml.*, IRCAM Spat, RNBO, Cage, Dada, EARS, Rhythmic & Time Toolkit)
+- Starter templates and package-aware critics
+
+### Active
 
 ### Future
 
@@ -102,5 +106,22 @@ Old generation pipeline fully removed — no generate.py, no manifests, no incre
 | Expand-then-contract test migration | Add v2.0 read-write tests before removing v1.x write-only tests; CI stays green throughout | ✓ Good — 60+ tests rewritten without breakage |
 | Validation warns (not errors) on unknown objects | DB rejection on load would block third-party packages and user objects | ✓ Good — unknown objects load cleanly |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd-complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-04-09 after v3.0.0 milestone*
+*Last updated: 2026-04-13 after v4.0 milestone start*

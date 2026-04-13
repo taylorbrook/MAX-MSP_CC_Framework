@@ -1,36 +1,36 @@
 ---
 gsd_state_version: 1.0
-milestone: v3.0.0
-milestone_name: Direct .maxpat Editing
-status: complete
-stopped_at: Milestone v3.0.0 archived
-last_updated: "2026-04-09"
-last_activity: 2026-04-09
+milestone: v4.0
+milestone_name: Package Integration
+status: active
+stopped_at: null
+last_updated: "2026-04-13"
+last_activity: 2026-04-13
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 15
-  completed_plans: 15
-  percent: 100
+  total_phases: 6
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-09)
+See: .planning/PROJECT.md (updated 2026-04-13)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Planning next milestone
+**Current focus:** v4.0 Package Integration
 
 ## Current Position
 
-Phase: --
+Phase: Not started (defining requirements)
 Plan: --
-Status: v3.0.0 complete, next milestone pending
-Last activity: 2026-04-13 - Completed quick task 260412-qy8: integrate MAX packages milestone proposal
+Status: Defining requirements
+Last activity: 2026-04-13 — Milestone v4.0 started
 
-Progress: [██████████] 100%
+Progress: [░░░░░░░░░░] 0%
 
 ## Accumulated Context
 
