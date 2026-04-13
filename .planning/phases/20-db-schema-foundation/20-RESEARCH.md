@@ -425,22 +425,19 @@ def all_objects(db_root: Path) -> list[dict]:
 | A3 | Package version numbers (9.0, 1.3, 1.0, 2.0) | package_info.json Schema | LOW -- version field is informational, not used for gating |
 | A4 | BEAP prefix is `bp.` | package_info.json Schema | MEDIUM -- incorrect prefix affects downstream Phase 21 extraction matching |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Allocation of the 6 ambiguous objects**
+1. **Allocation of the 6 ambiguous objects** — RESOLVED: live.* -> ableton-dsp, jit.* -> jit.mo
    - What we know: `live.adsrui`/`live.adsr~`/`live.scope~` are Ableton-authored, `jit.bang`/`jit.framecount`/`jit.line` are Jitter render utilities
-   - What's unclear: Exact MAX Packages folder assignment (can't check MAX app from here)
-   - Recommendation: Use proposed allocation (live.* -> ableton-dsp, jit.* -> jit.mo), validate with user. Easy to move later since it's just file organization.
+   - Decision: Use proposed allocation (live.* -> ableton-dsp, jit.* -> jit.mo). Easy to move later since it's just file organization.
 
-2. **Should `list_packages()` include empty placeholder packages?**
+2. **Should `list_packages()` include empty placeholder packages?** — RESOLVED: populated-only
    - What we know: D-09 creates empty placeholders for BEAP, Vizzie, etc.
-   - What's unclear: Whether API consumers want to see packages with 0 objects
-   - Recommendation: `list_packages()` returns only populated packages. Add `list_all_packages()` or use `package_info.json` to discover all known packages including empty ones.
+   - Decision: `list_packages()` returns only populated packages. Use `package_info.json` to discover all known packages including empty ones.
 
-3. **Should `jit.mo.sin` migrate from jitter domain?**
+3. **Should `jit.mo.sin` migrate from jitter domain?** — RESOLVED: yes, migrate
    - What we know: It's in `jitter/objects.json` with `domain: "Jitter"` but is a jit.mo package object
-   - What's unclear: Whether this migration is worth the test churn
-   - Recommendation: Include in this migration for correctness. Update domain field and add package tag.
+   - Decision: Include in this migration for correctness. Update domain field and add package tag.
 
 ## Sources
 
