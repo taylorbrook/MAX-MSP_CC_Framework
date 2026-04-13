@@ -80,44 +80,44 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DBSI-01 | — | Pending |
-| DBSI-02 | — | Pending |
-| DBSI-03 | — | Pending |
-| DBSI-04 | — | Pending |
-| DBSI-05 | — | Pending |
-| DBSI-06 | — | Pending |
-| EXTR-01 | — | Pending |
-| EXTR-02 | — | Pending |
-| EXTR-03 | — | Pending |
-| EXTR-04 | — | Pending |
-| EXTR-05 | — | Pending |
-| EXTR-06 | — | Pending |
-| EXTR-07 | — | Pending |
-| EXTR-08 | — | Pending |
-| GENG-01 | — | Pending |
-| GENG-02 | — | Pending |
-| GENG-03 | — | Pending |
-| GENG-04 | — | Pending |
-| GENG-05 | — | Pending |
-| AGNT-01 | — | Pending |
-| AGNT-02 | — | Pending |
-| AGNT-03 | — | Pending |
-| AGNT-04 | — | Pending |
-| AGNT-05 | — | Pending |
-| COMM-01 | — | Pending |
-| COMM-02 | — | Pending |
-| COMM-03 | — | Pending |
-| COMM-04 | — | Pending |
-| TMPL-01 | — | Pending |
-| TMPL-02 | — | Pending |
-| TMPL-03 | — | Pending |
-| TMPL-04 | — | Pending |
+| DBSI-01 | Phase 20 | Pending |
+| DBSI-02 | Phase 20 | Pending |
+| DBSI-03 | Phase 20 | Pending |
+| DBSI-04 | Phase 20 | Pending |
+| DBSI-05 | Phase 20 | Pending |
+| DBSI-06 | Phase 20 | Pending |
+| EXTR-01 | Phase 21 | Pending |
+| EXTR-02 | Phase 21 | Pending |
+| EXTR-03 | Phase 21 | Pending |
+| EXTR-04 | Phase 21 | Pending |
+| EXTR-05 | Phase 21 | Pending |
+| EXTR-06 | Phase 21 | Pending |
+| EXTR-07 | Phase 21 | Pending |
+| EXTR-08 | Phase 24 | Pending |
+| GENG-01 | Phase 22 | Pending |
+| GENG-02 | Phase 22 | Pending |
+| GENG-03 | Phase 22 | Pending |
+| GENG-04 | Phase 22 | Pending |
+| GENG-05 | Phase 22 | Pending |
+| AGNT-01 | Phase 23 | Pending |
+| AGNT-02 | Phase 23 | Pending |
+| AGNT-03 | Phase 23 | Pending |
+| AGNT-04 | Phase 23 | Pending |
+| AGNT-05 | Phase 23 | Pending |
+| COMM-01 | Phase 24 | Pending |
+| COMM-02 | Phase 24 | Pending |
+| COMM-03 | Phase 24 | Pending |
+| COMM-04 | Phase 24 | Pending |
+| TMPL-01 | Phase 25 | Pending |
+| TMPL-02 | Phase 25 | Pending |
+| TMPL-03 | Phase 25 | Pending |
+| TMPL-04 | Phase 25 | Pending |
 
 **Coverage:**
 - v4.0 requirements: 32 total
-- Mapped to phases: 0
-- Unmapped: 32
+- Mapped to phases: 32
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-13*
-*Last updated: 2026-04-13 after initial definition*
+*Last updated: 2026-04-13 after roadmap creation -- all requirements mapped to phases*

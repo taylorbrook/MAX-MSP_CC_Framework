@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-04-13)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 20 of 25 (DB Schema Foundation) -- ready to plan
 Plan: --
-Status: Defining requirements
-Last activity: 2026-04-13 — Milestone v4.0 started
+Status: Ready to plan
+Last activity: 2026-04-13 -- Roadmap finalized for v4.0
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -36,7 +36,10 @@ Progress: [░░░░░░░░░░] 0%
 
 ### Decisions
 
-Decisions archived in PROJECT.md Key Decisions table.
+- Per-patch package gating (locked): packages approved per-patch via `/max-build` and `/max-iterate`, not per-project
+- Per-package subdirectories: `packages/beap/objects.json` etc., not monolithic
+- Dual extraction pipelines: XML for compiled externals, new AbstractionExtractor for bpatcher packages
+- Stub entries for uninstalled community packages: warn-only, never block
 
 ### Pending Todos
 
