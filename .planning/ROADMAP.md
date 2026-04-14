@@ -63,14 +63,14 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
   - Package field added to all objects, package registry created, ObjectDatabase API extended
   - **Requirements:** PKG-01, PKG-02, PKG-03, PKG-04
 
-- [ ] Phase 21: Bundled Package Extraction (BEAP + Vizzie)
+- [x] Phase 21: Bundled Package Extraction (BEAP + Vizzie) (completed 2026-04-14)
   - **Goal:** Extract BEAP and Vizzie abstractions into the object DB using a new abstraction parser
   - Build `extract_abstractions.py` for bpatcher-based packages, extract ~192 BEAP + ~110 Vizzie modules, also extract Jitter Geometry + Jitter Tools via XML pipeline
   - **Plans:** 3 plans
   - Plans:
-    - [ ] 21-01-PLAN.md — Build extract_abstractions.py and extract BEAP + Vizzie into DB
-    - [ ] 21-02-PLAN.md — Extend extract_objects.py for Jitter Geometry + Jitter Tools extraction
-    - [ ] 21-03-PLAN.md — Verification tests, I/O cross-checks, and registry updates
+    - [x] 21-01-PLAN.md — Build extract_abstractions.py and extract BEAP + Vizzie into DB
+    - [x] 21-02-PLAN.md — Extend extract_objects.py for Jitter Geometry + Jitter Tools extraction
+    - [x] 21-03-PLAN.md — Verification tests, I/O cross-checks, and registry updates
   - **Requirements:** PKG-05, PKG-06, PKG-07, PKG-08
 
 - [ ] Phase 22: Package-Gated Generation
@@ -120,7 +120,7 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
 | 18. v1.x Cleanup | v3.0.0 | 2/2 | Complete | 2026-03-16 |
 | 19. Tech Debt Cleanup | v3.0.0 | 1/1 | Complete | 2026-03-17 |
 | 20. DB Schema Foundation | v4.0 | 2/2 | Complete | 2026-04-13 |
-| 21. Bundled Package Extraction | v4.0 | 0/3 | Planned | - |
+| 21. Bundled Package Extraction | v4.0 | 3/3 | Complete    | 2026-04-14 |
 | 22. Package-Gated Generation | v4.0 | 0/0 | Planned | - |
 | 23. Agent Package Intelligence | v4.0 | 0/0 | Planned | - |
 | 24. Community Package Support | v4.0 | 0/0 | Planned | - |
