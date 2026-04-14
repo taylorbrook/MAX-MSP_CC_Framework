@@ -1,0 +1,663 @@
+{
+  "jit.bang": {
+    "name": "jit.bang",
+    "maxclass": "jit.bang",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo,  Time",
+    "digest": "Output a frame bang",
+    "description": "Outputs a bang every time a frame is rendered by the attached context.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "update"
+    ],
+    "attributes": {
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.time",
+      "jit.line",
+      "jit.framecount"
+    ],
+    "tags": [
+      "jit.mo",
+      "Time"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
+  "jit.framecount": {
+    "name": "jit.framecount",
+    "maxclass": "jit.framecount",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo,  Time",
+    "digest": "Output a frame count",
+    "description": "Outputs the count of frames as they are rendered by the attached context.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "reset",
+      "update"
+    ],
+    "attributes": {
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.time",
+      "jit.line",
+      "jit.bang"
+    ],
+    "tags": [
+      "jit.mo",
+      "Time"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
+  "jit.line": {
+    "name": "jit.line",
+    "maxclass": "jit.line",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo,  Time",
+    "digest": "Generate timed ramp synched with render context",
+    "description": "Generate ramps and line segements from one value to another within a specified amount of time, and output in synch with and timed by an external render context. jit.line functions as a drop in replacement for standard Max line object, but removes stuttering associated with unsynched output between the line timer and context frames.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "int",
+      "float",
+      "list",
+      "reset",
+      "update"
+    ],
+    "attributes": {
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "targetname": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "timevalue": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "ui_priority": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.time",
+      "jit.bang",
+      "jit.framecount",
+      "line"
+    ],
+    "tags": [
+      "jit.mo",
+      "Time"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
+  "jit.mo.field": {
+    "name": "jit.mo.field",
+    "maxclass": "jit.mo.field",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo,  Manipulators",
+    "digest": "Field manipulator for 3 plane jit.mo streams",
+    "description": "Field manipulator for 3 plane jit.mo streams. Deforms position output depending on distance from a defined spatial location. Can be used for sculpting effects and gravity-like animations.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "rand"
+    ],
+    "attributes": {
+      "location": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "falloff": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "translate": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "radius": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "rand_amt": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "force": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.join",
+      "jit.mo.func",
+      "jit.mo.time"
+    ],
+    "tags": [
+      "jit.mo",
+      "Manipulators"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
+  "jit.mo.fieldmask": {
+    "name": "jit.mo.fieldmask",
+    "maxclass": "jit.mo.fieldmask",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo, Manipulators",
+    "digest": "Field mask for 3 plane jit.mo streams",
+    "description": "Field mask for 3 plane jit.mo streams. Calculates a mask value depending on distance from a defined spatial location. Can be used to perform arbitrary manipulations based on location",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "scale": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "location": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "falloff": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "offset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "radius": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.join",
+      "jit.mo.func",
+      "jit.mo.time",
+      "jit.mo.field"
+    ],
+    "tags": [
+      "jit.mo",
+      "Manipulators"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
+  "jit.mo.func": {
+    "name": "jit.mo.func",
+    "maxclass": "jit.mo.func",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo,  Generators",
+    "digest": "Generate animated single dim matrices using a specified function",
+    "description": "Generate animated single dim matrices using a specified function. Similar in nature to a sound oscillator, jit.mo.func can generate time-varying cell values across a matrix based on a given function.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "Dimension",
+        "type": "number",
+        "optional": true,
+        "digest": "Set the dimension (number of elements) of the output matrix"
+      }
+    ],
+    "messages": [
+      "rand"
+    ],
+    "attributes": {
+      "rand_amt": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "start": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "join": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "function": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "delta": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "offset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "loop": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "phase": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "period": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "scale": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "end": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "speed": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "loopreport": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "freq": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.join",
+      "jit.mo.field",
+      "jit.mo.time",
+      "jit.anim.drive",
+      "jit.anim.path"
+    ],
+    "tags": [
+      "jit.mo",
+      "Generators"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
+  "jit.mo.join": {
+    "name": "jit.mo.join",
+    "maxclass": "jit.mo.join",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo,  Generators",
+    "digest": "Combine jit.mo streams and output a multi-plane matrix",
+    "description": "Combine jit.mo streams and output a multi-plane matrix. Automatically connects to jit.world to drive animations. Inputs add multiple jit.mo/matrix inputs for additive control.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "Inlet Count",
+        "type": "number",
+        "optional": true,
+        "digest": "Set the number of inlets and planecount of output"
+      },
+      {
+        "name": "Dimension",
+        "type": "number",
+        "optional": true,
+        "digest": "Set the dimension (number of elements) of the output matrix and any attached"
+      }
+    ],
+    "messages": [],
+    "attributes": {
+      "fixed_delta": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "interval": {
+        "type": "time",
+        "get": true,
+        "set": true
+      },
+      "scale": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "speed": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.func",
+      "jit.mo.field",
+      "jit.mo.time",
+      "jit.anim.path",
+      "jit.world"
+    ],
+    "tags": [
+      "jit.mo",
+      "Generators"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
+  "jit.mo.sin": {
+    "name": "jit.mo.sin",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "Jitter Gen",
+    "digest": "Motion sine generator",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      },
+      {
+        "id": 1,
+        "type": "",
+        "signal": false,
+        "digest": "Control output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "Motion",
+      "Generator"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
+  "jit.mo.time": {
+    "name": "jit.mo.time",
+    "maxclass": "jit.mo.time",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo,  Time",
+    "digest": "Outputs float time values using specified mode for realtime animation",
+    "description": "Outputs float time values using specified mode for realtime animation. Can be used to generate control functions in sync with other jit.world and jit.mo objects, time delta between frames, or accumulated running time.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "update",
+      "reset"
+    ],
+    "attributes": {
+      "timevalue": {
+        "type": "float64",
+        "get": true,
+        "set": false
+      },
+      "start": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "offset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "loop": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "phase": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "freq": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "delta": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "function": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "period": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "end": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "scale": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "interval": {
+        "type": "time",
+        "get": true,
+        "set": true
+      },
+      "speed": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "loopreport": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "rand_amt": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.join",
+      "jit.mo.field",
+      "jit.mo.func",
+      "jit.anim.drive"
+    ],
+    "tags": [
+      "jit.mo",
+      "Time"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  }
+}
