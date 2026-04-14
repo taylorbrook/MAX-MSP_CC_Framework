@@ -41,8 +41,8 @@ class TestPackageObjectSchema:
                 )
 
     def test_per_package_directories(self, db_root):
-        """DBSI-05: packages/ableton-dsp/, packages/Mira/, packages/jit.mo/ exist with objects.json."""
-        expected = ["ableton-dsp", "Mira", "jit.mo"]
+        """DBSI-05: All extracted packages have directories with objects.json."""
+        expected = ["ableton-dsp", "Mira", "jit.mo", "BEAP", "Vizzie", "Jitter Geometry", "Jitter Tools"]
         for pkg_name in expected:
             pkg_dir = db_root / "packages" / pkg_name
             assert pkg_dir.is_dir(), f"Package directory '{pkg_name}' does not exist"
@@ -50,7 +50,7 @@ class TestPackageObjectSchema:
             assert json_path.exists(), f"Package '{pkg_name}' missing objects.json"
 
     def test_migration_completeness(self, db_root):
-        """DBSI-06: Total objects across per-package dirs = 88, monolithic file does not exist."""
+        """DBSI-06: Total objects across per-package dirs >= 400 (BEAP+Vizzie+Jitter+existing)."""
         pkg_root = db_root / "packages"
         total = 0
         for pkg_dir in sorted(pkg_root.iterdir()):
@@ -60,9 +60,7 @@ class TestPackageObjectSchema:
             if json_path.exists():
                 data = json.loads(json_path.read_text())
                 total += len(data)
-        assert total == 88, f"Expected 88 total package objects, got {total}"
-        # Monolithic file should not be loaded by ObjectDatabase
-        # (it may still exist on disk during transition, but DB must use subdirs)
+        assert total >= 400, f"Expected >= 400 total package objects (BEAP+Vizzie+Jitter+existing), got {total}"
 
 
 class TestPackageInfoSchema:
@@ -182,6 +180,28 @@ class TestPackageAPI:
     def test_get_package_info_unknown(self, db):
         """get_package_info() returns None for unknown package."""
         assert db.get_package_info("nonexistent") is None
+
+    # --- Migration verification ---
+
+    def test_beap_package_objects(self, db):
+        """BEAP objects accessible via get_package_objects."""
+        objs = db.get_package_objects("BEAP")
+        assert len(objs) >= 180
+
+    def test_vizzie_package_objects(self, db):
+        """Vizzie objects accessible via get_package_objects."""
+        objs = db.get_package_objects("Vizzie")
+        assert len(objs) >= 100
+
+    def test_jitter_geometry_package_objects(self, db):
+        """Jitter Geometry objects accessible via get_package_objects."""
+        objs = db.get_package_objects("Jitter Geometry")
+        assert len(objs) >= 25
+
+    def test_jitter_tools_package_objects(self, db):
+        """Jitter Tools objects accessible via get_package_objects."""
+        objs = db.get_package_objects("Jitter Tools")
+        assert len(objs) >= 90
 
     # --- Migration verification ---
 

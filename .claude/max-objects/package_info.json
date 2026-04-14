@@ -56,8 +56,8 @@
     "version": "1.0",
     "install_method": "bundled",
     "description": "BPATCHER Electro-Acoustic Patching -- modular synthesis modules",
-    "object_count": 0,
-    "extracted": false
+    "object_count": 185,
+    "extracted": true
   },
   "Vizzie": {
     "name": "Vizzie",
@@ -66,8 +66,8 @@
     "version": "2.0",
     "install_method": "bundled",
     "description": "Video processing and effects modules",
-    "object_count": 0,
-    "extracted": false
+    "object_count": 110,
+    "extracted": true
   },
   "RNBO Guitar": {
     "name": "RNBO Guitar",
