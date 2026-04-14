@@ -1030,6 +1030,10 @@ def extract_all(c74_root: Path, domain_filter: str | None = None, dry_run: bool 
         if pkg_name:
             if pkg_name not in package_buckets:
                 package_buckets[pkg_name] = {}
+            # Ensure rnbo_compatible field exists (merge_sources.py adds it
+            # for domain files, but per-package output bypasses that step)
+            if "rnbo_compatible" not in obj:
+                obj["rnbo_compatible"] = False
             package_buckets[pkg_name][name] = obj
 
         # Track stats
@@ -1107,6 +1111,11 @@ def write_output(result: dict, output_root: Path, domain_filter: str | None = No
                     for obj_name, obj in objects.items():
                         if obj_name not in merged:
                             merged[obj_name] = obj
+                        else:
+                            # Backfill missing fields from new extraction
+                            for k, v in obj.items():
+                                if k not in merged[obj_name]:
+                                    merged[obj_name][k] = v
                     objects = merged
             except (json.JSONDecodeError, OSError):
                 pass  # Overwrite if unreadable

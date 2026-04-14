@@ -273,7 +273,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "VIDDLL"
+    "package": "VIDDLL",
+    "rnbo_compatible": false
   },
   "jit.movie~": {
     "name": "jit.movie~",
@@ -537,7 +538,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "VIDDLL"
+    "package": "VIDDLL",
+    "rnbo_compatible": false
   },
   "jit.record": {
     "name": "jit.record",
@@ -667,6 +669,7 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "VIDDLL"
+    "package": "VIDDLL",
+    "rnbo_compatible": false
   }
 }

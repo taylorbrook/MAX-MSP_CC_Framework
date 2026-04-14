@@ -46,7 +46,8 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.close": {
     "name": "jit.geom.close",
@@ -97,7 +98,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.crop": {
     "name": "jit.geom.crop",
@@ -168,7 +170,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.decimate": {
     "name": "jit.geom.decimate",
@@ -219,7 +222,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.dimples": {
     "name": "jit.geom.dimples",
@@ -273,7 +277,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.displace": {
     "name": "jit.geom.displace",
@@ -349,7 +354,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.distribute": {
     "name": "jit.geom.distribute",
@@ -410,7 +416,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.join": {
     "name": "jit.geom.join",
@@ -456,7 +463,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.multiple": {
     "name": "jit.geom.multiple",
@@ -522,7 +530,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.normalize": {
     "name": "jit.geom.normalize",
@@ -570,7 +579,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.normgen": {
     "name": "jit.geom.normgen",
@@ -627,7 +637,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.prop": {
     "name": "jit.geom.prop",
@@ -678,7 +689,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.remesh": {
     "name": "jit.geom.remesh",
@@ -731,7 +743,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.shape": {
     "name": "jit.geom.shape",
@@ -817,7 +830,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.smooth": {
     "name": "jit.geom.smooth",
@@ -870,7 +884,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.subdivide": {
     "name": "jit.geom.subdivide",
@@ -928,7 +943,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.texgen": {
     "name": "jit.geom.texgen",
@@ -985,7 +1001,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.thru": {
     "name": "jit.geom.thru",
@@ -1031,7 +1048,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.todict": {
     "name": "jit.geom.todict",
@@ -1085,7 +1103,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.togeom": {
     "name": "jit.geom.togeom",
@@ -1139,7 +1158,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.tomatrix": {
     "name": "jit.geom.tomatrix",
@@ -1200,7 +1220,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.tomesh": {
     "name": "jit.geom.tomesh",
@@ -1264,7 +1285,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.twist": {
     "name": "jit.geom.twist",
@@ -1338,7 +1360,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.waves": {
     "name": "jit.geom.waves",
@@ -1427,7 +1450,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geom.xform": {
     "name": "jit.geom.xform",
@@ -1629,7 +1653,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   },
   "jit.geometry": {
     "name": "jit.geometry",
@@ -1693,6 +1718,7 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Geometry"
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
   }
 }

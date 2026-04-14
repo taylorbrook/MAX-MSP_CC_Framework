@@ -71,7 +71,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Mira"
+    "package": "Mira",
+    "rnbo_compatible": false
   },
   "mira.motion": {
     "name": "mira.motion",

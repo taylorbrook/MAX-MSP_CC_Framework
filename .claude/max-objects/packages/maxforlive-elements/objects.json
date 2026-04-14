@@ -139,7 +139,8 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "package": "maxforlive-elements"
+    "package": "maxforlive-elements",
+    "rnbo_compatible": false
   },
   "live.adsr~": {
     "name": "live.adsr~",
@@ -249,7 +250,8 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "package": "maxforlive-elements"
+    "package": "maxforlive-elements",
+    "rnbo_compatible": false
   },
   "live.scope~": {
     "name": "live.scope~",
@@ -384,6 +386,7 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "package": "maxforlive-elements"
+    "package": "maxforlive-elements",
+    "rnbo_compatible": false
   }
 }

@@ -96,7 +96,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.altern": {
     "name": "jit.fx.altern",
@@ -190,7 +191,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.ameba": {
     "name": "jit.fx.ameba",
@@ -284,7 +286,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.an.max": {
     "name": "jit.fx.an.max",
@@ -356,7 +359,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.an.mean": {
     "name": "jit.fx.an.mean",
@@ -428,7 +432,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.an.min": {
     "name": "jit.fx.an.min",
@@ -500,7 +505,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.bitcrush": {
     "name": "jit.fx.bitcrush",
@@ -589,7 +595,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.blur": {
     "name": "jit.fx.blur",
@@ -684,7 +691,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.brass": {
     "name": "jit.fx.brass",
@@ -784,7 +792,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.brcosa": {
     "name": "jit.fx.brcosa",
@@ -883,7 +892,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.bsort": {
     "name": "jit.fx.bsort",
@@ -971,7 +981,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.camera": {
     "name": "jit.fx.camera",
@@ -1086,7 +1097,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.cf.bilateral": {
     "name": "jit.fx.cf.bilateral",
@@ -1151,7 +1163,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.cf.directional": {
     "name": "jit.fx.cf.directional",
@@ -1237,7 +1250,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.cf.gaussian": {
     "name": "jit.fx.cf.gaussian",
@@ -1318,7 +1332,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.cf.kuwahara": {
     "name": "jit.fx.cf.kuwahara",
@@ -1414,7 +1429,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.cf.radial": {
     "name": "jit.fx.cf.radial",
@@ -1505,7 +1521,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.cf.sharpen": {
     "name": "jit.fx.cf.sharpen",
@@ -1575,7 +1592,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.cf.tiltshift": {
     "name": "jit.fx.cf.tiltshift",
@@ -1676,7 +1694,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.accum": {
     "name": "jit.fx.co.accum",
@@ -1773,7 +1792,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.additive": {
     "name": "jit.fx.co.additive",
@@ -1870,7 +1890,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.alphablend": {
     "name": "jit.fx.co.alphablend",
@@ -1967,7 +1988,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.average": {
     "name": "jit.fx.co.average",
@@ -2064,7 +2086,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.brightlight": {
     "name": "jit.fx.co.brightlight",
@@ -2161,7 +2184,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.burn": {
     "name": "jit.fx.co.burn",
@@ -2258,7 +2282,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.chromakey": {
     "name": "jit.fx.co.chromakey",
@@ -2380,7 +2405,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.darken": {
     "name": "jit.fx.co.darken",
@@ -2477,7 +2503,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.difference": {
     "name": "jit.fx.co.difference",
@@ -2574,7 +2601,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.dodge": {
     "name": "jit.fx.co.dodge",
@@ -2671,7 +2699,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.exclude": {
     "name": "jit.fx.co.exclude",
@@ -2768,7 +2797,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.freeze": {
     "name": "jit.fx.co.freeze",
@@ -2865,7 +2895,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.glow": {
     "name": "jit.fx.co.glow",
@@ -2962,7 +2993,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.hardlight": {
     "name": "jit.fx.co.hardlight",
@@ -3059,7 +3091,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.heat": {
     "name": "jit.fx.co.heat",
@@ -3156,7 +3189,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.inverse": {
     "name": "jit.fx.co.inverse",
@@ -3253,7 +3287,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.lighten": {
     "name": "jit.fx.co.lighten",
@@ -3350,7 +3385,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.lumakey": {
     "name": "jit.fx.co.lumakey",
@@ -3477,7 +3513,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.multiply": {
     "name": "jit.fx.co.multiply",
@@ -3574,7 +3611,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.negate": {
     "name": "jit.fx.co.negate",
@@ -3671,7 +3709,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.normal": {
     "name": "jit.fx.co.normal",
@@ -3768,7 +3807,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.overlay": {
     "name": "jit.fx.co.overlay",
@@ -3865,7 +3905,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.reflect": {
     "name": "jit.fx.co.reflect",
@@ -3962,7 +4003,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.screen": {
     "name": "jit.fx.co.screen",
@@ -4059,7 +4101,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.softlight": {
     "name": "jit.fx.co.softlight",
@@ -4156,7 +4199,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.stamp": {
     "name": "jit.fx.co.stamp",
@@ -4253,7 +4297,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.co.subtractive": {
     "name": "jit.fx.co.subtractive",
@@ -4350,7 +4395,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.concat": {
     "name": "jit.fx.concat",
@@ -4430,7 +4476,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.conway": {
     "name": "jit.fx.conway",
@@ -4525,7 +4572,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.crt": {
     "name": "jit.fx.crt",
@@ -4664,7 +4712,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.delay": {
     "name": "jit.fx.delay",
@@ -4769,7 +4818,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.dimmap": {
     "name": "jit.fx.dimmap",
@@ -4857,7 +4907,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.eclipse": {
     "name": "jit.fx.eclipse",
@@ -4958,7 +5009,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.ge.flowfield": {
     "name": "jit.fx.ge.flowfield",
@@ -5071,7 +5123,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.ge.lineinterp": {
     "name": "jit.fx.ge.lineinterp",
@@ -5169,7 +5222,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.ge.pattern": {
     "name": "jit.fx.ge.pattern",
@@ -5297,7 +5351,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.ge.randlines": {
     "name": "jit.fx.ge.randlines",
@@ -5395,7 +5450,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.grain": {
     "name": "jit.fx.grain",
@@ -5494,7 +5550,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.hue": {
     "name": "jit.fx.hue",
@@ -5578,7 +5635,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.lin2srgb": {
     "name": "jit.fx.lin2srgb",
@@ -5645,7 +5703,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.multiplex": {
     "name": "jit.fx.multiplex",
@@ -5720,7 +5779,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.pixelsorting": {
     "name": "jit.fx.pixelsorting",
@@ -5835,7 +5895,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.repos": {
     "name": "jit.fx.repos",
@@ -5941,7 +6002,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.rgb2luma": {
     "name": "jit.fx.rgb2luma",
@@ -6028,7 +6090,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.rota": {
     "name": "jit.fx.rota",
@@ -6143,7 +6206,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.slide": {
     "name": "jit.fx.slide",
@@ -6243,7 +6307,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.sobel": {
     "name": "jit.fx.sobel",
@@ -6327,7 +6392,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.srgb2lin": {
     "name": "jit.fx.srgb2lin",
@@ -6394,7 +6460,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.subtexture": {
     "name": "jit.fx.subtexture",
@@ -6472,7 +6539,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.threshold": {
     "name": "jit.fx.threshold",
@@ -6561,7 +6629,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tp.delay": {
     "name": "jit.fx.tp.delay",
@@ -6648,7 +6717,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tp.filter": {
     "name": "jit.fx.tp.filter",
@@ -6725,7 +6795,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tp.warp": {
     "name": "jit.fx.tp.warp",
@@ -6794,7 +6865,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.dissolve": {
     "name": "jit.fx.tr.dissolve",
@@ -6883,7 +6955,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.gridwipe": {
     "name": "jit.fx.tr.gridwipe",
@@ -6982,7 +7055,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.huefade": {
     "name": "jit.fx.tr.huefade",
@@ -7072,7 +7146,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.rotfade": {
     "name": "jit.fx.tr.rotfade",
@@ -7177,7 +7252,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.shrinkwipe": {
     "name": "jit.fx.tr.shrinkwipe",
@@ -7271,7 +7347,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.slide": {
     "name": "jit.fx.tr.slide",
@@ -7376,7 +7453,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.vignettes": {
     "name": "jit.fx.tr.vignettes",
@@ -7470,7 +7548,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.xfade": {
     "name": "jit.fx.tr.xfade",
@@ -7549,7 +7628,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.tr.zoomfade": {
     "name": "jit.fx.tr.zoomfade",
@@ -7654,7 +7734,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.vhs": {
     "name": "jit.fx.vhs",
@@ -7753,7 +7834,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.fx.wake": {
     "name": "jit.fx.wake",
@@ -7863,7 +7945,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.gl.buffer": {
     "name": "jit.gl.buffer",
@@ -7949,7 +8032,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.gl.environment": {
     "name": "jit.gl.environment",
@@ -8054,7 +8138,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.gl.meshwarp": {
     "name": "jit.gl.meshwarp",
@@ -8208,7 +8293,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.gl.pbr": {
     "name": "jit.gl.pbr",
@@ -8495,7 +8581,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.gl.textmult": {
     "name": "jit.gl.textmult",
@@ -8581,7 +8668,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.gl.textureset": {
     "name": "jit.gl.textureset",
@@ -8640,7 +8728,8 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.gl.tf": {
     "name": "jit.gl.tf",
@@ -8733,7 +8822,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.gradient.ui": {
     "name": "jit.gradient.ui",
@@ -8766,7 +8856,8 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.polymovie": {
     "name": "jit.polymovie",
@@ -8844,7 +8935,8 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.ui.button": {
     "name": "jit.ui.button",
@@ -9106,7 +9198,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.ui.canvas": {
     "name": "jit.ui.canvas",
@@ -9383,7 +9476,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.ui.group": {
     "name": "jit.ui.group",
@@ -9680,7 +9774,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.ui.number": {
     "name": "jit.ui.number",
@@ -9952,7 +10047,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.ui.slider": {
     "name": "jit.ui.slider",
@@ -10274,7 +10370,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "jit.ui.toggle": {
     "name": "jit.ui.toggle",
@@ -10561,7 +10658,8 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   },
   "v8": {
     "name": "v8",
@@ -10611,6 +10709,7 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "Jitter Tools"
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
   }
 }
