@@ -16,7 +16,7 @@
     "version": "1.3",
     "install_method": "bundled",
     "description": "iPad remote control for MAX patches",
-    "object_count": 2,
+    "object_count": 3,
     "extracted": true
   },
   "jit.mo": {
@@ -27,6 +27,26 @@
     "install_method": "bundled",
     "description": "Jitter motion and animation utilities",
     "object_count": 9,
+    "extracted": true
+  },
+  "Jitter Geometry": {
+    "name": "Jitter Geometry",
+    "tier": "bundled",
+    "prefix": "jit.geom.",
+    "version": "9.0",
+    "install_method": "bundled",
+    "description": "Jitter geometry manipulation and deformation objects",
+    "object_count": 26,
+    "extracted": true
+  },
+  "Jitter Tools": {
+    "name": "Jitter Tools",
+    "tier": "bundled",
+    "prefix": "jit.",
+    "version": "9.0",
+    "install_method": "bundled",
+    "description": "Additional Jitter rendering, effects, and utility objects",
+    "object_count": 99,
     "extracted": true
   },
   "BEAP": {

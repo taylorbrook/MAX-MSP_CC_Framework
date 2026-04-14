@@ -1,4 +1,78 @@
 {
+  "mira.frame": {
+    "name": "mira.frame",
+    "maxclass": "mira.frame",
+    "module": "max",
+    "domain": "Max",
+    "category": "Mira",
+    "digest": "Mirror your Max patcher on your iPad",
+    "description": "Mira.frame defines a rectangle in the Max patcher that will be mirrored on connected iPad devices. Any Mira-supported objects that fall within the rectangle will be visible on the iPad. Multiple mira.frame objects will be rendered on the iPad as separate tabs. When a mira.frame object exists in a patcher, all Mira-supported objects in the patcher are automatically assigned a scripting name.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "I am inlet 0",
+        "hot": true
+      }
+    ],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "OBJARG_NAME",
+        "type": "OBJARG_TYPE",
+        "optional": false,
+        "digest": "TEXT_HERE"
+      }
+    ],
+    "messages": [
+      "focus"
+    ],
+    "attributes": {
+      "aspect": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "draw_tab_name": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "miraweb_aspect": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "orientation": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "tabname": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "taborder": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "mira.motion",
+      "mira.multitouch",
+      "mira.status"
+    ],
+    "tags": [
+      "Mira"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Mira"
+  },
   "mira.motion": {
     "name": "mira.motion",
     "maxclass": "mira.motion",

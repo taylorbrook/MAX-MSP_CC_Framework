@@ -46,6 +46,8 @@ PACKAGE_GLOBS = [
     "packages/maxforlive-elements",
     "packages/mira",
     "packages/VIDDLL",
+    "packages/Jitter Geometry",    # 27 XML refpages
+    "packages/Jitter Tools",       # 99 XML refpages (16 top-level + 83 in jit.fx/)
 ]
 
 # Inlet/outlet type normalization map
@@ -904,8 +906,8 @@ def parse_rnbo_xml(filepath: Path) -> dict | None:
 # Discovery
 # ---------------------------------------------------------------------------
 
-def discover_xml_files(c74_root: Path, domain_filter: str | None = None) -> list[tuple[Path, str, str]]:
-    """Discover all .maxref.xml files, returning (path, module_hint, domain_hint) tuples."""
+def discover_xml_files(c74_root: Path, domain_filter: str | None = None) -> list[tuple[Path, str, str, str]]:
+    """Discover all .maxref.xml files, returning (path, module_hint, domain_hint, pkg_name) tuples."""
     files = []
 
     for rel_dir, module_hint, domain_hint in SOURCE_DIRS:
@@ -914,15 +916,16 @@ def discover_xml_files(c74_root: Path, domain_filter: str | None = None) -> list
         full_dir = c74_root / rel_dir
         if full_dir.exists():
             for xml_file in sorted(full_dir.glob("*.maxref.xml")):
-                files.append((xml_file, module_hint, domain_hint))
+                files.append((xml_file, module_hint, domain_hint, ""))
 
     # Package directories
     if not domain_filter or domain_filter.lower() == "packages":
         for pkg_glob in PACKAGE_GLOBS:
             pkg_dir = c74_root / pkg_glob
+            pkg_name = Path(pkg_glob).name  # "Jitter Geometry", "ableton-dsp", etc.
             if pkg_dir.exists():
                 for xml_file in sorted(pkg_dir.rglob("*.maxref.xml")):
-                    files.append((xml_file, "", "Packages"))
+                    files.append((xml_file, "", "Packages", pkg_name))
 
     return files
 
@@ -943,7 +946,7 @@ def extract_all(c74_root: Path, domain_filter: str | None = None, dry_run: bool 
     if dry_run:
         # Count files per source
         counts = defaultdict(int)
-        for _, _, domain in xml_files:
+        for _, _, domain, _ in xml_files:
             counts[domain] += 1
         total = sum(counts.values())
         print(f"Dry run: found {total} .maxref.xml files")
@@ -978,7 +981,10 @@ def extract_all(c74_root: Path, domain_filter: str | None = None, dry_run: bool 
         "max_installation_path": str(c74_root),
     }
 
-    for filepath, module_hint, domain_hint in xml_files:
+    # Per-package buckets for per-package output routing
+    package_buckets: dict[str, dict] = {}
+
+    for filepath, module_hint, domain_hint, pkg_name in xml_files:
         # Route to appropriate parser
         if domain_hint == "Gen":
             obj = parse_gen_xml(filepath, module_hint)
@@ -999,6 +1005,10 @@ def extract_all(c74_root: Path, domain_filter: str | None = None, dry_run: bool 
         if not name:
             continue
 
+        # Tag with package name if from a package
+        if pkg_name:
+            obj["package"] = pkg_name
+
         domain = obj.get("domain", "")
 
         # Route to correct bucket
@@ -1016,6 +1026,12 @@ def extract_all(c74_root: Path, domain_filter: str | None = None, dry_run: bool 
         domain_buckets[bucket_key][name] = obj
         stats["total_objects"] += 1
 
+        # Also route to per-package bucket when from a package
+        if pkg_name:
+            if pkg_name not in package_buckets:
+                package_buckets[pkg_name] = {}
+            package_buckets[pkg_name][name] = obj
+
         # Track stats
         if obj.get("variable_io"):
             stats["variable_io_count"] += 1
@@ -1028,18 +1044,73 @@ def extract_all(c74_root: Path, domain_filter: str | None = None, dry_run: bool 
     for key, bucket in domain_buckets.items():
         stats["domain_counts"][key] = len(bucket)
 
-    return {"domains": domain_buckets, "log": stats}
+    return {"domains": domain_buckets, "package_buckets": package_buckets, "log": stats}
 
 
-def write_output(result: dict, output_root: Path) -> None:
-    """Write domain JSON files and extraction log."""
+def write_output(result: dict, output_root: Path, domain_filter: str | None = None) -> None:
+    """Write domain JSON files and extraction log.
+
+    When per-package routing is active (package_buckets non-empty) and the domain
+    filter is 'packages', only per-package subdirectory files are written -- domain-level
+    files are skipped to avoid overwriting complete domain databases with partial data
+    from cross-domain package objects.
+    """
     output_root.mkdir(parents=True, exist_ok=True)
 
-    for domain_key, objects in result["domains"].items():
-        domain_dir = output_root / domain_key
-        domain_dir.mkdir(parents=True, exist_ok=True)
-        json_path = domain_dir / "objects.json"
-        # Sort objects by name for deterministic output
+    pkg_buckets = result.get("package_buckets", {})
+    packages_only = pkg_buckets and domain_filter and domain_filter.lower() == "packages"
+
+    if not packages_only:
+        for domain_key, objects in result["domains"].items():
+            if not objects:
+                continue
+            # When per-package routing is active, skip the monolithic packages/objects.json
+            if domain_key == "packages" and pkg_buckets:
+                continue
+            domain_dir = output_root / domain_key
+            domain_dir.mkdir(parents=True, exist_ok=True)
+            json_path = domain_dir / "objects.json"
+            sorted_objects = dict(sorted(objects.items()))
+            json_path.write_text(
+                json.dumps(sorted_objects, indent=2, ensure_ascii=False) + "\n"
+            )
+            print(f"  Wrote {len(objects)} objects to {json_path}")
+
+    # Per-package output (only writes packages that have objects in this run)
+    # Merge with existing per-package files to preserve manual curation (e.g., live.* in ableton-dsp)
+    for pkg_name, objects in pkg_buckets.items():
+        # Find the actual directory name on disk (handles case mismatches on macOS)
+        pkg_parent = output_root / "packages"
+        pkg_parent.mkdir(parents=True, exist_ok=True)
+        # Check existing directory names for case-insensitive match
+        actual_dir_name = pkg_name
+        for existing_dir in pkg_parent.iterdir():
+            if existing_dir.is_dir() and existing_dir.name.lower() == pkg_name.lower():
+                actual_dir_name = existing_dir.name
+                break
+        pkg_dir = pkg_parent / actual_dir_name
+        pkg_dir.mkdir(parents=True, exist_ok=True)
+        json_path = pkg_dir / "objects.json"
+
+        # Ensure package field matches actual directory name
+        for obj in objects.values():
+            if "package" in obj:
+                obj["package"] = actual_dir_name
+
+        # If file already exists, merge new objects without overwriting curated entries
+        if json_path.exists():
+            try:
+                existing = json.loads(json_path.read_text())
+                if isinstance(existing, dict) and existing:
+                    # Add only objects not already present (curated entries take precedence)
+                    merged = dict(existing)
+                    for obj_name, obj in objects.items():
+                        if obj_name not in merged:
+                            merged[obj_name] = obj
+                    objects = merged
+            except (json.JSONDecodeError, OSError):
+                pass  # Overwrite if unreadable
+
         sorted_objects = dict(sorted(objects.items()))
         json_path.write_text(
             json.dumps(sorted_objects, indent=2, ensure_ascii=False) + "\n"
@@ -1104,7 +1175,7 @@ def main():
         for domain, count in sorted(log["domain_counts"].items()):
             print(f"    {domain}: {count}")
 
-        write_output(result, args.output)
+        write_output(result, args.output, domain_filter=args.domain)
         print(f"\nDone.")
 
 
