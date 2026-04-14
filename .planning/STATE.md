@@ -20,13 +20,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** v4.0 Package Integration -- Phase 21 next
+**Current focus:** v4.0 Package Integration -- Phase 22 next
 
 ## Current Position
 
-Phase: 27
+Phase: 22
 Plan: Not started
-Status: Phase 20 complete, Phase 21 (Bundled Package Extraction) next
+Status: Phase 21 complete, Phase 22 (Package-Gated Generation) next
 Last activity: 2026-04-14
 
 Progress: [██░░░░░░░░] 17%
