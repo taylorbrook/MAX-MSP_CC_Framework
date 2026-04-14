@@ -1079,9 +1079,23 @@ def write_output(result: dict, output_root: Path, domain_filter: str | None = No
     # Per-package output (only writes packages that have objects in this run)
     # Merge with existing per-package files to preserve manual curation (e.g., live.* in ableton-dsp)
     for pkg_name, objects in pkg_buckets.items():
-        pkg_dir = output_root / "packages" / pkg_name
+        # Find the actual directory name on disk (handles case mismatches on macOS)
+        pkg_parent = output_root / "packages"
+        pkg_parent.mkdir(parents=True, exist_ok=True)
+        # Check existing directory names for case-insensitive match
+        actual_dir_name = pkg_name
+        for existing_dir in pkg_parent.iterdir():
+            if existing_dir.is_dir() and existing_dir.name.lower() == pkg_name.lower():
+                actual_dir_name = existing_dir.name
+                break
+        pkg_dir = pkg_parent / actual_dir_name
         pkg_dir.mkdir(parents=True, exist_ok=True)
         json_path = pkg_dir / "objects.json"
+
+        # Ensure package field matches actual directory name
+        for obj in objects.values():
+            if "package" in obj:
+                obj["package"] = actual_dir_name
 
         # If file already exists, merge new objects without overwriting curated entries
         if json_path.exists():
@@ -1090,9 +1104,9 @@ def write_output(result: dict, output_root: Path, domain_filter: str | None = No
                 if isinstance(existing, dict) and existing:
                     # Add only objects not already present (curated entries take precedence)
                     merged = dict(existing)
-                    for name, obj in objects.items():
-                        if name not in merged:
-                            merged[name] = obj
+                    for obj_name, obj in objects.items():
+                        if obj_name not in merged:
+                            merged[obj_name] = obj
                     objects = merged
             except (json.JSONDecodeError, OSError):
                 pass  # Overwrite if unreadable

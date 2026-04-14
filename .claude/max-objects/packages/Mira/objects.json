@@ -71,7 +71,7 @@
     "min_version": 8,
     "verified": true,
     "variable_io": false,
-    "package": "mira"
+    "package": "Mira"
   },
   "mira.motion": {
     "name": "mira.motion",
