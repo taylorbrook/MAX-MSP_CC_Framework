@@ -6,6 +6,7 @@ source of truth for object existence and metadata during patch generation.
 """
 
 import json
+from collections import defaultdict
 from pathlib import Path
 
 # Load core domains last so they take priority over RNBO duplicates
@@ -40,6 +41,8 @@ class ObjectDatabase:
         self._aliases: dict[str, str] = {}
         self._variable_io_rules: dict[str, dict] = {}
         self._pd_blocklist: dict[str, dict] = {}
+        self._package_objects: dict[str, list[str]] = defaultdict(list)
+        self._package_info: dict[str, dict] = {}
         self._load(db_root)
 
     def _load(self, db_root: Path) -> None:
@@ -64,11 +67,24 @@ class ObjectDatabase:
 
         # Load domain objects (core domains last for priority)
         for domain_dir in DOMAIN_LOAD_ORDER:
-            json_path = db_root / domain_dir / "objects.json"
-            if json_path.exists():
-                data = json.loads(json_path.read_text())
-                for name, obj in data.items():
-                    self._objects[name] = obj
+            if domain_dir == "packages":
+                # Scan per-package subdirectories instead of monolithic file
+                pkg_root = db_root / "packages"
+                if pkg_root.is_dir():
+                    for pkg_dir in sorted(pkg_root.iterdir()):
+                        if pkg_dir.is_dir():
+                            json_path = pkg_dir / "objects.json"
+                            if json_path.exists():
+                                data = json.loads(json_path.read_text())
+                                for name, obj in data.items():
+                                    self._objects[name] = obj
+                                    self._package_objects[pkg_dir.name].append(name)
+            else:
+                json_path = db_root / domain_dir / "objects.json"
+                if json_path.exists():
+                    data = json.loads(json_path.read_text())
+                    for name, obj in data.items():
+                        self._objects[name] = obj
 
         # Apply object overrides (deep-merge onto loaded objects)
         self._overridden_objects: set[str] = set()
@@ -84,17 +100,35 @@ class ObjectDatabase:
                         self._objects[name][key] = value
                     self._overridden_objects.add(name)
 
-    def lookup(self, name: str) -> dict | None:
+        # Load package registry
+        pkg_info_path = db_root / "package_info.json"
+        if pkg_info_path.exists():
+            self._package_info = json.loads(pkg_info_path.read_text())
+
+    def lookup(self, name: str, *, allowed_packages: list[str] | None = None) -> dict | None:
         """Look up an object by name, resolving aliases.
 
         Args:
             name: Object name or alias (e.g., "cycle~", "t").
+            allowed_packages: Package filter. None=return all (default),
+                []=core only, ["BEAP"]=core+BEAP objects.
 
         Returns:
-            Object dict from the database, or None if not found.
+            Object dict from the database, or None if not found or filtered.
         """
         canonical = self._aliases.get(name, name)
-        return self._objects.get(canonical)
+        obj = self._objects.get(canonical)
+        if obj is None:
+            return None
+        if allowed_packages is None:
+            return obj
+        # Core objects (no package field) always pass through
+        if "package" not in obj:
+            return obj
+        # Package objects must be in the allowed list
+        if obj.get("package") in allowed_packages:
+            return obj
+        return None
 
     def exists(self, name: str) -> bool:
         """Check whether an object exists in the database.
@@ -144,6 +178,61 @@ class ObjectDatabase:
         if entry:
             return entry.get("max_equivalent")
         return None
+
+    def list_packages(self) -> list[str]:
+        """Return sorted list of package names that have at least one object loaded."""
+        return sorted(self._package_objects.keys())
+
+    def get_package_objects(self, package: str) -> list[dict]:
+        """Return all objects belonging to a specific package.
+
+        Args:
+            package: Package name (e.g., "ableton-dsp").
+
+        Returns:
+            List of object dicts, or empty list if package unknown/empty.
+        """
+        return [self._objects[name] for name in self._package_objects.get(package, [])
+                if name in self._objects]
+
+    def is_core(self, name: str) -> bool:
+        """Check whether an object is a core (non-package) object.
+
+        Args:
+            name: Object name or alias.
+
+        Returns:
+            True if the object exists and has no 'package' field.
+        """
+        canonical = self._aliases.get(name, name)
+        obj = self._objects.get(canonical)
+        return obj is not None and "package" not in obj
+
+    def get_package(self, name: str) -> str | None:
+        """Return the package name for an object, or None if core/not found.
+
+        Args:
+            name: Object name or alias.
+
+        Returns:
+            Package name string, or None.
+        """
+        canonical = self._aliases.get(name, name)
+        obj = self._objects.get(canonical)
+        if obj is None:
+            return None
+        return obj.get("package")
+
+    def get_package_info(self, package: str) -> dict | None:
+        """Return registry metadata for a package from package_info.json.
+
+        Args:
+            package: Package name (e.g., "ableton-dsp").
+
+        Returns:
+            Package info dict, or None if not in registry.
+        """
+        return self._package_info.get(package)
 
     def compute_io_counts(self, name: str, args: list[str] | None = None) -> tuple[int, int]:
         """Compute actual inlet/outlet counts, handling variable I/O objects.

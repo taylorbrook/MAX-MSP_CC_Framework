@@ -25,11 +25,22 @@ def all_objects(db_root: Path) -> list[dict]:
     """Load all domain JSON files into a flat list of object dicts."""
     objects = []
     for domain_dir in DOMAIN_DIRS:
-        json_path = db_root / domain_dir / "objects.json"
-        if json_path.exists():
-            data = json.loads(json_path.read_text())
-            for obj in data.values():
-                objects.append(obj)
+        if domain_dir == "packages":
+            pkg_root = db_root / "packages"
+            if pkg_root.is_dir():
+                for pkg_dir in sorted(pkg_root.iterdir()):
+                    if pkg_dir.is_dir():
+                        json_path = pkg_dir / "objects.json"
+                        if json_path.exists():
+                            data = json.loads(json_path.read_text())
+                            for obj in data.values():
+                                objects.append(obj)
+        else:
+            json_path = db_root / domain_dir / "objects.json"
+            if json_path.exists():
+                data = json.loads(json_path.read_text())
+                for obj in data.values():
+                    objects.append(obj)
     return objects
 
 
@@ -38,9 +49,22 @@ def objects_by_domain(db_root: Path) -> dict[str, dict]:
     """Return dict keyed by domain directory name, each value is the objects dict."""
     result = {}
     for domain_dir in DOMAIN_DIRS:
-        json_path = db_root / domain_dir / "objects.json"
-        if json_path.exists():
-            result[domain_dir] = json.loads(json_path.read_text())
+        if domain_dir == "packages":
+            pkg_root = db_root / "packages"
+            merged = {}
+            if pkg_root.is_dir():
+                for pkg_dir in sorted(pkg_root.iterdir()):
+                    if pkg_dir.is_dir():
+                        json_path = pkg_dir / "objects.json"
+                        if json_path.exists():
+                            data = json.loads(json_path.read_text())
+                            merged.update(data)
+            if merged:
+                result["packages"] = merged
+        else:
+            json_path = db_root / domain_dir / "objects.json"
+            if json_path.exists():
+                result[domain_dir] = json.loads(json_path.read_text())
     return result
 
 
