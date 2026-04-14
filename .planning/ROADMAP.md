@@ -5,6 +5,7 @@
 - ✅ **v1.0 MVP** — Phases 1-7 (shipped 2026-03-10)
 - ✅ **v1.1 Patch Quality & Aesthetics** — Phases 8-12 (shipped 2026-03-14)
 - ✅ **v3.0.0 Direct .maxpat Editing** — Phases 13-19 (shipped 2026-04-09)
+- 📋 **v4.0 Package Integration** — Phases 20-25 (in progress)
 
 ## Phases
 
@@ -51,6 +52,45 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 
 </details>
 
+### 📋 v4.0 Package Integration (In Progress)
+
+**Goal:** Integrate MAX packages (bundled + community) into the framework at full parity with core domains -- object DB entries with validation, agent guidance, templates, critics, and install-aware gating.
+
+Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
+
+- [x] Phase 20: DB Schema Foundation (2/2 plans) — completed 2026-04-13
+  - **Goal:** Add package awareness to the object database so every object knows its source package
+  - Package field added to all objects, package registry created, ObjectDatabase API extended
+  - **Requirements:** PKG-01, PKG-02, PKG-03, PKG-04
+
+- [ ] Phase 21: Bundled Package Extraction (BEAP + Vizzie)
+  - **Goal:** Extract BEAP and Vizzie abstractions into the object DB using a new abstraction parser
+  - Build `extract_abstractions.py` for bpatcher-based packages, extract ~172 BEAP + ~110 Vizzie modules, also extract Jitter Geometry + Jitter Tools via XML pipeline
+  - **Requirements:** PKG-05, PKG-06, PKG-07, PKG-08
+
+- [ ] Phase 22: Package-Gated Generation
+  - **Goal:** Ensure agents never silently use package objects the user hasn't confirmed
+  - Package selection in project config, `/max-new` and `/max-build` prompt for packages, ObjectDatabase filtering via allowed_packages
+  - **Requirements:** PKG-09, PKG-10, PKG-11, PKG-12, PKG-13
+  - Depends on: Phase 20
+
+- [ ] Phase 23: Agent Package Intelligence
+  - **Goal:** Give agents deep knowledge of package-specific patterns, conventions, and workflows
+  - Package-specific guidance in SKILL.md files, BEAP modular patterns, layout overrides for bpatchers, relationships.json entries
+  - **Requirements:** PKG-14, PKG-15, PKG-16, PKG-17, PKG-18
+
+- [ ] Phase 24: Community Package Support
+  - **Goal:** Provide DB presence for community packages even when not locally installed
+  - Stub DB entries for FluCoMa, CNMAT, Bach, Odot, ml.*, IRCAM Spat; extraction commands for installed packages
+  - **Requirements:** PKG-19, PKG-20, PKG-21, PKG-22
+  - Depends on: Phase 20
+
+- [ ] Phase 25: Templates + Critics
+  - **Goal:** Provide starter templates and package-aware validation for common package workflows
+  - Starter templates per package, package-aware critics (BEAP signal conventions, Bach llll checker), template integration with `/max-new`
+  - **Requirements:** PKG-23, PKG-24, PKG-25, PKG-26
+  - Depends on: Phase 23, Phase 24
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -74,7 +114,13 @@ Full details: `.planning/milestones/v2.0-ROADMAP.md`
 | 17. Agent and Command Migration | v3.0.0 | 3/3 | Complete | 2026-03-16 |
 | 18. v1.x Cleanup | v3.0.0 | 2/2 | Complete | 2026-03-16 |
 | 19. Tech Debt Cleanup | v3.0.0 | 1/1 | Complete | 2026-03-17 |
+| 20. DB Schema Foundation | v4.0 | 2/2 | Complete | 2026-04-13 |
+| 21. Bundled Package Extraction | v4.0 | 0/0 | Planned | - |
+| 22. Package-Gated Generation | v4.0 | 0/0 | Planned | - |
+| 23. Agent Package Intelligence | v4.0 | 0/0 | Planned | - |
+| 24. Community Package Support | v4.0 | 0/0 | Planned | - |
+| 25. Templates + Critics | v4.0 | 0/0 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-09 -- v2.0 milestone archived*
+*Last updated: 2026-04-13 -- v4.0 Package Integration milestone registered*

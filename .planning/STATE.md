@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: completed
-last_updated: "2026-04-14T02:12:40.186Z"
-last_activity: 2026-04-14
+milestone: v4.0
+milestone_name: Package Integration
+status: in_progress
+last_updated: "2026-04-13"
+last_activity: 2026-04-13
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 15
-  completed_plans: 16
-  percent: 100
+  total_phases: 6
+  completed_phases: 1
+  total_plans: 2
+  completed_plans: 2
+  percent: 17
 ---
 
 # Project State
@@ -20,16 +20,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Planning next milestone
+**Current focus:** v4.0 Package Integration -- Phase 21 next
 
 ## Current Position
 
-Phase: 27
+Phase: 21
 Plan: Not started
-Status: v3.0.0 complete, next milestone pending
-Last activity: 2026-04-14
+Status: Phase 20 complete, Phase 21 (Bundled Package Extraction) next
+Last activity: 2026-04-13
 
-Progress: [██████████] 100%
+Progress: [██░░░░░░░░] 17%
 
 ## Accumulated Context
 
