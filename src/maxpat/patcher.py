@@ -142,6 +142,7 @@ class Box:
         db: ObjectDatabase | None = None,
         x: float = 0.0,
         y: float = 0.0,
+        allowed_packages: list[str] | None = None,
     ):
         """Create a Box.
 
@@ -153,6 +154,8 @@ class Box:
                 objects to verify existence and get I/O counts.
             x: Horizontal position.
             y: Vertical position.
+            allowed_packages: Package filter. None=allow all (default),
+                []=core only, ["BEAP"]=core+BEAP objects.
 
         Raises:
             ValueError: If name is not found in database and not a known
@@ -180,7 +183,7 @@ class Box:
         # Look up object in database for I/O counts and outlet types
         obj_data = None
         if db:
-            obj_data = db.lookup(name)
+            obj_data = db.lookup(name, allowed_packages=allowed_packages)
 
         if obj_data is None and not is_ui_object(canonical):
             # Object not in database and not a known UI type -- Rule #1 violation
@@ -364,17 +367,26 @@ class Patcher(GraphMixin, AnalysisMixin):
     via mixin classes for maintainability.
     """
 
-    def __init__(self, db: ObjectDatabase | None = None, is_subpatcher: bool = False):
+    def __init__(
+        self,
+        db: ObjectDatabase | None = None,
+        is_subpatcher: bool = False,
+        allowed_packages: list[str] | None = None,
+    ):
         """Create a new Patcher.
 
         Args:
             db: ObjectDatabase instance. Created automatically if None.
             is_subpatcher: If True, uses SUBPATCHER_RECT for window size.
+            allowed_packages: Package filter passed to Box creation.
+                None=allow all (default), []=core only,
+                ["BEAP"]=core+BEAP objects.
         """
         if db is None:
             db = ObjectDatabase()
 
         self.db = db
+        self.allowed_packages = allowed_packages
         self.boxes: list[Box] = []
         self.lines: list[Patchline] = []
         self.props = copy.deepcopy(DEFAULT_PATCHER_PROPS)
@@ -417,7 +429,8 @@ class Patcher(GraphMixin, AnalysisMixin):
             ValueError: If object not found in database (Rule #1).
         """
         box_id = self._gen_id()
-        box = Box(name=name, args=args, box_id=box_id, db=self.db, x=x, y=y)
+        box = Box(name=name, args=args, box_id=box_id, db=self.db, x=x, y=y,
+                  allowed_packages=self.allowed_packages)
 
         if not skip_overlap_check:
             w = box.patching_rect[2]
@@ -446,7 +459,8 @@ class Patcher(GraphMixin, AnalysisMixin):
             The created comment Box.
         """
         box_id = self._gen_id()
-        box = Box(name="comment", args=[], box_id=box_id, db=self.db, x=x, y=y)
+        box = Box(name="comment", args=[], box_id=box_id, db=self.db, x=x, y=y,
+                  allowed_packages=self.allowed_packages)
         # Override text: comment's text is the comment itself, not "comment"
         box.text = text
         # Recalculate size based on actual text
@@ -745,7 +759,8 @@ class Patcher(GraphMixin, AnalysisMixin):
             The created message Box.
         """
         box_id = self._gen_id()
-        box = Box(name="message", args=[], box_id=box_id, db=self.db, x=x, y=y)
+        box = Box(name="message", args=[], box_id=box_id, db=self.db, x=x, y=y,
+                  allowed_packages=self.allowed_packages)
         # Override text: message's text is the content, not "message"
         box.text = text
         # Recalculate size based on actual text
@@ -1389,7 +1404,8 @@ class Patcher(GraphMixin, AnalysisMixin):
         box_id = self._gen_id()
 
         # Create inner patcher
-        inner = Patcher(db=self.db, is_subpatcher=True)
+        inner = Patcher(db=self.db, is_subpatcher=True,
+                        allowed_packages=self.allowed_packages)
 
         # Add inlet objects inside the subpatcher
         inlet_spacing = 80.0
@@ -1515,7 +1531,8 @@ class Patcher(GraphMixin, AnalysisMixin):
         bpatch_box._bpatcher_attrs = bpatcher_attrs
 
         if embedded:
-            inner = Patcher(db=self.db, is_subpatcher=True)
+            inner = Patcher(db=self.db, is_subpatcher=True,
+                            allowed_packages=self.allowed_packages)
             inner.props["rect"] = [0.0, 0.0, width, height]
             bpatch_box._inner_patcher = inner
             self.boxes.append(bpatch_box)
@@ -1658,7 +1675,8 @@ class Patcher(GraphMixin, AnalysisMixin):
         box_id = self._gen_id()
 
         # Create inner Gen patcher
-        inner = Patcher(db=self.db, is_subpatcher=True)
+        inner = Patcher(db=self.db, is_subpatcher=True,
+                        allowed_packages=self.allowed_packages)
         inner.props["bgcolor"] = list(GEN_PATCHER_BGCOLOR)
         inner.props["rect"] = [100.0, 100.0, 600.0, 450.0]
 

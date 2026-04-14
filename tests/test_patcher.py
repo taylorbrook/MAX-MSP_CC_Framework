@@ -2084,3 +2084,54 @@ class TestLiveScopeOverride:
         scope = p.add_box("live.scope~")
         p.add_connection(osc, 0, scope, 0)
         assert len(p.lines) == 1
+
+
+class TestPackageGating:
+    """PKG-12: Patcher(allowed_packages=...) gates Box creation for package objects."""
+
+    def test_no_allowed_packages_allows_all(self):
+        """Backward compat: Patcher() with no allowed_packages creates any object."""
+        p = Patcher()
+        box = p.add_box("abl.device.autofilter~")
+        assert box.name == "abl.device.autofilter~"
+
+    def test_empty_allowed_raises_for_package_object(self):
+        """allowed_packages=[] means core only -- package objects raise ValueError."""
+        p = Patcher(allowed_packages=[])
+        with pytest.raises(ValueError, match="Unknown object"):
+            p.add_box("abl.device.autofilter~")
+
+    def test_empty_allowed_permits_core_objects(self):
+        """allowed_packages=[] still allows core objects like cycle~."""
+        p = Patcher(allowed_packages=[])
+        box = p.add_box("cycle~", args=["440"])
+        assert box.name == "cycle~"
+
+    def test_matching_package_allows_object(self):
+        """allowed_packages=["ableton-dsp"] allows ableton-dsp objects."""
+        p = Patcher(allowed_packages=["ableton-dsp"])
+        box = p.add_box("abl.device.autofilter~")
+        assert box.name == "abl.device.autofilter~"
+
+    def test_wrong_package_raises(self):
+        """allowed_packages=["BEAP"] rejects ableton-dsp objects."""
+        p = Patcher(allowed_packages=["BEAP"])
+        with pytest.raises(ValueError, match="Unknown object"):
+            p.add_box("abl.device.autofilter~")
+
+    def test_subpatcher_inherits_allowed_packages(self):
+        """add_subpatcher inner Patcher inherits allowed_packages from parent."""
+        p = Patcher(allowed_packages=["BEAP"])
+        _, inner = p.add_subpatcher("test_sub")
+        assert inner.allowed_packages == ["BEAP"]
+
+    def test_from_dict_no_gating(self):
+        """from_dict() does NOT enforce package gating (loads all objects)."""
+        # Create a patch with a package object, serialize, reload
+        p = Patcher()
+        p.add_box("abl.device.autofilter~")
+        d = p.to_dict()
+        # Load it back -- should NOT raise even though the object is a package object
+        loaded = Patcher.from_dict(d)
+        assert len(loaded.boxes) == 1
+        assert loaded.boxes[0].name == "abl.device.autofilter~"
