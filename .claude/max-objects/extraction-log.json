@@ -1,22 +1,22 @@
 {
-  "total_files_found": 2015,
-  "total_objects": 2015,
+  "total_files_found": 217,
+  "total_objects": 217,
   "domain_counts": {
-    "max": 470,
-    "msp": 248,
-    "jitter": 210,
-    "mc": 215,
-    "gen": 189,
-    "m4l": 33,
-    "rnbo": 560,
-    "packages": 87
+    "max": 1,
+    "msp": 0,
+    "jitter": 9,
+    "mc": 0,
+    "gen": 0,
+    "m4l": 0,
+    "rnbo": 0,
+    "packages": 206
   },
   "error_count": 0,
   "errors": [],
   "inlet_type_fallback_count": 0,
-  "variable_io_count": 17,
-  "empty_inlets_count": 133,
-  "empty_outlets_count": 159,
-  "extraction_timestamp": "2026-03-09T21:33:41.724900+00:00",
+  "variable_io_count": 0,
+  "empty_inlets_count": 17,
+  "empty_outlets_count": 19,
+  "extraction_timestamp": "2026-04-14T14:26:17.086773+00:00",
   "max_installation_path": "/Applications/Max.app/Contents/Resources/C74"
 }

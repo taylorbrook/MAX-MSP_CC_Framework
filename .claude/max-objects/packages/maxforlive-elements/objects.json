@@ -1,0 +1,389 @@
+{
+  "live.adsrui": {
+    "name": "live.adsrui",
+    "maxclass": "live.adsrui",
+    "module": "max",
+    "domain": "Packages",
+    "category": "M4L U/I",
+    "digest": "ADSR User Interface",
+    "description": "The live.adsrui object is a user interface for defining the shape of an envelope using the classic Attack, Decay, Sustain, Release model. Each segment has an individually definable length and exponential slope. This object is designed to work seamlessly with its companion object, live.adsr~.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "list",
+      "float",
+      "bang",
+      "key"
+    ],
+    "attributes": {
+      "active": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "attack_slope": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "attack_time": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "decay_domain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "decay_slope": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "decay_time": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "domain_exponent": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "enable_final": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "enable_initial": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "enable_peak": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "final": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "initial": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "outputmode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "peak": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "release_domain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "release_slope": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "release_time": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "show_bounds": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "show_slopehandles": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "sustain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "sustain_exponent": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "tethering": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "function",
+      "live.adsr~"
+    ],
+    "tags": [
+      "ui",
+      "Live"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "maxforlive-elements"
+  },
+  "live.adsr~": {
+    "name": "live.adsr~",
+    "maxclass": "live.adsr~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "M4L",
+    "digest": "ADSR envelope generator",
+    "description": "Use the live.adsr~ object to create sample-accurate Attack-Decay-Sustain-Release signal envelopes. Pair live.adsr~ with the live.adsrui object for graphical control over each of its stages.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "attack time",
+        "type": "number",
+        "optional": true,
+        "digest": "Attack time in ms"
+      },
+      {
+        "name": "decay time",
+        "type": "number",
+        "optional": true,
+        "digest": "Decay time in ms"
+      },
+      {
+        "name": "sustain",
+        "type": "number",
+        "optional": true,
+        "digest": "Sustain value"
+      },
+      {
+        "name": "release time",
+        "type": "number",
+        "optional": true,
+        "digest": "Release time in ms"
+      }
+    ],
+    "messages": [
+      "list",
+      "float"
+    ],
+    "attributes": {
+      "decay_slope": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "release_time": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "decay_time": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "attack_slope": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "attack_time": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "sustain": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "release_slope": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "final": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "peak": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "initial": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "loop_mode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "live.adsrui",
+      "adsr~"
+    ],
+    "tags": [
+      "synthesis",
+      "Live"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "maxforlive-elements"
+  },
+  "live.scope~": {
+    "name": "live.scope~",
+    "maxclass": "live.scope~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ui",
+    "digest": "Visualize an audio signal",
+    "description": "Use live.scope~ to visualize an audio signal. This object can be used as an alternative to scope~.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "signal"
+    ],
+    "attributes": {
+      "active": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "line_width": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "grid_line_width": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "vertical_divisions": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "grid": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "smooth": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "trigger_direction": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "trigger_threshold": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "samples": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "decay_time": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "interval": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "horizontal_divisions": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "rounded": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "activebgcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "linecolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "activelinecolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "activegridcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "scope~",
+      "meter~",
+      "live.meter~"
+    ],
+    "tags": [
+      "ui"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "maxforlive-elements"
+  }
+}

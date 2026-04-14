@@ -1,0 +1,1698 @@
+{
+  "Jitter Geometry Features": {
+    "name": "Jitter Geometry Features",
+    "maxclass": "Jitter Geometry Features",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Messages and attributes common to Jitter Geometry objects",
+    "description": "",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "cancel",
+      "clear",
+      "output"
+    ],
+    "attributes": {
+      "async": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "bypass": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": false
+      }
+    },
+    "seealso": [],
+    "tags": [
+      "Jitter",
+      "Geometry"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.close": {
+    "name": "jit.geom.close",
+    "maxclass": "jit.geom.close",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Editors",
+    "digest": "Close holes in a surface",
+    "description": "Close holes in a geometry surface.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "iterations": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.crop"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.crop": {
+    "name": "jit.geom.crop",
+    "maxclass": "jit.geom.crop",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Editors",
+    "digest": "Crop surface geometry",
+    "description": "Use jit.geom.crop to limit surface geometry to a bounding area area defined by a min and max value.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "coordmode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "invert": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "max": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "min": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.close"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.decimate": {
+    "name": "jit.geom.decimate",
+    "maxclass": "jit.geom.decimate",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Algorithms",
+    "digest": "Decimate surface geometry",
+    "description": "The jit.geom.decimate geometry processing object performs a decimation operation on input surface, reducing the number of vertices and faces while retaining the overall shape.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "iterations": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "bogus"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.dimples": {
+    "name": "jit.geom.dimples",
+    "maxclass": "jit.geom.dimples",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Deformers",
+    "digest": "Dimples deformation on surface geometry",
+    "description": "jit.geom.dimples extrudes the center of each face to create a spiked surface.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "offset": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.displace",
+      "jit.geom.normalize",
+      "jit.geom.twist",
+      "jit.geom.waves"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.displace": {
+    "name": "jit.geom.displace",
+    "maxclass": "jit.geom.displace",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Deformers",
+    "digest": "Displaces a surface using a height field",
+    "description": "jit.geom.displace displaces surface geometry based on a height field geometry matrix that can be sampled in different ways. The height field matrix is provided via the secondary inlet.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Height field matrix (1, 3 or 4 plane)",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "mid": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "sampler": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "strength": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "tex_coord_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.dimples",
+      "jit.geom.normalize",
+      "jit.geom.twist",
+      "jit.geom.waves"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.distribute": {
+    "name": "jit.geom.distribute",
+    "maxclass": "jit.geom.distribute",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Generators",
+    "digest": "Distribute points on surface geometry",
+    "description": "jit.geom.distribute scatters points on the surface of geometry.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "count": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "seed": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.multiple"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.join": {
+    "name": "jit.geom.join",
+    "maxclass": "jit.geom.join",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Utilities",
+    "digest": "Joins surfaces together",
+    "description": "jit.geom.join joins all surface geometries that it receives in its primary inlet into a single surface geometry.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry list to join",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "jit.geom.thru",
+      "jit.geom.xform"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.multiple": {
+    "name": "jit.geom.multiple",
+    "maxclass": "jit.geom.multiple",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Generators",
+    "digest": "Multiply surface geometry",
+    "description": "jit.geom.multiple multiplies incoming surface geometry. The second inlet provides positions for each instance through a geometry matrix (required). The third inlet can be used to provide scale values for each instance (optional). The fourth inlet can be used to provide rotation values for each instance (optional). The resulting instances are joined into a single surface.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry to be multiplied",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "position geometry (matrix or points)",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "scale geometry (matrix or points)",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "rotation geometry matrix",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "jit.geom.distribute"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.normalize": {
+    "name": "jit.geom.normalize",
+    "maxclass": "jit.geom.normalize",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Deformers",
+    "digest": "Normalizes surface geometry",
+    "description": "jit.geom.normalize normalizes surface geometry to fit into a unit cube.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "jit.geom.dimples",
+      "jit.geom.displace",
+      "jit.geom.twist",
+      "jit.geom.waves"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.normgen": {
+    "name": "jit.geom.normgen",
+    "maxclass": "jit.geom.normgen",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Properties",
+    "digest": "Generate normals",
+    "description": "Use jit.geom.normgen to generate normals for surface geometry.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "crease_angle": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "type": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.texgen",
+      "jit.geom.prop"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.prop": {
+    "name": "jit.geom.prop",
+    "maxclass": "jit.geom.prop",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Properties",
+    "digest": "Add properties to half-edge geometry",
+    "description": "Use jit.geom.prop to add certain properties to the half-edge geometry structure. Properties may be added to faces, vertices, halfedges, or edges, depending on their prop type.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "prop": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "bogus"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.remesh": {
+    "name": "jit.geom.remesh",
+    "maxclass": "jit.geom.remesh",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Algorithms",
+    "digest": "Remesh surface geometry",
+    "description": "The jit.geom.remesh rebuilds the surface of the input geometry. The algorithm adjusts mesh faces and vertices to achieve a surface with a more uniform topology (vertex spacing).",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "iterations": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.subdivide",
+      "jit.geom.decimate",
+      "jit.geom.smooth"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.shape": {
+    "name": "jit.geom.shape",
+    "maxclass": "jit.geom.shape",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Generators",
+    "digest": "Generate geometry shapes",
+    "description": "Use jit.geom.shape to generate basic surfaces.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "messages to this geometry object",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "dim": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "height": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "icodivisions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "radius": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "shape": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "subdivisions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "texcoord": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "thickness": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.togeom"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.smooth": {
+    "name": "jit.geom.smooth",
+    "maxclass": "jit.geom.smooth",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Algorithms",
+    "digest": "Smooth surface geometry",
+    "description": "jit.geom.smooth performs a smoothing operation on the input surface.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "iterations": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.subdivide",
+      "jit.geom.decimate",
+      "jit.geom.remesh"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.subdivide": {
+    "name": "jit.geom.subdivide",
+    "maxclass": "jit.geom.subdivide",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Algorithms",
+    "digest": "Subdivide surface geometry",
+    "description": "jit.geom.subdivide performs different subdivision algorithms on surface geometry meshes, increasing the vertex and face density of the surface. Depending on the algorithm type used, the mesh shape may also be altered.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "iterations": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "type": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.smooth",
+      "jit.geom.decimate",
+      "jit.geom.remesh"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.texgen": {
+    "name": "jit.geom.texgen",
+    "maxclass": "jit.geom.texgen",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Properties",
+    "digest": "Generate texture coordinates for surface geometry",
+    "description": "Use jit.geom.texgen to generate texture coordinates for surface geometry.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "planenorm": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "type": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.normgen",
+      "jit.geom.prop"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.thru": {
+    "name": "jit.geom.thru",
+    "maxclass": "jit.geom.thru",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Utilities",
+    "digest": "Pass geometry through unchanged",
+    "description": "Passes geometry received through unchanged, and can be used to enable and disable branches of a geometry graph.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "jit.geom.join",
+      "jit.geom.xform"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.todict": {
+    "name": "jit.geom.todict",
+    "maxclass": "jit.geom.todict",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Converters",
+    "digest": "Convert geometry to a dictionary",
+    "description": "The jit.geom.todict op converts Jitter half-edge geometry to a dictionary containing geometry mesh data.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry dictionary"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "vertex_dict": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.togeom",
+      "jit.geom.tomatrix",
+      "jit.geom.topoints",
+      "jit.geom.tomesh"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.togeom": {
+    "name": "jit.geom.togeom",
+    "maxclass": "jit.geom.togeom",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Converters",
+    "digest": "Convert to geometry",
+    "description": "jit.geom.togeom takes a jitter matrix or dictionary and converts it into a geometry representation that can be processed by a geometry graph.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "matrix or dictionary to convert",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "type": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.todict",
+      "jit.geom.tomatrix",
+      "jit.geom.topoints",
+      "jit.geom.tomesh"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.tomatrix": {
+    "name": "jit.geom.tomatrix",
+    "maxclass": "jit.geom.tomatrix",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Converters",
+    "digest": "Convert geometry to a matrix of unique points",
+    "description": "The jit.geom.topoints op converts Jitter half-edge geometry to a jit.matrix containing unique point values. If texture coordinates and normals are present, they will be included as additional planes in the matrix according to the Jitter matrixoutput spec.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "converted matrix"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "auto_normals": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "crease_angle": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "bogus"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.tomesh": {
+    "name": "jit.geom.tomesh",
+    "maxclass": "jit.geom.tomesh",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Converters",
+    "digest": "Convert geometry to",
+    "description": "Use jit.geom.tomesh to convert geometry to a jit.gl.mesh. Typically, you want to use jit.geom.tomesh over jit.geom.tomatrix if you want to directly render it as it is more performant for that use case.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry to render as mesh",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "connect to jit.gl.mesh"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "auto_normals": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "crease_angle": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mesh": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.todict",
+      "jit.geom.tomatrix",
+      "jit.geom.togeom",
+      "jit.geom.topoints"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.twist": {
+    "name": "jit.geom.twist",
+    "maxclass": "jit.geom.twist",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Deformers",
+    "digest": "Twist deformation of a surface",
+    "description": "jit.geom.twist deforms input surface by twisting around an axis.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "angle": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "axis": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "custom_axis": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "end": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "start": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.dimples",
+      "jit.geom.displace",
+      "jit.geom.normalize",
+      "jit.geom.waves"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.waves": {
+    "name": "jit.geom.waves",
+    "maxclass": "jit.geom.waves",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Deformers",
+    "digest": "Waves deformation on surface geometry",
+    "description": "jit.geom.waves deforms input geometry by applying a wave function to the vertex positions. It supports a linear and radial function (see radial).",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "amp": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "dir": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "falloff": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "freq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "offset": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "radial": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "rotation": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.dimples",
+      "jit.geom.displace",
+      "jit.geom.normalize",
+      "jit.geom.twist"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geom.xform": {
+    "name": "jit.geom.xform",
+    "maxclass": "jit.geom.xform",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Utilities",
+    "digest": "Transform geometry",
+    "description": "Use jit.geom.xform to adjust the position, rotation or scale of geometry. The operator inherits attributes from the jit.anim.node object, and as such can be bound to existing jit.anim.node objects via the anim attribute. See that objects reference page for detailed descriptions of these attributes.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "anchor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "anim": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "animmode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "direction": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "inherit_position": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "inherit_rotate": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "inherit_scale": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "invtransform": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "locklook": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "lockplane": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "lookat": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "movemode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "parentpos": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "parentquat": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "parentrot": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "parentscale": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "position": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "quat": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rotate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rotate_order": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "rotatexyz": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "scale": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "transform": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "tripod": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "turnmode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "worlddir": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "worldpos": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "worldquat": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "worldrot": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "worldscale": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "worldtransform": {
+        "type": "float",
+        "get": true,
+        "set": false
+      }
+    },
+    "seealso": [
+      "jit.geom.join",
+      "jit.geom.thru"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  },
+  "jit.geometry": {
+    "name": "jit.geometry",
+    "maxclass": "jit.geometry",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Named geometry container",
+    "description": "The jit.geometry object is a named container for geometry data. Geometry data sent to its inlet is stored and can be referenced by the registered name in a geometry graph by sending the message jit_geometry  registered_name.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input and other messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "jit_geometry",
+      "output"
+    ],
+    "attributes": {
+      "enable": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.geom.shape",
+      "jit.geom.togeom",
+      "jit.geom.todict",
+      "jit.geom.tomatrix",
+      "jit.geom.tomesh"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry"
+  }
+}

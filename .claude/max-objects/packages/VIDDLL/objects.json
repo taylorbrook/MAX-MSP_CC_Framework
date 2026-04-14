@@ -1,0 +1,672 @@
+{
+  "jit.movie": {
+    "name": "jit.movie",
+    "maxclass": "jit.movie",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter Generators, Jitter QuickTime",
+    "digest": "Play a movie file",
+    "description": "The jit.movie object plays and manipulates movie files. It comes in two forms: jit.movie, which outputs matrices, and jit.gl.movie, which outputs OpenGL textures. The OpenGL version is recommended for smoother playback and better performance.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "bang, messages in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "bang, messages in",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "out"
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(drag)",
+      "asyncread",
+      "cancelloadram",
+      "dispose",
+      "cancelframedump",
+      "frame",
+      "framedump",
+      "jump",
+      "loadram",
+      "start",
+      "stop",
+      "read",
+      "unloadram"
+    ],
+    "attributes": {
+      "adapt": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "autostart": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "cache_size": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "colormode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "dstrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "duration": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "engine": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "fps": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "framecount": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "framereport": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "interp": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "loop": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "loopend": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "looppoints": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "looppoints_ms": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "looppoints_secs": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "loopreport": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "loopstart": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "milliseconds": {
+        "type": "int",
+        "get": true,
+        "set": false
+      },
+      "movie_dim": {
+        "type": "int",
+        "get": true,
+        "set": false
+      },
+      "moviedim": {
+        "type": "int",
+        "get": true,
+        "set": false
+      },
+      "moviefile": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "moviename": {
+        "type": "symbol",
+        "get": true,
+        "set": false
+      },
+      "moviepath": {
+        "type": "symbol",
+        "get": true,
+        "set": false
+      },
+      "output_texture": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "position": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "seconds": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "srcrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "texture_name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "time": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "time_ms": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "time_secs": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "timescale": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "unique": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "usedstrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "usesrcrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "vol": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "Texture Output",
+      "Video Engine",
+      "jit.movie~",
+      "jit.playlist",
+      "jit.grab",
+      "jit.record",
+      "jit.pwindow",
+      "jit.window",
+      "jit.world",
+      "jit.gl.texture"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "VIDDLL"
+  },
+  "jit.movie~": {
+    "name": "jit.movie~",
+    "maxclass": "jit.movie~",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter Generators, Jitter QuickTime",
+    "digest": "Play a movie file with an audio track",
+    "description": "Use jit.movie~ for playing movie files and routing the audio track into MSP.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "bang, messages in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "bang, messages in",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "MSP audio out 0"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "MSP audio out 1"
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": "out"
+      },
+      {
+        "id": 3,
+        "type": "matrix",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(drag)",
+      "asyncread",
+      "dispose",
+      "cancelloadram",
+      "frame",
+      "frame_true",
+      "jump",
+      "jump_true",
+      "loadram",
+      "start",
+      "stop",
+      "read",
+      "unloadram"
+    ],
+    "attributes": {
+      "adapt": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "autostart": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "cache_size": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "colormode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "dstrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "duration": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "engine": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "fps": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "framecount": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "framereport": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "interp": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "loop": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "loopend": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "looppoints": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "loopreport": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "loopstart": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "milliseconds": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "movie_dim": {
+        "type": "int",
+        "get": true,
+        "set": false
+      },
+      "moviedim": {
+        "type": "int",
+        "get": true,
+        "set": false
+      },
+      "moviefile": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "moviename": {
+        "type": "symbol",
+        "get": true,
+        "set": false
+      },
+      "moviepath": {
+        "type": "symbol",
+        "get": true,
+        "set": false
+      },
+      "output_texture": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "position": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "seconds": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "srcrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "texture_name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "time": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "time_secs": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "timescale": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "unique": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "usedstrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "usesrcrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.movie",
+      "jit.playlist",
+      "jit.grab",
+      "jit.record",
+      "jit.world",
+      "jit.gl.texture"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "VIDDLL"
+  },
+  "jit.record": {
+    "name": "jit.record",
+    "maxclass": "jit.record",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter QuickTime",
+    "digest": "Record a movie file",
+    "description": "The jit.record object take a sequence of Jitter matrices as input, saving the sequence to disk as a movie file. Currently only 4 plane, char type matrix input is supported.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": "",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "out"
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "cancel",
+      "dictionary",
+      "print_formats",
+      "print_options",
+      "stop",
+      "write"
+    ],
+    "attributes": {
+      "adapt": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "codec": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "codeclist": {
+        "type": "symbol",
+        "get": true,
+        "set": false
+      },
+      "dstrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "engine": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "fps": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "interp": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "planemap": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "preview": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "realtime": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "srcrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "time": {
+        "type": "int",
+        "get": true,
+        "set": false
+      },
+      "usedstrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "usesrcrect": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "bogus"
+    ],
+    "tags": [
+      "TEXT_HERE"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "VIDDLL"
+  }
+}
