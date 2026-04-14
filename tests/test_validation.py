@@ -1036,3 +1036,82 @@ class TestMaxclassUsage:
                     if r.layer == "objects" and r.level == "warning"
                     and "maxclass" in r.message.lower()]
         assert warnings == []
+
+
+class TestPackageValidation:
+    """PKG-13: validate_patch with allowed_packages catches package violations."""
+
+    def test_no_allowed_packages_no_package_errors(self, db):
+        """Backward compat: no allowed_packages produces no package errors."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="abl.device.autofilter~",
+                      numinlets=3, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db)
+        pkg_errors = [r for r in results if r.layer == "packages"]
+        assert pkg_errors == []
+
+    def test_empty_allowed_flags_package_objects(self, db):
+        """allowed_packages=[] flags package objects as errors."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="abl.device.autofilter~",
+                      numinlets=3, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db, allowed_packages=[])
+        pkg_errors = [r for r in results if r.layer == "packages"]
+        assert len(pkg_errors) == 1
+        assert pkg_errors[0].level == "error"
+        assert "abl.device.autofilter~" in pkg_errors[0].message
+        assert "ableton-dsp" in pkg_errors[0].message
+
+    def test_matching_package_no_error(self, db):
+        """allowed_packages=["ableton-dsp"] does not flag ableton-dsp objects."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="abl.device.autofilter~",
+                      numinlets=3, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db, allowed_packages=["ableton-dsp"])
+        pkg_errors = [r for r in results if r.layer == "packages"]
+        assert pkg_errors == []
+
+    def test_wrong_package_flags_error(self, db):
+        """allowed_packages=["BEAP"] flags ableton-dsp objects as errors."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="abl.device.autofilter~",
+                      numinlets=3, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db, allowed_packages=["BEAP"])
+        pkg_errors = [r for r in results if r.layer == "packages"]
+        assert len(pkg_errors) == 1
+        assert "ableton-dsp" in pkg_errors[0].message
+
+    def test_core_objects_never_flagged(self, db):
+        """Core objects are not flagged regardless of allowed_packages."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="cycle~ 440"),
+        ])
+        results = validate_patch(patch, db=db, allowed_packages=[])
+        pkg_errors = [r for r in results if r.layer == "packages"]
+        assert pkg_errors == []
+
+    def test_package_errors_have_correct_layer_and_level(self, db):
+        """Package validation errors use layer='packages' and level='error'."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="abl.device.autofilter~",
+                      numinlets=3, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db, allowed_packages=[])
+        pkg_errors = [r for r in results if r.layer == "packages"]
+        assert len(pkg_errors) >= 1
+        for err in pkg_errors:
+            assert err.layer == "packages"
+            assert err.level == "error"
+
+    def test_patcher_instance_uses_own_allowed_packages(self, db):
+        """validate_patch reads allowed_packages from Patcher instance."""
+        p = Patcher()
+        p.add_box("abl.device.autofilter~")
+        p.allowed_packages = []  # Set after creation to simulate
+        results = validate_patch(p)
+        pkg_errors = [r for r in results if r.layer == "packages"]
+        assert len(pkg_errors) == 1

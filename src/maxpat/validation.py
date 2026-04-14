@@ -84,6 +84,7 @@ class ValidationResult:
 def validate_patch(
     patch,
     db: ObjectDatabase | None = None,
+    allowed_packages: list[str] | None = None,
 ) -> list[ValidationResult]:
     """Run the full four-layer validation pipeline on a patch.
 
@@ -91,6 +92,10 @@ def validate_patch(
         patch: Either a Patcher instance or a raw dict in .maxpat format.
         db: ObjectDatabase for lookups. If *patch* is a Patcher instance
             and *db* is None, the Patcher's own db is used.
+        allowed_packages: Package filter for Layer 2c. None=skip package
+            check (default), []=core only, ["BEAP"]=core+BEAP objects.
+            If *patch* is a Patcher instance and *allowed_packages* is
+            None, the Patcher's own allowed_packages is used.
 
     Returns:
         Combined list of ValidationResult from all layers.
@@ -102,6 +107,8 @@ def validate_patch(
     if isinstance(patch, PatcherClass):
         if db is None:
             db = patch.db
+        if allowed_packages is None:
+            allowed_packages = getattr(patch, "allowed_packages", None)
         patch_dict = patch.to_dict()
     else:
         patch_dict = patch
@@ -122,6 +129,9 @@ def validate_patch(
 
     # Layer 2b: Maxclass usage (non-UI objects should use "newobj")
     results.extend(_validate_maxclass_usage(patch_dict))
+
+    # Layer 2c: Package gating (defense in depth)
+    results.extend(_validate_package_gating(patch_dict, db, allowed_packages))
 
     # Layer 3: Connection bounds and signal types (mutates lines in-place)
     results.extend(_validate_connections(patch_dict, db))
@@ -279,6 +289,48 @@ def _validate_maxclass_usage(patch_dict: dict) -> list[ValidationResult]:
             f"'newobj' -- non-UI objects should use maxclass='newobj'",
         ))
 
+    return results
+
+
+# ===========================================================================
+# Layer 2c: Package Gating (Defense in Depth)
+# ===========================================================================
+
+def _validate_package_gating(
+    patch_dict: dict,
+    db: ObjectDatabase,
+    allowed_packages: list[str] | None,
+) -> list[ValidationResult]:
+    """Check that no objects from non-allowed packages appear in the patch.
+
+    This is defense-in-depth: Patcher-level gating should catch these during
+    generation, but this catches violations in loaded/edited patches.
+
+    Args:
+        patch_dict: The .maxpat-style dict to validate.
+        db: ObjectDatabase for package lookups.
+        allowed_packages: Package filter. None=skip check, []=core only,
+            ["BEAP"]=core+BEAP objects.
+
+    Returns:
+        List of ValidationResult for package violations.
+    """
+    if allowed_packages is None:
+        return []  # No package config -- skip check
+
+    results: list[ValidationResult] = []
+    for box_entry in patch_dict["patcher"]["boxes"]:
+        box = box_entry.get("box", {})
+        name = _extract_object_name(box)
+        if name is None:
+            continue
+        package = db.get_package(name)
+        if package and package not in allowed_packages:
+            results.append(ValidationResult(
+                "packages", "error",
+                f"Object '{name}' from package '{package}' not in allowed "
+                f"packages (allowed: {allowed_packages})",
+            ))
     return results
 
 
