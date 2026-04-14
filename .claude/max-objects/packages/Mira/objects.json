@@ -1,0 +1,117 @@
+{
+  "mira.motion": {
+    "name": "mira.motion",
+    "maxclass": "mira.motion",
+    "module": "mira",
+    "domain": "Packages",
+    "category": "Mira",
+    "digest": "Receive data from iPad accelerometer, gyroscope and magnetometer.",
+    "description": "Mira.motion outputs readings from the device accelerometer, magnetometer and gyroscope. On compatible devices, these data are available both as raw readings from onboard sensors and as postprocessed information that accounts for sensor bias and drift. Each reading is output from the mira.motion object in the form (data-type) (data-args) (device-name), where data-type is one of rawaccel, rawgyro, rawmagnet, rotationrate, gravity, accel, compass or orientation; data-args is between three and four numbers containing the value of the data; and device-name is the name of the mobile device as defined in Mira. The mira.mo abstractions can assist in filtering and formatting the output of mira.motion.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "mira.frame",
+      "mira.multitouch",
+      "mira.status"
+    ],
+    "tags": [
+      "Mira"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Mira"
+  },
+  "mira.multitouch": {
+    "name": "mira.multitouch",
+    "maxclass": "mira.multitouch",
+    "module": "mira",
+    "domain": "Packages",
+    "category": "Mira",
+    "digest": "Receive touch and gesture data from touchscreen.",
+    "description": "Mira.multitouch receives touch and gesture data from a multitouch device. It will output the position and state of as many touches as are supported by the device. When enabled, it will also output a message when a device gesture is recognized, as well as the state of that gesture. Mira.multitouch can recognize tap, swipe, rotation and pinch gestures. The mira.mt abstrations are useful for processing and filtering the messages output by mira.multitouch.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "hsegments": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "local_circles": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "pinch_enabled": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "remote_circles": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "remote_gestures": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "rotate_enabled": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "swipe_enabled": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "swipe_touch_count": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "tap_enabled": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "tap_tap_count": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "tap_touch_count": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      },
+      "vsegments": {
+        "type": "atom_long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "mira.frame",
+      "mira.motion",
+      "mira.status"
+    ],
+    "tags": [
+      "Mira"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Mira"
+  }
+}

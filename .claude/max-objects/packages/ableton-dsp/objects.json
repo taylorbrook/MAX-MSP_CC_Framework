@@ -302,7 +302,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.channeleq~": {
     "name": "abl.device.channeleq~",
@@ -449,7 +450,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.compressor~": {
     "name": "abl.device.compressor~",
@@ -594,7 +596,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.delay~": {
     "name": "abl.device.delay~",
@@ -736,7 +739,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.drift~": {
     "name": "abl.device.drift~",
@@ -1139,7 +1143,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.drumbuss~": {
     "name": "abl.device.drumbuss~",
@@ -1308,7 +1313,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.drumsampler~": {
     "name": "abl.device.drumsampler~",
@@ -1574,7 +1580,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.echo~": {
     "name": "abl.device.echo~",
@@ -1813,7 +1820,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.limiter~": {
     "name": "abl.device.limiter~",
@@ -1950,7 +1958,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.redux~": {
     "name": "abl.device.redux~",
@@ -2103,7 +2112,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.reverb~": {
     "name": "abl.device.reverb~",
@@ -2222,7 +2232,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.roar~": {
     "name": "abl.device.roar~",
@@ -2669,7 +2680,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.spectralresonator~": {
     "name": "abl.device.spectralresonator~",
@@ -2801,7 +2813,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.spectraltime~": {
     "name": "abl.device.spectraltime~",
@@ -2968,7 +2981,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.device.utility~": {
     "name": "abl.device.utility~",
@@ -3116,7 +3130,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.alternate~": {
     "name": "abl.dsp.alternate~",
@@ -3262,7 +3277,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.basicshapes~": {
     "name": "abl.dsp.basicshapes~",
@@ -3356,7 +3372,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.bitgrunge~": {
     "name": "abl.dsp.bitgrunge~",
@@ -3449,7 +3466,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.bubble~": {
     "name": "abl.dsp.bubble~",
@@ -3543,7 +3561,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.chip~": {
     "name": "abl.dsp.chip~",
@@ -3636,7 +3655,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.chorus~": {
     "name": "abl.dsp.chorus~",
@@ -3779,7 +3799,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.compander~": {
     "name": "abl.dsp.compander~",
@@ -3837,7 +3858,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.crackle~": {
     "name": "abl.dsp.crackle~",
@@ -3931,7 +3953,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.darkhall~": {
     "name": "abl.dsp.darkhall~",
@@ -4109,7 +4132,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.dfm~": {
     "name": "abl.dsp.dfm~",
@@ -4214,7 +4238,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.distortion~": {
     "name": "abl.dsp.distortion~",
@@ -4367,7 +4392,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.doubler~": {
     "name": "abl.dsp.doubler~",
@@ -4565,7 +4591,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.dualbasicshapes~": {
     "name": "abl.dsp.dualbasicshapes~",
@@ -4658,7 +4685,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.ensemble~": {
     "name": "abl.dsp.ensemble~",
@@ -4806,7 +4834,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.envfollower~": {
     "name": "abl.dsp.envfollower~",
@@ -4886,7 +4915,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.euclid~": {
     "name": "abl.dsp.euclid~",
@@ -5039,7 +5069,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.expshaper~": {
     "name": "abl.dsp.expshaper~",
@@ -5099,7 +5130,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.extratone~": {
     "name": "abl.dsp.extratone~",
@@ -5192,7 +5224,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.filterednoise~": {
     "name": "abl.dsp.filterednoise~",
@@ -5285,7 +5318,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.filther~": {
     "name": "abl.dsp.filther~",
@@ -5385,7 +5419,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.flanger~": {
     "name": "abl.dsp.flanger~",
@@ -5583,7 +5618,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.fmbass~": {
     "name": "abl.dsp.fmbass~",
@@ -5678,7 +5714,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.foldfm~": {
     "name": "abl.dsp.foldfm~",
@@ -5773,7 +5810,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.fuzz~": {
     "name": "abl.dsp.fuzz~",
@@ -5926,7 +5964,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.harmonicfm~": {
     "name": "abl.dsp.harmonicfm~",
@@ -6020,7 +6059,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.meldfilter~": {
     "name": "abl.dsp.meldfilter~",
@@ -6128,7 +6168,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.meldosc~": {
     "name": "abl.dsp.meldosc~",
@@ -6244,7 +6285,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.modalresonator~": {
     "name": "abl.dsp.modalresonator~",
@@ -6345,7 +6387,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.modulator~": {
     "name": "abl.dsp.modulator~",
@@ -6491,7 +6534,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.noiseloop~": {
     "name": "abl.dsp.noiseloop~",
@@ -6585,7 +6629,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.noisyshapes~": {
     "name": "abl.dsp.noisyshapes~",
@@ -6678,7 +6723,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.overdrive~": {
     "name": "abl.dsp.overdrive~",
@@ -6831,7 +6877,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.phaser~": {
     "name": "abl.dsp.phaser~",
@@ -7070,7 +7117,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.pitchestimator~": {
     "name": "abl.dsp.pitchestimator~",
@@ -7119,7 +7167,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.pitchshifter~": {
     "name": "abl.dsp.pitchshifter~",
@@ -7216,7 +7265,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.prism~": {
     "name": "abl.dsp.prism~",
@@ -7344,7 +7394,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.pulsate~": {
     "name": "abl.dsp.pulsate~",
@@ -7471,7 +7522,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.quartz~": {
     "name": "abl.dsp.quartz~",
@@ -7662,7 +7714,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.rain~": {
     "name": "abl.dsp.rain~",
@@ -7756,7 +7809,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.ramp~": {
     "name": "abl.dsp.ramp~",
@@ -7902,7 +7956,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.ringmod~": {
     "name": "abl.dsp.ringmod~",
@@ -7992,7 +8047,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.saturator~": {
     "name": "abl.dsp.saturator~",
@@ -8116,7 +8172,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.shepard~": {
     "name": "abl.dsp.shepard~",
@@ -8208,7 +8265,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.shimmer~": {
     "name": "abl.dsp.shimmer~",
@@ -8386,7 +8444,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.simplefm~": {
     "name": "abl.dsp.simplefm~",
@@ -8480,7 +8539,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.squarefifth~": {
     "name": "abl.dsp.squarefifth~",
@@ -8573,7 +8633,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.squaresync~": {
     "name": "abl.dsp.squaresync~",
@@ -8666,7 +8727,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.stereolfo~": {
     "name": "abl.dsp.stereolfo~",
@@ -8775,7 +8837,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.subosc~": {
     "name": "abl.dsp.subosc~",
@@ -8867,7 +8930,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.swarm~": {
     "name": "abl.dsp.swarm~",
@@ -8965,7 +9029,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.tarp~": {
     "name": "abl.dsp.tarp~",
@@ -9052,7 +9117,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.tides~": {
     "name": "abl.dsp.tides~",
@@ -9204,7 +9270,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.transform~": {
     "name": "abl.dsp.transform~",
@@ -9277,7 +9344,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.transientdesign~": {
     "name": "abl.dsp.transientdesign~",
@@ -9366,7 +9434,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.velvetnoise~": {
     "name": "abl.dsp.velvetnoise~",
@@ -9420,7 +9489,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.vibrato~": {
     "name": "abl.dsp.vibrato~",
@@ -9573,7 +9643,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.vowel~": {
     "name": "abl.dsp.vowel~",
@@ -9673,7 +9744,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.wander~": {
     "name": "abl.dsp.wander~",
@@ -9819,7 +9891,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "abl.dsp.waveshaper~": {
     "name": "abl.dsp.waveshaper~",
@@ -9968,614 +10041,8 @@
     "min_version": 9,
     "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "jit.bang": {
-    "name": "jit.bang",
-    "maxclass": "jit.bang",
-    "module": "max",
-    "domain": "Packages",
-    "category": "jit.mo,  Time",
-    "digest": "Output a frame bang",
-    "description": "Outputs a bang every time a frame is rendered by the attached context.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [
-      "bang",
-      "update"
-    ],
-    "attributes": {
-      "automatic": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "drawto": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "enable": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "fixed_delta": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "name": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "jit.mo.time",
-      "jit.line",
-      "jit.framecount"
-    ],
-    "tags": [
-      "jit.mo",
-      "Time"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "jit.framecount": {
-    "name": "jit.framecount",
-    "maxclass": "jit.framecount",
-    "module": "max",
-    "domain": "Packages",
-    "category": "jit.mo,  Time",
-    "digest": "Output a frame count",
-    "description": "Outputs the count of frames as they are rendered by the attached context.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [
-      "bang",
-      "reset",
-      "update"
-    ],
-    "attributes": {
-      "automatic": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "drawto": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "enable": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "fixed_delta": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "name": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "jit.mo.time",
-      "jit.line",
-      "jit.bang"
-    ],
-    "tags": [
-      "jit.mo",
-      "Time"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "jit.line": {
-    "name": "jit.line",
-    "maxclass": "jit.line",
-    "module": "max",
-    "domain": "Packages",
-    "category": "jit.mo,  Time",
-    "digest": "Generate timed ramp synched with render context",
-    "description": "Generate ramps and line segements from one value to another within a specified amount of time, and output in synch with and timed by an external render context. jit.line functions as a drop in replacement for standard Max line object, but removes stuttering associated with unsynched output between the line timer and context frames.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [
-      "bang",
-      "int",
-      "float",
-      "list",
-      "reset",
-      "update"
-    ],
-    "attributes": {
-      "automatic": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "drawto": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "enable": {
-        "type": "int",
-        "get": true,
-        "set": true
-      },
-      "fixed_delta": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "name": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "targetname": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "timevalue": {
-        "type": "float",
-        "get": true,
-        "set": false
-      },
-      "ui_priority": {
-        "type": "int",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "jit.mo.time",
-      "jit.bang",
-      "jit.framecount",
-      "line"
-    ],
-    "tags": [
-      "jit.mo",
-      "Time"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "jit.mo.field": {
-    "name": "jit.mo.field",
-    "maxclass": "jit.mo.field",
-    "module": "max",
-    "domain": "Packages",
-    "category": "jit.mo,  Manipulators",
-    "digest": "Field manipulator for 3 plane jit.mo streams",
-    "description": "Field manipulator for 3 plane jit.mo streams. Deforms position output depending on distance from a defined spatial location. Can be used for sculpting effects and gravity-like animations.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [
-      "rand"
-    ],
-    "attributes": {
-      "location": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "falloff": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "translate": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "radius": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "rand_amt": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "force": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "jit.mo.join",
-      "jit.mo.func",
-      "jit.mo.time"
-    ],
-    "tags": [
-      "jit.mo",
-      "Manipulators"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "jit.mo.fieldmask": {
-    "name": "jit.mo.fieldmask",
-    "maxclass": "jit.mo.fieldmask",
-    "module": "max",
-    "domain": "Packages",
-    "category": "jit.mo, Manipulators",
-    "digest": "Field mask for 3 plane jit.mo streams",
-    "description": "Field mask for 3 plane jit.mo streams. Calculates a mask value depending on distance from a defined spatial location. Can be used to perform arbitrary manipulations based on location",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [],
-    "attributes": {
-      "scale": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "location": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "falloff": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "offset": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "radius": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "jit.mo.join",
-      "jit.mo.func",
-      "jit.mo.time",
-      "jit.mo.field"
-    ],
-    "tags": [
-      "jit.mo",
-      "Manipulators"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "jit.mo.func": {
-    "name": "jit.mo.func",
-    "maxclass": "jit.mo.func",
-    "module": "max",
-    "domain": "Packages",
-    "category": "jit.mo,  Generators",
-    "digest": "Generate animated single dim matrices using a specified function",
-    "description": "Generate animated single dim matrices using a specified function. Similar in nature to a sound oscillator, jit.mo.func can generate time-varying cell values across a matrix based on a given function.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [
-      {
-        "name": "Dimension",
-        "type": "number",
-        "optional": true,
-        "digest": "Set the dimension (number of elements) of the output matrix"
-      }
-    ],
-    "messages": [
-      "rand"
-    ],
-    "attributes": {
-      "rand_amt": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "start": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "join": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "function": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "delta": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "offset": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "loop": {
-        "type": "long",
-        "get": true,
-        "set": true
-      },
-      "phase": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "period": {
-        "type": "long",
-        "get": true,
-        "set": true
-      },
-      "scale": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "end": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "speed": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "loopreport": {
-        "type": "long",
-        "get": true,
-        "set": true
-      },
-      "freq": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "jit.mo.join",
-      "jit.mo.field",
-      "jit.mo.time",
-      "jit.anim.drive",
-      "jit.anim.path"
-    ],
-    "tags": [
-      "jit.mo",
-      "Generators"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "jit.mo.join": {
-    "name": "jit.mo.join",
-    "maxclass": "jit.mo.join",
-    "module": "max",
-    "domain": "Packages",
-    "category": "jit.mo,  Generators",
-    "digest": "Combine jit.mo streams and output a multi-plane matrix",
-    "description": "Combine jit.mo streams and output a multi-plane matrix. Automatically connects to jit.world to drive animations. Inputs add multiple jit.mo/matrix inputs for additive control.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [
-      {
-        "name": "Inlet Count",
-        "type": "number",
-        "optional": true,
-        "digest": "Set the number of inlets and planecount of output"
-      },
-      {
-        "name": "Dimension",
-        "type": "number",
-        "optional": true,
-        "digest": "Set the dimension (number of elements) of the output matrix and any attached"
-      }
-    ],
-    "messages": [],
-    "attributes": {
-      "fixed_delta": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "interval": {
-        "type": "time",
-        "get": true,
-        "set": true
-      },
-      "scale": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "enable": {
-        "type": "long",
-        "get": true,
-        "set": true
-      },
-      "speed": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "name": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "jit.mo.func",
-      "jit.mo.field",
-      "jit.mo.time",
-      "jit.anim.path",
-      "jit.world"
-    ],
-    "tags": [
-      "jit.mo",
-      "Generators"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "jit.mo.time": {
-    "name": "jit.mo.time",
-    "maxclass": "jit.mo.time",
-    "module": "max",
-    "domain": "Packages",
-    "category": "jit.mo,  Time",
-    "digest": "Outputs float time values using specified mode for realtime animation",
-    "description": "Outputs float time values using specified mode for realtime animation. Can be used to generate control functions in sync with other jit.world and jit.mo objects, time delta between frames, or accumulated running time.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [
-      "update",
-      "reset"
-    ],
-    "attributes": {
-      "timevalue": {
-        "type": "float64",
-        "get": true,
-        "set": false
-      },
-      "start": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "offset": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "loop": {
-        "type": "long",
-        "get": true,
-        "set": true
-      },
-      "phase": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "fixed_delta": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "freq": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "delta": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "function": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "period": {
-        "type": "long",
-        "get": true,
-        "set": true
-      },
-      "end": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "scale": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "interval": {
-        "type": "time",
-        "get": true,
-        "set": true
-      },
-      "speed": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "loopreport": {
-        "type": "long",
-        "get": true,
-        "set": true
-      },
-      "rand_amt": {
-        "type": "float64",
-        "get": true,
-        "set": true
-      },
-      "mode": {
-        "type": "symbol",
-        "get": true,
-        "set": true
-      },
-      "enable": {
-        "type": "long",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "jit.mo.join",
-      "jit.mo.field",
-      "jit.mo.func",
-      "jit.anim.drive"
-    ],
-    "tags": [
-      "jit.mo",
-      "Time"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "live.adsrui": {
     "name": "live.adsrui",
@@ -10717,7 +10184,8 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "live.adsr~": {
     "name": "live.adsr~",
@@ -10827,7 +10295,8 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   },
   "live.scope~": {
     "name": "live.scope~",
@@ -10962,119 +10431,7 @@
     "min_version": 8,
     "verified": false,
     "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "mira.motion": {
-    "name": "mira.motion",
-    "maxclass": "mira.motion",
-    "module": "mira",
-    "domain": "Packages",
-    "category": "Mira",
-    "digest": "Receive data from iPad accelerometer, gyroscope and magnetometer.",
-    "description": "Mira.motion outputs readings from the device accelerometer, magnetometer and gyroscope. On compatible devices, these data are available both as raw readings from onboard sensors and as postprocessed information that accounts for sensor bias and drift. Each reading is output from the mira.motion object in the form (data-type) (data-args) (device-name), where data-type is one of rawaccel, rawgyro, rawmagnet, rotationrate, gravity, accel, compass or orientation; data-args is between three and four numbers containing the value of the data; and device-name is the name of the mobile device as defined in Mira. The mira.mo abstractions can assist in filtering and formatting the output of mira.motion.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [
-      "mira.frame",
-      "mira.multitouch",
-      "mira.status"
-    ],
-    "tags": [
-      "Mira"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
-  "mira.multitouch": {
-    "name": "mira.multitouch",
-    "maxclass": "mira.multitouch",
-    "module": "mira",
-    "domain": "Packages",
-    "category": "Mira",
-    "digest": "Receive touch and gesture data from touchscreen.",
-    "description": "Mira.multitouch receives touch and gesture data from a multitouch device. It will output the position and state of as many touches as are supported by the device. When enabled, it will also output a message when a device gesture is recognized, as well as the state of that gesture. Mira.multitouch can recognize tap, swipe, rotation and pinch gestures. The mira.mt abstrations are useful for processing and filtering the messages output by mira.multitouch.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [],
-    "attributes": {
-      "hsegments": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "local_circles": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "pinch_enabled": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "remote_circles": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "remote_gestures": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "rotate_enabled": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "swipe_enabled": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "swipe_touch_count": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "tap_enabled": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "tap_tap_count": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "tap_touch_count": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      },
-      "vsegments": {
-        "type": "atom_long",
-        "get": true,
-        "set": true
-      }
-    },
-    "seealso": [
-      "mira.frame",
-      "mira.motion",
-      "mira.status"
-    ],
-    "tags": [
-      "Mira"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
   }
 }
