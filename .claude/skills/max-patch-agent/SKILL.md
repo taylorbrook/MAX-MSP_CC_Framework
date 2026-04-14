@@ -22,6 +22,7 @@ Before any generation:
 1. Read `CLAUDE.md` at project root -- follow all 5 rules and patch style guidelines
 2. Use `ObjectDatabase` from `src.maxpat.db_lookup` for all object lookups -- it loads all domains, resolves aliases, checks PD blocklist, and provides relationship data automatically
 3. Read `.claude/max-objects/relationships.json` for common object pairings (if needed for design decisions)
+4. Read project `config.json` via `load_project_config()` from `src.maxpat.project` for allowed packages. Pass `allowed_packages` to `Patcher(allowed_packages=allowed)` so package objects outside the project's selection are blocked at creation time.
 
 **Domain focus:** Max control/data/UI objects. Signal processing and RNBO are handled by their respective agents.
 

@@ -20,8 +20,10 @@ The router is the entry point for all MAX generation tasks. It analyzes the user
 Before dispatching:
 1. Read `patches/.active-project.json` to identify the active project
 2. Read the active project's `context.md` for project vision
-
-Do NOT load object database JSON files -- specialists handle their own context loading.
+3. Read the active project's `config.json` via `load_project_config()` from `src.maxpat.project`
+   - If `config.json` does not exist (returns None): **STOP and tell the user** "Run `/max-new` or `/max-config` to set packages before building." Do NOT dispatch to any agent.
+   - If `config.json` exists: extract `packages` list and pass to specialist agents as `allowed_packages`
+4. Do NOT load object database JSON files -- specialists handle their own context loading.
 
 ## Dispatch Rules
 
@@ -100,6 +102,7 @@ When dispatching to multiple agents, minimize total SKILL.md context loaded.
 1. Analyze the task and determine agent(s)
 2. Log dispatch decision: which agent(s) and why
 3. Load and pass relevant context (project context) to specialist(s)
+3b. Pass `allowed_packages` from project config to specialist agent(s) -- they use it when constructing Patcher instances
 4. Invoke specialist skill(s)
 5. If multi-agent: merge outputs per merge-protocol.md
 6. Pass merged output to critic loop for review

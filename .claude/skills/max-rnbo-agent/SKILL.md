@@ -36,6 +36,7 @@ When invoked:
 1. Read `CLAUDE.md` RNBO section for export rules and constraints
 2. Use `RNBODatabase()` from `src.maxpat.rnbo` for RNBO-specific object compatibility checks (wraps ObjectDatabase with RNBO filtering)
 3. Use `ObjectDatabase` from `src.maxpat.db_lookup` for general object lookups when checking companion MSP/Gen objects
+4. Read project `config.json` via `load_project_config()` from `src.maxpat.project` for allowed packages. Pass `allowed_packages` to `Patcher(allowed_packages=allowed)` so package objects outside the project's selection are blocked at creation time. Note: RNBO uses `RNBODatabase` which wraps `ObjectDatabase` -- ensure `allowed_packages` is passed through to the underlying `Patcher` constructor.
 
 ## Python API References
 

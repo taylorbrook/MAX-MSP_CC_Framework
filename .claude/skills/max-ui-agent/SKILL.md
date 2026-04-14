@@ -21,6 +21,7 @@ The UI agent handles visual design and control placement for MAX patches. It man
 Before any generation:
 1. Read `CLAUDE.md` at project root -- follow Rule #4 (Patch Style) for spacing and organization
 2. Use `ObjectDatabase` from `src.maxpat.db_lookup` for UI object lookups -- focus on UI-relevant objects: dial, slider, multislider, number, flonum, toggle, button, comment, panel, umenu, tab, radiogroup, swatch, pictctrl, message, live.dial, live.slider, live.numbox, live.toggle, live.menu, live.text, live.tab
+3. Read project `config.json` via `load_project_config()` from `src.maxpat.project` for allowed packages. Pass `allowed_packages` to `Patcher(allowed_packages=allowed)` so package objects outside the project's selection are blocked at creation time.
 
 **Domain focus:** UI objects and presentation layout. Signal processing is handled by the DSP agent.
 

@@ -22,6 +22,7 @@ Before any generation:
 1. Read `CLAUDE.md` at project root -- follow MSP and Gen~ domain-specific rules
 2. Use `ObjectDatabase` from `src.maxpat.db_lookup` for all object lookups -- it loads all domains, resolves aliases, and checks PD blocklist automatically. No need to read individual domain JSON files.
 3. Check `.claude/max-objects/pd-blocklist.json` if you need to browse PD equivalents in bulk
+4. Read project `config.json` via `load_project_config()` from `src.maxpat.project` for allowed packages. Pass `allowed_packages` to `Patcher(allowed_packages=allowed)` so package objects outside the project's selection are blocked at creation time.
 
 **Domain focus:** MSP (signal processing) and Gen~ (DSP operators). Other domains are handled by their respective agents.
 
