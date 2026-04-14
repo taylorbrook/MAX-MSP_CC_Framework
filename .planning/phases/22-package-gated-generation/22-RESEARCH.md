@@ -329,7 +329,7 @@ results = validate_patch(patch_dict, db=db, allowed_packages=allowed)
 | A1 | Adding `allowed_packages` param to `Box.__init__()` is the cleanest threading approach | Architecture Patterns - Pattern 2 | LOW -- alternative is storing on DB instance, also viable but messier semantically |
 | A2 | `maxforlive-elements` and `VIDDLL` packages need tier entries in package_info.json | Pitfalls - Pitfall 5 | LOW -- could handle with fallback instead |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should `/max-config` be a new skill or extend max-lifecycle?**
    - What we know: max-lifecycle already handles project creation, status, switching
