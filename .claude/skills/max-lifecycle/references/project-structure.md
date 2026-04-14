@@ -8,6 +8,7 @@ Standard layout for MAX projects created by `/max-new`.
 patches/
   .active-project.json      # Tracks which project is currently active
   {project-name}/
+    config.json             # Package selection (which packages this project uses)
     versions.json           # Version history (semver, auto-created at 0.0.0)
     context.md              # Project vision, requirements, clarifying answers
     status.md               # Current stage, progress, created date
@@ -28,6 +29,15 @@ patches/
   "activated": "2026-03-10T14:00:00Z"
 }
 ```
+
+### config.json
+Package configuration for the project. Created during `/max-new` after the user selects packages. Can be edited directly or via `/max-config`.
+```json
+{
+  "packages": ["BEAP", "Vizzie"]
+}
+```
+Package names match keys in `.claude/max-objects/package_info.json`. An empty list means core objects only. If this file does not exist, the project has not been configured for packages yet -- `/max-build` will block until packages are configured.
 
 ### versions.json
 Semver version history, auto-created at `0.0.0` when a project is created. Each entry records the version number, a description of what changed, and an ISO timestamp.

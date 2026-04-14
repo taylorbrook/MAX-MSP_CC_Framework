@@ -21,6 +21,7 @@ Before lifecycle operations:
 2. Read `src/maxpat/testing.py` for test checklist generation
 3. Read `patches/.active-project.json` for current active project
 4. Read active project's `status.md` for current stage and progress
+5. Read active project's `config.json` via `load_project_config()` for package configuration
 
 ## Python Interface
 
@@ -28,7 +29,8 @@ Before lifecycle operations:
 from src.maxpat.project import (
     create_project, get_active_project, set_active_project,
     read_status, update_status, list_projects,
-    init_versions, get_version, bump_version, list_versions
+    init_versions, get_version, bump_version, list_versions,
+    load_project_config, save_project_config, get_allowed_packages,
 )
 from src.maxpat.testing import generate_test_checklist, save_test_results
 ```
@@ -41,6 +43,17 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 - Start conversational kickoff: ask clarifying questions about audio/MIDI requirements, signal flow, UI needs
 - Write answers to project's `context.md`
 - See `references/project-structure.md` for standard directory layout
+
+### Package Configuration
+- After `create_project()`, prompt the user to select packages for the project
+- Present packages in two groups using `ObjectDatabase().list_packages()` and `get_package_info()`:
+  - **Bundled packages** (tier == "bundled" in package_info.json): ship with MAX, always available
+  - **Community packages** (tier == "community" or "licensed"): require separate install
+- User picks individual packages from each group (no preset bundles)
+- Write selection with `save_project_config(project_dir, {"packages": [selected_names]})`
+- Package names must exactly match keys in package_info.json (e.g., "BEAP", "Vizzie", "ableton-dsp")
+- If user selects no packages, write `{"packages": []}` (core-only, per D-08)
+- Users can change packages later via `/max-config` (same bundled/community split)
 
 ### Status Tracking
 - Read current status with `read_status(project_dir)`
@@ -78,6 +91,7 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 - `/max-switch` -- Change active project
 - `/max-test` -- Generate test checklist from generated patches
 - `/max-version` -- Show current version or bump version
+- `/max-config` -- View or change project package configuration
 - Any command that needs to read/update project state
 
 ## When NOT to Use
