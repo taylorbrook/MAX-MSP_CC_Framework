@@ -1,320 +1,238 @@
-# Technology Stack: Package Integration
+# Technology Stack: v2.0 Direct .maxpat Reading & Surgical Editing
 
-**Project:** MAX Package Integration Milestone
-**Researched:** 2026-04-12
+**Project:** MaxSystem v2.0 -- Patcher Library Refactor to Read-Write Editor
+**Researched:** 2026-03-15
 **Overall Confidence:** HIGH
 
 ## Executive Summary
 
-Package integration extends the existing 2,015-object knowledge base to cover MAX packages -- from bundled Tier 1 (BEAP, Vizzie, Jitter Geometry, Jitter Tools) to community Tier 2 (FluCoMa, CNMAT, Bach, etc.). The core question: what stack additions are needed for extraction, registry, filtering, and validation of package objects?
+The v2.0 milestone replaces the Python generation pipeline with direct .maxpat reading and surgical editing. The core question: what stack additions are needed to load arbitrary .maxpat files, understand their structure, and make precise edits while preserving everything else?
 
-**Answer: Zero new external dependencies.** The existing Python stdlib + extraction script (`extract_objects.py`) + ObjectDatabase already handle 90% of the work. What changes is (1) the extraction script needs a second extraction path for bpatcher abstractions (BEAP/Vizzie have zero `.maxref.xml` files), (2) the ObjectDatabase needs a `package` field and filtering API, and (3) the registry needs a per-package metadata format for permission gating.
+**Answer: Almost nothing.** The existing codebase already has 90% of what is needed. `Patcher.from_dict()` already loads .maxpat JSON into Box/Patchline objects. The .maxpat format is plain JSON with a stable, well-understood structure. The layout engine already builds topology graphs from boxes and lines. What is missing is (1) richer querying of loaded patches, (2) targeted mutation operations that work on Box/Patchline objects without full regeneration, and (3) a write-back path that serializes only changes.
 
-The two package types require fundamentally different extraction strategies:
-- **XML-documented packages** (Jitter Geometry: 27 refs, Jitter Tools: 99 refs, RNBO: 560 refs): Existing `extract_objects.py` handles these already. Add the package source dirs to `SOURCE_DIRS` / `PACKAGE_GLOBS`.
-- **Bpatcher abstractions** (BEAP: 168 modules, Vizzie: 110 modules): No XML refs exist. I/O metadata must be extracted by parsing `.maxpat` JSON -- counting `inlet`/`outlet` boxes inside embedded or referenced patchers, reading `comment` attributes for digest text.
+**No new external dependencies are needed.** Python's stdlib `json` module is sufficient for all .maxpat reading and writing. The existing `Patcher`, `Box`, `Patchline` data model already maps 1:1 to the .maxpat JSON structure. Adding external libraries (py2max, deepdiff, jsonpatch, networkx) would create parallel systems competing with the existing well-tested codebase.
 
 ## Recommended Stack: No New Libraries
 
 ### What Already Works
 
-| Capability | Current Module | Status | Package Integration Change |
-|------------|---------------|--------|---------------------------|
-| XML ref extraction | `.claude/scripts/extract_objects.py` | Working | Add package source dirs |
-| Object storage | `.claude/max-objects/{domain}/objects.json` | Working | Expand `packages/` or add per-package dirs |
-| Object lookup | `db_lookup.py` ObjectDatabase | Working | Add `package` field filter, `list_packages()` |
-| Object validation | `validation.py` Layer 2 | Working | Package-aware existence checks |
-| Connection validation | `validation.py` Layer 3 | Working | No change (uses DB I/O counts) |
-| Object schema | `test_object_schema.py` | Working | Schema unchanged |
+| Capability | Current Module | Status | v2.0 Change Needed |
+|------------|---------------|--------|---------------------|
+| Load .maxpat JSON | `Patcher.from_dict()` | Working | Minor fixes (see below) |
+| Serialize to .maxpat JSON | `Patcher.to_dict()` | Working | None |
+| Box data model | `patcher.py` Box class | Working | Add mutation methods |
+| Connection data model | `patcher.py` Patchline class | Working | Add query methods |
+| Object database lookup | `db_lookup.py` ObjectDatabase | Working | None |
+| Graph topology | `layout.py` `_build_graph()` | Working | Extract to shared utility |
+| Validation pipeline | `validation.py` | Working | Works on dicts already |
+| File I/O | `hooks.py` | Working | Add `load_patch()` entry point |
 
 ### What Needs to Be Added (All In-House)
 
 | New Capability | Module | Purpose | Complexity |
 |----------------|--------|---------|------------|
-| Bpatcher abstraction extractor | Extend: `extract_objects.py` | Parse .maxpat JSON for I/O from inlet/outlet boxes | Medium |
-| Package registry format | New: `.claude/max-objects/packages/registry.json` | Per-package metadata: name, tier, version, license, installed path | Low |
-| ObjectDatabase filter API | Extend: `db_lookup.py` | `lookup(name, packages=["BEAP"])`, `list_packages()`, `objects_in_package()` | Low |
-| Package scanner | New function in `extract_objects.py` | Discover installed packages from MAX package dirs | Low |
-| Per-patch package permissions | New field in project `context.md` or `status.md` | List of allowed packages per project | Low |
+| Patch query API | New: `query.py` | Find boxes by name/type/connection, traverse topology | Medium |
+| Surgical edit operations | Extend: `patcher.py` | `remove_box()`, `replace_box()`, `reroute()` | Low |
+| Diff-aware write-back | Extend: `patcher.py` / `hooks.py` | Write only changed sections, preserve unknown keys | Medium |
+| `from_dict()` hardening | Fix: `patcher.py` | Handle all edge cases in real-world .maxpat files | Low |
+| `/max-onboard` analysis | New: `analysis.py` | Summarize patch structure, identify patterns | Medium |
 
 ## Detailed Stack Decisions
 
-### Decision 1: Two-Path Extraction (XML + Bpatcher Parsing)
+### Decision 1: Do NOT Adopt py2max
 
-**Recommendation:** Extend `extract_objects.py` with a second extraction function for `.maxpat`-based abstractions. Keep the existing XML extraction for packages that have `.maxref.xml` files.
+**Recommendation:** Do not use py2max. Continue with the existing custom Patcher model.
 
-**Evidence from disk analysis:**
+| Factor | py2max | Existing Patcher Model |
+|--------|--------|----------------------|
+| Round-trip support | Yes | Yes (via `from_dict()` / `to_dict()`) |
+| Object validation | None (any string accepted) | Full (2,015-object DB, Rule #1 enforcement) |
+| Variable I/O computation | None | Full (formula-based from overrides) |
+| Connection validation | None | 4-layer pipeline with auto-fix |
+| Layout engine | None (manual positioning) | Full topological layout with midpoints |
+| Test coverage | 418 tests | 624 tests |
+| Integration with agents | Would need adapter layer | Native |
+| Naming convention | `_tilde` suffix (`cycle_tilde`) | Native names (`cycle~`) |
 
-| Package | `.maxref.xml` Count | Module Type | Extraction Path |
-|---------|---------------------|-------------|-----------------|
-| Jitter Geometry | 27 | Compiled externals + abstractions | Existing XML parser |
-| Jitter Tools | 99 | Compiled externals (`.mxo`) + abstractions | Existing XML parser |
-| BEAP | 0 | Bpatcher clippings (167 embedded, 1 file-ref) | **New: .maxpat parser** |
-| Vizzie | 0 | Bpatcher clippings (0 embedded, 110 file-refs) | **New: .maxpat parser** |
-| Gen | 194 | Gen patchers | Already extracted |
-| RNBO | 560 | RNBO objects | Already extracted |
+py2max solves a different problem: generating .maxpat files from scratch without any object knowledge. This project already has a more capable version of that with validation, layout, and domain-specific intelligence. Adopting py2max would mean maintaining two parallel object models, writing adapter code, and losing validation. The existing `from_dict()` already does what py2max's `from_file()` does.
 
-**Bpatcher extraction algorithm:**
+**Confidence:** HIGH -- based on direct code comparison of both systems.
 
-```
-For each clipping .maxpat in package/clippings/:
-  1. Load JSON, find the bpatcher box
-  2. IF embedded (has 'patcher' key):
-     - Count inlet/outlet~ boxes in inner patcher
-     - Read 'comment' attribute from inlet/outlet boxes for digest
-  3. ELSE (file reference via 'name' key):
-     - Resolve reference file from package/patchers/
-     - Count inlet/outlet boxes in referenced patcher
-     - Read 'comment' attributes for digest
-  4. Extract: name, category (from dir path), inlets, outlets, signal types
-  5. Output to standard object schema format
-```
+### Decision 2: Do NOT Add jsonpatch/deepdiff for JSON Diff/Patch
 
-BEAP modules are 99.4% embedded (167/168). Vizzie is 100% file-referenced. Both patterns must be handled.
+**Recommendation:** Do not use RFC 6902 JSON Patch or deepdiff. Work at the Patcher/Box/Patchline level, not the raw JSON level.
 
-**Inlet comment attributes** are the key source of digest text. Verified on disk:
-- BEAP inlets: `comment` attribute is empty (BEAP uses presentation mode labels instead)
-- Vizzie inlets: `comment` attribute has full descriptions (e.g., "Toggle mirroring", "Video output")
+**Why not jsonpatch (v1.33):**
+- RFC 6902 patches operate on JSON paths like `/patcher/boxes/3/box/patching_rect/0`. These paths are brittle -- they break when array indices shift (adding/removing boxes changes every index after it).
+- .maxpat boxes are identified by their `id` field, not array position. Any useful diff/patch system needs to work by box ID, not JSON path.
+- The overhead of converting to/from JSON patch format adds complexity without benefit when we already have the Box/Patchline object model.
 
-For BEAP, we'll need to parse presentation-mode `comment` boxes near inlet/outlet positions as a fallback.
+**Why not deepdiff (v8.6.1):**
+- DeepDiff excels at comparing arbitrary Python objects. But .maxpat patches have known structure -- we do not need generic deep comparison.
+- DeepDiff's Delta feature has had security vulnerabilities (CVE-2025-58367 in deserialization). While patched in 8.6.1, this is unnecessary attack surface for a tool that reads/writes files to disk.
+- Comparing two Patcher objects at the Box/Patchline level is trivial with the existing model: boxes have IDs, connections have (source_id, outlet, dest_id, inlet) tuples. No library needed.
 
-**Complexity:** Medium. JSON parsing is trivial. The challenge is reliably associating comment text with inlet/outlet objects across both embedded and referenced patterns.
+**The right approach:** Operate at the semantic level (Box/Patchline), not the syntactic level (JSON paths). When writing back, serialize the full Patcher to dict and write it. The `.maxpat` files are typically 2-10K lines -- full serialization is instantaneous.
 
-**Confidence:** HIGH -- verified by parsing 168 BEAP clippings and 110 Vizzie clippings from `/Applications/Max.app/Contents/Resources/C74/packages/`.
+**Confidence:** HIGH -- jsonpatch's array-index-based paths are fundamentally wrong for ID-based structures.
 
-### Decision 2: Expand Object Schema with `package` Field
+### Decision 3: Do NOT Add NetworkX for Graph Analysis
 
-**Recommendation:** Add a `package` string field to every object. Core objects get `package: "core"`. Package objects get the package name (e.g., `"BEAP"`, `"FluCoMa"`).
+**Recommendation:** Do not add NetworkX. Extend the existing graph utilities in `layout.py`.
 
-**Current schema (18 fields):**
-```
-name, maxclass, module, domain, category, digest, description,
-inlets, outlets, arguments, messages, attributes, seealso, tags,
-min_version, verified, variable_io, rnbo_compatible
-```
+The existing layout engine already implements:
+- Adjacency list construction from boxes and lines (`_build_graph()`)
+- Connected component detection via BFS (`_find_components()`)
+- Topological sort via Kahn's algorithm (`_topological_levels()`)
+- Reverse adjacency for parent lookups
 
-**Proposed addition:**
-```
-package: string  // "core" | "BEAP" | "Vizzie" | "FluCoMa" | etc.
-```
+These are the exact graph operations needed for patch analysis: "what connects to this object?", "what are the signal chains?", "what are the independent sub-circuits?". NetworkX (v3.6.1, requires Python 3.11+) would be a 10MB dependency to replace ~100 lines of existing, tested code.
 
-This is a non-breaking addition. The `domain` field currently stores "Packages" for all package objects indiscriminately. Adding `package` enables filtering by specific package without changing `domain`.
+**What to do instead:** Extract `_build_graph()`, `_find_components()`, and `_topological_levels()` from `layout.py` into a shared `topology.py` module that both the layout engine and the new query/analysis modules can use.
 
-**Migration:** Backfill existing 87 package objects (all `abl.*`, `jit.*`, `live.*`, `mira.*`) with appropriate `package` values (e.g., `"ableton-dsp"`, `"jit.mo"`, `"mira"`). Core domain objects get `package: "core"`.
+**Confidence:** HIGH -- the existing implementations cover the needed algorithms.
 
-**Why not use `domain` for this?** Domain is a categorical field (Max, MSP, Jitter, MC, Gen, M4L, Packages, RNBO) used for validation pipeline routing. A single package can contain objects across multiple domains (e.g., FluCoMa has both signal processing `fluid.*~` and data objects `fluid.dataset`). Keeping `domain` for type and `package` for provenance is cleaner.
+### Decision 4: Harden `Patcher.from_dict()` (Existing Code, No New Deps)
 
-**Confidence:** HIGH -- simple additive schema change.
+**Recommendation:** Fix edge cases in the existing `from_dict()` classmethod.
 
-### Decision 3: Per-Package Directory Structure (Not Flat `packages/objects.json`)
+Current `from_dict()` (patcher.py lines 1012-1122) already handles:
+- Top-level patcher props extraction
+- Box reconstruction with maxclass, text, I/O counts
+- Name derivation from text field or maxclass
+- Patchline reconstruction from source/destination arrays
+- Recursive inner patcher loading
+- ID counter recovery for new box generation
 
-**Recommendation:** Move from a single `packages/objects.json` to per-package directories.
+**Edge cases to fix for real-world .maxpat files:**
 
-**Current:**
-```
-.claude/max-objects/packages/objects.json    # All 87 objects in one file
-```
+1. **bpatcher attributes not restored.** Current `from_dict()` sets `_bpatcher_attrs = None` for all loaded boxes. Real .maxpat bpatchers have `args`, `name`, `bgmode`, `offset`, etc. that need to be captured into `_bpatcher_attrs` for faithful round-trip.
 
-**Proposed:**
-```
-.claude/max-objects/packages/
-  registry.json                               # Package metadata index
-  ableton-dsp/objects.json                    # 74 abl.* objects
-  beap/objects.json                           # ~168 bp.* objects
-  vizzie/objects.json                         # ~110 vz.* objects
-  jitter-geometry/objects.json                # ~27 jit.geom.* objects
-  jitter-tools/objects.json                   # ~99 jit.gl.*, jit.ui.* objects
-  flucoma/objects.json                        # ~60 fluid.* objects (when installed)
-  cnmat/objects.json                          # ~30 objects (when installed)
-  # ... more as packages are added
-```
+2. **Unknown maxclasses.** MAX 9 introduces new maxclasses not in our UI set (e.g., `live.scope~`, `filtergraph~`, custom externals). `from_dict()` should not crash on unknown maxclasses -- it should load them permissively and flag unknowns.
 
-**Why per-package dirs:** Enables lazy loading (only load packages a project uses), cleaner git diffs, independent extraction per package, and permission gating at the directory level.
+3. **Non-standard ID formats.** User-created or MAX-generated patches sometimes use IDs like `obj-1073741824` or UUID-style IDs. The ID counter recovery should handle these gracefully.
 
-**Impact on ObjectDatabase._load():** Currently iterates `DOMAIN_LOAD_ORDER = ["rnbo", "packages", "m4l", ...]`. Change `"packages"` to iterate subdirectories of `packages/`, or accept a `packages` filter parameter.
+4. **Deeply nested subpatchers.** Poly~ objects can contain multiple levels of nesting. The recursive `from_dict()` call already handles this, but the `_is_subpatcher` flag should be set correctly for inner patchers.
 
-**Backward compatible:** The existing `DOMAIN_LOAD_ORDER` scan just needs to walk subdirs instead of loading one file.
+5. **Extra patcher-level keys.** Real .maxpat files from MAX have keys not in `DEFAULT_PATCHER_PROPS` (e.g., `editing_bgcolor`, `locked_bgcolor`, `parameter_enable`, custom styles). These are already preserved via the `props` copy in `from_dict()` -- verify this works for all cases.
 
-**Confidence:** HIGH -- directory-per-domain pattern already used for the 8 core domains.
+**Complexity:** Low. These are targeted fixes to existing code, not new architecture.
 
-### Decision 4: Package Registry Format (`registry.json`)
+**Confidence:** HIGH -- verified by examining both `from_dict()` source and real .maxpat files.
 
-**Recommendation:** Create a lightweight package index at `.claude/max-objects/packages/registry.json`.
+### Decision 5: Build Query API as New Module (`query.py`)
 
-```json
-{
-  "packages": {
-    "beap": {
-      "display_name": "BEAP",
-      "version": "1.0.4",
-      "tier": 1,
-      "bundled": true,
-      "license": "free",
-      "install_path": "packages/BEAP",
-      "object_count": 168,
-      "extraction_method": "bpatcher",
-      "extraction_date": "2026-04-12T00:00:00Z",
-      "categories": ["Oscillator", "Filter", "Envelope", "Effects", "MIDI", "Sequencer", "Mixer", "Scope", "Level", "LFO", "Quantizer", "Random", "Input", "Output", "Waveshapers", "Analysis", "Serialosc"]
-    },
-    "vizzie": {
-      "display_name": "Vizzie",
-      "version": "2.3.0",
-      "tier": 1,
-      "bundled": true,
-      "license": "free",
-      "install_path": "packages/Vizzie",
-      "object_count": 110,
-      "extraction_method": "bpatcher",
-      "extraction_date": "2026-04-12T00:00:00Z",
-      "categories": ["CONTROL", "EFFECTS", "GENERATORS", "INPUT", "MIXERS", "OUTPUT", "UTILITIES"]
-    },
-    "jitter-geometry": {
-      "display_name": "Jitter Geometry",
-      "version": "1.0.0",
-      "tier": 1,
-      "bundled": true,
-      "license": "free",
-      "install_path": "packages/Jitter Geometry",
-      "object_count": 27,
-      "extraction_method": "xml",
-      "extraction_date": null
-    },
-    "jitter-tools": {
-      "display_name": "Jitter Tools",
-      "version": "1.2.2",
-      "tier": 1,
-      "bundled": true,
-      "license": "free",
-      "install_path": "packages/Jitter Tools",
-      "object_count": 99,
-      "extraction_method": "xml",
-      "extraction_date": null
-    },
-    "flucoma": {
-      "display_name": "FluCoMa",
-      "version": "1.0.8",
-      "tier": 2,
-      "bundled": false,
-      "license": "free",
-      "install_path": null,
-      "object_count": 50,
-      "extraction_method": "xml_or_help",
-      "extraction_date": null,
-      "prefix": "fluid."
-    }
-  }
-}
-```
+**Recommendation:** Create `src/maxpat/query.py` for finding and traversing loaded patches.
 
-**Fields:**
-- `tier`: 1 (bundled with MAX) or 2 (community/licensed). Tier 1 objects are always available; Tier 2 require the package to be installed.
-- `bundled`: Whether the package ships with MAX 9.
-- `license`: "free", "paid", "academic". Used for gating recommendations.
-- `extraction_method`: "xml" (has `.maxref.xml`), "bpatcher" (parse `.maxpat` clippings), "xml_or_help" (may need both).
-- `install_path`: Relative to MAX's C74 dir for bundled, absolute for user-installed.
+This is the main new capability needed. Once a patch is loaded via `from_dict()`, agents need to ask questions like:
+- "Find all `cycle~` objects in this patch"
+- "What connects to the input of this `*~` object?"
+- "Trace the signal chain from this `noise~` to `dac~`"
+- "What subpatchers exist and what do they contain?"
+- "Which objects have no connections?"
 
-**Confidence:** HIGH -- mirrors `package-info.json` format from MAX plus our metadata.
-
-### Decision 5: ObjectDatabase Filtering Extensions
-
-**Recommendation:** Add package-aware methods to ObjectDatabase, not a new class.
+**Proposed API (no external deps, pure Python):**
 
 ```python
-class ObjectDatabase:
-    # Existing constructor gets optional packages filter
-    def __init__(self, db_root=None, packages=None):
-        """
-        Args:
-            packages: If provided, only load objects from these packages.
-                      None means load all. ["core"] means only core objects.
-                      ["core", "BEAP"] means core + BEAP.
-        """
-        ...
+class PatchQuery:
+    """Query interface for loaded Patcher objects."""
 
-    # New methods
-    def list_packages(self) -> list[str]:
-        """Return names of all available packages."""
-        ...
+    def __init__(self, patcher: Patcher): ...
 
-    def objects_in_package(self, package: str) -> list[str]:
-        """Return object names belonging to a specific package."""
-        ...
+    # Find boxes
+    def find_by_name(self, name: str) -> list[Box]: ...
+    def find_by_maxclass(self, maxclass: str) -> list[Box]: ...
+    def find_by_text(self, pattern: str) -> list[Box]: ...  # regex
+    def find_by_id(self, box_id: str) -> Box | None: ...
 
-    def lookup(self, name: str, packages: list[str] | None = None) -> dict | None:
-        """Look up object, optionally restricted to specific packages.
-        If packages is None, searches all loaded objects (existing behavior).
-        """
-        ...
+    # Topology queries (uses extracted graph utils)
+    def upstream(self, box: Box) -> list[Box]: ...  # all ancestors
+    def downstream(self, box: Box) -> list[Box]: ...  # all descendants
+    def direct_inputs(self, box: Box) -> list[tuple[Box, int, int]]: ...  # (src, outlet, inlet)
+    def direct_outputs(self, box: Box) -> list[tuple[Box, int, int]]: ...  # (dst, outlet, inlet)
+    def signal_chain(self, start: Box) -> list[Box]: ...  # follow signal connections
+    def components(self) -> list[list[Box]]: ...  # independent groups
+
+    # Subpatcher traversal
+    def subpatchers(self) -> list[tuple[Box, Patcher]]: ...
+    def walk_all_boxes(self) -> Iterator[tuple[Box, Patcher]]: ...  # deep recursive
+
+    # Summary/analysis
+    def summary(self) -> dict: ...  # counts, object types, signal chains
 ```
 
-**Why a filter, not separate databases:** The validation pipeline needs one unified database. Filtering at query time is simpler than maintaining separate ObjectDatabase instances per project.
+**Why a separate module:** Query logic is conceptually distinct from mutation (patcher.py) and layout (layout.py). Keeping it separate enables clean testing and avoids bloating the core Patcher class.
 
-**Per-patch permission gating:** A project's `context.md` or a new `packages.json` declares which packages the project uses:
-```json
-{"allowed_packages": ["core", "BEAP", "FluCoMa"]}
-```
-When creating a patch, pass this to `ObjectDatabase(packages=allowed)`. Agents can only use objects from allowed packages. Validation layer 2 flags objects from disallowed packages.
+**Complexity:** Medium. Graph traversal reuses existing topology code. The novel work is the query interface design.
 
-**Confidence:** HIGH -- simple extension to existing API.
+**Confidence:** HIGH -- pattern proven by both py2max and the existing layout engine.
 
-### Decision 6: Do NOT Build a Package Manager / Installer
+### Decision 6: Add Surgical Edit Operations to Patcher
 
-**Recommendation:** Do not build tooling to install/update community packages. That is MAX Package Manager's job.
+**Recommendation:** Add mutation methods directly to the `Patcher` class.
 
-**What we DO build:**
-- Scan installed packages and extract object metadata
-- Store extracted metadata in our DB format
-- Gate access per project
+Current Patcher has: `add_box()`, `add_connection()`, `add_subpatcher()`, etc. (creation only).
 
-**What we DO NOT build:**
-- Download/install packages from the internet
-- Version conflict resolution
-- Dependency management between packages
-- Auto-update from package repos
+**New methods needed for editing:**
 
-**Why:** Community packages (FluCoMa, Bach, CNMAT) have their own release cycles, build systems (CMake for FluCoMa), and distribution channels. Replicating this is a maintenance burden with no benefit -- users install via MAX Package Manager, we scan what is installed.
+```python
+class Patcher:
+    # Removal
+    def remove_box(self, box: Box | str) -> list[Patchline]: ...
+        # Remove box and all its connections, return removed connections
 
-**Confidence:** HIGH -- clear scope boundary.
+    def remove_connection(self, src: Box, outlet: int, dst: Box, inlet: int) -> bool: ...
 
-### Decision 7: Extraction for Community Packages (Tier 2)
+    # Replacement
+    def replace_box(self, old: Box | str, new_name: str, new_args: list[str] | None = None) -> Box: ...
+        # Replace object, attempt to preserve connections where I/O counts match
 
-**Recommendation:** Use a hybrid extraction approach based on what the package provides.
+    # Reconnection
+    def insert_between(self, upstream: Box, downstream: Box, new_box: Box,
+                        src_outlet: int = 0, dst_inlet: int = 0) -> None: ...
+        # Insert a box in the middle of an existing connection
 
-| Package | Type | Extraction Source | Notes |
-|---------|------|-------------------|-------|
-| FluCoMa | Compiled externals (`.mxo`) | `.maxref.xml` if present, else parse `.maxhelp` files | All objects prefixed `fluid.*` |
-| CNMAT | Compiled externals | `.maxref.xml` or `.maxhelp` | Objects like `resonators~`, `sinusoids~` |
-| Bach | Mixed (externals + abstractions) | `.maxref.xml` (250+ objects) | All prefixed `bach.*` |
-| Odot | Compiled externals | `.maxref.xml` or parse help patches | OSC processing, `o.*` prefix |
-| ml.star | Compiled externals | `.maxhelp` files | 8 objects, `ml.*` prefix |
-| IRCAM Spat | Compiled externals | `.maxref.xml` (300+ objects) | Licensed, `spat5.*` prefix, paid |
-| Cage | Mixed | `.maxref.xml` or help | `cage.*` prefix, depends on Bach |
-| Dada | Mixed | Help patches | `dada.*` prefix, depends on Bach |
-| EARS | Mixed | Help patches | `ears.*` prefix, depends on Bach |
-
-**Help patch extraction** (fallback when no XML refs exist):
-```
-For each .maxhelp in package/help/:
-  1. Find the target object box in the help patch
-  2. Read numinlets/numoutlets from the box
-  3. Read outlettype array for signal types
-  4. Parse comment boxes near inlets/outlets for digest text
-  5. Extract object name from box text
+    def reroute(self, old_src: Box, old_outlet: int, new_src: Box, new_outlet: int) -> None: ...
+        # Move all connections from one outlet to another
 ```
 
-This is less reliable than XML extraction but sufficient for Tier 2 packages where we accept lower verification confidence.
+**Why on Patcher, not a separate class:** These operations need to modify both `self.boxes` and `self.lines` atomically. Putting them on Patcher keeps the mutation boundary clear.
 
-**Confidence:** MEDIUM -- not all community packages have been examined. The extraction approach is sound but specific packages may have quirks.
+**Complexity:** Low. Remove/replace are straightforward list operations with connection cleanup.
 
-## What NOT to Add
+**Confidence:** HIGH -- standard mutable collection operations.
 
-| Technology | Why Not |
-|------------|---------|
-| Package download/install tooling | MAX Package Manager handles this |
-| SQLite for object DB | JSON files are small (11K lines for 87 objects), fast, git-friendly |
-| NetworkX for package dependency graphs | Package deps are simple (Bach -> Cage/Dada/EARS), hardcode in registry |
-| Web scraping for package docs | Fragile, unnecessary -- extract from installed files |
-| Any npm/pip dependencies | Extraction is pure Python stdlib (json, xml.etree, pathlib) |
+### Decision 7: Write-Back Strategy -- Full Serialization, Not Incremental
+
+**Recommendation:** Write the full .maxpat JSON on every save. Do NOT attempt incremental JSON patching.
+
+**Rationale:**
+1. .maxpat files are small (typical: 2K-10K lines, max observed: ~6K lines for kicksynth). Full JSON serialization + write takes <10ms.
+2. The current `to_dict()` is already a correct full serializer.
+3. `from_dict()` already preserves all keys it does not recognize into `extra_attrs` and `props`, so unknown keys survive the round-trip.
+4. Incremental JSON patching (only writing changed bytes) is complex, error-prone, and saves negligible time.
+5. MAX does not watch .maxpat files for changes -- there is no file-locking or live-reload concern.
+
+**The write pipeline becomes:**
+```
+Load:  json.loads(path.read_text()) -> Patcher.from_dict(data, db)
+Edit:  patcher.remove_box(...) / patcher.add_box(...) / etc.
+Save:  json.dumps(patcher.to_dict(), indent=2) -> path.write_text()
+```
+
+This replaces the entire `incremental.py` / `Manifest` system with a simpler approach: the .maxpat file IS the source of truth. No sidecar manifests needed.
+
+**Confidence:** HIGH -- performance verified (6K-line kicksynth.maxpat parses in <5ms).
+
+## What to Remove from the Stack
+
+| Module | Status | Rationale |
+|--------|--------|-----------|
+| `incremental.py` | **Remove** | Manifest-based merge is replaced by load-edit-save cycle. No more sidecar `.manifest.json` files. |
+| `Manifest` class | **Remove** | The .maxpat file is the single source of truth. No need to track generator-owned vs user-owned objects. |
+| `merge_and_write()` | **Remove** | Replaced by `Patcher.from_dict()` -> edit -> `to_dict()` -> write. |
+| `generate.py` scripts per patch | **Remove** | Agents edit .maxpat directly. No Python generation scripts. |
+| `versions.json` per patch | **Remove** | Version tracking via git, not custom JSON sidecar. |
 
 ## Existing Stack: Unchanged
 
@@ -322,114 +240,116 @@ This is less reliable than XML extraction but sufficient for Tier 2 packages whe
 |------------|---------|--------|
 | Python | 3.14 | Keep -- runtime for all modules |
 | pytest | 9.0.2 | Keep -- test framework |
-| `json` (stdlib) | 3.14 | Keep -- .maxpat and object DB parsing |
-| `xml.etree.ElementTree` (stdlib) | 3.14 | Keep -- .maxref.xml parsing in extract_objects.py |
-| `pathlib` (stdlib) | 3.14 | Keep -- file I/O and package path discovery |
-| `extract_objects.py` | v1.0 | Keep + extend -- add bpatcher extraction path |
-| `db_lookup.py` (ObjectDatabase) | v1.1 | Keep + extend -- add package filter API |
-| `validation.py` | v1.1 | Keep + extend -- package-aware object checks |
-| `patcher.py` | v2.0 | Keep -- round-trip editing (no changes needed) |
-| All other `src/maxpat/*.py` modules | v1.1-2.0 | Keep -- no changes needed |
+| `json` (stdlib) | 3.14 | Keep -- .maxpat parsing and serialization |
+| `pathlib` (stdlib) | 3.14 | Keep -- file I/O |
+| `copy` (stdlib) | 3.14 | Keep -- deep copy for dict manipulation |
+| `collections` (stdlib) | 3.14 | Keep -- defaultdict, deque in graph algorithms |
+| `re` (stdlib) | 3.14 | Keep -- pattern matching in validation |
+| `patcher.py` (Box/Patchline/Patcher) | v1.1 | Keep + extend -- add mutation methods |
+| `layout.py` | v1.1 | Keep -- extract topology utils to shared module |
+| `validation.py` | v1.1 | Keep -- already works on raw dicts |
+| `db_lookup.py` (ObjectDatabase) | v1.1 | Keep -- object lookup for agent validation |
+| `maxclass_map.py` | v1.1 | Keep -- UI maxclass resolution |
+| `sizing.py` | v1.1 | Keep -- box size calculation |
+| `aesthetics.py` | v1.1 | Keep -- styling helpers |
+| `defaults.py` | v1.1 | Keep -- constants and LayoutOptions |
+| `hooks.py` | v1.1 | Keep + extend -- add `load_patch()` entry point |
+| `codegen.py` | v1.1 | Keep -- GenExpr/js/N4M code generation |
+| `code_validation.py` | v1.1 | Keep -- GenExpr/js syntax validation |
 
-## New/Modified Module Map
+## New Module Map
 
 ```
-.claude/scripts/
-  extract_objects.py        # EXTENDED: add extract_bpatcher_abstractions(), scan_packages()
-
-.claude/max-objects/
-  packages/
-    registry.json           # NEW: package metadata index
-    ableton-dsp/objects.json # MOVED from flat packages/objects.json
-    beap/objects.json        # NEW: ~168 bpatcher abstraction objects
-    vizzie/objects.json      # NEW: ~110 bpatcher abstraction objects
-    jitter-geometry/objects.json  # NEW: 27 objects from XML refs
-    jitter-tools/objects.json     # NEW: 99 objects from XML refs
-    flucoma/objects.json     # NEW (when installed): ~50 objects
-    # more Tier 2 packages added as discovered
-
 src/maxpat/
-  db_lookup.py              # EXTENDED: package filter in __init__, list_packages(),
-                            #   objects_in_package(), package-aware lookup()
-  validation.py             # EXTENDED: Layer 2 checks package allowlist
-  # All other modules unchanged
+  patcher.py        # Extended: add remove_box, replace_box, insert_between, reroute
+  query.py           # NEW: PatchQuery class for find/traverse/analyze
+  topology.py        # NEW: extracted from layout.py -- shared graph utilities
+  analysis.py        # NEW: patch summarization for /max-onboard
+  layout.py          # Modified: imports topology from topology.py
+  hooks.py           # Extended: add load_patch() entry point
+  validation.py      # Unchanged
+  db_lookup.py       # Unchanged
+  maxclass_map.py    # Unchanged
+  sizing.py          # Unchanged
+  aesthetics.py      # Unchanged
+  defaults.py        # Unchanged
+  codegen.py         # Unchanged
+  code_validation.py # Unchanged
+  incremental.py     # REMOVED (replaced by load-edit-save cycle)
 ```
 
 ## Integration Points
 
-### Extraction Pipeline
+### Load Path (New)
 ```
-extract_objects.py --scan-packages
-  -> Discover: iterate MAX package dirs, read package-info.json
-  -> For each package:
-     IF has .maxref.xml: existing XML extraction
-     ELIF has clippings/: bpatcher extraction (parse .maxpat JSON)
-     ELSE: help patch extraction (parse .maxhelp JSON)
-  -> Output: per-package objects.json + update registry.json
+hooks.py:load_patch(path)
+  -> json.loads(path.read_text())
+  -> Patcher.from_dict(data, db=ObjectDatabase())
+  -> Returns: Patcher instance with all boxes/lines/props populated
 ```
 
-### ObjectDatabase Load Path (Modified)
+### Query Path (New)
 ```
-ObjectDatabase(packages=["core", "BEAP", "FluCoMa"])
-  -> Load DOMAIN_LOAD_ORDER domains (unchanged for core)
-  -> For "packages": iterate packages/ subdirs
-     -> Skip subdirs not in packages filter (if filter provided)
-     -> Load each subdir's objects.json
-  -> Apply overrides, aliases (unchanged)
+query.py:PatchQuery(patcher)
+  -> topology.py:build_graph(patcher.boxes, patcher.lines)
+  -> Returns: query object with find/traverse/analyze methods
 ```
 
-### Validation Integration
+### Edit Path (Extended)
 ```
-validate_patch(patch, db=ObjectDatabase(packages=project_packages))
-  -> Layer 2: object existence checks against filtered DB
-  -> Objects from non-allowed packages trigger warning:
-     "Object 'bp.Oscillator' requires BEAP package (not in project allowlist)"
+patcher.py:Patcher.remove_box(box)
+  -> Removes box from self.boxes
+  -> Removes all connections involving box from self.lines
+  -> Returns: removed connections (for undo)
+
+patcher.py:Patcher.replace_box(old, new_name, new_args)
+  -> Creates new Box with DB validation
+  -> Attempts to preserve compatible connections
+  -> Returns: new Box
+```
+
+### Save Path (Simplified)
+```
+hooks.py:save_patch(patcher, path)
+  -> patcher.to_dict()
+  -> json.dumps(result, indent=2)
+  -> path.write_text(json_str)
+  -> Optional: validate before write
 ```
 
 ### Agent Integration
 ```
-Agent receives: project context with allowed_packages
-Agent creates:  ObjectDatabase(packages=allowed_packages)
-Agent uses:     db.lookup("bp.Oscillator")  # Found only if BEAP allowed
-Agent suggests: db.objects_in_package("BEAP")  # For discovery
+Agent receives: path to .maxpat file
+Agent calls:    load_patch(path) -> patcher
+Agent queries:  PatchQuery(patcher).find_by_name("cycle~")
+Agent edits:    patcher.remove_box(old); patcher.add_box("saw~", ["440"])
+Agent saves:    save_patch(patcher, path)
+Agent validates: validate_patch(patcher)
 ```
 
 ## Installation
 
 ```bash
 # No new packages to install. Zero new dependencies.
-# Package extraction uses Python 3.14 stdlib: json, xml.etree, pathlib.
+# The entire v2.0 stack runs on Python 3.14 stdlib + existing codebase.
 ```
 
 ## Sources
 
 ### Codebase Analysis (HIGH confidence)
-- `extract_objects.py` -- Examined XML extraction pipeline, SOURCE_DIRS, PACKAGE_GLOBS (lines 1-50)
-- `db_lookup.py` -- Examined ObjectDatabase._load(), DOMAIN_LOAD_ORDER, lookup(), compute_io_counts()
-- `validation.py` -- Examined 4-layer pipeline, _validate_objects_exist(), _extract_object_name()
-- `conftest.py` -- Examined VALID_DOMAINS, DOMAIN_DIRS, test fixtures
-- `test_object_schema.py` -- Examined required schema fields (18 fields)
-- `.claude/max-objects/packages/objects.json` -- 87 existing package objects, all abl.*/jit.*/live.*/mira.*
-- `.claude/max-objects/extraction-log.json` -- 2,015 total objects across 8 domains
+- `src/maxpat/patcher.py` -- Examined `from_dict()` (lines 1012-1122), `to_dict()`, Box class
+- `src/maxpat/layout.py` -- Examined `_build_graph()`, `_find_components()`, `_topological_levels()`
+- `src/maxpat/incremental.py` -- Examined full merge logic, manifest system
+- `src/maxpat/validation.py` -- Examined 4-layer pipeline, dict-based operation
+- `src/maxpat/hooks.py` -- Examined `write_patch()`, `validate_file()`
+- `src/maxpat/db_lookup.py` -- Examined ObjectDatabase, `lookup()`, `compute_io_counts()`
+- Real .maxpat files -- kicksynth.maxpat (5,950 lines), multiple patches examined
 
-### MAX Package Structure Analysis (HIGH confidence, verified on disk)
-- `/Applications/Max.app/Contents/Resources/C74/packages/` -- Examined all 18 bundled packages
-- BEAP `package-info.json` -- Version 1.0.4, 168 clippings, 167/168 embedded bpatchers
-- Vizzie `package-info.json` -- Version 2.3.0, 110 clippings, 110/110 file-referenced bpatchers
-- Jitter Geometry -- 27 `.maxref.xml` files, compiled externals + abstractions
-- Jitter Tools -- 99 `.maxref.xml` files, compiled externals (`.mxo` in externals/)
-- BEAP inlet comment attributes: empty (uses presentation labels instead)
-- Vizzie inlet comment attributes: populated with descriptions
-
-### Official Documentation (HIGH confidence)
-- [MAX Package Structure](https://docs.cycling74.com/userguide/packages/) -- Directory structure, package-info.json format, discovery mechanism
-- [package-info.json Spec](https://docs.cycling74.com/max8/vignettes/package_info_json) -- All fields documented
-
-### Community Package Research (MEDIUM confidence)
-- [FluCoMa GitHub](https://github.com/flucoma/flucoma-max) -- Compiled C++ externals, `fluid.*` prefix, v1.0.8
-- [FluCoMa Reference](https://learn.flucoma.org/reference/) -- ~50 objects across analyse/decompose/slice/transform categories
-- [CNMAT Externals](https://github.com/CNMAT/CNMAT-Externs) -- Compiled externals, resonators~/sinusoids~/harmonics~
-- [Bach Project](https://www.bachproject.net/) -- 100+ externals + abstractions, `bach.*` prefix, notation/CAC
-- [FluCoMa on Cycling74](https://cycling74.com/packages/fluidcorpusmanipulation) -- Package Manager listing
-- [ml.star](https://cycling74.com/packages/mlstar) -- 8 ML objects, `ml.*` prefix
-- [IRCAM Spat5](https://forum.ircam.fr/projects/detail/spat/) -- 300+ objects, `spat5.*` prefix, paid license
+### External Library Research (HIGH confidence)
+- [py2max on GitHub](https://github.com/shakfu/py2max) -- v0.2.x, pure Python, round-trip support but no object validation. Confirmed incompatible naming convention (`_tilde` suffix).
+- [jsonpatch on PyPI](https://pypi.org/project/jsonpatch/) -- v1.33, RFC 6902 implementation. Confirmed array-index-based paths are wrong for .maxpat's ID-based structure.
+- [python-json-patch docs](https://python-json-patch.readthedocs.io/en/latest/mod-jsonpatch.html) -- Full API reviewed: `make_patch()`, `JsonPatch.from_diff()`, `apply()`. Operations are add/remove/replace/copy/move/test.
+- [deepdiff on PyPI](https://pypi.org/project/deepdiff/) -- v8.6.1, generic deep comparison with Delta feature. CVE-2025-58367 security vulnerability in deserialization (patched in 8.6.1). Overkill for known-structure .maxpat comparison.
+- [jsonpointer docs](https://python-json-pointer.readthedocs.io/en/latest/tutorial.html) -- v3.0.0, RFC 6901 pointer resolution. Same array-index problem as jsonpatch.
+- [NetworkX on PyPI](https://pypi.org/project/networkx/) -- v3.6.1, requires Python 3.11+. 10MB dependency to replace ~100 lines of existing graph code.
+- [Cycling '74 .maxpat format discussion](https://cycling74.com/forums/specification-for-maxpat-json-format) -- No official spec exists. Format is reverse-engineered from examples.
