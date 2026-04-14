@@ -1932,6 +1932,7 @@ class Patcher(GraphMixin, AnalysisMixin):
 
         p = cls.__new__(cls)
         p.db = db if db is not None else ObjectDatabase()
+        p.allowed_packages = None
         p.boxes = []
         p.lines = []
         p._is_subpatcher = False
