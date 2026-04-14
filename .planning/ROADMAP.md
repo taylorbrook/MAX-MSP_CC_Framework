@@ -76,6 +76,11 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
 - [ ] Phase 22: Package-Gated Generation
   - **Goal:** Ensure agents never silently use package objects the user hasn't confirmed
   - Package selection in project config, `/max-new` and `/max-build` prompt for packages, ObjectDatabase filtering via allowed_packages
+  - **Plans:** 3 plans
+  - Plans:
+    - [ ] 22-01-PLAN.md — Project config read/write functions and package_info.json completion
+    - [ ] 22-02-PLAN.md — Patcher/Box allowed_packages threading and validation pipeline layer
+    - [ ] 22-03-PLAN.md — Agent SKILL.md updates for package selection and gating
   - **Requirements:** PKG-09, PKG-10, PKG-11, PKG-12, PKG-13
   - Depends on: Phase 20
 
@@ -121,11 +126,11 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
 | 19. Tech Debt Cleanup | v3.0.0 | 1/1 | Complete | 2026-03-17 |
 | 20. DB Schema Foundation | v4.0 | 2/2 | Complete | 2026-04-13 |
 | 21. Bundled Package Extraction | v4.0 | 3/3 | Complete    | 2026-04-14 |
-| 22. Package-Gated Generation | v4.0 | 0/0 | Planned | - |
+| 22. Package-Gated Generation | v4.0 | 0/3 | Planned | - |
 | 23. Agent Package Intelligence | v4.0 | 0/0 | Planned | - |
 | 24. Community Package Support | v4.0 | 0/0 | Planned | - |
 | 25. Templates + Critics | v4.0 | 0/0 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-13 -- Phase 21 planned (3 plans)*
+*Last updated: 2026-04-14 -- Phase 22 planned (3 plans)*
