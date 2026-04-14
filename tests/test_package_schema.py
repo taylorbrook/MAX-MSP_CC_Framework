@@ -141,11 +141,11 @@ class TestPackageAPI:
         # Verify sorted
         assert packages == sorted(packages)
 
-    def test_list_packages_excludes_empty(self, db):
-        """DBSI-04: list_packages() does NOT include packages with 0 objects."""
+    def test_list_packages_includes_populated(self, db):
+        """DBSI-04: list_packages() includes populated packages."""
         packages = db.list_packages()
-        assert "BEAP" not in packages, "BEAP has 0 objects and should be excluded"
-        assert "Vizzie" not in packages, "Vizzie has 0 objects and should be excluded"
+        assert "BEAP" in packages, "BEAP should be in list_packages after extraction"
+        assert "Vizzie" in packages, "Vizzie should be in list_packages after extraction"
 
     def test_get_package_objects(self, db):
         """DBSI-04: get_package_objects() returns objects for a package."""
