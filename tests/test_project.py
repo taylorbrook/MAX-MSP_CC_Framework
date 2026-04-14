@@ -18,6 +18,9 @@ from src.maxpat.project import (
     list_versions,
     build_examples_catalog,
     update_version_comment,
+    load_project_config,
+    save_project_config,
+    get_allowed_packages,
 )
 
 
@@ -500,3 +503,74 @@ class TestUpdateVersionComment:
         result = update_version_comment(p, "0.1.0")
         assert isinstance(result, Box)
         assert result.text == "v0.1.0"
+
+
+class TestProjectConfig:
+    """Tests for project config (config.json) read/write functions."""
+
+    def test_load_returns_none_when_no_config(self, tmp_path: Path):
+        """load_project_config returns None when config.json does not exist."""
+        project_dir = create_project("my-synth", tmp_path)
+        result = load_project_config(project_dir)
+        assert result is None
+
+    def test_load_returns_dict_when_config_exists(self, tmp_path: Path):
+        """load_project_config returns dict when config.json exists."""
+        project_dir = create_project("my-synth", tmp_path)
+        config = {"packages": ["BEAP"]}
+        (project_dir / "config.json").write_text(json.dumps(config, indent=2) + "\n")
+
+        result = load_project_config(project_dir)
+        assert isinstance(result, dict)
+        assert result == {"packages": ["BEAP"]}
+
+    def test_save_writes_config_json(self, tmp_path: Path):
+        """save_project_config writes config.json with correct JSON content."""
+        project_dir = create_project("my-synth", tmp_path)
+        config = {"packages": ["BEAP", "Vizzie"]}
+        save_project_config(project_dir, config)
+
+        config_path = project_dir / "config.json"
+        assert config_path.is_file()
+        data = json.loads(config_path.read_text())
+        assert data == {"packages": ["BEAP", "Vizzie"]}
+
+    def test_save_overwrites_existing_config(self, tmp_path: Path):
+        """save_project_config overwrites existing config.json."""
+        project_dir = create_project("my-synth", tmp_path)
+        save_project_config(project_dir, {"packages": ["BEAP"]})
+        save_project_config(project_dir, {"packages": ["Vizzie", "FluCoMa"]})
+
+        data = json.loads((project_dir / "config.json").read_text())
+        assert data == {"packages": ["Vizzie", "FluCoMa"]}
+
+    def test_get_allowed_packages_none_when_no_config(self, tmp_path: Path):
+        """get_allowed_packages returns None when no config.json exists."""
+        project_dir = create_project("my-synth", tmp_path)
+        result = get_allowed_packages(project_dir)
+        assert result is None
+
+    def test_get_allowed_packages_empty_list_when_empty(self, tmp_path: Path):
+        """get_allowed_packages returns empty list when packages key is empty."""
+        project_dir = create_project("my-synth", tmp_path)
+        save_project_config(project_dir, {"packages": []})
+
+        result = get_allowed_packages(project_dir)
+        assert result == []
+
+    def test_get_allowed_packages_returns_package_list(self, tmp_path: Path):
+        """get_allowed_packages returns package names from config."""
+        project_dir = create_project("my-synth", tmp_path)
+        save_project_config(project_dir, {"packages": ["BEAP", "Vizzie"]})
+
+        result = get_allowed_packages(project_dir)
+        assert result == ["BEAP", "Vizzie"]
+
+    def test_round_trip_preserves_data(self, tmp_path: Path):
+        """Round-trip save then load preserves data exactly."""
+        project_dir = create_project("my-synth", tmp_path)
+        original = {"packages": ["BEAP", "Vizzie"], "extra_key": "extra_value"}
+        save_project_config(project_dir, original)
+
+        loaded = load_project_config(project_dir)
+        assert loaded == original

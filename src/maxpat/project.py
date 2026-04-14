@@ -171,6 +171,36 @@ def update_status(project_dir: Path, **kwargs: str) -> None:
     (project_dir / "status.md").write_text("\n".join(lines) + "\n")
 
 
+def load_project_config(project_dir: Path) -> dict | None:
+    """Load config.json from project directory.
+
+    Returns None if config.json does not exist (project not configured).
+    """
+    config_path = project_dir / "config.json"
+    if not config_path.is_file():
+        return None
+    return json.loads(config_path.read_text())
+
+
+def save_project_config(project_dir: Path, config: dict) -> None:
+    """Write config.json to project directory."""
+    config_path = project_dir / "config.json"
+    config_path.write_text(json.dumps(config, indent=2) + "\n")
+
+
+def get_allowed_packages(project_dir: Path) -> list[str] | None:
+    """Get allowed packages from project config.
+
+    Returns:
+        List of package names if configured, None if no config exists.
+        Empty list means core-only (explicitly configured with no packages).
+    """
+    config = load_project_config(project_dir)
+    if config is None:
+        return None
+    return config.get("packages", [])
+
+
 def init_versions(project_dir: Path) -> str:
     """Initialize versions.json with a 0.0.0 entry if it doesn't exist.
 
