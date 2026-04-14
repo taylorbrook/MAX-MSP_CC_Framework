@@ -9,6 +9,16 @@
     "object_count": 77,
     "extracted": true
   },
+  "maxforlive-elements": {
+    "name": "maxforlive-elements",
+    "tier": "bundled",
+    "prefix": "m4l.",
+    "version": "9.0",
+    "install_method": "bundled",
+    "description": "Max for Live UI elements and utility abstractions",
+    "object_count": 3,
+    "extracted": true
+  },
   "Mira": {
     "name": "Mira",
     "tier": "bundled",
@@ -178,5 +188,15 @@
     "description": "Rhythmic and time structure utilities",
     "object_count": 0,
     "extracted": false
+  },
+  "VIDDLL": {
+    "name": "VIDDLL",
+    "tier": "bundled",
+    "prefix": "viddll.",
+    "version": "9.0",
+    "install_method": "bundled",
+    "description": "GPU-accelerated video decoding and playback",
+    "object_count": 3,
+    "extracted": true
   }
 }
