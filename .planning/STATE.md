@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-09)
 
 Phase: 22
 Plan: Not started
-Status: Phase 21 complete, Phase 22 (Package-Gated Generation) next
+Status: Phase 22 context gathered, ready for planning
 Last activity: 2026-04-14
 
 Progress: [██░░░░░░░░] 17%
