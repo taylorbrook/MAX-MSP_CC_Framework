@@ -967,3 +967,69 @@ class TestCommentPlacement:
         assert note.patching_rect[0] > osc.patching_rect[0] + osc.patching_rect[2] - 1
         # Comment Y should be close to osc Y (within grid snap tolerance)
         assert abs(note.patching_rect[1] - osc.patching_rect[1]) <= 15.0
+
+
+# ---------------------------------------------------------------------------
+# Adaptive bpatcher spacing
+# ---------------------------------------------------------------------------
+
+
+class TestAdaptiveBpatcherSpacing:
+    """Test adaptive vertical spacing for rows containing tall bpatchers.
+
+    Uses grid_snap=False for precise gap measurement (grid snap rounds
+    positions to 15px grid which distorts gap assertions).
+    """
+
+    @staticmethod
+    def _no_snap_options() -> LayoutOptions:
+        return LayoutOptions(grid_snap=False)
+
+    def test_standard_height_gap_unchanged(self):
+        """Row with standard-height boxes (22px) produces gap = V_SPACING (unchanged)."""
+        p = Patcher()
+        a = p.add_box("cycle~", ["440"])
+        b = p.add_box("*~", ["0.5"])
+        p.add_connection(a, 0, b, 0)
+        apply_layout(p, options=self._no_snap_options())
+        # Standard objects: gap should be V_SPACING since height < 100
+        gap = b.patching_rect[1] - (a.patching_rect[1] + a.patching_rect[3])
+        assert abs(gap - V_SPACING) < 0.1, f"Expected gap ~{V_SPACING}, got {gap}"
+
+    def test_tall_bpatcher_adaptive_gap(self):
+        """Row with 116px tall bpatcher produces gap = 20 + (116-100)*0.1 = 21.6px."""
+        p = Patcher()
+        bp = p.add_bpatcher(height=116.0)
+        dac = p.add_box("ezdac~")
+        p.add_connection(bp, 0, dac, 0)
+        apply_layout(p, options=self._no_snap_options())
+        gap = dac.patching_rect[1] - (bp.patching_rect[1] + bp.patching_rect[3])
+        expected_gap = V_SPACING + (116 - 100) * 0.1  # 21.6
+        assert abs(gap - expected_gap) < 0.1, f"Expected gap ~{expected_gap}, got {gap}"
+
+    def test_very_tall_bpatcher_adaptive_gap(self):
+        """Row with 484px tall bpatcher produces gap = 20 + (484-100)*0.1 = 58.4px."""
+        p = Patcher()
+        bp = p.add_bpatcher(height=484.0)
+        dac = p.add_box("ezdac~")
+        p.add_connection(bp, 0, dac, 0)
+        apply_layout(p, options=self._no_snap_options())
+        gap = dac.patching_rect[1] - (bp.patching_rect[1] + bp.patching_rect[3])
+        expected_gap = V_SPACING + (484 - 100) * 0.1  # 58.4
+        assert abs(gap - expected_gap) < 0.1, f"Expected gap ~{expected_gap}, got {gap}"
+
+    def test_mixed_heights_uses_max(self):
+        """Row with mixed heights (22px and 484px) uses max_height=484 for gap."""
+        p = Patcher()
+        source = p.add_box("trigger", ["b", "b"])
+        bp = p.add_bpatcher(height=484.0)
+        small = p.add_box("print")
+        target = p.add_box("ezdac~")
+        p.add_connection(source, 0, bp, 0)
+        p.add_connection(source, 1, small, 0)
+        p.add_connection(bp, 0, target, 0)
+        apply_layout(p, options=self._no_snap_options())
+        # bp and small are in the same row; gap to next row uses max height
+        gap = target.patching_rect[1] - (bp.patching_rect[1] + bp.patching_rect[3])
+        expected_gap = V_SPACING + (484 - 100) * 0.1  # 58.4
+        assert abs(gap - expected_gap) < 0.1, f"Expected gap ~{expected_gap}, got {gap}"
