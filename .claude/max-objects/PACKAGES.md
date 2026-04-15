@@ -57,6 +57,8 @@ Vizzie modules process video using Jitter matrices:
 
 ### BEAP Templates
 
+> Additional BEAP workflow templates (FM synthesis, sequenced patterns) are in `.claude/skills/max-dsp-agent/SKILL.md` under "Package Workflow Templates".
+
 #### 1. Subtractive Synthesizer
 
 **Modules:** bp.Keyboard -> bp.Oscillator -> bp.LPF -> bp.VCA -> bp.Stereo
@@ -193,6 +195,13 @@ Community packages require separate installation and extraction before generatio
 | Dada | `dada.*` | Graphical CAC (requires Bach) | `dada.graph`, `dada.bounce` | Package Manager |
 | EARS | `ears.*` | Offline buffer processing (requires Bach) | `ears.slice`, `ears.filter~` | Package Manager |
 | Rhythmic Time Toolkit | `rtk.*` | Signal-rate sequencing | `rtk.seq~`, `rtk.clock~` | Package Manager |
+
+### Workflow Templates
+
+Structured workflow templates for community packages are maintained in agent SKILL.md files:
+
+- **FluCoMa** (real-time analysis, offline buffer processing, ML classification): `.claude/skills/max-dsp-agent/SKILL.md` > Package Workflow Templates
+- **Bach** (llll construction, notation display, algorithmic composition): `.claude/skills/max-patch-agent/SKILL.md` > Package Workflow Templates
 
 ### Data Type Warnings
 

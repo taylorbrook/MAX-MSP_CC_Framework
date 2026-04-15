@@ -132,6 +132,136 @@ BEAP modules use MSP signals internally but with modular conventions:
 - gen~ codebox output can feed BEAP modules if properly scaled to 0-5V range
 - BEAP modules are NOT gen~ objects -- they are bpatchers containing MSP signal chains
 
+## Package Workflow Templates
+
+Structured signal chain blueprints for generating working package patches. Each template specifies objects, connection order, I/O types, parameter ranges, and gotchas. Templates are generation guidance -- not pre-built .maxpat files.
+
+### FluCoMa: Real-Time Audio Analysis Chain
+
+**Use case:** Extract spectral features from live audio for visualization or ML input
+**Chain:** audio source -> fluid.melbands~ (or fluid.mfcc~ or fluid.pitch~) -> fluid.stats -> fluid.normalize -> downstream
+
+| # | Source | Outlet | Destination | Inlet | Type |
+|---|--------|--------|-------------|-------|------|
+| 1 | (audio source) | 0 | fluid.melbands~ | 0 (audio in) | signal |
+| 2 | fluid.melbands~ | 0 (features list) | fluid.stats | 0 (input) | list |
+| 3 | fluid.stats | 0 (stats) | fluid.normalize | 0 (input) | list |
+| 4 | fluid.normalize | 0 (normalized) | (downstream) | 0 | list |
+
+**Parameter ranges:**
+- fluid.melbands~: `@numbands` default 40 (range 2-128), `@minfreq` 20, `@maxfreq` 20000
+- fluid.stats: `@numderivs` default 0 (0-2), controls derivative statistics
+- fluid.normalize: call `fit` with training data before `transform`
+
+**Gotchas:**
+- fluid.melbands~ outputs a list of band energies (NOT signal) from outlet 0
+- fluid.stats accumulates over time -- send "reset" message to clear
+- fluid.normalize needs training data first -- send "fit" before "transform"
+- Real-time FluCoMa objects follow standard MSP gain conventions (+/-1 signal range)
+- Feature lists have variable length depending on analysis settings -- downstream objects must handle this
+
+### FluCoMa: Offline Buffer Processing Pipeline
+
+**Use case:** Analyze/decompose pre-recorded audio (corpus analysis, NMF decomposition)
+**Chain:** buffer~ (source) -> fluid.bufnmf (or fluid.bufstats, fluid.bufmelbands) -> [bang on completion] -> fluid.dataset -> fluid.kdtree
+
+| # | Source | Outlet | Destination | Inlet | Type |
+|---|--------|--------|-------------|-------|------|
+| 1 | buffer~ | (reference) | fluid.bufnmf | @source attribute | bang/message |
+| 2 | fluid.bufnmf | 0 (bang on done) | trigger | 0 | bang |
+| 3 | trigger | 0 | fluid.dataset | 0 (addpoint msg) | message |
+| 4 | fluid.dataset | (query) | fluid.kdtree | 0 (input) | message |
+| 5 | fluid.kdtree | 0 (nearest result) | (downstream) | 0 | list |
+
+**Parameter ranges:**
+- fluid.bufnmf: `@components` 2-10 (number of decomposition components), `@iterations` 100 default
+- fluid.dataset: stores labeled feature vectors, query by ID
+- fluid.kdtree: `@numneighbours` default 1 (number of nearest neighbors to return)
+
+**Gotchas:**
+- All fluid.buf* objects are ASYNC -- they output bang from outlet 0 when done
+- Chain multiple buf* operations using bang -> trigger -> next buf* pattern
+- fluid.bufnmf outputs to destination buffer~ (set via @resynth attribute), not via outlets
+- fluid.dataset stores feature vectors for ML queries; fluid.kdtree enables nearest-neighbor lookup
+- Source and destination buffers must be different buffer~ objects
+
+### FluCoMa: ML Classification Pipeline
+
+**Use case:** Train a classifier on audio features, then classify new audio in real-time
+**Train phase:** fluid.buf* analysis -> fluid.dataset (store features) -> fluid.mlpclassifier (train)
+**Predict phase:** real-time fluid.*~ analysis -> fluid.mlpclassifier (predict) -> result mapping
+
+| # | Phase | Source | Outlet | Destination | Inlet | Type |
+|---|-------|--------|--------|-------------|-------|------|
+| 1 | Train | fluid.bufmfcc (or bufmelbands) | 0 (bang) | trigger -> fluid.dataset addpoint | 0 | bang |
+| 2 | Train | fluid.dataset | (complete) | fluid.mlpclassifier "train" msg | 0 | message |
+| 3 | Predict | (audio source) | 0 | fluid.mfcc~ (or melbands~) | 0 | signal |
+| 4 | Predict | fluid.mfcc~ | 0 (features) | fluid.mlpclassifier "predict" msg | 0 | list |
+| 5 | Predict | fluid.mlpclassifier | 0 (prediction) | (result mapping) | 0 | list |
+
+**Parameter ranges:**
+- fluid.mlpclassifier: `@hiddenlayers` default [5] (list of layer sizes), `@maxiter` 1000, `@learnrate` 0.01
+- Training features and prediction features must use the same analysis (same object, same settings)
+
+**Gotchas:**
+- Training is offline (buf* objects), prediction can be real-time
+- fluid.mlpclassifier needs "train" message before "predict"
+- Send feature lists (not signals) to classifier input
+- Use identical analysis settings for training and prediction to avoid dimension mismatch
+- fluid.mlpclassifier stores model state -- use "write" message to save, "read" to reload
+
+### BEAP: FM Synthesis Chain
+
+Extends the canonical BEAP templates in PACKAGES.md with additional modular patterns.
+
+**Use case:** FM synthesis with modulator LFO controlling carrier frequency
+**Chain:** bp.LFOscillator (modulator CV) -> bp.FM (carrier) -> bp.SVF (optional filter) -> bp.VCA -> bp.Stereo
+
+| # | Source | Outlet | Destination | Inlet | Type |
+|---|--------|--------|-------------|-------|------|
+| 1 | bp.Keyboard | 0 (pitch CV) | bp.FM | 0 (CV1 1V/oct) | CV |
+| 2 | bp.LFOscillator | 0 (mod CV) | bp.FM | 1 (mod input) | CV |
+| 3 | bp.FM | 0 (signal) | bp.SVF | 0 (signal input) | audio |
+| 4 | bp.SVF | 0 (filtered) | bp.VCA | 0 (signal input) | audio |
+| 5 | bp.Keyboard | 1 (gate) | bp.ADSR | 0 (gate) | CV |
+| 6 | bp.ADSR | 0 (envelope) | bp.VCA | 1 (CV) | CV |
+| 7 | bp.VCA | 0 (output) | bp.Stereo | 0 | audio |
+
+**Parameter ranges:**
+- bp.LFOscillator: rate typically 0.1-20 Hz for FM modulation
+- bp.SVF: cutoff controlled via 0-5V CV on inlet 1
+- bp.FM: ratio parameter sets carrier/modulator frequency relationship
+
+**Gotchas:**
+- bp.FM expects modulation as 0-5V CV signal, not audio-rate modulation
+- bp.SVF cutoff controlled via 0-5V CV on inlet 1
+- Always route through bp.VCA before bp.Stereo (gain staging convention)
+- bp.LFOscillator outputs 0-5V CV range -- compatible directly with BEAP CV inlets
+
+### BEAP: Sequenced Pattern
+
+**Use case:** Step sequencer driving oscillator pitch and envelope
+**Chain:** bp.Steppr (gate + CV) -> bp.ADSR (envelope from gate) AND bp.Oscillator (pitch from CV) -> bp.VCA (envelope on CV inlet) -> bp.Stereo
+
+| # | Source | Outlet | Destination | Inlet | Type |
+|---|--------|--------|-------------|-------|------|
+| 1 | bp.Steppr | 0 (gate) | bp.ADSR | 0 (gate) | CV |
+| 2 | bp.Steppr | 1 (CV pitch) | bp.Oscillator | 0 (CV1 1V/oct) | CV |
+| 3 | bp.Oscillator | 0 (signal) | bp.VCA | 0 (signal input) | audio |
+| 4 | bp.ADSR | 0 (envelope) | bp.VCA | 1 (CV) | CV |
+| 5 | bp.VCA | 0 (output) | bp.Stereo | 0 | audio |
+
+**Parameter ranges:**
+- bp.Steppr: 8 or 16 steps, tempo in BPM, gate length adjustable
+- bp.ADSR: attack/decay/sustain/release in standard envelope ranges
+- bp.Oscillator: pitch follows 1V/oct from bp.Steppr CV output
+
+**Gotchas:**
+- bp.Steppr gate outlet (0) triggers bp.ADSR; CV outlet (1) controls pitch
+- bp.ADSR outputs 0-5V envelope -- connect to bp.VCA CV input (inlet 1)
+- bp.Oscillator pitch inlet expects 1V/octave CV from bp.Steppr or bp.Keyboard
+- Internal clock: bp.Steppr has its own tempo control; no external metro needed
+
 ## Editing Existing Patches (via /max-iterate)
 
 **Domain focus:** Edit signal chains, oscillator parameters, filter settings, gen~ codebox content.

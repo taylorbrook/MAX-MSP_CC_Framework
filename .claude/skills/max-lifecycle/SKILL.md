@@ -66,6 +66,18 @@ When a user selects a community package (tier == "community" in package_info.jso
 - After extraction completes, `extracted` flips to `true` and the package is unblocked
 - Bach ecosystem note: Cage, Dada, and EARS all require Bach installed first. If user selects any of these, ensure Bach is also selected and extracted.
 
+### Template Suggestions on Package Selection
+
+After the user selects packages for a project, suggest relevant workflow templates:
+
+- If BEAP selected: "BEAP modular templates are available in the DSP agent -- see `max-dsp-agent/SKILL.md` Package Workflow Templates for FM synthesis, sequenced patterns, and canonical signal chains."
+- If FluCoMa selected: "FluCoMa workflow templates cover real-time analysis, offline buffer processing, and ML classification pipelines -- see `max-dsp-agent/SKILL.md` Package Workflow Templates."
+- If Bach selected: "Bach workflow templates cover llll construction, notation display, and algorithmic composition -- see `max-patch-agent/SKILL.md` Package Workflow Templates. IMPORTANT: always use bach.list2llll to convert MAX lists before feeding bach objects."
+- If multiple DSP packages selected: mention both DSP agent template sections.
+- If no packages selected: skip template suggestions.
+
+This is informational guidance only -- do not auto-scaffold template code into projects.
+
 ### Status Tracking
 - Read current status with `read_status(project_dir)`
 - Update status with `update_status(project_dir, stage=..., progress=...)`
