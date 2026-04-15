@@ -94,14 +94,14 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
     - [x] 23-03-PLAN.md — Agent SKILL.md package intelligence sections and parity tests
   - **Requirements:** PKG-14, PKG-15, PKG-16, PKG-17, PKG-18
 
-- [ ] Phase 24: Community Package Support
+- [x] Phase 24: Community Package Support (completed 2026-04-15)
   - **Goal:** Provide DB presence for community packages even when not locally installed
   - Stub DB entries for FluCoMa, CNMAT, Bach, Odot, ml.*, IRCAM Spat; extraction commands for installed packages
   - **Plans:** 3 plans
   - Plans:
-    - [ ] 24-01-PLAN.md — Curated stub entries for all 10 community packages
-    - [ ] 24-02-PLAN.md — --package CLI flag for community package extraction
-    - [ ] 24-03-PLAN.md — Validation block gate and agent install guidance
+    - [x] 24-01-PLAN.md — Curated stub entries for all 10 community packages
+    - [x] 24-02-PLAN.md — --package CLI flag for community package extraction
+    - [x] 24-03-PLAN.md — Validation block gate and agent install guidance
   - **Requirements:** PKG-19, PKG-20, PKG-21, PKG-22
   - Depends on: Phase 20
 
@@ -138,7 +138,7 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
 | 21. Bundled Package Extraction | v4.0 | 3/3 | Complete    | 2026-04-14 |
 | 22. Package-Gated Generation | v4.0 | 3/3 | Complete   | 2026-04-14 |
 | 23. Agent Package Intelligence | v4.0 | 3/3 | Complete    | 2026-04-15 |
-| 24. Community Package Support | v4.0 | 0/3 | Planned | - |
+| 24. Community Package Support | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 25. Templates + Critics | v4.0 | 0/0 | Planned | - |
 
 ---
