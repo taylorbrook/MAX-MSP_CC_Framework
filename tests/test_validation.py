@@ -1184,7 +1184,7 @@ class TestCommunityPackageBlock:
     def test_ircam_spat_specific_message(self, db):
         """IRCAM Spat gets a specific download message, not Package Manager."""
         patch = _make_patch_dict(boxes=[
-            _make_box("obj-1", text="spat5.panoramix~",
+            _make_box("obj-1", text="spat5.panning~",
                       numinlets=2, numoutlets=2, outlettype=["signal", ""]),
         ])
         results = validate_patch(patch, db=db)

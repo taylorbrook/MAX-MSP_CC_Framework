@@ -133,6 +133,9 @@ def validate_patch(
     # Layer 2c: Package gating (defense in depth)
     results.extend(_validate_package_gating(patch_dict, db, allowed_packages))
 
+    # Layer 2d: Community package extracted check
+    results.extend(_validate_community_extracted(patch_dict, db))
+
     # Layer 3: Connection bounds and signal types (mutates lines in-place)
     results.extend(_validate_connections(patch_dict, db))
 
@@ -331,6 +334,70 @@ def _validate_package_gating(
                 f"Object '{name}' from package '{package}' not in allowed "
                 f"packages (allowed: {allowed_packages})",
             ))
+    return results
+
+
+# ===========================================================================
+# Layer 2d: Community Package Extracted Check
+# ===========================================================================
+
+def _validate_community_extracted(
+    patch_dict: dict,
+    db: ObjectDatabase,
+) -> list[ValidationResult]:
+    """Layer 2d: Warn when patch uses objects from unextracted community packages.
+
+    Per D-07/D-09: Block generation with community packages that have not been
+    locally extracted. The check uses the ``extracted`` flag in package_info.json
+    (no filesystem probing).
+    """
+    results: list[ValidationResult] = []
+    warned_packages: set[str] = set()
+
+    for box_entry in patch_dict["patcher"]["boxes"]:
+        box = box_entry.get("box", {})
+        name = _extract_object_name(box)
+        if name is None:
+            continue
+        package = db.get_package(name)
+        if package is None or package in warned_packages:
+            continue
+        info = db.get_package_info(package)
+        if info is None:
+            continue
+        tier = info.get("tier", "")
+        if tier not in ("community", "licensed"):
+            continue  # Bundled packages always available
+        if info.get("extracted", False):
+            continue  # Already extracted locally
+
+        warned_packages.add(package)
+        install_method = info.get("install_method", "package_manager")
+
+        # IRCAM Spat gets a specific message per RESEARCH.md
+        if package == "IRCAM Spat":
+            msg = (
+                "IRCAM Spat is not extracted. "
+                "Download from https://forum.ircam.fr/projects/detail/spat/ "
+                "(free IRCAM Forum account required), copy the spat5 folder to "
+                "~/Documents/Max 9/Packages/, then run: "
+                "python .claude/scripts/extract_objects.py --package \"IRCAM Spat\""
+            )
+        elif install_method == "package_manager":
+            msg = (
+                f"{package} is not extracted. "
+                f"Install via MAX Package Manager (Help -> Package Manager -> search '{package}'), "
+                f"then run: python .claude/scripts/extract_objects.py --package \"{package}\""
+            )
+        else:
+            msg = (
+                f"{package} is not extracted. "
+                f"Download from the official source and copy to ~/Documents/Max 9/Packages/, "
+                f"then run: python .claude/scripts/extract_objects.py --package \"{package}\""
+            )
+
+        results.append(ValidationResult("packages", "warning", msg))
+
     return results
 
 
