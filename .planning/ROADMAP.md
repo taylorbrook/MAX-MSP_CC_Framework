@@ -73,20 +73,25 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
     - [x] 21-03-PLAN.md — Verification tests, I/O cross-checks, and registry updates
   - **Requirements:** PKG-05, PKG-06, PKG-07, PKG-08
 
-- [ ] Phase 22: Package-Gated Generation
+- [x] Phase 22: Package-Gated Generation (completed 2026-04-14)
   - **Goal:** Ensure agents never silently use package objects the user hasn't confirmed
   - Package selection in project config, `/max-new` and `/max-build` prompt for packages, ObjectDatabase filtering via allowed_packages
   - **Plans:** 3 plans
   - Plans:
-    - [ ] 22-01-PLAN.md — Project config read/write functions and package_info.json completion
-    - [ ] 22-02-PLAN.md — Patcher/Box allowed_packages threading and validation pipeline layer
-    - [ ] 22-03-PLAN.md — Agent SKILL.md updates for package selection and gating
+    - [x] 22-01-PLAN.md — Project config read/write functions and package_info.json completion
+    - [x] 22-02-PLAN.md — Patcher/Box allowed_packages threading and validation pipeline layer
+    - [x] 22-03-PLAN.md — Agent SKILL.md updates for package selection and gating
   - **Requirements:** PKG-09, PKG-10, PKG-11, PKG-12, PKG-13
   - Depends on: Phase 20
 
 - [ ] Phase 23: Agent Package Intelligence
   - **Goal:** Give agents deep knowledge of package-specific patterns, conventions, and workflows
-  - Package-specific guidance in SKILL.md files, BEAP modular patterns, layout overrides for bpatchers, relationships.json entries
+  - DB-driven bpatcher sizing, adaptive layout spacing, PACKAGES.md shared reference, package relationship entries, per-agent SKILL.md guidance, parity tests
+  - **Plans:** 3 plans
+  - Plans:
+    - [ ] 23-01-PLAN.md — DB-driven bpatcher sizing and adaptive layout spacing
+    - [ ] 23-02-PLAN.md — PACKAGES.md shared reference and relationship entries
+    - [ ] 23-03-PLAN.md — Agent SKILL.md package intelligence sections and parity tests
   - **Requirements:** PKG-14, PKG-15, PKG-16, PKG-17, PKG-18
 
 - [ ] Phase 24: Community Package Support
@@ -126,11 +131,11 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
 | 19. Tech Debt Cleanup | v3.0.0 | 1/1 | Complete | 2026-03-17 |
 | 20. DB Schema Foundation | v4.0 | 2/2 | Complete | 2026-04-13 |
 | 21. Bundled Package Extraction | v4.0 | 3/3 | Complete    | 2026-04-14 |
-| 22. Package-Gated Generation | v4.0 | 0/3 | Planned | - |
-| 23. Agent Package Intelligence | v4.0 | 0/0 | Planned | - |
+| 22. Package-Gated Generation | v4.0 | 3/3 | Complete   | 2026-04-14 |
+| 23. Agent Package Intelligence | v4.0 | 0/3 | Planned | - |
 | 24. Community Package Support | v4.0 | 0/0 | Planned | - |
 | 25. Templates + Critics | v4.0 | 0/0 | Planned | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-14 -- Phase 22 planned (3 plans)*
+*Last updated: 2026-04-14 -- Phase 23 planned (3 plans)*
