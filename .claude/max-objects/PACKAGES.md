@@ -174,3 +174,35 @@ These packages use standard newobj objects (NOT bpatchers):
 | maxforlive-elements | m4l. | Max for Live | UI elements and utility abstractions |
 
 Look up individual objects with `ObjectDatabase.lookup(name)` for inlet/outlet details.
+
+## Community Packages
+
+Community packages require separate installation and extraction before generation. Agents must check `extracted` flag in package_info.json before using any community package objects.
+
+### Package Reference
+
+| Package | Prefix | Domain | Key Objects | Install |
+|---------|--------|--------|-------------|---------|
+| FluCoMa | `fluid.*` | Audio analysis, decomposition, ML | `fluid.mfcc`, `fluid.hpss~`, `fluid.mlpclassifier` | Package Manager |
+| CNMAT | *(bare names)* | OSC, resonance, spectral | `resonators~`, `analyzer~`, `peqbank~` | Package Manager |
+| Bach | `bach.*` | Algorithmic composition (llll data type) | `bach.score`, `bach.roll`, `bach.eval` | Package Manager |
+| Odot | `o.*` | OSC bundle expressions | `o.pack`, `o.route`, `o.expr.codebox` | Package Manager |
+| ml-lib | `ml.*` | Machine learning | `ml.svm`, `ml.ann`, `ml.knn` | Package Manager |
+| IRCAM Spat | `spat5.*` | Spatial audio, ambisonics | `spat5.panoramix`, `spat5.binaural~` | IRCAM Forum download |
+| Cage | `cage.*` | Algorithmic composition (requires Bach) | `cage.profile`, `cage.lsystem` | Package Manager |
+| Dada | `dada.*` | Graphical CAC (requires Bach) | `dada.graph`, `dada.bounce` | Package Manager |
+| EARS | `ears.*` | Offline buffer processing (requires Bach) | `ears.slice`, `ears.filter~` | Package Manager |
+| Rhythmic Time Toolkit | `rtk.*` | Signal-rate sequencing | `rtk.seq~`, `rtk.clock~` | Package Manager |
+
+### Data Type Warnings
+
+- **Bach llll**: Bach, Cage, Dada, EARS all use the llll (Lisp-like linked list) data type. lllls are NOT compatible with standard MAX lists. Use `bach.list2llll` / `bach.llll2list` for conversion. Never connect a regular MAX list outlet to a bach object expecting llll input.
+- **Odot bundles**: Odot objects pass OSC bundles, not standard MAX messages. Use `o.pack` to create bundles and `o.route` to extract values.
+- **FluCoMa buf* objects**: Offline buffer processors (no `~` suffix) operate asynchronously -- they output bang when done, not immediate results.
+
+### Extraction Command
+
+After installing a package, extract its objects for the framework:
+```
+python .claude/scripts/extract_objects.py --package "PackageName"
+```

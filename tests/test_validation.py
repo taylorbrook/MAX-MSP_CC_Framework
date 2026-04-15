@@ -1115,3 +1115,83 @@ class TestPackageValidation:
         results = validate_patch(p)
         pkg_errors = [r for r in results if r.layer == "packages"]
         assert len(pkg_errors) == 1
+
+
+# ===========================================================================
+# Layer 2d: Community Package Extracted Check
+# ===========================================================================
+
+class TestCommunityPackageBlock:
+    """PKG-21: Warn when patch uses objects from unextracted community packages."""
+
+    def test_community_block_warning(self, db):
+        """Patch with fluid.ampfeature~ produces warning when FluCoMa extracted=false."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="fluid.ampfeature~",
+                      numinlets=1, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db)
+        pkg_warnings = [r for r in results if r.layer == "packages" and r.level == "warning"]
+        assert len(pkg_warnings) >= 1
+        msg = pkg_warnings[0].message
+        assert "FluCoMa" in msg
+        assert "not extracted" in msg
+        assert "extract_objects.py --package" in msg
+        assert "Package Manager" in msg
+
+    def test_bundled_no_community_warning(self, db):
+        """Patch with ableton-dsp object produces no community extraction warning."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="abl.device.autofilter~",
+                      numinlets=3, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db)
+        pkg_warnings = [r for r in results
+                        if r.layer == "packages" and r.level == "warning"
+                        and "not extracted" in r.message]
+        assert len(pkg_warnings) == 0
+
+    def test_core_no_community_warning(self, db):
+        """Patch with core object (cycle~) produces no community extraction warning."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="cycle~ 440",
+                      numinlets=2, numoutlets=1, outlettype=["signal"]),
+        ])
+        results = validate_patch(patch, db=db)
+        pkg_warnings = [r for r in results
+                        if r.layer == "packages" and r.level == "warning"
+                        and "not extracted" in r.message]
+        assert len(pkg_warnings) == 0
+
+    def test_no_warning_when_extracted(self, db, monkeypatch):
+        """No warning when FluCoMa extracted=true."""
+        # Monkeypatch the package info to set extracted=true
+        original_info = db.get_package_info("FluCoMa")
+        patched_info = dict(original_info) if original_info else {}
+        patched_info["extracted"] = True
+        monkeypatch.setitem(db._package_info, "FluCoMa", patched_info)
+
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="fluid.ampfeature~",
+                      numinlets=1, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db)
+        pkg_warnings = [r for r in results
+                        if r.layer == "packages" and r.level == "warning"
+                        and "not extracted" in r.message]
+        assert len(pkg_warnings) == 0
+
+    def test_ircam_spat_specific_message(self, db):
+        """IRCAM Spat gets a specific download message, not Package Manager."""
+        patch = _make_patch_dict(boxes=[
+            _make_box("obj-1", text="spat5.panning~",
+                      numinlets=2, numoutlets=2, outlettype=["signal", ""]),
+        ])
+        results = validate_patch(patch, db=db)
+        pkg_warnings = [r for r in results
+                        if r.layer == "packages" and r.level == "warning"
+                        and "IRCAM Spat" in r.message]
+        assert len(pkg_warnings) >= 1
+        msg = pkg_warnings[0].message
+        assert "forum.ircam.fr" in msg
+        assert "extract_objects.py --package" in msg
