@@ -121,6 +121,88 @@ Vizzie modules pass Jitter matrices (video frames) between bpatchers:
 - Always terminate with vz.viewr (window) or vz.projectr (fullscreen)
 - Control inlets accept int/float messages for parameter adjustment
 
+## Package Workflow Templates
+
+Structured workflow blueprints for generating working package patches. Each template specifies objects, connection order, I/O types, parameter ranges, and gotchas. Templates are generation guidance -- not pre-built .maxpat files.
+
+### Bach: llll Construction and Manipulation
+
+**Use case:** Build nested list structures for algorithmic composition
+**Chain:** data source (message/number) -> bach.list2llll -> bach.join / bach.flat / bach.nth (llll manipulation) -> bach.score or bach.roll
+
+| # | Source | Outlet | Destination | Inlet | Type |
+|---|--------|--------|-------------|-------|------|
+| 1 | (MAX list source) | 0 | bach.list2llll | 0 (list in) | list |
+| 2 | bach.list2llll | 0 (llll out) | bach.join | 0 (llll in 1) | llll |
+| 3 | bach.list2llll | 0 (llll out) | bach.join | 1 (llll in 2) | llll |
+| 4 | bach.join | 0 (joined llll) | bach.flat | 0 (llll in) | llll |
+| 5 | bach.flat | 0 (flattened llll) | bach.nth | 0 (llll in) | llll |
+| 6 | bach.nth | 0 (extracted element) | bach.score | 0 (llll data) | llll |
+
+**Parameter ranges:**
+- bach.join: `@numins` default 2 (number of llll inlets to join)
+- bach.nth: index argument is 1-based (e.g., `bach.nth 1` extracts the first element)
+- bach.flat: depth argument controls flattening depth (0 = fully flatten)
+
+**Gotchas:**
+- ALWAYS convert MAX lists to llll via bach.list2llll before feeding ANY bach object
+- bach.llll2list converts back to MAX lists when feeding non-bach objects
+- llll is 1-indexed (not 0-indexed like MAX lists)
+- bach.nth extracts by position; bach.flat removes nesting levels
+- Connecting a standard MAX list outlet directly to a bach llll inlet will silently produce garbage -- the package critic will flag this as a blocker
+
+### Bach: Notation Display Workflow
+
+**Use case:** Display and edit musical notation with bach.score or bach.roll
+**Chain:** bach.score (or bach.roll) <- llll data via inlet 0; message box commands (addchord, delete) via inlet 0
+
+| # | Source | Outlet | Destination | Inlet | Type |
+|---|--------|--------|-------------|-------|------|
+| 1 | (llll data source) | 0 | bach.score | 0 (llll data / commands) | llll |
+| 2 | message box ("addchord ...") | 0 | bach.score | 0 (command) | message |
+| 3 | bach.score | 0 (modified llll) | (downstream bach processing) | 0 | llll |
+| 4 | bach.score | 1 (notifications) | (status display) | 0 | list |
+
+**Parameter ranges:**
+- bach.score: display width/height should be generous (300x200 minimum for readability)
+- Pitch representation: MIDI cents (6000 = middle C, 100 cents per semitone)
+- Duration representation: rationals (1/4 = quarter note, 1/8 = eighth note)
+
+**Gotchas:**
+- bach.score accepts both llll data AND messages on inlet 0 (messages like "addchord" are distinct from llll data)
+- To initialize: send the full llll to inlet 0
+- To modify: send command messages ("addchord", "delete", "setpitch") to inlet 0
+- bach.score is a UI object -- it needs presentation mode and adequate display size
+- Pitch representation: MIDI cents (6000 = middle C, 100 cents per semitone)
+- bach.roll is the proportional (non-quantized) equivalent of bach.score
+
+### Bach: Algorithmic Composition Pipeline
+
+**Use case:** Generate musical material algorithmically and display in notation
+**Chain:** algorithm source (metro + counter / random) -> bach.list2llll -> bach.collect -> bach.quantize -> bach.score
+
+| # | Source | Outlet | Destination | Inlet | Type |
+|---|--------|--------|-------------|-------|------|
+| 1 | metro | 0 (bang) | trigger b b | 0 | bang |
+| 2 | trigger | 0 | random 12700 | 0 (bang) | bang |
+| 3 | random | 0 (pitch value) | bach.list2llll | 0 | list |
+| 4 | bach.list2llll | 0 (llll) | bach.collect | 0 (llll in) | llll |
+| 5 | trigger | 1 | bach.collect | 0 (bang to flush) | bang |
+| 6 | bach.collect | 0 (collected llll) | bach.quantize | 0 (llll in) | llll |
+| 7 | bach.quantize | 0 (quantized llll) | bach.score | 0 (llll data) | llll |
+
+**Parameter ranges:**
+- metro: interval in ms (e.g., 250 for sixteenth notes at 60 BPM)
+- random: range for MIDI cents (e.g., 0-12700 for full MIDI range)
+- bach.quantize: quantization grid llll on inlet 1 (e.g., 1/4 for quarter note grid)
+
+**Gotchas:**
+- bach.collect accumulates lllls until bang -- send bang to collect then route to quantize
+- bach.quantize snaps pitches/durations to musical grid (needs quantization llll on inlet 1)
+- Output of bach.quantize is an llll ready for bach.score
+- Use bach.iter to iterate over llll elements for processing individual notes
+- Use trigger for fan-out to ensure correct ordering (bang to flush collect, then generate next)
+
 ## Editing Existing Patches (via /max-iterate)
 
 **Domain focus:** Edit control flow routing, message handling, subpatcher organization.
