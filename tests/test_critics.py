@@ -2052,3 +2052,77 @@ class TestPackageCritic:
         results = review_packages(patch)
         community_findings = [r for r in results if "unextracted" in r.finding.lower()]
         assert len(community_findings) == 0, f"Expected no community findings for BEAP, got: {community_findings}"
+
+
+# ===========================================================================
+# Integration tests: review_patch() package critic wiring
+# ===========================================================================
+
+
+class TestReviewPatchPackageIntegration:
+    """Tests that review_patch() auto-invokes review_packages() correctly."""
+
+    def test_review_patch_includes_package_critic(self):
+        """review_patch() returns BEAP VCA findings for a BEAP patch with missing VCA."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "bpatcher",
+                "name": "bp.Oscillator",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "bpatcher",
+                "name": "bp.Stereo",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_patch(patch)
+        vca_findings = [r for r in results if "vca" in r.finding.lower() or "gain staging" in r.finding.lower()]
+        assert len(vca_findings) >= 1, f"Expected VCA/gain staging finding from review_patch(), got: {[str(r) for r in results]}"
+
+    def test_review_patch_no_packages_skips_critic(self):
+        """review_patch() returns no package-related findings for a pure MSP patch."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "cycle~ 440",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "*~ 0.5",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "dac~",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_patch(patch)
+        package_findings = [r for r in results if "beap" in r.finding.lower() or "bach" in r.finding.lower() or "package" in r.finding.lower()]
+        assert len(package_findings) == 0, f"Expected no package findings for MSP patch, got: {[str(r) for r in package_findings]}"

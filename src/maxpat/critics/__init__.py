@@ -1,8 +1,8 @@
 """Critic system -- semantic/architectural review of generated patches.
 
-Provides review_patch() which combines DSP, structure, layout, RNBO, and
-external critics to catch design problems that the mechanical validation
-pipeline does not detect.
+Provides review_patch() which combines DSP, structure, layout, RNBO,
+package, and external critics to catch design problems that the mechanical
+validation pipeline does not detect.
 
 Usage:
     from src.maxpat.critics import review_patch, CriticResult
@@ -20,6 +20,8 @@ from src.maxpat.critics.structure_critic import review_structure
 from src.maxpat.critics.layout_critic import review_layout
 from src.maxpat.critics.rnbo_critic import review_rnbo
 from src.maxpat.critics.ext_critic import review_external
+from src.maxpat.critics.package_critic import review_packages
+from src.maxpat.utils import get_box_name
 
 
 def _has_rnbo_boxes(patch_dict: dict) -> bool:
@@ -29,6 +31,23 @@ def _has_rnbo_boxes(patch_dict: dict) -> bool:
     for box_entry in boxes:
         box = box_entry.get("box", {})
         if box.get("maxclass") == "rnbo~":
+            return True
+    return False
+
+
+def _has_package_boxes(patch_dict: dict) -> bool:
+    """Check if a patch contains any package objects."""
+    from src.maxpat.db_lookup import ObjectDatabase
+    db = ObjectDatabase()
+    patcher = patch_dict.get("patcher", {})
+    for box_entry in patcher.get("boxes", []):
+        box = box_entry.get("box", {})
+        # Handle bpatchers (BEAP, Vizzie) via name attribute
+        if box.get("maxclass") == "bpatcher":
+            name = box.get("name", "")
+        else:
+            name = get_box_name(box)
+        if name and db.get_package(name):
             return True
     return False
 
@@ -44,11 +63,13 @@ def review_patch(
     Combines DSP critic (signal flow, gen~ I/O, gain staging),
     structure critic (fan-out, hot/cold ordering, duplicates),
     RNBO critic (param naming, I/O completeness, duplicates),
+    package critic (BEAP conventions, Bach llll types, community extraction),
     and external critic (code structure, archetype requirements).
 
     The RNBO critic is only invoked when rnbo~ boxes are detected
-    in the patch. The external critic is only invoked when ext_code
-    is provided.
+    in the patch. The package critic is only invoked when package
+    objects (BEAP, Bach, community) are detected. The external critic
+    is only invoked when ext_code is provided.
 
     Args:
         patch_dict: A .maxpat-format dict.
@@ -74,6 +95,10 @@ def review_patch(
     if ext_code is not None:
         results.extend(review_external(ext_code, archetype=ext_archetype))
 
+    # Package critic: auto-invoke when package objects detected
+    if _has_package_boxes(patch_dict):
+        results.extend(review_packages(patch_dict))
+
     return results
 
 
@@ -84,5 +109,6 @@ __all__ = [
     "review_layout",
     "review_rnbo",
     "review_external",
+    "review_packages",
     "CriticResult",
 ]
