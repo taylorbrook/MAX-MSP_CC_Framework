@@ -373,3 +373,200 @@ class TestPackagesReference:
         """Content must contain Vizzie templates."""
         assert "vz.playr" in packages_md
         assert "vz.viewr" in packages_md
+
+
+class TestCommunityPackageStubs:
+    """PKG-19, PKG-22: Community package stub entries for all 10 packages."""
+
+    COMMUNITY_PACKAGES = [
+        "FluCoMa", "CNMAT", "Bach", "Odot", "ml-lib",
+        "IRCAM Spat", "Cage", "Dada", "EARS", "Rhythmic Time Toolkit",
+    ]
+
+    REQUIRED_STUB_FIELDS = [
+        "name", "maxclass", "module", "domain", "category",
+        "digest", "inlets", "outlets", "verified", "package",
+    ]
+
+    @pytest.fixture(scope="class")
+    def db(self):
+        from src.maxpat.db_lookup import ObjectDatabase
+        return ObjectDatabase()
+
+    @pytest.fixture(scope="class")
+    def all_stubs(self, db_root):
+        """Load all community package stub data."""
+        result = {}
+        for pkg_name in self.COMMUNITY_PACKAGES:
+            json_path = db_root / "packages" / pkg_name / "objects.json"
+            if json_path.exists():
+                data = json.loads(json_path.read_text())
+                result[pkg_name] = data
+            else:
+                result[pkg_name] = {}
+        return result
+
+    # --- Non-empty tests ---
+
+    def test_all_community_packages_have_stubs(self, all_stubs):
+        """All 10 community packages have non-empty objects.json."""
+        for pkg_name in self.COMMUNITY_PACKAGES:
+            assert len(all_stubs[pkg_name]) > 0, (
+                f"Package '{pkg_name}' has empty objects.json"
+            )
+
+    # --- Schema tests ---
+
+    def test_community_stubs_schema(self, all_stubs):
+        """Every stub entry has required fields."""
+        for pkg_name, data in all_stubs.items():
+            for obj_name, obj in data.items():
+                for field in self.REQUIRED_STUB_FIELDS:
+                    assert field in obj, (
+                        f"Object '{obj_name}' in {pkg_name} missing field '{field}'"
+                    )
+
+    def test_community_stubs_verified_false(self, all_stubs):
+        """All stubs have verified=false."""
+        for pkg_name, data in all_stubs.items():
+            for obj_name, obj in data.items():
+                assert obj.get("verified") is False, (
+                    f"Object '{obj_name}' in {pkg_name} must have verified=false"
+                )
+
+    def test_community_stubs_signal_objects_have_signal_io(self, all_stubs):
+        """Signal objects (name ends with ~) have at least one signal inlet or outlet."""
+        for pkg_name, data in all_stubs.items():
+            for obj_name, obj in data.items():
+                if obj_name.endswith("~"):
+                    has_signal = any(
+                        i.get("signal") for i in obj.get("inlets", [])
+                    ) or any(
+                        o.get("signal") for o in obj.get("outlets", [])
+                    )
+                    assert has_signal, (
+                        f"Signal object '{obj_name}' in {pkg_name} has no signal I/O"
+                    )
+
+    def test_community_stubs_package_matches_dir(self, all_stubs):
+        """package field matches directory name exactly."""
+        for pkg_name, data in all_stubs.items():
+            for obj_name, obj in data.items():
+                assert obj.get("package") == pkg_name, (
+                    f"Object '{obj_name}' package='{obj.get('package')}' != dir '{pkg_name}'"
+                )
+
+    # --- IRCAM Spat tier fix ---
+
+    def test_ircam_spat_tier_community(self, db_root):
+        """IRCAM Spat tier in package_info.json is 'community' not 'licensed'."""
+        data = json.loads((db_root / "package_info.json").read_text())
+        assert data["IRCAM Spat"]["tier"] == "community", (
+            f"IRCAM Spat tier should be 'community', got '{data['IRCAM Spat']['tier']}'"
+        )
+
+    # --- Minimum count tests ---
+
+    def test_flucoma_count(self, all_stubs):
+        """FluCoMa has >= 50 objects."""
+        assert len(all_stubs["FluCoMa"]) >= 50, (
+            f"FluCoMa has {len(all_stubs['FluCoMa'])} objects, expected >= 50"
+        )
+
+    def test_cnmat_count(self, all_stubs):
+        """CNMAT has >= 40 objects."""
+        assert len(all_stubs["CNMAT"]) >= 40, (
+            f"CNMAT has {len(all_stubs['CNMAT'])} objects, expected >= 40"
+        )
+
+    def test_bach_count(self, all_stubs):
+        """Bach has >= 60 objects."""
+        assert len(all_stubs["Bach"]) >= 60, (
+            f"Bach has {len(all_stubs['Bach'])} objects, expected >= 60"
+        )
+
+    def test_odot_count(self, all_stubs):
+        """Odot has >= 25 objects."""
+        assert len(all_stubs["Odot"]) >= 25, (
+            f"Odot has {len(all_stubs['Odot'])} objects, expected >= 25"
+        )
+
+    def test_ml_lib_count(self, all_stubs):
+        """ml-lib has >= 12 objects."""
+        assert len(all_stubs["ml-lib"]) >= 12, (
+            f"ml-lib has {len(all_stubs['ml-lib'])} objects, expected >= 12"
+        )
+
+    # --- ObjectDatabase lookup tests ---
+
+    def test_lookup_flucoma(self, db):
+        """ObjectDatabase.lookup('fluid.ampfeature~') returns non-None."""
+        assert db.lookup("fluid.ampfeature~") is not None
+
+    def test_lookup_cnmat(self, db):
+        """ObjectDatabase.lookup('resonators~') returns non-None."""
+        assert db.lookup("resonators~") is not None
+
+    def test_lookup_bach(self, db):
+        """ObjectDatabase.lookup('bach.score') returns non-None."""
+        assert db.lookup("bach.score") is not None
+
+    def test_lookup_odot(self, db):
+        """ObjectDatabase.lookup('o.pack') returns non-None."""
+        assert db.lookup("o.pack") is not None
+
+    def test_lookup_ml_lib(self, db):
+        """ObjectDatabase.lookup('ml.svm') returns non-None."""
+        assert db.lookup("ml.svm") is not None
+
+    # --- Remaining 5 packages (count + lookup) ---
+
+    def test_ircam_spat_count(self, all_stubs):
+        """IRCAM Spat has >= 20 objects."""
+        assert len(all_stubs["IRCAM Spat"]) >= 20, (
+            f"IRCAM Spat has {len(all_stubs['IRCAM Spat'])} objects, expected >= 20"
+        )
+
+    def test_cage_count(self, all_stubs):
+        """Cage has >= 25 objects."""
+        assert len(all_stubs["Cage"]) >= 25, (
+            f"Cage has {len(all_stubs['Cage'])} objects, expected >= 25"
+        )
+
+    def test_dada_count(self, all_stubs):
+        """Dada has >= 12 objects."""
+        assert len(all_stubs["Dada"]) >= 12, (
+            f"Dada has {len(all_stubs['Dada'])} objects, expected >= 12"
+        )
+
+    def test_ears_count(self, all_stubs):
+        """EARS has >= 25 objects."""
+        assert len(all_stubs["EARS"]) >= 25, (
+            f"EARS has {len(all_stubs['EARS'])} objects, expected >= 25"
+        )
+
+    def test_rtk_count(self, all_stubs):
+        """Rhythmic Time Toolkit has >= 12 objects."""
+        assert len(all_stubs["Rhythmic Time Toolkit"]) >= 12, (
+            f"RTK has {len(all_stubs['Rhythmic Time Toolkit'])} objects, expected >= 12"
+        )
+
+    def test_lookup_ircam_spat(self, db):
+        """ObjectDatabase.lookup('spat5.panoramix') returns non-None."""
+        assert db.lookup("spat5.panoramix") is not None
+
+    def test_lookup_cage(self, db):
+        """ObjectDatabase.lookup('cage.profile') returns non-None."""
+        assert db.lookup("cage.profile") is not None
+
+    def test_lookup_dada(self, db):
+        """ObjectDatabase.lookup('dada.graph') returns non-None."""
+        assert db.lookup("dada.graph") is not None
+
+    def test_lookup_ears(self, db):
+        """ObjectDatabase.lookup('ears.slice') returns non-None."""
+        assert db.lookup("ears.slice") is not None
+
+    def test_lookup_rtk(self, db):
+        """ObjectDatabase.lookup('rtk.seq~') returns non-None."""
+        assert db.lookup("rtk.seq~") is not None
