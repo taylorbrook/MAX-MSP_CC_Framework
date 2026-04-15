@@ -55,6 +55,17 @@ from src.maxpat.testing import generate_test_checklist, save_test_results
 - If user selects no packages, write `{"packages": []}` (core-only, per D-08)
 - Users can change packages later via `/max-config` (same bundled/community split)
 
+### Community Package Extraction Gate
+
+When a user selects a community package (tier == "community" in package_info.json):
+- Check `extracted` field in package_info.json via `ObjectDatabase().get_package_info(name)`
+- If `extracted` is `false`, the package has stub data only -- do NOT generate patches with its objects
+- Show the user the install + extract path:
+  - Package Manager packages (FluCoMa, CNMAT, Bach, Odot, ml-lib, Cage, Dada, EARS, Rhythmic Time Toolkit): "Install via MAX Package Manager (Help -> Package Manager -> search '{name}'), then run: `python .claude/scripts/extract_objects.py --package \"{name}\"`"
+  - IRCAM Spat: "Download from https://forum.ircam.fr/projects/detail/spat/ (free account required), copy spat5 folder to ~/Documents/Max 9/Packages/, then run: `python .claude/scripts/extract_objects.py --package \"IRCAM Spat\"`"
+- After extraction completes, `extracted` flips to `true` and the package is unblocked
+- Bach ecosystem note: Cage, Dada, and EARS all require Bach installed first. If user selects any of these, ensure Bach is also selected and extracted.
+
 ### Status Tracking
 - Read current status with `read_status(project_dir)`
 - Update status with `update_status(project_dir, stage=..., progress=...)`

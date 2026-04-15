@@ -113,6 +113,16 @@ When generating patches with package objects (BEAP, Vizzie, etc.), read `.claude
 - Functional roles and canonical module selection
 - Template signal chains with connection order
 
+### Community DSP Packages
+
+Before generating with community package objects, verify `get_package_info(name)["extracted"]` is `true`.
+
+- **FluCoMa** (`fluid.*`): Real-time audio analysis (`fluid.mfcc`, `fluid.pitch`, `fluid.loudness`), decomposition (`fluid.hpss~`, `fluid.sines~`), ML (`fluid.mlpclassifier`, `fluid.kdtree`). Signal objects follow standard MSP gain conventions.
+- **CNMAT** (`resonators~`, `peqbank~`, `oscillators~`, `harmonics~`): Spectral/resonance modeling. `resonators~` is the key DSP object -- takes partials data via messages.
+- **Bach** (`bach.*`): Algorithmic composition, not signal processing. `bach.score`/`bach.roll` output MIDI-like data for driving synths.
+- **IRCAM Spat** (`spat5.*`): Spatial audio -- `spat5.panning~`, `spat5.binaural~`, `spat5.reverb~`. Multi-channel signal I/O.
+- **ml-lib** (`ml.*`): Control-rate ML -- outputs classification/regression values for driving parameters.
+
 ### BEAP and MSP Integration
 
 BEAP modules use MSP signals internally but with modular conventions:

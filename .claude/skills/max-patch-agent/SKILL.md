@@ -94,6 +94,25 @@ BEAP modules are bpatchers that emulate analog modular synthesis:
 - Use bp.VCA for all gain control -- never connect oscillators directly to output
 - Keyboard provides pitch CV (outlet 0), gate (outlet 1), velocity (outlet 2), aftertouch (outlet 3)
 
+### Community Packages
+
+Community packages (FluCoMa, CNMAT, Bach, Odot, ml-lib, IRCAM Spat, Cage, Dada, EARS, Rhythmic Time Toolkit) have stub DB entries but require local extraction before generation.
+
+**Before using any community package object:**
+1. Check `ObjectDatabase().get_package_info(package_name)["extracted"]`
+2. If `false`: inform the user they must install and extract first (see max-lifecycle SKILL.md for exact messages)
+3. If `true`: proceed normally -- extracted data is verified and safe for generation
+
+**Package-specific notes:**
+- **FluCoMa** (`fluid.*`): Audio analysis/decomposition. Signal objects + offline buf* objects.
+- **CNMAT**: OSC, resonance, spectral. Objects have NO prefix (bare names like `resonators~`, `analyzer~`).
+- **Bach** (`bach.*`): Uses llll data type (NOT standard MAX lists). Never mix llll with regular lists. Use `bach.list2llll`/`bach.llll2list` for conversion.
+- **Cage/Dada/EARS**: Bach ecosystem -- all require Bach installed. Operate on lllls.
+- **Odot** (`o.*`): OSC bundle-based expression language.
+- **ml-lib** (`ml.*`): Machine learning. All follow add/train/map pattern.
+- **IRCAM Spat** (`spat5.*`): Spatial audio. Parameters via OSC bundles.
+- **Rhythmic Time Toolkit** (`rtk.*`): Signal-rate RNBO sequencing.
+
 ### Vizzie Video Chains
 
 Vizzie modules pass Jitter matrices (video frames) between bpatchers:
