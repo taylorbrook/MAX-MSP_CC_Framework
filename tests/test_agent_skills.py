@@ -626,3 +626,56 @@ def test_critic_references_edit_workflow() -> None:
     assert "save_patch_roundtrip" in content, (
         "max-critic/SKILL.md missing save_patch_roundtrip reference for edit workflow"
     )
+
+
+# ── Test: Package Intelligence sections in specialist agents ──────
+
+PACKAGE_AGENTS = [
+    "max-patch-agent",
+    "max-dsp-agent",
+    "max-ui-agent",
+    "max-rnbo-agent",
+    "max-js-agent",
+]
+
+
+@pytest.mark.parametrize("agent_name", PACKAGE_AGENTS)
+def test_specialist_has_package_intelligence(agent_name: str) -> None:
+    """Each specialist agent with package relevance must have Package Intelligence section."""
+    content = _read_skill(agent_name)
+    assert "Package Intelligence" in content, (
+        f"{agent_name}/SKILL.md missing 'Package Intelligence' section"
+    )
+
+
+@pytest.mark.parametrize("agent_name", PACKAGE_AGENTS)
+def test_specialist_references_packages_md(agent_name: str) -> None:
+    """Each agent with package intelligence must reference PACKAGES.md."""
+    content = _read_skill(agent_name)
+    assert "PACKAGES.md" in content, (
+        f"{agent_name}/SKILL.md missing reference to PACKAGES.md"
+    )
+
+
+def test_patch_agent_has_beap_patterns() -> None:
+    """Patch agent must document BEAP modular patterns."""
+    content = _read_skill("max-patch-agent")
+    assert "BEAP" in content and "bp.Stereo" in content
+
+
+def test_dsp_agent_has_cv_conventions() -> None:
+    """DSP agent must document CV signal conventions."""
+    content = _read_skill("max-dsp-agent")
+    assert "0-5V" in content or "0 to +5V" in content
+
+
+def test_ui_agent_has_bpatcher_layout() -> None:
+    """UI agent must document bpatcher layout with object_name and auto-sizing."""
+    content = _read_skill("max-ui-agent")
+    assert "object_name" in content and "auto-siz" in content.lower()
+
+
+def test_rnbo_agent_has_incompatibility_warning() -> None:
+    """RNBO agent must warn that BEAP/Vizzie are NOT RNBO-compatible."""
+    content = _read_skill("max-rnbo-agent")
+    assert "NOT RNBO-compatible" in content or "not RNBO-compatible" in content

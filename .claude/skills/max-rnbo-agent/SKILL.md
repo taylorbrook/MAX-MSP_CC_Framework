@@ -64,6 +64,22 @@ from src.maxpat.hooks import save_patch_roundtrip
 - `validate_rnbo_patch(patch_dict, target)`: 3-layer validation on the **inner RNBO patcher** (not the full rnbo~ wrapper). Checks: rnbo-objects, rnbo-target, rnbo-contained
 - `RNBO_TARGET_CONSTRAINTS`: Per-target constraint definitions (plugin, web, cpp)
 
+## Package Intelligence
+
+When generating patches with package objects (BEAP, Vizzie, etc.), read `.claude/max-objects/PACKAGES.md` for:
+- Signal conventions (BEAP: 0-5V CV, +/-1 audio; Vizzie: Jitter matrices)
+- Functional roles and canonical module selection
+- Template signal chains with connection order
+
+### Package Compatibility Warning
+
+BEAP and Vizzie modules are NOT RNBO-compatible:
+- BEAP bpatchers contain MSP abstractions that cannot be exported to VST3/AU/Web targets
+- Vizzie uses Jitter (video) which has no RNBO equivalent
+- If user requests "RNBO synth like BEAP", build equivalent signal chains using RNBO-compatible objects (rnbo~ internal patching with cycle~, biquad~, etc.)
+- jit.mo, Jitter Geometry, Jitter Tools are also NOT RNBO-compatible (Jitter domain)
+- Only ableton-dsp objects marked `rnbo_compatible: true` in the DB can be used in RNBO patches
+
 ## Editing Existing Patches (via /max-iterate)
 
 **Domain focus:** Edit RNBO patcher contents, param objects, export-compatible structures.

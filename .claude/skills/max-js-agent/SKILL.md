@@ -66,6 +66,21 @@ Before any generation:
 
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
+## Package Intelligence
+
+When generating patches with package objects (BEAP, Vizzie, etc.), read `.claude/max-objects/PACKAGES.md` for:
+- Signal conventions (BEAP: 0-5V CV, +/-1 audio; Vizzie: Jitter matrices)
+- Functional roles and canonical module selection
+- Template signal chains with connection order
+
+### Package-Aware Scripting
+
+When scripting interactions with package modules:
+- BEAP/Vizzie bpatchers expose parameters via their inlets -- use `this.patcher.getnamed()` to find bpatcher boxes and send messages to their inlets
+- BEAP CV values are 0-5V floats -- scale accordingly when sending from js
+- Vizzie control inlets accept standard int/float messages
+- Use `ObjectDatabase.get_package_objects("BEAP")` to programmatically list available modules
+
 ## Editing Existing Patches (via /max-iterate)
 
 **Domain focus:** Edit js/node.script box configurations; code file edits are direct file writes, not .maxpat edits.

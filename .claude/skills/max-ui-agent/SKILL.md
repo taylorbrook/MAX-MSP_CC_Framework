@@ -80,6 +80,23 @@ Before any generation:
 
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Assistance Comments, Z-Order Manipulation, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
+## Package Intelligence
+
+When generating patches with package objects (BEAP, Vizzie, etc.), read `.claude/max-objects/PACKAGES.md` for:
+- Signal conventions (BEAP: 0-5V CV, +/-1 audio; Vizzie: Jitter matrices)
+- Functional roles and canonical module selection
+- Template signal chains with connection order
+
+### Bpatcher Layout for Package Modules
+
+Package bpatchers have specific dimensions that differ from the default 200x100:
+- Use `add_bpatcher(object_name="bp.Oscillator", filename="bp.Oscillator.maxpat")` -- the `object_name` parameter triggers DB-driven auto-sizing
+- BEAP standard height: 116px (most modules), widths vary from 52px (bp.Mono) to 895px
+- Vizzie dimensions vary more widely (71-738px wide, 57-517px tall)
+- When placing package bpatchers in presentation mode, use the actual dimensions from DB for `presentation_rect` sizing
+- The layout engine applies adaptive vertical spacing for rows containing tall bpatchers (>100px) -- extra gap = (height - 100) * 0.1
+- For manual positioning, use `get_bpatcher_dims("bp.Oscillator")` from `src.maxpat.sizing` to query dimensions
+
 ## Editing Existing Patches (via /max-iterate)
 
 **Domain focus:** Edit presentation mode layouts, control positioning, bpatcher configurations.

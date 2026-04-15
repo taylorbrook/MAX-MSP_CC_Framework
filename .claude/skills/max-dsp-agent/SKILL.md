@@ -106,6 +106,22 @@ gen_box.outlettype = ["signal"]  # Use ["signal", "signal"] for stereo
 
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
+## Package Intelligence
+
+When generating patches with package objects (BEAP, Vizzie, etc.), read `.claude/max-objects/PACKAGES.md` for:
+- Signal conventions (BEAP: 0-5V CV, +/-1 audio; Vizzie: Jitter matrices)
+- Functional roles and canonical module selection
+- Template signal chains with connection order
+
+### BEAP and MSP Integration
+
+BEAP modules use MSP signals internally but with modular conventions:
+- BEAP CV range is 0 to +5V (NOT standard MSP +/-1) -- do not mix raw MSP signals into BEAP CV inputs without scaling
+- When building hybrid patches (MSP + BEAP), use `*~ 5.0` to scale MSP (+/-1) to BEAP CV range, or `*~ 0.2` for BEAP-to-MSP
+- BEAP 1V/oct pitch tracking: each volt = one octave. bp.Keyboard outputs calibrated pitch CV.
+- gen~ codebox output can feed BEAP modules if properly scaled to 0-5V range
+- BEAP modules are NOT gen~ objects -- they are bpatchers containing MSP signal chains
+
 ## Editing Existing Patches (via /max-iterate)
 
 **Domain focus:** Edit signal chains, oscillator parameters, filter settings, gen~ codebox content.

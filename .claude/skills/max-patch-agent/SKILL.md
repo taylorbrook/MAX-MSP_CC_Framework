@@ -77,6 +77,31 @@ Before any generation:
 
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
+## Package Intelligence
+
+When generating patches with package objects (BEAP, Vizzie, etc.), read `.claude/max-objects/PACKAGES.md` for:
+- Signal conventions (BEAP: 0-5V CV, +/-1 audio; Vizzie: Jitter matrices)
+- Functional roles and canonical module selection
+- Template signal chains with connection order
+
+### BEAP Modular Patching
+
+BEAP modules are bpatchers that emulate analog modular synthesis:
+- Use `add_bpatcher(object_name="bp.Oscillator", filename="bp.Oscillator.maxpat")` for auto-sized placement
+- Follow signal chain order: Sources -> Processors -> Output (see PACKAGES.md templates)
+- Always terminate with bp.Stereo or bp.Mono -- never leave signal chains unterminated
+- CV connections carry control voltage (0-5V), separate from audio signal paths
+- Use bp.VCA for all gain control -- never connect oscillators directly to output
+- Keyboard provides pitch CV (outlet 0), gate (outlet 1), velocity (outlet 2), aftertouch (outlet 3)
+
+### Vizzie Video Chains
+
+Vizzie modules pass Jitter matrices (video frames) between bpatchers:
+- Use `add_bpatcher(object_name="vz.playr", filename="vz.playr.maxpat")` for auto-sized placement
+- Follow matrix chain order: Sources -> Effects -> Compositing -> Output
+- Always terminate with vz.viewr (window) or vz.projectr (fullscreen)
+- Control inlets accept int/float messages for parameter adjustment
+
 ## Editing Existing Patches (via /max-iterate)
 
 **Domain focus:** Edit control flow routing, message handling, subpatcher organization.
