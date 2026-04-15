@@ -105,14 +105,14 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
   - **Requirements:** PKG-19, PKG-20, PKG-21, PKG-22
   - Depends on: Phase 20
 
-- [ ] Phase 25: Templates + Critics
+- [x] Phase 25: Templates + Critics (completed 2026-04-15)
   - **Goal:** Provide starter templates and package-aware validation for common package workflows
   - Package-aware critics (BEAP signal conventions, Bach llll type checker, community extraction), workflow templates for FluCoMa/BEAP/Bach in agent SKILL.md files, template integration with `/max-new`
   - **Plans:** 3 plans
   - Plans:
-    - [ ] 25-01-PLAN.md — Build package_critic.py with BEAP convention and Bach llll checks
-    - [ ] 25-02-PLAN.md — Wire review_packages() into review_patch() dispatcher
-    - [ ] 25-03-PLAN.md — Agent SKILL.md workflow templates and lifecycle integration
+    - [x] 25-01-PLAN.md — Build package_critic.py with BEAP convention and Bach llll checks
+    - [x] 25-02-PLAN.md — Wire review_packages() into review_patch() dispatcher
+    - [x] 25-03-PLAN.md — Agent SKILL.md workflow templates and lifecycle integration
   - **Requirements:** PKG-23, PKG-24, PKG-25, PKG-26
   - Depends on: Phase 23, Phase 24
 
@@ -144,7 +144,7 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
 | 22. Package-Gated Generation | v4.0 | 3/3 | Complete   | 2026-04-14 |
 | 23. Agent Package Intelligence | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 24. Community Package Support | v4.0 | 3/3 | Complete    | 2026-04-15 |
-| 25. Templates + Critics | v4.0 | 0/3 | Planned | - |
+| 25. Templates + Critics | v4.0 | 3/3 | Complete    | 2026-04-15 |
 
 ---
 *Roadmap created: 2026-03-08*
