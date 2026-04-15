@@ -431,19 +431,19 @@ Not applicable -- this phase adds internal validation logic and documentation co
 | A2 | FluCoMa real-time objects output list data from non-signal outlets, not signal data | Code Examples (template) | Template connection types may be wrong; verify with actual FluCoMa help files |
 | A3 | `bach.list2llll` is the ONLY bridge from MAX lists to llll format (no other bach object auto-converts) | Architecture Pattern 3 | False negatives in Bach critic if other objects also accept plain lists |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Bpatcher name resolution in get_box_name()**
+1. **Bpatcher name resolution in get_box_name()** — RESOLVED: Plan 25-01 T1 implements `_get_object_name(box)` that checks `box.get("name")` for bpatcher maxclass.
    - What we know: `get_box_name()` returns maxclass for non-newobj objects, which gives "bpatcher" for all BEAP/Vizzie modules
    - What's unclear: The exact attribute name used in .maxpat JSON for the bpatcher abstraction reference (`name`? `args[0]`? `bgpatching_rect.name`?)
    - Recommendation: Inspect an actual BEAP .maxpat patch in `tests/fixtures/` or generate a test bpatcher to verify the exact JSON key. May need to extend `get_box_name()` or create `get_bpatcher_name()`.
 
-2. **Bach objects with multiple inlet types**
+2. **Bach objects with multiple inlet types** — RESOLVED: Plan 25-01 T2 uses conservative `_is_llll_inlet()` digest check; message boxes allowed.
    - What we know: 70/78 bach objects have "llll in" on inlet 0; some objects like `bach.*` have llll on inlets 0 AND 1
    - What's unclear: Whether bach objects accept messages on the same llll inlet (e.g., `bach.score` accepts both llll and specific messages like `addchord`)
    - Recommendation: Treat the critic conservatively -- only flag connections from non-bach control outlets to llll inlets. Message boxes connecting to bach objects should be allowed (they send specific messages, not raw lists).
 
-3. **FluCoMa offline objects -- completion pattern**
+3. **FluCoMa offline objects -- completion pattern** — RESOLVED: Plan 25-03 T1 includes async bang-on-completion pattern in FluCoMa offline template.
    - What we know: `fluid.buf*` objects output bang on completion, not immediate results. 38 offline objects in DB.
    - What's unclear: Whether templates should encode the async completion pattern (bang -> trigger next step)
    - Recommendation: Include async pattern in FluCoMa templates with explicit note about bang-on-completion flow.
