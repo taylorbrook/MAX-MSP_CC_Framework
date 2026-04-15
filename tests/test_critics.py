@@ -1882,3 +1882,173 @@ class TestPackageCritic:
         # No findings should mention cycle~ or dac~
         msp_findings = [r for r in results if "cycle~" in r.finding or "dac~" in r.finding]
         assert len(msp_findings) == 0, f"Expected no MSP findings, got: {msp_findings}"
+
+    # --- Bach llll type tests ---
+
+    def test_bach_llll_mismatch(self):
+        """Non-bach object (pack) connected to bach.score llll inlet produces blocker."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "pack 0 0",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "bach.score",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "llll" in r.finding.lower()]
+        assert len(blockers) >= 1, f"Expected llll mismatch blocker, got: {results}"
+
+    def test_bach_to_bach_clean(self):
+        """bach.rev -> bach.score produces no Bach findings."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "bach.rev",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "bach.score",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        bach_findings = [r for r in results if "llll" in r.finding.lower()]
+        assert len(bach_findings) == 0, f"Expected no Bach findings, got: {bach_findings}"
+
+    def test_bach_list2llll_allowed(self):
+        """unpack -> bach.list2llll produces no findings (list2llll accepts lists)."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "unpack 0 0",
+                "numinlets": 1,
+                "numoutlets": 2,
+                "outlettype": ["", ""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "bach.list2llll",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        bach_findings = [r for r in results if "llll" in r.finding.lower()]
+        assert len(bach_findings) == 0, f"Expected no findings for list2llll, got: {bach_findings}"
+
+    def test_bach_non_llll_inlet(self):
+        """Non-bach to bach.write (no llll digest on inlets) produces no findings."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "pack 0 0",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "bach.write",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        bach_findings = [r for r in results if "llll" in r.finding.lower()]
+        assert len(bach_findings) == 0, f"Expected no findings for non-llll inlet, got: {bach_findings}"
+
+    # --- Community extraction tests ---
+
+    def test_community_unextracted_warning(self):
+        """Patch with FluCoMa object (community, extracted=false) produces warning."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "fluid.mfcc~ 13",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_packages(patch)
+        community_warnings = [r for r in results if r.severity == "warning" and "unextracted" in r.finding.lower()]
+        assert len(community_warnings) >= 1, f"Expected community extraction warning, got: {results}"
+
+    def test_community_extracted_clean(self):
+        """Patch with BEAP objects (bundled, extracted=true) produces no community findings."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "bpatcher",
+                "name": "bp.Oscillator",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "bpatcher",
+                "name": "bp.VCA",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "bpatcher",
+                "name": "bp.Stereo",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        community_findings = [r for r in results if "unextracted" in r.finding.lower()]
+        assert len(community_findings) == 0, f"Expected no community findings for BEAP, got: {community_findings}"

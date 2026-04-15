@@ -368,6 +368,22 @@ def _check_bach_llll_types(
 # Community extraction check
 # ---------------------------------------------------------------------------
 
+def _match_package_by_prefix(name: str, db: ObjectDatabase) -> str | None:
+    """Match an object name to a package using prefix from package_info.json.
+
+    Used as fallback when db.get_package() returns None (object not in DB,
+    typical for unextracted community packages).
+    """
+    for pkg_name in db.list_packages():
+        info = db.get_package_info(pkg_name)
+        if not info:
+            continue
+        prefix = info.get("prefix", "")
+        if prefix and name.startswith(prefix):
+            return pkg_name
+    return None
+
+
 def _check_community_extracted(
     box_lookup: dict[str, dict],
     db: ObjectDatabase,
@@ -376,7 +392,7 @@ def _check_community_extracted(
 
     Checks each unique package used in the patch. If a community or licensed
     package has extracted=False in package_info.json, emit a warning (once
-    per package).
+    per package). Uses prefix matching as fallback for objects not in the DB.
     """
     results: list[CriticResult] = []
     warned_packages: set[str] = set()
@@ -386,7 +402,10 @@ def _check_community_extracted(
         if not name:
             continue
 
+        # Try DB lookup first, fall back to prefix matching
         pkg = db.get_package(name)
+        if not pkg:
+            pkg = _match_package_by_prefix(name, db)
         if not pkg or pkg in warned_packages:
             continue
 
