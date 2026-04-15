@@ -317,3 +317,85 @@ class TestLiveObjectSizes:
             assert UI_SIZES[obj_name] is None, (
                 f"{obj_name} should be None in UI_SIZES, got {UI_SIZES[obj_name]}"
             )
+
+
+class TestBpatcherDBSizing:
+    """Tests for DB-driven bpatcher sizing via add_bpatcher() and get_bpatcher_dims()."""
+
+    def test_bpatcher_db_dimensions_oscillator(self):
+        """add_bpatcher(object_name='bp.Oscillator') uses actual DB dimensions 314x116."""
+        from src.maxpat.patcher import Patcher
+        p = Patcher()
+        box = p.add_bpatcher(object_name="bp.Oscillator")
+        assert box.patching_rect[2] == 314.0
+        assert box.patching_rect[3] == 116.0
+
+    def test_bpatcher_db_dimensions_mono(self):
+        """add_bpatcher(object_name='bp.Mono') returns width=52, height=116."""
+        from src.maxpat.patcher import Patcher
+        p = Patcher()
+        box = p.add_bpatcher(object_name="bp.Mono")
+        assert box.patching_rect[2] == 52.0
+        assert box.patching_rect[3] == 116.0
+
+    def test_bpatcher_db_dimensions_vizzie(self):
+        """add_bpatcher(object_name='vz.playr') returns width=349, height=158."""
+        from src.maxpat.patcher import Patcher
+        p = Patcher()
+        box = p.add_bpatcher(object_name="vz.playr")
+        assert box.patching_rect[2] == 349.0
+        assert box.patching_rect[3] == 158.0
+
+    def test_bpatcher_default_without_object_name(self):
+        """add_bpatcher() without object_name returns default 200x100."""
+        from src.maxpat.patcher import Patcher
+        p = Patcher()
+        box = p.add_bpatcher()
+        assert box.patching_rect[2] == 200.0
+        assert box.patching_rect[3] == 100.0
+
+    def test_bpatcher_explicit_width_overrides_db(self):
+        """add_bpatcher(object_name='bp.Oscillator', width=400.0) uses explicit width, DB height."""
+        from src.maxpat.patcher import Patcher
+        p = Patcher()
+        box = p.add_bpatcher(object_name="bp.Oscillator", width=400.0)
+        assert box.patching_rect[2] == 400.0
+        assert box.patching_rect[3] == 116.0
+
+    def test_bpatcher_nonexistent_object_falls_back(self):
+        """add_bpatcher(object_name='nonexistent_obj') falls back to 200x100."""
+        from src.maxpat.patcher import Patcher
+        p = Patcher()
+        box = p.add_bpatcher(object_name="nonexistent_obj")
+        assert box.patching_rect[2] == 200.0
+        assert box.patching_rect[3] == 100.0
+
+    def test_bpatcher_auto_io_from_db(self):
+        """add_bpatcher(object_name='bp.Oscillator') auto-sets numinlets=6, numoutlets=2."""
+        from src.maxpat.patcher import Patcher
+        p = Patcher()
+        box = p.add_bpatcher(object_name="bp.Oscillator")
+        assert box.numinlets == 6
+        assert box.numoutlets == 2
+
+    def test_calculate_box_size_bpatcher_unchanged(self):
+        """calculate_box_size('', 'bpatcher') still returns (200, 100) -- no regression."""
+        w, h = calculate_box_size("", "bpatcher")
+        assert (w, h) == (200.0, 100.0)
+
+    def test_bpatcher_dims_cache_contains_oscillator(self):
+        """_BPATCHER_DIMS cache in sizing.py contains bp.Oscillator with dims (314.0, 116.0)."""
+        from src.maxpat.sizing import _BPATCHER_DIMS
+        assert "bp.Oscillator" in _BPATCHER_DIMS
+        assert _BPATCHER_DIMS["bp.Oscillator"] == (314.0, 116.0)
+
+    def test_get_bpatcher_dims_returns_known(self):
+        """get_bpatcher_dims('bp.Oscillator') returns (314.0, 116.0)."""
+        from src.maxpat.sizing import get_bpatcher_dims
+        dims = get_bpatcher_dims("bp.Oscillator")
+        assert dims == (314.0, 116.0)
+
+    def test_get_bpatcher_dims_returns_none_for_unknown(self):
+        """get_bpatcher_dims('nonexistent') returns None."""
+        from src.maxpat.sizing import get_bpatcher_dims
+        assert get_bpatcher_dims("nonexistent") is None
