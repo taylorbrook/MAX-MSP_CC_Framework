@@ -19,6 +19,32 @@
     {"objects": ["line~", "*~"], "relationship": "common_pair", "note": "line~ for smoothing, *~ for gain control"},
     {"objects": ["snapshot~", "number"], "relationship": "common_pair", "note": "snapshot~ converts signal to control, number displays it"},
     {"objects": ["poly~", "thispoly~"], "relationship": "required_pair", "note": "thispoly~ must exist inside poly~ subpatcher for voice management"},
-    {"objects": ["pfft~", "fftin~", "fftout~"], "relationship": "required_group", "note": "fftin~/fftout~ must exist inside pfft~ subpatcher"}
+    {"objects": ["pfft~", "fftin~", "fftout~"], "relationship": "required_group", "note": "fftin~/fftout~ must exist inside pfft~ subpatcher"},
+
+    {"objects": ["bp.Keyboard", "bp.Oscillator"], "relationship": "cv_pair", "package": "BEAP", "note": "Keyboard pitch CV (outlet 0) to Oscillator CV1 (inlet 0) for 1V/oct tracking"},
+    {"objects": ["bp.Oscillator", "bp.VCA"], "relationship": "signal_chain", "package": "BEAP", "note": "Oscillator signal output to VCA signal input for volume control"},
+    {"objects": ["bp.Oscillator", "bp.LPF"], "relationship": "signal_chain", "package": "BEAP", "note": "Oscillator to low-pass filter for subtractive synthesis"},
+    {"objects": ["bp.LPF", "bp.VCA"], "relationship": "signal_chain", "package": "BEAP", "note": "Filter output to VCA for volume envelope"},
+    {"objects": ["bp.VCA", "bp.Stereo"], "relationship": "signal_chain", "package": "BEAP", "note": "VCA output to stereo output module"},
+    {"objects": ["bp.VCA", "bp.Mono"], "relationship": "signal_chain", "package": "BEAP", "note": "VCA output to mono output module"},
+    {"objects": ["bp.ADSR", "bp.VCA"], "relationship": "cv_pair", "package": "BEAP", "note": "ADSR envelope CV to VCA CV input for amplitude shaping"},
+    {"objects": ["bp.Keyboard", "bp.ADSR"], "relationship": "cv_pair", "package": "BEAP", "note": "Keyboard gate (outlet 1) to ADSR gate input (inlet 0)"},
+    {"objects": ["bp.LFO", "bp.LPF"], "relationship": "cv_pair", "package": "BEAP", "note": "LFO to filter cutoff CV for wobble/sweep effects"},
+    {"objects": ["bp.LFO", "bp.VCA"], "relationship": "cv_pair", "package": "BEAP", "note": "LFO to VCA CV for tremolo effect"},
+    {"objects": ["bp.LFO", "bp.Oscillator"], "relationship": "cv_pair", "package": "BEAP", "note": "LFO to oscillator CV2 for vibrato"},
+    {"objects": ["bp.Sequencer", "bp.Oscillator"], "relationship": "cv_pair", "package": "BEAP", "note": "Sequencer pitch output to oscillator CV1 for melodic sequences"},
+    {"objects": ["bp.FM", "bp.VCA"], "relationship": "signal_chain", "package": "BEAP", "note": "FM oscillator output to VCA for volume control"},
+    {"objects": ["bp.Keyboard", "bp.FM"], "relationship": "cv_pair", "package": "BEAP", "note": "Keyboard pitch CV to FM oscillator for played FM synthesis"},
+    {"objects": ["bp.Noise", "bp.LPF"], "relationship": "signal_chain", "package": "BEAP", "note": "Noise through filter for filtered noise sounds"},
+    {"objects": ["bp.Envelope Follower", "bp.VCA"], "relationship": "cv_pair", "package": "BEAP", "note": "Envelope follower CV output to VCA for dynamics following"},
+    {"objects": ["bp.AD", "bp.VCA"], "relationship": "cv_pair", "package": "BEAP", "note": "AD envelope to VCA CV for percussive amplitude shapes"},
+
+    {"objects": ["vz.playr", "vz.viewr"], "relationship": "matrix_chain", "package": "Vizzie", "note": "Video file player to display window"},
+    {"objects": ["vz.grabbr", "vz.viewr"], "relationship": "matrix_chain", "package": "Vizzie", "note": "Camera capture to display window"},
+    {"objects": ["vz.playr", "vz.slidr"], "relationship": "matrix_chain", "package": "Vizzie", "note": "Video source to slide effect"},
+    {"objects": ["vz.playr", "vz.xfadr"], "relationship": "matrix_chain", "package": "Vizzie", "note": "Video source to crossfader for compositing"},
+    {"objects": ["vz.grabbr", "vz.xfadr"], "relationship": "matrix_chain", "package": "Vizzie", "note": "Camera source to crossfader for compositing"},
+    {"objects": ["vz.xfadr", "vz.viewr"], "relationship": "matrix_chain", "package": "Vizzie", "note": "Crossfader composite output to display"},
+    {"objects": ["vz.xfadr", "vz.projectr"], "relationship": "matrix_chain", "package": "Vizzie", "note": "Crossfader composite to fullscreen projector output"}
   ]
 }

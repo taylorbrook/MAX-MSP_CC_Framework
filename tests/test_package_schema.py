@@ -215,3 +215,89 @@ class TestPackageAPI:
         assert obj.get("domain") == "Packages", (
             f"jit.mo.sin domain should be 'Packages', got '{obj.get('domain')}'"
         )
+
+
+class TestPackageRelationships:
+    """Package relationship entries in relationships.json."""
+
+    @pytest.fixture(scope="class")
+    def relationships(self, db_root):
+        data = json.loads((db_root / "relationships.json").read_text())
+        return data["pairs"]
+
+    def test_relationships_has_package_pairs(self, relationships):
+        """relationships.json must have >= 15 entries with 'package' field."""
+        pkg_pairs = [p for p in relationships if "package" in p]
+        assert len(pkg_pairs) >= 15, (
+            f"Expected >= 15 package pairs, got {len(pkg_pairs)}"
+        )
+
+    def test_package_pairs_have_required_fields(self, relationships):
+        """Every entry with 'package' must also have 'objects', 'relationship', 'note'."""
+        for pair in relationships:
+            if "package" not in pair:
+                continue
+            assert "objects" in pair, f"Package pair missing 'objects': {pair}"
+            assert "relationship" in pair, f"Package pair missing 'relationship': {pair}"
+            assert "note" in pair, f"Package pair missing 'note': {pair}"
+            assert isinstance(pair["objects"], list), f"'objects' must be a list: {pair}"
+            assert len(pair["objects"]) >= 2, f"'objects' must have >= 2 items: {pair}"
+
+    def test_core_pairs_unchanged(self, relationships):
+        """Entries without 'package' field must be >= 19 (original count)."""
+        core_pairs = [p for p in relationships if "package" not in p]
+        assert len(core_pairs) >= 19, (
+            f"Expected >= 19 core pairs (original count), got {len(core_pairs)}"
+        )
+
+    def test_package_pair_objects_in_db(self, relationships):
+        """For each package pair, both objects must exist in the DB."""
+        from src.maxpat.db_lookup import ObjectDatabase
+        db = ObjectDatabase()
+        for pair in relationships:
+            if "package" not in pair:
+                continue
+            for obj_name in pair["objects"]:
+                assert db.lookup(obj_name) is not None, (
+                    f"Object '{obj_name}' from package pair not found in DB"
+                )
+
+    def test_relationship_types_valid(self, relationships):
+        """All 'relationship' values must be from the allowed set."""
+        valid_types = {
+            "required_pair", "common_pair", "equivalent",
+            "required_group", "signal_chain", "cv_pair", "matrix_chain",
+        }
+        for pair in relationships:
+            assert pair["relationship"] in valid_types, (
+                f"Invalid relationship type '{pair['relationship']}' in {pair}"
+            )
+
+
+class TestPackagesReference:
+    """PACKAGES.md shared reference document tests."""
+
+    @pytest.fixture(scope="class")
+    def packages_md(self, db_root):
+        path = db_root / "PACKAGES.md"
+        assert path.exists(), "PACKAGES.md must exist"
+        return path.read_text()
+
+    def test_packages_md_exists(self, db_root):
+        """.claude/max-objects/PACKAGES.md must exist."""
+        assert (db_root / "PACKAGES.md").exists()
+
+    def test_packages_md_has_signal_conventions(self, packages_md):
+        """Content must contain signal conventions."""
+        assert "Signal Conventions" in packages_md
+        assert "0-5V" in packages_md or "0 to +5V" in packages_md
+
+    def test_packages_md_has_beap_templates(self, packages_md):
+        """Content must contain BEAP templates."""
+        assert "Subtractive" in packages_md
+        assert "bp.Oscillator" in packages_md
+
+    def test_packages_md_has_vizzie_templates(self, packages_md):
+        """Content must contain Vizzie templates."""
+        assert "vz.playr" in packages_md
+        assert "vz.viewr" in packages_md
