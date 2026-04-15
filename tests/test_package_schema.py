@@ -274,6 +274,78 @@ class TestPackageRelationships:
             )
 
 
+class TestPackageParity:
+    """PKG-18: Package objects have same coverage level as core domains."""
+
+    @pytest.fixture(scope="class")
+    def db(self):
+        from src.maxpat.db_lookup import ObjectDatabase
+        return ObjectDatabase()
+
+    def test_beap_objects_have_required_fields(self, db):
+        """BEAP objects must have all standard fields plus package-specific fields."""
+        required = ["name", "maxclass", "domain", "inlets", "outlets", "package", "bpatcher_dimensions", "category"]
+        objs = db.get_package_objects("BEAP")
+        assert len(objs) >= 180
+        for obj in objs:
+            for field in required:
+                assert field in obj, f"BEAP object '{obj.get('name', '?')}' missing field '{field}'"
+
+    def test_vizzie_objects_have_required_fields(self, db):
+        """Vizzie objects must have all standard fields plus package-specific fields."""
+        required = ["name", "maxclass", "domain", "inlets", "outlets", "package", "bpatcher_dimensions", "category"]
+        objs = db.get_package_objects("Vizzie")
+        assert len(objs) >= 100
+        for obj in objs:
+            for field in required:
+                assert field in obj, f"Vizzie object '{obj.get('name', '?')}' missing field '{field}'"
+
+    def test_beap_dimension_coverage(self, db):
+        """At least 90% of BEAP objects must have valid bpatcher_dimensions."""
+        objs = db.get_package_objects("BEAP")
+        with_dims = [o for o in objs if o.get("bpatcher_dimensions") and len(o["bpatcher_dimensions"]) >= 2 and o["bpatcher_dimensions"][0] > 0 and o["bpatcher_dimensions"][1] > 0]
+        coverage = len(with_dims) / len(objs) if objs else 0
+        assert coverage >= 0.9, f"BEAP dimension coverage {coverage:.1%} < 90%"
+
+    def test_vizzie_dimension_coverage(self, db):
+        """At least 90% of Vizzie objects must have valid bpatcher_dimensions."""
+        objs = db.get_package_objects("Vizzie")
+        with_dims = [o for o in objs if o.get("bpatcher_dimensions") and len(o["bpatcher_dimensions"]) >= 2 and o["bpatcher_dimensions"][0] > 0 and o["bpatcher_dimensions"][1] > 0]
+        coverage = len(with_dims) / len(objs) if objs else 0
+        assert coverage >= 0.9, f"Vizzie dimension coverage {coverage:.1%} < 90%"
+
+    def test_relationship_coverage_beap(self, db_root):
+        """BEAP must have at least 5 relationship entries."""
+        data = json.loads((db_root / "relationships.json").read_text())
+        beap_pairs = [p for p in data["pairs"] if p.get("package") == "BEAP"]
+        assert len(beap_pairs) >= 5, f"Expected >= 5 BEAP relationship pairs, got {len(beap_pairs)}"
+
+    def test_relationship_coverage_vizzie(self, db_root):
+        """Vizzie must have at least 3 relationship entries."""
+        data = json.loads((db_root / "relationships.json").read_text())
+        vizzie_pairs = [p for p in data["pairs"] if p.get("package") == "Vizzie"]
+        assert len(vizzie_pairs) >= 3, f"Expected >= 3 Vizzie relationship pairs, got {len(vizzie_pairs)}"
+
+    def test_agent_guidance_coverage(self):
+        """At least 3 specialist agents must reference PACKAGES.md."""
+        skills_dir = Path(__file__).resolve().parent.parent / ".claude" / "skills"
+        agents = ["max-patch-agent", "max-dsp-agent", "max-ui-agent", "max-rnbo-agent", "max-js-agent"]
+        count = 0
+        for agent in agents:
+            content = (skills_dir / agent / "SKILL.md").read_text()
+            if "PACKAGES.md" in content:
+                count += 1
+        assert count >= 3, f"Expected >= 3 agents referencing PACKAGES.md, got {count}"
+
+    def test_packages_md_has_templates(self, db_root):
+        """PACKAGES.md must have at least 3 template sections with connection lists."""
+        import re
+        content = (db_root / "PACKAGES.md").read_text()
+        # Count template sections (#### headers under BEAP/Vizzie Templates)
+        templates = re.findall(r'^####\s+\d+\.\s+', content, re.MULTILINE)
+        assert len(templates) >= 3, f"Expected >= 3 template sections, got {len(templates)}: {templates}"
+
+
 class TestPackagesReference:
     """PACKAGES.md shared reference document tests."""
 
