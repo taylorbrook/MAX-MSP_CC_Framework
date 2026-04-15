@@ -1466,10 +1466,11 @@ class Patcher(GraphMixin, AnalysisMixin):
         args: list[str] | None = None,
         x: float = 0.0,
         y: float = 0.0,
-        width: float = 200.0,
-        height: float = 100.0,
+        width: float | None = None,
+        height: float | None = None,
         numinlets: int = 1,
         numoutlets: int = 1,
+        object_name: str | None = None,
     ) -> Box | tuple[Box, Patcher]:
         """Add a bpatcher box (file reference or embedded).
 
@@ -1479,16 +1480,42 @@ class Patcher(GraphMixin, AnalysisMixin):
             args: bpatcher arguments.
             x: Horizontal position.
             y: Vertical position.
-            width: bpatcher display width.
-            height: bpatcher display height.
+            width: bpatcher display width (None = auto from DB or 200).
+            height: bpatcher display height (None = auto from DB or 100).
             numinlets: Number of inlets.
             numoutlets: Number of outlets.
+            object_name: Package object name (e.g. 'bp.Oscillator') for
+                DB-driven dimension and I/O lookup.
 
         Returns:
             Box if file reference, (Box, Patcher) tuple if embedded.
         """
         if args is None:
             args = []
+
+        # DB-driven dimension lookup when object_name provided
+        if object_name:
+            from src.maxpat.sizing import get_bpatcher_dims
+            dims = get_bpatcher_dims(object_name)
+            if dims:
+                if width is None:
+                    width = dims[0]
+                if height is None:
+                    height = dims[1]
+            # Auto-set I/O from DB when caller used defaults
+            if self.db and numinlets == 1 and numoutlets == 1:
+                obj_info = self.db.lookup(object_name)
+                if obj_info:
+                    if "inlets" in obj_info:
+                        numinlets = len(obj_info["inlets"])
+                    if "outlets" in obj_info:
+                        numoutlets = len(obj_info["outlets"])
+
+        # Fallback to standard defaults
+        if width is None:
+            width = 200.0
+        if height is None:
+            height = 100.0
 
         box_id = self._gen_id()
 

@@ -29,6 +29,41 @@ def _load_width_overrides() -> dict[str, dict[str, float]]:
 
 _WIDTH_OVERRIDES: dict[str, dict[str, float]] = _load_width_overrides()
 
+
+def _load_bpatcher_dims() -> dict[str, tuple[float, float]]:
+    """Load bpatcher dimensions from package DB entries.
+
+    Scans .claude/max-objects/packages/*/objects.json at import time and
+    builds a dict mapping object name to (width, height) for any entry
+    with a ``bpatcher_dimensions`` field.
+    """
+    dims: dict[str, tuple[float, float]] = {}
+    pkg_root = Path(__file__).parent.parent.parent / ".claude" / "max-objects" / "packages"
+    if not pkg_root.is_dir():
+        return dims
+    for pkg_dir in pkg_root.iterdir():
+        if not pkg_dir.is_dir():
+            continue
+        json_path = pkg_dir / "objects.json"
+        if not json_path.exists():
+            continue
+        with open(json_path) as f:
+            data = json.load(f)
+        for name, obj in data.items():
+            bp_dims = obj.get("bpatcher_dimensions")
+            if bp_dims and len(bp_dims) >= 2:
+                dims[name] = (float(bp_dims[0]), float(bp_dims[1]))
+    return dims
+
+
+_BPATCHER_DIMS: dict[str, tuple[float, float]] = _load_bpatcher_dims()
+
+
+def get_bpatcher_dims(object_name: str) -> tuple[float, float] | None:
+    """Return (width, height) for a known bpatcher object, or None."""
+    return _BPATCHER_DIMS.get(object_name)
+
+
 # Fixed sizes for UI objects: maxclass -> (width, height).
 # None means the object uses text-based sizing (comment, message).
 UI_SIZES: dict[str, tuple[float, float] | None] = {
