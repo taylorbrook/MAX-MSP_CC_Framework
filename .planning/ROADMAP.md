@@ -84,14 +84,14 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
   - **Requirements:** PKG-09, PKG-10, PKG-11, PKG-12, PKG-13
   - Depends on: Phase 20
 
-- [ ] Phase 23: Agent Package Intelligence
+- [x] Phase 23: Agent Package Intelligence (completed 2026-04-15)
   - **Goal:** Give agents deep knowledge of package-specific patterns, conventions, and workflows
   - DB-driven bpatcher sizing, adaptive layout spacing, PACKAGES.md shared reference, package relationship entries, per-agent SKILL.md guidance, parity tests
   - **Plans:** 3 plans
   - Plans:
-    - [ ] 23-01-PLAN.md — DB-driven bpatcher sizing and adaptive layout spacing
-    - [ ] 23-02-PLAN.md — PACKAGES.md shared reference and relationship entries
-    - [ ] 23-03-PLAN.md — Agent SKILL.md package intelligence sections and parity tests
+    - [x] 23-01-PLAN.md — DB-driven bpatcher sizing and adaptive layout spacing
+    - [x] 23-02-PLAN.md — PACKAGES.md shared reference and relationship entries
+    - [x] 23-03-PLAN.md — Agent SKILL.md package intelligence sections and parity tests
   - **Requirements:** PKG-14, PKG-15, PKG-16, PKG-17, PKG-18
 
 - [ ] Phase 24: Community Package Support
@@ -132,7 +132,7 @@ Canonical refs: `.planning/milestones/v4.0-package-integration-PROPOSAL.md`
 | 20. DB Schema Foundation | v4.0 | 2/2 | Complete | 2026-04-13 |
 | 21. Bundled Package Extraction | v4.0 | 3/3 | Complete    | 2026-04-14 |
 | 22. Package-Gated Generation | v4.0 | 3/3 | Complete   | 2026-04-14 |
-| 23. Agent Package Intelligence | v4.0 | 0/3 | Planned | - |
+| 23. Agent Package Intelligence | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 24. Community Package Support | v4.0 | 0/0 | Planned | - |
 | 25. Templates + Critics | v4.0 | 0/0 | Planned | - |
 
