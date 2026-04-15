@@ -360,7 +360,11 @@ def _position_component(
     for i in range(1, len(rows)):
         prev_row = rows[i - 1]
         max_height = max(b.patching_rect[3] for b in prev_row)
-        row_y.append(row_y[-1] + max_height + options.v_spacing)
+        # Adaptive gap: add proportional spacing for tall elements (bpatchers)
+        gap = options.v_spacing
+        if max_height > 100:
+            gap += (max_height - 100) * 0.1
+        row_y.append(row_y[-1] + max_height + gap)
 
     # Position boxes row by row
     max_right = start_x
