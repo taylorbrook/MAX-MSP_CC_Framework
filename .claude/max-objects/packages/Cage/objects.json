@@ -1,1 +1,1392 @@
-{}
+{
+  "cage.noterandom": {
+    "name": "cage.noterandom",
+    "maxclass": "cage.noterandom",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Random note generation with constraints",
+    "description": "Random note generation with constraints",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.pcset": {
+    "name": "cage.pcset",
+    "maxclass": "cage.pcset",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Pitch class set operations",
+    "description": "Pitch class set operations",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.scale": {
+    "name": "cage.scale",
+    "maxclass": "cage.scale",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Scale construction and lookup",
+    "description": "Scale construction and lookup",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.chord": {
+    "name": "cage.chord",
+    "maxclass": "cage.chord",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Chord construction from rules",
+    "description": "Chord construction from rules",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.arpeggio": {
+    "name": "cage.arpeggio",
+    "maxclass": "cage.arpeggio",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Arpeggio pattern generator",
+    "description": "Arpeggio pattern generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.profile": {
+    "name": "cage.profile",
+    "maxclass": "cage.profile",
+    "module": "max",
+    "domain": "Packages",
+    "category": "melody",
+    "digest": "Melodic profile analysis and generation",
+    "description": "Melodic profile analysis and generation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "melody"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.contour": {
+    "name": "cage.contour",
+    "maxclass": "cage.contour",
+    "module": "max",
+    "domain": "Packages",
+    "category": "melody",
+    "digest": "Melodic contour extraction",
+    "description": "Melodic contour extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "melody"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.inversion": {
+    "name": "cage.inversion",
+    "maxclass": "cage.inversion",
+    "module": "max",
+    "domain": "Packages",
+    "category": "melody",
+    "digest": "Melodic inversion",
+    "description": "Melodic inversion",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "melody"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.retrograde": {
+    "name": "cage.retrograde",
+    "maxclass": "cage.retrograde",
+    "module": "max",
+    "domain": "Packages",
+    "category": "melody",
+    "digest": "Retrograde transformation",
+    "description": "Retrograde transformation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "melody"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.transpose": {
+    "name": "cage.transpose",
+    "maxclass": "cage.transpose",
+    "module": "max",
+    "domain": "Packages",
+    "category": "melody",
+    "digest": "Transposition by interval",
+    "description": "Transposition by interval",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "melody"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.harmony": {
+    "name": "cage.harmony",
+    "maxclass": "cage.harmony",
+    "module": "max",
+    "domain": "Packages",
+    "category": "harmony",
+    "digest": "Harmonic analysis of pitch sets",
+    "description": "Harmonic analysis of pitch sets",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "harmony"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.fundamental": {
+    "name": "cage.fundamental",
+    "maxclass": "cage.fundamental",
+    "module": "max",
+    "domain": "Packages",
+    "category": "harmony",
+    "digest": "Fundamental frequency estimation",
+    "description": "Fundamental frequency estimation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "harmony"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.setclass": {
+    "name": "cage.setclass",
+    "maxclass": "cage.setclass",
+    "module": "max",
+    "domain": "Packages",
+    "category": "harmony",
+    "digest": "Pitch class set classification",
+    "description": "Pitch class set classification",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "harmony"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.interval": {
+    "name": "cage.interval",
+    "maxclass": "cage.interval",
+    "module": "max",
+    "domain": "Packages",
+    "category": "harmony",
+    "digest": "Interval vector computation",
+    "description": "Interval vector computation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "harmony"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.rhythm": {
+    "name": "cage.rhythm",
+    "maxclass": "cage.rhythm",
+    "module": "max",
+    "domain": "Packages",
+    "category": "rhythm",
+    "digest": "Rhythmic pattern generation",
+    "description": "Rhythmic pattern generation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "rhythm"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.meter": {
+    "name": "cage.meter",
+    "maxclass": "cage.meter",
+    "module": "max",
+    "domain": "Packages",
+    "category": "rhythm",
+    "digest": "Meter analysis and generation",
+    "description": "Meter analysis and generation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "rhythm"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.tempo": {
+    "name": "cage.tempo",
+    "maxclass": "cage.tempo",
+    "module": "max",
+    "domain": "Packages",
+    "category": "rhythm",
+    "digest": "Tempo curve generation",
+    "description": "Tempo curve generation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "rhythm"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.groove": {
+    "name": "cage.groove",
+    "maxclass": "cage.groove",
+    "module": "max",
+    "domain": "Packages",
+    "category": "rhythm",
+    "digest": "Groove pattern creation",
+    "description": "Groove pattern creation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "rhythm"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.agogics": {
+    "name": "cage.agogics",
+    "maxclass": "cage.agogics",
+    "module": "max",
+    "domain": "Packages",
+    "category": "rhythm",
+    "digest": "Agogic accent patterns",
+    "description": "Agogic accent patterns",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "rhythm"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.lsystem": {
+    "name": "cage.lsystem",
+    "maxclass": "cage.lsystem",
+    "module": "max",
+    "domain": "Packages",
+    "category": "generative",
+    "digest": "L-system string rewriting",
+    "description": "L-system string rewriting",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/rules in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "generative"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.automaton": {
+    "name": "cage.automaton",
+    "maxclass": "cage.automaton",
+    "module": "max",
+    "domain": "Packages",
+    "category": "generative",
+    "digest": "Cellular automaton generator",
+    "description": "Cellular automaton generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/rules in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "generative"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.fractal": {
+    "name": "cage.fractal",
+    "maxclass": "cage.fractal",
+    "module": "max",
+    "domain": "Packages",
+    "category": "generative",
+    "digest": "Fractal pattern generation",
+    "description": "Fractal pattern generation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/rules in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "generative"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.concat": {
+    "name": "cage.concat",
+    "maxclass": "cage.concat",
+    "module": "max",
+    "domain": "Packages",
+    "category": "score",
+    "digest": "Concatenate score fragments",
+    "description": "Concatenate score fragments",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in 2",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "score"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.split": {
+    "name": "cage.split",
+    "maxclass": "cage.split",
+    "module": "max",
+    "domain": "Packages",
+    "category": "score",
+    "digest": "Split score at positions",
+    "description": "Split score at positions",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in 2",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "score"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.slice": {
+    "name": "cage.slice",
+    "maxclass": "cage.slice",
+    "module": "max",
+    "domain": "Packages",
+    "category": "score",
+    "digest": "Slice score by time range",
+    "description": "Slice score by time range",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in 2",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "score"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.mix": {
+    "name": "cage.mix",
+    "maxclass": "cage.mix",
+    "module": "max",
+    "domain": "Packages",
+    "category": "score",
+    "digest": "Mix multiple score layers",
+    "description": "Mix multiple score layers",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in 2",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "score"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.track": {
+    "name": "cage.track",
+    "maxclass": "cage.track",
+    "module": "max",
+    "domain": "Packages",
+    "category": "score",
+    "digest": "Extract track from score",
+    "description": "Extract track from score",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in 2",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "score"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.fm": {
+    "name": "cage.fm",
+    "maxclass": "cage.fm",
+    "module": "max",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "FM synthesis parameter computation",
+    "description": "FM synthesis parameter computation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.rm": {
+    "name": "cage.rm",
+    "maxclass": "cage.rm",
+    "module": "max",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Ring modulation spectral analysis",
+    "description": "Ring modulation spectral analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.shift": {
+    "name": "cage.shift",
+    "maxclass": "cage.shift",
+    "module": "max",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Frequency shifting computation",
+    "description": "Frequency shifting computation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "cage.granulate": {
+    "name": "cage.granulate",
+    "maxclass": "cage.granulate",
+    "module": "max",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Granular decomposition of score data",
+    "description": "Granular decomposition of score data",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Cage",
+    "requires": [
+      "Bach"
+    ]
+  }
+}

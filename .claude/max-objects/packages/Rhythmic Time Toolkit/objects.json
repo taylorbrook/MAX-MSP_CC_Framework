@@ -1,1 +1,674 @@
-{}
+{
+  "rtk.seq~": {
+    "name": "rtk.seq~",
+    "maxclass": "rtk.seq~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "sequencing",
+    "digest": "Signal-rate step sequencer (stub confidence: LOW)",
+    "description": "Signal-rate step sequencer (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Clock/trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Reset",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Step/note value"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Gate/trigger out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sequencing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.stepper~": {
+    "name": "rtk.stepper~",
+    "maxclass": "rtk.stepper~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "sequencing",
+    "digest": "Signal-rate step counter (stub confidence: LOW)",
+    "description": "Signal-rate step counter (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Clock/trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Reset",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Step/note value"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Gate/trigger out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sequencing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.arp~": {
+    "name": "rtk.arp~",
+    "maxclass": "rtk.arp~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "sequencing",
+    "digest": "Signal-rate arpeggiator (stub confidence: LOW)",
+    "description": "Signal-rate arpeggiator (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Clock/trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Reset",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Step/note value"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Gate/trigger out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sequencing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.pattern~": {
+    "name": "rtk.pattern~",
+    "maxclass": "rtk.pattern~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "sequencing",
+    "digest": "Signal-rate pattern player (stub confidence: LOW)",
+    "description": "Signal-rate pattern player (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Clock/trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Reset",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Step/note value"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Gate/trigger out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sequencing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.clock~": {
+    "name": "rtk.clock~",
+    "maxclass": "rtk.clock~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "timing",
+    "digest": "Signal-rate clock generator (stub confidence: LOW)",
+    "description": "Signal-rate clock generator (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Rate/tempo in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Clock/gate out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "timing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.tap~": {
+    "name": "rtk.tap~",
+    "maxclass": "rtk.tap~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "timing",
+    "digest": "Signal-rate tap tempo (stub confidence: LOW)",
+    "description": "Signal-rate tap tempo (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Rate/tempo in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Clock/gate out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "timing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.metro~": {
+    "name": "rtk.metro~",
+    "maxclass": "rtk.metro~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "timing",
+    "digest": "Signal-rate metronome (stub confidence: LOW)",
+    "description": "Signal-rate metronome (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Rate/tempo in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Clock/gate out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "timing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.gate~": {
+    "name": "rtk.gate~",
+    "maxclass": "rtk.gate~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "timing",
+    "digest": "Signal-rate gate generator (stub confidence: LOW)",
+    "description": "Signal-rate gate generator (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Rate/tempo in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Clock/gate out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "timing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.melody~": {
+    "name": "rtk.melody~",
+    "maxclass": "rtk.melody~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "melody",
+    "digest": "Signal-rate melody generator (stub confidence: LOW)",
+    "description": "Signal-rate melody generator (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Pitch/trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Pitch out"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Gate out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "melody"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.scale~": {
+    "name": "rtk.scale~",
+    "maxclass": "rtk.scale~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "melody",
+    "digest": "Signal-rate scale quantizer (stub confidence: LOW)",
+    "description": "Signal-rate scale quantizer (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Pitch/trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Pitch out"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Gate out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "melody"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.chord~": {
+    "name": "rtk.chord~",
+    "maxclass": "rtk.chord~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "melody",
+    "digest": "Signal-rate chord generator (stub confidence: LOW)",
+    "description": "Signal-rate chord generator (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Pitch/trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Pitch out"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Gate out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "melody"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.counter~": {
+    "name": "rtk.counter~",
+    "maxclass": "rtk.counter~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Signal-rate counter (stub confidence: LOW)",
+    "description": "Signal-rate counter (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Value out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.random~": {
+    "name": "rtk.random~",
+    "maxclass": "rtk.random~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Signal-rate random generator (stub confidence: LOW)",
+    "description": "Signal-rate random generator (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Value out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  },
+  "rtk.swing~": {
+    "name": "rtk.swing~",
+    "maxclass": "rtk.swing~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Signal-rate swing/shuffle (stub confidence: LOW)",
+    "description": "Signal-rate swing/shuffle (stub confidence: LOW)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Trigger in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Value out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Rhythmic Time Toolkit"
+  }
+}

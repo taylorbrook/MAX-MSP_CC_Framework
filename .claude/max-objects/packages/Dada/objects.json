@@ -1,1 +1,648 @@
-{}
+{
+  "dada.graph": {
+    "name": "dada.graph",
+    "maxclass": "dada.graph",
+    "module": "max",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Interactive graph visualization and editing",
+    "description": "Interactive graph visualization and editing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Interaction data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.distances": {
+    "name": "dada.distances",
+    "maxclass": "dada.distances",
+    "module": "max",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Distance matrix visualization",
+    "description": "Distance matrix visualization",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Interaction data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.music~": {
+    "name": "dada.music~",
+    "maxclass": "dada.music~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Interactive music canvas with audio output",
+    "description": "Interactive music canvas with audio output",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.peanos~": {
+    "name": "dada.peanos~",
+    "maxclass": "dada.peanos~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Peano curve-based audio generator",
+    "description": "Peano curve-based audio generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.bounce": {
+    "name": "dada.bounce",
+    "maxclass": "dada.bounce",
+    "module": "max",
+    "domain": "Packages",
+    "category": "physics",
+    "digest": "Ball bouncing physics simulation",
+    "description": "Ball bouncing physics simulation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Position data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "physics"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.nodes": {
+    "name": "dada.nodes",
+    "maxclass": "dada.nodes",
+    "module": "max",
+    "domain": "Packages",
+    "category": "physics",
+    "digest": "Interactive node graph with forces",
+    "description": "Interactive node graph with forces",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Position data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "physics"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.bodies": {
+    "name": "dada.bodies",
+    "maxclass": "dada.bodies",
+    "module": "max",
+    "domain": "Packages",
+    "category": "physics",
+    "digest": "Rigid body physics simulation",
+    "description": "Rigid body physics simulation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Position data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "physics"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.polygon": {
+    "name": "dada.polygon",
+    "maxclass": "dada.polygon",
+    "module": "max",
+    "domain": "Packages",
+    "category": "geometry",
+    "digest": "Polygon drawing and manipulation",
+    "description": "Polygon drawing and manipulation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Point/llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Geometry data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "geometry"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.segment": {
+    "name": "dada.segment",
+    "maxclass": "dada.segment",
+    "module": "max",
+    "domain": "Packages",
+    "category": "geometry",
+    "digest": "Line segment operations",
+    "description": "Line segment operations",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Point/llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Geometry data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "geometry"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.voronoi": {
+    "name": "dada.voronoi",
+    "maxclass": "dada.voronoi",
+    "module": "max",
+    "domain": "Packages",
+    "category": "geometry",
+    "digest": "Voronoi diagram generator",
+    "description": "Voronoi diagram generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Point/llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Geometry data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "geometry"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.db": {
+    "name": "dada.db",
+    "maxclass": "dada.db",
+    "module": "max",
+    "domain": "Packages",
+    "category": "database",
+    "digest": "Database interface for dada objects",
+    "description": "Database interface for dada objects",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Query/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Status"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "database"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.sqlite": {
+    "name": "dada.sqlite",
+    "maxclass": "dada.sqlite",
+    "module": "max",
+    "domain": "Packages",
+    "category": "database",
+    "digest": "SQLite database access",
+    "description": "SQLite database access",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Query/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Status"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "database"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.colors": {
+    "name": "dada.colors",
+    "maxclass": "dada.colors",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Color palette generator",
+    "description": "Color palette generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.base": {
+    "name": "dada.base",
+    "maxclass": "dada.base",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Base GUI canvas for custom interfaces",
+    "description": "Base GUI canvas for custom interfaces",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  }
+}

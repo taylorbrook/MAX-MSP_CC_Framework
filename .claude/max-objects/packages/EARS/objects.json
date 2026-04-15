@@ -1,1 +1,1566 @@
-{}
+{
+  "ears.readfile": {
+    "name": "ears.readfile",
+    "maxclass": "ears.readfile",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Read audio file into buffer",
+    "description": "Read audio file into buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name/message",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.writefile": {
+    "name": "ears.writefile",
+    "maxclass": "ears.writefile",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Write buffer to audio file",
+    "description": "Write buffer to audio file",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name/message",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.frommax": {
+    "name": "ears.frommax",
+    "maxclass": "ears.frommax",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Import MAX buffer into ears buffer",
+    "description": "Import MAX buffer into ears buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name/message",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.tomax": {
+    "name": "ears.tomax",
+    "maxclass": "ears.tomax",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Export ears buffer to MAX buffer",
+    "description": "Export ears buffer to MAX buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name/message",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.slice": {
+    "name": "ears.slice",
+    "maxclass": "ears.slice",
+    "module": "max",
+    "domain": "Packages",
+    "category": "editing",
+    "digest": "Slice buffer at onset points",
+    "description": "Slice buffer at onset points",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "editing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.join": {
+    "name": "ears.join",
+    "maxclass": "ears.join",
+    "module": "max",
+    "domain": "Packages",
+    "category": "editing",
+    "digest": "Join multiple buffers",
+    "description": "Join multiple buffers",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "editing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.crop": {
+    "name": "ears.crop",
+    "maxclass": "ears.crop",
+    "module": "max",
+    "domain": "Packages",
+    "category": "editing",
+    "digest": "Crop buffer to time range",
+    "description": "Crop buffer to time range",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "editing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.rotate": {
+    "name": "ears.rotate",
+    "maxclass": "ears.rotate",
+    "module": "max",
+    "domain": "Packages",
+    "category": "editing",
+    "digest": "Rotate buffer contents",
+    "description": "Rotate buffer contents",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "editing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.reverse": {
+    "name": "ears.reverse",
+    "maxclass": "ears.reverse",
+    "module": "max",
+    "domain": "Packages",
+    "category": "editing",
+    "digest": "Reverse buffer contents",
+    "description": "Reverse buffer contents",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "editing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.pan": {
+    "name": "ears.pan",
+    "maxclass": "ears.pan",
+    "module": "max",
+    "domain": "Packages",
+    "category": "editing",
+    "digest": "Pan buffer between channels",
+    "description": "Pan buffer between channels",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "editing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.mix": {
+    "name": "ears.mix",
+    "maxclass": "ears.mix",
+    "module": "max",
+    "domain": "Packages",
+    "category": "editing",
+    "digest": "Mix multiple buffers",
+    "description": "Mix multiple buffers",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/llll in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "editing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.timestretch~": {
+    "name": "ears.timestretch~",
+    "maxclass": "ears.timestretch~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "timepitch",
+    "digest": "Time-stretching of buffer audio",
+    "description": "Time-stretching of buffer audio",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "timepitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.pitchshift~": {
+    "name": "ears.pitchshift~",
+    "maxclass": "ears.pitchshift~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "timepitch",
+    "digest": "Pitch-shifting of buffer audio",
+    "description": "Pitch-shifting of buffer audio",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "timepitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.resample": {
+    "name": "ears.resample",
+    "maxclass": "ears.resample",
+    "module": "max",
+    "domain": "Packages",
+    "category": "timepitch",
+    "digest": "Resample buffer to new sample rate",
+    "description": "Resample buffer to new sample rate",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "timepitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.loudness": {
+    "name": "ears.loudness",
+    "maxclass": "ears.loudness",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Loudness analysis of buffer",
+    "description": "Loudness analysis of buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.pitch": {
+    "name": "ears.pitch",
+    "maxclass": "ears.pitch",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Pitch analysis of buffer",
+    "description": "Pitch analysis of buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.descriptors": {
+    "name": "ears.descriptors",
+    "maxclass": "ears.descriptors",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Audio descriptor extraction",
+    "description": "Audio descriptor extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.spectrogram": {
+    "name": "ears.spectrogram",
+    "maxclass": "ears.spectrogram",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Spectrogram computation from buffer",
+    "description": "Spectrogram computation from buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.filter~": {
+    "name": "ears.filter~",
+    "maxclass": "ears.filter~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "effects",
+    "digest": "Filter buffer audio",
+    "description": "Filter buffer audio",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "effects"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.reverb~": {
+    "name": "ears.reverb~",
+    "maxclass": "ears.reverb~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "effects",
+    "digest": "Apply reverb to buffer",
+    "description": "Apply reverb to buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "effects"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.distortion~": {
+    "name": "ears.distortion~",
+    "maxclass": "ears.distortion~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "effects",
+    "digest": "Apply distortion to buffer",
+    "description": "Apply distortion to buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "effects"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.compressor~": {
+    "name": "ears.compressor~",
+    "maxclass": "ears.compressor~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "effects",
+    "digest": "Apply compression to buffer",
+    "description": "Apply compression to buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "effects"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.ambi.enc~": {
+    "name": "ears.ambi.enc~",
+    "maxclass": "ears.ambi.enc~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "ambisonics",
+    "digest": "Encode buffer into ambisonics",
+    "description": "Encode buffer into ambisonics",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "ambisonics"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.ambi.dec~": {
+    "name": "ears.ambi.dec~",
+    "maxclass": "ears.ambi.dec~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "ambisonics",
+    "digest": "Decode ambisonics buffer",
+    "description": "Decode ambisonics buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "ambisonics"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.synth~": {
+    "name": "ears.synth~",
+    "maxclass": "ears.synth~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "synthesis",
+    "digest": "Synthesize audio into buffer",
+    "description": "Synthesize audio into buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "synthesis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.render~": {
+    "name": "ears.render~",
+    "maxclass": "ears.render~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "synthesis",
+    "digest": "Render score/llll to buffer",
+    "description": "Render score/llll to buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "synthesis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.score2buf": {
+    "name": "ears.score2buf",
+    "maxclass": "ears.score2buf",
+    "module": "max",
+    "domain": "Packages",
+    "category": "score",
+    "digest": "Convert score data to buffer",
+    "description": "Convert score data to buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "score"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.process~": {
+    "name": "ears.process~",
+    "maxclass": "ears.process~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "score",
+    "digest": "Process buffer with llll instructions",
+    "description": "Process buffer with llll instructions",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Score llll/message in",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Done"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "score"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  }
+}

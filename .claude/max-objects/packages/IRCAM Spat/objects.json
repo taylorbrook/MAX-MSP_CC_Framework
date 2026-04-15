@@ -1,1 +1,1081 @@
-{}
+{
+  "spat5.panoramix": {
+    "name": "spat5.panoramix",
+    "maxclass": "spat5.panoramix",
+    "module": "max",
+    "domain": "Packages",
+    "category": "spatialization",
+    "digest": "High-level spatial audio rendering interface",
+    "description": "High-level spatial audio rendering interface",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spatialization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.oper": {
+    "name": "spat5.oper",
+    "maxclass": "spat5.oper",
+    "module": "max",
+    "domain": "Packages",
+    "category": "spatialization",
+    "digest": "Spatialization operator (control-rate)",
+    "description": "Spatialization operator (control-rate)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spatialization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.panning~": {
+    "name": "spat5.panning~",
+    "maxclass": "spat5.panning~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spatialization",
+    "digest": "Multi-source panning processor",
+    "description": "Multi-source panning processor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Source audio",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Spatialized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spatialization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.binaural~": {
+    "name": "spat5.binaural~",
+    "maxclass": "spat5.binaural~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spatialization",
+    "digest": "Binaural spatialization renderer",
+    "description": "Binaural spatialization renderer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Source audio",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Spatialized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spatialization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.ambi.enc~": {
+    "name": "spat5.ambi.enc~",
+    "maxclass": "spat5.ambi.enc~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spatialization",
+    "digest": "Ambisonics encoder",
+    "description": "Ambisonics encoder",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Source audio",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Spatialized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spatialization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.reverb~": {
+    "name": "spat5.reverb~",
+    "maxclass": "spat5.reverb~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "room",
+    "digest": "Artificial reverberation",
+    "description": "Artificial reverberation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Processed output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "room"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.early~": {
+    "name": "spat5.early~",
+    "maxclass": "spat5.early~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "room",
+    "digest": "Early reflections processor",
+    "description": "Early reflections processor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Processed output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "room"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.irt~": {
+    "name": "spat5.irt~",
+    "maxclass": "spat5.irt~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "room",
+    "digest": "Impulse response tail processor",
+    "description": "Impulse response tail processor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Processed output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "room"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.conv~": {
+    "name": "spat5.conv~",
+    "maxclass": "spat5.conv~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "room",
+    "digest": "Convolution reverb",
+    "description": "Convolution reverb",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Processed output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "room"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.hoa.enc~": {
+    "name": "spat5.hoa.enc~",
+    "maxclass": "spat5.hoa.enc~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "hoa",
+    "digest": "Higher-order ambisonics encoder",
+    "description": "Higher-order ambisonics encoder",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "hoa"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.hoa.dec~": {
+    "name": "spat5.hoa.dec~",
+    "maxclass": "spat5.hoa.dec~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "hoa",
+    "digest": "Higher-order ambisonics decoder",
+    "description": "Higher-order ambisonics decoder",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "hoa"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.hoa.proc~": {
+    "name": "spat5.hoa.proc~",
+    "maxclass": "spat5.hoa.proc~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "hoa",
+    "digest": "HOA processing and transformation",
+    "description": "HOA processing and transformation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "hoa"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.hoa.focus~": {
+    "name": "spat5.hoa.focus~",
+    "maxclass": "spat5.hoa.focus~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "hoa",
+    "digest": "HOA focus/directional enhancement",
+    "description": "HOA focus/directional enhancement",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "hoa"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.hoa.mirror~": {
+    "name": "spat5.hoa.mirror~",
+    "maxclass": "spat5.hoa.mirror~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "hoa",
+    "digest": "HOA mirror transformation",
+    "description": "HOA mirror transformation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "hoa"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.hoa.srp~": {
+    "name": "spat5.hoa.srp~",
+    "maxclass": "spat5.hoa.srp~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "hoa",
+    "digest": "Steered response power for source localization",
+    "description": "Steered response power for source localization",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Ambisonics out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "hoa"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.wfs~": {
+    "name": "spat5.wfs~",
+    "maxclass": "spat5.wfs~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "wfs",
+    "digest": "Wave field synthesis renderer",
+    "description": "Wave field synthesis renderer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Source audio",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "WFS output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "wfs"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.trajectories": {
+    "name": "spat5.trajectories",
+    "maxclass": "spat5.trajectories",
+    "module": "max",
+    "domain": "Packages",
+    "category": "control",
+    "digest": "Source trajectory automation",
+    "description": "Source trajectory automation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "control"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.periactes": {
+    "name": "spat5.periactes",
+    "maxclass": "spat5.periactes",
+    "module": "max",
+    "domain": "Packages",
+    "category": "control",
+    "digest": "Scene management and presets",
+    "description": "Scene management and presets",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "control"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.sfplay~": {
+    "name": "spat5.sfplay~",
+    "maxclass": "spat5.sfplay~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Spatial soundfile player",
+    "description": "Spatial soundfile player",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Status"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.sfrecord~": {
+    "name": "spat5.sfrecord~",
+    "maxclass": "spat5.sfrecord~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Spatial soundfile recorder",
+    "description": "Spatial soundfile recorder",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Status"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.viewer": {
+    "name": "spat5.viewer",
+    "maxclass": "spat5.viewer",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ui",
+    "digest": "Source position 3D viewer",
+    "description": "Source position 3D viewer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Position data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "ui"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.oper~": {
+    "name": "spat5.oper~",
+    "maxclass": "spat5.oper~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spatialization",
+    "digest": "Spatialization operator (signal-rate)",
+    "description": "Spatialization operator (signal-rate)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Spatialized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spatialization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.osc.route": {
+    "name": "spat5.osc.route",
+    "maxclass": "spat5.osc.route",
+    "module": "max",
+    "domain": "Packages",
+    "category": "osc",
+    "digest": "Route OSC messages by address",
+    "description": "Route OSC messages by address",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "osc"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.osc.pack": {
+    "name": "spat5.osc.pack",
+    "maxclass": "spat5.osc.pack",
+    "module": "max",
+    "domain": "Packages",
+    "category": "osc",
+    "digest": "Pack values into OSC message",
+    "description": "Pack values into OSC message",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "osc"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  },
+  "spat5.osc.unpack": {
+    "name": "spat5.osc.unpack",
+    "maxclass": "spat5.osc.unpack",
+    "module": "max",
+    "domain": "Packages",
+    "category": "osc",
+    "digest": "Unpack OSC message into values",
+    "description": "Unpack OSC message into values",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "osc"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "IRCAM Spat"
+  }
+}
