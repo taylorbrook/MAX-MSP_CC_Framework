@@ -1,1 +1,716 @@
-{}
+{
+  "ml.adaboost": {
+    "name": "ml.adaboost",
+    "maxclass": "ml.adaboost",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "Adaptive boosting classifier",
+    "description": "Adaptive boosting classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.dtw": {
+    "name": "ml.dtw",
+    "maxclass": "ml.dtw",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "Dynamic time warping classifier",
+    "description": "Dynamic time warping classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.gmm": {
+    "name": "ml.gmm",
+    "maxclass": "ml.gmm",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "Gaussian mixture model classifier",
+    "description": "Gaussian mixture model classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.hmmc": {
+    "name": "ml.hmmc",
+    "maxclass": "ml.hmmc",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "Hidden Markov model classifier",
+    "description": "Hidden Markov model classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.knn": {
+    "name": "ml.knn",
+    "maxclass": "ml.knn",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "K-nearest neighbor classifier",
+    "description": "K-nearest neighbor classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.mindist": {
+    "name": "ml.mindist",
+    "maxclass": "ml.mindist",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "Minimum distance classifier",
+    "description": "Minimum distance classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.randforest": {
+    "name": "ml.randforest",
+    "maxclass": "ml.randforest",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "Random forest classifier",
+    "description": "Random forest classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.softmax": {
+    "name": "ml.softmax",
+    "maxclass": "ml.softmax",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "Softmax regression classifier",
+    "description": "Softmax regression classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.svm": {
+    "name": "ml.svm",
+    "maxclass": "ml.svm",
+    "module": "max",
+    "domain": "Packages",
+    "category": "classification",
+    "digest": "Support vector machine classifier",
+    "description": "Support vector machine classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Classification result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "classification"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.linreg": {
+    "name": "ml.linreg",
+    "maxclass": "ml.linreg",
+    "module": "max",
+    "domain": "Packages",
+    "category": "regression",
+    "digest": "Linear regression",
+    "description": "Linear regression",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Regression result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "regression"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.logreg": {
+    "name": "ml.logreg",
+    "maxclass": "ml.logreg",
+    "module": "max",
+    "domain": "Packages",
+    "category": "regression",
+    "digest": "Logistic regression",
+    "description": "Logistic regression",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Regression result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "regression"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.ann": {
+    "name": "ml.ann",
+    "maxclass": "ml.ann",
+    "module": "max",
+    "domain": "Packages",
+    "category": "regression",
+    "digest": "Artificial neural network",
+    "description": "Artificial neural network",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Regression result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "regression"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.mulreg": {
+    "name": "ml.mulreg",
+    "maxclass": "ml.mulreg",
+    "module": "max",
+    "domain": "Packages",
+    "category": "regression",
+    "digest": "Multiple regression",
+    "description": "Multiple regression",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Regression result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Training info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "regression"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  },
+  "ml.minmax": {
+    "name": "ml.minmax",
+    "maxclass": "ml.minmax",
+    "module": "max",
+    "domain": "Packages",
+    "category": "feature",
+    "digest": "Min-max feature scaling",
+    "description": "Min-max feature scaling",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (add, train, map, clear)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Scaled result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "add",
+      "train",
+      "map",
+      "clear",
+      "save",
+      "load"
+    ],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "feature"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ml-lib"
+  }
+}

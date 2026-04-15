@@ -141,11 +141,11 @@
   },
   "IRCAM Spat": {
     "name": "IRCAM Spat",
-    "tier": "licensed",
+    "tier": "community",
     "prefix": "spat5.",
     "version": "",
     "install_method": "installer",
-    "description": "Spatial audio rendering and room acoustics",
+    "description": "Spatial audio rendering. Free download from forum.ircam.fr (account required). Copy spat5 folder to ~/Documents/Max 9/Packages/",
     "object_count": 0,
     "extracted": false
   },

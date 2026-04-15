@@ -1,1 +1,2241 @@
-{}
+{
+  "OpenSoundControl": {
+    "name": "OpenSoundControl",
+    "maxclass": "OpenSoundControl",
+    "module": "max",
+    "domain": "Packages",
+    "category": "osc",
+    "digest": "OSC encoding and decoding",
+    "description": "OSC encoding and decoding",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info/dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "osc"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "OSC-route": {
+    "name": "OSC-route",
+    "maxclass": "OSC-route",
+    "module": "max",
+    "domain": "Packages",
+    "category": "osc",
+    "digest": "Route OSC messages by address pattern",
+    "description": "Route OSC messages by address pattern",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info/dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "osc"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "OSC-schedule": {
+    "name": "OSC-schedule",
+    "maxclass": "OSC-schedule",
+    "module": "max",
+    "domain": "Packages",
+    "category": "osc",
+    "digest": "Schedule OSC bundles by timetag",
+    "description": "Schedule OSC bundles by timetag",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info/dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "osc"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "OSC-timetag": {
+    "name": "OSC-timetag",
+    "maxclass": "OSC-timetag",
+    "module": "max",
+    "domain": "Packages",
+    "category": "osc",
+    "digest": "Generate and manipulate OSC timetags",
+    "description": "Generate and manipulate OSC timetags",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info/dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "osc"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "slipOSC": {
+    "name": "slipOSC",
+    "maxclass": "slipOSC",
+    "module": "max",
+    "domain": "Packages",
+    "category": "osc",
+    "digest": "SLIP-encoded OSC over serial",
+    "description": "SLIP-encoded OSC over serial",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "OSC output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info/dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "osc"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "analyzer~": {
+    "name": "analyzer~",
+    "maxclass": "analyzer~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Real-time spectral analysis",
+    "description": "Real-time spectral analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Analysis out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "2threshattack~": {
+    "name": "2threshattack~",
+    "maxclass": "2threshattack~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Two-threshold attack detection",
+    "description": "Two-threshold attack detection",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Analysis out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "accumulate~": {
+    "name": "accumulate~",
+    "maxclass": "accumulate~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Signal accumulator",
+    "description": "Signal accumulator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Analysis out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "cambio~": {
+    "name": "cambio~",
+    "maxclass": "cambio~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Signal change detection",
+    "description": "Signal change detection",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Analysis out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "roughness": {
+    "name": "roughness",
+    "maxclass": "roughness",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Sensory roughness computation",
+    "description": "Sensory roughness computation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "List in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "vsnapshot~": {
+    "name": "vsnapshot~",
+    "maxclass": "vsnapshot~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Vector snapshot of signal",
+    "description": "Vector snapshot of signal",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Analysis out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Analysis data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "decaying-sinusoids~": {
+    "name": "decaying-sinusoids~",
+    "maxclass": "decaying-sinusoids~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Bank of decaying sinusoidal partials",
+    "description": "Bank of decaying sinusoidal partials",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Excitation in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Model data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Synthesized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "harmonics~": {
+    "name": "harmonics~",
+    "maxclass": "harmonics~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Harmonic series generator",
+    "description": "Harmonic series generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Excitation in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Model data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Synthesized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "oscillators~": {
+    "name": "oscillators~",
+    "maxclass": "oscillators~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Bank of sinusoidal oscillators",
+    "description": "Bank of sinusoidal oscillators",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Excitation in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Model data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Synthesized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "peqbank~": {
+    "name": "peqbank~",
+    "maxclass": "peqbank~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Parametric EQ filter bank",
+    "description": "Parametric EQ filter bank",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Excitation in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Model data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Synthesized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "resonators~": {
+    "name": "resonators~",
+    "maxclass": "resonators~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Bank of resonant filters",
+    "description": "Bank of resonant filters",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Excitation in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Model data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Synthesized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "sinusoids~": {
+    "name": "sinusoids~",
+    "maxclass": "sinusoids~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "spectral",
+    "digest": "Sinusoidal resynthesis from partial data",
+    "description": "Sinusoidal resynthesis from partial data",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Excitation in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Model data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Synthesized output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spectral"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "bench~": {
+    "name": "bench~",
+    "maxclass": "bench~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "signal",
+    "digest": "Signal processing benchmark",
+    "description": "Signal processing benchmark",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "signal"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "firbank~": {
+    "name": "firbank~",
+    "maxclass": "firbank~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "signal",
+    "digest": "FIR filter bank",
+    "description": "FIR filter bank",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "signal"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "granubuf~": {
+    "name": "granubuf~",
+    "maxclass": "granubuf~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "signal",
+    "digest": "Granular synthesis from buffer",
+    "description": "Granular synthesis from buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "signal"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "poly.bus~": {
+    "name": "poly.bus~",
+    "maxclass": "poly.bus~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "signal",
+    "digest": "Polyphonic signal bus",
+    "description": "Polyphonic signal bus",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "signal"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "poly.send~": {
+    "name": "poly.send~",
+    "maxclass": "poly.send~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "signal",
+    "digest": "Send to polyphonic bus",
+    "description": "Send to polyphonic bus",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "signal"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "waveguide~": {
+    "name": "waveguide~",
+    "maxclass": "waveguide~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "signal",
+    "digest": "Digital waveguide model",
+    "description": "Digital waveguide model",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "signal"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "bdist": {
+    "name": "bdist",
+    "maxclass": "bdist",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Probability distribution generator",
+    "description": "Probability distribution generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "bessel": {
+    "name": "bessel",
+    "maxclass": "bessel",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Bessel function computation",
+    "description": "Bessel function computation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "bpf": {
+    "name": "bpf",
+    "maxclass": "bpf",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Breakpoint function editor",
+    "description": "Breakpoint function editor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "cnmatrix~": {
+    "name": "cnmatrix~",
+    "maxclass": "cnmatrix~",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Matrix mixer for multichannel signals",
+    "description": "Matrix mixer for multichannel signals",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "deinterleave": {
+    "name": "deinterleave",
+    "maxclass": "deinterleave",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Deinterleave list into outlets",
+    "description": "Deinterleave list into outlets",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "interleave": {
+    "name": "interleave",
+    "maxclass": "interleave",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Interleave lists from inlets",
+    "description": "Interleave lists from inlets",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "lcm": {
+    "name": "lcm",
+    "maxclass": "lcm",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Least common multiple",
+    "description": "Least common multiple",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "list-accum": {
+    "name": "list-accum",
+    "maxclass": "list-accum",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Accumulate lists over time",
+    "description": "Accumulate lists over time",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "list-interpolate": {
+    "name": "list-interpolate",
+    "maxclass": "list-interpolate",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Interpolate between lists",
+    "description": "Interpolate between lists",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "migrator": {
+    "name": "migrator",
+    "maxclass": "migrator",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Data migration between parameter spaces",
+    "description": "Data migration between parameter spaces",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "randdist": {
+    "name": "randdist",
+    "maxclass": "randdist",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Random number from distribution",
+    "description": "Random number from distribution",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "rbfi": {
+    "name": "rbfi",
+    "maxclass": "rbfi",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Radial basis function interpolation",
+    "description": "Radial basis function interpolation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "res-transform": {
+    "name": "res-transform",
+    "maxclass": "res-transform",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Resonance model transformation",
+    "description": "Resonance model transformation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "resdisplay": {
+    "name": "resdisplay",
+    "maxclass": "resdisplay",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Resonance model display",
+    "description": "Resonance model display",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "trend-report": {
+    "name": "trend-report",
+    "maxclass": "trend-report",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Trend analysis of data streams",
+    "description": "Trend analysis of data streams",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "SDIF-buffer": {
+    "name": "SDIF-buffer",
+    "maxclass": "SDIF-buffer",
+    "module": "max",
+    "domain": "Packages",
+    "category": "sdif",
+    "digest": "SDIF file buffer container",
+    "description": "SDIF file buffer container",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "SDIF data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sdif"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "SDIF-fileinfo": {
+    "name": "SDIF-fileinfo",
+    "maxclass": "SDIF-fileinfo",
+    "module": "max",
+    "domain": "Packages",
+    "category": "sdif",
+    "digest": "SDIF file metadata",
+    "description": "SDIF file metadata",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "SDIF data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sdif"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "SDIF-info": {
+    "name": "SDIF-info",
+    "maxclass": "SDIF-info",
+    "module": "max",
+    "domain": "Packages",
+    "category": "sdif",
+    "digest": "SDIF stream information",
+    "description": "SDIF stream information",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "SDIF data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sdif"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "SDIF-listpoke": {
+    "name": "SDIF-listpoke",
+    "maxclass": "SDIF-listpoke",
+    "module": "max",
+    "domain": "Packages",
+    "category": "sdif",
+    "digest": "Write data into SDIF buffer",
+    "description": "Write data into SDIF buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "SDIF data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sdif"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "SDIF-ranges": {
+    "name": "SDIF-ranges",
+    "maxclass": "SDIF-ranges",
+    "module": "max",
+    "domain": "Packages",
+    "category": "sdif",
+    "digest": "Query SDIF data ranges",
+    "description": "Query SDIF data ranges",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "SDIF data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sdif"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "SDIF-tuples": {
+    "name": "SDIF-tuples",
+    "maxclass": "SDIF-tuples",
+    "module": "max",
+    "domain": "Packages",
+    "category": "sdif",
+    "digest": "Extract SDIF tuples",
+    "description": "Extract SDIF tuples",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "SDIF data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "sdif"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "sphY": {
+    "name": "sphY",
+    "maxclass": "sphY",
+    "module": "max",
+    "domain": "Packages",
+    "category": "spatial",
+    "digest": "Spherical harmonics computation",
+    "description": "Spherical harmonics computation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Position/data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spatial"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "xydisplay": {
+    "name": "xydisplay",
+    "maxclass": "xydisplay",
+    "module": "max",
+    "domain": "Packages",
+    "category": "spatial",
+    "digest": "Interactive XY position display",
+    "description": "Interactive XY position display",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Position/data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "spatial"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "bench": {
+    "name": "bench",
+    "maxclass": "bench",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Timing benchmark for MAX operations",
+    "description": "Timing benchmark for MAX operations",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "gridpanel": {
+    "name": "gridpanel",
+    "maxclass": "gridpanel",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Grid display panel",
+    "description": "Grid display panel",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "printit": {
+    "name": "printit",
+    "maxclass": "printit",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Debug print with context info",
+    "description": "Debug print with context info",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "thread.fork": {
+    "name": "thread.fork",
+    "maxclass": "thread.fork",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Fork execution to low-priority thread",
+    "description": "Fork execution to low-priority thread",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "thread.join": {
+    "name": "thread.join",
+    "maxclass": "thread.join",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Join back to main thread",
+    "description": "Join back to main thread",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "threefates": {
+    "name": "threefates",
+    "maxclass": "threefates",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Three-way conditional routing",
+    "description": "Three-way conditional routing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "trampoline": {
+    "name": "trampoline",
+    "maxclass": "trampoline",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Recursive message bouncing",
+    "description": "Recursive message bouncing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  },
+  "whichthread": {
+    "name": "whichthread",
+    "maxclass": "whichthread",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Report current thread",
+    "description": "Report current thread",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "CNMAT"
+  }
+}

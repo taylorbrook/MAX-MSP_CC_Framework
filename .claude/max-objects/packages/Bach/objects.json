@@ -1,1 +1,3142 @@
-{}
+{
+  "bach.score": {
+    "name": "bach.score",
+    "maxclass": "bach.score",
+    "module": "max",
+    "domain": "Packages",
+    "category": "notation",
+    "digest": "Musical score notation editor",
+    "description": "Musical score notation editor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Playout"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Selection"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "notation"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.roll": {
+    "name": "bach.roll",
+    "maxclass": "bach.roll",
+    "module": "max",
+    "domain": "Packages",
+    "category": "notation",
+    "digest": "Piano roll notation editor",
+    "description": "Piano roll notation editor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Playout"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Selection"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "notation"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.slur": {
+    "name": "bach.slur",
+    "maxclass": "bach.slur",
+    "module": "max",
+    "domain": "Packages",
+    "category": "notation",
+    "digest": "Slur notation handler",
+    "description": "Slur notation handler",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Playout"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Selection"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "notation"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.chord": {
+    "name": "bach.chord",
+    "maxclass": "bach.chord",
+    "module": "max",
+    "domain": "Packages",
+    "category": "notation",
+    "digest": "Chord notation builder",
+    "description": "Chord notation builder",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Playout"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Selection"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "notation"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.eval": {
+    "name": "bach.eval",
+    "maxclass": "bach.eval",
+    "module": "max",
+    "domain": "Packages",
+    "category": "programming",
+    "digest": "Evaluate llll expressions",
+    "description": "Evaluate llll expressions",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "programming"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.lam": {
+    "name": "bach.lam",
+    "maxclass": "bach.lam",
+    "module": "max",
+    "domain": "Packages",
+    "category": "programming",
+    "digest": "Lambda function for lllls",
+    "description": "Lambda function for lllls",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "programming"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.if": {
+    "name": "bach.if",
+    "maxclass": "bach.if",
+    "module": "max",
+    "domain": "Packages",
+    "category": "programming",
+    "digest": "Conditional branching on lllls",
+    "description": "Conditional branching on lllls",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "True branch"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "False branch"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "programming"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.for": {
+    "name": "bach.for",
+    "maxclass": "bach.for",
+    "module": "max",
+    "domain": "Packages",
+    "category": "programming",
+    "digest": "Iteration loop over lllls",
+    "description": "Iteration loop over lllls",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "programming"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.while": {
+    "name": "bach.while",
+    "maxclass": "bach.while",
+    "module": "max",
+    "domain": "Packages",
+    "category": "programming",
+    "digest": "While loop over lllls",
+    "description": "While loop over lllls",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "programming"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.case": {
+    "name": "bach.case",
+    "maxclass": "bach.case",
+    "module": "max",
+    "domain": "Packages",
+    "category": "programming",
+    "digest": "Case-based branching",
+    "description": "Case-based branching",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "programming"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.rev": {
+    "name": "bach.rev",
+    "maxclass": "bach.rev",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Reverse llll",
+    "description": "Reverse llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.flat": {
+    "name": "bach.flat",
+    "maxclass": "bach.flat",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Flatten nested llll",
+    "description": "Flatten nested llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.rot": {
+    "name": "bach.rot",
+    "maxclass": "bach.rot",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Rotate llll elements",
+    "description": "Rotate llll elements",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.thin": {
+    "name": "bach.thin",
+    "maxclass": "bach.thin",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Remove duplicate elements from llll",
+    "description": "Remove duplicate elements from llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.slice": {
+    "name": "bach.slice",
+    "maxclass": "bach.slice",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Slice llll at positions",
+    "description": "Slice llll at positions",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.join": {
+    "name": "bach.join",
+    "maxclass": "bach.join",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Join multiple lllls",
+    "description": "Join multiple lllls",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.sublist": {
+    "name": "bach.sublist",
+    "maxclass": "bach.sublist",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Extract sublist from llll",
+    "description": "Extract sublist from llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.nth": {
+    "name": "bach.nth",
+    "maxclass": "bach.nth",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Get Nth element of llll",
+    "description": "Get Nth element of llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.length": {
+    "name": "bach.length",
+    "maxclass": "bach.length",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Count elements in llll",
+    "description": "Count elements in llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.depth": {
+    "name": "bach.depth",
+    "maxclass": "bach.depth",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Measure nesting depth of llll",
+    "description": "Measure nesting depth of llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.append": {
+    "name": "bach.append",
+    "maxclass": "bach.append",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Append element to llll",
+    "description": "Append element to llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.appendend": {
+    "name": "bach.appendend",
+    "maxclass": "bach.appendend",
+    "module": "max",
+    "domain": "Packages",
+    "category": "list",
+    "digest": "Append to end of llll",
+    "description": "Append to end of llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "list"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.+": {
+    "name": "bach.+",
+    "maxclass": "bach.+",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Add lllls element-wise",
+    "description": "Add lllls element-wise",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.-": {
+    "name": "bach.-",
+    "maxclass": "bach.-",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Subtract lllls element-wise",
+    "description": "Subtract lllls element-wise",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.*": {
+    "name": "bach.*",
+    "maxclass": "bach.*",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Multiply lllls element-wise",
+    "description": "Multiply lllls element-wise",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach./": {
+    "name": "bach./",
+    "maxclass": "bach./",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Divide lllls element-wise",
+    "description": "Divide lllls element-wise",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.%": {
+    "name": "bach.%",
+    "maxclass": "bach.%",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Modulo lllls element-wise",
+    "description": "Modulo lllls element-wise",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.abs": {
+    "name": "bach.abs",
+    "maxclass": "bach.abs",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Absolute value of llll elements",
+    "description": "Absolute value of llll elements",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.min": {
+    "name": "bach.min",
+    "maxclass": "bach.min",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Minimum of llll elements",
+    "description": "Minimum of llll elements",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.max": {
+    "name": "bach.max",
+    "maxclass": "bach.max",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Maximum of llll elements",
+    "description": "Maximum of llll elements",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.minmax": {
+    "name": "bach.minmax",
+    "maxclass": "bach.minmax",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Min and max of llll elements",
+    "description": "Min and max of llll elements",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Min"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Max"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.mean": {
+    "name": "bach.mean",
+    "maxclass": "bach.mean",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Mean of llll elements",
+    "description": "Mean of llll elements",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "llll B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.rand": {
+    "name": "bach.rand",
+    "maxclass": "bach.rand",
+    "module": "max",
+    "domain": "Packages",
+    "category": "math",
+    "digest": "Random llll generation",
+    "description": "Random llll generation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "math"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.pitch": {
+    "name": "bach.pitch",
+    "maxclass": "bach.pitch",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Pitch representation and conversion",
+    "description": "Pitch representation and conversion",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.pc": {
+    "name": "bach.pc",
+    "maxclass": "bach.pc",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Pitch class extraction",
+    "description": "Pitch class extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.octave": {
+    "name": "bach.octave",
+    "maxclass": "bach.octave",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Octave extraction",
+    "description": "Octave extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.interval": {
+    "name": "bach.interval",
+    "maxclass": "bach.interval",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Interval computation",
+    "description": "Interval computation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.chordname": {
+    "name": "bach.chordname",
+    "maxclass": "bach.chordname",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Chord name lookup",
+    "description": "Chord name lookup",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.midi2pitch": {
+    "name": "bach.midi2pitch",
+    "maxclass": "bach.midi2pitch",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "MIDI to pitch name conversion",
+    "description": "MIDI to pitch name conversion",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.pitch2midi": {
+    "name": "bach.pitch2midi",
+    "maxclass": "bach.pitch2midi",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pitch",
+    "digest": "Pitch name to MIDI conversion",
+    "description": "Pitch name to MIDI conversion",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pitch"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.collect": {
+    "name": "bach.collect",
+    "maxclass": "bach.collect",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Collect messages into llll",
+    "description": "Collect messages into llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.shelf": {
+    "name": "bach.shelf",
+    "maxclass": "bach.shelf",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Named llll storage",
+    "description": "Named llll storage",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.dict": {
+    "name": "bach.dict",
+    "maxclass": "bach.dict",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Dictionary operations on lllls",
+    "description": "Dictionary operations on lllls",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.coll": {
+    "name": "bach.coll",
+    "maxclass": "bach.coll",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Collection-like llll storage",
+    "description": "Collection-like llll storage",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.grab": {
+    "name": "bach.grab",
+    "maxclass": "bach.grab",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Grab llll from connected object",
+    "description": "Grab llll from connected object",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.store": {
+    "name": "bach.store",
+    "maxclass": "bach.store",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Store and recall llll",
+    "description": "Store and recall llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.match": {
+    "name": "bach.match",
+    "maxclass": "bach.match",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pattern",
+    "digest": "Pattern match on llll structure",
+    "description": "Pattern match on llll structure",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pattern"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.group": {
+    "name": "bach.group",
+    "maxclass": "bach.group",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pattern",
+    "digest": "Group llll elements by criteria",
+    "description": "Group llll elements by criteria",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pattern"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.sort": {
+    "name": "bach.sort",
+    "maxclass": "bach.sort",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pattern",
+    "digest": "Sort llll elements",
+    "description": "Sort llll elements",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pattern"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.unique": {
+    "name": "bach.unique",
+    "maxclass": "bach.unique",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pattern",
+    "digest": "Remove duplicates from llll",
+    "description": "Remove duplicates from llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "pattern"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.read": {
+    "name": "bach.read",
+    "maxclass": "bach.read",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Read file into llll",
+    "description": "Read file into llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message/filename in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.write": {
+    "name": "bach.write",
+    "maxclass": "bach.write",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Write llll to file",
+    "description": "Write llll to file",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message/filename in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.fromfile": {
+    "name": "bach.fromfile",
+    "maxclass": "bach.fromfile",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Import from standard file formats",
+    "description": "Import from standard file formats",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message/filename in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.tofile": {
+    "name": "bach.tofile",
+    "maxclass": "bach.tofile",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Export to standard file formats",
+    "description": "Export to standard file formats",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message/filename in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.list2llll": {
+    "name": "bach.list2llll",
+    "maxclass": "bach.list2llll",
+    "module": "max",
+    "domain": "Packages",
+    "category": "conversion",
+    "digest": "Convert MAX list to llll",
+    "description": "Convert MAX list to llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "conversion"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.llll2list": {
+    "name": "bach.llll2list",
+    "maxclass": "bach.llll2list",
+    "module": "max",
+    "domain": "Packages",
+    "category": "conversion",
+    "digest": "Convert llll to MAX list",
+    "description": "Convert llll to MAX list",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "conversion"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.explode": {
+    "name": "bach.explode",
+    "maxclass": "bach.explode",
+    "module": "max",
+    "domain": "Packages",
+    "category": "conversion",
+    "digest": "Explode llll into individual elements",
+    "description": "Explode llll into individual elements",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "conversion"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.wrap": {
+    "name": "bach.wrap",
+    "maxclass": "bach.wrap",
+    "module": "max",
+    "domain": "Packages",
+    "category": "conversion",
+    "digest": "Wrap elements into nested llll",
+    "description": "Wrap elements into nested llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "conversion"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.quantize": {
+    "name": "bach.quantize",
+    "maxclass": "bach.quantize",
+    "module": "max",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Quantize llll values to grid",
+    "description": "Quantize llll values to grid",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.pluck": {
+    "name": "bach.pluck",
+    "maxclass": "bach.pluck",
+    "module": "max",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Extract elements by plucking pattern",
+    "description": "Extract elements by plucking pattern",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.repr": {
+    "name": "bach.repr",
+    "maxclass": "bach.repr",
+    "module": "max",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Text representation of llll",
+    "description": "Text representation of llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.portal": {
+    "name": "bach.portal",
+    "maxclass": "bach.portal",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Portal for llll routing between patchers",
+    "description": "Portal for llll routing between patchers",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.reg": {
+    "name": "bach.reg",
+    "maxclass": "bach.reg",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "llll register (store and recall)",
+    "description": "llll register (store and recall)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.tree": {
+    "name": "bach.tree",
+    "maxclass": "bach.tree",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Tree display of llll structure",
+    "description": "Tree display of llll structure",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.keys": {
+    "name": "bach.keys",
+    "maxclass": "bach.keys",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Extract keys from llll",
+    "description": "Extract keys from llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.values": {
+    "name": "bach.values",
+    "maxclass": "bach.values",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Extract values from llll",
+    "description": "Extract values from llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.lookup": {
+    "name": "bach.lookup",
+    "maxclass": "bach.lookup",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Lookup value by key in llll",
+    "description": "Lookup value by key in llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.filter": {
+    "name": "bach.filter",
+    "maxclass": "bach.filter",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Filter llll elements by condition",
+    "description": "Filter llll elements by condition",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.sieve": {
+    "name": "bach.sieve",
+    "maxclass": "bach.sieve",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Sieve llll through criteria",
+    "description": "Sieve llll through criteria",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.find": {
+    "name": "bach.find",
+    "maxclass": "bach.find",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Find element in llll",
+    "description": "Find element in llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.replace": {
+    "name": "bach.replace",
+    "maxclass": "bach.replace",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Replace elements in llll",
+    "description": "Replace elements in llll",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.contains": {
+    "name": "bach.contains",
+    "maxclass": "bach.contains",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Check if llll contains element",
+    "description": "Check if llll contains element",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.classify": {
+    "name": "bach.classify",
+    "maxclass": "bach.classify",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Classify llll elements into groups",
+    "description": "Classify llll elements into groups",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.trans": {
+    "name": "bach.trans",
+    "maxclass": "bach.trans",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Transpose llll matrix",
+    "description": "Transpose llll matrix",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.mc2f": {
+    "name": "bach.mc2f",
+    "maxclass": "bach.mc2f",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "MIDI cents to frequency",
+    "description": "MIDI cents to frequency",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.f2mc": {
+    "name": "bach.f2mc",
+    "maxclass": "bach.f2mc",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Frequency to MIDI cents",
+    "description": "Frequency to MIDI cents",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.primeform": {
+    "name": "bach.primeform",
+    "maxclass": "bach.primeform",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Prime form of pitch class set",
+    "description": "Prime form of pitch class set",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  },
+  "bach.reduce": {
+    "name": "bach.reduce",
+    "maxclass": "bach.reduce",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Reduce llll with operation",
+    "description": "Reduce llll with operation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Bach"
+  }
+}

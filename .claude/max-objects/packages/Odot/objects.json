@@ -1,1 +1,1219 @@
-{}
+{
+  "o.pack": {
+    "name": "o.pack",
+    "maxclass": "o.pack",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Pack values into odot bundle",
+    "description": "Pack values into odot bundle",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.route": {
+    "name": "o.route",
+    "maxclass": "o.route",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Route odot bundles by address",
+    "description": "Route odot bundles by address",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Matched 1"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Matched 2"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Unmatched"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": true,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.collect": {
+    "name": "o.collect",
+    "maxclass": "o.collect",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Collect bundles over time",
+    "description": "Collect bundles over time",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.select": {
+    "name": "o.select",
+    "maxclass": "o.select",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Select addresses from bundle",
+    "description": "Select addresses from bundle",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.union": {
+    "name": "o.union",
+    "maxclass": "o.union",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Union of two bundles",
+    "description": "Union of two bundles",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result bundle"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.intersection": {
+    "name": "o.intersection",
+    "maxclass": "o.intersection",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Intersection of two bundles",
+    "description": "Intersection of two bundles",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result bundle"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.difference": {
+    "name": "o.difference",
+    "maxclass": "o.difference",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Difference of two bundles",
+    "description": "Difference of two bundles",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle A",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle B",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result bundle"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.flatten": {
+    "name": "o.flatten",
+    "maxclass": "o.flatten",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Flatten nested bundle addresses",
+    "description": "Flatten nested bundle addresses",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.explode": {
+    "name": "o.explode",
+    "maxclass": "o.explode",
+    "module": "max",
+    "domain": "Packages",
+    "category": "bundle",
+    "digest": "Explode bundle into individual messages",
+    "description": "Explode bundle into individual messages",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "bundle"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.expr.codebox": {
+    "name": "o.expr.codebox",
+    "maxclass": "o.expr.codebox",
+    "module": "max",
+    "domain": "Packages",
+    "category": "expression",
+    "digest": "Odot expression codebox",
+    "description": "Odot expression codebox",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "expression"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.if": {
+    "name": "o.if",
+    "maxclass": "o.if",
+    "module": "max",
+    "domain": "Packages",
+    "category": "expression",
+    "digest": "Conditional routing of bundles",
+    "description": "Conditional routing of bundles",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "True"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "False"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "expression"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.cond": {
+    "name": "o.cond",
+    "maxclass": "o.cond",
+    "module": "max",
+    "domain": "Packages",
+    "category": "expression",
+    "digest": "Multi-condition bundle routing",
+    "description": "Multi-condition bundle routing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "expression"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.var": {
+    "name": "o.var",
+    "maxclass": "o.var",
+    "module": "max",
+    "domain": "Packages",
+    "category": "state",
+    "digest": "Store and recall odot bundle variable",
+    "description": "Store and recall odot bundle variable",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "state"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.change": {
+    "name": "o.change",
+    "maxclass": "o.change",
+    "module": "max",
+    "domain": "Packages",
+    "category": "state",
+    "digest": "Pass bundle only if changed",
+    "description": "Pass bundle only if changed",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "state"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.edge": {
+    "name": "o.edge",
+    "maxclass": "o.edge",
+    "module": "max",
+    "domain": "Packages",
+    "category": "state",
+    "digest": "Detect transitions in bundle values",
+    "description": "Detect transitions in bundle values",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "state"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.print": {
+    "name": "o.print",
+    "maxclass": "o.print",
+    "module": "max",
+    "domain": "Packages",
+    "category": "debug",
+    "digest": "Print bundle to MAX console",
+    "description": "Print bundle to MAX console",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pass-through"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "debug"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.printbytes": {
+    "name": "o.printbytes",
+    "maxclass": "o.printbytes",
+    "module": "max",
+    "domain": "Packages",
+    "category": "debug",
+    "digest": "Print raw OSC bytes",
+    "description": "Print raw OSC bytes",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pass-through"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "debug"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.display": {
+    "name": "o.display",
+    "maxclass": "o.display",
+    "module": "max",
+    "domain": "Packages",
+    "category": "debug",
+    "digest": "Display bundle contents in patch",
+    "description": "Display bundle contents in patch",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pass-through"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "debug"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.atomize": {
+    "name": "o.atomize",
+    "maxclass": "o.atomize",
+    "module": "max",
+    "domain": "Packages",
+    "category": "debug",
+    "digest": "Convert bundle to MAX atoms",
+    "description": "Convert bundle to MAX atoms",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pass-through"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "debug"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.downcast": {
+    "name": "o.downcast",
+    "maxclass": "o.downcast",
+    "module": "max",
+    "domain": "Packages",
+    "category": "debug",
+    "digest": "Downcast bundle types",
+    "description": "Downcast bundle types",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pass-through"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "debug"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.timetag": {
+    "name": "o.timetag",
+    "maxclass": "o.timetag",
+    "module": "max",
+    "domain": "Packages",
+    "category": "scheduling",
+    "digest": "Generate OSC timetag",
+    "description": "Generate OSC timetag",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle/list in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "scheduling"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.schedule": {
+    "name": "o.schedule",
+    "maxclass": "o.schedule",
+    "module": "max",
+    "domain": "Packages",
+    "category": "scheduling",
+    "digest": "Schedule bundle by timetag",
+    "description": "Schedule bundle by timetag",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle/list in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "scheduling"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.listenumerate": {
+    "name": "o.listenumerate",
+    "maxclass": "o.listenumerate",
+    "module": "max",
+    "domain": "Packages",
+    "category": "scheduling",
+    "digest": "Enumerate list with OSC addresses",
+    "description": "Enumerate list with OSC addresses",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle/list in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "scheduling"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.compose": {
+    "name": "o.compose",
+    "maxclass": "o.compose",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Compose bundle from text",
+    "description": "Compose bundle from text",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.append": {
+    "name": "o.append",
+    "maxclass": "o.append",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Append address/value to bundle",
+    "description": "Append address/value to bundle",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.prepend": {
+    "name": "o.prepend",
+    "maxclass": "o.prepend",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Prepend address to bundle",
+    "description": "Prepend address to bundle",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.dict": {
+    "name": "o.dict",
+    "maxclass": "o.dict",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Convert between dict and bundle",
+    "description": "Convert between dict and bundle",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.slip.decode": {
+    "name": "o.slip.decode",
+    "maxclass": "o.slip.decode",
+    "module": "max",
+    "domain": "Packages",
+    "category": "serialization",
+    "digest": "Decode SLIP-encoded OSC",
+    "description": "Decode SLIP-encoded OSC",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle/message out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "serialization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.messageiterate": {
+    "name": "o.messageiterate",
+    "maxclass": "o.messageiterate",
+    "module": "max",
+    "domain": "Packages",
+    "category": "serialization",
+    "digest": "Iterate over bundle messages",
+    "description": "Iterate over bundle messages",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Data in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle/message out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "serialization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.io.udp": {
+    "name": "o.io.udp",
+    "maxclass": "o.io.udp",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Send/receive bundles over UDP",
+    "description": "Send/receive bundles over UDP",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Received bundle"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  },
+  "o.io.slipserial": {
+    "name": "o.io.slipserial",
+    "maxclass": "o.io.slipserial",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Send/receive bundles over serial (SLIP)",
+    "description": "Send/receive bundles over serial (SLIP)",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bundle/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Received bundle"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "io"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Odot"
+  }
+}
