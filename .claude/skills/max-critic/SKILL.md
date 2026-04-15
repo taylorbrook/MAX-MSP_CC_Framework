@@ -28,6 +28,7 @@ Before running the critic loop:
 - Track revision history to detect repeated identical findings
 - Annotate warnings/notes as comment objects in .maxpat or code comments
 - The RNBO critic (`review_rnbo`) auto-invokes when rnbo~ boxes are detected in the patch
+- The package critic (`review_packages`) auto-invokes when package objects (BEAP, Bach, community) are detected in the patch
 - The external critic (`review_external`) invokes when `ext_code` is provided
 
 ## Critic Loop Protocol
@@ -36,7 +37,7 @@ See `references/critic-protocol.md` for the full loop specification.
 
 Summary:
 1. Generator produces output
-2. Critic runs `review_patch()` on the output
+2. Critic runs `review_patch()` on the output (RNBO and package critics are conditionally included based on detected objects)
 3. If blockers found: format findings, request revision from generator
 4. If only warnings/notes: annotate inline and proceed
 5. If clean (no findings): approve output
@@ -54,6 +55,15 @@ The critic loop applies equally to edited patches. After edits, `validate_patch(
 | blocker | Request revision from generator | Yes |
 | warning | Annotate as comment object in .maxpat or code comment | No |
 | note | Annotate as comment object in .maxpat or code comment | No |
+
+### Package Critic Severities
+
+| Check | Severity | Trigger |
+|-------|----------|---------|
+| BEAP missing output termination | warning | BEAP source with no path to bp.Stereo/bp.Mono |
+| BEAP missing VCA gain staging | warning | BEAP oscillator directly to output without bp.VCA |
+| Bach llll type mismatch | blocker | Non-bach outlet connected to bach llll inlet |
+| Community package not extracted | warning | Community package object used without local extraction |
 
 ## Output Protocol
 
