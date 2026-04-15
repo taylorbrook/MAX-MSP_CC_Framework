@@ -3,10 +3,22 @@
 Tests validate extracted data files from Plans 01 (BEAP/Vizzie) and 02 (Jitter Geometry/Tools).
 """
 
+import importlib.util
 import json
 from pathlib import Path
 
 import pytest
+
+# Load extract_objects.py from .claude/scripts/ (not a Python package)
+_SCRIPT_PATH = Path(__file__).resolve().parent.parent / ".claude" / "scripts" / "extract_objects.py"
+
+
+def _load_extract_objects():
+    """Import extract_objects.py as a module from its filesystem path."""
+    spec = importlib.util.spec_from_file_location("extract_objects", _SCRIPT_PATH)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 class TestBEAPExtraction:
@@ -199,3 +211,78 @@ class TestDBRoundTrip:
         for name in jt_data:
             obj = db.lookup(name)
             assert obj is not None, f"Jitter Tools object {name} not found in ObjectDatabase"
+
+
+class TestCommunityPackageExtraction:
+    """PKG-20: Community package extraction CLI -- path resolution, pipeline detection, registry update."""
+
+    @pytest.fixture(scope="class")
+    def extract_mod(self):
+        return _load_extract_objects()
+
+    def test_community_folder_name_mapping(self, extract_mod):
+        """COMMUNITY_PACKAGE_FOLDER_NAMES maps display names to filesystem folder names."""
+        mapping = extract_mod.COMMUNITY_PACKAGE_FOLDER_NAMES
+
+        expected = {
+            "FluCoMa": "FluidCorpusManipulation",
+            "IRCAM Spat": "spat5",
+            "Bach": "bach",
+            "Odot": "odot",
+            "ml-lib": "ml-lib",
+            "CNMAT": "CNMAT",
+            "Cage": "cage",
+            "Dada": "dada",
+            "EARS": "ears",
+            "Rhythmic Time Toolkit": "rhythm-and-time-toolkit",
+        }
+        for key, val in expected.items():
+            assert key in mapping, f"Missing key: {key}"
+            assert mapping[key] == val, f"{key}: expected {val}, got {mapping[key]}"
+
+    def test_resolve_community_package_path_custom(self, extract_mod, tmp_path):
+        """Custom path returned if it exists."""
+        pkg_dir = tmp_path / "FluidCorpusManipulation"
+        pkg_dir.mkdir()
+        result = extract_mod.resolve_community_package_path("FluCoMa", custom_path=pkg_dir)
+        assert result == pkg_dir
+
+    def test_resolve_community_package_path_not_found(self, extract_mod, tmp_path):
+        """Returns None if package not found anywhere."""
+        result = extract_mod.resolve_community_package_path("FluCoMa", custom_path=tmp_path / "nonexistent")
+        assert result is None
+
+    def test_detect_pipeline_xml(self, extract_mod, tmp_path):
+        """Detects XML pipeline when .maxref.xml files present."""
+        (tmp_path / "docs").mkdir()
+        (tmp_path / "docs" / "fluid.buf~.maxref.xml").touch()
+        assert extract_mod.detect_pipeline(tmp_path) == "xml"
+
+    def test_detect_pipeline_abstraction(self, extract_mod, tmp_path):
+        """Detects abstraction pipeline when .maxpat present but no .maxref.xml."""
+        (tmp_path / "patchers").mkdir()
+        (tmp_path / "patchers" / "bach.roll.maxpat").touch()
+        assert extract_mod.detect_pipeline(tmp_path) == "abstraction"
+
+    def test_detect_pipeline_default(self, extract_mod, tmp_path):
+        """Defaults to XML for empty directory."""
+        assert extract_mod.detect_pipeline(tmp_path) == "xml"
+
+    def test_update_package_registry(self, extract_mod, tmp_path):
+        """Updates package_info.json with extracted=True and object_count."""
+        pkg_info = {
+            "FluCoMa": {
+                "name": "FluCoMa",
+                "tier": "community",
+                "extracted": False,
+                "object_count": 0,
+            }
+        }
+        pkg_info_path = tmp_path / "package_info.json"
+        pkg_info_path.write_text(json.dumps(pkg_info))
+
+        extract_mod.update_package_registry(tmp_path, "FluCoMa", 52)
+
+        updated = json.loads(pkg_info_path.read_text())
+        assert updated["FluCoMa"]["extracted"] is True
+        assert updated["FluCoMa"]["object_count"] == 52

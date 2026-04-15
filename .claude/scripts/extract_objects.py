@@ -50,6 +50,27 @@ PACKAGE_GLOBS = [
     "packages/Jitter Tools",       # 99 XML refpages (16 top-level + 83 in jit.fx/)
 ]
 
+# Community package display names -> actual filesystem folder names
+COMMUNITY_PACKAGE_FOLDER_NAMES = {
+    "FluCoMa": "FluidCorpusManipulation",
+    "IRCAM Spat": "spat5",
+    "Bach": "bach",
+    "Odot": "odot",
+    "ml-lib": "ml-lib",
+    "CNMAT": "CNMAT",
+    "Cage": "cage",
+    "Dada": "dada",
+    "EARS": "ears",
+    "Rhythmic Time Toolkit": "rhythm-and-time-toolkit",
+}
+
+# Standard search paths for community packages (checked in order)
+COMMUNITY_PACKAGE_SEARCH_PATHS = [
+    Path.home() / "Documents" / "Max 9" / "Packages",
+    Path.home() / "Documents" / "Max 8" / "Packages",
+    Path("/Applications/Max.app/Contents/Resources/C74/packages"),
+]
+
 # Inlet/outlet type normalization map
 INLET_TYPE_MAP = {
     # Signal types
@@ -1135,6 +1156,52 @@ def write_output(result: dict, output_root: Path, domain_filter: str | None = No
 
 
 # ---------------------------------------------------------------------------
+# Community package helpers
+# ---------------------------------------------------------------------------
+
+def resolve_community_package_path(package_name: str, custom_path: Path | None = None) -> Path | None:
+    """Resolve the filesystem path for a community package.
+
+    If custom_path is provided, returns it only if it exists.
+    Otherwise searches COMMUNITY_PACKAGE_SEARCH_PATHS for the folder.
+    """
+    if custom_path:
+        return custom_path if custom_path.exists() else None
+    folder_name = COMMUNITY_PACKAGE_FOLDER_NAMES.get(package_name, package_name)
+    for base in COMMUNITY_PACKAGE_SEARCH_PATHS:
+        candidate = base / folder_name
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def detect_pipeline(package_path: Path) -> str:
+    """Auto-detect whether a package uses XML refpages or abstraction .maxpat files.
+
+    Returns "xml" if .maxref.xml files found, "abstraction" if only .maxpat,
+    or "xml" as default for empty directories.
+    """
+    if list(package_path.rglob("*.maxref.xml")):
+        return "xml"
+    if list(package_path.rglob("*.maxpat")):
+        return "abstraction"
+    return "xml"
+
+
+def update_package_registry(output_root: Path, package_name: str, object_count: int) -> None:
+    """Update package_info.json to mark a package as extracted with its object count."""
+    pkg_info_path = output_root / "package_info.json"
+    if not pkg_info_path.exists():
+        return
+    registry = json.loads(pkg_info_path.read_text())
+    if package_name in registry:
+        registry[package_name]["extracted"] = True
+        registry[package_name]["object_count"] = object_count
+        pkg_info_path.write_text(json.dumps(registry, indent=2, ensure_ascii=False) + "\n")
+        print(f"  Updated package_info.json: {package_name} extracted=True, count={object_count}")
+
+
+# ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
@@ -1165,7 +1232,55 @@ def main():
         default=Path(".claude/max-objects"),
         help="Output root directory (default: .claude/max-objects)",
     )
+    parser.add_argument(
+        "--package",
+        type=str,
+        default=None,
+        help="Extract a specific community package (e.g., 'FluCoMa', 'Bach'). Auto-detects install path.",
+    )
+    parser.add_argument(
+        "--path",
+        type=Path,
+        default=None,
+        help="Custom path to community package folder (use with --package).",
+    )
     args = parser.parse_args()
+
+    # Community package extraction mode
+    if args.package:
+        pkg_path = resolve_community_package_path(args.package, args.path)
+        if pkg_path is None:
+            folder = COMMUNITY_PACKAGE_FOLDER_NAMES.get(args.package, args.package)
+            print(f"Error: Package '{args.package}' not found.", file=sys.stderr)
+            print(f"  Searched for folder '{folder}' in:", file=sys.stderr)
+            for p in COMMUNITY_PACKAGE_SEARCH_PATHS:
+                print(f"    {p}", file=sys.stderr)
+            print(f"  Use --path to specify a custom location.", file=sys.stderr)
+            sys.exit(1)
+        pipeline = detect_pipeline(pkg_path)
+        print(f"Package: {args.package}")
+        print(f"  Path: {pkg_path}")
+        print(f"  Pipeline: {pipeline}")
+        if pipeline == "xml":
+            # Run XML extraction scoped to this package path
+            result = extract_all(pkg_path, domain_filter=None, dry_run=args.dry_run)
+            if not args.dry_run:
+                # Route all extracted objects to this package's subdirectory
+                all_objects = {}
+                for domain_objects in result["domains"].values():
+                    all_objects.update(domain_objects)
+                for obj in all_objects.values():
+                    obj["package"] = args.package
+                    obj["domain"] = "Packages"
+                result["package_buckets"] = {args.package: all_objects}
+                result["domains"] = {}
+                write_output(result, args.output, domain_filter="packages")
+                update_package_registry(args.output, args.package, len(all_objects))
+        else:
+            # Abstraction pipeline -- guide user to run extract_abstractions.py
+            print(f"  Abstraction pipeline for {args.package} -- run extract_abstractions.py with --package-dir {pkg_path}")
+            print(f"  Run: python .claude/scripts/extract_abstractions.py --package-dir \"{pkg_path}\" --package-name \"{args.package}\"")
+        sys.exit(0)
 
     if not args.max_path.exists():
         print(f"Error: MAX path not found: {args.max_path}", file=sys.stderr)
