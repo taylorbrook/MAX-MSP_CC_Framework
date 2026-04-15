@@ -1697,3 +1697,188 @@ class TestDSPCriticGainSafety:
         results = review_layout(patch)
         overlap_warnings = [r for r in results if "overlap" in r.finding.lower()]
         assert len(overlap_warnings) == 0, f"Expected no overlap warnings with comment/panel, got: {results}"
+
+
+# ===========================================================================
+# Package critic tests
+# ===========================================================================
+
+
+from src.maxpat.critics.package_critic import review_packages
+
+
+class TestPackageCritic:
+    """Tests for BEAP, Bach, and community package critic checks."""
+
+    # --- BEAP convention tests ---
+
+    def test_beap_missing_vca(self):
+        """BEAP patch with bp.Oscillator -> bp.Stereo (no VCA) produces warning."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "bpatcher",
+                "name": "bp.Oscillator",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "bpatcher",
+                "name": "bp.Stereo",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        vca_warnings = [r for r in results if r.severity == "warning" and "vca" in r.finding.lower()]
+        assert len(vca_warnings) >= 1, f"Expected VCA warning, got: {results}"
+
+    def test_beap_clean_chain(self):
+        """BEAP patch with bp.Oscillator -> bp.VCA -> bp.Stereo produces no BEAP findings."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "bpatcher",
+                "name": "bp.Oscillator",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "bpatcher",
+                "name": "bp.VCA",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "bpatcher",
+                "name": "bp.Stereo",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-2", 0], "destination": ["obj-3", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        beap_findings = [r for r in results if "beap" in r.finding.lower() or "vca" in r.finding.lower() or "output" in r.finding.lower()]
+        assert len(beap_findings) == 0, f"Expected no BEAP findings, got: {beap_findings}"
+
+    def test_beap_missing_output(self):
+        """BEAP patch with bp.Oscillator -> bp.VCA but no output produces warning."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "bpatcher",
+                "name": "bp.Oscillator",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "bpatcher",
+                "name": "bp.VCA",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        output_warnings = [r for r in results if r.severity == "warning" and "output" in r.finding.lower()]
+        assert len(output_warnings) >= 1, f"Expected output termination warning, got: {results}"
+
+    def test_no_beap_no_findings(self):
+        """Non-BEAP patch returns empty list from review_packages."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "cycle~ 440",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "dac~",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        assert results == [], f"Expected no findings for non-package patch, got: {results}"
+
+    def test_beap_mixed_patch(self):
+        """Mixed patch with BEAP + standard MSP only checks BEAP conventions for BEAP chains."""
+        boxes = [
+            # BEAP chain: bp.Oscillator -> bp.Stereo (missing VCA)
+            {
+                "id": "obj-1",
+                "maxclass": "bpatcher",
+                "name": "bp.Oscillator",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "bpatcher",
+                "name": "bp.Stereo",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+            # Standard MSP chain: cycle~ -> dac~ (should not trigger BEAP warnings)
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "cycle~ 440",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-4",
+                "maxclass": "newobj",
+                "text": "dac~",
+                "numinlets": 2,
+                "numoutlets": 0,
+                "outlettype": [],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-3", 0], "destination": ["obj-4", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        # Should have BEAP VCA warning but no warning about dac~ chain
+        beap_warnings = [r for r in results if "vca" in r.finding.lower()]
+        assert len(beap_warnings) >= 1, f"Expected BEAP VCA warning, got: {results}"
+        # No findings should mention cycle~ or dac~
+        msp_findings = [r for r in results if "cycle~" in r.finding or "dac~" in r.finding]
+        assert len(msp_findings) == 0, f"Expected no MSP findings, got: {msp_findings}"
