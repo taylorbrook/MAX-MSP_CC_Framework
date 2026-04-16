@@ -37,6 +37,12 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - ✓ Patch analysis engine — 7-facet structured summaries for onboarding existing patches — v3.0.0
 - ✓ All agents and slash commands migrated to direct .maxpat editing workflow — v3.0.0
 - ✓ Old pipeline removed — incremental.py, generate.py scripts, manifests all deleted — v3.0.0
+- ✓ Package-aware object database — all objects tagged with source package, 16-package registry, allowed_packages filtering — v4.0
+- ✓ Bundled package extraction — BEAP, Vizzie, Jitter Geometry, Jitter Tools extracted into per-package DB — v4.0
+- ✓ Package-gated generation — project config selection, agent prompting, validation blocking — v4.0
+- ✓ Agent package intelligence — DB-driven bpatcher sizing, adaptive layout, PACKAGES.md reference, SKILL.md guidance — v4.0
+- ✓ Community package support — stub DB entries for 10 community packages, --package CLI extraction — v4.0
+- ✓ Package-aware critics — BEAP signal conventions, Bach llll type checker, workflow templates — v4.0
 
 ### Active
 
@@ -60,12 +66,12 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 
 ## Context
 
-Shipped v3.0.0 with 33,430 LOC Python.
+Shipped v4.0 with ~88,000 LOC Python.
 Tech stack: Python (editing + validation), JSON (object DB + .maxpat), C++ (Min-DevKit externals), GenExpr (DSP code), JavaScript (js/N4M).
-Object database: 2,015 objects across 8 domains (Max, MSP, Jitter, MC, Gen, M4L, RNBO, Packages).
-Agent system: 6 specialists + router, DSP/structure/RNBO/external critics, dual-scope memory.
-v3.0.0 shipped direct .maxpat editing — read_patch, find/modify/insert/replace, graph queries, patch analysis.
-Old generation pipeline fully removed — no generate.py, no manifests, no incremental.py.
+Object database: 2,015+ objects across 8 domains (Max, MSP, Jitter, MC, Gen, M4L, RNBO, Packages) plus bundled packages (BEAP, Vizzie, Jitter Geometry, Jitter Tools) and 10 community package stubs.
+Agent system: 6 specialists + router, DSP/structure/RNBO/external/package critics, dual-scope memory.
+Package integration: DB-driven bpatcher sizing, allowed_packages gating, extraction CLI for community packages.
+v4.0 shipped full package integration — bundled and community MAX packages are first-class citizens with DB entries, validation, agent intelligence, critics, and workflow templates.
 
 ## Key Decisions
 
@@ -97,4 +103,4 @@ Old generation pipeline fully removed — no generate.py, no manifests, no incre
 | Validation warns (not errors) on unknown objects | DB rejection on load would block third-party packages and user objects | ✓ Good — unknown objects load cleanly |
 
 ---
-*Last updated: 2026-04-09 after v3.0.0 milestone*
+*Last updated: 2026-04-15 after v4.0 milestone*

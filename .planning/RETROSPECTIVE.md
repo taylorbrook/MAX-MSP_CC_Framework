@@ -90,6 +90,47 @@
 
 ---
 
+## Milestone: v4.0 — Package Integration
+
+**Shipped:** 2026-04-15
+**Phases:** 6 | **Plans:** 17
+
+### What Was Built
+- Package-aware object database: all objects tagged with source package, 16-package registry, allowed_packages filtering
+- Bundled package extraction: BEAP (~192), Vizzie (~110), Jitter Geometry (26), Jitter Tools (99) via abstraction parser and XML pipeline
+- Generation gating: package selection in project config, agent prompting, validation blocks unavailable packages
+- Agent package intelligence: DB-driven bpatcher sizing, adaptive layout spacing, PACKAGES.md shared reference, 5 SKILL.md files updated
+- Community package support: stub DB entries for 10 community packages, --package CLI extraction flag
+- Package-aware critics: BEAP signal conventions, Bach llll type checker, community extraction validator, workflow templates
+
+### What Worked
+- Proposal-driven milestone: v4.0-package-integration-PROPOSAL.md defined all 6 phases and 26 requirements upfront — clean execution with no scope drift
+- Phase dependency ordering (DB schema -> extraction -> gating -> intelligence -> community -> critics) — each layer built on the previous
+- Stub pattern for community packages: provide DB presence without requiring local installation, with extraction path when available
+- Splitting bundled vs community packages into separate phases avoided conflating two different extraction patterns
+
+### What Was Inefficient
+- REQUIREMENTS.md checkboxes for phases 21-25 were never checked off during phase execution — requirements tracking only done in ROADMAP.md phase entries
+- The gsd-tools CLI milestone complete command pulled accomplishments from phases outside v4.0 range (phases 8-12 from v1.1) — required manual cleanup
+
+### Patterns Established
+- Package as first-class DB concept: package field on every object, package_info.json registry, per-package subdirectories
+- Stub DB entries for uninstalled packages with extraction commands for when they become available
+- Package critics as separate module (package_critic.py) dispatched from the main review_patch() pipeline
+- PACKAGES.md as shared reference document cross-referenced from agent SKILL.md files
+
+### Key Lessons
+1. Requirements checkboxes should be checked off as part of phase completion, not left for milestone archive
+2. Proposal-driven milestones with upfront phase/requirement mapping produce clean execution with no scope drift
+3. Community package stubs are the right abstraction — full extraction when installed, graceful guidance when not
+
+### Cost Observations
+- Model mix: primarily Opus for execution, Sonnet for research/planning agents
+- 10-day execution window (2026-04-05 to 2026-04-15) across 6 phases
+- Notable: Phases 23-25 all completed on 2026-04-15 (single day) — mature framework patterns enable fast execution
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -98,6 +139,7 @@
 |-----------|--------|-------|------------|
 | v1.0 | 7 | 21 | Initial framework build — established all patterns |
 | v3.0.0 | 7 | 15 | Write-only to read-write editor — .maxpat as single source of truth |
+| v4.0 | 6 | 17 | Package integration — bundled + community packages as first-class citizens |
 
 ### Cumulative Quality
 
@@ -105,9 +147,11 @@
 |-----------|-------|--------------|-------------|
 | v1.0 | 624 | 40/40 | passed |
 | v3.0.0 | 700+ | 26/26 | passed (76/76 must-haves) |
+| v4.0 | 750+ | 26/26 | no audit (yolo mode) |
 
 ### Top Lessons (Verified Across Milestones)
 
-1. TDD with xfail-to-pass promotion works well for both gap closure (v1.0) and architectural changes (v2.0)
+1. TDD with xfail-to-pass promotion works well for both gap closure (v1.0) and architectural changes (v3.0.0)
 2. Dependency-ordered phases consistently deliver — each phase has a solid foundation from the previous one
-3. Documentation accuracy should be verified at plan completion, not deferred — both milestones had doc gaps caught at audit time
+3. Documentation accuracy should be verified at plan completion, not deferred — both v1.0 and v3.0.0 had doc gaps caught at audit time
+4. Proposal-driven milestones with upfront phase/requirement mapping produce the cleanest execution — validated in v4.0

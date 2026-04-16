@@ -1,5 +1,25 @@
 # Milestones
 
+## v4.0 Package Integration (Shipped: 2026-04-15)
+
+**Phases completed:** 6 phases (20-25), 17 plans
+**Timeline:** 10 days (2026-04-05 to 2026-04-15)
+**Stats:** 98 code files modified, +54,702/-936 lines
+**Requirements:** 26/26 satisfied (PKG-01 through PKG-26)
+
+**Delivered:** Full package integration — bundled and community MAX packages are now first-class citizens in the framework with DB entries, validation gating, agent intelligence, critics, and workflow templates.
+
+**Key accomplishments:**
+
+1. Package-aware object database — all objects tagged with source package, 16-package registry, allowed_packages filtering in ObjectDatabase
+2. Bundled package extraction — BEAP (~192 modules), Vizzie (~110), Jitter Geometry (26), Jitter Tools (99) extracted via abstraction parser and XML pipeline
+3. Generation gating — package selection in project config, `/max-new` and `/max-build` prompt for packages, validation blocks unavailable packages
+4. Agent package intelligence — DB-driven bpatcher sizing, adaptive layout spacing, PACKAGES.md shared reference, 5 specialist SKILL.md files updated with package domain guidance
+5. Community package support — stub DB entries for 10 community packages (FluCoMa, CNMAT, Bach, Odot, ml.*, IRCAM Spat, Cage, Dada, EARS, RTK), `--package` CLI extraction flag
+6. Package-aware critics — BEAP signal convention checker, Bach llll type checker, community extraction validator, workflow templates for FluCoMa/BEAP/Bach
+
+---
+
 ## v3.0.0 Direct .maxpat Editing (Shipped: 2026-04-09)
 
 **Phases completed:** 7 phases (13-19), 15 plans
