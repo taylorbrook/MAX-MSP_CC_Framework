@@ -93,11 +93,11 @@
     "name": "FluCoMa",
     "tier": "community",
     "prefix": "fluid.",
-    "version": "",
+    "version": "1.0.9",
     "install_method": "package_manager",
     "description": "Fluid Corpus Manipulation -- audio decomposition and analysis",
-    "object_count": 0,
-    "extracted": false
+    "object_count": 78,
+    "extracted": true
   },
   "CNMAT": {
     "name": "CNMAT",
