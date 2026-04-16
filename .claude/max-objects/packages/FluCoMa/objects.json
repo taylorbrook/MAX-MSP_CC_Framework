@@ -1,7 +1,52 @@
 {
+  "fluid.ampfeature~": {
+    "name": "fluid.ampfeature~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Amplitude differential feature extraction",
+    "description": "Amplitude differential feature extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Feature output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
   "fluid.ampgate~": {
     "name": "fluid.ampgate~",
-    "maxclass": "fluid.ampgate~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "slicing",
@@ -52,7 +97,7 @@
   },
   "fluid.ampslice~": {
     "name": "fluid.ampslice~",
-    "maxclass": "fluid.ampslice~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "slicing",
@@ -101,353 +146,20 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
-  "fluid.noveltyslice~": {
-    "name": "fluid.noveltyslice~",
-    "maxclass": "fluid.noveltyslice~",
+  "fluid.audiofilesin": {
+    "name": "fluid.audiofilesin",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
-    "category": "slicing",
-    "digest": "Spectral novelty-based onset detection",
-    "description": "Spectral novelty-based onset detection",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Sliced output"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Slice indices"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "slicing"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.onsetslice~": {
-    "name": "fluid.onsetslice~",
-    "maxclass": "fluid.onsetslice~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "slicing",
-    "digest": "Onset detection using spectral flux",
-    "description": "Onset detection using spectral flux",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Sliced output"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Slice indices"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "slicing"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.transientslice~": {
-    "name": "fluid.transientslice~",
-    "maxclass": "fluid.transientslice~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "slicing",
-    "digest": "Transient-based onset detection",
-    "description": "Transient-based onset detection",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Sliced output"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Slice indices"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "slicing"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.ampfeature~": {
-    "name": "fluid.ampfeature~",
-    "maxclass": "fluid.ampfeature~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Amplitude differential feature extraction",
-    "description": "Amplitude differential feature extraction",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Feature output"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.noveltyfeature~": {
-    "name": "fluid.noveltyfeature~",
-    "maxclass": "fluid.noveltyfeature~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Spectral novelty feature extraction",
-    "description": "Spectral novelty feature extraction",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Feature output"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.onsetfeature~": {
-    "name": "fluid.onsetfeature~",
-    "maxclass": "fluid.onsetfeature~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Onset feature extraction",
-    "description": "Onset feature extraction",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Feature output"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.sinefeature~": {
-    "name": "fluid.sinefeature~",
-    "maxclass": "fluid.sinefeature~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Sinusoidal feature extraction",
-    "description": "Sinusoidal feature extraction",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Feature output"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufnmfseed": {
-    "name": "fluid.bufnmfseed",
-    "maxclass": "fluid.bufnmfseed",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Seed NMF bases from buffer",
-    "description": "Seed NMF bases from buffer",
+    "category": "utility",
+    "digest": "Audio file input helper",
+    "description": "Audio file input helper",
     "inlets": [
       {
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "Buffer/message in",
+        "digest": "Messages",
         "hot": true
       }
     ],
@@ -456,13 +168,7 @@
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
+        "digest": "Output"
       }
     ],
     "arguments": [],
@@ -470,556 +176,7 @@
     "attributes": {},
     "seealso": [],
     "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufstft": {
-    "name": "fluid.bufstft",
-    "maxclass": "fluid.bufstft",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Buffer STFT analysis",
-    "description": "Buffer STFT analysis",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.chroma": {
-    "name": "fluid.chroma",
-    "maxclass": "fluid.chroma",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Chromagram analysis",
-    "description": "Chromagram analysis",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.loudness": {
-    "name": "fluid.loudness",
-    "maxclass": "fluid.loudness",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Loudness descriptor analysis",
-    "description": "Loudness descriptor analysis",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.melbands": {
-    "name": "fluid.melbands",
-    "maxclass": "fluid.melbands",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Mel-band energy analysis",
-    "description": "Mel-band energy analysis",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.mfcc": {
-    "name": "fluid.mfcc",
-    "maxclass": "fluid.mfcc",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Mel-frequency cepstral coefficients",
-    "description": "Mel-frequency cepstral coefficients",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.nmfmatch": {
-    "name": "fluid.nmfmatch",
-    "maxclass": "fluid.nmfmatch",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "NMF template matching",
-    "description": "NMF template matching",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.pitch": {
-    "name": "fluid.pitch",
-    "maxclass": "fluid.pitch",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Pitch estimation",
-    "description": "Pitch estimation",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.spectralshape": {
-    "name": "fluid.spectralshape",
-    "maxclass": "fluid.spectralshape",
-    "module": "max",
-    "domain": "Packages",
-    "category": "analysis",
-    "digest": "Spectral shape descriptors",
-    "description": "Spectral shape descriptors",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "analysis"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufnmf": {
-    "name": "fluid.bufnmf",
-    "maxclass": "fluid.bufnmf",
-    "module": "max",
-    "domain": "Packages",
-    "category": "decomposition",
-    "digest": "Non-negative matrix factorization",
-    "description": "Non-negative matrix factorization",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Buffer/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "decomposition"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.hpss~": {
-    "name": "fluid.hpss~",
-    "maxclass": "fluid.hpss~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "decomposition",
-    "digest": "Harmonic-percussive source separation",
-    "description": "Harmonic-percussive source separation",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Harmonic/sines"
-      },
-      {
-        "id": 1,
-        "type": "signal",
-        "signal": true,
-        "digest": "Percussive/residual"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "decomposition"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.sines~": {
-    "name": "fluid.sines~",
-    "maxclass": "fluid.sines~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "decomposition",
-    "digest": "Sinusoidal modeling and resynthesis",
-    "description": "Sinusoidal modeling and resynthesis",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Harmonic/sines"
-      },
-      {
-        "id": 1,
-        "type": "signal",
-        "signal": true,
-        "digest": "Percussive/residual"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "decomposition"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.transients~": {
-    "name": "fluid.transients~",
-    "maxclass": "fluid.transients~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "decomposition",
-    "digest": "Transient separation",
-    "description": "Transient separation",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio in",
-        "hot": true
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Parameters",
-        "hot": false
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Harmonic/sines"
-      },
-      {
-        "id": 1,
-        "type": "signal",
-        "signal": true,
-        "digest": "Percussive/residual"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "decomposition"
+      "utility"
     ],
     "min_version": 8,
     "verified": false,
@@ -1029,7 +186,7 @@
   },
   "fluid.audiotransport~": {
     "name": "fluid.audiotransport~",
-    "maxclass": "fluid.audiotransport~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "transformation",
@@ -1079,9 +236,477 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
-  "fluid.bufnmfcross": {
-    "name": "fluid.bufnmfcross",
-    "maxclass": "fluid.bufnmfcross",
+  "fluid.buf2list": {
+    "name": "fluid.buf2list",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Convert buffer contents to Max list",
+    "description": "Convert buffer contents to Max list",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufampfeature~": {
+    "name": "fluid.bufampfeature~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer amplitude feature extraction",
+    "description": "Buffer amplitude feature extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufampgate~": {
+    "name": "fluid.bufampgate~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "slicing",
+    "digest": "Buffer amplitude gating",
+    "description": "Buffer amplitude gating",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "slicing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufampslice~": {
+    "name": "fluid.bufampslice~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "slicing",
+    "digest": "Buffer amplitude slicing",
+    "description": "Buffer amplitude slicing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "slicing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufaudiotransport~": {
+    "name": "fluid.bufaudiotransport~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "transformation",
+    "digest": "Buffer audio transport",
+    "description": "Buffer audio transport",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "transformation"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufchroma~": {
+    "name": "fluid.bufchroma~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer chroma analysis",
+    "description": "Buffer chroma analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufcompose~": {
+    "name": "fluid.bufcompose~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Compose buffers from multiple sources",
+    "description": "Compose buffers from multiple sources",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufflatten~": {
+    "name": "fluid.bufflatten~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Flatten multidimensional buffer data",
+    "description": "Flatten multidimensional buffer data",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufhpss~": {
+    "name": "fluid.bufhpss~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "decomposition",
+    "digest": "Buffer HPSS decomposition",
+    "description": "Buffer HPSS decomposition",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "decomposition"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufloudness~": {
+    "name": "fluid.bufloudness~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer loudness analysis",
+    "description": "Buffer loudness analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufmelbands~": {
+    "name": "fluid.bufmelbands~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer mel band analysis",
+    "description": "Buffer mel band analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufmfcc~": {
+    "name": "fluid.bufmfcc~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer MFCC analysis",
+    "description": "Buffer MFCC analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufnmfcross~": {
+    "name": "fluid.bufnmfcross~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "transformation",
@@ -1123,9 +748,1661 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
+  "fluid.bufnmfseed~": {
+    "name": "fluid.bufnmfseed~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Seed NMF bases from buffer",
+    "description": "Seed NMF bases from buffer",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufnmf~": {
+    "name": "fluid.bufnmf~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "decomposition",
+    "digest": "Non-negative matrix factorization",
+    "description": "Non-negative matrix factorization",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "decomposition"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufnoveltyfeature~": {
+    "name": "fluid.bufnoveltyfeature~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer novelty feature extraction",
+    "description": "Buffer novelty feature extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufnoveltyslice~": {
+    "name": "fluid.bufnoveltyslice~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "slicing",
+    "digest": "Buffer novelty slicing",
+    "description": "Buffer novelty slicing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "slicing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufonsetfeature~": {
+    "name": "fluid.bufonsetfeature~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer onset feature extraction",
+    "description": "Buffer onset feature extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufonsetslice~": {
+    "name": "fluid.bufonsetslice~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "slicing",
+    "digest": "Buffer onset slicing",
+    "description": "Buffer onset slicing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "slicing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufpitch~": {
+    "name": "fluid.bufpitch~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer pitch analysis",
+    "description": "Buffer pitch analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufscale~": {
+    "name": "fluid.bufscale~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Scale buffer values",
+    "description": "Scale buffer values",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufselectevery~": {
+    "name": "fluid.bufselectevery~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Select every Nth buffer frame",
+    "description": "Select every Nth buffer frame",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufselect~": {
+    "name": "fluid.bufselect~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Select buffer frames by index",
+    "description": "Select buffer frames by index",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufsinefeature~": {
+    "name": "fluid.bufsinefeature~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer sine feature extraction",
+    "description": "Buffer sine feature extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufsines~": {
+    "name": "fluid.bufsines~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "decomposition",
+    "digest": "Buffer sinusoidal modelling",
+    "description": "Buffer sinusoidal modelling",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "decomposition"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufspectralshape~": {
+    "name": "fluid.bufspectralshape~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer spectral shape analysis",
+    "description": "Buffer spectral shape analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufstats~": {
+    "name": "fluid.bufstats~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Statistical summary of buffer data",
+    "description": "Statistical summary of buffer data",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufstft~": {
+    "name": "fluid.bufstft~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Buffer STFT analysis",
+    "description": "Buffer STFT analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufthreaddemo~": {
+    "name": "fluid.bufthreaddemo~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Threading demonstration utility",
+    "description": "Threading demonstration utility",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.bufthresh~": {
+    "name": "fluid.bufthresh~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Threshold buffer values",
+    "description": "Threshold buffer values",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.buftransientslice~": {
+    "name": "fluid.buftransientslice~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "slicing",
+    "digest": "Buffer transient slicing",
+    "description": "Buffer transient slicing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "slicing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.buftransients~": {
+    "name": "fluid.buftransients~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "decomposition",
+    "digest": "Buffer transient extraction",
+    "description": "Buffer transient extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages (buffer name, parameters)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Bang on completion"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "decomposition"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.chroma~": {
+    "name": "fluid.chroma~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Chromagram analysis",
+    "description": "Chromagram analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.concataudiofiles": {
+    "name": "fluid.concataudiofiles",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Concatenate audio files",
+    "description": "Concatenate audio files",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.datasetquery~": {
+    "name": "fluid.datasetquery~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Query and filter datasets",
+    "description": "Query and filter datasets",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.dataset~": {
+    "name": "fluid.dataset~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Labeled dataset container",
+    "description": "Labeled dataset container",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.gain~": {
+    "name": "fluid.gain~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Gain control",
+    "description": "Gain control",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Gain parameter",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.grid~": {
+    "name": "fluid.grid~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Grid-based dimensionality reduction display",
+    "description": "Grid-based dimensionality reduction display",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.hpss~": {
+    "name": "fluid.hpss~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "decomposition",
+    "digest": "Harmonic-percussive source separation",
+    "description": "Harmonic-percussive source separation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Harmonic component"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Percussive component"
+      },
+      {
+        "id": 2,
+        "type": "signal",
+        "signal": true,
+        "digest": "Residual component"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "decomposition"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.jit.plotter": {
+    "name": "fluid.jit.plotter",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Jitter-based data plotter",
+    "description": "Jitter-based data plotter",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.kdtree~": {
+    "name": "fluid.kdtree~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "K-dimensional tree for nearest neighbor",
+    "description": "K-dimensional tree for nearest neighbor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.kmeans~": {
+    "name": "fluid.kmeans~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "K-means clustering",
+    "description": "K-means clustering",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.knnclassifier~": {
+    "name": "fluid.knnclassifier~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "K-nearest neighbor classifier",
+    "description": "K-nearest neighbor classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.knnregressor~": {
+    "name": "fluid.knnregressor~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "K-nearest neighbor regressor",
+    "description": "K-nearest neighbor regressor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.labelset~": {
+    "name": "fluid.labelset~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Labeled set container",
+    "description": "Labeled set container",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.list2buf": {
+    "name": "fluid.list2buf",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Convert Max list to buffer contents",
+    "description": "Convert Max list to buffer contents",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.loudness~": {
+    "name": "fluid.loudness~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Loudness descriptor analysis",
+    "description": "Loudness descriptor analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.mds~": {
+    "name": "fluid.mds~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Multidimensional scaling",
+    "description": "Multidimensional scaling",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.melbands~": {
+    "name": "fluid.melbands~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Mel-band energy analysis",
+    "description": "Mel-band energy analysis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.mfcc~": {
+    "name": "fluid.mfcc~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Mel-frequency cepstral coefficients",
+    "description": "Mel-frequency cepstral coefficients",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.mlpclassifier~": {
+    "name": "fluid.mlpclassifier~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Neural network classifier",
+    "description": "Neural network classifier",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.mlpregressor~": {
+    "name": "fluid.mlpregressor~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Neural network regressor",
+    "description": "Neural network regressor",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
   "fluid.nmffilter~": {
     "name": "fluid.nmffilter~",
-    "maxclass": "fluid.nmffilter~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "transformation",
@@ -1175,9 +2452,53 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
+  "fluid.nmfmatch~": {
+    "name": "fluid.nmfmatch~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "NMF template matching",
+    "description": "NMF template matching",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
   "fluid.nmfmorph~": {
     "name": "fluid.nmfmorph~",
-    "maxclass": "fluid.nmfmorph~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "transformation",
@@ -1227,757 +2548,9 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
-  "fluid.buffflatten": {
-    "name": "fluid.buffflatten",
-    "maxclass": "fluid.buffflatten",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Flatten multidimensional buffer data",
-    "description": "Flatten multidimensional buffer data",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufscale": {
-    "name": "fluid.bufscale",
-    "maxclass": "fluid.bufscale",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Scale buffer values",
-    "description": "Scale buffer values",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufselect": {
-    "name": "fluid.bufselect",
-    "maxclass": "fluid.bufselect",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Select buffer frames by index",
-    "description": "Select buffer frames by index",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufselectevery": {
-    "name": "fluid.bufselectevery",
-    "maxclass": "fluid.bufselectevery",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Select every Nth buffer frame",
-    "description": "Select every Nth buffer frame",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufstats": {
-    "name": "fluid.bufstats",
-    "maxclass": "fluid.bufstats",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Statistical summary of buffer data",
-    "description": "Statistical summary of buffer data",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufthresh": {
-    "name": "fluid.bufthresh",
-    "maxclass": "fluid.bufthresh",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Threshold buffer values",
-    "description": "Threshold buffer values",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.dataset": {
-    "name": "fluid.dataset",
-    "maxclass": "fluid.dataset",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Labeled dataset container",
-    "description": "Labeled dataset container",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.datasetquery": {
-    "name": "fluid.datasetquery",
-    "maxclass": "fluid.datasetquery",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Query and filter datasets",
-    "description": "Query and filter datasets",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.grid": {
-    "name": "fluid.grid",
-    "maxclass": "fluid.grid",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Grid-based dimensionality reduction display",
-    "description": "Grid-based dimensionality reduction display",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.kdtree": {
-    "name": "fluid.kdtree",
-    "maxclass": "fluid.kdtree",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "K-dimensional tree for nearest neighbor",
-    "description": "K-dimensional tree for nearest neighbor",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.kmeans": {
-    "name": "fluid.kmeans",
-    "maxclass": "fluid.kmeans",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "K-means clustering",
-    "description": "K-means clustering",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.knnclassifier": {
-    "name": "fluid.knnclassifier",
-    "maxclass": "fluid.knnclassifier",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "K-nearest neighbor classifier",
-    "description": "K-nearest neighbor classifier",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.knnregressor": {
-    "name": "fluid.knnregressor",
-    "maxclass": "fluid.knnregressor",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "K-nearest neighbor regressor",
-    "description": "K-nearest neighbor regressor",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.labelset": {
-    "name": "fluid.labelset",
-    "maxclass": "fluid.labelset",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Labeled set container",
-    "description": "Labeled set container",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.mds": {
-    "name": "fluid.mds",
-    "maxclass": "fluid.mds",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Multidimensional scaling",
-    "description": "Multidimensional scaling",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.mlpclassifier": {
-    "name": "fluid.mlpclassifier",
-    "maxclass": "fluid.mlpclassifier",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Neural network classifier",
-    "description": "Neural network classifier",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.mlpregressor": {
-    "name": "fluid.mlpregressor",
-    "maxclass": "fluid.mlpregressor",
-    "module": "max",
-    "domain": "Packages",
-    "category": "data",
-    "digest": "Neural network regressor",
-    "description": "Neural network regressor",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Dump"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.normalize": {
-    "name": "fluid.normalize",
-    "maxclass": "fluid.normalize",
+  "fluid.normalize~": {
+    "name": "fluid.normalize~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "data",
@@ -2019,9 +2592,201 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
-  "fluid.pca": {
-    "name": "fluid.pca",
-    "maxclass": "fluid.pca",
+  "fluid.noveltyfeature~": {
+    "name": "fluid.noveltyfeature~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Spectral novelty feature extraction",
+    "description": "Spectral novelty feature extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Feature output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.noveltyslice~": {
+    "name": "fluid.noveltyslice~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "slicing",
+    "digest": "Spectral novelty-based onset detection",
+    "description": "Spectral novelty-based onset detection",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Sliced output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Slice indices"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "slicing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.onsetfeature~": {
+    "name": "fluid.onsetfeature~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Onset feature extraction",
+    "description": "Onset feature extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Feature output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.onsetslice~": {
+    "name": "fluid.onsetslice~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "slicing",
+    "digest": "Onset detection using spectral flux",
+    "description": "Onset detection using spectral flux",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Sliced output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Slice indices"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "slicing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.pca~": {
+    "name": "fluid.pca~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "data",
@@ -2063,9 +2828,53 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
+  "fluid.pitch~": {
+    "name": "fluid.pitch~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Pitch estimation",
+    "description": "Pitch estimation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
   "fluid.plotter": {
     "name": "fluid.plotter",
-    "maxclass": "fluid.plotter",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "data",
@@ -2107,9 +2916,9 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
-  "fluid.robustscale": {
-    "name": "fluid.robustscale",
-    "maxclass": "fluid.robustscale",
+  "fluid.robustscale~": {
+    "name": "fluid.robustscale~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "data",
@@ -2151,9 +2960,105 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
-  "fluid.skeans": {
-    "name": "fluid.skeans",
-    "maxclass": "fluid.skeans",
+  "fluid.sinefeature~": {
+    "name": "fluid.sinefeature~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Sinusoidal feature extraction",
+    "description": "Sinusoidal feature extraction",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Feature output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.sines~": {
+    "name": "fluid.sines~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "decomposition",
+    "digest": "Sinusoidal modeling and resynthesis",
+    "description": "Sinusoidal modeling and resynthesis",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Harmonic/sines"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Percussive/residual"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "decomposition"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.skmeans~": {
+    "name": "fluid.skmeans~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "data",
@@ -2195,9 +3100,53 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
-  "fluid.standardize": {
-    "name": "fluid.standardize",
-    "maxclass": "fluid.standardize",
+  "fluid.spectralshape~": {
+    "name": "fluid.spectralshape~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "analysis",
+    "digest": "Spectral shape descriptors",
+    "description": "Spectral shape descriptors",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Done bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "analysis"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.standardize~": {
+    "name": "fluid.standardize~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "data",
@@ -2241,7 +3190,7 @@
   },
   "fluid.stats": {
     "name": "fluid.stats",
-    "maxclass": "fluid.stats",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "data",
@@ -2283,9 +3232,111 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
-  "fluid.umap": {
-    "name": "fluid.umap",
-    "maxclass": "fluid.umap",
+  "fluid.transientslice~": {
+    "name": "fluid.transientslice~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "slicing",
+    "digest": "Transient-based onset detection",
+    "description": "Transient-based onset detection",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Sliced output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Slice indices"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "slicing"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.transients~": {
+    "name": "fluid.transients~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "decomposition",
+    "digest": "Transient separation",
+    "description": "Transient separation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Harmonic/sines"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Percussive/residual"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "decomposition"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "FluCoMa"
+  },
+  "fluid.umap~": {
+    "name": "fluid.umap~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "data",
@@ -2320,94 +3371,6 @@
     "seealso": [],
     "tags": [
       "data"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufcompose": {
-    "name": "fluid.bufcompose",
-    "maxclass": "fluid.bufcompose",
-    "module": "max",
-    "domain": "Packages",
-    "category": "utility",
-    "digest": "Compose buffers from multiple sources",
-    "description": "Compose buffers from multiple sources",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "utility"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "FluCoMa"
-  },
-  "fluid.bufthreaddemo": {
-    "name": "fluid.bufthreaddemo",
-    "maxclass": "fluid.bufthreaddemo",
-    "module": "max",
-    "domain": "Packages",
-    "category": "utility",
-    "digest": "Threading demonstration utility",
-    "description": "Threading demonstration utility",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Done bang"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "utility"
     ],
     "min_version": 8,
     "verified": false,
