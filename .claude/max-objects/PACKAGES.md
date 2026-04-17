@@ -4,7 +4,12 @@ Shared reference for all agents when generating patches with bundled package obj
 
 ## Scope
 
-Bundled packages only: BEAP, Vizzie, jit.mo, Jitter Geometry, Jitter Tools, ableton-dsp, Mira, maxforlive-elements.
+Covers all packages in `.claude/max-objects/packages/`:
+
+- **Bundled** (ship with Max 9): ableton-dsp, BEAP, jit.mo, Jitter Geometry, Jitter Tools, maxforlive-elements, Mira, RNBO Guitar, VIDDLL, Vizzie.
+- **Community** (separate install via Package Manager or manual): ABL Effect Modules, abclib, Bach, Cage, catart-mubu, CNMAT, cv.jit, Dada, EARS, ease, FlowSwing, FluCoMa, grainflow, IRCAM Spat, ml-lib, ml.star, nn_tilde, Odot, Rhythmic Time Toolkit.
+
+For per-package install state and object counts, see `package_info.json` (`installed`, `extracted`, `object_count` fields).
 
 ## Signal Conventions
 
@@ -174,6 +179,8 @@ These packages use standard newobj objects (NOT bpatchers):
 | Jitter Tools | jit. | Jitter rendering | Additional rendering, effects, utilities |
 | Mira | mira. | iPad control | Remote control UI for MAX patches |
 | maxforlive-elements | m4l. | Max for Live | UI elements and utility abstractions |
+| VIDDLL | viddll. | GPU video decoding | Hardware-accelerated video playback (3 objects, used by Vizzie internally) |
+| RNBO Guitar | rnbo.guitar. | RNBO guitar effects | Empty in DB (`extracted: false`) -- placeholder for future extraction |
 
 Look up individual objects with `ObjectDatabase.lookup(name)` for inlet/outlet details.
 
@@ -185,15 +192,24 @@ Community packages require separate installation and extraction before generatio
 
 | Package | Prefix | Domain | Key Objects | Install |
 |---------|--------|--------|-------------|---------|
-| FluCoMa | `fluid.*` | Audio analysis, decomposition, ML | `fluid.mfcc`, `fluid.hpss~`, `fluid.mlpclassifier` | Package Manager |
-| CNMAT | *(bare names)* | OSC, resonance, spectral | `resonators~`, `analyzer~`, `peqbank~` | Package Manager |
+| ABL Effect Modules | `Abl.*` | Ableton-style effect abstractions (`.maxpat` bpatchers wrapping ABL DSP library) | `Abl.Compressor~`, `Abl.AutoFilter~`, `Abl.DarkHall~`, `Abl.SpectralReson~` | Package Manager |
+| abclib | `abc.*` | Spatial audio (ambisonics), multichannel synthesis, mixed-music utilities | `abc.adcinput~`, `abc.delaychain~`, `abc.env.generator~`, `abc.cartopol~` | Package Manager |
 | Bach | `bach.*` | Algorithmic composition (llll data type) | `bach.score`, `bach.roll`, `bach.eval` | Package Manager |
-| Odot | `o.*` | OSC bundle expressions | `o.pack`, `o.route`, `o.expr.codebox` | Package Manager |
-| ml-lib | `ml.*` | Machine learning | `ml.svm`, `ml.ann`, `ml.knn` | Package Manager |
-| IRCAM Spat | `spat5.*` | Spatial audio, ambisonics | `spat5.panoramix`, `spat5.binaural~` | IRCAM Forum download |
 | Cage | `cage.*` | Algorithmic composition (requires Bach) | `cage.profile`, `cage.lsystem` | Package Manager |
+| catart-mubu | `camu.*` | Concatenative synthesis, audio mosaicing, descriptor analysis (requires MuBu; optional Bach/Cage/Spat) | `camu.analysis`, `camu.import-from-text`, `camu.imubu.control`, `camu.export.segments` | Package Manager |
+| CNMAT | *(bare names)* | OSC, resonance, spectral | `resonators~`, `analyzer~`, `peqbank~` | Package Manager |
+| cv.jit | `cv.jit.*` | Computer vision externals for Jitter (matrices in/out) | `cv.jit.binedge`, `cv.jit.blobs.bounds`, `cv.jit.blobs.centroids`, `cv.jit.LKflow` | Package Manager |
 | Dada | `dada.*` | Graphical CAC (requires Bach) | `dada.graph`, `dada.bounce` | Package Manager |
 | EARS | `ears.*` | Offline buffer processing (requires Bach) | `ears.slice`, `ears.filter~` | Package Manager |
+| ease | `ease`, `ease~`, `jit.ease`, `list.ease`, `ease.xfade`, `ease.xfade~` | Easing functions for audio, visuals, automation | `ease`, `ease~`, `jit.ease`, `list.ease` | Package Manager |
+| FlowSwing | `flowSwing.*` | Real-time non-isochronous-grid time-warping and sample-accurate sequencing (FluCoMa optional) | `flowSwing.audioWarp`, `flowSwing.onsetDetect`, `flowSwing.stepUI`, `flowSwing.subDiv` | Package Manager |
+| FluCoMa | `fluid.*` | Audio analysis, decomposition, ML | `fluid.mfcc`, `fluid.hpss~`, `fluid.mlpclassifier` | Package Manager |
+| grainflow | `grainflow.*` | Multichannel granulation toolkit (mc.* paradigm) | `grainflow.live~`, `grainflow.scrubSynth~`, `grainflow.synth~`, `grainflow.streams~` | Package Manager |
+| IRCAM Spat | `spat5.*` | Spatial audio, ambisonics | `spat5.panoramix`, `spat5.binaural~` | IRCAM Forum download |
+| ml-lib | `ml.*` | Supervised/sequence ML (older lib) | `ml.svm`, `ml.knn`, `ml.adaboost`, `ml.gmm`, `ml.hmmc` | Package Manager |
+| ml.star | `ml.*` | Unsupervised ML for real-time interactive music/video (different package from ml-lib, see warning below) | `ml.mlp`, `ml.fcm`, `ml.markov`, `ml.kdtree`, `ml.som` | Package Manager |
+| nn_tilde | `nn~`, `mc.nn~`, `mcs.nn~`, `nn.info` | Neural audio synthesis via PyTorch models (requires libtorch + `.ts` model file) | `nn~`, `mc.nn~`, `nn.info` | Package Manager |
+| Odot | `o.*` | OSC bundle expressions | `o.pack`, `o.route`, `o.expr.codebox` | Package Manager |
 | Rhythmic Time Toolkit | `rtk.*` | Signal-rate sequencing | `rtk.seq~`, `rtk.clock~` | Package Manager |
 
 ### Workflow Templates
@@ -208,10 +224,23 @@ Structured workflow templates for community packages are maintained in agent SKI
 - **Bach llll**: Bach, Cage, Dada, EARS all use the llll (Lisp-like linked list) data type. lllls are NOT compatible with standard MAX lists. Use `bach.list2llll` / `bach.llll2list` for conversion. Never connect a regular MAX list outlet to a bach object expecting llll input.
 - **Odot bundles**: Odot objects pass OSC bundles, not standard MAX messages. Use `o.pack` to create bundles and `o.route` to extract values.
 - **FluCoMa buf* objects**: Offline buffer processors (no `~` suffix) operate asynchronously -- they output bang when done, not immediate results.
+- **ml-lib vs ml.star prefix collision**: Both packages use the `ml.*` namespace but ship different objects (ml-lib has supervised classifiers like `ml.svm`/`ml.knn`/`ml.adaboost`; ml.star has unsupervised algorithms like `ml.mlp`/`ml.fcm`/`ml.markov`). No object names overlap, but `ObjectDatabase.lookup("ml.foo")` only resolves to whichever package owns that specific name -- check the `package` field on the returned entry to confirm which library you're invoking.
+- **cv.jit Jitter matrices**: All cv.jit objects consume and emit Jitter `jit_matrix` messages, not audio signals. Use `jit.matrix` to bridge between `jit.grab` / `jit.movie` sources and cv.jit processors.
+- **catart-mubu MuBu dependency**: catart-mubu requires the MuBu package (separate install) for its `mubu` and `imubu` containers. Without MuBu, the `camu.imubu.*` and `camu.input.*` objects will not instantiate.
+- **nn_tilde model files**: `nn~` and its mc/mcs variants require a PyTorch `.ts` (TorchScript) model file at instantiation: `nn~ <path-to-model.ts> <method-name>`. Without a valid model, the object reports an error and produces silence. Models are loaded async; `nn.info` queries metadata about a loaded model.
+- **grainflow multichannel**: grainflow objects use Max's `mc.*` multichannel paradigm. Inputs/outputs are `multichannelsignal` -- pack/unpack with `mc.pack~` / `mc.unpack~` to interop with mono signal chains.
+- **ABL Effect Modules are bpatchers**: Each `Abl.*~` object is a `.maxpat` abstraction designed to be loaded via `bpatcher Abl.<Name>~` (not as a newobj alone). They expect Live-style modulation and depend on the bundled `ableton-dsp` package (`abl.*` primitives) for their internal DSP.
 
 ### Extraction Command
 
-After installing a package, extract its objects for the framework:
-```
+After installing a package, extract its objects for the framework. The script auto-detects pipeline (XML refpages vs `.maxpat` abstractions) and writes/merges into `packages/<name>/objects.json`, then updates `package_info.json`:
+
+```bash
+# Standard install location (~/Documents/Max 9/Packages/<name>):
 python .claude/scripts/extract_objects.py --package "PackageName"
+
+# Custom path (e.g., a local copy for audit, or a non-standard install):
+python .claude/scripts/extract_objects.py --package "PackageName" --path /path/to/package-folder
 ```
+
+**Abstraction-only packages** (no `.maxref.xml` refpages -- e.g., ABL Effect Modules, catart-mubu, cv.jit) are not handled by `extract_objects.py`. For those, parse inlet/outlet boxes directly from the `.maxpat` files in the package's `patchers/` directory or from the corresponding `.maxhelp` files. See the procedure used in `.planning/quick/260416-vji-audit-and-update-db-for-15-installed-max/260416-vji-SUMMARY.md`.
