@@ -1,7 +1,7 @@
 {
   "abl.device.autofilter~": {
     "name": "abl.device.autofilter~",
-    "maxclass": "abl.device.autofilter~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -307,7 +307,7 @@
   },
   "abl.device.channeleq~": {
     "name": "abl.device.channeleq~",
-    "maxclass": "abl.device.channeleq~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "filter",
@@ -455,7 +455,7 @@
   },
   "abl.device.compressor~": {
     "name": "abl.device.compressor~",
-    "maxclass": "abl.device.compressor~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "utility",
@@ -601,7 +601,7 @@
   },
   "abl.device.delay~": {
     "name": "abl.device.delay~",
-    "maxclass": "abl.device.delay~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "effect",
@@ -744,7 +744,7 @@
   },
   "abl.device.drift~": {
     "name": "abl.device.drift~",
-    "maxclass": "abl.device.drift~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "instrument",
@@ -1148,7 +1148,7 @@
   },
   "abl.device.drumbuss~": {
     "name": "abl.device.drumbuss~",
-    "maxclass": "abl.device.drumbuss~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -1318,7 +1318,7 @@
   },
   "abl.device.drumsampler~": {
     "name": "abl.device.drumsampler~",
-    "maxclass": "abl.device.drumsampler~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -1585,7 +1585,7 @@
   },
   "abl.device.echo~": {
     "name": "abl.device.echo~",
-    "maxclass": "abl.device.echo~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -1825,7 +1825,7 @@
   },
   "abl.device.limiter~": {
     "name": "abl.device.limiter~",
-    "maxclass": "abl.device.limiter~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -1963,7 +1963,7 @@
   },
   "abl.device.redux~": {
     "name": "abl.device.redux~",
-    "maxclass": "abl.device.redux~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -2117,7 +2117,7 @@
   },
   "abl.device.reverb~": {
     "name": "abl.device.reverb~",
-    "maxclass": "abl.device.reverb~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -2237,7 +2237,7 @@
   },
   "abl.device.roar~": {
     "name": "abl.device.roar~",
-    "maxclass": "abl.device.roar~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -2685,7 +2685,7 @@
   },
   "abl.device.spectralresonator~": {
     "name": "abl.device.spectralresonator~",
-    "maxclass": "abl.device.spectralresonator~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -2818,7 +2818,7 @@
   },
   "abl.device.spectraltime~": {
     "name": "abl.device.spectraltime~",
-    "maxclass": "abl.device.spectraltime~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -2986,7 +2986,7 @@
   },
   "abl.device.utility~": {
     "name": "abl.device.utility~",
-    "maxclass": "abl.device.utility~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3135,7 +3135,7 @@
   },
   "abl.dsp.alternate~": {
     "name": "abl.dsp.alternate~",
-    "maxclass": "abl.dsp.alternate~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3282,7 +3282,7 @@
   },
   "abl.dsp.basicshapes~": {
     "name": "abl.dsp.basicshapes~",
-    "maxclass": "abl.dsp.basicshapes~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3377,7 +3377,7 @@
   },
   "abl.dsp.bitgrunge~": {
     "name": "abl.dsp.bitgrunge~",
-    "maxclass": "abl.dsp.bitgrunge~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3471,7 +3471,7 @@
   },
   "abl.dsp.bubble~": {
     "name": "abl.dsp.bubble~",
-    "maxclass": "abl.dsp.bubble~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3566,7 +3566,7 @@
   },
   "abl.dsp.chip~": {
     "name": "abl.dsp.chip~",
-    "maxclass": "abl.dsp.chip~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3660,7 +3660,7 @@
   },
   "abl.dsp.chorus~": {
     "name": "abl.dsp.chorus~",
-    "maxclass": "abl.dsp.chorus~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3804,7 +3804,7 @@
   },
   "abl.dsp.compander~": {
     "name": "abl.dsp.compander~",
-    "maxclass": "abl.dsp.compander~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3863,7 +3863,7 @@
   },
   "abl.dsp.crackle~": {
     "name": "abl.dsp.crackle~",
-    "maxclass": "abl.dsp.crackle~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -3958,7 +3958,7 @@
   },
   "abl.dsp.darkhall~": {
     "name": "abl.dsp.darkhall~",
-    "maxclass": "abl.dsp.darkhall~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -4137,7 +4137,7 @@
   },
   "abl.dsp.dfm~": {
     "name": "abl.dsp.dfm~",
-    "maxclass": "abl.dsp.dfm~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -4243,7 +4243,7 @@
   },
   "abl.dsp.distortion~": {
     "name": "abl.dsp.distortion~",
-    "maxclass": "abl.dsp.distortion~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -4397,7 +4397,7 @@
   },
   "abl.dsp.doubler~": {
     "name": "abl.dsp.doubler~",
-    "maxclass": "abl.dsp.doubler~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -4596,7 +4596,7 @@
   },
   "abl.dsp.dualbasicshapes~": {
     "name": "abl.dsp.dualbasicshapes~",
-    "maxclass": "abl.dsp.dualbasicshapes~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -4690,7 +4690,7 @@
   },
   "abl.dsp.ensemble~": {
     "name": "abl.dsp.ensemble~",
-    "maxclass": "abl.dsp.ensemble~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -4839,7 +4839,7 @@
   },
   "abl.dsp.envfollower~": {
     "name": "abl.dsp.envfollower~",
-    "maxclass": "abl.dsp.envfollower~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -4920,7 +4920,7 @@
   },
   "abl.dsp.euclid~": {
     "name": "abl.dsp.euclid~",
-    "maxclass": "abl.dsp.euclid~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5074,7 +5074,7 @@
   },
   "abl.dsp.expshaper~": {
     "name": "abl.dsp.expshaper~",
-    "maxclass": "abl.dsp.expshaper~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5135,7 +5135,7 @@
   },
   "abl.dsp.extratone~": {
     "name": "abl.dsp.extratone~",
-    "maxclass": "abl.dsp.extratone~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5229,7 +5229,7 @@
   },
   "abl.dsp.filterednoise~": {
     "name": "abl.dsp.filterednoise~",
-    "maxclass": "abl.dsp.filterednoise~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5323,7 +5323,7 @@
   },
   "abl.dsp.filther~": {
     "name": "abl.dsp.filther~",
-    "maxclass": "abl.dsp.filther~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5424,7 +5424,7 @@
   },
   "abl.dsp.flanger~": {
     "name": "abl.dsp.flanger~",
-    "maxclass": "abl.dsp.flanger~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5623,7 +5623,7 @@
   },
   "abl.dsp.fmbass~": {
     "name": "abl.dsp.fmbass~",
-    "maxclass": "abl.dsp.fmbass~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5719,7 +5719,7 @@
   },
   "abl.dsp.foldfm~": {
     "name": "abl.dsp.foldfm~",
-    "maxclass": "abl.dsp.foldfm~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5815,7 +5815,7 @@
   },
   "abl.dsp.fuzz~": {
     "name": "abl.dsp.fuzz~",
-    "maxclass": "abl.dsp.fuzz~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -5969,7 +5969,7 @@
   },
   "abl.dsp.harmonicfm~": {
     "name": "abl.dsp.harmonicfm~",
-    "maxclass": "abl.dsp.harmonicfm~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -6064,7 +6064,7 @@
   },
   "abl.dsp.meldfilter~": {
     "name": "abl.dsp.meldfilter~",
-    "maxclass": "abl.dsp.meldfilter~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -6173,7 +6173,7 @@
   },
   "abl.dsp.meldosc~": {
     "name": "abl.dsp.meldosc~",
-    "maxclass": "abl.dsp.meldosc~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -6290,7 +6290,7 @@
   },
   "abl.dsp.modalresonator~": {
     "name": "abl.dsp.modalresonator~",
-    "maxclass": "abl.dsp.modalresonator~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -6392,7 +6392,7 @@
   },
   "abl.dsp.modulator~": {
     "name": "abl.dsp.modulator~",
-    "maxclass": "abl.dsp.modulator~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -6539,7 +6539,7 @@
   },
   "abl.dsp.noiseloop~": {
     "name": "abl.dsp.noiseloop~",
-    "maxclass": "abl.dsp.noiseloop~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -6634,7 +6634,7 @@
   },
   "abl.dsp.noisyshapes~": {
     "name": "abl.dsp.noisyshapes~",
-    "maxclass": "abl.dsp.noisyshapes~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -6728,7 +6728,7 @@
   },
   "abl.dsp.overdrive~": {
     "name": "abl.dsp.overdrive~",
-    "maxclass": "abl.dsp.overdrive~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -6882,7 +6882,7 @@
   },
   "abl.dsp.phaser~": {
     "name": "abl.dsp.phaser~",
-    "maxclass": "abl.dsp.phaser~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -7122,7 +7122,7 @@
   },
   "abl.dsp.pitchestimator~": {
     "name": "abl.dsp.pitchestimator~",
-    "maxclass": "abl.dsp.pitchestimator~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -7172,7 +7172,7 @@
   },
   "abl.dsp.pitchshifter~": {
     "name": "abl.dsp.pitchshifter~",
-    "maxclass": "abl.dsp.pitchshifter~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -7270,7 +7270,7 @@
   },
   "abl.dsp.prism~": {
     "name": "abl.dsp.prism~",
-    "maxclass": "abl.dsp.prism~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -7399,7 +7399,7 @@
   },
   "abl.dsp.pulsate~": {
     "name": "abl.dsp.pulsate~",
-    "maxclass": "abl.dsp.pulsate~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -7527,7 +7527,7 @@
   },
   "abl.dsp.quartz~": {
     "name": "abl.dsp.quartz~",
-    "maxclass": "abl.dsp.quartz~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -7719,7 +7719,7 @@
   },
   "abl.dsp.rain~": {
     "name": "abl.dsp.rain~",
-    "maxclass": "abl.dsp.rain~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -7814,7 +7814,7 @@
   },
   "abl.dsp.ramp~": {
     "name": "abl.dsp.ramp~",
-    "maxclass": "abl.dsp.ramp~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -7961,7 +7961,7 @@
   },
   "abl.dsp.ringmod~": {
     "name": "abl.dsp.ringmod~",
-    "maxclass": "abl.dsp.ringmod~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8052,7 +8052,7 @@
   },
   "abl.dsp.saturator~": {
     "name": "abl.dsp.saturator~",
-    "maxclass": "abl.dsp.saturator~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8177,7 +8177,7 @@
   },
   "abl.dsp.shepard~": {
     "name": "abl.dsp.shepard~",
-    "maxclass": "abl.dsp.shepard~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8270,7 +8270,7 @@
   },
   "abl.dsp.shimmer~": {
     "name": "abl.dsp.shimmer~",
-    "maxclass": "abl.dsp.shimmer~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8449,7 +8449,7 @@
   },
   "abl.dsp.simplefm~": {
     "name": "abl.dsp.simplefm~",
-    "maxclass": "abl.dsp.simplefm~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8544,7 +8544,7 @@
   },
   "abl.dsp.squarefifth~": {
     "name": "abl.dsp.squarefifth~",
-    "maxclass": "abl.dsp.squarefifth~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8638,7 +8638,7 @@
   },
   "abl.dsp.squaresync~": {
     "name": "abl.dsp.squaresync~",
-    "maxclass": "abl.dsp.squaresync~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8732,7 +8732,7 @@
   },
   "abl.dsp.stereolfo~": {
     "name": "abl.dsp.stereolfo~",
-    "maxclass": "abl.dsp.stereolfo~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8842,7 +8842,7 @@
   },
   "abl.dsp.subosc~": {
     "name": "abl.dsp.subosc~",
-    "maxclass": "abl.dsp.subosc~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8935,7 +8935,7 @@
   },
   "abl.dsp.swarm~": {
     "name": "abl.dsp.swarm~",
-    "maxclass": "abl.dsp.swarm~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9034,7 +9034,7 @@
   },
   "abl.dsp.tarp~": {
     "name": "abl.dsp.tarp~",
-    "maxclass": "abl.dsp.tarp~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9122,7 +9122,7 @@
   },
   "abl.dsp.tides~": {
     "name": "abl.dsp.tides~",
-    "maxclass": "abl.dsp.tides~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9275,7 +9275,7 @@
   },
   "abl.dsp.transform~": {
     "name": "abl.dsp.transform~",
-    "maxclass": "abl.dsp.transform~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9349,7 +9349,7 @@
   },
   "abl.dsp.transientdesign~": {
     "name": "abl.dsp.transientdesign~",
-    "maxclass": "abl.dsp.transientdesign~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9439,7 +9439,7 @@
   },
   "abl.dsp.velvetnoise~": {
     "name": "abl.dsp.velvetnoise~",
-    "maxclass": "abl.dsp.velvetnoise~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9494,7 +9494,7 @@
   },
   "abl.dsp.vibrato~": {
     "name": "abl.dsp.vibrato~",
-    "maxclass": "abl.dsp.vibrato~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9648,7 +9648,7 @@
   },
   "abl.dsp.vowel~": {
     "name": "abl.dsp.vowel~",
-    "maxclass": "abl.dsp.vowel~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9749,7 +9749,7 @@
   },
   "abl.dsp.wander~": {
     "name": "abl.dsp.wander~",
-    "maxclass": "abl.dsp.wander~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -9896,7 +9896,7 @@
   },
   "abl.dsp.waveshaper~": {
     "name": "abl.dsp.waveshaper~",
-    "maxclass": "abl.dsp.waveshaper~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -10046,7 +10046,7 @@
   },
   "live.adsrui": {
     "name": "live.adsrui",
-    "maxclass": "live.adsrui",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "M4L U/I",
@@ -10189,7 +10189,7 @@
   },
   "live.adsr~": {
     "name": "live.adsr~",
-    "maxclass": "live.adsr~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "M4L",

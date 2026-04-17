@@ -1,0 +1,417 @@
+{
+  "flowSwing.audioWarp": {
+    "name": "flowSwing.audioWarp",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "FlowSwing",
+    "digest": "NI Grid based time-warp of sound samples",
+    "description": "Generates complex time-warp that can be modulated in real time.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Playback position",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Time-warped audio signal"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "Formative",
+      "Target",
+      "S",
+      "asGrid",
+      "lock",
+      "markers",
+      "morph",
+      "mute",
+      "niRotation",
+      "offset",
+      "snapToNIGrid",
+      "title",
+      "zoom",
+      "patcher",
+      "signal"
+    ],
+    "attributes": {},
+    "seealso": [
+      "flowSwing_onsetDetect",
+      "flowSwing_envelop",
+      "flowSwing_nested",
+      "flowSwing_subDiv",
+      "flowSwing_noise",
+      "buffer~",
+      "groove~"
+    ],
+    "tags": [
+      "FlowSwing",
+      "Flow",
+      "Swing"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "FlowSwing",
+    "rnbo_compatible": false
+  },
+  "flowSwing.envelop": {
+    "name": "flowSwing.envelop",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "FlowSwing",
+    "digest": "Sequencer with 2 hierarchically nested NI Grids",
+    "description": "Generates automation curves and multichannel triggers for sequencing using two hiearchically nested NI Grids.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Playback position",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Envelop"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Multi-channel"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "Formative",
+      "Formative2",
+      "Target",
+      "Target2",
+      "S",
+      "S2",
+      "asGrid",
+      "breakpoints",
+      "chans",
+      "firstChannel",
+      "lock",
+      "morph",
+      "mute",
+      "niRotation",
+      "niRotation2",
+      "offset",
+      "snapToNIGrid",
+      "title",
+      "zoom",
+      "patcher",
+      "signal"
+    ],
+    "attributes": {},
+    "seealso": [
+      "flowSwing_envelop",
+      "flowSwing_audioWarp",
+      "flowSwing_subDiv",
+      "flowSwing_stepUI",
+      "flowSwing_noise",
+      "function"
+    ],
+    "tags": [
+      "FlowSwing",
+      "Flow",
+      "Swing"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "FlowSwing",
+    "rnbo_compatible": false
+  },
+  "flowSwing.noise": {
+    "name": "flowSwing.noise",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "FlowSwing",
+    "digest": "Synthesizer with tone-to-noise control and mc based polyphony",
+    "description": "A flexible noise synthesizer with tone-to-noise control, Non-Isochronous detune, skew shaping, and ADSR. Supports polyphony and sample-accurate timing via mc signals.\n\t\t\n\t\t\tflowSwing.noise is part of the FlowSwing package.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Multichannel gate signal to trigger independent voices.",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc.signal",
+        "signal": false,
+        "digest": "Channel 1 of generated audio."
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Channel 2 of generated audio."
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "mc.signal",
+      "float, signal, mc.signal",
+      "Formative",
+      "Target",
+      "S",
+      "ampCurve",
+      "attack",
+      "envCurve",
+      "filter",
+      "filterRange",
+      "noiseA",
+      "noiseArange",
+      "noiseF",
+      "noiseFrange",
+      "release",
+      "skew",
+      "skewRange",
+      "sustain"
+    ],
+    "attributes": {},
+    "seealso": [
+      "flowSwing_envelop",
+      "flowSwing_nested",
+      "flowSwing_subDiv",
+      "flowSwing_stepUI"
+    ],
+    "tags": [
+      "FlowSwing",
+      "Flow",
+      "Swing"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "FlowSwing",
+    "rnbo_compatible": false
+  },
+  "flowSwing.onsetDetect": {
+    "name": "flowSwing.onsetDetect",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "FlowSwing",
+    "digest": "Onset detection and automatic creation of warp markers",
+    "description": "Creates warpmarkers for flowSwing.audioWarp at onset positions.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "bang or message to fluid.bufonsetslice~.",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "buffer name or messages to set parameters.",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "list of onset position in samples."
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Dictionary of markers for flowSwing.audioWarp and parameter values."
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "buffer",
+      "continous",
+      "metric",
+      "threshold",
+      "pattrstorge messages"
+    ],
+    "attributes": {},
+    "seealso": [
+      "flowSwing_audioWarp",
+      "fluid.bufonsetslice~",
+      "buffer~"
+    ],
+    "tags": [
+      "FlowSwing",
+      "Flow",
+      "Swing"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "FlowSwing",
+    "rnbo_compatible": false
+  },
+  "flowSwing.stepUI": {
+    "name": "flowSwing.stepUI",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "FlowSwing",
+    "digest": "Step-sequencer UI for breakpoint control",
+    "description": "Edits per-breakpoint parameters alongside flowSwing.envelop or flowSwing.nested",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "list of relative times",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "list of y values or messages to set parameters",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "list of y values"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "step been edited with the mouse"
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": "parameters changes"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "list",
+      "zoom_x",
+      "color",
+      "floatmode",
+      "format",
+      "grid",
+      "range",
+      "pattrstorge messages"
+    ],
+    "attributes": {},
+    "seealso": [
+      "flowSwing_envelop",
+      "flowSwing_nested",
+      "flowSwing_audioWarp",
+      "flowSwing_noise"
+    ],
+    "tags": [
+      "FlowSwing",
+      "Flow",
+      "Swing"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "FlowSwing",
+    "rnbo_compatible": false
+  },
+  "flowSwing.subDiv": {
+    "name": "flowSwing.subDiv",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "FlowSwing",
+    "digest": "Non Integer subdivision of a phasor",
+    "description": "Subdivides an input phasor ramp into segments with any relative length.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "phasor input",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "list",
+        "signal": false,
+        "digest": "list of segment times (0-1)",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "float",
+        "signal": false,
+        "digest": "slide factor",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "output phase"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "segment index"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "list",
+      "clear",
+      "float"
+    ],
+    "attributes": {},
+    "seealso": [
+      "flowSwing_envelop",
+      "flowSwing_nested",
+      "flowSwing_audioWarp",
+      "flowSwing_noise",
+      "subdiv~"
+    ],
+    "tags": [
+      "FlowSwing",
+      "Flow",
+      "Swing"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "FlowSwing",
+    "rnbo_compatible": false
+  }
+}

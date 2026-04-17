@@ -1,7 +1,7 @@
 {
   "Jitter Geometry Features": {
     "name": "Jitter Geometry Features",
-    "maxclass": "Jitter Geometry Features",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -51,7 +51,7 @@
   },
   "jit.geom.close": {
     "name": "jit.geom.close",
-    "maxclass": "jit.geom.close",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Editors",
@@ -103,7 +103,7 @@
   },
   "jit.geom.crop": {
     "name": "jit.geom.crop",
-    "maxclass": "jit.geom.crop",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Editors",
@@ -175,7 +175,7 @@
   },
   "jit.geom.decimate": {
     "name": "jit.geom.decimate",
-    "maxclass": "jit.geom.decimate",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Algorithms",
@@ -227,7 +227,7 @@
   },
   "jit.geom.dimples": {
     "name": "jit.geom.dimples",
-    "maxclass": "jit.geom.dimples",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Deformers",
@@ -282,7 +282,7 @@
   },
   "jit.geom.displace": {
     "name": "jit.geom.displace",
-    "maxclass": "jit.geom.displace",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Deformers",
@@ -359,7 +359,7 @@
   },
   "jit.geom.distribute": {
     "name": "jit.geom.distribute",
-    "maxclass": "jit.geom.distribute",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Generators",
@@ -421,7 +421,7 @@
   },
   "jit.geom.join": {
     "name": "jit.geom.join",
-    "maxclass": "jit.geom.join",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Utilities",
@@ -468,7 +468,7 @@
   },
   "jit.geom.multiple": {
     "name": "jit.geom.multiple",
-    "maxclass": "jit.geom.multiple",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Generators",
@@ -535,7 +535,7 @@
   },
   "jit.geom.normalize": {
     "name": "jit.geom.normalize",
-    "maxclass": "jit.geom.normalize",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Deformers",
@@ -584,7 +584,7 @@
   },
   "jit.geom.normgen": {
     "name": "jit.geom.normgen",
-    "maxclass": "jit.geom.normgen",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Properties",
@@ -642,7 +642,7 @@
   },
   "jit.geom.prop": {
     "name": "jit.geom.prop",
-    "maxclass": "jit.geom.prop",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Properties",
@@ -694,7 +694,7 @@
   },
   "jit.geom.remesh": {
     "name": "jit.geom.remesh",
-    "maxclass": "jit.geom.remesh",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Algorithms",
@@ -748,7 +748,7 @@
   },
   "jit.geom.shape": {
     "name": "jit.geom.shape",
-    "maxclass": "jit.geom.shape",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Generators",
@@ -835,7 +835,7 @@
   },
   "jit.geom.smooth": {
     "name": "jit.geom.smooth",
-    "maxclass": "jit.geom.smooth",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Algorithms",
@@ -889,7 +889,7 @@
   },
   "jit.geom.subdivide": {
     "name": "jit.geom.subdivide",
-    "maxclass": "jit.geom.subdivide",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Algorithms",
@@ -948,7 +948,7 @@
   },
   "jit.geom.texgen": {
     "name": "jit.geom.texgen",
-    "maxclass": "jit.geom.texgen",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Properties",
@@ -1006,7 +1006,7 @@
   },
   "jit.geom.thru": {
     "name": "jit.geom.thru",
-    "maxclass": "jit.geom.thru",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Utilities",
@@ -1053,7 +1053,7 @@
   },
   "jit.geom.todict": {
     "name": "jit.geom.todict",
-    "maxclass": "jit.geom.todict",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Converters",
@@ -1108,7 +1108,7 @@
   },
   "jit.geom.togeom": {
     "name": "jit.geom.togeom",
-    "maxclass": "jit.geom.togeom",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Converters",
@@ -1163,7 +1163,7 @@
   },
   "jit.geom.tomatrix": {
     "name": "jit.geom.tomatrix",
-    "maxclass": "jit.geom.tomatrix",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Converters",
@@ -1225,7 +1225,7 @@
   },
   "jit.geom.tomesh": {
     "name": "jit.geom.tomesh",
-    "maxclass": "jit.geom.tomesh",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Converters",
@@ -1290,7 +1290,7 @@
   },
   "jit.geom.twist": {
     "name": "jit.geom.twist",
-    "maxclass": "jit.geom.twist",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Deformers",
@@ -1365,7 +1365,7 @@
   },
   "jit.geom.waves": {
     "name": "jit.geom.waves",
-    "maxclass": "jit.geom.waves",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Deformers",
@@ -1455,7 +1455,7 @@
   },
   "jit.geom.xform": {
     "name": "jit.geom.xform",
-    "maxclass": "jit.geom.xform",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Utilities",
@@ -1658,7 +1658,7 @@
   },
   "jit.geometry": {
     "name": "jit.geometry",
-    "maxclass": "jit.geometry",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",

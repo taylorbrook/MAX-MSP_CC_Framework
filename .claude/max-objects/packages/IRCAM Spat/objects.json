@@ -1,7 +1,7 @@
 {
   "spat5.panoramix": {
     "name": "spat5.panoramix",
-    "maxclass": "spat5.panoramix",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "spatialization",
@@ -45,7 +45,7 @@
   },
   "spat5.oper": {
     "name": "spat5.oper",
-    "maxclass": "spat5.oper",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "spatialization",
@@ -89,7 +89,7 @@
   },
   "spat5.panning~": {
     "name": "spat5.panning~",
-    "maxclass": "spat5.panning~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "spatialization",
@@ -134,7 +134,7 @@
   },
   "spat5.binaural~": {
     "name": "spat5.binaural~",
-    "maxclass": "spat5.binaural~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "spatialization",
@@ -179,7 +179,7 @@
   },
   "spat5.ambi.enc~": {
     "name": "spat5.ambi.enc~",
-    "maxclass": "spat5.ambi.enc~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "spatialization",
@@ -224,7 +224,7 @@
   },
   "spat5.reverb~": {
     "name": "spat5.reverb~",
-    "maxclass": "spat5.reverb~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "room",
@@ -269,7 +269,7 @@
   },
   "spat5.early~": {
     "name": "spat5.early~",
-    "maxclass": "spat5.early~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "room",
@@ -314,7 +314,7 @@
   },
   "spat5.irt~": {
     "name": "spat5.irt~",
-    "maxclass": "spat5.irt~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "room",
@@ -359,7 +359,7 @@
   },
   "spat5.conv~": {
     "name": "spat5.conv~",
-    "maxclass": "spat5.conv~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "room",
@@ -404,7 +404,7 @@
   },
   "spat5.hoa.enc~": {
     "name": "spat5.hoa.enc~",
-    "maxclass": "spat5.hoa.enc~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "hoa",
@@ -449,7 +449,7 @@
   },
   "spat5.hoa.dec~": {
     "name": "spat5.hoa.dec~",
-    "maxclass": "spat5.hoa.dec~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "hoa",
@@ -494,7 +494,7 @@
   },
   "spat5.hoa.proc~": {
     "name": "spat5.hoa.proc~",
-    "maxclass": "spat5.hoa.proc~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "hoa",
@@ -539,7 +539,7 @@
   },
   "spat5.hoa.focus~": {
     "name": "spat5.hoa.focus~",
-    "maxclass": "spat5.hoa.focus~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "hoa",
@@ -584,7 +584,7 @@
   },
   "spat5.hoa.mirror~": {
     "name": "spat5.hoa.mirror~",
-    "maxclass": "spat5.hoa.mirror~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "hoa",
@@ -629,7 +629,7 @@
   },
   "spat5.hoa.srp~": {
     "name": "spat5.hoa.srp~",
-    "maxclass": "spat5.hoa.srp~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "hoa",
@@ -674,7 +674,7 @@
   },
   "spat5.wfs~": {
     "name": "spat5.wfs~",
-    "maxclass": "spat5.wfs~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "wfs",
@@ -719,7 +719,7 @@
   },
   "spat5.trajectories": {
     "name": "spat5.trajectories",
-    "maxclass": "spat5.trajectories",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "control",
@@ -757,7 +757,7 @@
   },
   "spat5.periactes": {
     "name": "spat5.periactes",
-    "maxclass": "spat5.periactes",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "control",
@@ -795,7 +795,7 @@
   },
   "spat5.sfplay~": {
     "name": "spat5.sfplay~",
-    "maxclass": "spat5.sfplay~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "io",
@@ -839,7 +839,7 @@
   },
   "spat5.sfrecord~": {
     "name": "spat5.sfrecord~",
-    "maxclass": "spat5.sfrecord~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "io",
@@ -883,7 +883,7 @@
   },
   "spat5.viewer": {
     "name": "spat5.viewer",
-    "maxclass": "spat5.viewer",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "ui",
@@ -921,7 +921,7 @@
   },
   "spat5.oper~": {
     "name": "spat5.oper~",
-    "maxclass": "spat5.oper~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "spatialization",
@@ -966,7 +966,7 @@
   },
   "spat5.osc.route": {
     "name": "spat5.osc.route",
-    "maxclass": "spat5.osc.route",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "osc",
@@ -1004,7 +1004,7 @@
   },
   "spat5.osc.pack": {
     "name": "spat5.osc.pack",
-    "maxclass": "spat5.osc.pack",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "osc",
@@ -1042,7 +1042,7 @@
   },
   "spat5.osc.unpack": {
     "name": "spat5.osc.unpack",
-    "maxclass": "spat5.osc.unpack",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "osc",

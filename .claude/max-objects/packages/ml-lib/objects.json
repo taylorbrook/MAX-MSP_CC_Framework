@@ -1,7 +1,7 @@
 {
   "ml.adaboost": {
     "name": "ml.adaboost",
-    "maxclass": "ml.adaboost",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -52,7 +52,7 @@
   },
   "ml.dtw": {
     "name": "ml.dtw",
-    "maxclass": "ml.dtw",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -103,7 +103,7 @@
   },
   "ml.gmm": {
     "name": "ml.gmm",
-    "maxclass": "ml.gmm",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -154,7 +154,7 @@
   },
   "ml.hmmc": {
     "name": "ml.hmmc",
-    "maxclass": "ml.hmmc",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -205,7 +205,7 @@
   },
   "ml.knn": {
     "name": "ml.knn",
-    "maxclass": "ml.knn",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -256,7 +256,7 @@
   },
   "ml.mindist": {
     "name": "ml.mindist",
-    "maxclass": "ml.mindist",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -307,7 +307,7 @@
   },
   "ml.randforest": {
     "name": "ml.randforest",
-    "maxclass": "ml.randforest",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -358,7 +358,7 @@
   },
   "ml.softmax": {
     "name": "ml.softmax",
-    "maxclass": "ml.softmax",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -409,7 +409,7 @@
   },
   "ml.svm": {
     "name": "ml.svm",
-    "maxclass": "ml.svm",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "classification",
@@ -460,7 +460,7 @@
   },
   "ml.linreg": {
     "name": "ml.linreg",
-    "maxclass": "ml.linreg",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "regression",
@@ -511,7 +511,7 @@
   },
   "ml.logreg": {
     "name": "ml.logreg",
-    "maxclass": "ml.logreg",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "regression",
@@ -562,7 +562,7 @@
   },
   "ml.ann": {
     "name": "ml.ann",
-    "maxclass": "ml.ann",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "regression",
@@ -613,7 +613,7 @@
   },
   "ml.mulreg": {
     "name": "ml.mulreg",
-    "maxclass": "ml.mulreg",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "regression",
@@ -664,7 +664,7 @@
   },
   "ml.minmax": {
     "name": "ml.minmax",
-    "maxclass": "ml.minmax",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "feature",

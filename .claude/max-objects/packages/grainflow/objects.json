@@ -1,0 +1,2983 @@
+{
+  "grainflow.chorus~": {
+    "name": "grainflow.chorus~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "A simple granular chorus effect.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal/multichannelsignal",
+        "signal": false,
+        "digest": "Stereo signal to be sustained",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Sustain in stereo."
+      }
+    ],
+    "arguments": [
+      {
+        "name": "number-of-grains",
+        "type": "symbol",
+        "optional": false,
+        "digest": "The number of grains"
+      }
+    ],
+    "messages": [
+      "int",
+      "grainSize",
+      "decay",
+      "pitchshift",
+      "randomPan",
+      "---any-grainflow-param---",
+      "ngrains",
+      "voices",
+      "grain",
+      "env",
+      "amp",
+      "ampRandom",
+      "windowOffset",
+      "windowOffsetRandom",
+      "space",
+      "spaceRandom",
+      "density",
+      "travOffset",
+      "travRandom",
+      "travGlobalOffset",
+      "rate",
+      "rateRandom",
+      "direction",
+      "rateOffset",
+      "glisson",
+      "glissonRandom",
+      "rateQuantizeSemi",
+      "travMode",
+      "travOffsets",
+      "rateMode",
+      "rates",
+      "envMode",
+      "env2D",
+      "env2DNumber",
+      "env2DPosition",
+      "env2DRandom",
+      "windowOffsetMode",
+      "windowReadBias"
+    ],
+    "attributes": {
+      "any-message": {
+        "type": "anything",
+        "get": false,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow.freeze~",
+      "grainflow.harmonize~",
+      "grainflow.synth~",
+      "grainflow.scrubSynth~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.freeze~": {
+    "name": "grainflow.freeze~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Freeze moments in time with granulation",
+    "description": "",
+    "inlets": [
+      {
+        "id": 1,
+        "type": "signal/multichannelsignal/list",
+        "signal": false,
+        "digest": "Signal and Multichannelsignal will act as the granulator's clock.  Multichannel signals should be used if you want more direct control in the length and size of grains. Lists are interpreted as messages to the abstraction.",
+        "hot": false
+      },
+      {
+        "id": 0,
+        "type": "signal/multichannelsignal",
+        "signal": false,
+        "digest": "Input audio",
+        "hot": true
+      },
+      {
+        "id": 2,
+        "type": "signal/multichannelsignal",
+        "signal": false,
+        "digest": "Frequency Modulation",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "signal/multichannelsignal",
+        "signal": false,
+        "digest": "Amplitude Modulation",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grains each as their own channel."
+      }
+    ],
+    "arguments": [
+      {
+        "name": "buffer-time",
+        "type": "float",
+        "optional": false,
+        "digest": "The length of the interal buffer.  The freeze can last as long as the duration of this buffer. If it goes over the duration the buffer loops and the freeze will be overwritten."
+      },
+      {
+        "name": "freeze-voices",
+        "type": "int",
+        "optional": false,
+        "digest": "Number of freeze voices"
+      }
+    ],
+    "messages": [
+      "midi-note",
+      "adsr",
+      "transpose",
+      "freezeDepth",
+      "freezeExpandTime",
+      "int",
+      "open",
+      "---grain-flow-messages---",
+      "ngrains",
+      "voices",
+      "grain",
+      "env",
+      "buf",
+      "amp",
+      "ampRandom",
+      "windowOffset",
+      "windowOffsetRandom",
+      "space",
+      "spaceRandom",
+      "density",
+      "travOffset",
+      "travRandom",
+      "travGlobalOffset",
+      "rate",
+      "rateRandom",
+      "direction",
+      "rateOffset",
+      "glisson",
+      "glissonRandom",
+      "rateQuantizeSemi",
+      "travMode",
+      "travOffsets",
+      "rateMode",
+      "rates",
+      "envMode",
+      "env2D",
+      "env2DNumber",
+      "env2DPosition",
+      "env2DRandom",
+      "windowOffsetMode",
+      "windowReadBias"
+    ],
+    "attributes": {
+      "any-message": {
+        "type": "anything",
+        "get": false,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow.chorus~",
+      "grainflow.harmonize~",
+      "grainflow.synth~",
+      "grainflow.scrubSynth~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.harmonize~": {
+    "name": "grainflow.harmonize~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Granular harmonizer abstraction using grainflow~.",
+    "description": "grainflow.harmonize~ is an implementation of grainflow~ designed for harmonization.  Each harmonizer voice is a 4 grain granulator.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal to be harmonized.",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal/multichannelsignal",
+        "signal": false,
+        "digest": "Frequency Modulation",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "signal/multichannelsignal",
+        "signal": false,
+        "digest": "Amplitude Modulation",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Each harmonizer voice as its own channel."
+      }
+    ],
+    "arguments": [
+      {
+        "name": "buffer-size",
+        "type": "symbol",
+        "optional": false,
+        "digest": "The size of the internal buffer."
+      },
+      {
+        "name": "harmonizer-voices",
+        "type": "int",
+        "optional": false,
+        "digest": "The maximum number of harmonizer voices.  Each harmonizer has 4 grains."
+      }
+    ],
+    "messages": [
+      "int",
+      "state",
+      "grainSize",
+      "notesPerOctave",
+      "adsr",
+      "allnotesoff",
+      "addedLatency",
+      "latencyMode",
+      "---grain-flow-messages---",
+      "ngrains",
+      "voices",
+      "grain",
+      "env",
+      "amp",
+      "ampRandom",
+      "windowOffset",
+      "windowOffsetRandom",
+      "space",
+      "spaceRandom",
+      "density",
+      "travOffset",
+      "travRandom",
+      "travGlobalOffset",
+      "rateRandom",
+      "direction",
+      "rateOffset",
+      "glisson",
+      "glissonRandom",
+      "rateQuantizeSemi",
+      "travMode",
+      "travOffsets",
+      "rateMode",
+      "rates",
+      "envMode",
+      "env2D",
+      "env2DNumber",
+      "env2DPosition",
+      "env2DRandom",
+      "windowOffsetMode",
+      "windowReadBias"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow.chorus~",
+      "grainflow.freeze~",
+      "grainflow.synth~",
+      "grainflow.scrubSynth~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.live~": {
+    "name": "grainflow.live~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "granulation,  msp,  grainflow",
+    "digest": "the live granulation object for grainflow",
+    "description": "the live granulation object for grainflow",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "buffer-size-or-buffer",
+        "type": "",
+        "optional": true,
+        "digest": "the size of the internal buffer in ms or the name of a buffer"
+      },
+      {
+        "name": "number-of-grains",
+        "type": "int",
+        "optional": true,
+        "digest": "max number of grains"
+      },
+      {
+        "name": "envelope-buffer",
+        "type": "int",
+        "optional": true,
+        "digest": "(optional) the initial envelope buffer for all grains"
+      }
+    ],
+    "messages": [
+      "g",
+      "int",
+      "trav",
+      "travRandom",
+      "windowBuffer",
+      "travOffset",
+      "streamTarget",
+      "target",
+      "rateBuffer",
+      "windowOffsetRandom",
+      "set",
+      "streamSet",
+      "nstreams",
+      "stream",
+      "deviate",
+      "streamDeviate",
+      "randomrange",
+      "streamRandomrange",
+      "spread",
+      "streamSpread",
+      "windowMode",
+      "bufChan",
+      "g_chan",
+      "delayMode",
+      "rateMode",
+      "glissonMode",
+      "env",
+      "buf",
+      "env2D",
+      "env2DPosition",
+      "delayBuffer",
+      "glissonBuffer",
+      "done"
+    ],
+    "attributes": {
+      "amp": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "ampOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "ampRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "autoOverlap": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "bufChans": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "buffer_name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "chanMode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "delay": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "delayOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "delayRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "density": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "direction": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "envPosition": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "envPositionOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "envPositionRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "freeze": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "glisson": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonBufferPosition": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonBufferPositionOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonBufferPositionRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonSt": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonStOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonStRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "liveMode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "loopMode": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "nEnvelopes": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "ngrains": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "overdub": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "play": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "rate": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "rateOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "rateQuantizeSemi": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "rateRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "rec": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "space": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "spaceOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "spaceRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "startPoint": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "state": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "stopPoint": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "transpose": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "transposeOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "transposeRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "voices": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "window": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "windowOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "windowRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [],
+    "tags": [
+      "granulation",
+      "msp",
+      "grainflow"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.scrubSynth~": {
+    "name": "grainflow.scrubSynth~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Create a noise synthesizer through granular synthesis.  The scrubSynth uses integer multiples of frequency and traversal to generate a wavelet synthesis-like approach using granulation.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Grain Phasor Frequency",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Small offset from phasor frequency to traversal.",
+        "hot": true
+      },
+      {
+        "id": 2,
+        "type": "signal",
+        "signal": true,
+        "digest": "Factor from grain phasor frequency to traversal.",
+        "hot": true
+      },
+      {
+        "id": 3,
+        "type": "signal",
+        "signal": true,
+        "digest": "FM index",
+        "hot": true
+      },
+      {
+        "id": 4,
+        "type": "signal",
+        "signal": true,
+        "digest": "FM mod depth",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grains each as their own channel."
+      },
+      {
+        "id": 1,
+        "type": "lisy",
+        "signal": false,
+        "digest": "Grain data"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "buffer-name",
+        "type": "float",
+        "optional": false,
+        "digest": "Buffer to sample from."
+      },
+      {
+        "name": "granular-voices",
+        "type": "int",
+        "optional": false,
+        "digest": "Number of granular voices per synth voice."
+      }
+    ],
+    "messages": [
+      "int",
+      "---grain-flow-messages---",
+      "ngrains",
+      "voices",
+      "grain",
+      "env",
+      "buf",
+      "amp",
+      "ampRandom",
+      "windowOffset",
+      "windowOffsetRandom",
+      "space",
+      "spaceRandom",
+      "density",
+      "travOffset",
+      "travRandom",
+      "travGlobalOffset",
+      "rate",
+      "rateRandom",
+      "direction",
+      "rateOffset",
+      "glisson",
+      "glissonRandom",
+      "rateQuantizeSemi",
+      "travMode",
+      "travOffsets",
+      "rateMode",
+      "rates",
+      "envMode",
+      "env2D",
+      "env2DNumber",
+      "env2DPosition",
+      "env2DRandom",
+      "windowOffsetMode",
+      "windowReadBias"
+    ],
+    "attributes": {
+      "any-message": {
+        "type": "anything",
+        "get": false,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow.chorus~",
+      "grainflow.freeze~",
+      "grainflow.harmonize~",
+      "grainflow.synth~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.3dspread": {
+    "name": "grainflow.spat.3dspread",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Spreads grains from a center point",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grain state as mc",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "xyz positions"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "spread",
+        "type": "int",
+        "optional": true,
+        "digest": "The amount grains may deviate from the center"
+      }
+    ],
+    "messages": [
+      "spread",
+      "center",
+      "centeraed"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.pan~",
+      "grainflow.spat.spirograph",
+      "grainflow.spat.phys",
+      "grainflow.spat.transformOverLife"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.format": {
+    "name": "grainflow.spat.format",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Formats grain position messages for other systems such as Spat Gris or the IEM Suite",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "converted message"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "xyz",
+      "mode"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.phys",
+      "grainflow.spat.pan~",
+      "grainflow.spat.phys.add",
+      "grainflow.spat.phys.magnets",
+      "grainflow.spat.phys.transform"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.pan~": {
+    "name": "grainflow.spat.pan~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "A 3D Panner for grainflow",
+    "description": "Pan grains based on position to speakers. Currently suports basic distance based panning and vector based panning.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "multichannelsignal/list",
+        "signal": false,
+        "digest": "Grains as MC, pan positions and speaker posions as messages.",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Panned Grains"
+      },
+      {
+        "id": 1,
+        "type": "viz",
+        "signal": false,
+        "digest": "Information for grainflow.spatview~"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "xyz",
+      "speakers",
+      "dictionary",
+      "falloffDistance",
+      "falloffCurve",
+      "dimmask",
+      "panMode",
+      "nspeakers"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.spirograph",
+      "grainflow.spat.volume",
+      "grainflow.spat.phys",
+      "grainflow.spat.transformOverLife"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.phys": {
+    "name": "grainflow.spat.phys",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "A simple physics engine that allows for manipulation of position, velocity, and acceleration manipulations.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grain State as MC",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "jittermatrix",
+        "signal": false,
+        "digest": "Jitter matrix created using the lambda outlet. The matrix will insert itself before each physics update.",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "xyz positions"
+      },
+      {
+        "id": 1,
+        "type": "jittermatrix",
+        "signal": false,
+        "digest": "Lamda outlet for custom physics proccessing"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "position",
+      "positionRandom",
+      "velocity",
+      "velocityRandom",
+      "acceleration",
+      "accelerationRandom",
+      "physUpdate"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.pan~",
+      "grainflow.spat.phys.add",
+      "grainflow.spat.phys.magnets",
+      "grainflow.spat.phys.transform",
+      "grainflow.spat.phys.drag"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.phys.add": {
+    "name": "grainflow.spat.phys.add",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Adds values to physics fields using the lambda outlet for custom updates.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "jittermatrix",
+        "signal": false,
+        "digest": "grainflow.phys matrix",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jittermatrix",
+        "signal": false,
+        "digest": "Lamda outlet for custom physics proccessing"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "position",
+      "positionRandom",
+      "velocity",
+      "velocityRandom",
+      "acceleration",
+      "accelerationRandom"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.pan~",
+      "grainflow.spat.phys.add",
+      "grainflow.spat.phys.magnets",
+      "grainflow.spat.phys.transform",
+      "grainflow.spat.phys.drag"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.phys.drag": {
+    "name": "grainflow.spat.phys.drag",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Applies drag to a grainflow physics matrix",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "jittermatrix",
+        "signal": false,
+        "digest": "grainflow.phys matrix",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "float",
+        "signal": false,
+        "digest": "drag",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jittermatrix",
+        "signal": false,
+        "digest": "Lamda outlet for custom physics proccessing"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.phys",
+      "grainflow.spat.pan~",
+      "grainflow.spat.phys.add",
+      "grainflow.spat.phys.magnets",
+      "grainflow.spat.phys.transform"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.phys.magnets": {
+    "name": "grainflow.spat.phys.magnets",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Applies transformations to a selected physics field",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "jittermatrix",
+        "signal": false,
+        "digest": "grainflow.phys matrix",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jittermatrix",
+        "signal": false,
+        "digest": "Lamda outlet for custom physics proccessing"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "translate",
+      "scale",
+      "rotate",
+      "dimop"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.phys",
+      "grainflow.spat.pan~",
+      "grainflow.spat.phys.add",
+      "grainflow.spat.phys.magnets",
+      "grainflow.spat.phys.drag"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.speakers": {
+    "name": "grainflow.spat.speakers",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Allows for easy access to speaker presets and loading of speaker files",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "name of a speaker setup as a symbol",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "speaker json"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "symbol",
+      "getspeakers",
+      "readtxt",
+      "readjson"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.phys",
+      "grainflow.spat.pan~",
+      "grainflow.spat.phys.add",
+      "grainflow.spat.phys.magnets",
+      "grainflow.spat.phys.transform"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.spirograph": {
+    "name": "grainflow.spat.spirograph",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Samples signals to spatialize grains with grainflow.spat.pan~",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Grain State as MC",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "X position",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Y position",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Z position",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "xyz message for grainflow.spat.pan~"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.pan~",
+      "grainflow.spat.volume",
+      "grainflow.spat.phys",
+      "grainflow.spat.transformOverLife"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.split": {
+    "name": "grainflow.spat.split",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Splits grain posiiton messages based on their IDs",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "speaker position messages or grain state messages (will generate positions at 0 0 0)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "grain positions within the range"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "grain positions outside of the range"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "start-grain",
+        "type": "",
+        "optional": false,
+        "digest": "grain ID that starts the range"
+      },
+      {
+        "name": "end-grain",
+        "type": "",
+        "optional": false,
+        "digest": "grain ID that ends the range"
+      }
+    ],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.phys",
+      "grainflow.spat.pan~",
+      "grainflow.spat.phys.add",
+      "grainflow.spat.phys.magnets",
+      "grainflow.spat.phys.transform"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.transformOverLive": {
+    "name": "grainflow.spat.transformOverLive",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Samples 3D volumes for grainflow.spat.pan~",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "xyz positions to transform",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "xyz positions"
+      },
+      {
+        "id": 1,
+        "type": "viz",
+        "signal": false,
+        "digest": "Information for grainflow.spatview~"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "translate",
+      "translateRandom",
+      "translate",
+      "translateRandom",
+      "scale",
+      "scaleRandom",
+      "rotate",
+      "rotateRandom"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.pan~",
+      "grainflow.spat.volume",
+      "grainflow.spat.spirograph",
+      "grainflow.spat.phys",
+      "grainflow.spat.transform"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spat.volume": {
+    "name": "grainflow.spat.volume",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Samples 3D volumes for grainflow.spat.pan~",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grain states",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "xyz positions"
+      },
+      {
+        "id": 1,
+        "type": "viz",
+        "signal": false,
+        "digest": "Information for grainflow.spatview~"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "shape",
+      "phase",
+      "elevation",
+      "innerRadius",
+      "translate",
+      "translateRandom",
+      "translate",
+      "translateRandom",
+      "scale",
+      "scaleRandom",
+      "rotate",
+      "rotateRandom",
+      "jit_matrix"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.spat.pan~",
+      "grainflow.spat.spirograph",
+      "grainflow.spat.phys",
+      "grainflow.spat.transformOverLife"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP",
+      "Spatialization"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.spatview~": {
+    "name": "grainflow.spatview~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ui",
+    "digest": "Visualize Grainflow spatialization",
+    "description": "Visualize Grainflow spatialization",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "speakers",
+      "xyz",
+      "vizInfo",
+      "pos",
+      "grainAmp",
+      "anything",
+      "setSpeakerAmps"
+    ],
+    "attributes": {
+      "falloffDistance": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "speakerPositions": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "dimmask": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "falloffCurve": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "zoneColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "drawCenter": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "backgroundColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "grainColor2": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "grainColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "centerColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "speakerOnColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "grainScale": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [],
+    "tags": [
+      "ui"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.streams~": {
+    "name": "grainflow.streams~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Create multiple streams of grains without channel loss.",
+    "description": "Control streams of grains without the loss of channels!  grainflow.stream is a shortcut to allow users to easily interface with multiple instances of grainflow with each grain being output as its own channel. A signal vector of delay will be added due to the use of sends and receives in a poly~.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Multichannelsignal will act as the grainulators clock for each stream.",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grain traversal as a multichannelsignal- each channel is for a stream.",
+        "hot": true
+      },
+      {
+        "id": 2,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Frequency Modulation",
+        "hot": true
+      },
+      {
+        "id": 3,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Amplitude Modulation",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grains each as their own channel."
+      },
+      {
+        "id": 1,
+        "type": "list",
+        "signal": false,
+        "digest": "Grain information organized by stream number."
+      }
+    ],
+    "arguments": [
+      {
+        "name": "streams",
+        "type": "int",
+        "optional": false,
+        "digest": "The number of streams created."
+      },
+      {
+        "name": "grains-per-stream",
+        "type": "int",
+        "optional": false,
+        "digest": "The number of grains in each stream."
+      },
+      {
+        "name": "buffer-name",
+        "type": "symbol",
+        "optional": false,
+        "digest": "The name of the buffer the granulate."
+      }
+    ],
+    "messages": [
+      "stream",
+      "deviate",
+      "---grainflow-messages---",
+      "int",
+      "state",
+      "ngrains",
+      "voices",
+      "grain",
+      "env",
+      "buf",
+      "amp",
+      "ampRandom",
+      "windowOffset",
+      "windowOffsetRandom",
+      "space",
+      "spaceRandom",
+      "density",
+      "travOffset",
+      "travRandom",
+      "travGlobalOffset",
+      "rate",
+      "rateRandom",
+      "direction",
+      "rateOffset",
+      "glisson",
+      "glissonRandom",
+      "rateQuantizeSemi",
+      "travMode",
+      "travOffsets",
+      "rateMode",
+      "rates",
+      "envMode",
+      "env2D",
+      "env2DNumber",
+      "env2DPosition",
+      "env2DRandom",
+      "windowOffsetMode",
+      "windowReadBias"
+    ],
+    "attributes": {
+      "any-message": {
+        "type": "anything",
+        "get": false,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow~",
+      "grainflow.streams~",
+      "grainflow.record~",
+      "grainflow.grainRecord~",
+      "grainflow.waveform~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.synth~": {
+    "name": "grainflow.synth~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "A granular sampler",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "Messages to control grainflow.synth~",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grains each as their own channel."
+      }
+    ],
+    "arguments": [
+      {
+        "name": "buffer-name",
+        "type": "float",
+        "optional": false,
+        "digest": "Buffer to sample from"
+      },
+      {
+        "name": "synth-voices",
+        "type": "int",
+        "optional": false,
+        "digest": "Number of synth voices"
+      },
+      {
+        "name": "granular-voices",
+        "type": "int",
+        "optional": false,
+        "digest": "Number of granular voices per synth voice"
+      }
+    ],
+    "messages": [
+      "midi-note",
+      "adsr",
+      "period",
+      "update",
+      "autoUpdate",
+      "---grain-flow-messages---",
+      "ngrains",
+      "voices",
+      "grain",
+      "env",
+      "buf",
+      "amp",
+      "ampRandom",
+      "windowOffset",
+      "windowOffsetRandom",
+      "space",
+      "spaceRandom",
+      "density",
+      "travOffset",
+      "travRandom",
+      "travGlobalOffset",
+      "rate",
+      "rateRandom",
+      "direction",
+      "rateOffset",
+      "glisson",
+      "glissonRandom",
+      "rateQuantizeSemi",
+      "travMode",
+      "travOffsets",
+      "rateMode",
+      "rates",
+      "envMode",
+      "env2D",
+      "env2DNumber",
+      "env2DPosition",
+      "env2DRandom",
+      "windowOffsetMode",
+      "windowReadBias"
+    ],
+    "attributes": {
+      "any-message": {
+        "type": "anything",
+        "get": false,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow.chorus~",
+      "grainflow.freeze~",
+      "grainflow.harmonize~",
+      "grainflow.scrubSynth~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.3dspread": {
+    "name": "grainflow.util.3dspread",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "An easy way to pan grains generated with grainflow.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grains as independent channels.",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "channel coordinates",
+        "signal": false,
+        "digest": "x y z positions of a channel"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "spread",
+      "center"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.util.vbap3d"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.grainRecord~": {
+    "name": "grainflow.util.grainRecord~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Record grains of an incoming signal to a buffer.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal to record",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "grain clock",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "record head"
+      },
+      {
+        "id": 1,
+        "type": "list",
+        "signal": false,
+        "digest": "record head"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "buffername",
+        "type": "symbol",
+        "optional": false,
+        "digest": "The name of the buffer the granulate."
+      }
+    ],
+    "messages": [
+      "int",
+      "travRandom",
+      "ngrains",
+      "overdub"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.util.record~",
+      "grainflow.streams~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.listChange": {
+    "name": "grainflow.util.listChange",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "detects changes in lists",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "List to check for changes from the last list.",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "list of changes. 0 is no change 1 is a change in a positive direction, -1 is a change in a negitive dirrection."
+      },
+      {
+        "id": 1,
+        "type": "list",
+        "signal": false,
+        "digest": "indices of changed members.  Signs are applied to signifiy the dirrection of the change."
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "list"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.list~": {
+    "name": "grainflow.util.list~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Selects from a list based on an audio value from 0-1.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Sampling value from 0-1",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "list",
+        "signal": false,
+        "digest": "list to sample from",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Values sampled from list"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "list of values",
+        "type": "int",
+        "optional": false,
+        "digest": "Values to be sampled from"
+      }
+    ],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.multipan~": {
+    "name": "grainflow.util.multipan~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "granulation,  msp,  grainflow",
+    "digest": "An easy way to pan grains generated with grainflow",
+    "description": "An easy way to pan grains generated with grainflow.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "output channels",
+        "type": "int",
+        "optional": true,
+        "digest": "The number of output channels"
+      }
+    ],
+    "messages": [],
+    "attributes": {
+      "panCenter": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "panSpread": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow.util.multipan~",
+      "grainflow.spatpan~"
+    ],
+    "tags": [
+      "granulation",
+      "msp",
+      "grainflow"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.phasor~": {
+    "name": "grainflow.util.phasor~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "An easy to adust phasor for granulation",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "float",
+        "signal": false,
+        "digest": "Rate of the phasor in hz.",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "float",
+        "signal": false,
+        "digest": "low boundary",
+        "hot": false
+      },
+      {
+        "id": 1,
+        "type": "float",
+        "signal": false,
+        "digest": "High boundary",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Phasor signal."
+      }
+    ],
+    "arguments": [
+      {
+        "name": "initial frequency",
+        "type": "int",
+        "optional": false,
+        "digest": "Inital frequency of the phasor."
+      }
+    ],
+    "messages": [
+      "mode",
+      "reset",
+      "set"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.live~",
+      "grainflow.streams~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.randomRangeList": {
+    "name": "grainflow.util.randomRangeList",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Generates a random list of n elements between two numbers.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "bang",
+        "signal": false,
+        "digest": "Triggers a list.",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "int",
+        "signal": false,
+        "digest": "Members in the list.",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "float",
+        "signal": false,
+        "digest": "Min value.",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "float",
+        "signal": false,
+        "digest": "Max value.",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "Random list."
+      }
+    ],
+    "arguments": [
+      {
+        "name": "list-length",
+        "type": "int",
+        "optional": false,
+        "digest": "Length of the random list."
+      },
+      {
+        "name": "min",
+        "type": "float",
+        "optional": false
+      },
+      {
+        "name": "max",
+        "type": "float",
+        "optional": false
+      }
+    ],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.rateSizePhasor~": {
+    "name": "grainflow.util.rateSizePhasor~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "Generates random numbers in a range whenver a grain turns off.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Grain state (0 triggers output)",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Min",
+        "hot": true
+      },
+      {
+        "id": 2,
+        "type": "signal",
+        "signal": true,
+        "digest": "Max",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Random numbers as signals per grain"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "min",
+        "type": "float",
+        "optional": false
+      },
+      {
+        "name": "max",
+        "type": "float",
+        "optional": false
+      }
+    ],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "grainflow~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.record~": {
+    "name": "grainflow.util.record~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "granulation,  msp,  grainflow",
+    "digest": "A simple buffer recorder intended to be used with grainflow",
+    "description": "A simple buffer recorder intended to be used with grainflow",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "buffer-name",
+        "type": "int",
+        "optional": true,
+        "digest": "the buffer to record to"
+      }
+    ],
+    "messages": [
+      "buf",
+      "set",
+      "int"
+    ],
+    "attributes": {
+      "buffer": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "freeze": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "overdub": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "state": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow~",
+      "grainflow.live~"
+    ],
+    "tags": [
+      "granulation",
+      "msp",
+      "grainflow"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.stereoPan~": {
+    "name": "grainflow.util.stereoPan~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "An easy way to pan grains generated with grainflow.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grains as independent channels.",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "float",
+        "signal": false,
+        "digest": "Tracker Position",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": "List of tracker positions"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "float",
+      "norm",
+      "trackers",
+      "trackersNorm",
+      "doubleclick",
+      "drag",
+      "shiftclick",
+      "addPoint",
+      "insertPoint",
+      "movePoint",
+      "removePoint",
+      "removePoint",
+      "swapPoint",
+      "scramble",
+      "randomize",
+      "jitter",
+      "setPoints",
+      "clear",
+      "getPoints",
+      "getLength",
+      "bgColor",
+      "color",
+      "selectColor",
+      "dotTextColor",
+      "trackerColor",
+      "dotSize",
+      "trackerSize",
+      "lineThickness"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "function",
+      "2D.wave~"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.stereopan~": {
+    "name": "grainflow.util.stereopan~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "granulation,  msp,  grainflow",
+    "digest": "An easy way to pan grains generated with grainflow",
+    "description": "An easy way to pan grains generated with grainflow.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "panCenter": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "panSpread": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow.util.multipan~",
+      "grainflow.spatpan~"
+    ],
+    "tags": [
+      "granulation",
+      "msp",
+      "grainflow"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.util.vbap3d": {
+    "name": "grainflow.util.vbap3d",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "grainflow, MSP Proccessing",
+    "digest": "An easy way to pan grains generated with grainflow.",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": "Grains as independent channels.",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "mc_signal",
+        "signal": true,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "position",
+      "speakers"
+    ],
+    "attributes": {},
+    "seealso": [
+      "grainflow~",
+      "grainflow.util.3Dspread"
+    ],
+    "tags": [
+      "Grainflow",
+      "Granulation",
+      "MSP"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow.waveform~": {
+    "name": "grainflow.waveform~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ui",
+    "digest": "Visualize Grainflow granulation on a waveform display",
+    "description": "Visualize Grainflow granulation on a waveform display",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "grainInfo",
+      "buf",
+      "anything",
+      "set",
+      "recordHead"
+    ],
+    "attributes": {
+      "bgColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "buffername": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "chan": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "dotColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "dotColorSecondary": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "dotScale": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "dotVJitter": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "fps": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "maxBufferDrawSamples": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "selectColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "selection": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "showTriangles": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "trackerColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "trackerWidth": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "triangleColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "vZoom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "waveformColor": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "grainflow~",
+      "grainflow.live~"
+    ],
+    "tags": [
+      "ui"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  },
+  "grainflow~": {
+    "name": "grainflow~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "granulation,  msp,  grainflow",
+    "digest": "the base object for grainflow",
+    "description": "the base object for grainflow",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "buf",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Buffer~ from which to read"
+      },
+      {
+        "name": "number-of-grains",
+        "type": "int",
+        "optional": true,
+        "digest": "max number of grains"
+      },
+      {
+        "name": "envelope-buffer",
+        "type": "int",
+        "optional": true,
+        "digest": "(optional) the initial envelope buffer for all grains"
+      }
+    ],
+    "messages": [
+      "rateBuffer",
+      "delayBuffer",
+      "env2D",
+      "windowBuffer",
+      "buf",
+      "env",
+      "glissonMode",
+      "windowMode",
+      "rateMode",
+      "glissonBuffer",
+      "bufChan",
+      "delayMode",
+      "stream",
+      "streamSpread",
+      "randomrange",
+      "chan",
+      "done",
+      "streamTarget",
+      "env2DPosition",
+      "travOffset",
+      "nstreams",
+      "int",
+      "windowOffsetRandom",
+      "target",
+      "g",
+      "streamSet",
+      "spread",
+      "travRandom",
+      "deviate",
+      "streamDeviate",
+      "trav",
+      "streamRandomrange"
+    ],
+    "attributes": {
+      "amp": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "ampOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "ampRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "autoOverlap": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "bufChans": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "chanMode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "delay": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "delayOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "delayRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "density": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "direction": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "envPosition": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "envPositionOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "envPositionRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glisson": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonBufferPosition": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonBufferPositionOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonBufferPositionRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonSt": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonStOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "glissonStRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "liveMode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "loopMode": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "nEnvelopes": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "ngrains": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "rate": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "rateOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "rateQuantizeSemi": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "rateRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "space": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "spaceOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "spaceRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "startPoint": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "state": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "stopPoint": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "transpose": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "transposeOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "transposeRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "voices": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "window": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "windowOffset": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "windowRandom": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [],
+    "tags": [
+      "granulation",
+      "msp",
+      "grainflow"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "grainflow",
+    "rnbo_compatible": false
+  }
+}

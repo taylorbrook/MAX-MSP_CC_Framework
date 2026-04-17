@@ -1,0 +1,1505 @@
+{
+  "jit.ml.lzw": {
+    "name": "jit.ml.lzw",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Lemper-Ziv-Welch string based compression for Jitter matrices.",
+    "description": "Compress/decompress matrices using a sub-string dictionary based compression algorithm. Commonly used to estimate the complexity or novelty of sequential data.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(matrix) data to be compressed, char type only, or decompressed.",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(matrix) the compressed, or reconstituted matrix."
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dump out"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "reset",
+      "dictionary",
+      "dict_size"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.lzw",
+      "ml.som",
+      "ml.spatial"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.art": {
+    "name": "ml.art",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Fuzzy Adaptive Resonance Theory Neural Network",
+    "description": "Classifies inputs by defining categories of similar exemplars, learning in an unsupervised, on-line fashion.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) data to be classified",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Category ID"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Resonance"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "choice",
+        "type": "number",
+        "optional": true,
+        "digest": "Choice parameter"
+      },
+      {
+        "name": "learning rate",
+        "type": "number",
+        "optional": true,
+        "digest": "Learning Rate"
+      },
+      {
+        "name": "vigilance",
+        "type": "number",
+        "optional": true,
+        "digest": "Vigilance parameter"
+      }
+    ],
+    "messages": [
+      "list",
+      "reset",
+      "count",
+      "read",
+      "write"
+    ],
+    "attributes": {
+      "vigilance": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "choice": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "learnrate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "predict": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.som",
+      "ml.spatial"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.fcm": {
+    "name": "ml.fcm",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Fuzzy C-means clustering",
+    "description": "A form of clustering in which each data point can belong to more than one cluster. A membership grade, calculated for each point, indicates the degree to which the points belong to each cluster.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) data to be classified",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) cluster memberships"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "various messages"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "fuzz",
+        "type": "float",
+        "optional": true,
+        "digest": "Fuzz parameter"
+      },
+      {
+        "name": "cluster count",
+        "type": "int",
+        "optional": true,
+        "digest": "Number of Clusters"
+      },
+      {
+        "name": "threshold",
+        "type": "float",
+        "optional": true,
+        "digest": "Training termination threshold"
+      }
+    ],
+    "messages": [
+      "bang",
+      "clear",
+      "dump",
+      "get_cluster",
+      "get_clusters",
+      "list",
+      "query",
+      "random",
+      "reset"
+    ],
+    "attributes": {
+      "cluster": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "fuzz": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "iterations": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "threshold": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.art",
+      "ml.som"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.hmm": {
+    "name": "ml.hmm",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Hidden Markov Model",
+    "description": "A statistical model in which the system being modeled is assumed to be a Markov process with unobserved (i.e. hidden) states.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) observed tokens",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) assumed state for building the model",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) generated token"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dump out"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "backward",
+      "bang",
+      "baum_welch",
+      "build",
+      "clear",
+      "clear_observations",
+      "dump",
+      "emissions",
+      "get_emission",
+      "get_emissions",
+      "get_initial",
+      "get_states",
+      "get_states",
+      "get_transition",
+      "get_transitions",
+      "initial_prob",
+      "int",
+      "list",
+      "predict",
+      "reset",
+      "train",
+      "transitions",
+      "viterbi"
+    ],
+    "attributes": {
+      "alphabet": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "epochs": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "error": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "max_observations": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "states": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.markov"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.kdtree": {
+    "name": "ml.kdtree",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "k-d tree: organize \"k\" dimensioned data into a binary-tree for improved, and nearest neighbor searching.",
+    "description": "kdtree acts like the coll object but sorts the data into a balanced tree structure, significantly improving closest point searching.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) data to be stored and sorted.",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) data associated with index/query"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) index of data"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "dump out"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "list",
+      "clear",
+      "dump",
+      "sort",
+      "read",
+      "write",
+      "count"
+    ],
+    "attributes": {},
+    "seealso": [
+      "coll",
+      "ml.fcm"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.lzw": {
+    "name": "ml.lzw",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Lemper-Ziv-Welch string compression and decompression",
+    "description": "Compresses any symbols, integers, or lists of symbols and integers using a dictionary based compression algorithm.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) values/symbols to be compressed, various messages.",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) compressed code sequence, decompressed string"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "list",
+      "clear",
+      "reset",
+      "dump",
+      "dictionary",
+      "dict_size",
+      "comp_size",
+      "decompress"
+    ],
+    "attributes": {},
+    "seealso": [
+      "jit.ml.lzw"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.markov": {
+    "name": "ml.markov",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Markov Chain",
+    "description": "A stochastic model describing a sequence of possible events in which the probability of each event depends on the state(s) attained in the previous event(s). Based on the Markov Property, the chain makes predictions of future states independently from the state history of the process.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) observations, various messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) generated states"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(symbol) generated states, if using symbols"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "dump out"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "build",
+      "clear",
+      "clear_observations",
+      "dump",
+      "get_initial",
+      "get_transition",
+      "get_transitions",
+      "get_states",
+      "initial_prob",
+      "int",
+      "list",
+      "reset",
+      "transitions"
+    ],
+    "attributes": {
+      "dynamic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "debug": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "max_observations": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "order": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "states": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.hmm"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.mlp": {
+    "name": "ml.mlp",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Multi-Layer Perceptron Neural Network",
+    "description": "Learns associations between given inputs and paired outputs. Typically used as a classifier (giving many inputs and providing a numerical output for each category) or for non-linear mapping and interpolation.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) data to be classified",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) inputs and outputs to be associated through learning",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) output values"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(float) average training error"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "dump out"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "input_size",
+        "type": "int",
+        "optional": true,
+        "digest": "Size of input lists"
+      },
+      {
+        "name": "output_size",
+        "type": "int",
+        "optional": true,
+        "digest": "Size of output lists"
+      },
+      {
+        "name": "internal_layer(s)_size",
+        "type": "int",
+        "optional": true,
+        "digest": "Size of internal layer(s)"
+      },
+      {
+        "name": "num_internal_layers",
+        "type": "int",
+        "optional": true,
+        "digest": "Number of internal layers"
+      }
+    ],
+    "messages": [
+      "list",
+      "reset",
+      "clear",
+      "clear_training",
+      "train",
+      "count",
+      "int",
+      "float",
+      "dump",
+      "mlp",
+      "layer",
+      "tlu"
+    ],
+    "attributes": {
+      "momentum": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "flatness": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "error": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "epochs": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.art",
+      "ml.som",
+      "ml.spatial"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.principle": {
+    "name": "ml.principle",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "machine learning",
+    "digest": "Principle Component Analysis (PCA)",
+    "description": "Performs a PCA analysis of lists. First input a representative sample of your data to ml.principle. Send it a bang (or 'calc') to analyze the data for principle components. Subsequent input will be transposed into the eigen-space.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "list",
+      "bang",
+      "calc",
+      "clear",
+      "reset"
+    ],
+    "attributes": {},
+    "seealso": [
+      "ml.scale"
+    ],
+    "tags": [
+      "machine learning"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.scalar": {
+    "name": "ml.scalar",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Uses distribution of elements to scale lists to -1./1",
+    "description": "Uses distribution of elements to scale lists to -1./1. standard deviation.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "list"
+    ],
+    "attributes": {
+      "inverse": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "fit": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "scale"
+    ],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.scale": {
+    "name": "ml.scale",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "data",
+    "digest": "Uses distribution of elements to scale lists to -1./1",
+    "description": "Uses distribution of elements to scale lists to -1./1. standard deviation.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "list",
+      "float"
+    ],
+    "attributes": {
+      "inverse": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "fit": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "scale"
+    ],
+    "tags": [
+      "data"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.som": {
+    "name": "ml.som",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Self-Organizing Map",
+    "description": "A self-organizing map (SOM) or self-organizing feature map (SOFM) is a type of artificial neural network (ANN) that is trained using unsupervised learning to produce a low-dimensional (typically two-dimensional), discretized representation of the input space of the training samples, called a map, and is therefore a method to do dimensionality reduction.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) data to be classified, various messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) coordinates and weights of the node"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) coordinates and weights of nodes being trained"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "(float) change in weights due to new input"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "size",
+        "type": "int",
+        "optional": true,
+        "digest": "Size of the network [x ,y]"
+      },
+      {
+        "name": "neighborhood",
+        "type": "int",
+        "optional": true,
+        "digest": "Neighborhood radius"
+      },
+      {
+        "name": "learning",
+        "type": "float",
+        "optional": true,
+        "digest": "Learning rate [0,1]"
+      },
+      {
+        "name": "plasticity",
+        "type": "float",
+        "optional": true,
+        "digest": "Plasticity parameter"
+      }
+    ],
+    "messages": [
+      "list",
+      "reset",
+      "randomize",
+      "get"
+    ],
+    "attributes": {
+      "learning": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "neighborhood": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "plasticity": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "size": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "output_learning": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.art",
+      "ml.spatial"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.spatial": {
+    "name": "ml.spatial",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Spatial encoding of symbolic tokens",
+    "description": "The Spatial encoder is a form of neural network that takes integer tokens and creates a vector encoding the input sequence. The ml.spatial represents a form of \"short term memory\" network where each vector element indicates the recency of a token's appearance.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list, int) values to be encoded, various messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) spatial encoding"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "size",
+        "type": "int",
+        "optional": true,
+        "digest": "Size of the encoder"
+      },
+      {
+        "name": "decay",
+        "type": "float",
+        "optional": true,
+        "digest": "Decay amount"
+      },
+      {
+        "name": "model",
+        "type": "int",
+        "optional": true,
+        "digest": "Decay model (0,1)"
+      }
+    ],
+    "messages": [
+      "list",
+      "int",
+      "reset",
+      "linear",
+      "exponential",
+      "bang"
+    ],
+    "attributes": {
+      "dynamic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "decay": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "model": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "size": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.art",
+      "ml.mlp",
+      "ml.som"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.vmm.bin": {
+    "name": "ml.vmm.bin",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Binary CTW Variable order Markov Model Predictor",
+    "description": "A Variable order Markov Model for general purpose sequence prediction. The VMM projects sequences on the binary alphabet, then predicts over the binary sequence using the classical CTW predictor. Due to projection into binary and back the prediction accuracy of this model is very poor compared to other VMMs.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(bang) generate, various messages",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) training data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) generated states, messages"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dump out"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "alphabet",
+        "type": "int",
+        "optional": true,
+        "digest": "Alphabet size"
+      },
+      {
+        "name": "order",
+        "type": "int",
+        "optional": true,
+        "digest": "Maximum order"
+      }
+    ],
+    "messages": [
+      "bang",
+      "clear",
+      "gen",
+      "learn",
+      "logeval",
+      "predict",
+      "int",
+      "list",
+      "anything",
+      "reset"
+    ],
+    "attributes": {
+      "debug": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "order": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alphabet": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.vmm.dct",
+      "ml.vmm.lzms",
+      "ml.vmm.ppm",
+      "ml.vmm.pst",
+      "ml.hmm"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.vmm.dct": {
+    "name": "ml.vmm.dct",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Decomposed CTW Markov Model",
+    "description": "A Variable order Markov Model for general purpose sequence prediction. The VMM learns conditional distributions where the length varies according to the statistics of the training data.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(bang) generate, various messages",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) training data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) generated states, messages"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "alphabet",
+        "type": "int",
+        "optional": true,
+        "digest": "Alphabet size"
+      },
+      {
+        "name": "max order",
+        "type": "int",
+        "optional": true,
+        "digest": "Maximum order"
+      }
+    ],
+    "messages": [
+      "bang",
+      "clear",
+      "gen",
+      "learn",
+      "logeval",
+      "predict",
+      "int",
+      "list",
+      "anything",
+      "reset"
+    ],
+    "attributes": {
+      "debug": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "order": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alphabet": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.vmm.lzms",
+      "ml.vmm.ppm",
+      "ml.vmm.pst",
+      "ml.hmm"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.vmm.lzms": {
+    "name": "ml.vmm.lzms",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Lempel-Ziv 78 Variable order Markov Model",
+    "description": "A Variable order Markov Model for general purpose sequence prediction. THe LZ-78 algorithm is a popular lossless compression algorithm. The VMM learns conditional distributions where the length varies according to the statistics of the training data. This object parses sequences into unique 'phrases' which are stored in an internal dictionary which is used to both compress and predict sequences.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(bang) generate, various messages",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) training data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) generated states, messages"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "alphabet",
+        "type": "int",
+        "optional": true,
+        "digest": "Alphabet size"
+      },
+      {
+        "name": "max order",
+        "type": "int",
+        "optional": true,
+        "digest": "Maximum order"
+      }
+    ],
+    "messages": [
+      "bang",
+      "clear",
+      "gen",
+      "learn",
+      "logeval",
+      "predict",
+      "int",
+      "list",
+      "anything",
+      "reset"
+    ],
+    "attributes": {
+      "debug": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "order": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alphabet": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.vmm.dct",
+      "ml.vmm.ppm",
+      "ml.vmm.pst",
+      "ml.hmm"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.vmm.ppm": {
+    "name": "ml.vmm.ppm",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Prediction by Partial Matchh Markov Model",
+    "description": "A Variable order Markov Model for general purpose sequence prediction. The VMM learns conditional distributions where the length varies according to the statistics of the training data. PPM learns 'online', immediately as data is received.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(bang) generate, various messages",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) training data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) generated states, messages"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dump out"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "alphabet",
+        "type": "int",
+        "optional": true,
+        "digest": "Alphabet size"
+      },
+      {
+        "name": "max order",
+        "type": "int",
+        "optional": true,
+        "digest": "Maximum order"
+      }
+    ],
+    "messages": [
+      "bang",
+      "clear",
+      "dump",
+      "gen",
+      "learn",
+      "logeval",
+      "predict",
+      "n",
+      "int",
+      "list",
+      "anything",
+      "reset"
+    ],
+    "attributes": {
+      "debug": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "order": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alphabet": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.vmm.dct",
+      "ml.vmm.lzms",
+      "ml.vmm.pst",
+      "ml.hmm"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  },
+  "ml.vmm.pst": {
+    "name": "ml.vmm.pst",
+    "maxclass": "newobj",
+    "module": "ml.*",
+    "domain": "Packages",
+    "category": "Machine Learning",
+    "digest": "Probabalistic Suffix Tree Markov Model",
+    "description": "A Variable order Markov Model for general purpose sequence prediction. The VMM learns conditional distributions where the length varies according to the statistics of the training data.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(bang) generate, various messages",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "(list) training data",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "(int) generated states, messages"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dump out"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "alphabet",
+        "type": "int",
+        "optional": true,
+        "digest": "Alphabet size"
+      },
+      {
+        "name": "max order",
+        "type": "int",
+        "optional": true,
+        "digest": "Maximum order"
+      },
+      {
+        "name": "pMin",
+        "type": "float",
+        "optional": true,
+        "digest": "configuration parameter"
+      },
+      {
+        "name": "alpha",
+        "type": "float",
+        "optional": true,
+        "digest": "configuration parameter"
+      },
+      {
+        "name": "gamma",
+        "type": "float",
+        "optional": true,
+        "digest": "configuration parameter"
+      },
+      {
+        "name": "r",
+        "type": "float",
+        "optional": true,
+        "digest": "configuration parameter"
+      }
+    ],
+    "messages": [
+      "bang",
+      "build",
+      "clear",
+      "dump",
+      "gen",
+      "learn",
+      "logeval",
+      "predict",
+      "rebuild",
+      "int",
+      "list",
+      "anything",
+      "reset"
+    ],
+    "attributes": {
+      "debug": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "order": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alphabet": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "pMin": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "alpha": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gamma": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "r": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ml.vmm.dct",
+      "ml.vmm.lzms",
+      "ml.vmm.ppm",
+      "ml.hmm"
+    ],
+    "tags": [
+      "ml"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "ml.star",
+    "rnbo_compatible": false
+  }
+}

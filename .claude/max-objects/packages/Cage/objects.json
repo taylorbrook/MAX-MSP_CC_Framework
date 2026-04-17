@@ -1,7 +1,7 @@
 {
   "cage.noterandom": {
     "name": "cage.noterandom",
-    "maxclass": "cage.noterandom",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "pitch",
@@ -49,7 +49,7 @@
   },
   "cage.pcset": {
     "name": "cage.pcset",
-    "maxclass": "cage.pcset",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "pitch",
@@ -97,7 +97,7 @@
   },
   "cage.scale": {
     "name": "cage.scale",
-    "maxclass": "cage.scale",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "pitch",
@@ -145,7 +145,7 @@
   },
   "cage.chord": {
     "name": "cage.chord",
-    "maxclass": "cage.chord",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "pitch",
@@ -193,7 +193,7 @@
   },
   "cage.arpeggio": {
     "name": "cage.arpeggio",
-    "maxclass": "cage.arpeggio",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "pitch",
@@ -241,7 +241,7 @@
   },
   "cage.profile": {
     "name": "cage.profile",
-    "maxclass": "cage.profile",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "melody",
@@ -282,7 +282,7 @@
   },
   "cage.contour": {
     "name": "cage.contour",
-    "maxclass": "cage.contour",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "melody",
@@ -323,7 +323,7 @@
   },
   "cage.inversion": {
     "name": "cage.inversion",
-    "maxclass": "cage.inversion",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "melody",
@@ -364,7 +364,7 @@
   },
   "cage.retrograde": {
     "name": "cage.retrograde",
-    "maxclass": "cage.retrograde",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "melody",
@@ -405,7 +405,7 @@
   },
   "cage.transpose": {
     "name": "cage.transpose",
-    "maxclass": "cage.transpose",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "melody",
@@ -446,7 +446,7 @@
   },
   "cage.harmony": {
     "name": "cage.harmony",
-    "maxclass": "cage.harmony",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "harmony",
@@ -487,7 +487,7 @@
   },
   "cage.fundamental": {
     "name": "cage.fundamental",
-    "maxclass": "cage.fundamental",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "harmony",
@@ -528,7 +528,7 @@
   },
   "cage.setclass": {
     "name": "cage.setclass",
-    "maxclass": "cage.setclass",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "harmony",
@@ -569,7 +569,7 @@
   },
   "cage.interval": {
     "name": "cage.interval",
-    "maxclass": "cage.interval",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "harmony",
@@ -610,7 +610,7 @@
   },
   "cage.rhythm": {
     "name": "cage.rhythm",
-    "maxclass": "cage.rhythm",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "rhythm",
@@ -651,7 +651,7 @@
   },
   "cage.meter": {
     "name": "cage.meter",
-    "maxclass": "cage.meter",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "rhythm",
@@ -692,7 +692,7 @@
   },
   "cage.tempo": {
     "name": "cage.tempo",
-    "maxclass": "cage.tempo",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "rhythm",
@@ -733,7 +733,7 @@
   },
   "cage.groove": {
     "name": "cage.groove",
-    "maxclass": "cage.groove",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "rhythm",
@@ -774,7 +774,7 @@
   },
   "cage.agogics": {
     "name": "cage.agogics",
-    "maxclass": "cage.agogics",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "rhythm",
@@ -815,7 +815,7 @@
   },
   "cage.lsystem": {
     "name": "cage.lsystem",
-    "maxclass": "cage.lsystem",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "generative",
@@ -863,7 +863,7 @@
   },
   "cage.automaton": {
     "name": "cage.automaton",
-    "maxclass": "cage.automaton",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "generative",
@@ -911,7 +911,7 @@
   },
   "cage.fractal": {
     "name": "cage.fractal",
-    "maxclass": "cage.fractal",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "generative",
@@ -959,7 +959,7 @@
   },
   "cage.concat": {
     "name": "cage.concat",
-    "maxclass": "cage.concat",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "score",
@@ -1007,7 +1007,7 @@
   },
   "cage.split": {
     "name": "cage.split",
-    "maxclass": "cage.split",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "score",
@@ -1055,7 +1055,7 @@
   },
   "cage.slice": {
     "name": "cage.slice",
-    "maxclass": "cage.slice",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "score",
@@ -1103,7 +1103,7 @@
   },
   "cage.mix": {
     "name": "cage.mix",
-    "maxclass": "cage.mix",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "score",
@@ -1151,7 +1151,7 @@
   },
   "cage.track": {
     "name": "cage.track",
-    "maxclass": "cage.track",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "score",
@@ -1199,7 +1199,7 @@
   },
   "cage.fm": {
     "name": "cage.fm",
-    "maxclass": "cage.fm",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "spectral",
@@ -1247,7 +1247,7 @@
   },
   "cage.rm": {
     "name": "cage.rm",
-    "maxclass": "cage.rm",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "spectral",
@@ -1295,7 +1295,7 @@
   },
   "cage.shift": {
     "name": "cage.shift",
-    "maxclass": "cage.shift",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "spectral",
@@ -1343,7 +1343,7 @@
   },
   "cage.granulate": {
     "name": "cage.granulate",
-    "maxclass": "cage.granulate",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "spectral",

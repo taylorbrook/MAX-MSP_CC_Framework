@@ -1,0 +1,283 @@
+{
+  "mc.nn~": {
+    "name": "mc.nn~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "audio,  deep learning,  ai",
+    "digest": "Multi-channel interface for deep learning models",
+    "description": "Multi-channel interface for deep learning models",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "model path",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Absolute path to the pretrained model"
+      },
+      {
+        "name": "method",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Name of the method to call during synthesis"
+      },
+      {
+        "name": "buffer size",
+        "type": "int",
+        "optional": true,
+        "digest": "Size of the internal buffer (can't be lower than the method's ratio)"
+      }
+    ],
+    "messages": [
+      "delete",
+      "method",
+      "anything",
+      "dump",
+      "download",
+      "print_available_models",
+      "print"
+    ],
+    "attributes": {
+      "track_buffers": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "gpu": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "chans": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "nn.info",
+      "nn~",
+      "mcs.nn~"
+    ],
+    "tags": [
+      "audio",
+      "deep learning",
+      "ai"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "nn_tilde",
+    "rnbo_compatible": false
+  },
+  "mcs.nn~": {
+    "name": "mcs.nn~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "audio,  deep learning,  ai",
+    "digest": "Multi-channel interface for deep learning models",
+    "description": "Multi-channel interface for deep learning models",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "model path",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Absolute path to the pretrained model"
+      },
+      {
+        "name": "method",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Name of the method to call during synthesis"
+      },
+      {
+        "name": "buffer size",
+        "type": "int",
+        "optional": true,
+        "digest": "Size of the internal buffer (can't be lower than the method's ratio)"
+      }
+    ],
+    "messages": [
+      "delete",
+      "method",
+      "anything",
+      "dump",
+      "download",
+      "print_available_models",
+      "print"
+    ],
+    "attributes": {
+      "track_buffers": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "gpu": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "chans": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "nn.info",
+      "nn~",
+      "mc.nn~"
+    ],
+    "tags": [
+      "audio",
+      "deep learning",
+      "ai"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "nn_tilde",
+    "rnbo_compatible": false
+  },
+  "nn.info": {
+    "name": "nn.info",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "audio,  deep learning,  ai",
+    "digest": "Fetching information from deep learning models",
+    "description": "Fetching information from deep learning models",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "model path",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Absolute path to the pretrained model"
+      }
+    ],
+    "messages": [
+      "delete",
+      "get_available_models",
+      "dump_dict",
+      "bang",
+      "parameters",
+      "methods",
+      "attributes",
+      "path",
+      "download",
+      "set",
+      "dump",
+      "print"
+    ],
+    "attributes": {
+      "dict": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "nn~",
+      "mc.nn~",
+      "mcs.nn~"
+    ],
+    "tags": [
+      "audio",
+      "deep learning",
+      "ai"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "nn_tilde",
+    "rnbo_compatible": false
+  },
+  "nn~": {
+    "name": "nn~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "audio,  deep learning,  ai",
+    "digest": "Interface for deep learning models",
+    "description": "Interface for deep learning models",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "model path",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Absolute path to the pretrained model"
+      },
+      {
+        "name": "method",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Name of the method to call during synthesis"
+      },
+      {
+        "name": "buffer size",
+        "type": "int",
+        "optional": true,
+        "digest": "Size of the internal buffer (can't be lower than the method's ratio)"
+      }
+    ],
+    "messages": [
+      "delete",
+      "method",
+      "anything",
+      "dump",
+      "download",
+      "print_available_models",
+      "print"
+    ],
+    "attributes": {
+      "track_buffers": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "gpu": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "nn.info",
+      "mc.nn~",
+      "mcs.nn~"
+    ],
+    "tags": [
+      "audio",
+      "deep learning",
+      "ai"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "nn_tilde",
+    "rnbo_compatible": false
+  }
+}

@@ -1,18 +1,18 @@
 {
-  "dada.graph": {
-    "name": "dada.graph",
-    "maxclass": "dada.graph",
-    "module": "max",
+  "dada.analysis.centroid": {
+    "name": "dada.analysis.centroid",
+    "maxclass": "newobj",
+    "module": "dada",
     "domain": "Packages",
-    "category": "visualization",
-    "digest": "Interactive graph visualization and editing",
-    "description": "Interactive graph visualization and editing",
+    "category": "",
+    "digest": "Symbolic centroid",
+    "description": "Finds the pitch centroid of a score.",
     "inlets": [
       {
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "llll in",
+        "digest": "Score gathered syntax",
         "hot": true
       }
     ],
@@ -21,45 +21,117 @@
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "llll out"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Interaction data"
+        "digest": "Pitch centroid"
       }
     ],
     "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment",
+      "dada.cartesian",
+      "dada.analysis.spread"
+    ],
     "tags": [
-      "visualization"
+      "dada",
+      "dada abstractions",
+      "dada analysis"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false,
     "package": "Dada",
-    "requires": [
-      "Bach"
-    ]
+    "rnbo_compatible": false
   },
-  "dada.distances": {
-    "name": "dada.distances",
-    "maxclass": "dada.distances",
-    "module": "max",
+  "dada.analysis.chroma": {
+    "name": "dada.analysis.chroma",
+    "maxclass": "newobj",
+    "module": "dada",
     "domain": "Packages",
-    "category": "visualization",
-    "digest": "Distance matrix visualization",
-    "description": "Distance matrix visualization",
+    "category": "",
+    "digest": "Symbolic chroma",
+    "description": "Finds the chroma vector of a score.",
     "inlets": [
       {
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "llll in",
+        "digest": "Score gathered syntax",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Modulo",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Chroma vector"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "modulo",
+        "type": "int",
+        "optional": true,
+        "digest": "Modulo"
+      }
+    ],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment",
+      "dada.cartesian"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions",
+      "dada analysis"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.analysis.count": {
+    "name": "dada.analysis.count",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Count items",
+    "description": "Counts the items of a score.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score gathered syntax",
         "hot": true
       }
     ],
@@ -68,39 +140,345 @@
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "llll out"
+        "digest": "Item count"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "item_type",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Item type"
+      }
+    ],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment",
+      "dada.cartesian"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions",
+      "dada analysis"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.analysis.duration": {
+    "name": "dada.analysis.duration",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Duration",
+    "description": "Finds the duration of a score in milliseconds",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score gathered syntax",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score duration"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment",
+      "dada.cartesian",
+      "dada.analysis.count"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions",
+      "dada analysis"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.analysis.energy": {
+    "name": "dada.analysis.energy",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Symbolic energy",
+    "description": "Finds the average velocity of a score.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score gathered syntax",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score energy"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment",
+      "dada.cartesian",
+      "dada.analysis.centroid",
+      "dada.analysis.spread"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions",
+      "dada analysis"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.analysis.minmax": {
+    "name": "dada.analysis.minmax",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Minimum and maximum of a parameter",
+    "description": "Finds the minimum and maximum of a parameter inside the score",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score gathered syntax",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Minimum"
       },
       {
         "id": 1,
         "type": "control",
         "signal": false,
-        "digest": "Interaction data"
+        "digest": "Maximum"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "parameter_name",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Parameter name"
+      }
+    ],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment",
+      "dada.cartesian"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions",
+      "dada analysis"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.analysis.rhythmdistrib": {
+    "name": "dada.analysis.rhythmdistrib",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Rhythmic energy distribution",
+    "description": "Finds the rhythmic energy distribution of a score",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score gathered syntax",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Energy distribution"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Onsets"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "numdiv",
+        "type": "int",
+        "optional": true,
+        "digest": "Number of Regions"
+      }
+    ],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "numdiv": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment",
+      "dada.cartesian"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions",
+      "dada analysis"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.analysis.spread": {
+    "name": "dada.analysis.spread",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Symbolic spread",
+    "description": "Finds the pitch spread of a score.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Score gathered syntax",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pitch spread"
       }
     ],
     "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment",
+      "dada.cartesian",
+      "dada.analysis.centroid"
+    ],
     "tags": [
-      "visualization"
+      "dada",
+      "dada abstractions"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false,
     "package": "Dada",
-    "requires": [
-      "Bach"
-    ]
+    "rnbo_compatible": false
   },
-  "dada.music~": {
-    "name": "dada.music~",
-    "maxclass": "dada.music~",
-    "module": "msp",
+  "dada.base": {
+    "name": "dada.base",
+    "maxclass": "newobj",
+    "module": "max",
     "domain": "Packages",
-    "category": "visualization",
-    "digest": "Interactive music canvas with audio output",
-    "description": "Interactive music canvas with audio output",
+    "category": "utility",
+    "digest": "Base GUI canvas for custom interfaces",
+    "description": "Base GUI canvas for custom interfaces",
     "inlets": [
       {
         "id": 0,
@@ -113,15 +491,9 @@
     "outlets": [
       {
         "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio out"
-      },
-      {
-        "id": 1,
         "type": "control",
         "signal": false,
-        "digest": "Event data"
+        "digest": "Output"
       }
     ],
     "arguments": [],
@@ -129,148 +501,7 @@
     "attributes": {},
     "seealso": [],
     "tags": [
-      "visualization"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "Dada",
-    "requires": [
-      "Bach"
-    ]
-  },
-  "dada.peanos~": {
-    "name": "dada.peanos~",
-    "maxclass": "dada.peanos~",
-    "module": "msp",
-    "domain": "Packages",
-    "category": "visualization",
-    "digest": "Peano curve-based audio generator",
-    "description": "Peano curve-based audio generator",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "llll/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "signal",
-        "signal": true,
-        "digest": "Audio out"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Event data"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "visualization"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "Dada",
-    "requires": [
-      "Bach"
-    ]
-  },
-  "dada.bounce": {
-    "name": "dada.bounce",
-    "maxclass": "dada.bounce",
-    "module": "max",
-    "domain": "Packages",
-    "category": "physics",
-    "digest": "Ball bouncing physics simulation",
-    "description": "Ball bouncing physics simulation",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "llll/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Position data"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Event data"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "physics"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "Dada",
-    "requires": [
-      "Bach"
-    ]
-  },
-  "dada.nodes": {
-    "name": "dada.nodes",
-    "maxclass": "dada.nodes",
-    "module": "max",
-    "domain": "Packages",
-    "category": "physics",
-    "digest": "Interactive node graph with forces",
-    "description": "Interactive node graph with forces",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "llll/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Position data"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Event data"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "physics"
+      "utility"
     ],
     "min_version": 8,
     "verified": false,
@@ -283,7 +514,7 @@
   },
   "dada.bodies": {
     "name": "dada.bodies",
-    "maxclass": "dada.bodies",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "physics",
@@ -328,9 +559,3109 @@
       "Bach"
     ]
   },
+  "dada.boids": {
+    "name": "dada.boids",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Swarm intelligence modeling",
+    "description": "Controller for rule-based swarm-intelligence models",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Incoming symbol or list",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump outlet"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries and notifications"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Sequencing data"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "bang when object is changed via the interface"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(drag)",
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "autozoom",
+      "bang",
+      "clear",
+      "clock",
+      "domain",
+      "dump",
+      "exportimage",
+      "getdomain",
+      "getrange",
+      "int",
+      "llll",
+      "move",
+      "play",
+      "range",
+      "read",
+      "rotate",
+      "scale",
+      "stop",
+      "write",
+      "writetxt"
+    ],
+    "attributes": {
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axescolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgimage": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "fixedruleparamscolor": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "ruleparamscolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "seq": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showaxes": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showaxeslabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showfocus": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showintensity": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "shownames": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showruleparamnames": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showruleparams": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showspeed": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "xlabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "ylabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "bach.wordcloud"
+    ],
+    "tags": [
+      "dada",
+      "dada interfaces",
+      "dada rule-based systems"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.bounce": {
+    "name": "dada.bounce",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "physics",
+    "digest": "Ball bouncing physics simulation",
+    "description": "Ball bouncing physics simulation",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Position data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "physics"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.cartesian": {
+    "name": "dada.cartesian",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Cartesian display of database",
+    "description": "2D interface for databases",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Incoming",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump outlet"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Mouse hover/click content"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries result"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Beat sync bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "autozoom",
+      "bang",
+      "clock",
+      "domain",
+      "dump",
+      "exportimage",
+      "getdomain",
+      "getnumgrains",
+      "getrange",
+      "getturtle",
+      "knn",
+      "range",
+      "setturtle",
+      "turtle",
+      "turtledelta"
+    ],
+    "attributes": {
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "alpha": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "autozoomwhenupdated": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "axescolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "beatsync": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgimage": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bpmfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "colorfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "contentfield": {
+        "type": "sym_array",
+        "get": true,
+        "set": true
+      },
+      "convexcombfield": {
+        "type": "sym_array",
+        "get": true,
+        "set": true
+      },
+      "convexcombmax": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "convexcombmin": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "convexcombp": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "database": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "graincolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "legendcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "legendsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "lengthfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "looplast": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "maxr": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mindist": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "minr": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "phasefield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "relativeknn": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "relativeturtle": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "shapefield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "showaxes": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showaxeslabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showfocus": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showlegend": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showturtle": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "sizefield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "stopbeatsonmouseleave": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "stoplooponmouseleave": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "stoploopwhennothovered": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "table": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "turtlecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "vzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "where": {
+        "type": "llll",
+        "get": true,
+        "set": true
+      },
+      "xfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "xlabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "yfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "ylabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "zoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.base",
+      "dada.segment",
+      "dada.distances"
+    ],
+    "tags": [
+      "dada",
+      "dada interfaces",
+      "dada corpus-based tools",
+      "dada geometry"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.catart": {
+    "name": "dada.catart",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Symbolic concatenative synthesis interface",
+    "description": "2D interface for databases",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Incoming",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump outlet"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Mouse hover/click content"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries result"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Beat sync bang"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "autozoom",
+      "bang",
+      "clock",
+      "domain",
+      "dump",
+      "exportimage",
+      "getdomain",
+      "getnumgrains",
+      "getrange",
+      "getturtle",
+      "knn",
+      "range",
+      "setturtle",
+      "turtle",
+      "turtledelta"
+    ],
+    "attributes": {
+      "alpha": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "autozoomwhenupdated": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "beatsync": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "bpmfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "colorfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "contentfield": {
+        "type": "sym_array",
+        "get": true,
+        "set": true
+      },
+      "continuousbang": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "convexcombfield": {
+        "type": "sym_array",
+        "get": true,
+        "set": true
+      },
+      "convexcombmax": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "convexcombmin": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "convexcombp": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "database": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "embed": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "graincolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "jitmatrix": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "legendcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "legendsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "lengthfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "looplast": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "maxr": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "maxundosteps": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "messagebang": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "mindist": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "minr": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notify": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "phasefield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "playcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "playstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "relativeknn": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "relativeturtle": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "shapefield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "showlegend": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showturtle": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "sizefield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "snaptogrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "stopbeatsonmouseleave": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "stoplooponmouseleave": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "stoploopwhennothovered": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "table": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "turtlecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "undobang": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "undobeforeplay": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "verboseundo": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "where": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "xfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "yfield": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.base",
+      "dada.segment",
+      "dada.distances"
+    ],
+    "tags": [
+      "dada",
+      "dada interfaces",
+      "dada corpus-based tools",
+      "dada geometry"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.colors": {
+    "name": "dada.colors",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "utility",
+    "digest": "Color palette generator",
+    "description": "Color palette generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "utility"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.db": {
+    "name": "dada.db",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "database",
+    "digest": "Database interface for dada objects",
+    "description": "Database interface for dada objects",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Query/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Result"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Status"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "database"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.distances": {
+    "name": "dada.distances",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Distance matrix visualization",
+    "description": "Distance matrix visualization",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Interaction data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.graph": {
+    "name": "dada.graph",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Interactive graph visualization and editing",
+    "description": "Interactive graph visualization and editing",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Interaction data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.kaleido": {
+    "name": "dada.kaleido",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Kaleidoscope interface",
+    "description": "Graphic interface in kaleidoscopic form.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Incoming symbol or list",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump outlet"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries and notifications"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Information about sampling point hits"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Playout"
+      },
+      {
+        "id": 4,
+        "type": "control",
+        "signal": false,
+        "digest": "bang when object is changed via the interface"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(drag)",
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "bang",
+      "domain",
+      "exportimage",
+      "flush",
+      "getdomain",
+      "getrange",
+      "move",
+      "range",
+      "read",
+      "rotate",
+      "sample",
+      "scale",
+      "setsample",
+      "setsamplepitch",
+      "setsamplevelocity",
+      "shake",
+      "write",
+      "writetxt"
+    ],
+    "attributes": {
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgimage": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "chamberborder": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "chambercolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "continuousbang": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "count": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "directedit": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "edit": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "embed": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "extend": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "jitmatrix": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "maxundosteps": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "messagebang": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "mirrorsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "nopaint": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notify": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "play": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "samplingcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "samplingptsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "senddist": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "sendhit": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showchambers": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showfocus": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showsampling": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showvelocity": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "tonedivision": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "type": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "undobang": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "verboseundo": {
+        "type": "",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.bounce",
+      "dada.bodies",
+      "bach.tonnetz"
+    ],
+    "tags": [
+      "dada",
+      "dada interfaces",
+      "dada geometry"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.life": {
+    "name": "dada.life",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "2D cellular automata",
+    "description": "Graphic interface for 2D cellular automata",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Incoming messages or state or bang to evolve",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump outlet"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries and notifications"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Playout"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "bang when object is changed via the interface"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(drag)",
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "bang",
+      "clear",
+      "clearall",
+      "dump",
+      "exportimage",
+      "exportpng",
+      "flush",
+      "getcellsum",
+      "getnumliving",
+      "getnumliving",
+      "getsize",
+      "random",
+      "read",
+      "rule",
+      "shift",
+      "write",
+      "writetxt"
+    ],
+    "attributes": {
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "border": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "born": {
+        "type": "int_array",
+        "get": true,
+        "set": true
+      },
+      "candycane2": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "candycane3": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "candycane4": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "candycane5": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "candycane6": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "candycane7": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "candycane8": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "cellalpha": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "cellblue": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "cellcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "cellgreen": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "cellred": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "cellsize": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "cents": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "colormap": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "customrule": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "extendedplay": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "jitmatrix": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "lattice": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "mapmax": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "maxpitch": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "minpitch": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "neighborhood": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notify": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "numcandycane": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "play": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "randomdensity": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "shape": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showfocus": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "shownotes": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showvelocity": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "size": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "sizefactor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "sprite": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "stayalive": {
+        "type": "int_array",
+        "get": true,
+        "set": true
+      },
+      "velocity": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.life.info",
+      "bach.tonnetz",
+      "cage.life",
+      "dada.kaleido"
+    ],
+    "tags": [
+      "dada",
+      "dada interfaces",
+      "dada rule-based systems"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.life.info": {
+    "name": "dada.life.info",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Pattern information in 2D cellular automata",
+    "description": "Reports information about dada.life configurations.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pattern from",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pattern periodicity"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Pattern period delta"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Annihilation time"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Trimmed pattern"
+      },
+      {
+        "id": 4,
+        "type": "control",
+        "signal": false,
+        "digest": "Trimmed pattern coordinates"
+      },
+      {
+        "id": 5,
+        "type": "control",
+        "signal": false,
+        "digest": "Pattern orbit"
+      },
+      {
+        "id": 6,
+        "type": "control",
+        "signal": false,
+        "digest": "Trimmed pattern orbit"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "llll"
+    ],
+    "attributes": {
+      "border": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "born": {
+        "type": "int_array",
+        "get": true,
+        "set": true
+      },
+      "customrule": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "lattice": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "maxiter": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "neighborhood": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "orbit": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "stayalive": {
+        "type": "int_array",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.life"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.machines": {
+    "name": "dada.machines",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Machine networks",
+    "description": "Apply transformation to score or generic data via a machine networks",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Network inlet",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Network outlet"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(drag)",
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "autozoom",
+      "clear",
+      "domain",
+      "dump",
+      "exportimage",
+      "getdomain",
+      "getrange",
+      "llll",
+      "range",
+      "read",
+      "roll",
+      "write",
+      "writetxt"
+    ],
+    "attributes": {
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "arrowsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "axescolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgimage": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgewidth": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "embed": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "linestyle": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "machinecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "machineout": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "machinesize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "maxundosteps": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "networkcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "selectioncolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "shift": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "showaxes": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showaxeslabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showfocus": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showmachines": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "shownetwork": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "snaptogrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "stretch": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "transp": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "verboseundo": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "xlabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "ylabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "cage.bounce"
+    ],
+    "tags": [
+      "dada",
+      "dada interfaces",
+      "dada rule-based systems"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.match": {
+    "name": "dada.match",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Musical pattern matching",
+    "description": "Matches subsequences of a bach.roll via a lambda loop, in a combinatorial fashion",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "dur": {
+        "type": "llll",
+        "get": true,
+        "set": true
+      },
+      "incremental": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "label": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "maxnumchordsgap": {
+        "type": "llll",
+        "get": true,
+        "set": true
+      },
+      "normalize": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "numchords": {
+        "type": "llll",
+        "get": true,
+        "set": true
+      },
+      "numnotes": {
+        "type": "llll",
+        "get": true,
+        "set": true
+      },
+      "overlap": {
+        "type": "llll",
+        "get": true,
+        "set": true
+      },
+      "voicewise": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment"
+    ],
+    "tags": [
+      "dada scores"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.multibrot": {
+    "name": "dada.multibrot",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Mandelbrot set and its generalizations",
+    "description": "Get divergence information of multibrot sets",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Get information about point",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump outlet (unused)"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries and Notifications"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Click information"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Message information"
+      },
+      {
+        "id": 4,
+        "type": "control",
+        "signal": false,
+        "digest": "bang when object is changed via the interface (unused)"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "domain",
+      "exportimage",
+      "exportpng",
+      "getdomain",
+      "getinfo",
+      "getrange",
+      "range"
+    ],
+    "attributes": {
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axescolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "exp": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "jitmatrix": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "knobcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "knobsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "maxiter": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "presentation_rect": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "setcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "showaxes": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showaxeslabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showfocus": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "start": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "xlabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "ylabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "bach.nodes"
+    ],
+    "tags": [
+      "dada",
+      "dada interfaces",
+      "dada rule-based systems"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.music~": {
+    "name": "dada.music~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Interactive music canvas with audio output",
+    "description": "Interactive music canvas with audio output",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.nodes": {
+    "name": "dada.nodes",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "physics",
+    "digest": "Interactive node graph with forces",
+    "description": "Interactive node graph with forces",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Position data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "physics"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.pareto": {
+    "name": "dada.pareto",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Musical pattern paretoing",
+    "description": "paretoes subsequences of a bach.roll via a lambda loop, in a combinatorial fashion",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Trigger Calculation",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Bricks",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Lambda Inlet",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Pareto Front"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Lambda Outlet"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "maxbricks": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "obj": {
+        "type": "sym_array",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "removedup": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "repetition": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "start": {
+        "type": "llll",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.segment"
+    ],
+    "tags": [
+      "dada scores"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.peanos~": {
+    "name": "dada.peanos~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "Packages",
+    "category": "visualization",
+    "digest": "Peano curve-based audio generator",
+    "description": "Peano curve-based audio generator",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "llll/message in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio out"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Event data"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [
+      "visualization"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "Dada",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "dada.platform": {
+    "name": "dada.platform",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "2D platform games interface",
+    "description": "Implements an scriptable and interactive interface for platform games",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Incoming symbol or list",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump outlet"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries and notifications"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Playout"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "bang when object is changed via the interface"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "(drag)",
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "add",
+      "addprototype",
+      "addsprite",
+      "bang",
+      "break",
+      "clear",
+      "clock",
+      "count",
+      "delete",
+      "domain",
+      "dump",
+      "exportimage",
+      "fix",
+      "getdomain",
+      "getrange",
+      "int",
+      "play",
+      "range",
+      "read",
+      "resettime",
+      "restart",
+      "resume",
+      "script",
+      "set",
+      "stop",
+      "write",
+      "writetxt"
+    ],
+    "attributes": {
+      "airfriction": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "autoscroll": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgsprite": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "constraintzoom": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "editmode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "embed": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "floattextfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gravity": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "groundfriction": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "height": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "hero": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "intro": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "legendfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "maxtime": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "maxundosteps": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notifyblocks": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notifycoins": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notifygamechar": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notifygamecharpos": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notifyportals": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "notifyusercontrol": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "playcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "playmode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "playstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "savefixed": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "selectioncolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "showblocks": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showcoins": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showfocus": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgamechars": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showheroname": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showleveltitle": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showpoints": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showtime": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showvp": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "snaptogrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "textcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "textfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "title": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "undobeforeplay": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "verboseundo": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "width": {
+        "type": "",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.kaleido"
+    ],
+    "tags": [
+      "dada",
+      "dada interfaces",
+      "dada rule-based systems"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
   "dada.polygon": {
     "name": "dada.polygon",
-    "maxclass": "dada.polygon",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "geometry",
@@ -377,7 +3708,7 @@
   },
   "dada.segment": {
     "name": "dada.segment",
-    "maxclass": "dada.segment",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "geometry",
@@ -422,103 +3753,9 @@
       "Bach"
     ]
   },
-  "dada.voronoi": {
-    "name": "dada.voronoi",
-    "maxclass": "dada.voronoi",
-    "module": "max",
-    "domain": "Packages",
-    "category": "geometry",
-    "digest": "Voronoi diagram generator",
-    "description": "Voronoi diagram generator",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Point/llll in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Geometry data"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Info"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "geometry"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "Dada",
-    "requires": [
-      "Bach"
-    ]
-  },
-  "dada.db": {
-    "name": "dada.db",
-    "maxclass": "dada.db",
-    "module": "max",
-    "domain": "Packages",
-    "category": "database",
-    "digest": "Database interface for dada objects",
-    "description": "Database interface for dada objects",
-    "inlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Query/message in",
-        "hot": true
-      }
-    ],
-    "outlets": [
-      {
-        "id": 0,
-        "type": "control",
-        "signal": false,
-        "digest": "Result"
-      },
-      {
-        "id": 1,
-        "type": "control",
-        "signal": false,
-        "digest": "Status"
-      }
-    ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [
-      "database"
-    ],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false,
-    "package": "Dada",
-    "requires": [
-      "Bach"
-    ]
-  },
   "dada.sqlite": {
     "name": "dada.sqlite",
-    "maxclass": "dada.sqlite",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "database",
@@ -563,20 +3800,20 @@
       "Bach"
     ]
   },
-  "dada.colors": {
-    "name": "dada.colors",
-    "maxclass": "dada.colors",
-    "module": "max",
+  "dada.stage": {
+    "name": "dada.stage",
+    "maxclass": "newobj",
+    "module": "dada",
     "domain": "Packages",
-    "category": "utility",
-    "digest": "Color palette generator",
-    "description": "Color palette generator",
+    "category": "",
+    "digest": "Spatial mixer representation",
+    "description": "Interface for spatializing labels and icons, with mixing tools",
     "inlets": [
       {
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "llll/message in",
+        "digest": "Incoming symbol or list",
         "hot": true
       }
     ],
@@ -585,39 +3822,1063 @@
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "Output"
+        "digest": "Dump outlet"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Queries and notifications"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "bang when object is changed via the interface"
       }
     ],
     "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
+    "messages": [
+      "(drag)",
+      "(keyboard)",
+      "(mouse)",
+      "(tools)",
+      "addcards",
+      "clear",
+      "deletecards",
+      "domain",
+      "dump",
+      "exportimage",
+      "getdomain",
+      "getrange",
+      "llll",
+      "range",
+      "read",
+      "relocate",
+      "write",
+      "writetxt"
+    ],
+    "attributes": {
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "allowdeletion": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axescolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bgimage": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "cardborder": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "cardbordercolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "embed": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "fadercolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "maximum": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "maxundosteps": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "minimum": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notify": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "numdigits": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "showaxes": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showaxeslabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showfaders": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showfocus": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showicons": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showtext": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showvalue": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "slope": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "textcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "texthalign": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "textvalign": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "trianglecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "valuecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "verboseundo": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "xlabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "ylabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "bach.wordcloud"
+    ],
     "tags": [
-      "utility"
+      "dada interfaces",
+      "dada geometry"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
-    "rnbo_compatible": false,
     "package": "Dada",
-    "requires": [
-      "Bach"
-    ]
+    "rnbo_compatible": false
   },
-  "dada.base": {
-    "name": "dada.base",
-    "maxclass": "dada.base",
+  "dada.terrain.ellipse~": {
+    "name": "dada.terrain.ellipse~",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Paths along circles or ellipses",
+    "description": "Produces the coordinates of paths along ellipses at sample rate.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Phase (0-1)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "X or radius"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Y or angle"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "a",
+        "type": "double",
+        "optional": true,
+        "digest": "First axis size"
+      },
+      {
+        "name": "b",
+        "type": "double",
+        "optional": true,
+        "digest": "Second axis size"
+      },
+      {
+        "name": "rot",
+        "type": "double",
+        "optional": true,
+        "digest": "Rotation angle"
+      },
+      {
+        "name": "xc",
+        "type": "double",
+        "optional": true,
+        "digest": "Center X"
+      },
+      {
+        "name": "yc",
+        "type": "double",
+        "optional": true,
+        "digest": "Center Y"
+      }
+    ],
+    "messages": [
+      "signal"
+    ],
+    "attributes": {
+      "a": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "b": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "polar": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "rot": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.terrain~",
+      "dada.terrain.rect~",
+      "dada.terrain.segment~",
+      "dada.terrain.spiral~"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.terrain.rectangle~": {
+    "name": "dada.terrain.rectangle~",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Paths along rectangles",
+    "description": "Produces the coordinates of paths along rectangles at sample rate.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Phase (0-1)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "X or radius"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Y or angle"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "x",
+        "type": "double",
+        "optional": true,
+        "digest": "Start X"
+      },
+      {
+        "name": "y",
+        "type": "double",
+        "optional": true,
+        "digest": "Start Y"
+      },
+      {
+        "name": "w",
+        "type": "double",
+        "optional": true,
+        "digest": "Width"
+      },
+      {
+        "name": "h",
+        "type": "double",
+        "optional": true,
+        "digest": "Height"
+      }
+    ],
+    "messages": [
+      "signal"
+    ],
+    "attributes": {
+      "h": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "polar": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "w": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "x": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "y": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.terrain~",
+      "dada.terrain.ellipse~",
+      "dada.terrain.segment~",
+      "dada.terrain.spiral~"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.terrain.rect~": {
+    "name": "dada.terrain.rect~",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Paths along rectangles",
+    "description": "Produces the coordinates of paths along rectangles at sample rate.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Phase (0-1)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "X or radius"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Y or angle"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "x",
+        "type": "double",
+        "optional": true,
+        "digest": "Start X"
+      },
+      {
+        "name": "y",
+        "type": "double",
+        "optional": true,
+        "digest": "Start Y"
+      },
+      {
+        "name": "w",
+        "type": "double",
+        "optional": true,
+        "digest": "Width"
+      },
+      {
+        "name": "h",
+        "type": "double",
+        "optional": true,
+        "digest": "Height"
+      }
+    ],
+    "messages": [
+      "signal"
+    ],
+    "attributes": {
+      "h": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "polar": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "w": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "x": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "y": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.terrain~",
+      "dada.terrain.ellipse~",
+      "dada.terrain.segment~",
+      "dada.terrain.spiral~"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.terrain.segment~": {
+    "name": "dada.terrain.segment~",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Paths along lines",
+    "description": "Produces the coordinates of segment paths at sample rate.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Phase (0-1)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "X or radius"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Y or angle"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "polar",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Polar coordinates"
+      },
+      {
+        "name": "startpoint",
+        "type": "list",
+        "optional": true,
+        "digest": "Starting point"
+      },
+      {
+        "name": "endpoint",
+        "type": "list",
+        "optional": true,
+        "digest": "Ending point"
+      }
+    ],
+    "messages": [
+      "signal"
+    ],
+    "attributes": {
+      "end": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "polar": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "polarend": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "polarstart": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "start": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.terrain~",
+      "dada.terrain.ellipse~",
+      "dada.terrain.rect~",
+      "dada.terrain.spiral~"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.terrain.spiral~": {
+    "name": "dada.terrain.spiral~",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Paths along spirals",
+    "description": "Produces the coordinates of paths along Archimedean spirals at sample rate.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Phase (0-1)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "X or radius"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Y or angle"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "a",
+        "type": "double",
+        "optional": true,
+        "digest": "Turn Parameter"
+      },
+      {
+        "name": "b",
+        "type": "double",
+        "optional": true,
+        "digest": "Distance parameter"
+      },
+      {
+        "name": "num_turns",
+        "type": "double",
+        "optional": true,
+        "digest": "Number of turnings"
+      },
+      {
+        "name": "xc",
+        "type": "double",
+        "optional": true,
+        "digest": "Center X"
+      },
+      {
+        "name": "yc",
+        "type": "double",
+        "optional": true,
+        "digest": "Center Y"
+      }
+    ],
+    "messages": [
+      "signal"
+    ],
+    "attributes": {
+      "a": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "b": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "center": {
+        "type": "float_array",
+        "get": true,
+        "set": true
+      },
+      "n": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "polar": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.terrain~",
+      "dada.terrain.rect~",
+      "dada.terrain.segment~",
+      "dada.terrain.ellipse~"
+    ],
+    "tags": [
+      "dada",
+      "dada abstractions"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.terrain~": {
+    "name": "dada.terrain~",
+    "maxclass": "newobj",
+    "module": "dada",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Wave-terrain synthesis",
+    "description": "Wave-terrain synthesis and polar buffer-based interpolation of radially arranged buffers",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "autozoom"
+    ],
+    "attributes": {
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "autozoomwhenupdated": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "axescolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "buffers": {
+        "type": "llll",
+        "get": true,
+        "set": true
+      },
+      "eqp": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "interval": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "jitmatrix": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "linewidth": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "modulation": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "numpoints": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "patching_rect": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "pathcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true
+      },
+      "pathmode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "polar": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showaxes": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showaxeslabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showbuffers": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "shownames": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "showterrain": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "staticfunction": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "type": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "wheelfunction": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "wheelmode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "xlabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "ylabel": {
+        "type": "",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "dada.terrain.ellipse~",
+      "dada.terrain.rect~",
+      "dada.terrain.segment~",
+      "dada.terrain.spiral~"
+    ],
+    "tags": [
+      "dada interfaces",
+      "dada geometry",
+      "dada audio"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Dada",
+    "rnbo_compatible": false
+  },
+  "dada.voronoi": {
+    "name": "dada.voronoi",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
-    "category": "utility",
-    "digest": "Base GUI canvas for custom interfaces",
-    "description": "Base GUI canvas for custom interfaces",
+    "category": "geometry",
+    "digest": "Voronoi diagram generator",
+    "description": "Voronoi diagram generator",
     "inlets": [
       {
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "llll/message in",
+        "digest": "Point/llll in",
         "hot": true
       }
     ],
@@ -626,7 +4887,13 @@
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "Output"
+        "digest": "Geometry data"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Info"
       }
     ],
     "arguments": [],
@@ -634,7 +4901,7 @@
     "attributes": {},
     "seealso": [],
     "tags": [
-      "utility"
+      "geometry"
     ],
     "min_version": 8,
     "verified": false,

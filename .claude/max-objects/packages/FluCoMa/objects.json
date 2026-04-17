@@ -952,7 +952,7 @@
   },
   "fluid.bufonsetslice~": {
     "name": "fluid.bufonsetslice~",
-    "maxclass": "fluid.bufonsetslice~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "analysis",
@@ -3260,6 +3260,48 @@
     "rnbo_compatible": false,
     "package": "FluCoMa"
   },
+  "fluid.stftpass~": {
+    "name": "fluid.stftpass~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "FluidCorpusManipulation",
+    "digest": "Realtime FFT/IFFT return trip.",
+    "description": "This class implements a sanity test for the FluCoMa Realtime Client FFT/IFFT Wrapper.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "reset"
+    ],
+    "attributes": {
+      "fftsettings": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "maxfftsize": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "warnings": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [],
+    "tags": [
+      "Fluid Decomposition",
+      "corpus"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "FluCoMa",
+    "rnbo_compatible": false
+  },
   "fluid.transientslice~": {
     "name": "fluid.transientslice~",
     "maxclass": "newobj",
@@ -3405,5 +3447,39 @@
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "FluCoMa"
+  },
+  "fluid.waveform~": {
+    "name": "fluid.waveform~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "FluidCorpusManipulation",
+    "digest": "Visualise audio waveforms and data.",
+    "description": "A JSUI object for visualising waveforms, feature data, slices and spectrograms.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "waveform",
+      "features",
+      "image",
+      "slices",
+      "remove",
+      "clear",
+      "bgcolor"
+    ],
+    "attributes": {},
+    "seealso": [
+      "fluid.waveform~"
+    ],
+    "tags": [
+      "Fluid Decomposition",
+      "corpus"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "FluCoMa",
+    "rnbo_compatible": false
   }
 }

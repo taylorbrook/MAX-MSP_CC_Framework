@@ -1,7 +1,7 @@
 {
   "rtk.seq~": {
     "name": "rtk.seq~",
-    "maxclass": "rtk.seq~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "sequencing",
@@ -52,7 +52,7 @@
   },
   "rtk.stepper~": {
     "name": "rtk.stepper~",
-    "maxclass": "rtk.stepper~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "sequencing",
@@ -103,7 +103,7 @@
   },
   "rtk.arp~": {
     "name": "rtk.arp~",
-    "maxclass": "rtk.arp~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "sequencing",
@@ -154,7 +154,7 @@
   },
   "rtk.pattern~": {
     "name": "rtk.pattern~",
-    "maxclass": "rtk.pattern~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "sequencing",
@@ -205,7 +205,7 @@
   },
   "rtk.clock~": {
     "name": "rtk.clock~",
-    "maxclass": "rtk.clock~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "timing",
@@ -250,7 +250,7 @@
   },
   "rtk.tap~": {
     "name": "rtk.tap~",
-    "maxclass": "rtk.tap~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "timing",
@@ -295,7 +295,7 @@
   },
   "rtk.metro~": {
     "name": "rtk.metro~",
-    "maxclass": "rtk.metro~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "timing",
@@ -340,7 +340,7 @@
   },
   "rtk.gate~": {
     "name": "rtk.gate~",
-    "maxclass": "rtk.gate~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "timing",
@@ -385,7 +385,7 @@
   },
   "rtk.melody~": {
     "name": "rtk.melody~",
-    "maxclass": "rtk.melody~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "melody",
@@ -436,7 +436,7 @@
   },
   "rtk.scale~": {
     "name": "rtk.scale~",
-    "maxclass": "rtk.scale~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "melody",
@@ -487,7 +487,7 @@
   },
   "rtk.chord~": {
     "name": "rtk.chord~",
-    "maxclass": "rtk.chord~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "melody",
@@ -538,7 +538,7 @@
   },
   "rtk.counter~": {
     "name": "rtk.counter~",
-    "maxclass": "rtk.counter~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "utility",
@@ -583,7 +583,7 @@
   },
   "rtk.random~": {
     "name": "rtk.random~",
-    "maxclass": "rtk.random~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "utility",
@@ -628,7 +628,7 @@
   },
   "rtk.swing~": {
     "name": "rtk.swing~",
-    "maxclass": "rtk.swing~",
+    "maxclass": "newobj",
     "module": "msp",
     "domain": "Packages",
     "category": "utility",
@@ -673,7 +673,7 @@
   },
   "rtt.clock~": {
     "name": "rtt.clock~",
-    "maxclass": "rtt.clock~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "timing",
@@ -744,7 +744,7 @@
   },
   "rtt.counter~": {
     "name": "rtt.counter~",
-    "maxclass": "rtt.counter~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "timing",
@@ -799,7 +799,7 @@
   },
   "rtt.euclidean~": {
     "name": "rtt.euclidean~",
-    "maxclass": "rtt.euclidean~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "pattern",
@@ -856,12 +856,12 @@
   },
   "rtt.sequence~": {
     "name": "rtt.sequence~",
-    "maxclass": "rtt.sequence~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "sequencing",
     "digest": "Signal-rate step sequencer driven by phasor",
-    "description": "Phasor 0-1 input \u2192 step index \u2192 outputs interpolated step value list.",
+    "description": "Phasor 0-1 input → step index → outputs interpolated step value list.",
     "inlets": [
       {
         "id": 0,

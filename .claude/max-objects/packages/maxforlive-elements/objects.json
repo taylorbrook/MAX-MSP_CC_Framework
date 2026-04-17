@@ -1,7 +1,7 @@
 {
   "live.adsrui": {
     "name": "live.adsrui",
-    "maxclass": "live.adsrui",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "M4L U/I",
@@ -144,7 +144,7 @@
   },
   "live.adsr~": {
     "name": "live.adsr~",
-    "maxclass": "live.adsr~",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "M4L",

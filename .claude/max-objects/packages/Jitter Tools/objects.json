@@ -1,7 +1,7 @@
 {
   "jit.fx.alphaglue": {
     "name": "jit.fx.alphaglue",
-    "maxclass": "jit.fx.alphaglue",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -101,7 +101,7 @@
   },
   "jit.fx.altern": {
     "name": "jit.fx.altern",
-    "maxclass": "jit.fx.altern",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -196,7 +196,7 @@
   },
   "jit.fx.ameba": {
     "name": "jit.fx.ameba",
-    "maxclass": "jit.fx.ameba",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -291,7 +291,7 @@
   },
   "jit.fx.an.max": {
     "name": "jit.fx.an.max",
-    "maxclass": "jit.fx.an.max",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Analysis",
@@ -364,7 +364,7 @@
   },
   "jit.fx.an.mean": {
     "name": "jit.fx.an.mean",
-    "maxclass": "jit.fx.an.mean",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Analysis",
@@ -437,7 +437,7 @@
   },
   "jit.fx.an.min": {
     "name": "jit.fx.an.min",
-    "maxclass": "jit.fx.an.min",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Analysis",
@@ -510,7 +510,7 @@
   },
   "jit.fx.bitcrush": {
     "name": "jit.fx.bitcrush",
-    "maxclass": "jit.fx.bitcrush",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -600,7 +600,7 @@
   },
   "jit.fx.blur": {
     "name": "jit.fx.blur",
-    "maxclass": "jit.fx.blur",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -696,7 +696,7 @@
   },
   "jit.fx.brass": {
     "name": "jit.fx.brass",
-    "maxclass": "jit.fx.brass",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -797,7 +797,7 @@
   },
   "jit.fx.brcosa": {
     "name": "jit.fx.brcosa",
-    "maxclass": "jit.fx.brcosa",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -897,7 +897,7 @@
   },
   "jit.fx.bsort": {
     "name": "jit.fx.bsort",
-    "maxclass": "jit.fx.bsort",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -986,7 +986,7 @@
   },
   "jit.fx.camera": {
     "name": "jit.fx.camera",
-    "maxclass": "jit.fx.camera",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -1102,7 +1102,7 @@
   },
   "jit.fx.cf.bilateral": {
     "name": "jit.fx.cf.bilateral",
-    "maxclass": "jit.fx.cf.bilateral",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Filters",
@@ -1168,7 +1168,7 @@
   },
   "jit.fx.cf.directional": {
     "name": "jit.fx.cf.directional",
-    "maxclass": "jit.fx.cf.directional",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Filters",
@@ -1255,7 +1255,7 @@
   },
   "jit.fx.cf.gaussian": {
     "name": "jit.fx.cf.gaussian",
-    "maxclass": "jit.fx.cf.gaussian",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Filters",
@@ -1337,7 +1337,7 @@
   },
   "jit.fx.cf.kuwahara": {
     "name": "jit.fx.cf.kuwahara",
-    "maxclass": "jit.fx.cf.kuwahara",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Filters",
@@ -1434,7 +1434,7 @@
   },
   "jit.fx.cf.radial": {
     "name": "jit.fx.cf.radial",
-    "maxclass": "jit.fx.cf.radial",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Filters",
@@ -1526,7 +1526,7 @@
   },
   "jit.fx.cf.sharpen": {
     "name": "jit.fx.cf.sharpen",
-    "maxclass": "jit.fx.cf.sharpen",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Filters",
@@ -1597,7 +1597,7 @@
   },
   "jit.fx.cf.tiltshift": {
     "name": "jit.fx.cf.tiltshift",
-    "maxclass": "jit.fx.cf.tiltshift",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Filters",
@@ -1699,7 +1699,7 @@
   },
   "jit.fx.co.accum": {
     "name": "jit.fx.co.accum",
-    "maxclass": "jit.fx.co.accum",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -1797,7 +1797,7 @@
   },
   "jit.fx.co.additive": {
     "name": "jit.fx.co.additive",
-    "maxclass": "jit.fx.co.additive",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -1895,7 +1895,7 @@
   },
   "jit.fx.co.alphablend": {
     "name": "jit.fx.co.alphablend",
-    "maxclass": "jit.fx.co.alphablend",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -1993,7 +1993,7 @@
   },
   "jit.fx.co.average": {
     "name": "jit.fx.co.average",
-    "maxclass": "jit.fx.co.average",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2091,7 +2091,7 @@
   },
   "jit.fx.co.brightlight": {
     "name": "jit.fx.co.brightlight",
-    "maxclass": "jit.fx.co.brightlight",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2189,7 +2189,7 @@
   },
   "jit.fx.co.burn": {
     "name": "jit.fx.co.burn",
-    "maxclass": "jit.fx.co.burn",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2287,7 +2287,7 @@
   },
   "jit.fx.co.chromakey": {
     "name": "jit.fx.co.chromakey",
-    "maxclass": "jit.fx.co.chromakey",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2410,7 +2410,7 @@
   },
   "jit.fx.co.darken": {
     "name": "jit.fx.co.darken",
-    "maxclass": "jit.fx.co.darken",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2508,7 +2508,7 @@
   },
   "jit.fx.co.difference": {
     "name": "jit.fx.co.difference",
-    "maxclass": "jit.fx.co.difference",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2606,7 +2606,7 @@
   },
   "jit.fx.co.dodge": {
     "name": "jit.fx.co.dodge",
-    "maxclass": "jit.fx.co.dodge",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2704,7 +2704,7 @@
   },
   "jit.fx.co.exclude": {
     "name": "jit.fx.co.exclude",
-    "maxclass": "jit.fx.co.exclude",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2802,7 +2802,7 @@
   },
   "jit.fx.co.freeze": {
     "name": "jit.fx.co.freeze",
-    "maxclass": "jit.fx.co.freeze",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2900,7 +2900,7 @@
   },
   "jit.fx.co.glow": {
     "name": "jit.fx.co.glow",
-    "maxclass": "jit.fx.co.glow",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -2998,7 +2998,7 @@
   },
   "jit.fx.co.hardlight": {
     "name": "jit.fx.co.hardlight",
-    "maxclass": "jit.fx.co.hardlight",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3096,7 +3096,7 @@
   },
   "jit.fx.co.heat": {
     "name": "jit.fx.co.heat",
-    "maxclass": "jit.fx.co.heat",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3194,7 +3194,7 @@
   },
   "jit.fx.co.inverse": {
     "name": "jit.fx.co.inverse",
-    "maxclass": "jit.fx.co.inverse",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3292,7 +3292,7 @@
   },
   "jit.fx.co.lighten": {
     "name": "jit.fx.co.lighten",
-    "maxclass": "jit.fx.co.lighten",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3390,7 +3390,7 @@
   },
   "jit.fx.co.lumakey": {
     "name": "jit.fx.co.lumakey",
-    "maxclass": "jit.fx.co.lumakey",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3518,7 +3518,7 @@
   },
   "jit.fx.co.multiply": {
     "name": "jit.fx.co.multiply",
-    "maxclass": "jit.fx.co.multiply",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3616,7 +3616,7 @@
   },
   "jit.fx.co.negate": {
     "name": "jit.fx.co.negate",
-    "maxclass": "jit.fx.co.negate",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3714,7 +3714,7 @@
   },
   "jit.fx.co.normal": {
     "name": "jit.fx.co.normal",
-    "maxclass": "jit.fx.co.normal",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3812,7 +3812,7 @@
   },
   "jit.fx.co.overlay": {
     "name": "jit.fx.co.overlay",
-    "maxclass": "jit.fx.co.overlay",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -3910,7 +3910,7 @@
   },
   "jit.fx.co.reflect": {
     "name": "jit.fx.co.reflect",
-    "maxclass": "jit.fx.co.reflect",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -4008,7 +4008,7 @@
   },
   "jit.fx.co.screen": {
     "name": "jit.fx.co.screen",
-    "maxclass": "jit.fx.co.screen",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -4106,7 +4106,7 @@
   },
   "jit.fx.co.softlight": {
     "name": "jit.fx.co.softlight",
-    "maxclass": "jit.fx.co.softlight",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -4204,7 +4204,7 @@
   },
   "jit.fx.co.stamp": {
     "name": "jit.fx.co.stamp",
-    "maxclass": "jit.fx.co.stamp",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -4302,7 +4302,7 @@
   },
   "jit.fx.co.subtractive": {
     "name": "jit.fx.co.subtractive",
-    "maxclass": "jit.fx.co.subtractive",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Compositors",
@@ -4400,7 +4400,7 @@
   },
   "jit.fx.concat": {
     "name": "jit.fx.concat",
-    "maxclass": "jit.fx.concat",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -4481,7 +4481,7 @@
   },
   "jit.fx.conway": {
     "name": "jit.fx.conway",
-    "maxclass": "jit.fx.conway",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -4577,7 +4577,7 @@
   },
   "jit.fx.crt": {
     "name": "jit.fx.crt",
-    "maxclass": "jit.fx.crt",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -4717,7 +4717,7 @@
   },
   "jit.fx.delay": {
     "name": "jit.fx.delay",
-    "maxclass": "jit.fx.delay",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -4823,7 +4823,7 @@
   },
   "jit.fx.dimmap": {
     "name": "jit.fx.dimmap",
-    "maxclass": "jit.fx.dimmap",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -4912,7 +4912,7 @@
   },
   "jit.fx.eclipse": {
     "name": "jit.fx.eclipse",
-    "maxclass": "jit.fx.eclipse",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -5014,7 +5014,7 @@
   },
   "jit.fx.ge.flowfield": {
     "name": "jit.fx.ge.flowfield",
-    "maxclass": "jit.fx.ge.flowfield",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Generative",
@@ -5128,7 +5128,7 @@
   },
   "jit.fx.ge.lineinterp": {
     "name": "jit.fx.ge.lineinterp",
-    "maxclass": "jit.fx.ge.lineinterp",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Generative",
@@ -5227,7 +5227,7 @@
   },
   "jit.fx.ge.pattern": {
     "name": "jit.fx.ge.pattern",
-    "maxclass": "jit.fx.ge.pattern",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Generative",
@@ -5356,7 +5356,7 @@
   },
   "jit.fx.ge.randlines": {
     "name": "jit.fx.ge.randlines",
-    "maxclass": "jit.fx.ge.randlines",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Generative",
@@ -5455,7 +5455,7 @@
   },
   "jit.fx.grain": {
     "name": "jit.fx.grain",
-    "maxclass": "jit.fx.grain",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -5555,7 +5555,7 @@
   },
   "jit.fx.hue": {
     "name": "jit.fx.hue",
-    "maxclass": "jit.fx.hue",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -5640,7 +5640,7 @@
   },
   "jit.fx.lin2srgb": {
     "name": "jit.fx.lin2srgb",
-    "maxclass": "jit.fx.lin2srgb",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -5708,7 +5708,7 @@
   },
   "jit.fx.multiplex": {
     "name": "jit.fx.multiplex",
-    "maxclass": "jit.fx.multiplex",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -5784,7 +5784,7 @@
   },
   "jit.fx.pixelsorting": {
     "name": "jit.fx.pixelsorting",
-    "maxclass": "jit.fx.pixelsorting",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -5900,7 +5900,7 @@
   },
   "jit.fx.repos": {
     "name": "jit.fx.repos",
-    "maxclass": "jit.fx.repos",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -6007,7 +6007,7 @@
   },
   "jit.fx.rgb2luma": {
     "name": "jit.fx.rgb2luma",
-    "maxclass": "jit.fx.rgb2luma",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -6095,7 +6095,7 @@
   },
   "jit.fx.rota": {
     "name": "jit.fx.rota",
-    "maxclass": "jit.fx.rota",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -6211,7 +6211,7 @@
   },
   "jit.fx.slide": {
     "name": "jit.fx.slide",
-    "maxclass": "jit.fx.slide",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -6312,7 +6312,7 @@
   },
   "jit.fx.sobel": {
     "name": "jit.fx.sobel",
-    "maxclass": "jit.fx.sobel",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -6397,7 +6397,7 @@
   },
   "jit.fx.srgb2lin": {
     "name": "jit.fx.srgb2lin",
-    "maxclass": "jit.fx.srgb2lin",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -6465,7 +6465,7 @@
   },
   "jit.fx.subtexture": {
     "name": "jit.fx.subtexture",
-    "maxclass": "jit.fx.subtexture",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Utilities",
@@ -6544,7 +6544,7 @@
   },
   "jit.fx.threshold": {
     "name": "jit.fx.threshold",
-    "maxclass": "jit.fx.threshold",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -6634,7 +6634,7 @@
   },
   "jit.fx.tp.delay": {
     "name": "jit.fx.tp.delay",
-    "maxclass": "jit.fx.tp.delay",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Temporal",
@@ -6722,7 +6722,7 @@
   },
   "jit.fx.tp.filter": {
     "name": "jit.fx.tp.filter",
-    "maxclass": "jit.fx.tp.filter",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Temporal",
@@ -6800,7 +6800,7 @@
   },
   "jit.fx.tp.warp": {
     "name": "jit.fx.tp.warp",
-    "maxclass": "jit.fx.tp.warp",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Temporal",
@@ -6870,7 +6870,7 @@
   },
   "jit.fx.tr.dissolve": {
     "name": "jit.fx.tr.dissolve",
-    "maxclass": "jit.fx.tr.dissolve",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -6960,7 +6960,7 @@
   },
   "jit.fx.tr.gridwipe": {
     "name": "jit.fx.tr.gridwipe",
-    "maxclass": "jit.fx.tr.gridwipe",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -7060,7 +7060,7 @@
   },
   "jit.fx.tr.huefade": {
     "name": "jit.fx.tr.huefade",
-    "maxclass": "jit.fx.tr.huefade",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -7151,7 +7151,7 @@
   },
   "jit.fx.tr.rotfade": {
     "name": "jit.fx.tr.rotfade",
-    "maxclass": "jit.fx.tr.rotfade",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -7257,7 +7257,7 @@
   },
   "jit.fx.tr.shrinkwipe": {
     "name": "jit.fx.tr.shrinkwipe",
-    "maxclass": "jit.fx.tr.shrinkwipe",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -7352,7 +7352,7 @@
   },
   "jit.fx.tr.slide": {
     "name": "jit.fx.tr.slide",
-    "maxclass": "jit.fx.tr.slide",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -7458,7 +7458,7 @@
   },
   "jit.fx.tr.vignettes": {
     "name": "jit.fx.tr.vignettes",
-    "maxclass": "jit.fx.tr.vignettes",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -7553,7 +7553,7 @@
   },
   "jit.fx.tr.xfade": {
     "name": "jit.fx.tr.xfade",
-    "maxclass": "jit.fx.tr.xfade",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -7633,7 +7633,7 @@
   },
   "jit.fx.tr.zoomfade": {
     "name": "jit.fx.tr.zoomfade",
-    "maxclass": "jit.fx.tr.zoomfade",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Transitions",
@@ -7739,7 +7739,7 @@
   },
   "jit.fx.vhs": {
     "name": "jit.fx.vhs",
-    "maxclass": "jit.fx.vhs",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -7839,7 +7839,7 @@
   },
   "jit.fx.wake": {
     "name": "jit.fx.wake",
-    "maxclass": "jit.fx.wake",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.fx, Effects",
@@ -7950,7 +7950,7 @@
   },
   "jit.gl.buffer": {
     "name": "jit.gl.buffer",
-    "maxclass": "jit.gl.buffer",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8037,7 +8037,7 @@
   },
   "jit.gl.environment": {
     "name": "jit.gl.environment",
-    "maxclass": "jit.gl.environment",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8143,7 +8143,7 @@
   },
   "jit.gl.meshwarp": {
     "name": "jit.gl.meshwarp",
-    "maxclass": "jit.gl.meshwarp",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8298,7 +8298,7 @@
   },
   "jit.gl.pbr": {
     "name": "jit.gl.pbr",
-    "maxclass": "jit.gl.pbr",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8586,7 +8586,7 @@
   },
   "jit.gl.textmult": {
     "name": "jit.gl.textmult",
-    "maxclass": "jit.gl.textmult",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8673,7 +8673,7 @@
   },
   "jit.gl.textureset": {
     "name": "jit.gl.textureset",
-    "maxclass": "jit.gl.textureset",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8733,7 +8733,7 @@
   },
   "jit.gl.tf": {
     "name": "jit.gl.tf",
-    "maxclass": "jit.gl.tf",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8827,7 +8827,7 @@
   },
   "jit.gradient.ui": {
     "name": "jit.gradient.ui",
-    "maxclass": "jit.gradient.ui",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",
@@ -8861,7 +8861,7 @@
   },
   "jit.polymovie": {
     "name": "jit.polymovie",
-    "maxclass": "jit.polymovie",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "Jitter Tools",
@@ -8940,7 +8940,7 @@
   },
   "jit.ui.button": {
     "name": "jit.ui.button",
-    "maxclass": "jit.ui.button",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter UI",
@@ -9203,7 +9203,7 @@
   },
   "jit.ui.canvas": {
     "name": "jit.ui.canvas",
-    "maxclass": "jit.ui.canvas",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter UI",
@@ -9481,7 +9481,7 @@
   },
   "jit.ui.group": {
     "name": "jit.ui.group",
-    "maxclass": "jit.ui.group",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter UI",
@@ -9779,7 +9779,7 @@
   },
   "jit.ui.number": {
     "name": "jit.ui.number",
-    "maxclass": "jit.ui.number",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter UI",
@@ -10052,7 +10052,7 @@
   },
   "jit.ui.slider": {
     "name": "jit.ui.slider",
-    "maxclass": "jit.ui.slider",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter UI",
@@ -10375,7 +10375,7 @@
   },
   "jit.ui.toggle": {
     "name": "jit.ui.toggle",
-    "maxclass": "jit.ui.toggle",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter UI",
@@ -10663,7 +10663,7 @@
   },
   "v8": {
     "name": "v8",
-    "maxclass": "v8",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "",

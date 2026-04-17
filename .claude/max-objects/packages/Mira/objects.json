@@ -1,7 +1,7 @@
 {
   "mira.frame": {
     "name": "mira.frame",
-    "maxclass": "mira.frame",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Max",
     "category": "Mira",
@@ -76,7 +76,7 @@
   },
   "mira.motion": {
     "name": "mira.motion",
-    "maxclass": "mira.motion",
+    "maxclass": "newobj",
     "module": "mira",
     "domain": "Packages",
     "category": "Mira",
@@ -103,7 +103,7 @@
   },
   "mira.multitouch": {
     "name": "mira.multitouch",
-    "maxclass": "mira.multitouch",
+    "maxclass": "newobj",
     "module": "mira",
     "domain": "Packages",
     "category": "Mira",

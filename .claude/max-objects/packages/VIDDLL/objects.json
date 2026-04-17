@@ -1,7 +1,7 @@
 {
   "jit.movie": {
     "name": "jit.movie",
-    "maxclass": "jit.movie",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter Generators, Jitter QuickTime",
@@ -278,7 +278,7 @@
   },
   "jit.movie~": {
     "name": "jit.movie~",
-    "maxclass": "jit.movie~",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter Generators, Jitter QuickTime",
@@ -543,7 +543,7 @@
   },
   "jit.record": {
     "name": "jit.record",
-    "maxclass": "jit.record",
+    "maxclass": "newobj",
     "module": "jit",
     "domain": "Jitter",
     "category": "Jitter QuickTime",

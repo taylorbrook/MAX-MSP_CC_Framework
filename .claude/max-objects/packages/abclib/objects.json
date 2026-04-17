@@ -1,0 +1,3293 @@
+{
+  "abc.2plf.ui": {
+    "name": "abc.2plf.ui",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "3 DoF GUI",
+    "description": "abc.2plf.ui lets you control processes with three degrees of freedom: the position of points on the first (thickest) line, the color of points on the first line, and points on the second line. By double-clicking, a point will be inserted at cursor level on the first line (with the \"option\" key for the second line). To change their color, press the \"cmd\" key and drag the mouse. The \"play\" message, followed by a number corresponding to the execution time, brings up lists compatible with the \"line\" object. The \"shift\" key displays a marker at cursor level. This object is compatible with pattrstorage.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "play",
+      "init"
+    ],
+    "attributes": {},
+    "seealso": [
+      "abc.map.ui",
+      "abc.hoa.map~",
+      "abc.hoa.decorrelation~",
+      "abc.hoa.ringmod~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.adcinput~": {
+    "name": "abc.adcinput~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's mono adc~ input",
+    "description": "abc.adcinput~ is an abstraction for a mono adc~ input with possible dc filtering. The bpatcher can accept three default values as arguments.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "int"
+    ],
+    "attributes": {
+      "channel": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "dc-filter": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.cartopol~",
+      "abc.mult2pi~",
+      "abc.quadriout~",
+      "abc.stereoout~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.audiotester~": {
+    "name": "abc.audiotester~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's audiotester",
+    "description": "abc.audiotester~ enables to test the audio configuration from 1 to 64 loudspeakers by sending a pink noise alternatively to them at a certain frequency.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "nls",
+      "freq",
+      "gain"
+    ],
+    "attributes": {
+      "nls": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "freq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.multinoise~",
+      "abc.puckettespaf~",
+      "abc.rissetsbell~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.cartopol~": {
+    "name": "abc.cartopol~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's cartesian to polar converter",
+    "description": "abc.cartopol~ converts cartesian coordinate in polar coordinate. The angle is in radians.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.poltocar~",
+      "abc.adcinput~",
+      "abc.stereoout~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.delaychain~": {
+    "name": "abc.delaychain~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's sequential double overlapped delays without reinjection",
+    "description": "abc.delaychain~ provides chains of delays (the output of the delay #k is internally connected to the input of the delay #k+1) with a global reinjection. Each line is a double overlapped delay enabling duration changes without clicking at a maximum speed set by updatefreq parameter which is initialized at 30 Hz (30 Hz means one can change the duration of the delay up to 30 times per second). \n\n  Since it is a chain of delays, there is no 'abc.delaychain~ 1' object. Each delay line has got an individual gain: gain0, gain1, gain2, etc. in dB (between -127 and +18). A feedback parameter (fdbk) enables to loop the rhythmic structure.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "nmbr-delay",
+        "type": "int",
+        "optional": false,
+        "digest": "number of delays in the chain"
+      }
+    ],
+    "messages": [
+      "dur[index]",
+      "gain[index]",
+      "fdbk",
+      "tempo",
+      "updatefreq"
+    ],
+    "attributes": {
+      "dur[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fdbk": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "tempo": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "updatefreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.harmo~",
+      "abc.mc.freqshift~",
+      "abc.mc.flanger~",
+      "abc.mc.randenv~",
+      "abc.mc.grain~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.drops~": {
+    "name": "abc.drops~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Rain drop synthesizer",
+    "description": "abc.drops~ simulates raindrops with a periodic exciter that enters a reson filter whose frequency varies randomly at a random speed.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "dropperiod",
+      "attackdur",
+      "avgfreq",
+      "dropthinness",
+      "qf",
+      "gain",
+      "limiter"
+    ],
+    "attributes": {
+      "dropperiod": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "attackdur": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "avgfreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "dropthinness": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "qf": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "limiter": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.multinoise~",
+      "abc.puckettespaf~",
+      "abc.rissetsbell~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.dtd.ui": {
+    "name": "abc.dtd.ui",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Decorrelation GUI",
+    "description": "abc.dtd.ui allows for controlling decorrelation in ambisonics. Each segment corresponds to an harmonic, with the position on the horizontal axis representing the delay time applied to the corresponding harmonic. The position on the vertical axis controls the gain of the harmonic. 22 types of distributions are available, and the object is compatible with pattrstorage.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "functiontype",
+      "factor",
+      "delay",
+      "channels"
+    ],
+    "attributes": {},
+    "seealso": [
+      "abc.map.ui",
+      "abc.2plf.ui",
+      "abc.hoa.map~",
+      "abc.hoa.decorrelation~",
+      "abc.hoa.ringmod~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.env.generator~": {
+    "name": "abc.env.generator~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's enveloped noise with rarefaction",
+    "description": "abc.env.generator~ generates noise enveloped with a positive cosine shape (Hanning window). It uses rarefaction.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "grain-size",
+        "type": "float",
+        "optional": false,
+        "digest": "the grain size (ms)"
+      },
+      {
+        "name": "rarefaction",
+        "type": "float",
+        "optional": false,
+        "digest": "rarefaction"
+      }
+    ],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.mc.multinoise~",
+      "abc.puckettespaf~",
+      "abc.rissetsbell~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.env.noise~": {
+    "name": "abc.env.noise~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's enveloped noise with rarefaction",
+    "description": "abc.env.noise~ generates noise enveloped with a positive cosine shape (Hanning window). \n  It uses rarefaction.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "grainsize": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rarefaction": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.multinoise~",
+      "abc.puckettespaf~",
+      "abc.rissetsbell~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.envfollower~": {
+    "name": "abc.envfollower~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's envelope follower",
+    "description": "abc.envfollower~ provides an envelope follower.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "attack",
+      "release"
+    ],
+    "attributes": {
+      "attack": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "release": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.poltocar~",
+      "abc.cartopol~",
+      "abc.peakamp~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.gaincontrol": {
+    "name": "abc.gaincontrol",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's graphic control of amplitude",
+    "description": "abc.gaincontrol is an abstraction that outputs a message 'gain' followed by an amplitude value in dB (from -127 to +18 dB). It mainly enables to control abc.mc.gain~ and abc.hoa.decoder~ objects. As a bpatcher, it includes one default value that is the gain value in dB when launching the patch.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.gain~",
+      "abc.hoa.decoder~",
+      "abc.adcinput~",
+      "abc.cartopol~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.generatorinterface~": {
+    "name": "abc.generatorinterface~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's GUI for simple multi-source generator",
+    "description": "abc.generatorinterface~ is an graphic abstraction that enables the generation of various sounds (noise, sinus, phasor). Generated sounds are pulsed at a certain frequency (pulse rate) and have a pulse ratio (duty: ratio between sound and silence)",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.generator~",
+      "abc.drops~",
+      "abc.rissetsbell~",
+      "abc.puckettespaf~",
+      "abc.gaincontrol"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.generator~": {
+    "name": "abc.generator~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's simple multi-source generator",
+    "description": "abc.generator~enables the generation of various sounds (noise, sinus, phasor). Generated sounds are pulsed at a certain frequency (pulse rate) and have a pulse ratio (or duty: ratio between sound and silence).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "phasoron",
+      "noiseon",
+      "sinuson",
+      "phasorfreq",
+      "phasorpulserate",
+      "phasorpulseratio",
+      "sinusfreq",
+      "sinuspulserate",
+      "sinuspulseratio",
+      "noisecutoff",
+      "noisepulserate",
+      "noisepulseratio",
+      "gain"
+    ],
+    "attributes": {
+      "phasoron": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "noiseon": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "sinuson": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "phasorfreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "phasorpulserate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "phasorpulseratio": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "sinusfreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "sinuspulserate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "sinuspulseratio": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "noisecutoff": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "noisepulserate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "noisepulseratio": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.generatorinterface~",
+      "abc.drops~",
+      "abc.rissetsbell~",
+      "abc.puckettespaf~",
+      "abc.gaincontrol"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.gotoevent": {
+    "name": "abc.gotoevent",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's event counter utility",
+    "description": "abc.gotoevent abstraction enables to resume a mixed music piece at a certain event. Left input is the target as an event number, right input is the bang that triggers the counter from 0 to that event. It first switches off the dsp if it is on, and at the end restores its status as it was.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "int",
+      "bang"
+    ],
+    "attributes": {},
+    "seealso": [
+      "abc.poltocar~",
+      "abc.cartopol~",
+      "abc.peakamp~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.binaural~": {
+    "name": "abc.hoa.binaural~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Binaural Decoder based on the code of P.Lecomte",
+    "description": "abc.hoa.binaural~ enables to decode from ambisonic spatial components using binaural decoder of P.Lecomte based on HRIR of the Neumann KU100 from 2D/3D ambisonics flux.\n  \nSee Ambitools website : https://www.sekisushai.net/ambitools/\nAnd the paper : P. Lecomte, P.-A. Gauthier, C. Langrenne, A. Berry, et A. Garcia, « A Fifty-Node Lebedev Grid and Its Applications to Ambisonics », Journal of the Audio Engineering Society, vol. 64, nᵒ 11, p. 868‑881, 2016.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": true,
+        "digest": "ambisonic order"
+      }
+    ],
+    "messages": [
+      "gain"
+    ],
+    "attributes": {
+      "dimensions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.encoder~",
+      "abc.hoa.map~",
+      "abc.hoa.stereodecoder~",
+      "abc.hoa.wider~",
+      "abc.hoa.mirror~",
+      "abc.hoa.optim~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.decoder~": {
+    "name": "abc.hoa.decoder~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's 2D High Order Ambisonics (HOA) Decoder",
+    "description": "abc.hoa.decoder~ enables to decode from ambisonic spatial components to sets of loudspeakers. \n  Decoder is by default for 2N+2 loudspeakers in 2D and (N+1)^2 in 3D. You can change the number of loudspeakers with the speakers attribut. This decoder use Ambisonics Channel Numbering and N2D/SN3D format.\n    The first argument is the ambisonic order. \n    To change the number of loudspeakers, use the attribute '@speakers' followed by the number of loudspeakers.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": true,
+        "digest": "ambisonic order"
+      }
+    ],
+    "messages": [
+      "a[index]",
+      "angularoffset",
+      "directangles",
+      "stereo",
+      "gain"
+    ],
+    "attributes": {
+      "speakers": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dimensions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "stereo": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "a[index]": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "angularoffset": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "directangles": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.encoder~",
+      "abc.hoa.map~",
+      "abc.hoa.stereodecoder~",
+      "abc.hoa.wider~",
+      "abc.hoa.mirror~",
+      "abc.hoa.optim~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.decorrelation~": {
+    "name": "abc.hoa.decorrelation~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Decorrelation",
+    "description": "abc.hoa.decorrelation~ is an High Order Ambisonics (HOA) decorrelation process. This object has tree modes: syn, fx and man. The fx mode applies decorrelation to the ambisonics channels and the syn mode generates spatial decorrelated components from one mono signal at a given ambisonic order N.\n    \n    \n    The decorrelation is defined for each i spatial component among P=2*N+1 at the ambisonic order N in 2D and P=(N+1)^2 in 3D as a delay of 0 if factor is under 1-(i+1)/P and delay*functiontype((i+1)/P) in the contrary case, where delay is the maximum delay applied (in samples) and functiontype is a distribution function for durations. The user can choose this delay time distribution among 22 different ones. The delay increases according to the index of ambisonic components. But it increases at each step and it is modulated by a threshold. For the 2D decorrelation, the increment order follows the Ambisonics Channel Number. For the 3D decorrelation, the user can choose the increment order among 3 different ones. Therefore, delays are progressively revealed when the factor increases:\n    \n    \n    - when the factor is close to 0, only upper components are delayed;\n    \n    - when the factor increases, more and more components are delayed.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "the ambisonic order of the decorrelation process"
+      }
+    ],
+    "messages": [
+      "delay",
+      "factor",
+      "fdbk",
+      "functiontype",
+      "distributionmode"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "string",
+        "get": true,
+        "set": true
+      },
+      "dimensions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "delay": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "factor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fdbk": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "functiontype": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "distributionmode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.ringmod~",
+      "abc.hoa.delay~",
+      "abc.hoa.grain~",
+      "abc.hoa.encoder~",
+      "abc.hoa.decoder~",
+      "abc.hoa.optim~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.delay~": {
+    "name": "abc.hoa.delay~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Delay",
+    "description": "abc.hoa.delay~ is an High Order Ambisonics (HOA) delay process. This object have two modes : syn and fx. The fx mode applies delay to the ambisonics channels and the syn mode generates spatial delayed components from one mono signal at a given ambisonic order N.\n    \n    \n    The delay is defined for each i spatial component among P=2*N+1 at the ambisonic order N in 2D as a delay of factor*delay_i. By default, the P delays are equally spread between win/N and win which the maximum delay in milliseconds.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "the ambisonic order"
+      }
+    ],
+    "messages": [
+      "deltime[index]",
+      "feedback",
+      "factor"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "string",
+        "get": true,
+        "set": true
+      },
+      "deltime[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "feedback": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "factor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.decorrelation~",
+      "abc.hoa.grain~",
+      "abc.hoa.ringmod~",
+      "abc.hoa.encoder~",
+      "abc.hoa.decoder~",
+      "abc.hoa.optim~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.encoder~": {
+    "name": "abc.hoa.encoder~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Encoder",
+    "description": "abc.hoa.encoder~ enables to create punctual sources either in rotation at a certain speed or static and located at a precise angle (in degrees). It is possible to encode a maximum of 8 sources in 2D or 3D. N varies between 1 and 7.\n  \n  For instance, at ambisonic order 3, 'abc.hoa.encoder~ 3 @sources 4' enables to encode 4 monophonic sources.\n  The speeds (s0, s1, ...) of the sources in turns per second and the fixed angles (a0, a1, ...) in degrees (when the speeds equal 0), as well as the return time (it) in milliseconds are the control parameters.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": true,
+        "digest": "the ambisonic order of the decorrelation process"
+      }
+    ],
+    "messages": [
+      "a[index]",
+      "e[index]",
+      "s[index]",
+      "sa[index]",
+      "se[index]",
+      "returntime"
+    ],
+    "attributes": {
+      "sources": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dimensions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "a[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "e[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "s[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "sa[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "se[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "returntime": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.decoder~",
+      "abc.hoa.map~",
+      "abc.hoa.optim~",
+      "abc.hoa.wider~",
+      "abc.hoa.mirror~",
+      "abc.hoa.rotate~",
+      "abc.hoa.scope~",
+      "abc.hoa.decorrelation~",
+      "abc.hoa.ringmod~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.grain~": {
+    "name": "abc.hoa.grain~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Granulator",
+    "description": "abc.hoa.grain~ is an High Order Ambisonics (HOA) granulator process. This object have two modes : syn and fx and man. The fx mode applies granulator to the ambisonics channels and the syn mode generates spatial granulated components from one mono signal at a given ambisonic order N.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "The ambisonic order of the decorrelation process"
+      }
+    ],
+    "messages": [
+      "grainsize",
+      "deltime",
+      "feedback",
+      "rarefaction"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "string",
+        "get": true,
+        "set": true
+      },
+      "grainsize": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "deltime": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "feedback": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rarefaction": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.delay~",
+      "abc.hoa.decorrelation~",
+      "abc.hoa.ringmod~",
+      "abc.hoa.encoder~",
+      "abc.hoa.decoder~",
+      "abc.hoa.optim~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.map~": {
+    "name": "abc.hoa.map~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's 2D High Order Ambisonics (HOA) 2D spatializer",
+    "description": "abc.hoa.map~ enables you to encode multiple sources in ambisonic in polar coordinates. In contrary to the abc.hoa.encoder~, the user can change the distance between the sweet-spot and the source. \n  Each input of this object corresponds to a multichannel signal which combines the signal source and its polar coordinates [sig, radian, meter]. \n  For example, if the user spatializes 2 sources (e.g. using @sources 2), the object will have 2 inputs. The first input will expects a 3 channels mc signal corresponding to the signal of the first source and its polar coordinates. The second input will expects a 3 channels mc signal corresponding to the signal of the second source and its polar coordinates.",
+    "inlets": [
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "signal and its polar coordinates",
+        "hot": false
+      }
+    ],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": true,
+        "digest": "ambisonic order"
+      }
+    ],
+    "messages": [],
+    "attributes": {
+      "sources": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.encoder~",
+      "abc.hoa.decoder~",
+      "abc.hoa.wider~",
+      "abc.hoa.trajectories~",
+      "abc.hoa.mirror~",
+      "abc.hoa.decorrelation~",
+      "abc.hoa.delay~",
+      "abc.hoa.grains~",
+      "abc.hoa.ringmod~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.mirror~": {
+    "name": "abc.hoa.mirror~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Mirror",
+    "description": "abc.hoa.mirror~ is an High Order Ambisonics (HOA) mirror process. This object applies mirror L/R symmetry to a set of ambisonic spatial components using a simple multiplication of negative components by a 'factor'. This 'factor' parameter can take three different values: 1 (original sound field), 0 (original and mirror sound field together) and -1 (only the mirror sound field).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "the ambisonic order of the decorrelation process"
+      }
+    ],
+    "messages": [
+      "factor"
+    ],
+    "attributes": {
+      "factor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.wider~",
+      "abc.hoa.encoder~",
+      "abc.hoa.decoder~",
+      "abc.hoa.optim~",
+      "abc.hoa.map~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.optim~": {
+    "name": "abc.hoa.optim~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Optimizations",
+    "description": "abc.hoa.optim~ is an High Order Ambisonics (HOA) optimization process. This object enables to apply optimizations to the sound field with 3 levels (depending on optimtype value). It provides solutions when having an audience that cannot be considered as staying in the center of the ambisonic circle.\n      -basic (0) has no effect;\n      -maxRe (1) optimization is used when the audience is confined to the center of the circle;\n      -inPhase (2) optimization is used when the audience covers all the circle.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "the ambisonic order"
+      }
+    ],
+    "messages": [
+      "optimtype"
+    ],
+    "attributes": {
+      "dimensions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "optimtype": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.encoder~",
+      "abc.hoa.decoder~",
+      "abc.hoa.wider~",
+      "abc.hoa.mirror~",
+      "abc.hoa.map~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.ringmod~": {
+    "name": "abc.hoa.ringmod~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Ring Modulation",
+    "description": "abc.hoa.ringmod~ is an High Order Ambisonics (HOA) ring modulation process. This object has two modes: syn and fx. The fx mode applies ring modulation to the ambisonics channels and the syn mode generates spatial modulated components from one mono signal at a given ambisonic order N.\n    \n    \n    The ring modulation is defined for each i spatial component among P=2*N+1 at the ambisonic order N in 2D and P=(N+1)^2 in 3D as a frequency of 0 if factor is under 1-(i+1)/P and freq*functiontype((i+1)/P) in the contrary case, where delay is the maximum delay applied (in samples) and functiontype is a distribution function for frequencies. The user can choose this frequency of modulation distribution among 22 different ones. The frequency increases according to the index of ambisonic components. But it increases at each step and it is modulated by a threshold. For the 2D ring modulation, the increment order follows the Ambisonics Channel Number. For the 3D ring modulation, the user can choose the increment order among 3 different ones. Therefore, delays are progressively revealed when the factor increases:\n    \n    \n    - when the factor is close to 0, only upper components are modulated;\n    \n    - when the factor increases, more and more components are modulated.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "the ambisonic order of the modulation process"
+      }
+    ],
+    "messages": [
+      "f0",
+      "factor",
+      "functiontype",
+      "distributionmode"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "string",
+        "get": true,
+        "set": true
+      },
+      "dimensions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "f0": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "factor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "functiontype": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "distributionmode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.delay~",
+      "abc.hoa.grain~",
+      "abc.hoa.decorrelation~",
+      "abc.hoa.wider~",
+      "abc.hoa.mirror~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.rotate~": {
+    "name": "abc.hoa.rotate~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Rotate",
+    "description": "abc.hoa.rotate~ is an High Order Ambisonics (HOA) rotate process. This object enables the rotation of the ambisonic sound field. It can be either a continuous rotation at a certain speed in tours by second (with speed parameter) or a fixed angle of rotation in degrees (with angle parameter, when the speed is zero). The 'returntime' in milliseconds is the duration of the interpolation between a continuous rotation or a fixed angle. Contrary to the encoding that enables the rotation of one punctual source, the abc.hoa.rotate~ objects enable the rotation of the whole sound field.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "the ambisonic order"
+      }
+    ],
+    "messages": [
+      "speed",
+      "angle",
+      "returntime"
+    ],
+    "attributes": {
+      "speed": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "angle": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "returntime": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.mirror~",
+      "abc.hoa.wider~",
+      "abc.hoa.map~",
+      "abc.hoa.encoder~",
+      "abc.hoa.decoder~",
+      "abc.hoa.optim~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.scope~": {
+    "name": "abc.hoa.scope~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Scope",
+    "description": "abc.hoa.scope~ is an High Order Ambisonics (HOA) scope process. This object enables the visualization of the ambisonic field in a scope~ Max graphical object\n      The abc.scope abstraction within a bpatcher enables to graphically render the ambisonic field using Jitter OpenGL.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "the ambisonic order"
+      }
+    ],
+    "messages": [
+      "refresh",
+      "normalize"
+    ],
+    "attributes": {
+      "refresh": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "normalize": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.encoder~",
+      "abc.hoa.map~",
+      "abc.hoa.decoder~",
+      "abc.hoa.optim~",
+      "abc.hoa.wider~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.stereodecoder~": {
+    "name": "abc.hoa.stereodecoder~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's 2D High Order Ambisonics (HOA) Stereo Encoder",
+    "description": "abc.hoa.stereoencoder~ enables to diffuse a stereo source in ambisonics using two encoders with an opening angle in degrees (initialized to 60 degrees).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": true,
+        "digest": "ambisonic order"
+      }
+    ],
+    "messages": [
+      "angle"
+    ],
+    "attributes": {
+      "angle": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.encoder~",
+      "abc.hoa.map~",
+      "abc.hoa.wider~",
+      "abc.hoa.decoder~",
+      "abc.hoa.stereodecoder~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.hoa.wider~": {
+    "name": "abc.hoa.wider~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's High Order Ambisonics (HOA) Wider",
+    "description": "abc.hoa.wider~ is an High Order Ambisonics (HOA) wider process. This objects can be used to widen the diffusion of a localized sound. The order depending signals are weighted and appear in a logarithmic way to have linear changes. Width parameter varies between 0 and 1.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "ambisonic-order",
+        "type": "int",
+        "optional": false,
+        "digest": "the ambisonic order"
+      }
+    ],
+    "messages": [
+      "width"
+    ],
+    "attributes": {
+      "dimensions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "width": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.mirror~",
+      "abc.hoa.rotate~",
+      "abc.hoa.encoder~",
+      "abc.hoa.decoder~",
+      "abc.hoa.optim~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.jupiterbank~": {
+    "name": "abc.jupiterbank~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's synthesizer inspired by Manoury's Jupiter bank of oscillators",
+    "description": "abc.jupiterbank~ is inspired by the bank of 14 oscillators used by Philippe Manoury in Jupiter for flute and live electronics. It enables to generate spectra that can evoluate from harmonic to inharmonic content. Each partial has a separate output in the object.\n\nThe 14 frequencies (i from 0 to 13) are given by the formula: f_i = (k+i)*f0 where k is a constant and f0 a kind of 'fundamental' frequency. The distance between the frequencies is always f0. When k is 1, the spectrem is harmonic and results in f0, 2*f0, ..., 14*f0. When k is diffrent from integers, the spectrum is inharmonic.\nWe added to these 14 oscillators 14 resonant filters tuned at the same frequencies. Crossfading between oscillators and filters is controlled by osc2filter.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "k",
+      "f0",
+      "osc2filter",
+      "resg",
+      "resq",
+      "gain",
+      "fa"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "k": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "f0": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "osc2filter": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "resg": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "resq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fa": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.rissetsbell~",
+      "abc.puckettespaf~",
+      "abc.drops~",
+      "abc.generatorinterface~",
+      "abc.mc.addsynth~",
+      "abc.mc.substractsynth~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.linedrive~": {
+    "name": "abc.linedrive~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's exponential curve",
+    "description": "abc.linedrive~ converts a signal between 0 and 127 to a signal between 0 and outputmax following an exponential profile to be defined by the expcurve parameter.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "outputmax",
+      "expcurve"
+    ],
+    "attributes": {
+      "outputmax": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "expcurve": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.peakamp~",
+      "abc.mc.randenv~",
+      "abc.envfollower~",
+      "abc.phasor2pi~",
+      "abc.cartopol~",
+      "abc.poltocar~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.map.ui": {
+    "name": "abc.map.ui",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "4 DoF GUI",
+    "description": "abc.map.ui object lets you use the circle's position, radius and opacity to control processing. Create circles with the 'add' message (with the number of circles as an argument), delete circles with the 'del' message (the numbers of circles to be deleted as a list). This object is compatible with pattrstorage.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "mode",
+      "add",
+      "del",
+      "precision",
+      "flip_axis",
+      "set_xy",
+      "set_ad"
+    ],
+    "attributes": {},
+    "seealso": [
+      "abc.2plf.ui",
+      "abc.hoa.map~",
+      "abc.hoa.decorrelation~",
+      "abc.hoa.ringmod~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.addsynth~": {
+    "name": "abc.mc.addsynth~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's additive synthesis",
+    "description": "abc.mc.addsynth~ enable additive synthesis by adding elementary sound modules. Each module includes two oscillators that start at the same frequency but can be tuned finely thanks to fbeat frequencies (fbeat is the frequential increment of the second oscillator).\n  \n  f0 is the general fundamental frequency. fmult0, fmult1, etc. are the multipliers of f0 to get the frequencies of the partials. For an harmonic spectrum, one can use fmult0 = 1, fmult1 = 2, fmult2 = 3 etc. The amplitudes of the partials (in dB) can also be set individually thanks to amp0, amp1, etc. messages. gain (in dB) is the general control of the amplitude.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "f0",
+      "gain",
+      "amp[index]",
+      "fmult[index]",
+      "fbeat[index]"
+    ],
+    "attributes": {
+      "f0": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "amp[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fmult[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fbeat[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.substractsynth~",
+      "abc.mc.delay~",
+      "abc.mc.harmo~",
+      "abc.mc.flanger~",
+      "abc.mc.freqshift~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.busmult~": {
+    "name": "abc.mc.busmult~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's multiplication of two buses",
+    "description": "abc.mc.busmult~ enables to implement multichannel multiplications (from 1 signal to 16 signals). Two buses are connected to the object, the left one and the right one.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "signalsPerBus",
+        "type": "int",
+        "optional": false,
+        "digest": "number of signals per bus"
+      }
+    ],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.mc.busplus~",
+      "abc.mc.busselect~",
+      "abc.mc.harmo~",
+      "abc.mc.delay~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.busplus~": {
+    "name": "abc.mc.busplus~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's crossfaded selector of two buses",
+    "description": "abc.mc.busplus~ enables to implement multichannel bus selections (from 1 signal to 15 signals). Two buses are connected to the object, the left one and the right one.\n- the leftOrRight parameter enables to select between the left or the right bus. \n- the ramp parameter enables to set a crossfade duration when switching between the two buses",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "signalsPerBus",
+        "type": "int",
+        "optional": false,
+        "digest": "number of signals per bus"
+      }
+    ],
+    "messages": [
+      "ramp",
+      "leftOrRight"
+    ],
+    "attributes": {
+      "ramp": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "leftOrRight": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.busmult~",
+      "abc.mc.busplus~",
+      "abc.mc.harmo~",
+      "abc.mc.delay~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.chopan~": {
+    "name": "abc.mc.chopan~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's panner",
+    "description": "abc.mc.chopan~ enables multichannel stereo panning using Chowning model to have a constant acoustic energy and avoiding feeling a loss in the center of the scene (contrary to linear panning). The first source is panned to the left, the last one to the right, and the other ones are progressively spread from the left to the right.\n  - phi0 angle is a parameter to set the opening angle of the stereo in degrees\n  - for abc.mc.chopan~ 1 only, there is an incAngle parameter that controls the incident angle (in degrees) of the incoming sound",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "inputs",
+        "type": "string",
+        "optional": false,
+        "digest": "number of inputs"
+      }
+    ],
+    "messages": [
+      "phi0",
+      "gain",
+      "incAngle"
+    ],
+    "attributes": {
+      "phi0": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "incAngle": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.harmo~",
+      "abc.mc.freqshift~",
+      "abc.mc.flanger~",
+      "abc.mc.randenv~",
+      "abc.mc.grain~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.delay~": {
+    "name": "abc.mc.delay~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's multichannel delay",
+    "description": "abc.mc.delay~ provides multiple parallel delay lines with reinjection. Each line is a double overlapped delay enabling duration changes without clicking at a maximum speed set by updatefreq parameter which is initialized at 30 Hz (30 Hz means one can change the duration of the delay up to 30 times per second).\n  The other important feature of these delays lines is that all durations are not given in milliseconds but as a musical durations: 1 stands for a quarter, 0.5 for an 8th, 0.25 for a 16th, etc. Durations are parameters dur0, dur1, dur2, etc.\n  These musical durations are automatically converted to milliseconds thanks to the tempo parameter expressed in bpm.\n  Each delay line has got an individual feedback: fdbk0, fdbk1, fdbk2, etc. (between 0 and 1)\n  Each delay line has got an individual gain: gain0, gain1, gain2, etc. in dB (between -127 and +18)",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "dur[index]",
+      "gain[index]",
+      "fdbk[index]",
+      "tempo",
+      "updatefreq"
+    ],
+    "attributes": {
+      "dur[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fdbk[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "tempo": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "updatefreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.harmo~",
+      "abc.mc.freqshift~",
+      "abc.mc.flanger~",
+      "abc.mc.randenv~",
+      "abc.mc.grain~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.flanger~": {
+    "name": "abc.mc.flanger~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's multichannel flanger",
+    "description": "abc.mc.flanger~ provides classic multichannel flangers with sinusoidal delay\n- rate is the frequency of the sinusoid varying the delay duration\n- depth is the maximum of the delay duration expressed in milliseconds\n- offset enables to shift the variation of the delay duration between offset and offset+depth\n- feeedback is the amount of delayed sound added to the original\n- spread controls spatial spreading\n0 => mono, all outputs identical\n1 => maximum spatial split. For 'abc.mc.flanger~ 2' it means a maximum stereo effect.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "rate",
+      "depth",
+      "offset",
+      "fdbk",
+      "spread"
+    ],
+    "attributes": {
+      "rate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "depth": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "offset": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fdbk": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "spread": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.delay~",
+      "abc.mc.harmo~",
+      "abc.mc.freqshift~",
+      "abc.mc.gain~",
+      "abc.mc.chopan~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.freqshift~": {
+    "name": "abc.mc.freqshift~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's multichannel frequency shifter",
+    "description": "abc.mc.freqshift~ provides parallel multiple frequency shifters. Each line is a frequency shifter in Direct Form 2 provided by a quadruple biquad.\n  Each frequency shifter has got a shifting frequency: fr0, fr1, etc. in Hz (positive or negative) and an individual gain: gain0, gain1, gain2, etc. in dB (between -127 and +18)",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "fr[index]",
+      "gain[index]"
+    ],
+    "attributes": {
+      "fr[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.harmo~",
+      "abc.mc.flanger~",
+      "abc.mc.delay~",
+      "abc.mc.randenv~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.gain~": {
+    "name": "abc.mc.gain~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's multichannel gain process",
+    "description": "abc.mc.gain~ provides a multichannel gain process. There are n parallel gains, each having its own input and own output.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "gain"
+    ],
+    "attributes": {
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.harmo~",
+      "abc.mc.flanger~",
+      "abc.mc.delay~",
+      "abc.mc.randenv~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.grain~": {
+    "name": "abc.mc.grain~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's multichannel granular process",
+    "description": "abc.mc.grain~ provides parallel granular processes.\ngs0, gs1, gs2, ... are the grain sizes expressed in milliseconds for the n granulators.\ndt0, dt1, dt2, ... are the maximum delays expressed in milliseconds for the n granulators.\nfdbk0, fdbk1, fdbk2, ... are the feedbacks of the n granulators (between 0 and 1)\nrrf0, rrf1, rrf2, ... are the rarefactions of the n granulators (between 0 and 1, 0 means no rarefaction, 1 means total rarefaction)",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "gs[index]",
+      "dt[index]",
+      "fdbk[index]",
+      "rrf[index]"
+    ],
+    "attributes": {
+      "gs[index]": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dt[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fdbk[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rrf[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.harmo~",
+      "abc.mc.flanger~",
+      "abc.mc.delay~",
+      "abc.mc.randenv~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.harmo~": {
+    "name": "abc.mc.harmo~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's multichannel harmonizer",
+    "description": "abc.mc.harmo~ provides a multichannel harmonizer. There are n parallel harmonizers, each having its own input and own output.\n\n  Each harmonizer has got an individual gain: gain0, gain1, gain2, etc. in dB (between -127 and +18) and a transposition coefficient: trans0, trans1, etc. in midicents (100 for an upper semiton, 200 for an upper ton, -400 for a lower major third, ...)",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "trans[index]",
+      "gain[index]",
+      "winsize[index]"
+    ],
+    "attributes": {
+      "trans[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "winsize[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.freqshift~",
+      "abc.mc.flanger~",
+      "abc.mc.delay~",
+      "abc.mc.randenv~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.matrix~": {
+    "name": "abc.mc.matrix~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's signal matrices with coefficients",
+    "description": "abc.mc.matrix~ provides signal matrices with coefficients from -1 and 1.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "size",
+        "type": "int",
+        "optional": false,
+        "digest": "size of the matrice"
+      }
+    ],
+    "messages": [
+      "m[index]",
+      "ramp"
+    ],
+    "attributes": {
+      "m[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "ramp": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.plus~",
+      "abc.mc.busmult~",
+      "abc.mc.busselect~",
+      "abc.mc.gain~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.multinoise~": {
+    "name": "abc.mc.multinoise~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's multichannel decorrelated white noise",
+    "description": "abc.mc.multinoise~ provides multichannel decorrelated white noise signals.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.mc.plus~",
+      "abc.mc.busmult~",
+      "abc.mc.busselect~",
+      "abc.mc.gain~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.pulsedenv2synth~": {
+    "name": "abc.mc.pulsedenv2synth~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's pulsed synthetizer",
+    "description": "abc.mc.pulsedenv2synth~ is a multichannel generator of sound bursts based on a sinusoid sound (at carrierFreq frequency) to which short triangular envelopes are applied (at envFreq frequency).\n  The ratio silence/sound is controlable (ratio).\n  The short envelopes can be decorrelated thanks to spread control (between 0 and 1).\n  A lowpass filter (at frequency fc) is applied to the output.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "envFreq",
+      "carrierFreq",
+      "ratio",
+      "spread",
+      "fc",
+      "gain"
+    ],
+    "attributes": {
+      "envFreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "carrierFreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "ratio": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "spread": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fc": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.substractsynth~",
+      "abc.mc.delay~",
+      "abc.mc.harmo~",
+      "abc.mc.flanger~",
+      "abc.mc.freqshift~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.randenv~": {
+    "name": "abc.mc.randenv~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Random envelopes",
+    "description": "abc.mc.randenv~ provides multichannel envelopes with two modes: linear and cosinus. By default the object is in cosinus mode.\n\nA probability distribution is applied to each channel providing for each envelope a factor that is 1 or 0 and enables to apply a statistic duration of silence.\n- If the rarefaction is 0.3, it means 30% of the envelopes are muted (multiplied by 0) and 70% of them are played (multiplied by 1). When the rarefaction is 0., the envelope is constantly played, whereas when it is 1 no sound is played at all (maximum rarefaction).\n- freq parameter is the frequency of the envelope generated.\n- spread parameter controls the phase between the envelopes of the various channels: 0 means no dephasing, 1 means maximum dephasing (for instance half a period when there are 2 channels).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "freq",
+      "rarefaction",
+      "spread"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "string",
+        "get": true,
+        "set": true
+      },
+      "freq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rarefaction": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "spread": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.matrix~",
+      "abc.mc.multinoise~",
+      "abc.mc.delay~",
+      "abc.mc.flanger~",
+      "abc.mc.freqshift~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mc.substractsynth~": {
+    "name": "abc.mc.substractsynth~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's substractive synthesis",
+    "description": "abc.mc.substractsynth~ enables substractive synthesis by instantiating banks of band pass filters on incoming sounds either white, pink, decorrelated etc. sounds (having filterQ as quality factor, and filterG as filter gain).\n\nf0 is the general fundamental frequency. fmult0, fmult1, etc. are the multipliers of f0 to get the frequencies of the partials. For an harmonic spectrum, one can use fmult0 = 1, fmult1 = 2, fmult2 = 3 etc. The amplitudes of the partials (in dB) can also be set individually thanks to amp0, amp1, etc. messages. gain (in dB) is the general control of the amplitude.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "instances",
+        "type": "int",
+        "optional": false,
+        "digest": "number of instances"
+      }
+    ],
+    "messages": [
+      "f0",
+      "gain",
+      "filterQ",
+      "filterG",
+      "amp[index]",
+      "fmult[index]"
+    ],
+    "attributes": {
+      "f0": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "filterQ": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "filterG": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "amp[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fmult[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.addsynth~",
+      "abc.mc.delay~",
+      "abc.mc.freqshift~",
+      "abc.mc.gain~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.mult2pi~": {
+    "name": "abc.mult2pi~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Multiplication by 2*PI",
+    "description": "abc.mult2pi~ multiplies the incoming signal by 2*PI. Therefore a phasor~ between 0 and 1 becomes an angle between 0 and 2*Pi.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.phasor2pi~",
+      "abc.poltocar~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.musdur": {
+    "name": "abc.musdur",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Musical duration controller",
+    "description": "abc.musdur is an abstraction to set the duration of a delay line as a musical duration. As a bpatcher, it includes one defaut value: the index of the duration chosen (0 for a whole, 1 for a half, 2 for a quarter, 3 for an 8th, 4 for a 16th, 5 for a 32nd, 6 for a triplet).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "init-value",
+        "type": "int",
+        "optional": true,
+        "digest": "initial value"
+      }
+    ],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.phasor2pi~",
+      "abc.poltocar~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.peakamp~": {
+    "name": "abc.peakamp~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's peak amplitude measurement",
+    "description": "abc.peakamp~ computes the highest absolute value of the incoming signal on a duration defined by period attribute in milliseconds.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "period"
+    ],
+    "attributes": {
+      "period": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.busplus~",
+      "abc.mc.busselect~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.phasor2pi~": {
+    "name": "abc.phasor2pi~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's phasor between 0 and 2PI generator",
+    "description": "abc.phasor2pi~ generates a phasor signal going from 0 to 2*PI instead of 1. It directly expresses an angle in radians.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "freq"
+    ],
+    "attributes": {
+      "freq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.mc.busplus~",
+      "abc.mc.busselect~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.pict2map": {
+    "name": "abc.pict2map",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Graphic 2D control of a source position",
+    "description": "abc.pict2map is an abstraction inside a bpatcher that enables to graphically control the abc.hoa.map~ object. There are no default values. It generates the polar coordinates of the source r and theta (in radians).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "reset",
+      "float"
+    ],
+    "attributes": {},
+    "seealso": [
+      "abc.hoa.map~",
+      "abc.poltocar~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.poltocar~": {
+    "name": "abc.poltocar~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's polar to cartesian converter",
+    "description": "abc.poltocar~ converts polar coordinate in cartesian coordinate. The angle is in radians.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.cartopol~",
+      "abc.adcinput~",
+      "abc.stereoout~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.puckettespaf~": {
+    "name": "abc.puckettespaf~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's phase-aligned formant (PAF) generator",
+    "description": "abc.puckettespaf~consists in a two-cosine carrier signal multiplied by a waveshaping pulse generator. The central frequency cf (Hz) is bordered by two successive multiples of the fundamental frequency f0 (Hz). The bandwith parameter (bw, in Hz) controls the width of the central peak in the spectrum of the PAF generator.\nTwo waveshaping functions are provided: either Gaussian (wf = 0) or Cauchy (wf = 1). They are respectively controlled by sigma and a parameters.\n\nPAF synthesis is a basis to generate variable spectra on a pair of harmonics to build formants that enable to create sound close to sung vowels thanks to formants.\n\n'abc.puckettespaf~ @mode 2' object adds the possibility of inharmonic generation by adding a variable phase to the driving phasor controlled by two parameters: ifreq (Hz) and iamp (between 0 and 1). \n\nThis implementation is based on the paper of Miller Puckett: https://msp.ucsd.edu/techniques/v0.11/book-html/node96.html.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "a",
+      "bw",
+      "cf",
+      "f0",
+      "gain",
+      "sigma",
+      "wf",
+      "ifreq",
+      "iamp"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "a": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "bw": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "cf": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "f0": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "sigma": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "wf": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "ifreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "iamp": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.peakamp~",
+      "abc.mc.delay~",
+      "abc.mc.gain~",
+      "abc.mc.addsynth~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.quadriout~": {
+    "name": "abc.quadriout~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's 4 channel output abstraction",
+    "description": "abc.quadriout~ is an abstraction that enables 4 channel output (dac~ 1 to 4) with a control of the global gain in dB.\n  \n  Output gain in dB and numbers of the outputs in the inspector menu.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "output-number",
+        "type": "int",
+        "optional": true,
+        "digest": "the numbers of the four outputs"
+      }
+    ],
+    "messages": [],
+    "attributes": {
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.phasor2pi~",
+      "abc.poltocar~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.rev4~": {
+    "name": "abc.rev4~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's reverberation module",
+    "description": "abc.rev4~ is a classical reverberation module with 2 controls: the duration and the gain. As it is a cascade of delay lines with reinjection, it is proposed in two versions: a stereo one, abc.rev4~, and a quadriphonic one, 'abc.rev4~ @mode quadri' that splits the outputs of the delay lines to the 4 outputs.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "revDur",
+      "revGain"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "string",
+        "get": true,
+        "set": true
+      },
+      "revDur": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "revGain": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.peakamp~",
+      "abc.mc.delay~",
+      "abc.mc.gain~",
+      "abc.mc.addsynth~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.rissetsbell~": {
+    "name": "abc.rissetsbell~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Risset's bell synthesis",
+    "description": "abc.rissetsbell~ provides a bell synthesis according to Risset's bell model. It is based on 11 layouts with oscillators and envelopes. In our implementation, the model is extended with a double oscillator that enables detuning and a filter that inverts the behavior (possible crossfade between synthesis and filtering) using the osc2filter parameter.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "dur",
+      "gain",
+      "gate",
+      "osc2filter",
+      "resg",
+      "resq",
+      "freq",
+      "pfreq"
+    ],
+    "attributes": {
+      "dur": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gate": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "osc2filter": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "resg": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "resq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "freq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "pfreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.peakamp~",
+      "abc.mc.delay~",
+      "abc.mc.gain~",
+      "abc.mc.addsynth~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.scope": {
+    "name": "abc.scope",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Visualization of X-Y signals using Jitter",
+    "description": "abc.scope is an abstraction to be used within a bpatcher in association with abc.hoa.scope~ object to visualize X-Y signals for instance ambisonic components at the order N. There are 3 signal inputs: X signal, Y signal and a binary signal (1/0) to tell the drawing corresponds to positive (red) values or negative (blue) ones.\n  Three parameters can be set:\n- the type of drawing: points or lines\n- the size of the drawing (1 by default)\n- display on/off the floating window with the visualization.\nThe three default values can be set thanks to the bpatcher inspector.\nA unique 4 digit number is attributed to each instance and each visualization window.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "drawing-type",
+      "size",
+      "color-bg",
+      "color-pos",
+      "color-neg",
+      "color-circ"
+    ],
+    "attributes": {
+      "drawing-type": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "size": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "display": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.scope~",
+      "abc.poltocar~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.scopeembedded": {
+    "name": "abc.scopeembedded",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Visualization of X-Y signals using Jitter",
+    "description": "abc.scopeembedded is an abstraction to be used within a bpatcher in association with abc.hoa.scope~ object to visualize X-Y signals for instance ambisonic components at the order N. There are 3 signal inputs: X signal, Y signal and a binary signal (1/0) to tell the drawing corresponds to positive (red) values or negative (blue) ones.\n  Two parameters can be set by message in the right inlet: the type of drawing, the size of the drawing. The two default values can be set thanks to the bpatcher inspector.\n  A unique 4 digit number is attributed to each instance and each visualization window.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "drawing-type",
+      "size",
+      "color-bg",
+      "color-pos",
+      "color-neg",
+      "color-circ"
+    ],
+    "attributes": {
+      "drawing-type": {
+        "type": "string",
+        "get": true,
+        "set": true
+      },
+      "size": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.scope~",
+      "abc.poltocar~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.simpleburstfm~": {
+    "name": "abc.simpleburstfm~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's simple and short (110 ms) FM Synthesis",
+    "description": "abc.simpleburstfm~ is an abstraction that generates a short (110 milliseconds) FM synthetized sound (carrier at 440 Hz, modulator at 220 Hz, modulation index equals 5). There is no default value in the bpatcher.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "abc.mc.busplus~",
+      "abc.mc.busselect~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.soundcoat~": {
+    "name": "abc.soundcoat~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's sound coat",
+    "description": "abc.soundcoat~ is a set of 16 bandpass filters receiving a noise sound as input. The output gains of the filters are slowly randomized. randwin is the duration of the cycle of randomization of the 16 outputs in milliseconds (3000 is the default value, 1 minimum, 20000 maximum).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "gain",
+      "randwin"
+    ],
+    "attributes": {
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "randwin": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.peakamp~",
+      "abc.mc.delay~",
+      "abc.mc.gain~",
+      "abc.mc.addsynth~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.sounddetector~": {
+    "name": "abc.sounddetector~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's sound detector",
+    "description": "abc.sounddetector~ provides the detection of attacks and releases of incoming sound. Its first outlet is an on-off envelope. The second outlet provides a binary signal of detection of the attack. The third outlet provides a binary signal of detection of the release.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "offset",
+      "noteOn",
+      "noiseFloor",
+      "noteDur",
+      "offDur",
+      "attack",
+      "tSlide"
+    ],
+    "attributes": {
+      "offset": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "noteOn": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "noiseFloor": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "noteDur": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "offDur": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "attack": {
+        "type": "boolean",
+        "get": true,
+        "set": true
+      },
+      "tSlide": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.peakamp~",
+      "abc.mc.delay~",
+      "abc.mc.gain~",
+      "abc.mc.addsynth~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.soundgrain~": {
+    "name": "abc.soundgrain~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's granulator on a rainstick sound",
+    "description": "abc.soundgrain~ is a granulator on a rainstick sound which is looped at freqmult speed (default value 1, minimum 0.01, maximum 100).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "gain",
+      "freqmult"
+    ],
+    "attributes": {
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "freqmult": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.peakamp~",
+      "abc.mc.delay~",
+      "abc.mc.gain~",
+      "abc.mc.addsynth~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.stereoout~": {
+    "name": "abc.stereoout~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's 2 channel output abstraction",
+    "description": "abc.stereoout~ is an abstraction that enables 2 channel output (dac~ 1 to 2) with a control of the global gain in dB. This global gain can be set as default value in the bpatcher inspector.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.phasor2pi~",
+      "abc.poltocar~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.trajectories~": {
+    "name": "abc.trajectories~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's 2D trajectories generator",
+    "description": "abc.trajectories~ 2D trajectories in cartesian coordinates. Mode square stands for a square, mode Z for a Z, mode squareZ for an interpolation between a square and a Z, mode random for a random trajectory. Mode 'square', 'Z', 'squareZ' and 'random' have in common two controllers: freq (frequency of the shape in s-1), and size. Mode 'circular' has particular variables.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "freq",
+      "size",
+      "ampRho",
+      "ampTheta",
+      "freqRho",
+      "freqTheta",
+      "rotSpeed"
+    ],
+    "attributes": {
+      "mode": {
+        "type": "string",
+        "get": true,
+        "set": true
+      },
+      "freq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "size": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "ampRho": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "ampTheta": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "freqRho": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "freqTheta": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rotSpeed": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.peakamp~",
+      "abc.mc.delay~",
+      "abc.mc.gain~",
+      "abc.mc.addsynth~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.vbap~": {
+    "name": "abc.vbap~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's circular VBAP spatialization with irregular angles",
+    "description": "abc.vbap~object provides implementations of VBAP algorithm  by Ville Pulkki for various number of loudspeakers dispatched on a circle with angles that can be irregular.\n  Angles are given by parameters a0, a1, a2... angles (in degrees). theta is the angle of the virtual source (in degrees).",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "nmbr-speakers",
+        "type": "int",
+        "optional": true,
+        "digest": "number of speakers"
+      }
+    ],
+    "messages": [
+      "a[index]",
+      "theta"
+    ],
+    "attributes": {
+      "a[index]": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "theta": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.phasor2pi~",
+      "abc.poltocar~",
+      "abc.adcinput~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  },
+  "abc.vector~": {
+    "name": "abc.vector~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Abclib's Energy and Velocity Vectors computation",
+    "description": "abc.vector~ computes the coordinates of velocity and energy vectors for a given loudspeaker setup.\n  To understand or anticipate the localization accuracy of an ambisonic reproduction, two indices were theorized by Gerzon, based on Makita's theory of perception: the energy vector and the velocity vector. The velocity and energy vectors are calculated for a given reproduction system.\n\nThe velocity vector (denoted as Rv) is valid for frequencies below 700 Hz. Its direction corresponds to the apparent direction of the source, and its magnitude represents the accuracy (or blurriness) of the rendering.\n\nThe energy vector (denoted as Re) is the counterpart of the velocity vector for frequencies ranging from 500 Hz to 5 kHz. These localization indices, calculated from the signals sent to the loudspeakers, make it possible to optimize ambisonic signals to achieve the best possible rendering in a given situation.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "number-of-speakers",
+        "type": "int",
+        "optional": false,
+        "digest": "the number of loudspeakers"
+      }
+    ],
+    "messages": [
+      "a[index]",
+      "e[index]"
+    ],
+    "attributes": {
+      "dimensions": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "a[index]": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "e[index]": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abc.hoa.optim~",
+      "abc.hoa.decoder~",
+      "abc.hoa.wider~",
+      "abc.hoa.mirror~",
+      "abc.hoa.map~"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false
+  }
+}

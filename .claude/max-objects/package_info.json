@@ -96,28 +96,28 @@
     "version": "1.0.9",
     "install_method": "package_manager",
     "description": "Fluid Corpus Manipulation -- audio decomposition and analysis",
-    "object_count": 78,
+    "object_count": 80,
     "extracted": true
   },
   "CNMAT": {
     "name": "CNMAT",
     "tier": "community",
     "prefix": "cnmat.",
-    "version": "",
+    "version": "1.0.5",
     "install_method": "package_manager",
     "description": "CNMAT Externals -- OSC, resonance models, descriptors",
-    "object_count": 0,
-    "extracted": false
+    "object_count": 51,
+    "extracted": true
   },
   "Bach": {
     "name": "Bach",
     "tier": "community",
     "prefix": "bach.",
-    "version": "",
+    "version": "0.8.3",
     "install_method": "package_manager",
     "description": "Computer-aided composition with musical notation",
-    "object_count": 0,
-    "extracted": false
+    "object_count": 241,
+    "extracted": true
   },
   "Odot": {
     "name": "Odot",
@@ -163,21 +163,21 @@
     "name": "Dada",
     "tier": "community",
     "prefix": "dada.",
-    "version": "",
+    "version": "0.3.1",
     "install_method": "package_manager",
     "description": "Data-driven and dynamic approaches",
-    "object_count": 0,
-    "extracted": false
+    "object_count": 35,
+    "extracted": true
   },
   "EARS": {
     "name": "EARS",
     "tier": "community",
     "prefix": "ears.",
-    "version": "",
+    "version": "0.1.0",
     "install_method": "package_manager",
     "description": "Electroacoustic and audio research synthesis",
-    "object_count": 0,
-    "extracted": false
+    "object_count": 107,
+    "extracted": true
   },
   "Rhythmic Time Toolkit": {
     "name": "Rhythmic Time Toolkit",
@@ -207,6 +207,56 @@
     "install_method": "package_manager",
     "description": "Use easing functions in Max for audio, visuals, and automation.",
     "object_count": 6,
+    "extracted": true
+  },
+  "abclib": {
+    "name": "abclib",
+    "tier": "community",
+    "prefix": "abc.",
+    "version": "1.1.2",
+    "install_method": "package_manager",
+    "description": "abc library is a toolbox for spatial audio processing using ambisonics, multichannel processes and synthesis. Released by the CICM / MUSIDANSE team, this library offers a large set of utilities and GUI for mixed music composers.",
+    "object_count": 66,
+    "extracted": true
+  },
+  "FlowSwing": {
+    "name": "FlowSwing",
+    "tier": "community",
+    "prefix": "flowSwing.",
+    "version": "2.6.1",
+    "install_method": "package_manager",
+    "description": "FlowSwing is a Max/MSP package for real-time rhythmic transformations and variations based on Non-Isochronous (NI) Grids. It provides tools for time-warping audio, shaping control signals, and sample-accurate sequencing using flexible timing structures defined by a small set of parameters. Warp mark",
+    "object_count": 6,
+    "extracted": true
+  },
+  "grainflow": {
+    "name": "grainflow",
+    "tier": "community",
+    "prefix": "grainflow.",
+    "version": "2.1.2",
+    "install_method": "package_manager",
+    "description": "A suite of granulation tools that leverage the multichannel system in Max to allow for the rapid creation of creative granular tool. Grainflow 2.0 introduces new externals for grainflow~, grainflow.waveform~, and grainflow.spatview~. Please report any issues to https://github.com/composingcap/grainf",
+    "object_count": 34,
+    "extracted": true
+  },
+  "ml.star": {
+    "name": "ml.star",
+    "tier": "community",
+    "prefix": "ml.",
+    "version": "1.3.0",
+    "install_method": "package_manager",
+    "description": "A toolbox of unsupervised machine learning algorithms implemented in Max to support on-line learning, and real-time interactive music and video, aimed at the computer artist and musician.\n",
+    "object_count": 18,
+    "extracted": true
+  },
+  "nn_tilde": {
+    "name": "nn_tilde",
+    "tier": "community",
+    "prefix": "",
+    "version": "1.6.0",
+    "install_method": "package_manager",
+    "description": "Max interfaces for deep neural generation",
+    "object_count": 4,
     "extracted": true
   }
 }

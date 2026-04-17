@@ -1,7 +1,7 @@
 {
   "jit.bang": {
     "name": "jit.bang",
-    "maxclass": "jit.bang",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.mo,  Time",
@@ -58,7 +58,7 @@
   },
   "jit.framecount": {
     "name": "jit.framecount",
-    "maxclass": "jit.framecount",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.mo,  Time",
@@ -116,7 +116,7 @@
   },
   "jit.line": {
     "name": "jit.line",
-    "maxclass": "jit.line",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.mo,  Time",
@@ -193,7 +193,7 @@
   },
   "jit.mo.field": {
     "name": "jit.mo.field",
-    "maxclass": "jit.mo.field",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.mo,  Manipulators",
@@ -254,7 +254,7 @@
   },
   "jit.mo.fieldmask": {
     "name": "jit.mo.fieldmask",
-    "maxclass": "jit.mo.fieldmask",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.mo, Manipulators",
@@ -309,7 +309,7 @@
   },
   "jit.mo.func": {
     "name": "jit.mo.func",
-    "maxclass": "jit.mo.func",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.mo,  Generators",
@@ -419,7 +419,7 @@
   },
   "jit.mo.join": {
     "name": "jit.mo.join",
-    "maxclass": "jit.mo.join",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.mo,  Generators",
@@ -539,7 +539,7 @@
   },
   "jit.mo.time": {
     "name": "jit.mo.time",
-    "maxclass": "jit.mo.time",
+    "maxclass": "newobj",
     "module": "max",
     "domain": "Packages",
     "category": "jit.mo,  Time",
