@@ -1,6 +1,14 @@
 inlets = 1;
 outlets = 2;
 
+function buffer() {
+    bang();
+}
+
+function anything() {
+    bang();
+}
+
 function bang() {
     var onsets = new Buffer("onsets");
     var source = new Buffer("source");
