@@ -204,7 +204,7 @@
     "version": "0.1.0",
     "install_method": "package_manager",
     "description": "Electroacoustic and audio research synthesis",
-    "object_count": 134,
+    "object_count": 103,
     "extracted": true,
     "installed": true
   },
