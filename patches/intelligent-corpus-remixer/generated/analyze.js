@@ -1,6 +1,8 @@
 inlets = 1;
 outlets = 2;
 
+var MIN_SLICE = 4096;
+
 function buffer() {
     bang();
 }
@@ -15,18 +17,28 @@ function bang() {
     var numOnsets = onsets.framecount();
     var sourceLen = source.framecount();
 
+    post("analyze: source=" + sourceLen + " frames, onsets buffer=" + numOnsets + " frames\n");
+
     if (numOnsets === 0 || sourceLen === 0) {
         post("analyze: source or onsets buffer empty\n");
         return;
     }
 
-    var bounds = [];
+    var rawBounds = [];
     for (var i = 0; i < numOnsets; i++) {
         var v = onsets.peek(1, i, 1);
-        bounds.push(Math.floor(v[0]));
+        var f = Math.floor(v[0]);
+        rawBounds.push(f);
     }
+    post("analyze: raw onsets = " + rawBounds.join(",") + "\n");
+
+    var bounds = rawBounds.slice();
     if (bounds.length === 0 || bounds[0] > 0) bounds.unshift(0);
-    if (bounds[bounds.length - 1] < sourceLen) bounds.push(sourceLen);
+    if (bounds[bounds.length - 1] < sourceLen - 1) bounds.push(sourceLen);
+    for (var i = 0; i < bounds.length; i++) {
+        if (bounds[i] < 0) bounds[i] = 0;
+        if (bounds[i] > sourceLen) bounds[i] = sourceLen;
+    }
 
     var bufmfcc = this.patcher.getnamed("bufmfcc");
     var bufstats = this.patcher.getnamed("bufstats");
@@ -40,10 +52,13 @@ function bang() {
     dataset.message("clear");
 
     var kept = 0;
+    var skipped = 0;
     for (var i = 0; i < bounds.length - 1; i++) {
         var start = bounds[i];
         var len = bounds[i + 1] - bounds[i];
-        if (len < 1024) continue;
+        if (len < MIN_SLICE) { skipped++; continue; }
+        if (start + len > sourceLen) len = sourceLen - start;
+        if (len < MIN_SLICE) { skipped++; continue; }
 
         bufmfcc.message("startframe", start);
         bufmfcc.message("numframes", len);
@@ -55,7 +70,7 @@ function bang() {
         kept++;
     }
 
-    post("analyze: added " + kept + " points to descriptors dataset\n");
+    post("analyze: added " + kept + " points, skipped " + skipped + " short slices\n");
     outlet(1, kept);
     outlet(0, "bang");
 }
