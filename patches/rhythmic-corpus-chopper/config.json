@@ -1,0 +1,9 @@
+{
+  "packages": [
+    "FluCoMa",
+    "EARS",
+    "Bach",
+    "Rhythmic Time Toolkit"
+  ],
+  "max_version": 9
+}
