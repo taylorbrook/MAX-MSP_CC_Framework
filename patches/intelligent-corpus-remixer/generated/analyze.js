@@ -52,10 +52,11 @@ function bang() {
 
     var bufmfcc = this.patcher.getnamed("bufmfcc");
     var bufstats = this.patcher.getnamed("bufstats");
+    var bufflatten = this.patcher.getnamed("bufflatten");
     var dataset = this.patcher.getnamed("descriptors");
 
-    if (!bufmfcc || !bufstats || !dataset) {
-        post("analyze: missing named objects (bufmfcc/bufstats/descriptors)\n");
+    if (!bufmfcc || !bufstats || !bufflatten || !dataset) {
+        post("analyze: missing named objects (bufmfcc/bufstats/bufflatten/descriptors)\n");
         return;
     }
 
@@ -75,12 +76,14 @@ function bang() {
         bufmfcc.message("bang");
 
         bufstats.message("bang");
+        bufflatten.message("bang");
 
-        dataset.message("addpoint", "slice_" + kept, "mfcc_mean");
+        dataset.message("addpoint", "slice_" + kept, "mfcc_flat");
         kept++;
     }
 
     post("analyze: added " + kept + " points, skipped " + skipped + " short slices\n");
+    dataset.message("print");
     outlet(1, kept);
     outlet(0, "bang");
 }
