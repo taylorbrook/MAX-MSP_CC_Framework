@@ -745,7 +745,7 @@
                                         640.0,
                                         22.0
                                     ],
-                                    "text": "fluid.bufonsetslice~ @source source @indices onsets @threshold 0.5 @minslicelength 2 @blocking 1"
+                                    "text": "fluid.bufonsetslice~ @source source @indices onsets @threshold 0.5 @minslicelength 8 @blocking 1"
                                 }
                             },
                             {
@@ -2910,7 +2910,7 @@
                         130.0,
                         22.0
                     ],
-                    "text": "dict plot_data"
+                    "text": "dictionary plot_data"
                 }
             }
         ],
