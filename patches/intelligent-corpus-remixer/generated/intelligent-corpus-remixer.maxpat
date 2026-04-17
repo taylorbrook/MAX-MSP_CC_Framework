@@ -896,6 +896,49 @@
                                     ],
                                     "text": "t b b"
                                 }
+                            },
+                            {
+                                "box": {
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
+                                    "id": "obj-12",
+                                    "maxclass": "newobj",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "float",
+                                        "bang"
+                                    ],
+                                    "patching_rect": [
+                                        700.0,
+                                        120.0,
+                                        147.0,
+                                        22.0
+                                    ],
+                                    "text": "buffer~ mfcc_flat"
+                                }
+                            },
+                            {
+                                "box": {
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
+                                    "id": "obj-13",
+                                    "maxclass": "newobj",
+                                    "numinlets": 2,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        30.0,
+                                        255.0,
+                                        450.0,
+                                        22.0
+                                    ],
+                                    "text": "fluid.bufflatten~ @source mfcc_mean @destination mfcc_flat @blocking 1",
+                                    "varname": "bufflatten"
+                                }
                             }
                         ],
                         "lines": [
