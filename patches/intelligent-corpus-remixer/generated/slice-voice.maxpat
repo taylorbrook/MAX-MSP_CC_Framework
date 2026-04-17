@@ -166,7 +166,7 @@
                         79.0,
                         22.0
                     ],
-                    "text": "message 1",
+                    "text": "1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -186,7 +186,7 @@
                         135.0,
                         22.0
                     ],
-                    "text": "message offset $1",
+                    "text": "offset $1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -206,7 +206,7 @@
                         149.0,
                         22.0
                     ],
-                    "text": "message duration $1",
+                    "text": "duration $1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -226,7 +226,7 @@
                         149.0,
                         22.0
                     ],
-                    "text": "message loopmode $1",
+                    "text": "loopmode $1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -269,7 +269,7 @@
                         121.0,
                         22.0
                     ],
-                    "text": "message trig $1",
+                    "text": "trig $1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
