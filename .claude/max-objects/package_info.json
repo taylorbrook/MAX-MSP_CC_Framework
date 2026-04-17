@@ -258,5 +258,35 @@
     "description": "Max interfaces for deep neural generation",
     "object_count": 4,
     "extracted": true
+  },
+  "ABL Effect Modules": {
+    "name": "ABL Effect Modules",
+    "tier": "community",
+    "prefix": "Abl.",
+    "version": "1.0.1",
+    "install_method": "package_manager",
+    "description": "ABL Effect Modules: a collection of Max patches featuring objects created with Ableton's ABL library for DSP. These objects interface with the inner workings of some of Ableton Live Suite's most popular devices. ABL  Effect Modules offer a modular approach to effects rack construction through simpli",
+    "object_count": 48,
+    "extracted": true
+  },
+  "catart-mubu": {
+    "name": "catart-mubu",
+    "tier": "community",
+    "prefix": "camu.",
+    "version": "1.7.0",
+    "install_method": "package_manager",
+    "description": "CataRT-MuBu is a collection of Max patches for corpus-based concatenative synthesis, audio mosaicing, descriptor analysis, transcription, and composition.  Requirements: MuBu package; Optional: sensel, blocks, bach, cage, spat5",
+    "object_count": 71,
+    "extracted": true
+  },
+  "cv.jit": {
+    "name": "cv.jit",
+    "tier": "community",
+    "prefix": "cv.jit.",
+    "version": "2.0.2",
+    "install_method": "package_manager",
+    "description": "A collection of max/msp/jitter externals, abstractions and help files for computer vision applications originally authored by Jean-Marc Pelletier.",
+    "object_count": 47,
+    "extracted": true
   }
 }

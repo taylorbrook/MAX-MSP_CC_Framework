@@ -1,0 +1,2113 @@
+{
+  "cv.jit.HSflow": {
+    "name": "cv.jit.HSflow",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.HSflow.mxo",
+    "variable_io": false
+  },
+  "cv.jit.LKflow": {
+    "name": "cv.jit.LKflow",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.LKflow.mxo",
+    "variable_io": false
+  },
+  "cv.jit.binedge": {
+    "name": "cv.jit.binedge",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.binedge.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blobs.bounds": {
+    "name": "cv.jit.blobs.bounds",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blobs.bounds.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blobs.centroids": {
+    "name": "cv.jit.blobs.centroids",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blobs.centroids.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blobs.direction": {
+    "name": "cv.jit.blobs.direction",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blobs.direction.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blobs.elongation": {
+    "name": "cv.jit.blobs.elongation",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blobs.elongation.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blobs.moments": {
+    "name": "cv.jit.blobs.moments",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blobs.moments.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blobs.orientation": {
+    "name": "cv.jit.blobs.orientation",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blobs.orientation.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blobs.recon": {
+    "name": "cv.jit.blobs.recon",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blobs.recon.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blobs.sort": {
+    "name": "cv.jit.blobs.sort",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blobs.sort.mxo",
+    "variable_io": false
+  },
+  "cv.jit.blur": {
+    "name": "cv.jit.blur",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.blur.mxo",
+    "variable_io": false
+  },
+  "cv.jit.calibration": {
+    "name": "cv.jit.calibration",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.calibration.mxo",
+    "variable_io": false
+  },
+  "cv.jit.canny": {
+    "name": "cv.jit.canny",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.canny.mxo",
+    "variable_io": false
+  },
+  "cv.jit.centroids": {
+    "name": "cv.jit.centroids",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.centroids.mxo",
+    "variable_io": false
+  },
+  "cv.jit.covariance": {
+    "name": "cv.jit.covariance",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.covariance.mxo",
+    "variable_io": false
+  },
+  "cv.jit.dilate": {
+    "name": "cv.jit.dilate",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.dilate.mxo",
+    "variable_io": false
+  },
+  "cv.jit.erode": {
+    "name": "cv.jit.erode",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.erode.mxo",
+    "variable_io": false
+  },
+  "cv.jit.extrema": {
+    "name": "cv.jit.extrema",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.extrema.mxo",
+    "variable_io": false
+  },
+  "cv.jit.face.landmarks": {
+    "name": "cv.jit.face.landmarks",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.face.landmarks.mxo",
+    "variable_io": false
+  },
+  "cv.jit.faces": {
+    "name": "cv.jit.faces",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.faces.mxo",
+    "variable_io": false
+  },
+  "cv.jit.features": {
+    "name": "cv.jit.features",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.features.mxo",
+    "variable_io": false
+  },
+  "cv.jit.findchessboardcorners": {
+    "name": "cv.jit.findchessboardcorners",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.findchessboardcorners.mxo",
+    "variable_io": false
+  },
+  "cv.jit.findcontours": {
+    "name": "cv.jit.findcontours",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.findcontours.mxo",
+    "variable_io": false
+  },
+  "cv.jit.findhomography": {
+    "name": "cv.jit.findhomography",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.findhomography.mxo",
+    "variable_io": false
+  },
+  "cv.jit.floodfill": {
+    "name": "cv.jit.floodfill",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.floodfill.mxo",
+    "variable_io": false
+  },
+  "cv.jit.getperspective": {
+    "name": "cv.jit.getperspective",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.getperspective.mxo",
+    "variable_io": false
+  },
+  "cv.jit.hough": {
+    "name": "cv.jit.hough",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.hough.mxo",
+    "variable_io": false
+  },
+  "cv.jit.kalman": {
+    "name": "cv.jit.kalman",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.kalman.mxo",
+    "variable_io": false
+  },
+  "cv.jit.keypoints": {
+    "name": "cv.jit.keypoints",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.keypoints.mxo",
+    "variable_io": false
+  },
+  "cv.jit.keypoints.match": {
+    "name": "cv.jit.keypoints.match",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 3,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.keypoints.match.mxo",
+    "variable_io": false
+  },
+  "cv.jit.label": {
+    "name": "cv.jit.label",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.label.mxo",
+    "variable_io": false
+  },
+  "cv.jit.learn": {
+    "name": "cv.jit.learn",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.learn.mxo",
+    "variable_io": false
+  },
+  "cv.jit.lines": {
+    "name": "cv.jit.lines",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.lines.mxo",
+    "variable_io": false
+  },
+  "cv.jit.mass": {
+    "name": "cv.jit.mass",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.mass.mxo",
+    "variable_io": false
+  },
+  "cv.jit.mean": {
+    "name": "cv.jit.mean",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.mean.mxo",
+    "variable_io": false
+  },
+  "cv.jit.moments": {
+    "name": "cv.jit.moments",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 3,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 4,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.moments.mxo",
+    "variable_io": false
+  },
+  "cv.jit.noise": {
+    "name": "cv.jit.noise",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "float",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.noise.mxo",
+    "variable_io": false
+  },
+  "cv.jit.opticalflow": {
+    "name": "cv.jit.opticalflow",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.opticalflow.mxo",
+    "variable_io": false
+  },
+  "cv.jit.perspective": {
+    "name": "cv.jit.perspective",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.perspective.mxo",
+    "variable_io": false
+  },
+  "cv.jit.ravg": {
+    "name": "cv.jit.ravg",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.ravg.mxo",
+    "variable_io": false
+  },
+  "cv.jit.resize": {
+    "name": "cv.jit.resize",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.resize.mxo",
+    "variable_io": false
+  },
+  "cv.jit.shift": {
+    "name": "cv.jit.shift",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 3,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.shift.mxo",
+    "variable_io": false
+  },
+  "cv.jit.sum": {
+    "name": "cv.jit.sum",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.sum.mxo",
+    "variable_io": false
+  },
+  "cv.jit.threshold": {
+    "name": "cv.jit.threshold",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.threshold.mxo",
+    "variable_io": false
+  },
+  "cv.jit.track": {
+    "name": "cv.jit.track",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "jit_matrix",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.track.mxo",
+    "variable_io": false
+  },
+  "cv.jit.unproject": {
+    "name": "cv.jit.unproject",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "list",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "rnbo_compatible": false,
+    "package": "cv.jit",
+    "external_file": "cv.jit/externals/cv.jit.unproject.mxo",
+    "variable_io": false
+  }
+}

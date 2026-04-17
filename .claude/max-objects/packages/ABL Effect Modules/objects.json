@@ -1,0 +1,3629 @@
+{
+  "Abl.AutoFilter~": {
+    "name": "Abl.AutoFilter~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio sidechain"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.AutoFilter~.maxpat",
+    "variable_io": false
+  },
+  "Abl.ChannelEQ~": {
+    "name": "Abl.ChannelEQ~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.ChannelEQ~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Chorus~": {
+    "name": "Abl.Chorus~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Chorus~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Compander~": {
+    "name": "Abl.Compander~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Compander~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Compressor~": {
+    "name": "Abl.Compressor~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Compressor~.maxpat",
+    "variable_io": false
+  },
+  "Abl.DFM~": {
+    "name": "Abl.DFM~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.DFM~.maxpat",
+    "variable_io": false
+  },
+  "Abl.DarkHall~": {
+    "name": "Abl.DarkHall~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.DarkHall~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Delay~": {
+    "name": "Abl.Delay~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Delay~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Distortion~": {
+    "name": "Abl.Distortion~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Distortion~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Doubler~": {
+    "name": "Abl.Doubler~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Doubler~.maxpat",
+    "variable_io": false
+  },
+  "Abl.DrumBuss~": {
+    "name": "Abl.DrumBuss~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.DrumBuss~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Echo~": {
+    "name": "Abl.Echo~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Echo~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Ensemble~": {
+    "name": "Abl.Ensemble~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Ensemble~.maxpat",
+    "variable_io": false
+  },
+  "Abl.EnvFollower~": {
+    "name": "Abl.EnvFollower~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Envelope right signal [0. 1.]"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Envelope left signal [0. 1.]"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.EnvFollower~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Fade~": {
+    "name": "Abl.Fade~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input 2"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input 1"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output 2"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output 1"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Fade~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Filther~": {
+    "name": "Abl.Filther~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Filther~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Flanger~": {
+    "name": "Abl.Flanger~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Flanger~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Fuzz~": {
+    "name": "Abl.Fuzz~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Fuzz~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Input~": {
+    "name": "Abl.Input~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Stereo soundfile player & live audio stereo input",
+    "description": "Stereo soundfile player & live audio stereo input",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input (thru)"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Input~.maxpat",
+    "variable_io": false
+  },
+  "Abl.LFO~": {
+    "name": "Abl.LFO~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Stereo low frequency oscillator incorporating an algorithm from various Ableton Live's native devices such as Auto Filter or Shifter",
+    "description": "Stereo low frequency oscillator incorporating an algorithm from various Ableton Live's native devices such as Auto Filter or Shifter",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "LFO right signal [0. 1.]"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "LFO left signal [0. 1.]"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.LFO~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Limiter~": {
+    "name": "Abl.Limiter~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Limiter~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Matrix~": {
+    "name": "Abl.Matrix~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "A small utility for routing and mixing 4 stereo signals",
+    "description": "A small utility for routing and mixing 4 stereo signals",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input 4"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input 3"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input 2"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input 1"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output 4"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output 3"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output 2"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output 1"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Matrix~.maxpat",
+    "variable_io": false
+  },
+  "Abl.MeldFilter~": {
+    "name": "Abl.MeldFilter~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.MeldFilter~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Mix~": {
+    "name": "Abl.Mix~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Mix~.maxpat",
+    "variable_io": false
+  },
+  "Abl.ModScaler~": {
+    "name": "Abl.ModScaler~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Mono modulation signal scaler incorporating a signal shaping algorithm from various Ableton Live's native devices",
+    "description": "Mono modulation signal scaler incorporating a signal shaping algorithm from various Ableton Live's native devices",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation signal [0. 1.]"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Scaled modulation signal [0. 1.]"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.ModScaler~.maxpat",
+    "variable_io": false
+  },
+  "Abl.ModalReson~": {
+    "name": "Abl.ModalReson~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "A stereo resonator using a modal filter bank",
+    "description": "A stereo resonator using a modal filter bank",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.ModalReson~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Output~": {
+    "name": "Abl.Output~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Stereo audio output",
+    "description": "Stereo audio output",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output (thru)"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Output~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Overdrive~": {
+    "name": "Abl.Overdrive~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Overdrive~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Phaser~": {
+    "name": "Abl.Phaser~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Phaser~.maxpat",
+    "variable_io": false
+  },
+  "Abl.PitchShifter~": {
+    "name": "Abl.PitchShifter~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.PitchShifter~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Pitch~": {
+    "name": "Abl.Pitch~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Estimates the pitch/frequency of a given input signal",
+    "description": "Estimates the pitch/frequency of a given input signal",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio thru"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MIDI pitch (float)"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Pitch~.maxpat",
+    "variable_io": false
+  },
+  "Abl.PlateReverb~": {
+    "name": "Abl.PlateReverb~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.PlateReverb~.maxpat",
+    "variable_io": false
+  },
+  "Abl.PrismReverb~": {
+    "name": "Abl.PrismReverb~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.PrismReverb~.maxpat",
+    "variable_io": false
+  },
+  "Abl.QuartzReverb~": {
+    "name": "Abl.QuartzReverb~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.QuartzReverb~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Redux~": {
+    "name": "Abl.Redux~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Redux~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Remote~": {
+    "name": "Abl.Remote~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "A small utility that sends or receives signals without patch cords",
+    "description": "A small utility that sends or receives signals without patch cords",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Remote~.maxpat",
+    "variable_io": false
+  },
+  "Abl.RingMod~": {
+    "name": "Abl.RingMod~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.RingMod~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Saturator~": {
+    "name": "Abl.Saturator~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Saturator~.maxpat",
+    "variable_io": false
+  },
+  "Abl.ShimmerReverb~": {
+    "name": "Abl.ShimmerReverb~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.ShimmerReverb~.maxpat",
+    "variable_io": false
+  },
+  "Abl.SpectralReson~": {
+    "name": "Abl.SpectralReson~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.SpectralReson~.maxpat",
+    "variable_io": false
+  },
+  "Abl.SpectralTime~": {
+    "name": "Abl.SpectralTime~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.SpectralTime~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Switch~": {
+    "name": "Abl.Switch~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "A small utility for fast routing of 2 stereo signals",
+    "description": "A small utility for fast routing of 2 stereo signals",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input 2"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input 1"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output 2"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output 1"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Switch~.maxpat",
+    "variable_io": false
+  },
+  "Abl.TidesReverb~": {
+    "name": "Abl.TidesReverb~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.TidesReverb~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Transient~": {
+    "name": "Abl.Transient~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Transient~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Utility~": {
+    "name": "Abl.Utility~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Utility~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Vibrato~": {
+    "name": "Abl.Vibrato~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Vibrato~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Vowel~": {
+    "name": "Abl.Vowel~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Vowel~.maxpat",
+    "variable_io": false
+  },
+  "Abl.Waveshaper~": {
+    "name": "Abl.Waveshaper~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Modulation input signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "Control parameters with a <name value> message, send messages to pattrstorage"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "MC stereo audio input"
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal A [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Modulation output signal B [0. 1.] "
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output of <name value> parameter messages, pattrstorage messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "MC stereo audio output"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "ABL Effect Modules",
+    "abstraction_file": "ABL Effect Modules/patchers/Abl.Waveshaper~.maxpat",
+    "variable_io": false
+  }
+}

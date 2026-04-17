@@ -1,0 +1,3146 @@
+{
+  "camu.alive-to-index": {
+    "name": "camu.alive-to-index",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.alive-to-index.maxpat",
+    "variable_io": false
+  },
+  "camu.analysis": {
+    "name": "camu.analysis",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": "connect output of mubu here"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "choice of analysis: connect left or middle outlet from umenu"
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "Sends bang when analysis is finished (connect to mubu.knn or camu.select to update)."
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Sends progress as float or list of floats 0..1 (Connect to progress bar multi-slider)"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.analysis.maxpat",
+    "variable_io": false
+  },
+  "camu.circle-player": {
+    "name": "camu.circle-player",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "int",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 3,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 4,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.circle-player.maxpat",
+    "variable_io": false
+  },
+  "camu.cont": {
+    "name": "camu.cont",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "int",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.cont.maxpat",
+    "variable_io": false
+  },
+  "camu.content-summary": {
+    "name": "camu.content-summary",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "bang",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 3,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output long progress text and summary (to print or put into comment over progress bar)."
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "Output short progress text and summary (to print or put into comment over progress bar)."
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.content-summary.maxpat",
+    "variable_io": false
+  },
+  "camu.control.blocks": {
+    "name": "camu.control.blocks",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.control.blocks.maxpat",
+    "variable_io": false
+  },
+  "camu.control.linnstrument": {
+    "name": "camu.control.linnstrument",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.control.linnstrument.maxpat",
+    "variable_io": false
+  },
+  "camu.control.mpe": {
+    "name": "camu.control.mpe",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 3,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.control.mpe.maxpat",
+    "variable_io": false
+  },
+  "camu.control.qwerty": {
+    "name": "camu.control.qwerty",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.control.qwerty.maxpat",
+    "variable_io": false
+  },
+  "camu.control.sensel": {
+    "name": "camu.control.sensel",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.control.sensel.maxpat",
+    "variable_io": false
+  },
+  "camu.debug": {
+    "name": "camu.debug",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.debug.maxpat",
+    "variable_io": false
+  },
+  "camu.debug.control": {
+    "name": "camu.debug.control",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.debug.control.maxpat",
+    "variable_io": false
+  },
+  "camu.detect-theme": {
+    "name": "camu.detect-theme",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.detect-theme.maxpat",
+    "variable_io": false
+  },
+  "camu.export.segments": {
+    "name": "camu.export.segments",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.export.segments.maxpat",
+    "variable_io": false
+  },
+  "camu.export.segments.ordered": {
+    "name": "camu.export.segments.ordered",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "bang",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.export.segments.ordered.maxpat",
+    "variable_io": false
+  },
+  "camu.filenamenotenumber": {
+    "name": "camu.filenamenotenumber",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "bang",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.filenamenotenumber.maxpat",
+    "variable_io": false
+  },
+  "camu.id-to-index": {
+    "name": "camu.id-to-index",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "bang",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.id-to-index.maxpat",
+    "variable_io": false
+  },
+  "camu.import-from-text": {
+    "name": "camu.import-from-text",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.import-from-text.maxpat",
+    "variable_io": false
+  },
+  "camu.imubu.control": {
+    "name": "camu.imubu.control",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "int",
+        "signal": false,
+        "hot": true,
+        "digest": "click mode flag and other messages"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "connect rightmost outlet of knn or camu.select and mubu.concat~ here"
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "list of x/y descr. indices"
+      },
+      {
+        "id": 3,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "from imubu"
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "to knn, marker/buffer must be routed to mubu.concat"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "to imubu editor"
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": "to xy controller in 0..1 feedback"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.imubu.control.maxpat",
+    "variable_io": false
+  },
+  "camu.input.mpe": {
+    "name": "camu.input.mpe",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "list of active notes' float MIDI Note Numbers"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.input.mpe.maxpat",
+    "variable_io": false
+  },
+  "camu.ircamdescriptor-menu": {
+    "name": "camu.ircamdescriptor-menu",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.ircamdescriptor-menu.maxpat",
+    "variable_io": false
+  },
+  "camu.key.select": {
+    "name": "camu.key.select",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.key.select.maxpat",
+    "variable_io": false
+  },
+  "camu.key.soundset": {
+    "name": "camu.key.soundset",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.key.soundset.maxpat",
+    "variable_io": false
+  },
+  "camu.key.value": {
+    "name": "camu.key.value",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.key.value.maxpat",
+    "variable_io": false
+  },
+  "camu.keymixer-horiz-data": {
+    "name": "camu.keymixer-horiz-data",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "bang",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "bang",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 3,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.keymixer-horiz-data.maxpat",
+    "variable_io": false
+  },
+  "camu.keymixer-horiz-level": {
+    "name": "camu.keymixer-horiz-level",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.keymixer-horiz-level.maxpat",
+    "variable_io": false
+  },
+  "camu.menu": {
+    "name": "camu.menu",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "to imubu: graphics configuration messages"
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": "descriptor index"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.menu.maxpat",
+    "variable_io": false
+  },
+  "camu.pipo.descr-chop": {
+    "name": "camu.pipo.descr-chop",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.pipo.descr-chop.maxpat",
+    "variable_io": false
+  },
+  "camu.pipo.descr-gate": {
+    "name": "camu.pipo.descr-gate",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.pipo.descr-gate.maxpat",
+    "variable_io": false
+  },
+  "camu.pipo.descr-onseg": {
+    "name": "camu.pipo.descr-onseg",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.pipo.descr-onseg.maxpat",
+    "variable_io": false
+  },
+  "camu.pipo.ircamdescriptor-chop": {
+    "name": "camu.pipo.ircamdescriptor-chop",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.pipo.ircamdescriptor-chop.maxpat",
+    "variable_io": false
+  },
+  "camu.pipo.ircamdescriptor-gate": {
+    "name": "camu.pipo.ircamdescriptor-gate",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.pipo.ircamdescriptor-gate.maxpat",
+    "variable_io": false
+  },
+  "camu.pipo.ircamdescriptor-onseg": {
+    "name": "camu.pipo.ircamdescriptor-onseg",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.pipo.ircamdescriptor-onseg.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr+mfcc-chop": {
+    "name": "camu.process.descr+mfcc-chop",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr+mfcc-chop.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr+mfcc-gate": {
+    "name": "camu.process.descr+mfcc-gate",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr+mfcc-gate.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr+mfcc-none": {
+    "name": "camu.process.descr+mfcc-none",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr+mfcc-none.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr+mfcc-onseg": {
+    "name": "camu.process.descr+mfcc-onseg",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr+mfcc-onseg.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr-chop": {
+    "name": "camu.process.descr-chop",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr-chop.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr-gate": {
+    "name": "camu.process.descr-gate",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr-gate.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr-none": {
+    "name": "camu.process.descr-none",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr-none.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr-onseg": {
+    "name": "camu.process.descr-onseg",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr-onseg.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr-onseg-mono": {
+    "name": "camu.process.descr-onseg-mono",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr-onseg-mono.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr-onseg-xy": {
+    "name": "camu.process.descr-onseg-xy",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr-onseg-xy.maxpat",
+    "variable_io": false
+  },
+  "camu.process.descr-yin": {
+    "name": "camu.process.descr-yin",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.descr-yin.maxpat",
+    "variable_io": false
+  },
+  "camu.process.ircamdescriptor-chop": {
+    "name": "camu.process.ircamdescriptor-chop",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.ircamdescriptor-chop.maxpat",
+    "variable_io": false
+  },
+  "camu.process.ircamdescriptor-gate": {
+    "name": "camu.process.ircamdescriptor-gate",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.ircamdescriptor-gate.maxpat",
+    "variable_io": false
+  },
+  "camu.process.ircamdescriptor-onseg": {
+    "name": "camu.process.ircamdescriptor-onseg",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.ircamdescriptor-onseg.maxpat",
+    "variable_io": false
+  },
+  "camu.process.mfcc-chop": {
+    "name": "camu.process.mfcc-chop",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.mfcc-chop.maxpat",
+    "variable_io": false
+  },
+  "camu.process.mfcc-gate": {
+    "name": "camu.process.mfcc-gate",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.mfcc-gate.maxpat",
+    "variable_io": false
+  },
+  "camu.process.mfcc-onseg": {
+    "name": "camu.process.mfcc-onseg",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.mfcc-onseg.maxpat",
+    "variable_io": false
+  },
+  "camu.process.off": {
+    "name": "camu.process.off",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process.off.maxpat",
+    "variable_io": false
+  },
+  "camu.process2.descr-chop": {
+    "name": "camu.process2.descr-chop",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process2.descr-chop.maxpat",
+    "variable_io": false
+  },
+  "camu.process2.descr-gate": {
+    "name": "camu.process2.descr-gate",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process2.descr-gate.maxpat",
+    "variable_io": false
+  },
+  "camu.process2.descr-onseg": {
+    "name": "camu.process2.descr-onseg",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.process2.descr-onseg.maxpat",
+    "variable_io": false
+  },
+  "camu.random": {
+    "name": "camu.random",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "bang",
+        "signal": false,
+        "hot": true,
+        "digest": "from mubu.knn: list of marker indices, or bang for retrigger"
+      },
+      {
+        "id": 1,
+        "type": "list",
+        "signal": false,
+        "hot": false,
+        "digest": "from mubu.knn: list of buffer indices"
+      },
+      {
+        "id": 2,
+        "type": "list",
+        "signal": false,
+        "hot": false,
+        "digest": "from mubu.knn: list of distances"
+      },
+      {
+        "id": 3,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "loopback from mubu.concat~: current marker, buffer and play state message"
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "marker index"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "buffer index"
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": "buffer index"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.random.maxpat",
+    "variable_io": false
+  },
+  "camu.random.filter": {
+    "name": "camu.random.filter",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "list",
+        "signal": false,
+        "hot": true,
+        "digest": "from mubu.knn: list of marker indices, or bang for retrigger"
+      },
+      {
+        "id": 1,
+        "type": "list",
+        "signal": false,
+        "hot": false,
+        "digest": "from mubu.knn: list of buffer indices"
+      },
+      {
+        "id": 2,
+        "type": "list",
+        "signal": false,
+        "hot": false,
+        "digest": "from mubu.knn: list of distances"
+      },
+      {
+        "id": 3,
+        "type": "list",
+        "signal": false,
+        "hot": false,
+        "digest": "from mubu.knn: list of distances"
+      },
+      {
+        "id": 4,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "loopback from mubu.concat~: current marker, buffer and play state message"
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "marker index"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "buffer index"
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": "buffer index"
+      },
+      {
+        "id": 3,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.random.filter.maxpat",
+    "variable_io": false
+  },
+  "camu.record": {
+    "name": "camu.record",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "int",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.record.maxpat",
+    "variable_io": false
+  },
+  "camu.select": {
+    "name": "camu.select",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "bang",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 3,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.select.maxpat",
+    "variable_io": false
+  },
+  "camu.syncmetro": {
+    "name": "camu.syncmetro",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "int",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.syncmetro.maxpat",
+    "variable_io": false
+  },
+  "camu.synth.poly~": {
+    "name": "camu.synth.poly~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.synth.poly~.maxpat",
+    "variable_io": false
+  },
+  "camu.synth.poly~8ch": {
+    "name": "camu.synth.poly~8ch",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.synth.poly~8ch.maxpat",
+    "variable_io": false
+  },
+  "camu.synth.voice-8ch": {
+    "name": "camu.synth.voice-8ch",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.synth.voice-8ch.maxpat",
+    "variable_io": false
+  },
+  "camu.synth.voice-mc": {
+    "name": "camu.synth.voice-mc",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.synth.voice-mc.maxpat",
+    "variable_io": false
+  },
+  "camu.taboo": {
+    "name": "camu.taboo",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": "from mubu.knn: marker index"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "from mubu.knn: buffer index"
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "taboo length"
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "marker index"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "buffer index"
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "digest": "taboo"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.taboo.maxpat",
+    "variable_io": false
+  },
+  "camu.tag.directories": {
+    "name": "camu.tag.directories",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.tag.directories.maxpat",
+    "variable_io": false
+  },
+  "camu.target": {
+    "name": "camu.target",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "hot": true,
+        "digest": "target values list or bang from retrigger-random"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "descriptor choice x, or as list x/y/z"
+      },
+      {
+        "id": 2,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": "descriptor choice y (when not sent as list in 2nd inlet)"
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "to mubu.knn or camu.select"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.target.maxpat",
+    "variable_io": false
+  },
+  "camu.triggermode": {
+    "name": "camu.triggermode",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "int",
+        "signal": false,
+        "hot": true,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "anything",
+        "signal": false,
+        "digest": "to mubu.concat"
+      },
+      {
+        "id": 1,
+        "type": "anything",
+        "signal": false,
+        "digest": "cont mode on/off"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.triggermode.maxpat",
+    "variable_io": false
+  },
+  "camu.voice": {
+    "name": "camu.voice",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "hot": false,
+        "digest": ""
+      }
+    ],
+    "outlets": [
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": -1,
+        "type": "anything",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.voice.maxpat",
+    "variable_io": false
+  },
+  "camu.voice.poly~": {
+    "name": "camu.voice.poly~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.voice.poly~.maxpat",
+    "variable_io": false
+  },
+  "camu.voice.poly~8ch": {
+    "name": "camu.voice.poly~8ch",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.voice.poly~8ch.maxpat",
+    "variable_io": false
+  },
+  "camu.voice.poly~mc": {
+    "name": "camu.voice.poly~mc",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [],
+    "tags": [],
+    "min_version": 8,
+    "verified": false,
+    "rnbo_compatible": false,
+    "package": "catart-mubu",
+    "abstraction_file": "catart-mubu/patchers/lib/camu.voice.poly~mc.maxpat",
+    "variable_io": false
+  }
+}
