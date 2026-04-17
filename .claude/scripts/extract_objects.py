@@ -71,6 +71,32 @@ COMMUNITY_PACKAGE_SEARCH_PATHS = [
     Path("/Applications/Max.app/Contents/Resources/C74/packages"),
 ]
 
+# Object names whose maxclass is NOT "newobj". These are built-in UI widgets,
+# special boxes (gen~/rnbo~), and bpatcher-style abstractions that Max stores
+# with their own maxclass rather than the generic newobj. Everything else
+# defaults to "newobj" -- the box class for externals, abstractions, and most
+# user-instantiated objects.
+NON_NEWOBJ_MAXCLASSES = {
+    # Standard UI widgets
+    "button", "comment", "dial", "flonum", "function", "fpic",
+    "gswitch", "gswitch2", "kslider", "led", "message", "multislider",
+    "nslider", "number", "panel", "pictslider", "preset", "radiogroup",
+    "rslider", "slider", "swatch", "tab", "textbutton", "toggle",
+    "ubutton", "umenu", "scope~", "spectroscope~", "plot~", "vu",
+    "meter~", "levelmeter~", "gain~", "ezadc~", "ezdac~", "waveform~",
+    "matrixctrl",
+    # live.* widgets
+    "live.dial", "live.gain~", "live.menu", "live.numbox", "live.text",
+    "live.tab", "live.toggle", "live.button", "live.slider", "live.grid",
+    "live.step", "live.drop", "live.line", "live.meter~", "live.scope~",
+    "live.comment", "live.banks", "live.observer", "live.object",
+    "live.path", "live.remote~", "live.thisdevice",
+    # Container / box specials
+    "bpatcher", "patcher", "subpatcher",
+    # Jitter UI
+    "jit.cellblock", "jit.fpsgui", "jit.pwindow", "jit.window",
+}
+
 # Inlet/outlet type normalization map
 INLET_TYPE_MAP = {
     # Signal types
@@ -543,8 +569,12 @@ def parse_standard_xml(filepath: Path, module_hint: str, domain_hint: str) -> di
             if md_el.get("name") == "tag" and md_el.text:
                 tags.append(md_el.text.strip())
 
-    # Build the maxclass
-    maxclass = name
+    # Build the maxclass. The XML name attribute is the object's text name (e.g.
+    # "ease", "fluid.bufnmf~"); maxclass is the box class Max uses to instantiate
+    # it. Most objects -- externals, abstractions invoked via newobj text -- use
+    # maxclass "newobj". Only built-in UI widgets, bpatchers, and a few special
+    # boxes (gen~, rnbo~) carry their own maxclass.
+    maxclass = "newobj" if name not in NON_NEWOBJ_MAXCLASSES else name
 
     # Check for variable I/O
     variable_io = name in VARIABLE_IO_RULES
@@ -927,9 +957,24 @@ def parse_rnbo_xml(filepath: Path) -> dict | None:
 # Discovery
 # ---------------------------------------------------------------------------
 
-def discover_xml_files(c74_root: Path, domain_filter: str | None = None) -> list[tuple[Path, str, str, str]]:
-    """Discover all .maxref.xml files, returning (path, module_hint, domain_hint, pkg_name) tuples."""
+def discover_xml_files(
+    c74_root: Path,
+    domain_filter: str | None = None,
+    community_root: Path | None = None,
+    community_package_name: str = "",
+) -> list[tuple[Path, str, str, str]]:
+    """Discover all .maxref.xml files, returning (path, module_hint, domain_hint, pkg_name) tuples.
+
+    If ``community_root`` is set, scan it recursively for .maxref.xml files and
+    tag them as a community package. Skips SOURCE_DIRS / PACKAGE_GLOBS scanning
+    (those describe the C74 install layout, not community packages).
+    """
     files = []
+
+    if community_root is not None:
+        for xml_file in sorted(community_root.rglob("*.maxref.xml")):
+            files.append((xml_file, "", "Packages", community_package_name))
+        return files
 
     for rel_dir, module_hint, domain_hint in SOURCE_DIRS:
         if domain_filter and domain_hint.lower() != domain_filter.lower():
@@ -955,14 +1000,29 @@ def discover_xml_files(c74_root: Path, domain_filter: str | None = None) -> list
 # Main extraction
 # ---------------------------------------------------------------------------
 
-def extract_all(c74_root: Path, domain_filter: str | None = None, dry_run: bool = False) -> dict:
+def extract_all(
+    c74_root: Path,
+    domain_filter: str | None = None,
+    dry_run: bool = False,
+    community_root: Path | None = None,
+    community_package_name: str = "",
+) -> dict:
     """Run the full extraction pipeline.
 
     Returns a dict with:
       - domains: {domain_dir: {name: obj_dict}}
       - log: extraction statistics dict
+
+    If ``community_root`` is set, recursively scan that directory for .maxref.xml
+    files (community packages store refpages directly under ``docs/``, not under
+    the C74 ``docs/refpages/<lang>-ref/`` layout).
     """
-    xml_files = discover_xml_files(c74_root, domain_filter)
+    xml_files = discover_xml_files(
+        c74_root,
+        domain_filter,
+        community_root=community_root,
+        community_package_name=community_package_name,
+    )
 
     if dry_run:
         # Count files per source
@@ -1188,17 +1248,80 @@ def detect_pipeline(package_path: Path) -> str:
     return "xml"
 
 
-def update_package_registry(output_root: Path, package_name: str, object_count: int) -> None:
-    """Update package_info.json to mark a package as extracted with its object count."""
+def update_package_registry(
+    output_root: Path,
+    package_name: str,
+    object_count: int,
+    package_source: Path | None = None,
+) -> None:
+    """Update package_info.json to mark a package as extracted with its object count.
+
+    If ``package_source`` points at a package directory containing a
+    ``package-info.json`` file and ``package_name`` is not already in the
+    registry, a new entry is created using metadata from that file (name,
+    version, description). The tier defaults to ``community`` and prefix is
+    inferred from the most common dotted prefix of the extracted objects (or
+    left empty when no clear prefix exists).
+    """
     pkg_info_path = output_root / "package_info.json"
     if not pkg_info_path.exists():
         return
     registry = json.loads(pkg_info_path.read_text())
-    if package_name in registry:
-        registry[package_name]["extracted"] = True
-        registry[package_name]["object_count"] = object_count
+
+    if package_name not in registry:
+        # Build a new entry from the package's own package-info.json
+        new_entry: dict = {
+            "name": package_name,
+            "tier": "community",
+            "prefix": "",
+            "version": "",
+            "install_method": "package_manager",
+            "description": "",
+            "object_count": object_count,
+            "extracted": True,
+        }
+        if package_source is not None:
+            src_info = package_source / "package-info.json"
+            if src_info.exists():
+                try:
+                    src = json.loads(src_info.read_text())
+                    if isinstance(src, dict):
+                        new_entry["version"] = str(src.get("version", "")).lstrip("v")
+                        new_entry["description"] = str(src.get("description", ""))[:300]
+                except (json.JSONDecodeError, OSError):
+                    pass
+        # Try to infer a prefix from the extracted objects.json
+        pkg_objs_path = output_root / "packages" / package_name / "objects.json"
+        if pkg_objs_path.exists():
+            try:
+                pkg_objs = json.loads(pkg_objs_path.read_text())
+                prefixes = [n.split(".", 1)[0] + "." for n in pkg_objs if "." in n]
+                if prefixes:
+                    most_common = max(set(prefixes), key=prefixes.count)
+                    if prefixes.count(most_common) >= max(2, len(prefixes) // 2):
+                        new_entry["prefix"] = most_common
+            except (json.JSONDecodeError, OSError):
+                pass
+        registry[package_name] = new_entry
         pkg_info_path.write_text(json.dumps(registry, indent=2, ensure_ascii=False) + "\n")
-        print(f"  Updated package_info.json: {package_name} extracted=True, count={object_count}")
+        print(f"  Added package_info.json entry: {package_name} (count={object_count})")
+        return
+
+    registry[package_name]["extracted"] = True
+    registry[package_name]["object_count"] = object_count
+    # Refresh version from the source package-info.json when available so the
+    # registry stays in sync with what the user actually has installed.
+    if package_source is not None:
+        src_info = package_source / "package-info.json"
+        if src_info.exists():
+            try:
+                src = json.loads(src_info.read_text())
+                if isinstance(src, dict) and src.get("version"):
+                    registry[package_name]["version"] = str(src["version"]).lstrip("v")
+            except (json.JSONDecodeError, OSError):
+                pass
+    pkg_info_path.write_text(json.dumps(registry, indent=2, ensure_ascii=False) + "\n")
+    print(f"  Updated package_info.json: {package_name} extracted=True, count={object_count}")
 
 
 # ---------------------------------------------------------------------------
@@ -1262,8 +1385,17 @@ def main():
         print(f"  Path: {pkg_path}")
         print(f"  Pipeline: {pipeline}")
         if pipeline == "xml":
-            # Run XML extraction scoped to this package path
-            result = extract_all(pkg_path, domain_filter=None, dry_run=args.dry_run)
+            # Run XML extraction scoped to this package path. Community packages
+            # store .maxref.xml directly under docs/, not in C74's nested
+            # docs/refpages/<lang>-ref/ structure -- pass community_root so the
+            # discoverer recursively scans pkg_path.
+            result = extract_all(
+                pkg_path,
+                domain_filter=None,
+                dry_run=args.dry_run,
+                community_root=pkg_path,
+                community_package_name=args.package,
+            )
             if not args.dry_run:
                 # Route all extracted objects to this package's subdirectory
                 all_objects = {}
@@ -1275,7 +1407,12 @@ def main():
                 result["package_buckets"] = {args.package: all_objects}
                 result["domains"] = {}
                 write_output(result, args.output, domain_filter="packages")
-                update_package_registry(args.output, args.package, len(all_objects))
+                update_package_registry(
+                    args.output,
+                    args.package,
+                    len(all_objects),
+                    package_source=pkg_path,
+                )
         else:
             # Abstraction pipeline -- guide user to run extract_abstractions.py
             print(f"  Abstraction pipeline for {args.package} -- run extract_abstractions.py with --package-dir {pkg_path}")

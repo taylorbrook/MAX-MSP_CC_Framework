@@ -1,22 +1,22 @@
 {
-  "total_files_found": 217,
-  "total_objects": 217,
+  "total_files_found": 6,
+  "total_objects": 6,
   "domain_counts": {
-    "max": 1,
+    "max": 0,
     "msp": 0,
-    "jitter": 9,
+    "jitter": 0,
     "mc": 0,
     "gen": 0,
     "m4l": 0,
     "rnbo": 0,
-    "packages": 206
+    "packages": 6
   },
   "error_count": 0,
   "errors": [],
   "inlet_type_fallback_count": 0,
   "variable_io_count": 0,
-  "empty_inlets_count": 17,
-  "empty_outlets_count": 19,
-  "extraction_timestamp": "2026-04-14T14:26:17.086773+00:00",
-  "max_installation_path": "/Applications/Max.app/Contents/Resources/C74"
+  "empty_inlets_count": 6,
+  "empty_outlets_count": 6,
+  "extraction_timestamp": "2026-04-17T05:52:46.410011+00:00",
+  "max_installation_path": ".claude/max-objects/_pkg-source/ease"
 }

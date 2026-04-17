@@ -1,0 +1,493 @@
+{
+  "ease": {
+    "name": "ease",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ease,  functions",
+    "digest": "Generate or apply an easing function",
+    "description": "Generate or apply an easing function.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "function",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial easing function to use"
+      },
+      {
+        "name": "input_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the input range"
+      },
+      {
+        "name": "input_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the input range"
+      },
+      {
+        "name": "output_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the output range"
+      },
+      {
+        "name": "output_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the output range"
+      }
+    ],
+    "messages": [
+      "float"
+    ],
+    "attributes": {
+      "output_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "input_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "function": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "list.ease",
+      "ease~",
+      "jit.ease",
+      "ease.xfade",
+      "ease.xfade~",
+      "line",
+      "line~",
+      "curve~"
+    ],
+    "tags": [
+      "ease",
+      "functions"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ease",
+    "rnbo_compatible": false
+  },
+  "ease.xfade": {
+    "name": "ease.xfade",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ease,  functions",
+    "digest": "Use an easing function to interpolate between successive lists",
+    "description": "Use an easing function to interpolate between successive lists.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "function",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial easing function to use"
+      },
+      {
+        "name": "input_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the input range"
+      },
+      {
+        "name": "input_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the input range"
+      },
+      {
+        "name": "output_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the output range"
+      },
+      {
+        "name": "output_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the output range"
+      }
+    ],
+    "messages": [
+      "list",
+      "set",
+      "bang",
+      "float"
+    ],
+    "attributes": {
+      "output_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "input_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "function": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ease",
+      "ease~",
+      "ease.xfade~",
+      "jit.ease",
+      "list.ease",
+      "line",
+      "line~",
+      "curve~"
+    ],
+    "tags": [
+      "ease",
+      "functions"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ease",
+    "rnbo_compatible": false
+  },
+  "ease.xfade~": {
+    "name": "ease.xfade~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ease,  functions",
+    "digest": "Use an easing function to interpolate between two sample values",
+    "description": "Use an easing function to interpolate between two sample values.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "function",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial easing function to use"
+      },
+      {
+        "name": "input_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the input range"
+      },
+      {
+        "name": "input_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the input range"
+      },
+      {
+        "name": "output_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the output range"
+      },
+      {
+        "name": "output_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the output range"
+      }
+    ],
+    "messages": [
+      "float"
+    ],
+    "attributes": {
+      "output_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "input_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "function": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ease",
+      "ease~",
+      "list.ease",
+      "jit.ease",
+      "ease.xfade",
+      "line",
+      "line~",
+      "curve~"
+    ],
+    "tags": [
+      "ease",
+      "functions"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ease",
+    "rnbo_compatible": false
+  },
+  "ease~": {
+    "name": "ease~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ease,  functions",
+    "digest": "Generate or apply an easing function",
+    "description": "Generate or apply an easing function.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "function",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial easing function to use"
+      },
+      {
+        "name": "input_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the input range"
+      },
+      {
+        "name": "input_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the input range"
+      },
+      {
+        "name": "output_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the output range"
+      },
+      {
+        "name": "output_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the output range"
+      }
+    ],
+    "messages": [],
+    "attributes": {
+      "output_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "input_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "function": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ease",
+      "list.ease",
+      "jit.ease",
+      "ease.xfade",
+      "ease.xfade~",
+      "line",
+      "line~",
+      "curve~"
+    ],
+    "tags": [
+      "ease",
+      "functions"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ease",
+    "rnbo_compatible": false
+  },
+  "jit.ease": {
+    "name": "jit.ease",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ease,  functions",
+    "digest": "Generate or apply an easing function",
+    "description": "Generate or apply an easing function.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "function",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial easing function to use"
+      },
+      {
+        "name": "input_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the input range"
+      },
+      {
+        "name": "input_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the input range"
+      },
+      {
+        "name": "output_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the output range"
+      },
+      {
+        "name": "output_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the output range"
+      }
+    ],
+    "messages": [],
+    "attributes": {
+      "output_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "input_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "function": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ease",
+      "list.ease",
+      "ease~",
+      "ease.xfade",
+      "ease.xfade~",
+      "line",
+      "line~",
+      "curve~"
+    ],
+    "tags": [
+      "ease",
+      "functions"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ease",
+    "rnbo_compatible": false
+  },
+  "list.ease": {
+    "name": "list.ease",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "ease,  functions",
+    "digest": "Generate or apply an easing function",
+    "description": "Generate or apply an easing function.",
+    "inlets": [],
+    "outlets": [],
+    "arguments": [
+      {
+        "name": "function",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial easing function to use"
+      },
+      {
+        "name": "input_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the input range"
+      },
+      {
+        "name": "input_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the input range"
+      },
+      {
+        "name": "output_range[low]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial low value for the output range"
+      },
+      {
+        "name": "output_range[high]",
+        "type": "number",
+        "optional": true,
+        "digest": "Initial high value for the output range"
+      }
+    ],
+    "messages": [
+      "list"
+    ],
+    "attributes": {
+      "output_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "input_range": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "function": {
+        "type": "long",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "ease",
+      "ease~",
+      "jit.ease",
+      "ease.xfade",
+      "ease.xfade~",
+      "line",
+      "line~",
+      "curve~"
+    ],
+    "tags": [
+      "ease",
+      "functions"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "package": "ease",
+    "rnbo_compatible": false
+  }
+}

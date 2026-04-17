@@ -198,5 +198,15 @@
     "description": "GPU-accelerated video decoding and playback",
     "object_count": 3,
     "extracted": true
+  },
+  "ease": {
+    "name": "ease",
+    "tier": "community",
+    "prefix": "ease.",
+    "version": "1.2.3",
+    "install_method": "package_manager",
+    "description": "Use easing functions in Max for audio, visuals, and automation.",
+    "object_count": 6,
+    "extracted": true
   }
 }
