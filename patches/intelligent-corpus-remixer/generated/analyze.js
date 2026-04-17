@@ -24,11 +24,21 @@ function bang() {
         return;
     }
 
+    post("analyze: onsets channelcount=" + onsets.channelcount() + "\n");
+    var sampleC1 = onsets.peek(1, 0, 1);
+    var sampleC0 = onsets.peek(0, 0, 1);
+    post("analyze: probe ch=1 -> " + JSON.stringify(sampleC1) + " ch=0 -> " + JSON.stringify(sampleC0) + "\n");
+    var batch = onsets.peek(1, 0, numOnsets);
+    post("analyze: batch peek ch=1 type=" + (typeof batch) + " len=" + (batch && batch.length) + " first3=" + (batch ? [batch[0], batch[1], batch[2]].join(",") : "null") + "\n");
+
     var rawBounds = [];
     for (var i = 0; i < numOnsets; i++) {
-        var v = onsets.peek(1, i, 1);
-        var f = Math.floor(v[0]);
-        rawBounds.push(f);
+        var f = batch && batch[i];
+        if (typeof f !== "number" || isNaN(f)) {
+            f = onsets.peek(1, i, 1);
+            f = (f && f[0]) || 0;
+        }
+        rawBounds.push(Math.floor(f));
     }
     post("analyze: raw onsets = " + rawBounds.join(",") + "\n");
 
