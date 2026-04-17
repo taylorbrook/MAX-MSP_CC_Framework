@@ -24,15 +24,63 @@
         "digest": "Bundle out"
       }
     ],
-    "arguments": [],
-    "messages": [],
+    "arguments": [
+      {
+        "name": "argument",
+        "type": "OSC",
+        "optional": true,
+        "digest": "OSC address to bind data to"
+      }
+    ],
+    "messages": [
+      {
+        "name": "FullPacket [variable]",
+        "digest": "Bind an odot bundle to an address"
+      },
+      {
+        "name": "anything [variable]",
+        "digest": "Bind a symbol to an address"
+      },
+      {
+        "name": "bang",
+        "digest": "Output the current bindings stored in the object"
+      },
+      {
+        "name": "dictionary",
+        "digest": "Bind an odot bundle version of a dictionary to an address"
+      },
+      {
+        "name": "doc",
+        "digest": "Output an odot bundle containing the documentation of the object"
+      },
+      {
+        "name": "float",
+        "digest": "Bind a floating-point number to an address"
+      },
+      {
+        "name": "int",
+        "digest": "A Max integer passed to an inlet of o.pack will be bound to an address. For example, passing 42 to an instance of \"o.pack /foo\" will output { /foo : 42 }"
+      },
+      {
+        "name": "list",
+        "digest": "Bind a list of numbers or symbols to an address"
+      },
+      {
+        "name": "set",
+        "digest": "Set the address corresponding to an inlet"
+      },
+      {
+        "name": "version",
+        "digest": "Get current version information."
+      }
+    ],
     "attributes": {},
     "seealso": [],
     "tags": [
       "bundle"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Odot"
@@ -74,15 +122,47 @@
         "digest": "Unmatched"
       }
     ],
-    "arguments": [],
-    "messages": [],
+    "arguments": [
+      {
+        "name": "argument",
+        "type": "OSC address",
+        "optional": true,
+        "digest": "Specify an address or a pattern to match"
+      }
+    ],
+    "messages": [
+      {
+        "name": "FullPacket [variable]",
+        "digest": "Process an odot bundle"
+      },
+      {
+        "name": "anything [variable]",
+        "digest": "Process a Max OSC message"
+      },
+      {
+        "name": "dictionary [variable]",
+        "digest": "Process a Max dictionary"
+      },
+      {
+        "name": "doc",
+        "digest": "Output an odot bundle containing the documentation of the object"
+      },
+      {
+        "name": "set",
+        "digest": "Specify the address to extract data from"
+      },
+      {
+        "name": "version",
+        "digest": "Get current version information"
+      }
+    ],
     "attributes": {},
     "seealso": [],
     "tags": [
       "bundle"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": true,
     "rnbo_compatible": false,
     "package": "Odot"
@@ -400,14 +480,59 @@
       }
     ],
     "arguments": [],
-    "messages": [],
+    "messages": [
+      {
+        "name": "FullPacket [variable]",
+        "digest": "odot bundle to perform expression on"
+      },
+      {
+        "name": "bang",
+        "digest": "Perform the expression using an empty bundle as input"
+      },
+      {
+        "name": "dictionary [variable]",
+        "digest": "A Max dictionary to be evaluated"
+      },
+      {
+        "name": "doc",
+        "digest": "Output an odot bundle containing the documentation of the object"
+      },
+      {
+        "name": "doc-cat",
+        "digest": "Output an odot bundle containing documentation categories"
+      },
+      {
+        "name": "doc-category",
+        "digest": "Output an odot bundle containing documentation categories"
+      },
+      {
+        "name": "doc-func",
+        "digest": "Output an odot bundle containing documentation for a particular function"
+      },
+      {
+        "name": "doc-function",
+        "digest": "Output an odot bundle containing documentation for functions"
+      },
+      {
+        "name": "post-ast",
+        "digest": "Print Abstract Syntax Tree to the Max window"
+      },
+      {
+        "name": "select",
+        "digest": "Select all contents"
+      },
+      {
+        "name": "version",
+        "digest": "Get current version information"
+      }
+    ],
     "attributes": {},
     "seealso": [],
     "tags": [
       "expression"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Odot"
@@ -1013,15 +1138,47 @@
         "digest": "Bundle out"
       }
     ],
-    "arguments": [],
-    "messages": [],
+    "arguments": [
+      {
+        "name": "address",
+        "type": "symbol",
+        "optional": true,
+        "digest": "OSC address to prepend"
+      }
+    ],
+    "messages": [
+      {
+        "name": "FullPacket [variable]",
+        "digest": "The OSC packet that the object's address argument will be prepended to."
+      },
+      {
+        "name": "anything [variable]",
+        "digest": "A Max message containing OSC addresses and values to be transcoded to an odot bundle"
+      },
+      {
+        "name": "dictionary [variable]",
+        "digest": "A Max dictionary to be transcoded to an odot bundle"
+      },
+      {
+        "name": "doc",
+        "digest": "Output an odot bundle containing the documentation of the object"
+      },
+      {
+        "name": "set [variable]",
+        "digest": "Set the address to be prepended."
+      },
+      {
+        "name": "version",
+        "digest": "Get current version information."
+      }
+    ],
     "attributes": {},
     "seealso": [],
     "tags": [
       "data"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Odot"

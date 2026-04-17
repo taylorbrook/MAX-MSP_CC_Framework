@@ -1557,31 +1557,31 @@
         "id": 0,
         "type": "control",
         "signal": false,
-        "digest": "Measureinfo – in \"separate\" mode: Pitches or MIDIcents"
+        "digest": "Measureinfo \u2013 in \"separate\" mode: Pitches or MIDIcents"
       },
       {
         "id": 1,
         "type": "control",
         "signal": false,
-        "digest": "Pitches or MIDIcents – in \"separate\" mode: Durations"
+        "digest": "Pitches or MIDIcents \u2013 in \"separate\" mode: Durations"
       },
       {
         "id": 2,
         "type": "control",
         "signal": false,
-        "digest": "Durations – in \"separate\" mode: Velocities"
+        "digest": "Durations \u2013 in \"separate\" mode: Velocities"
       },
       {
         "id": 3,
         "type": "control",
         "signal": false,
-        "digest": "Velocities – in \"separate\" mode: Ties"
+        "digest": "Velocities \u2013 in \"separate\" mode: Ties"
       },
       {
         "id": 4,
         "type": "control",
         "signal": false,
-        "digest": "Ties – in \"separate\" mode: Extras"
+        "digest": "Ties \u2013 in \"separate\" mode: Extras"
       },
       {
         "id": 5,
@@ -14581,15 +14581,2833 @@
         "digest": "Queries"
       }
     ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
+    "arguments": [
+      {
+        "name": "numvoices",
+        "type": "int",
+        "optional": true,
+        "digest": "Number of voices"
+      }
+    ],
+    "messages": [
+      {
+        "name": "addbreakpoint",
+        "args": [
+          {
+            "name": "relative_x_position",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "delta_midicents",
+            "type": "float/symbol",
+            "optional": false
+          },
+          {
+            "name": "slope",
+            "type": "float",
+            "optional": true
+          },
+          {
+            "name": "velocity",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Add a pitch breakpoint to each selected note"
+      },
+      {
+        "name": "addchord",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          },
+          {
+            "name": "chord",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Add a chord"
+      },
+      {
+        "name": "addchords",
+        "args": [
+          {
+            "name": "offset",
+            "type": "number",
+            "optional": true
+          },
+          {
+            "name": "chords",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Add several chords"
+      },
+      {
+        "name": "addmarker",
+        "args": [
+          {
+            "name": "position",
+            "type": "float/symbol",
+            "optional": false
+          },
+          {
+            "name": "name_or_names",
+            "type": "llll",
+            "optional": false
+          },
+          {
+            "name": "role",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "content",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Add a marker"
+      },
+      {
+        "name": "adjustadditionalstartpad",
+        "digest": "Adjust additional start pad automatically"
+      },
+      {
+        "name": "appendslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "slot_element",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Append a slot element at the end of a slot"
+      },
+      {
+        "name": "bang",
+        "digest": "Build content from separate parameters"
+      },
+      {
+        "name": "cents",
+        "args": [
+          {
+            "name": "cents",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the cents of selected items"
+      },
+      {
+        "name": "changeslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "element_index",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "slot_element",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Change a specific slot element inside a specific slot of selected items"
+      },
+      {
+        "name": "checkdynamics",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Check dynamics for selection"
+      },
+      {
+        "name": "clear",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear all the content or a specific parameter inlet"
+      },
+      {
+        "name": "clearall",
+        "digest": "Clear all separate parameters inlets"
+      },
+      {
+        "name": "clearbreakpoints",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear all the pitch breakpoints"
+      },
+      {
+        "name": "clearmarkers",
+        "digest": "Delete all markers"
+      },
+      {
+        "name": "clearnames",
+        "args": [
+          {
+            "name": "categories",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Clear all names in the score"
+      },
+      {
+        "name": "clearselection",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear current selection"
+      },
+      {
+        "name": "clock",
+        "args": [
+          {
+            "name": "setclock_name",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Select a clock source"
+      },
+      {
+        "name": "copy",
+        "args": [
+          {
+            "name": "slot",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int/symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Copy"
+      },
+      {
+        "name": "copyslot",
+        "args": [
+          {
+            "name": "slot_from",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "slot_to",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Copy a slot to another one for selected items"
+      },
+      {
+        "name": "cut",
+        "args": [
+          {
+            "name": "slot",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int/symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Cut"
+      },
+      {
+        "name": "delete",
+        "digest": "Delete current selected items"
+      },
+      {
+        "name": "deletemarker",
+        "args": [
+          {
+            "name": "marker_names",
+            "type": "list",
+            "optional": false
+          }
+        ],
+        "digest": "Delete a marker"
+      },
+      {
+        "name": "deleteslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "element_position_or_wrapped_xcoord",
+            "type": "int/llll",
+            "optional": false
+          }
+        ],
+        "digest": "Delete the slot element at a given position of a slot"
+      },
+      {
+        "name": "deletevoice",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Delete a voice"
+      },
+      {
+        "name": "distribute",
+        "digest": "Evenly distribute onsets"
+      },
+      {
+        "name": "domain",
+        "args": [
+          {
+            "name": "duration_or_starting_point_ms",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "ending_point_ms",
+            "type": "float",
+            "optional": true
+          },
+          {
+            "name": "ending_pad_pixels",
+            "type": "float",
+            "optional": true
+          }
+        ],
+        "digest": "Set the displayed domain"
+      },
+      {
+        "name": "droplastundo",
+        "digest": "Drop last undo step"
+      },
+      {
+        "name": "dump",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "dump_options",
+            "type": "list",
+            "optional": true
+          }
+        ],
+        "digest": "Dump information"
+      },
+      {
+        "name": "dumpnotepixelpos",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve pixel position of every chord and note"
+      },
+      {
+        "name": "dumpselection",
+        "digest": "Get selected items playout syntax"
+      },
+      {
+        "name": "dumpvoicepixelpos",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve pixel position of every voice"
+      },
+      {
+        "name": "duration",
+        "args": [
+          {
+            "name": "duration",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the duration of selected items"
+      },
+      {
+        "name": "dynamics2velocities",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Assign velocities depending on dynamics"
+      },
+      {
+        "name": "erasebreakpoints",
+        "digest": "Delete pitch breakpoints of selected notes"
+      },
+      {
+        "name": "eraseslot",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Clear a specific slot for selected items"
+      },
+      {
+        "name": "explodechords",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Turn all chords into 1-note-chords"
+      },
+      {
+        "name": "exportimage",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export as PNG image"
+      },
+      {
+        "name": "exportmidi",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export as MIDI file"
+      },
+      {
+        "name": "exportom",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export to OpenMusic"
+      },
+      {
+        "name": "exportpwgl",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export to PWGL"
+      },
+      {
+        "name": "fixdynamics",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Fix dynamics for selection"
+      },
+      {
+        "name": "fixvzoom",
+        "digest": "Fix the vertical zoom value"
+      },
+      {
+        "name": "getcurrentchord",
+        "digest": "Get notes at cursor position"
+      },
+      {
+        "name": "getcursor",
+        "digest": "Get current playhead cursor position"
+      },
+      {
+        "name": "getdomain",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the current domain"
+      },
+      {
+        "name": "getdomainpixels",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the pixel position of the domain"
+      },
+      {
+        "name": "getlength",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the total length"
+      },
+      {
+        "name": "getloop",
+        "digest": "Get current loop region position"
+      },
+      {
+        "name": "getmarker",
+        "args": [
+          {
+            "name": "names",
+            "type": "list",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve marker information"
+      },
+      {
+        "name": "getnumchords",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the number of chords"
+      },
+      {
+        "name": "getnumnotes",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the number of notes"
+      },
+      {
+        "name": "getnumvoices",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the number of voices"
+      },
+      {
+        "name": "getvzoom",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve the current vertical zoom"
+      },
+      {
+        "name": "getzoom",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve the current horizontal zoom"
+      },
+      {
+        "name": "glissando",
+        "args": [
+          {
+            "name": "trim_or_extend",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slope",
+            "type": "float",
+            "optional": true
+          }
+        ],
+        "digest": "Make selection glissando"
+      },
+      {
+        "name": "gluechord",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          },
+          {
+            "name": "chord",
+            "type": "llll",
+            "optional": false
+          },
+          {
+            "name": "threshold_ms",
+            "type": "float",
+            "optional": true
+          },
+          {
+            "name": "threshold_cents",
+            "type": "float",
+            "optional": true
+          },
+          {
+            "name": "smooth_ms",
+            "type": "atom",
+            "optional": true
+          }
+        ],
+        "digest": "Glue a chord to the existing ones"
+      },
+      {
+        "name": "goto",
+        "args": [
+          {
+            "name": "command",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Move selection"
+      },
+      {
+        "name": "group",
+        "digest": "Group selected chords"
+      },
+      {
+        "name": "hidecursor",
+        "digest": "Hide the playhead cursor"
+      },
+      {
+        "name": "inhibitundo",
+        "digest": "Temporarily disable/enable undo step creation"
+      },
+      {
+        "name": "inscreen",
+        "args": [
+          {
+            "name": "ms_or_name",
+            "type": "float/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Change scrollbar position to display a temporal point"
+      },
+      {
+        "name": "inscreenpos",
+        "args": [
+          {
+            "name": "ms_or_name",
+            "type": "float/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Change scrollbar position to precisely display a temporal point"
+      },
+      {
+        "name": "insertslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "element_position",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "slot_element",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Insert a slot element at a given position in a slot"
+      },
+      {
+        "name": "insertvoice",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "voice_or_ref",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Insert a voice"
+      },
+      {
+        "name": "interp",
+        "args": [
+          {
+            "name": "time",
+            "type": "number",
+            "optional": false
+          }
+        ],
+        "digest": "Obtain active notes data at a given instant"
+      },
+      {
+        "name": "lambda",
+        "args": [
+          {
+            "name": "modification_message",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Perform operation on individual selected items"
+      },
+      {
+        "name": "legato",
+        "args": [
+          {
+            "name": "trim_or_extend",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Make selection legato"
+      },
+      {
+        "name": "llll",
+        "digest": "Function depends on inlet"
+      },
+      {
+        "name": "lock",
+        "digest": "Lock selected items"
+      },
+      {
+        "name": "merge",
+        "args": [
+          {
+            "name": "selection",
+            "type": "sym",
+            "optional": true
+          },
+          {
+            "name": "threshold_ms",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "threshold_cents",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "time_merging_policy",
+            "type": "int",
+            "optional": true
+          },
+          {
+            "name": "pitch_vel_merging_policy",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Merge notes or chords"
+      },
+      {
+        "name": "moveslot",
+        "args": [
+          {
+            "name": "slot_from",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "slot_to",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Move a slot to another one for selected items"
+      },
+      {
+        "name": "mute",
+        "digest": "Mute selected items"
+      },
+      {
+        "name": "name",
+        "args": [
+          {
+            "name": "names",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Assign name(s) to selected items"
+      },
+      {
+        "name": "nameappend",
+        "args": [
+          {
+            "name": "names",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Append name(s) to selected items"
+      },
+      {
+        "name": "nametoslot",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "policy",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Copy name(s) to slot for selected items"
+      },
+      {
+        "name": "nametoslot",
+        "args": [
+          {
+            "name": "pitchslot",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "velocityslot",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Copy duration line breakpoint function into a slot"
+      },
+      {
+        "name": "onset",
+        "args": [
+          {
+            "name": "onset",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the onset of selected items"
+      },
+      {
+        "name": "openslotwin",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Open a slot window"
+      },
+      {
+        "name": "paintjit",
+        "digest": "Draw the score onto a jitter matrix"
+      },
+      {
+        "name": "paste",
+        "args": [
+          {
+            "name": "replace",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "position_or_slot",
+            "type": "number/symbol",
+            "optional": true
+          },
+          {
+            "name": "starting_voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Paste"
+      },
+      {
+        "name": "pause",
+        "digest": "Pause"
+      },
+      {
+        "name": "pitch",
+        "args": [
+          {
+            "name": "pitch",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the pitch of selected items"
+      },
+      {
+        "name": "pixeltotime",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          },
+          {
+            "name": "pixel_position",
+            "type": "float",
+            "optional": false
+          }
+        ],
+        "digest": "Convert a pixel position into a time position"
+      },
+      {
+        "name": "play",
+        "args": [
+          {
+            "name": "scheduling_mode",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "start_ms",
+            "type": "float",
+            "optional": true
+          },
+          {
+            "name": "end_ms",
+            "type": "float",
+            "optional": true
+          }
+        ],
+        "digest": "Play"
+      },
+      {
+        "name": "poc",
+        "args": [
+          {
+            "name": "pitch_or_cents",
+            "type": "number/pitch/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the pitch or cents of selected items"
+      },
+      {
+        "name": "poly",
+        "args": [
+          {
+            "name": "maxnumvoices",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Force maximum polyphony and/or assign voicing numbers for selection"
+      },
+      {
+        "name": "prependslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "slot_element",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Prepend a slot element at the beginning of a slot"
+      },
+      {
+        "name": "quantize",
+        "args": [
+          {
+            "name": "selective_quantize_options",
+            "type": "list",
+            "optional": true
+          }
+        ],
+        "digest": "Send quantization data"
+      },
+      {
+        "name": "read",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Open file"
+      },
+      {
+        "name": "realtime",
+        "args": [
+          {
+            "name": "realtime_mode",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Toggle real-time mode"
+      },
+      {
+        "name": "redo",
+        "digest": "Perform a redo step"
+      },
+      {
+        "name": "refresh",
+        "digest": "Force recomputation and redraw"
+      },
+      {
+        "name": "resetslotinfo",
+        "digest": "Reset the custom notehead definition to the default one"
+      },
+      {
+        "name": "resetslotinfo",
+        "digest": "Reset the slotinfo to the default one"
+      },
+      {
+        "name": "resetslotinfo",
+        "digest": "Reset the commands to the default one"
+      },
+      {
+        "name": "resetslotinfo",
+        "digest": "Reset the custom articulations definition to the default one"
+      },
+      {
+        "name": "respell",
+        "digest": "Respell selected notes automatically"
+      },
+      {
+        "name": "rippledelete",
+        "digest": "Ripple-delete current selected items"
+      },
+      {
+        "name": "role",
+        "args": [
+          {
+            "name": "role",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "content",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Assign role to selected markers"
+      },
+      {
+        "name": "sample",
+        "args": [
+          {
+            "name": "num_samples",
+            "type": "number",
+            "optional": false
+          },
+          {
+            "name": "ms",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Sample score data"
+      },
+      {
+        "name": "scroll",
+        "args": [
+          {
+            "name": "amount",
+            "type": "float",
+            "optional": false
+          }
+        ],
+        "digest": "Scroll the object horizontally or vertically"
+      },
+      {
+        "name": "sel",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Select items"
+      },
+      {
+        "name": "select",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Involutively select items"
+      },
+      {
+        "name": "sendcommand",
+        "args": [
+          {
+            "name": "command_number",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Send a command to selected items"
+      },
+      {
+        "name": "setcursor",
+        "args": [
+          {
+            "name": "position",
+            "type": "list",
+            "optional": false
+          }
+        ],
+        "digest": "Move the playhead cursor"
+      },
+      {
+        "name": "setdl",
+        "args": [
+          {
+            "name": "breakpoints",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Set the duration line for selected items"
+      },
+      {
+        "name": "setnotationcolors",
+        "args": [
+          {
+            "name": "red",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "green",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "blue",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "alpha",
+            "type": "float",
+            "optional": false
+          }
+        ],
+        "digest": "Change all notation colors at once"
+      },
+      {
+        "name": "setslot",
+        "args": [
+          {
+            "name": "slots",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Set the content of one or more slots for selected items"
+      },
+      {
+        "name": "showcursor",
+        "digest": "Show the playhead cursor"
+      },
+      {
+        "name": "slice",
+        "args": [
+          {
+            "name": "positions",
+            "type": "number/llll",
+            "optional": false
+          },
+          {
+            "name": "voices",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Slice all the notes at a given instant"
+      },
+      {
+        "name": "slottoname",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Assign name(s) to selected items from slot content"
+      },
+      {
+        "name": "snaponsettogrid",
+        "digest": "Snap selected chords' onsets to the current temporal grid"
+      },
+      {
+        "name": "snappitchtogrid",
+        "digest": "Snap selected notes' pitches to the current microtonal grid"
+      },
+      {
+        "name": "snaptailtogrid",
+        "digest": "Snap selected notes' tails to the current temporal grid"
+      },
+      {
+        "name": "solo",
+        "digest": "Set selected items as solo"
+      },
+      {
+        "name": "stop",
+        "digest": "Stop"
+      },
+      {
+        "name": "subroll",
+        "args": [
+          {
+            "name": "voices",
+            "type": "llll",
+            "optional": false
+          },
+          {
+            "name": "time_lapse",
+            "type": "llll",
+            "optional": false
+          },
+          {
+            "name": "selective_options",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Output a portion of bach.roll"
+      },
+      {
+        "name": "subsel",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Restrict selection"
+      },
+      {
+        "name": "tail",
+        "args": [
+          {
+            "name": "tail_position_ms",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the tail position of selected items"
+      },
+      {
+        "name": "timetopixel",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          },
+          {
+            "name": "position_ms",
+            "type": "float",
+            "optional": false
+          }
+        ],
+        "digest": "Convert a time position into a pixel position"
+      },
+      {
+        "name": "undo",
+        "digest": "Perform an undo step"
+      },
+      {
+        "name": "ungroup",
+        "digest": "Ungroup selected items"
+      },
+      {
+        "name": "unlock",
+        "digest": "Unlock selected items"
+      },
+      {
+        "name": "unmute",
+        "digest": "Unmute selected items"
+      },
+      {
+        "name": "unsel",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Deselect items"
+      },
+      {
+        "name": "unsolo",
+        "digest": "Remove solo status from selected items"
+      },
+      {
+        "name": "velocities2dynamics",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Infer dynamics depending on velocities"
+      },
+      {
+        "name": "velocity",
+        "args": [
+          {
+            "name": "velocity",
+            "type": "int/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the velocity of selected items"
+      },
+      {
+        "name": "voice",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the voice of selected items"
+      },
+      {
+        "name": "write",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save file in native format"
+      },
+      {
+        "name": "writetxt",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save file in text format"
+      }
+    ],
+    "attributes": {
+      "accidentalcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Accidental Color",
+        "default": "0. 0. 0. 1."
+      },
+      "accidentaldecay": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Accidental Decay Time",
+        "default": "0"
+      },
+      "accidentalsfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Accidentals Font",
+        "default": "\\"
+      },
+      "accidentalsgraphic": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Accidental Graphic",
+        "default": "1"
+      },
+      "accidentalspreferences": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Accidental Preferences",
+        "default": "0"
+      },
+      "activepart": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Active Part",
+        "default": "1"
+      },
+      "additionalstartpad": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Additional Start Pad",
+        "default": "0."
+      },
+      "align": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Chords Alignment Mode",
+        "default": "1"
+      },
+      "allowcopypaste": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Copy/Paste",
+        "default": "1"
+      },
+      "allowglissandi": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Glissando Breakpoints",
+        "default": "1"
+      },
+      "allowlock": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Lock",
+        "default": "1"
+      },
+      "allowmute": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Mute",
+        "default": "1"
+      },
+      "allowslothzoom": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Slot Horizontal Zooming",
+        "default": "1"
+      },
+      "allowsolo": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Solo",
+        "default": "1"
+      },
+      "annotationcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Annotation Color",
+        "default": "0. 0. 0. 1."
+      },
+      "annotationfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Annotation Font Size",
+        "default": "10"
+      },
+      "annotationsfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Annotations Font",
+        "default": "Arial"
+      },
+      "applyslope": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Apply Range Slopes During Playback",
+        "default": "1"
+      },
+      "articulationcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Articulation Color",
+        "default": "0. 0. 0. 1."
+      },
+      "articulationsfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Articulations Font",
+        "default": "\\"
+      },
+      "autoclear": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Autoclear",
+        "default": "1"
+      },
+      "autojump": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Auto Jump To Next Chord While Linear Editing",
+        "default": "1"
+      },
+      "automessage": {
+        "type": "atom_array",
+        "get": true,
+        "set": true,
+        "digest": "Automatically Send Message When Changed"
+      },
+      "autosize": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Automatically Adapt Number Of Voices",
+        "default": "1"
+      },
+      "auxclefcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Auxiliary Clef Color",
+        "default": "0. 0. 0. 1."
+      },
+      "auxstaffcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Auxiliary Staff Color",
+        "default": "0.4 0.4 0.4 1."
+      },
+      "bgcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Background Color",
+        "default": "1. 1. 1. 1."
+      },
+      "bgslotfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Background Slot Font Size",
+        "default": "8"
+      },
+      "bgslots": {
+        "type": "int_array",
+        "get": true,
+        "set": true,
+        "digest": "Slots In Background"
+      },
+      "bgslottextshift": {
+        "type": "float_array",
+        "get": true,
+        "set": true,
+        "digest": "Background Slot Text Shift",
+        "default": "0 0"
+      },
+      "bgslotzoom": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Zoom For Slot In Background",
+        "default": "100"
+      },
+      "bordercolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Border Color",
+        "default": "0.6 0.6 0.6 1."
+      },
+      "breakpointshavenoteheads": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Breakpoints Have Noteheads",
+        "default": "0"
+      },
+      "breakpointshavevelocity": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Breakpoints Have Velocity",
+        "default": "0"
+      },
+      "breakpointsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Pitch Breakpoint Size",
+        "default": "3."
+      },
+      "catchplay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Catch Play Head",
+        "default": "1"
+      },
+      "clefcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Clef Color",
+        "default": "0. 0. 0. 1."
+      },
+      "clefs": {
+        "type": "sym_array",
+        "get": true,
+        "set": true,
+        "digest": "Clefs",
+        "default": "G"
+      },
+      "continuousbang": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Continuously Output Bang If Changed",
+        "default": "0"
+      },
+      "customspacing": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Custom Spacing Mode",
+        "default": "0"
+      },
+      "defaultmarkername": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Default Marker Name",
+        "default": "marker"
+      },
+      "defaultnoteslots": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Default Note Slots"
+      },
+      "defaultvelocity": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Default Velocity",
+        "default": "100"
+      },
+      "dumpplaycmd": {
+        "type": "atom_array",
+        "get": true,
+        "set": true,
+        "digest": "Play Offline Commands",
+        "default": "v"
+      },
+      "durationlinewidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Duration Line Width",
+        "default": "2."
+      },
+      "dynamicscolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Color",
+        "default": "0. 0. 0. 1."
+      },
+      "dynamicsexprfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Expressions Font Size",
+        "default": "12"
+      },
+      "dynamicsfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Font Size",
+        "default": "24"
+      },
+      "dynamicsoutputmode": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Output Mode",
+        "default": "2"
+      },
+      "dynamicsvadj": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Vertical Adjustment",
+        "default": "-20"
+      },
+      "embed": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Save Data With Patcher",
+        "default": "1"
+      },
+      "enhancedstems": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Enhanced Stem Display",
+        "default": "0"
+      },
+      "enharmonictable": {
+        "type": "sym_array",
+        "get": true,
+        "set": true,
+        "digest": "Custom Enharmonic Table",
+        "default": "default"
+      },
+      "fadedomain": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Fade Domain Over Clefs",
+        "default": "1"
+      },
+      "fontface": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "fontname": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "fontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "grid": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Grid",
+        "default": "0"
+      },
+      "gridcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Grid Color",
+        "default": "0. 0. 0. 0.3"
+      },
+      "gridperiodms": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Ruler/Grid Period (ms)",
+        "default": "1000"
+      },
+      "hidevoices": {
+        "type": "char_array",
+        "get": true,
+        "set": true,
+        "digest": "Hide Voices",
+        "default": "0"
+      },
+      "highlightdomain": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Highlight Domain",
+        "default": "0"
+      },
+      "highlightplay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Highlight Played Notes",
+        "default": "0"
+      },
+      "inset": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Border Inset",
+        "default": "7"
+      },
+      "jitmatrix": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Mirror To Jitter Matrix"
+      },
+      "keepselectioniflostfocus": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Keep Selection If Lost Focus",
+        "default": "1"
+      },
+      "keys": {
+        "type": "sym_array",
+        "get": true,
+        "set": true,
+        "digest": "Keys",
+        "default": "CM"
+      },
+      "keysigcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Key Signature Color",
+        "default": "0. 0. 0. 1."
+      },
+      "labelfamilies": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Label Families",
+        "default": "0"
+      },
+      "legend": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Legend",
+        "default": "2"
+      },
+      "legendcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Mouseover Legend Color",
+        "default": "0.5 0.5 0.5 1."
+      },
+      "legendfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Legend Font Size",
+        "default": "13"
+      },
+      "linearedit": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Linear Editing",
+        "default": "1"
+      },
+      "lineareditcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Edit Color",
+        "default": "0.78 0.63 0.04 1."
+      },
+      "linearedittimemultipliers": {
+        "type": "float_array",
+        "get": true,
+        "set": true,
+        "digest": "Linear Editing Time Multipliers",
+        "default": "1 2 3 4 5 6 7 8 9 10"
+      },
+      "linearedittimestep": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Linear Editing Base Time Step",
+        "default": "100"
+      },
+      "linkannotationtoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Text Annotation To Slot"
+      },
+      "linkarticulationstoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Articulations To Slot"
+      },
+      "linkdlcolortoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Duration Line Color To Slot",
+        "default": "0"
+      },
+      "linkdynamicstoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Dynamics To Slot"
+      },
+      "linklyricstoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Lyrics To Slot"
+      },
+      "linknotecolortoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Color To Slot",
+        "default": "0"
+      },
+      "linknoteheadadjusttoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Head Adjust To Slot",
+        "default": "0"
+      },
+      "linknoteheadfonttoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Head Font To Slot",
+        "default": "0"
+      },
+      "linknoteheadtoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Head To Slot"
+      },
+      "linknotesizetoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Size To Slot",
+        "default": "0"
+      },
+      "lockcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Lock Color",
+        "default": "0.83 0.04 0.04 1."
+      },
+      "loop": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Loop Region"
+      },
+      "loopcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Loop Color",
+        "default": "0.68 0.48 0.69 1."
+      },
+      "lyricsalignment": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Alignment",
+        "default": "0"
+      },
+      "lyricscolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Color",
+        "default": "0. 0. 0. 1."
+      },
+      "lyricsfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Font",
+        "default": "Arial"
+      },
+      "lyricsfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Font Size",
+        "default": "12"
+      },
+      "lyricsvadj": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Vertical Adjustment",
+        "default": "-16"
+      },
+      "markersfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Markers Font",
+        "default": "Arial"
+      },
+      "markersfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Markers Font Size",
+        "default": "9"
+      },
+      "maxundosteps": {
+        "type": "atom",
+        "get": true,
+        "set": true,
+        "digest": "Maximum Number Of Undo Steps",
+        "default": "50"
+      },
+      "midichannels": {
+        "type": "int_array",
+        "get": true,
+        "set": true,
+        "digest": "MIDI Channels",
+        "default": "1"
+      },
+      "minlength": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Minimum Length In Milliseconds",
+        "default": "0"
+      },
+      "mousehover": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Mouse Hovering",
+        "default": "1"
+      },
+      "mutecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Mute Color",
+        "default": "0.29 0.29 0.72 1."
+      },
+      "nonantialiasedstafflines": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Only Non-Antialiased Staff",
+        "default": "1"
+      },
+      "notationfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Notation Font",
+        "default": "\\"
+      },
+      "notecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Note Color",
+        "default": "0. 0. 0. 1."
+      },
+      "notifymessages": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Notifications When Changed Via Messages",
+        "default": "0"
+      },
+      "notifypaint": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Notifications When Display Is Refreshed",
+        "default": "0"
+      },
+      "numgridsubdivisions": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Number of Ruler/Grid Subdivisions",
+        "default": "10"
+      },
+      "numparts": {
+        "type": "int_array",
+        "get": true,
+        "set": true,
+        "digest": "Number of Voices per Part",
+        "default": "1"
+      },
+      "numvoices": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Number Of Voices"
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Outlet Types"
+      },
+      "outputpitchesgathered": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Pitches In Gathered Syntax",
+        "default": "1"
+      },
+      "outputpitchesplayout": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Pitches In Playout Syntax",
+        "default": "0"
+      },
+      "outputpitchesseparate": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Pitches In Separate Syntax",
+        "default": "0"
+      },
+      "outputslotnames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Slot Names From Playout",
+        "default": "0"
+      },
+      "pitcheditrange": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Constraint Pitches While Editing"
+      },
+      "playcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Play Color",
+        "default": "0.34 0.87 0.20 1."
+      },
+      "playheaddragmode": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Playhead Mousing Mode",
+        "default": "0"
+      },
+      "playheadwidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Playhead Width",
+        "default": "1."
+      },
+      "playmarkers": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Markers",
+        "default": "1"
+      },
+      "playmode": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Playout Mode",
+        "default": "1"
+      },
+      "playoutfullpath": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Full Path In Playout Syntax",
+        "default": "0"
+      },
+      "playpartialnotes": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Partial Notes",
+        "default": "1"
+      },
+      "playpollthrottle": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Poll Throttle",
+        "default": "10"
+      },
+      "playrests": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Rests",
+        "default": "0"
+      },
+      "playstep": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Play Bar Average Step (ms)",
+        "default": "50"
+      },
+      "playwhenlinearediting": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Chord Playback While Linear Editing",
+        "default": "1"
+      },
+      "popupmenuslots": {
+        "type": "int_array",
+        "get": true,
+        "set": true,
+        "digest": "Slots In Popup Menu"
+      },
+      "preventedit": {
+        "type": "atom_array",
+        "get": true,
+        "set": true,
+        "digest": "Prevent Editing For"
+      },
+      "rightclickslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Right Click Directly Pops Out Slot",
+        "default": "0"
+      },
+      "ruler": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Ruler",
+        "default": "0"
+      },
+      "rulercolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Ruler Color",
+        "default": "0. 0. 0. 1."
+      },
+      "rulerlabels": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Ruler Labels",
+        "default": "1"
+      },
+      "rulerlabelsfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Ruler Labels Font Size",
+        "default": "8"
+      },
+      "rulermode": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Ruler/Grid Mode",
+        "default": "1"
+      },
+      "samplingrate": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Sampling Rate (For Filter Slots)",
+        "default": "44100"
+      },
+      "scrollbarcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Scrollbar Color",
+        "default": "0.3 0.3 0.3 1."
+      },
+      "selectedlegendcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Selection Legend Color",
+        "default": "0.2 0.2 0.2 1."
+      },
+      "selectioncolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Selection Color",
+        "default": "0.8 0. 0.8 1."
+      },
+      "senddoneafterpaint": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Send 'Done' Only After Paint",
+        "default": "1"
+      },
+      "senddoneatstartup": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Send 'Done' At Startup (If Data Was Saved)",
+        "default": "1"
+      },
+      "showaccidentalspreferences": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Display Accidentals",
+        "default": "0"
+      },
+      "showannotations": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Text Annotations",
+        "default": "1"
+      },
+      "showarticulations": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Articulations",
+        "default": "1"
+      },
+      "showarticulationsextensions": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Articulations Extensions",
+        "default": "1"
+      },
+      "showauxclefs": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Auxiliary Clefs In Combinations",
+        "default": "1"
+      },
+      "showborder": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Border",
+        "default": "1"
+      },
+      "showclefs": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Clefs",
+        "default": "1"
+      },
+      "showdurations": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Duration Lines",
+        "default": "1"
+      },
+      "showdynamics": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Dynamics",
+        "default": "1"
+      },
+      "showfocus": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Object Focus",
+        "default": "1"
+      },
+      "showgroups": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Groups",
+        "default": "4"
+      },
+      "showhairpins": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Hairpins for Dynamics",
+        "default": "1"
+      },
+      "showledgerlines": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Ledger Lines",
+        "default": "1"
+      },
+      "showlockcolor": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Lock Color",
+        "default": "2"
+      },
+      "showloop": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Loop Region",
+        "default": "0"
+      },
+      "showlyrics": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Lyrics",
+        "default": "1"
+      },
+      "showmarkers": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Markers",
+        "default": "1"
+      },
+      "showmutecolor": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Mute Color",
+        "default": "2"
+      },
+      "shownotenames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Note Names In Selection Legend",
+        "default": "0"
+      },
+      "showpartcolors": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Part Colors",
+        "default": "0"
+      },
+      "showplayhead": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Playhead",
+        "default": "0"
+      },
+      "showscrollbar": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Horizontal Scrollbar If Needed",
+        "default": "1"
+      },
+      "showslotlabels": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Slot Labels",
+        "default": "1"
+      },
+      "showslotlegend": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Slot Legend",
+        "default": "1"
+      },
+      "showslotnumbers": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Slot Numbers In Slot Window",
+        "default": "1"
+      },
+      "showsolocolor": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Solo Color",
+        "default": "2"
+      },
+      "showstems": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Stems",
+        "default": "2"
+      },
+      "showtails": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Note Tails",
+        "default": "1"
+      },
+      "showvelocity": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Velocity",
+        "default": "0"
+      },
+      "showvoicenames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Voice Names",
+        "default": "1"
+      },
+      "showvscrollbar": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Vertical Scrollbar If Needed",
+        "default": "1"
+      },
+      "slopemapping": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Slope Mapping",
+        "default": "0"
+      },
+      "slotfunctionptradius": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Function Slot Point Radius",
+        "default": "1.3"
+      },
+      "slotminimumwindowwidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Minimum Slot Window Width",
+        "default": "0"
+      },
+      "slotwinalpha": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Slot Window Opacity %",
+        "default": "100"
+      },
+      "slotwinzoom": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Zoom For Slot Window",
+        "default": "125"
+      },
+      "smartmarkernames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Smart Marker Names Placement",
+        "default": "1"
+      },
+      "snaplinearedit": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Snap Linear Editing To Grid",
+        "default": "1"
+      },
+      "snapmarkers": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Snap Markers To Grid When Editing",
+        "default": "0"
+      },
+      "snaponset": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Snap Onset To Grid When Editing",
+        "default": "0"
+      },
+      "snappitch": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Snap Pitch To Grid When Editing",
+        "default": "1"
+      },
+      "snaptail": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Snap Tail To Grid When Editing",
+        "default": "0"
+      },
+      "solocolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Solo Color",
+        "default": "0.61 0.61 0.21 1."
+      },
+      "spacebarplay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Use Spacebar To Play",
+        "default": "1"
+      },
+      "staffcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Main Staff Color",
+        "default": "0. 0. 0. 1."
+      },
+      "stafflines": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Number Of Staff Lines"
+      },
+      "stemcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Stem Color",
+        "default": "0. 0. 0. 1."
+      },
+      "subdivisiongridcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Subdivision Grid Color",
+        "default": "0. 0. 0. 0.1"
+      },
+      "thinannotations": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Handle Annotation Duplicates",
+        "default": "0"
+      },
+      "thinannotationsclearsym": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Annotation Clearing Symbol",
+        "default": "ord."
+      },
+      "tonedivision": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Microtonal Division",
+        "default": "2"
+      },
+      "undobang": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Send bang Upon Undo",
+        "default": "1"
+      },
+      "useloop": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Activate Loop Region (When Shown)",
+        "default": "1"
+      },
+      "verboseundo": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Post Undo/Redo Steps",
+        "default": "0"
+      },
+      "voicenames": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Voice Names"
+      },
+      "voicenamesalign": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Voice Names Alignment",
+        "default": "1"
+      },
+      "voicenamesfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Voice Names Font",
+        "default": "Arial"
+      },
+      "voicenamesfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Voice Names Font Size",
+        "default": "11"
+      },
+      "voicespacing": {
+        "type": "float_array",
+        "get": true,
+        "set": true,
+        "digest": "Voice Spacing"
+      },
+      "vzoom": {
+        "type": "atom",
+        "get": true,
+        "set": true,
+        "digest": "Vertical Zoom %",
+        "default": "Auto"
+      },
+      "zoom": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Horizontal Zoom %",
+        "default": "100."
+      }
+    },
     "seealso": [],
     "tags": [
       "notation"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Bach"
@@ -14855,15 +17673,3589 @@
         "digest": "Queries"
       }
     ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
+    "arguments": [
+      {
+        "name": "numvoices",
+        "type": "int",
+        "optional": true,
+        "digest": "Number of voices"
+      }
+    ],
+    "messages": [
+      {
+        "name": "addbreakpoint",
+        "args": [
+          {
+            "name": "relative_x_position",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "delta_midicents",
+            "type": "float/symbol",
+            "optional": false
+          },
+          {
+            "name": "slope",
+            "type": "float",
+            "optional": true
+          },
+          {
+            "name": "velocity",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Add a pitch breakpoint to each selected note"
+      },
+      {
+        "name": "addmarker",
+        "args": [
+          {
+            "name": "position_ms",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "name_or_names",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Add a marker"
+      },
+      {
+        "name": "addtempo",
+        "args": [
+          {
+            "name": "measure_number",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "tempo",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Add a tempo"
+      },
+      {
+        "name": "appendmeasure",
+        "args": [
+          {
+            "name": "voice_numbers",
+            "type": "int/symbol/llll",
+            "optional": true
+          },
+          {
+            "name": "measures",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Append a single measure"
+      },
+      {
+        "name": "appendmeasures",
+        "args": [
+          {
+            "name": "voice_numbers",
+            "type": "int/symbol/llll",
+            "optional": true
+          },
+          {
+            "name": "how_many",
+            "type": "int",
+            "optional": true
+          },
+          {
+            "name": "voices",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Append several measures"
+      },
+      {
+        "name": "appendslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "slot_element",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Append a slot element at the end of a slot"
+      },
+      {
+        "name": "autobeam",
+        "digest": "Rebeam automatically the rhythm of the selected portion of score"
+      },
+      {
+        "name": "autorhythm",
+        "args": [
+          {
+            "name": "reparse_tuplets",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Reparse automatically the rhythm of the selected portion of score"
+      },
+      {
+        "name": "bang",
+        "digest": "Build content from separate parameters"
+      },
+      {
+        "name": "ceilmeasures",
+        "args": [
+          {
+            "name": "num_measures",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Pad measures"
+      },
+      {
+        "name": "cents",
+        "args": [
+          {
+            "name": "velocity",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the pitch of selected items"
+      },
+      {
+        "name": "changeslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "element_index",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "slot_element",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Change a specific slot element inside a given slot of selected items"
+      },
+      {
+        "name": "checkdynamics",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Check dynamics for selection"
+      },
+      {
+        "name": "clear",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear all the measures or a specific parameter inlet"
+      },
+      {
+        "name": "clearall",
+        "digest": "Clear all separate parameters inlets"
+      },
+      {
+        "name": "cleararticulations",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear all the articulations"
+      },
+      {
+        "name": "clearbreakpoints",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear all the pitch breakpoints"
+      },
+      {
+        "name": "clearmarkers",
+        "digest": "Delete all markers"
+      },
+      {
+        "name": "clearmarkers",
+        "digest": "Delete all markers"
+      },
+      {
+        "name": "clearnames",
+        "args": [
+          {
+            "name": "categories",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Clear names of selected items"
+      },
+      {
+        "name": "clearnotes",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear all the chords"
+      },
+      {
+        "name": "clearselection",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear current selection"
+      },
+      {
+        "name": "clearselectionarticulations",
+        "digest": "Clear articulations for selected items"
+      },
+      {
+        "name": "cleartempi",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Clear all the tempi"
+      },
+      {
+        "name": "clock",
+        "args": [
+          {
+            "name": "setclock_name",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Select a clock source"
+      },
+      {
+        "name": "collapse",
+        "args": [
+          {
+            "name": "voices",
+            "type": "llll",
+            "optional": false
+          },
+          {
+            "name": "selective_options",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Collapse score to a single voice"
+      },
+      {
+        "name": "copy",
+        "args": [
+          {
+            "name": "slot",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int/symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Copy"
+      },
+      {
+        "name": "copyslot",
+        "args": [
+          {
+            "name": "slot_from",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "slot_to",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Copy a slot to another one for selected items"
+      },
+      {
+        "name": "cut",
+        "args": [
+          {
+            "name": "slot",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int/symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Cut"
+      },
+      {
+        "name": "delete",
+        "digest": "Delete current selected items"
+      },
+      {
+        "name": "deletegrace",
+        "digest": "Delete selected chords' grace notes"
+      },
+      {
+        "name": "deletemarker",
+        "args": [
+          {
+            "name": "marker_names",
+            "type": "list",
+            "optional": false
+          }
+        ],
+        "digest": "Delete a marker"
+      },
+      {
+        "name": "deletemeasures",
+        "digest": "Delete current selected measures"
+      },
+      {
+        "name": "deleteslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "element_position_or_wrapped_xcoord",
+            "type": "int/llll",
+            "optional": false
+          }
+        ],
+        "digest": "Delete the slot element at a given position of a slot"
+      },
+      {
+        "name": "deletevoice",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Delete a voice"
+      },
+      {
+        "name": "domain",
+        "args": [
+          {
+            "name": "duration_or_starting_point_ms",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "ending_point_ms",
+            "type": "float",
+            "optional": true
+          },
+          {
+            "name": "ending_pad_pixels",
+            "type": "float",
+            "optional": true
+          }
+        ],
+        "digest": "Change horizontal zoom to set the displayed domain"
+      },
+      {
+        "name": "droplastundo",
+        "digest": "Prune last undo step"
+      },
+      {
+        "name": "dump",
+        "args": [
+          {
+            "name": "selective_dump_options",
+            "type": "list",
+            "optional": true
+          }
+        ],
+        "digest": "Dump information"
+      },
+      {
+        "name": "dumpmeasurepixelpos",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve pixel position of every measure"
+      },
+      {
+        "name": "dumpnotepixelpos",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve pixel position of every chord and note"
+      },
+      {
+        "name": "dumpselection",
+        "digest": "Get selected items playout syntax"
+      },
+      {
+        "name": "dumpvoicepixelpos",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve pixel position of every voice"
+      },
+      {
+        "name": "dynamics2velocities",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Assign velocities depending on dynamics"
+      },
+      {
+        "name": "erasebreakpoints",
+        "digest": "Delete pitch breakpoints of selected notes"
+      },
+      {
+        "name": "eraseslot",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Clear a specific slot for selected notes"
+      },
+      {
+        "name": "exportimage",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export as PNG image"
+      },
+      {
+        "name": "exportlilypond",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export as LilyPond file"
+      },
+      {
+        "name": "exportlilypondpdf",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export PDF file via LilyPond"
+      },
+      {
+        "name": "exportmidi",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export as MIDI file"
+      },
+      {
+        "name": "exportom",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export to OpenMusic"
+      },
+      {
+        "name": "exportpwgl",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export to PWGL"
+      },
+      {
+        "name": "exportxml",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Export as MusicXML file"
+      },
+      {
+        "name": "filltiesequenceswithslots",
+        "digest": "Fill tie sequences with slots"
+      },
+      {
+        "name": "fixdynamics",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Fix dynamics for selection"
+      },
+      {
+        "name": "fixvzoom",
+        "digest": "Fix the vertical zoom value"
+      },
+      {
+        "name": "getcurrentchord",
+        "digest": "Get notes at cursor position"
+      },
+      {
+        "name": "getcursor",
+        "digest": "Get current playhead cursor position"
+      },
+      {
+        "name": "getdomain",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the current domain"
+      },
+      {
+        "name": "getdomainpixels",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the pixel position of the domain"
+      },
+      {
+        "name": "getlength",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the total length"
+      },
+      {
+        "name": "getloop",
+        "digest": "Get current loop region position"
+      },
+      {
+        "name": "getmarker",
+        "args": [
+          {
+            "name": "names",
+            "type": "list",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve marker information"
+      },
+      {
+        "name": "getnumchords",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the number of chords"
+      },
+      {
+        "name": "getnummeasures",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the number of measures"
+      },
+      {
+        "name": "getnumnotes",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the number of notes"
+      },
+      {
+        "name": "getnumvoices",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Get the number of voices"
+      },
+      {
+        "name": "getvzoom",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve the current vertical zoom"
+      },
+      {
+        "name": "getzoom",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Retrieve the current horizontal zoom"
+      },
+      {
+        "name": "glissando",
+        "args": [
+          {
+            "name": "slope",
+            "type": "float",
+            "optional": true
+          }
+        ],
+        "digest": "Make selection glissando"
+      },
+      {
+        "name": "goto",
+        "args": [
+          {
+            "name": "command",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Move selection"
+      },
+      {
+        "name": "hidecursor",
+        "digest": "Hide the playhead cursor"
+      },
+      {
+        "name": "inhibitundo",
+        "digest": "Temporarily disable/enable undo step creation"
+      },
+      {
+        "name": "inscreen",
+        "args": [
+          {
+            "name": "position_or_name",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Change scrollbar position to display a temporal point"
+      },
+      {
+        "name": "inscreenmeas",
+        "args": [
+          {
+            "name": "start_measure_number",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "end_measure_number",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Display measure range to fit the domain"
+      },
+      {
+        "name": "inscreenpos",
+        "args": [
+          {
+            "name": "domain_relative_location",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "position_or_name",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Change scrollbar position to precisely display a temporal point"
+      },
+      {
+        "name": "insertmeasure",
+        "args": [
+          {
+            "name": "measure_position",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "measures",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Insert a single measure"
+      },
+      {
+        "name": "insertmeasures",
+        "args": [
+          {
+            "name": "voice_numbers",
+            "type": "int/symbol/llll",
+            "optional": true
+          },
+          {
+            "name": "measure_position",
+            "type": "int",
+            "optional": true
+          },
+          {
+            "name": "voices",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Insert several measures"
+      },
+      {
+        "name": "insertslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "element_position",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "slot_element",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Insert a slot element at a given position in a slot"
+      },
+      {
+        "name": "insertvoice",
+        "args": [
+          {
+            "name": "voice_number",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "voice_or_ref",
+            "type": "int/llll",
+            "optional": true
+          }
+        ],
+        "digest": "Insert a voice"
+      },
+      {
+        "name": "interp",
+        "args": [
+          {
+            "name": "time",
+            "type": "float/llll",
+            "optional": false
+          }
+        ],
+        "digest": "Obtain active notes data at a given instant"
+      },
+      {
+        "name": "join",
+        "digest": "Join selected chords"
+      },
+      {
+        "name": "lambda",
+        "args": [
+          {
+            "name": "modification_message",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Perform operation on individual selected items"
+      },
+      {
+        "name": "legato",
+        "digest": "Make selection legato"
+      },
+      {
+        "name": "llll",
+        "digest": "Function depends on inlet"
+      },
+      {
+        "name": "lock",
+        "digest": "Lock selected items"
+      },
+      {
+        "name": "measureinfo",
+        "args": [
+          {
+            "name": "measureinfo",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the measureinfo of selected measures"
+      },
+      {
+        "name": "merge",
+        "args": [
+          {
+            "name": "selection",
+            "type": "sym",
+            "optional": true
+          },
+          {
+            "name": "threshold_time",
+            "type": "rational",
+            "optional": false
+          },
+          {
+            "name": "threshold_cents",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "time_merging_policy",
+            "type": "int",
+            "optional": true
+          },
+          {
+            "name": "pitch_merging_policy",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Merge notes or chords"
+      },
+      {
+        "name": "mergegrace",
+        "digest": "Merge selected chords' grace notes"
+      },
+      {
+        "name": "moveslot",
+        "args": [
+          {
+            "name": "slot_from",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "slot_to",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Move a slot to another one for selected items"
+      },
+      {
+        "name": "mute",
+        "digest": "Mute selected items"
+      },
+      {
+        "name": "name",
+        "args": [
+          {
+            "name": "names",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Append name(s) to selected items"
+      },
+      {
+        "name": "name",
+        "args": [
+          {
+            "name": "names",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Assign name(s) to selected items"
+      },
+      {
+        "name": "nametoslot",
+        "args": [
+          {
+            "name": "pitchslot",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "velocityslot",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Copy duration line breakpoint function into a slot"
+      },
+      {
+        "name": "nametoslot",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "policy",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Copy name(s) to slot for selected items"
+      },
+      {
+        "name": "onset",
+        "args": [
+          {
+            "name": "onset",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the onset of selected markers"
+      },
+      {
+        "name": "openslotwin",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Open a slot window"
+      },
+      {
+        "name": "overtype",
+        "args": [
+          {
+            "name": "region",
+            "type": "llll",
+            "optional": false
+          },
+          {
+            "name": "content",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Replace score content at given points"
+      },
+      {
+        "name": "paintjit",
+        "digest": "Draw the score onto a jitter matrix"
+      },
+      {
+        "name": "paste",
+        "args": [
+          {
+            "name": "replace",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int/symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Paste"
+      },
+      {
+        "name": "pause",
+        "digest": "Pause"
+      },
+      {
+        "name": "pitch",
+        "args": [
+          {
+            "name": "pitch",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the pitch of selected items"
+      },
+      {
+        "name": "pixeltotime",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          },
+          {
+            "name": "pixel_position",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "snap_type",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Convert a pixel position into a time position"
+      },
+      {
+        "name": "play",
+        "args": [
+          {
+            "name": "scheduling_mode",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "start",
+            "type": "float/llll",
+            "optional": true
+          },
+          {
+            "name": "end",
+            "type": "float/llll",
+            "optional": true
+          }
+        ],
+        "digest": "Play"
+      },
+      {
+        "name": "playselection",
+        "args": [
+          {
+            "name": "scheduling_mode",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Only play selected items"
+      },
+      {
+        "name": "poc",
+        "args": [
+          {
+            "name": "pitch_or_cents",
+            "type": "number/pitch/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the pitch or cents of selected items"
+      },
+      {
+        "name": "prependslotitem",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          },
+          {
+            "name": "slot_element",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Prepend a slot element at the beginning of a slot"
+      },
+      {
+        "name": "quantize",
+        "args": [
+          {
+            "name": "selective_quantize_options",
+            "type": "list",
+            "optional": true
+          }
+        ],
+        "digest": "Send quantization data"
+      },
+      {
+        "name": "read",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Open file"
+      },
+      {
+        "name": "realtime",
+        "args": [
+          {
+            "name": "realtime_mode",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Toggle real-time mode"
+      },
+      {
+        "name": "redo",
+        "digest": "Perform a redo step"
+      },
+      {
+        "name": "refresh",
+        "digest": "Force recomputation and redraw"
+      },
+      {
+        "name": "resetslotinfo",
+        "digest": "Reset the custom articulations definition to the default one"
+      },
+      {
+        "name": "resetslotinfo",
+        "digest": "Reset the commands to the default one"
+      },
+      {
+        "name": "resetslotinfo",
+        "digest": "Reset the slotinfo to the default one"
+      },
+      {
+        "name": "resetslotinfo",
+        "digest": "Reset the custom notehead definition to the default one"
+      },
+      {
+        "name": "resetwidthfactors",
+        "args": [
+          {
+            "name": "start_measure_number",
+            "type": "int",
+            "optional": true
+          },
+          {
+            "name": "end_measure_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Reset measure width factors"
+      },
+      {
+        "name": "respell",
+        "digest": "Respell selected notes automatically"
+      },
+      {
+        "name": "sample",
+        "args": [
+          {
+            "name": "num_samples_or_delta",
+            "type": "number/llll",
+            "optional": false
+          },
+          {
+            "name": "ms_or_timepoint",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Sample score data"
+      },
+      {
+        "name": "score2roll",
+        "digest": "Send data for converting content into a bach.roll"
+      },
+      {
+        "name": "scroll",
+        "args": [
+          {
+            "name": "amount",
+            "type": "float",
+            "optional": false
+          }
+        ],
+        "digest": "Scroll the object horizontally or vertically"
+      },
+      {
+        "name": "sel",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Select items"
+      },
+      {
+        "name": "sendcommand",
+        "args": [
+          {
+            "name": "command_number",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Send a command to selected items"
+      },
+      {
+        "name": "setcursor",
+        "args": [
+          {
+            "name": "position",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Move the playhead cursor"
+      },
+      {
+        "name": "setdurationline",
+        "args": [
+          {
+            "name": "breakpoints",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Set the duration line for selected items"
+      },
+      {
+        "name": "setmeasureparameters",
+        "args": [
+          {
+            "name": "measure",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Set measure parameters"
+      },
+      {
+        "name": "setnotationcolors",
+        "args": [
+          {
+            "name": "red",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "green",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "blue",
+            "type": "float",
+            "optional": false
+          },
+          {
+            "name": "alpha",
+            "type": "float",
+            "optional": false
+          }
+        ],
+        "digest": "Change all notation colors at once"
+      },
+      {
+        "name": "setslot",
+        "args": [
+          {
+            "name": "slots",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Set the content of one or more slots for selected notes"
+      },
+      {
+        "name": "showcursor",
+        "digest": "Show the playhead cursor"
+      },
+      {
+        "name": "slice",
+        "args": [
+          {
+            "name": "timepoints",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Slice all the notes at a given timepoint"
+      },
+      {
+        "name": "slottoname",
+        "args": [
+          {
+            "name": "slot_number_or_name",
+            "type": "int/symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Assign name(s) to selected items from slot content"
+      },
+      {
+        "name": "snappitchtogrid",
+        "digest": "Snap selected notes' pitches to the current microtonal grid"
+      },
+      {
+        "name": "solo",
+        "digest": "Set selected items as solo"
+      },
+      {
+        "name": "split",
+        "args": [
+          {
+            "name": "num_parts",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "separate",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Split selected chords"
+      },
+      {
+        "name": "stop",
+        "digest": "Stop"
+      },
+      {
+        "name": "subscore",
+        "args": [
+          {
+            "name": "voices",
+            "type": "llll",
+            "optional": false
+          },
+          {
+            "name": "measure_range",
+            "type": "llll",
+            "optional": false
+          },
+          {
+            "name": "selective_options",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Output a portion of bach.score"
+      },
+      {
+        "name": "subsel",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Restrict selection"
+      },
+      {
+        "name": "symduration",
+        "args": [
+          {
+            "name": "symduration",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the duration of selected items"
+      },
+      {
+        "name": "testdomain",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          },
+          {
+            "name": "domain_start",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Test hypotetical domain"
+      },
+      {
+        "name": "tie",
+        "args": [
+          {
+            "name": "tie",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the ties of selected items"
+      },
+      {
+        "name": "timepoint",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          },
+          {
+            "name": "position",
+            "type": "number/llll",
+            "optional": false
+          }
+        ],
+        "digest": "Perform conversions between timepoint and millisecond syntaxes"
+      },
+      {
+        "name": "timetopixel",
+        "args": [
+          {
+            "name": "query_label",
+            "type": "llll",
+            "optional": true
+          },
+          {
+            "name": "position",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Convert a time position into a pixel position"
+      },
+      {
+        "name": "undo",
+        "digest": "Perform an undo step"
+      },
+      {
+        "name": "unlock",
+        "digest": "Unlock selected items"
+      },
+      {
+        "name": "unmute",
+        "digest": "Unmute selected items"
+      },
+      {
+        "name": "unsel",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Involutively select items"
+      },
+      {
+        "name": "unsel",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Deselect items"
+      },
+      {
+        "name": "unsolo",
+        "digest": "Remove solo status from selected items"
+      },
+      {
+        "name": "velocities2dynamics",
+        "args": [
+          {
+            "name": "selection",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "slot_number",
+            "type": "int",
+            "optional": true
+          }
+        ],
+        "digest": "Infer dynamics depending on velocities"
+      },
+      {
+        "name": "velocity",
+        "args": [
+          {
+            "name": "velocity",
+            "type": "number/llll/anything",
+            "optional": false
+          }
+        ],
+        "digest": "Modify the velocity of selected items"
+      },
+      {
+        "name": "write",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save file in native format"
+      },
+      {
+        "name": "writetxt",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save file in text format"
+      }
+    ],
+    "attributes": {
+      "accidentalcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Accidental Color",
+        "default": "0. 0. 0. 1."
+      },
+      "accidentalsfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Accidentals Font",
+        "default": "\\"
+      },
+      "accidentalsgraphic": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Accidental Graphic",
+        "default": "1"
+      },
+      "accidentalspreferences": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Accidental Preferences",
+        "default": "0"
+      },
+      "activepart": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Active Part",
+        "default": "1"
+      },
+      "additionalstartpad": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Additional Start Pad",
+        "default": "0."
+      },
+      "admitdottedtuplets": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Admit Dotted Tuplets",
+        "default": "1"
+      },
+      "align": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Proportional Spacing Alignment Mode",
+        "default": "1"
+      },
+      "allowbarlinelock": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Barline Lock",
+        "default": "1"
+      },
+      "allowbeaming": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Beaming",
+        "default": "1"
+      },
+      "allowcopypaste": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Copy/Paste",
+        "default": "1"
+      },
+      "allowglissandi": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Glissando Breakpoints",
+        "default": "1"
+      },
+      "allowlock": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Lock",
+        "default": "1"
+      },
+      "allowmute": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Mute",
+        "default": "1"
+      },
+      "allowslothzoom": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Slot Horizontal Zooming",
+        "default": "1"
+      },
+      "allowsolo": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Solo",
+        "default": "1"
+      },
+      "annotationcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Annotation Color",
+        "default": "0. 0. 0. 1."
+      },
+      "annotationfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Annotation Font Size",
+        "default": "10"
+      },
+      "annotationsfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Annotations Font",
+        "default": "Arial"
+      },
+      "applyslope": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Apply Range Slopes During Playback",
+        "default": "1"
+      },
+      "articulationcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Articulation Color",
+        "default": "0. 0. 0. 1."
+      },
+      "articulationsfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Articulations Font",
+        "default": "\\"
+      },
+      "autoclear": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Autoclear",
+        "default": "1"
+      },
+      "autocomplete": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Autocomplete Measures",
+        "default": "1"
+      },
+      "autojump": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Auto Jump To Next Chord While Linear Editing",
+        "default": "1"
+      },
+      "automessage": {
+        "type": "atom_array",
+        "get": true,
+        "set": true,
+        "digest": "Automatically Send Message When Changed"
+      },
+      "autoparserhythm": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Parse Rhythm Automatically",
+        "default": "1"
+      },
+      "autosize": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Automatically Adapt Number Of Voices",
+        "default": "1"
+      },
+      "auxclefcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Auxiliary Clef Color",
+        "default": "0. 0. 0. 1."
+      },
+      "auxstaffcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Auxiliary Staff Color",
+        "default": "0.4 0.4 0.4 1."
+      },
+      "beamcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Beam Color",
+        "default": "0. 0. 0. 1."
+      },
+      "beamgracesequences": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Beam Grace Sequences When Possible",
+        "default": "1"
+      },
+      "bgcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Background Color",
+        "default": "1. 1. 1. 1."
+      },
+      "bgslotfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Background Slot Font Size",
+        "default": "8"
+      },
+      "bgslots": {
+        "type": "int_array",
+        "get": true,
+        "set": true,
+        "digest": "Slots In Background"
+      },
+      "bgslottextshift": {
+        "type": "float_array",
+        "get": true,
+        "set": true,
+        "digest": "Background Slot Text Shift",
+        "default": "0 0"
+      },
+      "bgslotzoom": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Zoom For Slot In Background",
+        "default": "100"
+      },
+      "bigtsratio": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Big Time Signatures Ratio",
+        "default": "2."
+      },
+      "bordercolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Border Color",
+        "default": "0.6 0.6 0.6 1."
+      },
+      "breakpointshavenoteheads": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Breakpoints Have Noteheads",
+        "default": "0"
+      },
+      "breakpointshavevelocity": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Breakpoints Have Velocity",
+        "default": "0"
+      },
+      "breakpointsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Pitch Breakpoint Size",
+        "default": "3."
+      },
+      "breakrootlevelbeam": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Always Break Root Level Beam",
+        "default": "1"
+      },
+      "catchplay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Catch Play Head",
+        "default": "1"
+      },
+      "cautionaryaccidentals": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Cautionary Accidentals",
+        "default": "0"
+      },
+      "cautionaryaccidentalsdecay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Cautionary Accidentals Decay",
+        "default": "3"
+      },
+      "cautionaryaccidentalsremind": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Cautionary Accidentals Remind",
+        "default": "10"
+      },
+      "centeredwholerests": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Centered Whole Rests In Empty Measures",
+        "default": "1"
+      },
+      "changecentstomeasuresbydragging": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Whole Measure Dragging",
+        "default": "0"
+      },
+      "clefcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Clef Color",
+        "default": "0. 0. 0. 1."
+      },
+      "clefs": {
+        "type": "sym_array",
+        "get": true,
+        "set": true,
+        "digest": "Clefs",
+        "default": "G"
+      },
+      "constraintbeamsinspaces": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Constrain Beams In Spaces",
+        "default": "1"
+      },
+      "continuousbang": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Continuously Output Bang If Changed",
+        "default": "0"
+      },
+      "defaultmarkername": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Default Marker Name",
+        "default": "marker"
+      },
+      "defaultnoteslots": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Default Note Slots"
+      },
+      "defaultvelocity": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Default Velocity",
+        "default": "100"
+      },
+      "dlspansties": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Duration Line Spans Ties",
+        "default": "1"
+      },
+      "drawbarlinesacrossstaves": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Draw Barlines Across Staves",
+        "default": "1"
+      },
+      "dumpplaycmd": {
+        "type": "atom_array",
+        "get": true,
+        "set": true,
+        "digest": "Play Offline Commands",
+        "default": "v"
+      },
+      "durationlinewidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Duration Line Width",
+        "default": "2."
+      },
+      "dynamicsaffectspacing": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Affect Spacing",
+        "default": "2"
+      },
+      "dynamicscolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Color",
+        "default": "0. 0. 0. 1."
+      },
+      "dynamicsexprfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Expressions Font Size",
+        "default": "12"
+      },
+      "dynamicsfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Font Size",
+        "default": "24"
+      },
+      "dynamicsoutputmode": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Output Mode",
+        "default": "2"
+      },
+      "dynamicsvadj": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Dynamics Vertical Adjustment",
+        "default": "-20"
+      },
+      "edittiedelementstogether": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Edit Tied Notes Together",
+        "default": "1"
+      },
+      "embed": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Save Data With Patcher",
+        "default": "1"
+      },
+      "enhancedstems": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Enhanced Stem Display",
+        "default": "0"
+      },
+      "enharmonictable": {
+        "type": "sym_array",
+        "get": true,
+        "set": true,
+        "digest": "Custom Enharmonic Table",
+        "default": "default"
+      },
+      "extendbeamsoverrests": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Extend Beams Over Rests",
+        "default": "1"
+      },
+      "fadedomain": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Fade Domain Over Clefs",
+        "default": "1"
+      },
+      "finitestaff": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "End Staff With Last Measure",
+        "default": "0"
+      },
+      "flagcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Flag Color",
+        "default": "0. 0. 0. 1."
+      },
+      "fontface": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "fontname": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "fontsize": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "gracedur": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "1/8 Grace Note Playback Duration",
+        "default": "1/64"
+      },
+      "gracemaxperc": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Maximum Playback Percentage Of Chord Taken By Grace Notes",
+        "default": "90"
+      },
+      "grid": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Grid",
+        "default": "0"
+      },
+      "gridcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Grid Color",
+        "default": "0. 0. 0. 0.3"
+      },
+      "gridperiodms": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Ruler/Grid Period (ms)",
+        "default": "1000"
+      },
+      "hidetupletshapeonbeams": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Hide Tuplet Shape If Tuplet Is Beamed",
+        "default": "1"
+      },
+      "hidevoices": {
+        "type": "char_array",
+        "get": true,
+        "set": true,
+        "digest": "Hide Voices",
+        "default": "0"
+      },
+      "highlightdomain": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Highlight Domain",
+        "default": "0"
+      },
+      "highlightplay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Highlight Played Notes",
+        "default": "0"
+      },
+      "inset": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Border Inset",
+        "default": "7"
+      },
+      "jitmatrix": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Mirror To Jitter Matrix"
+      },
+      "jointuplets": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Join Tuplets When Possible",
+        "default": "1"
+      },
+      "keepselectioniflostfocus": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Keep Selection If Lost Focus",
+        "default": "1"
+      },
+      "keys": {
+        "type": "sym_array",
+        "get": true,
+        "set": true,
+        "digest": "Keys",
+        "default": "CM"
+      },
+      "keysigcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Key Signature Color",
+        "default": "0. 0. 0. 1."
+      },
+      "labelfamilies": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Label Families",
+        "default": "0"
+      },
+      "legend": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Legend",
+        "default": "2"
+      },
+      "legendcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Mouseover Legend Color",
+        "default": "0.5 0.5 0.5 1."
+      },
+      "legendfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Legend Font Size",
+        "default": "13"
+      },
+      "leveltobeam": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Tree Levels To Beams Conversion",
+        "default": "0"
+      },
+      "linearedit": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Linear Editing",
+        "default": "1"
+      },
+      "lineareditcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Edit Color",
+        "default": "0.78 0.63 0.04 1."
+      },
+      "lineareditquarterkey": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Linear Editing Quarter Key",
+        "default": "5"
+      },
+      "linkannotationtoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Text Annotation To Slot"
+      },
+      "linkarticulationstoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Articulations To Slot"
+      },
+      "linkdlcolortoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Duration Line Color To Slot",
+        "default": "0"
+      },
+      "linkdynamicstoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Dynamics To Slot"
+      },
+      "linklyricstoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Lyrics To Slot"
+      },
+      "linknotecolortoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Color To Slot",
+        "default": "0"
+      },
+      "linknoteheadadjusttoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Head Adjust To Slot",
+        "default": "0"
+      },
+      "linknoteheadfonttoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Head Font To Slot",
+        "default": "0"
+      },
+      "linknoteheadtoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Head To Slot"
+      },
+      "linknotesizetoslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Link Note Size To Slot",
+        "default": "0"
+      },
+      "lockcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Lock Color",
+        "default": "0.83 0.04 0.04 1."
+      },
+      "loop": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Loop Region"
+      },
+      "loopcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Loop Color",
+        "default": "0.68 0.48 0.69 1."
+      },
+      "lyricsaffectspacing": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Affect Spacing",
+        "default": "2"
+      },
+      "lyricsalignment": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Alignment",
+        "default": "0"
+      },
+      "lyricscolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Color",
+        "default": "0. 0. 0. 1."
+      },
+      "lyricsfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Font",
+        "default": "Arial"
+      },
+      "lyricsfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Font Size",
+        "default": "12"
+      },
+      "lyricsvadj": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Lyrics Vertical Adjustment",
+        "default": "-16"
+      },
+      "maketreecompatiblewithts": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Make Rhythmic Tree Compatible With Time Signature",
+        "default": "1"
+      },
+      "markersfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Markers Font",
+        "default": "Arial"
+      },
+      "markersfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Markers Font Size",
+        "default": "9"
+      },
+      "maxbeamdeltay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Maximum Delta Y For Beamings In Steps",
+        "default": "1"
+      },
+      "maxdots": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Maximum Number Of Dots",
+        "default": "1"
+      },
+      "maxrestfloatsteps": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Rests Floating Maximum Number Of Steps",
+        "default": "4"
+      },
+      "maxundosteps": {
+        "type": "atom",
+        "get": true,
+        "set": true,
+        "digest": "Maximum Number Of Undo Steps",
+        "default": "50"
+      },
+      "measmarkercolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Measure-Attached Marker Color",
+        "default": "0.17 0.25 0.88 0.9"
+      },
+      "measurenumberfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Measure Numbers Font Size",
+        "default": "9"
+      },
+      "measurenumberoffset": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Measure Number Offset",
+        "default": "0"
+      },
+      "midichannels": {
+        "type": "int_array",
+        "get": true,
+        "set": true,
+        "digest": "MIDI Channels",
+        "default": "1"
+      },
+      "minmeaswidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Minimum Measure Width",
+        "default": "60"
+      },
+      "minmeaswidthpersymunit": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Minimum Measure Width Per Symbolic Unit",
+        "default": "110"
+      },
+      "mousehover": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Allow Mouse Hovering",
+        "default": "1"
+      },
+      "mutecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Mute Color",
+        "default": "0.29 0.29 0.72 1."
+      },
+      "nonantialiasedstafflines": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Only Non-Antialiased Staff",
+        "default": "1"
+      },
+      "notationfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Notation Font",
+        "default": "\\"
+      },
+      "notecolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Note Color",
+        "default": "0. 0. 0. 1."
+      },
+      "notifymessages": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Notifications When Changed Via Messages",
+        "default": "0"
+      },
+      "notifypaint": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Notifications When Display Is Refreshed",
+        "default": "0"
+      },
+      "numgridsubdivisions": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Number of Ruler/Grid Subdivisions",
+        "default": "10"
+      },
+      "numparts": {
+        "type": "int_array",
+        "get": true,
+        "set": true,
+        "digest": "Number of Voices per Part",
+        "default": "1"
+      },
+      "numvoices": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Number Of Voices"
+      },
+      "onseteqthresh": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Onset Equality Threshold in Milliseconds",
+        "default": "0.001"
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Outlet Types"
+      },
+      "outputpitchesgathered": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Pitches In Gathered Syntax",
+        "default": "1"
+      },
+      "outputpitchesplayout": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Pitches In Playout Syntax",
+        "default": "0"
+      },
+      "outputpitchesseparate": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Pitches In Separate Syntax",
+        "default": "0"
+      },
+      "outputslotnames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Slot Names From Playout",
+        "default": "0"
+      },
+      "outputtiesindurationtree": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Ties In Duration Tree",
+        "default": "1"
+      },
+      "outputtrees": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Rhythmic Trees Upon Dump",
+        "default": "1"
+      },
+      "pitcheditrange": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Constraint Pitches While Editing"
+      },
+      "playcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Play Color",
+        "default": "0.34 0.87 0.20 1."
+      },
+      "playheaddragmode": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Playhead Mousing Mode",
+        "default": "0"
+      },
+      "playheadwidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Playhead Width",
+        "default": "1."
+      },
+      "playmarkers": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Markers",
+        "default": "1"
+      },
+      "playmeasures": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Measure Start Barlines",
+        "default": "0"
+      },
+      "playmode": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Playout Mode",
+        "default": "1"
+      },
+      "playoutfullpath": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Full Path In Playout Syntax",
+        "default": "0"
+      },
+      "playpartialnotes": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Partial Notes",
+        "default": "1"
+      },
+      "playpollthrottle": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Poll Throttle",
+        "default": "10"
+      },
+      "playrests": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Rests",
+        "default": "0"
+      },
+      "playrestsseparately": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Rests Separately",
+        "default": "0"
+      },
+      "playstep": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Play Bar Average Step (ms)",
+        "default": "50"
+      },
+      "playtempi": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Tempi",
+        "default": "0"
+      },
+      "playtiedelementsseparately": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Play Tied Elements Separately",
+        "default": "0"
+      },
+      "playwhenlinearediting": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Chord Playback While Linear Editing",
+        "default": "1"
+      },
+      "popupmenuslots": {
+        "type": "int_array",
+        "get": true,
+        "set": true,
+        "digest": "Slots In Popup Menu"
+      },
+      "preventedit": {
+        "type": "atom_array",
+        "get": true,
+        "set": true,
+        "digest": "Prevent Editing For"
+      },
+      "reducetreeidlelevels": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Always Reduce Rhythmic Tree Idle Levels",
+        "default": "1"
+      },
+      "restcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Rest Color",
+        "default": "0. 0. 0. 1."
+      },
+      "restswithinbeaming": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Rests Can Be Within Beaming",
+        "default": "1"
+      },
+      "reversegracedirection": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Reverse Grace Chords Direction",
+        "default": "1"
+      },
+      "rightclickslot": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Right Click Directly Pops Out Slot",
+        "default": "0"
+      },
+      "ruler": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Ruler",
+        "default": "0"
+      },
+      "rulercolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Ruler Color",
+        "default": "0. 0. 0. 1."
+      },
+      "rulerlabels": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Ruler Labels",
+        "default": "1"
+      },
+      "rulerlabelsfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Ruler Labels Font Size",
+        "default": "8"
+      },
+      "samplingrate": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Sampling Rate (For Filter Slots)",
+        "default": "44100"
+      },
+      "saveleveltypes": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output And Save Level Types",
+        "default": "1"
+      },
+      "scrollbarcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Scrollbar Color",
+        "default": "0.3 0.3 0.3 1."
+      },
+      "selectedlegendcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Selection Legend Color",
+        "default": "0.2 0.2 0.2 1."
+      },
+      "selectioncolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Selection Color",
+        "default": "0.8 0. 0.8 1."
+      },
+      "senddoneafterpaint": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Send 'Done' Only After Paint",
+        "default": "1"
+      },
+      "senddoneatstartup": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Send 'Done' At Startup (If Data Was Saved)",
+        "default": "1"
+      },
+      "showaccidentalspreferences": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Display Accidentals",
+        "default": "0"
+      },
+      "showaccidentalstiepreferences": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Accidental Upon Tie",
+        "default": "0"
+      },
+      "showannotations": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Text Annotations",
+        "default": "1"
+      },
+      "showarticulations": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Articulations",
+        "default": "1"
+      },
+      "showarticulationsextensions": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Articulations Extensions",
+        "default": "1"
+      },
+      "showauxclefs": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Auxiliary Clefs In Combinations",
+        "default": "1"
+      },
+      "showbarlinelocks": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Barline Locks",
+        "default": "1"
+      },
+      "showbarlines": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Barlines",
+        "default": "1"
+      },
+      "showbeams": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Beams",
+        "default": "1"
+      },
+      "showborder": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Border",
+        "default": "1"
+      },
+      "showclefs": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Clefs",
+        "default": "1"
+      },
+      "showdots": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Augmentation Dots",
+        "default": "1"
+      },
+      "showdurations": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Duration Lines",
+        "default": "1"
+      },
+      "showdynamics": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Dynamics",
+        "default": "1"
+      },
+      "showfirstmeasurenumber": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show First Measure Number",
+        "default": "0"
+      },
+      "showflags": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Chord Flags",
+        "default": "1"
+      },
+      "showfocus": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Object Focus",
+        "default": "1"
+      },
+      "showhairpins": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Hairpins for Dynamics",
+        "default": "1"
+      },
+      "showledgerlines": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Ledger Lines",
+        "default": "1"
+      },
+      "showlockcolor": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Lock Color",
+        "default": "2"
+      },
+      "showloop": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Loop Region",
+        "default": "0"
+      },
+      "showlyrics": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Lyrics",
+        "default": "1"
+      },
+      "showlyricswordextensions": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Lyrics Word Extensions",
+        "default": "1"
+      },
+      "showmarkers": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Markers",
+        "default": "1"
+      },
+      "showmeasurenumbers": {
+        "type": "char_array",
+        "get": true,
+        "set": true,
+        "digest": "Show Measure Numbers",
+        "default": "1"
+      },
+      "showmutecolor": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Mute Color",
+        "default": "2"
+      },
+      "shownotenames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Note Names In Selection Legend",
+        "default": "0"
+      },
+      "showpartcolors": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Part Colors",
+        "default": "0"
+      },
+      "showplayhead": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Playhead",
+        "default": "0"
+      },
+      "showrests": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Rests",
+        "default": "2"
+      },
+      "showrhythmictree": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Rhythmic Trees",
+        "default": "0"
+      },
+      "showrhythmictreelocks": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Rhythmic Tree Locks",
+        "default": "1"
+      },
+      "showscrollbar": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Horizontal Scrollbar If Needed",
+        "default": "1"
+      },
+      "showslotlabels": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Slot Labels",
+        "default": "1"
+      },
+      "showslotlegend": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Slot Legend",
+        "default": "1"
+      },
+      "showslotnumbers": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Slot Numbers In Slot Window",
+        "default": "1"
+      },
+      "showsolocolor": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Solo Color",
+        "default": "2"
+      },
+      "showstems": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Stems",
+        "default": "2"
+      },
+      "showstemsforbeamedrests": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Stems For Beamed Rests",
+        "default": "1"
+      },
+      "showsynchronoustempionce": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Synchronous Tempi Once",
+        "default": "1"
+      },
+      "showtails": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Note Tails",
+        "default": "1"
+      },
+      "showtempi": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Tempi",
+        "default": "1"
+      },
+      "showtempointerp": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Tempi Interpolation",
+        "default": "1"
+      },
+      "showties": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Ties",
+        "default": "1"
+      },
+      "showtimesignatures": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Time Signatures",
+        "default": "1"
+      },
+      "showtupletspreferences": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Tuplets As",
+        "default": "1"
+      },
+      "showvelocity": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Velocity",
+        "default": "0"
+      },
+      "showvoicenames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Voice Names",
+        "default": "1"
+      },
+      "showvscrollbar": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Vertical Scrollbar If Needed",
+        "default": "1"
+      },
+      "simplifytuplets": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Make Tuplets Simpler When Possible",
+        "default": "1"
+      },
+      "slashgracebeams": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Slash Grace Beams",
+        "default": "1"
+      },
+      "slashgraceflags": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Slash Grace Flags",
+        "default": "1"
+      },
+      "slopemapping": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Slope Mapping",
+        "default": "0"
+      },
+      "slotfunctionptradius": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Function Slot Point Radius",
+        "default": "1.3"
+      },
+      "slotminimumwindowwidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Minimum Slot Window Width",
+        "default": "0"
+      },
+      "slotwinalpha": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Slot Window Opacity %",
+        "default": "100"
+      },
+      "slotwinzoom": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Zoom For Slot Window",
+        "default": "125"
+      },
+      "smartmarkernames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Smart Marker Names Placement",
+        "default": "1"
+      },
+      "snappitch": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Snap Pitch To Grid When Editing",
+        "default": "1"
+      },
+      "solocolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Solo Color",
+        "default": "0.61 0.61 0.21 1."
+      },
+      "spacebarplay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Use Spacebar To Play",
+        "default": "1"
+      },
+      "spacingproportionality": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Spacing Proportionality",
+        "default": "0.5"
+      },
+      "spacingtype": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Spacing Type",
+        "default": "0"
+      },
+      "spacingwidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Spacing Width",
+        "default": "2."
+      },
+      "staffcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Main Staff Color",
+        "default": "0. 0. 0. 1."
+      },
+      "stafflines": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Number Of Staff Lines"
+      },
+      "stemcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Stem Color",
+        "default": "0. 0. 0. 1."
+      },
+      "subdivisiongridcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Subdivision Grid Color",
+        "default": "0. 0. 0. 0.1"
+      },
+      "syncopationasymratio": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Syncopation Max Asym-Ratio",
+        "default": "1."
+      },
+      "syncopationmaxdots": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Maximum Number of Dots in Syncopations",
+        "default": "0"
+      },
+      "syncopationposdurratio": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Syncopation Max Dur/Pos-Ratio",
+        "default": "2.5"
+      },
+      "tempocolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Tempo Color",
+        "default": "0. 0. 0. 1."
+      },
+      "tempodigits": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Number Of Digits For Tempo Approximation",
+        "default": "1"
+      },
+      "temposize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Tempi Relative Size",
+        "default": "0.7"
+      },
+      "tempovadj": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Tempi Vertical Adjustment",
+        "default": "24"
+      },
+      "thinannotations": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Handle Annotation Duplicates",
+        "default": "0"
+      },
+      "thinannotationsclearsym": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Annotation Clearing Symbol",
+        "default": "ord."
+      },
+      "tieassignspitch": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Ties Assign Pitches",
+        "default": "0"
+      },
+      "tonedivision": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Microtonal Division",
+        "default": "2"
+      },
+      "treehandling": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Rhythmic Trees Handling",
+        "default": "3"
+      },
+      "tupletcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Tuplet Color",
+        "default": "0. 0. 0. 1."
+      },
+      "tupletshape": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Tuplet Shape",
+        "default": "1"
+      },
+      "undobang": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Send bang Upon Undo",
+        "default": "1"
+      },
+      "useloop": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Activate Loop Region (When Shown)",
+        "default": "1"
+      },
+      "verboseundo": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Post Undo/Redo Steps",
+        "default": "0"
+      },
+      "voicenames": {
+        "type": "llll",
+        "get": true,
+        "set": true,
+        "digest": "Voice Names"
+      },
+      "voicenamesalign": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Voice Names Alignment",
+        "default": "1"
+      },
+      "voicenamesfont": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Voice Names Font",
+        "default": "Arial"
+      },
+      "voicenamesfontsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Voice Names Font Size",
+        "default": "11"
+      },
+      "voicespacing": {
+        "type": "float_array",
+        "get": true,
+        "set": true,
+        "digest": "Voice Spacing"
+      },
+      "vzoom": {
+        "type": "atom",
+        "get": true,
+        "set": true,
+        "digest": "Vertical Zoom %",
+        "default": "Auto"
+      },
+      "writetrees": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Incorporate Tree Information Upon Write or Writetxt",
+        "default": "1"
+      },
+      "zoom": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Horizontal Zoom %",
+        "default": "100."
+      }
+    },
     "seealso": [],
     "tags": [
       "notation"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Bach"

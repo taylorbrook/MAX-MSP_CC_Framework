@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Package Integration
 status: complete
-last_updated: "2026-04-17T05:55:00.000Z"
+last_updated: "2026-04-17T13:30:00.000Z"
 last_activity: 2026-04-17
 progress:
   total_phases: 6
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-16 - Completed quick task 260416-ery: Review FluCoMa package object integration gaps
+Last activity: 2026-04-17 - Completed quick task 260417-8p0: Populated metadata + I/O overrides for 9 physics-composition package objects
 
 Progress: [██████████] 100%
 
@@ -56,3 +56,4 @@ None.
 | 260411-eoq | Add font contrast readability to layout pipeline | 2026-04-11 | 87ba2ec | | [260411-eoq-add-functionality-for-the-layout-of-the-](./quick/260411-eoq-add-functionality-for-the-layout-of-the-/) |
 | 260416-ery | Review FluCoMa package object integration gaps | 2026-04-16 | f38bbb9 | | [260416-ery-review-the-integration-of-the-flucoma-ma](./quick/260416-ery-review-the-integration-of-the-flucoma-ma/) |
 | 260416-vji | Audit + extend DB for 15 installed community packages (8 new pkgs, 513 maxclass fixes) | 2026-04-17 | f09c29c | | [260416-vji-audit-and-update-db-for-15-installed-max](./quick/260416-vji-audit-and-update-db-for-15-installed-max/) |
+| 260417-8p0 | Populate messages/attributes/args + I/O overrides for 9 physics-composition package objects (dada/bach/odot) from refpages | 2026-04-17 | 203ac7b | Verified | [260417-8p0-populate-pkg-object-metadata](./quick/260417-8p0-populate-pkg-object-metadata/) |

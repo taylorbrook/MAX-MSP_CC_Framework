@@ -496,15 +496,295 @@
         "digest": "Output"
       }
     ],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
+    "arguments": [
+      {
+        "name": "name",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Name"
+      },
+      {
+        "name": "filename",
+        "type": "symbol",
+        "optional": true,
+        "digest": "Filename"
+      }
+    ],
+    "messages": [
+      {
+        "name": "adddistanceentry",
+        "args": [
+          {
+            "name": "distance_table_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "reference_table_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "reference_column_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "column_value1",
+            "type": "atom",
+            "optional": false
+          },
+          {
+            "name": "column_value2",
+            "type": "atom",
+            "optional": false
+          },
+          {
+            "name": "distance",
+            "type": "number",
+            "optional": false
+          }
+        ],
+        "digest": "Add an entry to a distance table"
+      },
+      {
+        "name": "adddistanceentry",
+        "args": [
+          {
+            "name": "distance_table_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "reference_table_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "reference_column_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "column_value1",
+            "type": "atom",
+            "optional": false
+          },
+          {
+            "name": "column_value2",
+            "type": "atom",
+            "optional": false
+          },
+          {
+            "name": "distance",
+            "type": "number",
+            "optional": false
+          }
+        ],
+        "digest": "Add an entry to a distance table"
+      },
+      {
+        "name": "adddistancetable",
+        "args": [
+          {
+            "name": "table_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "reference_table_name",
+            "type": "symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Add a distance table to the database"
+      },
+      {
+        "name": "addentry",
+        "args": [
+          {
+            "name": "table_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "specs",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Add an entry to a table"
+      },
+      {
+        "name": "addtable",
+        "args": [
+          {
+            "name": "table_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "columns",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Add a table to the database"
+      },
+      {
+        "name": "appendfromfile",
+        "args": [
+          {
+            "name": "table_name",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          },
+          {
+            "name": "columns",
+            "type": "llll",
+            "optional": true
+          }
+        ],
+        "digest": "Appends entries to table from file"
+      },
+      {
+        "name": "clear",
+        "args": [
+          {
+            "name": "table_name",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Delete entries"
+      },
+      {
+        "name": "deletetable",
+        "args": [
+          {
+            "name": "table_name",
+            "type": "symbol",
+            "optional": false
+          }
+        ],
+        "digest": "Delete a specific table"
+      },
+      {
+        "name": "dump",
+        "digest": "Output entire database as llll"
+      },
+      {
+        "name": "erase",
+        "digest": "Erase database"
+      },
+      {
+        "name": "getcols",
+        "digest": "Output column names and types as llll"
+      },
+      {
+        "name": "query",
+        "args": [
+          {
+            "name": "query",
+            "type": "anything",
+            "optional": false
+          }
+        ],
+        "digest": "Send a query"
+      },
+      {
+        "name": "read",
+        "args": [
+          {
+            "name": "file_name",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Load database from disk"
+      },
+      {
+        "name": "wopen",
+        "digest": "Open text editor for database"
+      },
+      {
+        "name": "write",
+        "args": [
+          {
+            "name": "file",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save database in native format"
+      },
+      {
+        "name": "writetxt",
+        "args": [
+          {
+            "name": "file",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save database in text format"
+      }
+    ],
+    "attributes": {
+      "escapesinglequotes": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Escape Single Quotes"
+      },
+      "llllastext": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Store lllls as Text"
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Database Name"
+      },
+      "nulltodefault": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Convert null lllls to Default Values"
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Outlet Types"
+      },
+      "outputcolnames": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Column Names"
+      },
+      "volatile": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Volatile Dataset File"
+      }
+    },
     "seealso": [],
     "tags": [
       "utility"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Dada",
@@ -544,14 +824,588 @@
       }
     ],
     "arguments": [],
-    "messages": [],
-    "attributes": {},
+    "messages": [
+      {
+        "name": "addplanets",
+        "args": [
+          {
+            "name": "particles_llll",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Add planets"
+      },
+      {
+        "name": "addstars",
+        "args": [
+          {
+            "name": "bodies_llll",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Add stars"
+      },
+      {
+        "name": "autozoom",
+        "digest": "Set domain and range automatically"
+      },
+      {
+        "name": "clear",
+        "digest": "Clear"
+      },
+      {
+        "name": "clock",
+        "digest": "Select a clock source"
+      },
+      {
+        "name": "deleteplanet",
+        "args": [
+          {
+            "name": "index",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Delete a planet"
+      },
+      {
+        "name": "deletestar",
+        "args": [
+          {
+            "name": "index",
+            "type": "int",
+            "optional": false
+          }
+        ],
+        "digest": "Delete a star"
+      },
+      {
+        "name": "distribute",
+        "args": [
+          {
+            "name": "body_index",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "mirror",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Evenly distribute star notes"
+      },
+      {
+        "name": "domain",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "list",
+            "optional": false
+          }
+        ],
+        "digest": "Set the X domain"
+      },
+      {
+        "name": "dump",
+        "digest": "Output state"
+      },
+      {
+        "name": "exportimage",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save as PNG image"
+      },
+      {
+        "name": "follow",
+        "args": [
+          {
+            "name": "particles_indices",
+            "type": "list",
+            "optional": true
+          }
+        ],
+        "digest": "Follow planets"
+      },
+      {
+        "name": "forceperiod",
+        "args": [
+          {
+            "name": "planet_index",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "period_ms",
+            "type": "float",
+            "optional": false
+          }
+        ],
+        "digest": "Force the period of a planet"
+      },
+      {
+        "name": "forceperiod",
+        "args": [
+          {
+            "name": "zero_position",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Force a planet to have circular motion"
+      },
+      {
+        "name": "getdomain",
+        "digest": "Retrieve current X domain"
+      },
+      {
+        "name": "getrange",
+        "digest": "Retrieve current Y range"
+      },
+      {
+        "name": "llll",
+        "digest": "Set state"
+      },
+      {
+        "name": "planet",
+        "args": [
+          {
+            "name": "planet_index",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "planet_syntax",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Change planet"
+      },
+      {
+        "name": "play",
+        "digest": "Start sequencing"
+      },
+      {
+        "name": "range",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "list",
+            "optional": false
+          }
+        ],
+        "digest": "Set the Y range"
+      },
+      {
+        "name": "read",
+        "args": [
+          {
+            "name": "file_name",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Load from disk"
+      },
+      {
+        "name": "restart",
+        "digest": "Restart"
+      },
+      {
+        "name": "settime",
+        "args": [
+          {
+            "name": "time_ms",
+            "type": "float",
+            "optional": false
+          }
+        ],
+        "digest": "Set time"
+      },
+      {
+        "name": "star",
+        "args": [
+          {
+            "name": "star_index",
+            "type": "int",
+            "optional": false
+          },
+          {
+            "name": "star_syntax",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Change star"
+      },
+      {
+        "name": "stop",
+        "digest": "Stop sequencing"
+      },
+      {
+        "name": "write",
+        "args": [
+          {
+            "name": "file",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save in native format"
+      },
+      {
+        "name": "writetxt",
+        "args": [
+          {
+            "name": "file",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save in text format"
+      }
+    ],
+    "attributes": {
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Allow Center Shifting",
+        "default": "1"
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Allow Zoom",
+        "default": "1"
+      },
+      "approxmethod": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Approximation Method",
+        "default": "1"
+      },
+      "axescolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Axes Color",
+        "default": "0.4 0.4 0.4 1."
+      },
+      "axeslabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Axes Labels Color",
+        "default": "0.4 0.4 0.4 1."
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Axes Labels Font Size",
+        "default": "10."
+      },
+      "bgcolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Background Color",
+        "default": "1. 1. 1. 1."
+      },
+      "bgimage": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Background Image",
+        "default": "none"
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Border Color",
+        "default": "0. 0. 0. 1."
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Center Coordinates",
+        "default": "0 0"
+      },
+      "embed": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Save Data With Patcher",
+        "default": "1"
+      },
+      "g": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "G constant",
+        "default": "6674"
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Color",
+        "default": "0. 0. 0. 0.1"
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Labels Color",
+        "default": "0.4 0.4 0.4 1."
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Labels Font Size",
+        "default": "8."
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Mode",
+        "default": "0"
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Size",
+        "default": "10 10"
+      },
+      "hidewhileplaying": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Hide While Playing",
+        "default": "0"
+      },
+      "highlightplay": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Highlight Play",
+        "default": "1"
+      },
+      "hitdata": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Hit Data",
+        "default": "1"
+      },
+      "indexaschannel": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Use Index As Channel",
+        "default": "0"
+      },
+      "law": {
+        "type": "atom_array",
+        "get": true,
+        "set": true,
+        "digest": "Gravitational Law",
+        "default": "default"
+      },
+      "maxundosteps": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Maximum Number Of Undo Steps",
+        "default": "50"
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Allow Mouse Hovering",
+        "default": "1"
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Notify Display Refresh",
+        "default": "0"
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Outlet Types"
+      },
+      "patching_rect": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "default": "0 0 280 280"
+      },
+      "showacceleration": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Planet Acceleration",
+        "default": "0"
+      },
+      "showaxes": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Axes",
+        "default": "1"
+      },
+      "showaxeslabels": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Axes Labels",
+        "default": "0"
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Border",
+        "default": "1"
+      },
+      "showdensity": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Density Value",
+        "default": "0"
+      },
+      "showfocus": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Focus",
+        "default": "1"
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Grid",
+        "default": "1"
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Grid Labels",
+        "default": "1"
+      },
+      "shownotes": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Notes",
+        "default": "2"
+      },
+      "showplanetid": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Planet ID",
+        "default": "0"
+      },
+      "showspeed": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Planet Speed",
+        "default": "1"
+      },
+      "showstarid": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Star ID",
+        "default": "0"
+      },
+      "snaptogrid": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Snap To Grid",
+        "default": "0"
+      },
+      "tonedivision": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Microtonal Division",
+        "default": "2"
+      },
+      "usemidichannels": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Use MIDI Channels Of",
+        "default": "0"
+      },
+      "velslope": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Velocity Mapping Slope",
+        "default": "0."
+      },
+      "verboseundo": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Post Undo/Redo Steps",
+        "default": "0"
+      },
+      "xlabel": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "X Axis Label"
+      },
+      "ylabel": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Y Axis Label"
+      },
+      "zeroveldist": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Zero-Velocity Distance",
+        "default": "500"
+      }
+    },
     "seealso": [],
     "tags": [
       "physics"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Dada",
@@ -842,14 +1696,643 @@
       }
     ],
     "arguments": [],
-    "messages": [],
-    "attributes": {},
+    "messages": [
+      {
+        "name": "addball",
+        "args": [
+          {
+            "name": "ball_syntax",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Add a ball"
+      },
+      {
+        "name": "bang",
+        "digest": "Perform single step"
+      },
+      {
+        "name": "clear",
+        "args": [
+          {
+            "name": "what",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Clear elements"
+      },
+      {
+        "name": "clock",
+        "digest": "Select a clock source"
+      },
+      {
+        "name": "deleteball",
+        "args": [
+          {
+            "name": "index",
+            "type": "long",
+            "optional": false
+          }
+        ],
+        "digest": "Delete a ball"
+      },
+      {
+        "name": "domain",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "list",
+            "optional": false
+          }
+        ],
+        "digest": "Set the X domain"
+      },
+      {
+        "name": "dump",
+        "args": [
+          {
+            "name": "what",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Output state"
+      },
+      {
+        "name": "exportimage",
+        "args": [
+          {
+            "name": "filename",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save as PNG image"
+      },
+      {
+        "name": "flush",
+        "digest": "Send all note-offs"
+      },
+      {
+        "name": "getdomain",
+        "digest": "Retrieve current X domain"
+      },
+      {
+        "name": "getrange",
+        "digest": "Retrieve current Y range"
+      },
+      {
+        "name": "int",
+        "digest": "Play/Stop"
+      },
+      {
+        "name": "llll",
+        "digest": "Set state"
+      },
+      {
+        "name": "meta",
+        "args": [
+          {
+            "name": "element_type",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "element_index",
+            "type": "long",
+            "optional": false
+          },
+          {
+            "name": "metadata",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Assign metadata"
+      },
+      {
+        "name": "move",
+        "args": [
+          {
+            "name": "element_type",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "element_index",
+            "type": "long",
+            "optional": false
+          },
+          {
+            "name": "delta_coord",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Translate elements"
+      },
+      {
+        "name": "notes",
+        "args": [
+          {
+            "name": "pitch_and_vels",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Assign pitches and velocities"
+      },
+      {
+        "name": "play",
+        "digest": "Start sequencing"
+      },
+      {
+        "name": "range",
+        "args": [
+          {
+            "name": "arguments",
+            "type": "list",
+            "optional": false
+          }
+        ],
+        "digest": "Set the Y range"
+      },
+      {
+        "name": "read",
+        "args": [
+          {
+            "name": "file_name",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Load from disk"
+      },
+      {
+        "name": "rotate",
+        "args": [
+          {
+            "name": "element_type",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "element_index",
+            "type": "long",
+            "optional": false
+          },
+          {
+            "name": "angle",
+            "type": "number/llll",
+            "optional": false
+          }
+        ],
+        "digest": "Rotate elements"
+      },
+      {
+        "name": "scale",
+        "args": [
+          {
+            "name": "element_type",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "element_index",
+            "type": "long",
+            "optional": false
+          },
+          {
+            "name": "factor",
+            "type": "number",
+            "optional": false
+          }
+        ],
+        "digest": "Scale elements"
+      },
+      {
+        "name": "scores",
+        "args": [
+          {
+            "name": "scores",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Assign scores"
+      },
+      {
+        "name": "split",
+        "args": [
+          {
+            "name": "edge",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "edge_index",
+            "type": "long",
+            "optional": false
+          },
+          {
+            "name": "split_point",
+            "type": "llll",
+            "optional": false
+          }
+        ],
+        "digest": "Split edges"
+      },
+      {
+        "name": "stop",
+        "digest": "Stop sequencing"
+      },
+      {
+        "name": "subdivide",
+        "args": [
+          {
+            "name": "edge",
+            "type": "symbol",
+            "optional": false
+          },
+          {
+            "name": "edge_index",
+            "type": "long",
+            "optional": false
+          },
+          {
+            "name": "num_subdivisions",
+            "type": "long",
+            "optional": false
+          }
+        ],
+        "digest": "Subdivide edges"
+      },
+      {
+        "name": "write",
+        "args": [
+          {
+            "name": "file",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save in native format"
+      },
+      {
+        "name": "writetxt",
+        "args": [
+          {
+            "name": "file",
+            "type": "symbol",
+            "optional": true
+          }
+        ],
+        "digest": "Save in text format"
+      }
+    ],
+    "attributes": {
+      "allowcentershift": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Allow Center Shifting",
+        "default": "1"
+      },
+      "allowzoom": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Allow Zoom",
+        "default": "1"
+      },
+      "axescolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Axes Color",
+        "default": "0.4 0.4 0.4 1."
+      },
+      "axeslabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Axes Labels Color",
+        "default": "0.4 0.4 0.4 1."
+      },
+      "axeslabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Axes Labels Font Size",
+        "default": "10."
+      },
+      "ballsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Ball Size",
+        "default": "3."
+      },
+      "bgcolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Background Color",
+        "default": "1. 1. 1. 1."
+      },
+      "bgimage": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Background Image",
+        "default": "none"
+      },
+      "blinktime": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Blinking Time",
+        "default": "200"
+      },
+      "bordercolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Border Color",
+        "default": "0. 0. 0. 1."
+      },
+      "bouncedata": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Output Bounce Data",
+        "default": "1"
+      },
+      "center": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Center Coordinates",
+        "default": "0 0"
+      },
+      "edgewidth": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Room Edge Line Width",
+        "default": "1.5"
+      },
+      "embed": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Save Data With Patcher",
+        "default": "1"
+      },
+      "gridcolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Color",
+        "default": "0. 0. 0. 0.1"
+      },
+      "gridlabelscolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Labels Color",
+        "default": "0.4 0.4 0.4 1."
+      },
+      "gridlabelsfontsize": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Labels Font Size",
+        "default": "8."
+      },
+      "gridmode": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Mode",
+        "default": "0"
+      },
+      "gridstep": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Grid Size",
+        "default": "10 10"
+      },
+      "indexaschannel": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Use Ball Index As Channel",
+        "default": "0"
+      },
+      "maxundosteps": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Maximum Number Of Undo Steps",
+        "default": "50"
+      },
+      "mode": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Metadata Mode",
+        "default": "0"
+      },
+      "mousehover": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Allow Mouse Hovering",
+        "default": "1"
+      },
+      "noteoff": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Send Noteoff Information",
+        "default": "1"
+      },
+      "notifypaint": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Notify Display Refresh",
+        "default": "0"
+      },
+      "out": {
+        "type": "symbol",
+        "get": true,
+        "set": true,
+        "digest": "Outlet Types"
+      },
+      "playcolor": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Play Color",
+        "default": "0.34 0.87 0.20 1."
+      },
+      "playstep": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Play Step (ms)",
+        "default": "50"
+      },
+      "roomcolor": {
+        "type": "rgba",
+        "get": true,
+        "set": true,
+        "digest": "Room Color",
+        "default": "0.3 0.3 0.3 1."
+      },
+      "showaxes": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Axes",
+        "default": "1"
+      },
+      "showaxeslabels": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Axes Labels",
+        "default": "0"
+      },
+      "showballs": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Balls",
+        "default": "3"
+      },
+      "showborder": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Border",
+        "default": "1"
+      },
+      "showfocus": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Focus",
+        "default": "1"
+      },
+      "showgrid": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Grid",
+        "default": "1"
+      },
+      "showgridlabels": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Show Grid Labels",
+        "default": "1"
+      },
+      "showroom": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Room",
+        "default": "1"
+      },
+      "showspeed": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Show Ball Speed",
+        "default": "1"
+      },
+      "snaptogrid": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Snap To Grid",
+        "default": "0"
+      },
+      "speeddisplayfactor": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Speed Display Factor",
+        "default": "0.2"
+      },
+      "speedvel": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Velocities Depend On Normal Speed",
+        "default": "1"
+      },
+      "tonedivision": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Microtonal Division",
+        "default": "2"
+      },
+      "type": {
+        "type": "int",
+        "get": true,
+        "set": true,
+        "digest": "Metadata Type",
+        "default": "0"
+      },
+      "undobeforeplay": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Save State For Undo Before Playing",
+        "default": "1"
+      },
+      "verboseundo": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Post Undo/Redo Steps",
+        "default": "0"
+      },
+      "vertexsize": {
+        "type": "float",
+        "get": true,
+        "set": true,
+        "digest": "Room Vertex Size",
+        "default": "4."
+      },
+      "xlabel": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "X Axis Label"
+      },
+      "ylabel": {
+        "type": "",
+        "get": true,
+        "set": true,
+        "digest": "Y Axis Label"
+      }
+    },
     "seealso": [],
     "tags": [
       "physics"
     ],
     "min_version": 8,
-    "verified": false,
+    "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Dada",

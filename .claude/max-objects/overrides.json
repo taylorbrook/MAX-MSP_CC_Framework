@@ -5939,6 +5939,432 @@
         "source": "io_count_finding"
       }
     },
+    "dada.bounce": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Incoming symbol or list",
+          "hot": true
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Dump outlet"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Queries and notifications"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Information about bounce occurrence"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Playout"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "bang when object is changed via the interface"
+        }
+      ],
+      "_audit": {
+        "source": "refpage_ioverify_260417",
+        "ref_source": ".claude/max-objects/_pkg-source/dada/docs/refpages/dada_ref/dada.bounce.maxref.xml",
+        "note": "Extracted DB had inlets=1 / outlets=2; maxref.xml lists inlets=1 / outlets=5. Override restores ref-accurate counts/digests."
+      }
+    },
+    "dada.bodies": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Messages or state",
+          "hot": true
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Dump outlet"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Queries and Notifications"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Hit data"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Playout"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "bang when something is changed via the interface"
+        }
+      ],
+      "_audit": {
+        "source": "refpage_ioverify_260417",
+        "ref_source": ".claude/max-objects/_pkg-source/dada/docs/refpages/dada_ref/dada.bodies.maxref.xml",
+        "note": "Extracted DB had inlets=1 / outlets=2; maxref.xml lists inlets=1 / outlets=5. Override restores ref-accurate counts/digests."
+      }
+    },
+    "dada.base": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Incoming queries or messages",
+          "hot": true
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Query results or dump"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Bang when an external file has been properly loaded"
+        }
+      ],
+      "_audit": {
+        "source": "refpage_ioverify_260417",
+        "ref_source": ".claude/max-objects/_pkg-source/dada/docs/refpages/dada_ref/dada.base.maxref.xml",
+        "note": "Extracted DB had inlets=1 / outlets=1; maxref.xml lists inlets=1 / outlets=2. Override restores ref-accurate counts/digests."
+      }
+    },
+    "bach.roll": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "bang or llll containing gathered syntax of the entire object",
+          "hot": true
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Onsets (in milliseconds) in separate syntax.",
+          "hot": false
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Pitches or MIDIcents in separate syntax.",
+          "hot": false
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Durations (in milliseconds) in separate syntax",
+          "hot": false
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Velocities (1 to 127) in separate syntax",
+          "hot": false
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Extras in separate syntax",
+          "hot": false
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Whole object dump"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Onsets"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Pitches or MIDIcents"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Durations"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Velocities"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Extras"
+        },
+        {
+          "id": 6,
+          "type": "",
+          "signal": false,
+          "digest": "Playout"
+        },
+        {
+          "id": 7,
+          "type": "",
+          "signal": false,
+          "digest": "bang when changed"
+        }
+      ],
+      "_audit": {
+        "source": "refpage_ioverify_260417",
+        "ref_source": ".claude/max-objects/_pkg-source/bach/docs/refpages/bach_ref/bach.roll.maxref.xml",
+        "note": "Extracted DB had inlets=1 / outlets=4; maxref.xml lists inlets=6 / outlets=8. Override restores ref-accurate counts/digests."
+      }
+    },
+    "bach.score": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "bang or llll containing gathered syntax of the entire object",
+          "hot": true
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Measureinfo in separate syntax.",
+          "hot": false
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Pitches or MIDIcents in separate syntax.",
+          "hot": false
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Durations (in symbolic units, fractions of the whole note) in separate syntax",
+          "hot": false
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Velocities (1 to 127) in separate syntax",
+          "hot": false
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Ties (1 for notes starting a tie, 0 for any other note) in separate syntax",
+          "hot": false
+        },
+        {
+          "id": 6,
+          "type": "",
+          "signal": false,
+          "digest": "Extras in separate syntax",
+          "hot": false
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Whole object dump"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Measureinfo"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "signal": false,
+          "digest": "Pitches or MIDIcents"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "signal": false,
+          "digest": "Durations"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "signal": false,
+          "digest": "Velocities"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "signal": false,
+          "digest": "Ties"
+        },
+        {
+          "id": 6,
+          "type": "",
+          "signal": false,
+          "digest": "Extras"
+        },
+        {
+          "id": 7,
+          "type": "",
+          "signal": false,
+          "digest": "Playout"
+        },
+        {
+          "id": 8,
+          "type": "",
+          "signal": false,
+          "digest": "bang when changed"
+        }
+      ],
+      "_audit": {
+        "source": "refpage_ioverify_260417",
+        "ref_source": ".claude/max-objects/_pkg-source/bach/docs/refpages/bach_ref/bach.score.maxref.xml",
+        "note": "Extracted DB had inlets=1 / outlets=4; maxref.xml lists inlets=7 / outlets=9. Override restores ref-accurate counts/digests."
+      }
+    },
+    "o.pack": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Max data (triggers output)",
+          "hot": true
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "Max data (no output)",
+          "hot": false
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "OSC packet containing incoming data bound to OSC addresses"
+        }
+      ],
+      "_audit": {
+        "source": "refpage_ioverify_260417",
+        "ref_source": "github.com/CNMAT/CNMAT-odot@master:docs/refpages/odot_ref/o.pack.maxref.xml",
+        "note": "Extracted DB had inlets=1 / outlets=1; maxref.xml lists inlets=2 / outlets=1. Override restores ref-accurate counts/digests."
+      }
+    },
+    "o.route": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "OSC packet",
+          "hot": true
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Result of pattern-matching"
+        }
+      ],
+      "_audit": {
+        "source": "refpage_ioverify_260417",
+        "ref_source": "github.com/CNMAT/CNMAT-odot@master:docs/refpages/odot_ref/o.route.maxref.xml",
+        "note": "Extracted DB had inlets=1 / outlets=3; maxref.xml lists inlets=1 / outlets=1. Override restores ref-accurate counts/digests. For odot/o.route, note that the object is variable_io in practice (one outlet per address argument); the refpage documents only the base topology."
+      }
+    },
+    "o.expr.codebox": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "odot bundle",
+          "hot": true
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "signal": false,
+          "digest": "Results of an expression"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "signal": false,
+          "digest": "NULL"
+        }
+      ],
+      "_audit": {
+        "source": "refpage_ioverify_260417",
+        "ref_source": "github.com/CNMAT/CNMAT-odot@master:docs/refpages/odot_ref/o.expr.codebox.maxref.xml",
+        "note": "Extracted DB had inlets=1 / outlets=1; maxref.xml lists inlets=1 / outlets=2. Override restores ref-accurate counts/digests."
+      }
+    },
     "_domain_other": "--- Other Objects (not in domain JSONs) ---",
     "M4L.api.ObserveTransport": {
       "inlets": [
