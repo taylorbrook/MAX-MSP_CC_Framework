@@ -670,5 +670,245 @@
     "variable_io": false,
     "rnbo_compatible": false,
     "package": "Rhythmic Time Toolkit"
+  },
+  "rtt.clock~": {
+    "name": "rtt.clock~",
+    "maxclass": "rtt.clock~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "timing",
+    "digest": "Master clock outputting phasor 0-1 at bar rate",
+    "description": "Outputs bar-rate phasor (outlet 0) and bar-wrap impulse (outlet 1). @bpm, @barlength, @syncupdate.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Transport on/off (0/1)",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": true,
+        "digest": "BPM signal or float",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": true,
+        "digest": "Hard-sync impulse",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Bar length",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Phasor 0->1 at bar rate"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Hard-sync / bar-wrap impulse"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "bpm": "float",
+      "barlength": "float",
+      "syncupdate": "0|1"
+    },
+    "seealso": [],
+    "tags": [
+      "timing",
+      "rtt"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": true,
+    "package": "Rhythmic Time Toolkit",
+    "requires": []
+  },
+  "rtt.counter~": {
+    "name": "rtt.counter~",
+    "maxclass": "rtt.counter~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "timing",
+    "digest": "Pulse-driven signal-rate counter",
+    "description": "Increments on each input pulse. Outputs current index as signal.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Pulse input",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Max count / reset",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Current count signal"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Wrap pulse"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "max": "int"
+    },
+    "seealso": [],
+    "tags": [
+      "timing",
+      "rtt"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": true,
+    "package": "Rhythmic Time Toolkit",
+    "requires": []
+  },
+  "rtt.euclidean~": {
+    "name": "rtt.euclidean~",
+    "maxclass": "rtt.euclidean~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "pattern",
+    "digest": "Euclidean rhythm pattern gate at signal rate",
+    "description": "Gates incoming pulses according to Euclidean pattern (k hits distributed over n steps).",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Pulse in",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "k (hits)",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "n (steps)",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Gated pulse out"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "pulses": "int",
+      "steps": "int"
+    },
+    "seealso": [],
+    "tags": [
+      "pattern",
+      "rtt"
+    ],
+    "min_version": 8,
+    "verified": false,
+    "variable_io": false,
+    "rnbo_compatible": true,
+    "package": "Rhythmic Time Toolkit",
+    "requires": []
+  },
+  "rtt.sequence~": {
+    "name": "rtt.sequence~",
+    "maxclass": "rtt.sequence~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "sequencing",
+    "digest": "Signal-rate step sequencer driven by phasor",
+    "description": "Phasor 0-1 input \u2192 step index \u2192 outputs interpolated step value list.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Phasor 0-1",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Step list",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Step value signal"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Metadata"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "steps": "int",
+      "low": "float",
+      "high": "float"
+    },
+    "seealso": [],
+    "tags": [
+      "sequencing",
+      "rtt"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": true,
+    "package": "Rhythmic Time Toolkit",
+    "requires": []
   }
 }

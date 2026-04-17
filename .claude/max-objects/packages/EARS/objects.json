@@ -1562,5 +1562,133 @@
     "requires": [
       "Bach"
     ]
+  },
+  "ears.read~": {
+    "name": "ears.read~",
+    "maxclass": "ears.read~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "io",
+    "digest": "Read audio file into buffer (async, outputs buffer name)",
+    "description": "Reads audio file via llll [filename start_ms end_ms]; outputs buffer name on outlet 0 when load completes.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Filename / llll [file start end]",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Buffer name list (plain Max list)"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Resolved paths llll"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "Sample format llll"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "Metadata tags llll"
+      },
+      {
+        "id": 4,
+        "type": "control",
+        "signal": false,
+        "digest": "Markers llll"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {},
+    "seealso": [
+      "ears.writefile",
+      "ears.slice~"
+    ],
+    "tags": [
+      "io",
+      "ears"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
+  },
+  "ears.slice~": {
+    "name": "ears.slice~",
+    "maxclass": "ears.slice~",
+    "module": "max",
+    "domain": "Packages",
+    "category": "editing",
+    "digest": "Slice buffer at given sample positions",
+    "description": "Cuts input buffer into N new buffers at the given slice points. @timeunit samps|ms|relative selects list unit.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Input buffer name(s)",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Slice points (list or llll)",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Output slice buffer names list"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump/info llll"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "timeunit": "samps|ms|relative"
+    },
+    "seealso": [
+      "ears.read~"
+    ],
+    "tags": [
+      "editing",
+      "ears"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "EARS",
+    "requires": [
+      "Bach"
+    ]
   }
 }
