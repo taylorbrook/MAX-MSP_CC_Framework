@@ -53,7 +53,7 @@ function bang() {
     var bufmfcc = this.patcher.getnamed("bufmfcc");
     var bufstats = this.patcher.getnamed("bufstats");
     var bufflatten = this.patcher.getnamed("bufflatten");
-    var dataset = this.patcher.getnamed("descriptors");
+    var dataset = this.patcher.getnamed("descRef");
 
     if (!bufmfcc || !bufstats || !bufflatten || !dataset) {
         post("analyze: missing named objects (bufmfcc/bufstats/bufflatten/descriptors)\n");
