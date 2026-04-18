@@ -4,6 +4,14 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-04-16T14:51:58.342581+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "fix cluster trigger order, add @blocking, wire route dump\u2192jsui",
+      "timestamp": "2026-04-18T02:12:38.021407+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }
