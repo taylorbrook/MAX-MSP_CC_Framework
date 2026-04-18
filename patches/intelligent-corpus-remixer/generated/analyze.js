@@ -84,6 +84,11 @@ function bang() {
 
     post("analyze: added " + kept + " points, skipped " + skipped + " short slices\n");
     dataset.message("print");
-    outlet(1, kept);
-    outlet(0, "bang");
+
+    var keptFinal = kept;
+    var doneTask = new Task(function() {
+        outlet(1, keptFinal);
+        outlet(0, "bang");
+    }, this);
+    doneTask.schedule(100);
 }
