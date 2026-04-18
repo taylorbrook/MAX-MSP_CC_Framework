@@ -2461,15 +2461,15 @@
       "inlets": [
         {
           "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
+          "type": "signal",
+          "signal": true,
+          "digest": "Left signal input"
         },
         {
           "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": ""
+          "type": "signal",
+          "signal": true,
+          "digest": "Right signal input"
         }
       ]
     },
