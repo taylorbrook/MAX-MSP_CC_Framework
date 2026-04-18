@@ -1,0 +1,14 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-04-16T14:52:19.462402+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "First full build: dada.bounce physics source + 5 per-ball voice subpatchers (cycle~ + harmonic partial, adsr~, constant-power pan by x-position) + bach.roll accumulating display + master gain~/limi~/dac~ chain",
+      "timestamp": "2026-04-18T06:12:59+00:00"
+    }
+  ]
+}
