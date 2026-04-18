@@ -852,7 +852,7 @@
                                         22.0
                                     ],
                                     "text": "fluid.dataset~ descriptors",
-                                    "varname": "descriptors"
+                                    "varname": "descRef"
                                 }
                             },
                             {
