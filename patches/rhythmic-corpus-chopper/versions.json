@@ -4,6 +4,14 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-04-16T14:52:33.177621+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "replace ears.read~ in p io with buffer~ rcc_loop + replace$1 message",
+      "timestamp": "2026-04-18T02:19:06.350849+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
