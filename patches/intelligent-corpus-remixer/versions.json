@@ -20,6 +20,14 @@
       "files_changed": [
         "intelligent-corpus-remixer.maxpat"
       ]
+    },
+    {
+      "version": "0.0.3",
+      "description": "normalize UMAP 2D output for fluid.plotter [0,1] range",
+      "timestamp": "2026-04-19T04:11:20.541198+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }
