@@ -3842,21 +3842,30 @@
                   ],
                   "text": "groove~ rcc_dummy 2"
                 }
+              },
+              {
+                "box": {
+                  "maxclass": "newobj",
+                  "id": "obj-10",
+                  "numinlets": 1,
+                  "numoutlets": 2,
+                  "outlettype": [
+                    "",
+                    ""
+                  ],
+                  "patching_rect": [
+                    30.0,
+                    255.0,
+                    101.0,
+                    22.0
+                  ],
+                  "text": "route symbol",
+                  "fontname": "Arial",
+                  "fontsize": 12.0
+                }
               }
             ],
             "lines": [
-              {
-                "patchline": {
-                  "destination": [
-                    "obj-6",
-                    0
-                  ],
-                  "source": [
-                    "obj-1",
-                    0
-                  ]
-                }
-              },
               {
                 "patchline": {
                   "destination": [
@@ -3982,6 +3991,30 @@
                   "source": [
                     "obj-9",
                     1
+                  ]
+                }
+              },
+              {
+                "patchline": {
+                  "source": [
+                    "obj-1",
+                    0
+                  ],
+                  "destination": [
+                    "obj-10",
+                    0
+                  ]
+                }
+              },
+              {
+                "patchline": {
+                  "source": [
+                    "obj-10",
+                    0
+                  ],
+                  "destination": [
+                    "obj-6",
+                    0
                   ]
                 }
               }
@@ -4261,7 +4294,7 @@
             58.0,
             20.0
           ],
-          "text": "v0.0.1",
+          "text": "v0.0.2",
           "fontname": "Arial",
           "fontsize": 12.0
         }
