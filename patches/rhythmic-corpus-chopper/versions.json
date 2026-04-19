@@ -12,6 +12,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.0.2",
+      "description": "guard player input with route symbol so groove~ set $1 only fires on valid buffer names",
+      "timestamp": "2026-04-19T04:06:45.421454+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
