@@ -12,6 +12,14 @@
       "files_changed": [
         "intelligent-corpus-remixer.maxpat"
       ]
+    },
+    {
+      "version": "0.0.2",
+      "description": "remove invalid @blocking on ML objs; chain via route fittransform/fit",
+      "timestamp": "2026-04-19T02:01:20.929260+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }
