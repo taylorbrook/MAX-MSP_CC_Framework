@@ -9,6 +9,11 @@
       "version": "0.0.1",
       "description": "First full build: dada.bounce physics source + 5 per-ball voice subpatchers (cycle~ + harmonic partial, adsr~, constant-power pan by x-position) + bach.roll accumulating display + master gain~/limi~/dac~ chain",
       "timestamp": "2026-04-18T06:12:59+00:00"
+    },
+    {
+      "version": "0.0.2",
+      "description": "UX pass: split the single Clear button into Reset (re-adds 5 balls + clears notation) and Clear-notation (keeps balls). Fixed bach.llll2list (doesn't exist in installed bach) -> bach.nth per-axis. Fixed expr clip() (not a valid function) -> min(max()). Targeted control labels so they stay near their boxes.",
+      "timestamp": "2026-04-18T07:00:00+00:00"
     }
   ]
 }
