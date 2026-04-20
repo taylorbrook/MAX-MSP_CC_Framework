@@ -45,6 +45,7 @@ class ObjectDatabase:
         self._package_objects: dict[str, list[str]] = defaultdict(list)
         self._package_info: dict[str, dict] = {}
         self._empty_io_warned: set[str] = set()
+        self._first_arg_warned: set[tuple[str, str]] = set()
         self._load(db_root)
 
     def _load(self, db_root: Path) -> None:
@@ -158,6 +159,28 @@ class ObjectDatabase:
             "override to overrides.json.",
             UserWarning,
             stacklevel=3,
+        )
+
+    def _warn_non_integer_first_arg(
+        self, formula: str, raw_arg: str, default: int
+    ) -> None:
+        """Emit a one-time UserWarning when a 'first_arg' formula receives a
+        non-integer first argument. Dedup keyed on (formula, raw_arg) to avoid
+        spamming repeated lookups of the same malformed patch.
+
+        stacklevel=4 (one deeper than _maybe_warn_empty_io) because the call
+        path is user → compute_io_counts → _apply_io_formula → here.
+        """
+        key = (formula, raw_arg)
+        if key in self._first_arg_warned:
+            return
+        self._first_arg_warned.add(key)
+        warnings.warn(
+            f"variable_io formula '{formula}' received non-integer first arg "
+            f"{raw_arg!r}; falling back to default count {default}. "
+            "Patch may be malformed.",
+            UserWarning,
+            stacklevel=4,
         )
 
     def exists(self, name: str) -> bool:
@@ -366,12 +389,13 @@ class ObjectDatabase:
             return len(args) + 1
 
         if formula == "first_arg":
-            if args:
-                try:
-                    return int(args[0])
-                except (ValueError, IndexError):
-                    return default
-            return default
+            if not args:
+                return default
+            try:
+                return int(args[0])
+            except ValueError:
+                self._warn_non_integer_first_arg(formula, args[0], default)
+                return default
 
         if formula == "first_arg+1":
             if args:
