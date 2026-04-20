@@ -196,3 +196,33 @@ def test_audit_empty_io_segments():
     # covered_by_override may be empty today (0 empty-I/O entries have
     # overrides); just confirm the key is present and the list is a list
     assert isinstance(audit["covered_by_override"], list)
+
+
+# ── compute_io_counts regression (REVIEW 260420-j15 FN-01) ──────
+
+def test_compute_io_counts_honors_overrides_rules_for_lifted_objects():
+    """Regression: cycle / combine / router were silently mis-counted.
+
+    See .planning/quick/260420-j15-review-the-objects-database-entries-and-/
+    260420-j15-REVIEW.md FN-01 + DQ-02. These three core MAX objects have
+    variable_io=true plus an inline io_rule in their per-domain JSON, but
+    db_lookup only consults overrides.json:variable_io_rules. Before
+    quick-260420-j15 lifted the rules into the loaded registry,
+    compute_io_counts fell through to raw default-array lengths (e.g.
+    router(['4','6']) returned (4, 5), not (4, 6)). This test locks in the
+    fix: if a future edit removes any of the three rules, the test fails
+    loudly.
+    """
+    db = ObjectDatabase()
+
+    # cycle: first arg = outlet count; no-arg = 2 outlets
+    assert db.compute_io_counts("cycle", ["5"]) == (1, 5)
+    assert db.compute_io_counts("cycle", []) == (1, 2)
+
+    # combine: arg count = inlet count; no-arg = 2 inlets
+    assert db.compute_io_counts("combine", ["a", "b", "c"]) == (3, 1)
+    assert db.compute_io_counts("combine", []) == (2, 1)
+
+    # router: first_arg inlets, second_arg outlets; no-arg = 2x2
+    assert db.compute_io_counts("router", ["4", "6"]) == (4, 6)
+    assert db.compute_io_counts("router", []) == (2, 2)
