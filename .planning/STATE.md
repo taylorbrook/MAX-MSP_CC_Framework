@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Package Integration
 status: complete
-last_updated: "2026-04-20T06:50:00.000Z"
+last_updated: "2026-04-20T22:35:00.000Z"
 last_activity: 2026-04-20
 progress:
   total_phases: 6
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-20 - Completed quick task 260420-j15: Review objects DB entries and functionality (10 DQ + 7 FN + 6 TC findings; 3 variable_io rule fixes + wrap~ blocklist clarification)
+Last activity: 2026-04-20 - Completed quick task 260420-lla: Fix compute_io_counts FN-03 + FN-04 bugs and add regression tests (TC-01 + TC-02)
 
 Progress: [██████████] 100%
 
@@ -60,3 +60,4 @@ None.
 | 260419-vy7 | Populate I/O schemas for 11 critical empty-schema objects (bpatcher, funnel, expr, expr~, codebox, codebox~, pan, pan~, xfade, xfade~, waveform~) | 2026-04-20 | e9ddfa8 | Verified | [260419-vy7-populate-i-o-for-11-critical-empty-schem](./quick/260419-vy7-populate-i-o-for-11-critical-empty-schem/) |
 | 260419-w9l | Add empty-I/O health check to db_lookup.py (has_complete_io, lookup warning, audit_empty_io, 12 tests) | 2026-04-20 | 49caaaa | Verified | [260419-w9l-add-empty-i-o-health-check-to-db-lookup-](./quick/260419-w9l-add-empty-i-o-health-check-to-db-lookup-/) |
 | 260420-j15 | Review objects DB entries and functionality (23 findings: 10 DQ + 7 FN + 6 TC; fixed 3 variable_io rule gaps + wrap~ blocklist) | 2026-04-20 | 1d56295 |  | [260420-j15-review-the-objects-database-entries-and-](./quick/260420-j15-review-the-objects-database-entries-and-/) |
+| 260420-lla | Fix compute_io_counts FN-03 (always-evaluate arg_count) + FN-04 (warn on non-integer first_arg) + add TC-01/TC-02 tests (22 passing) | 2026-04-20 | 8b0c310 | Verified | [260420-lla-fix-compute-io-counts-fn-03-fn-04-bugs-a](./quick/260420-lla-fix-compute-io-counts-fn-03-fn-04-bugs-a/) |
