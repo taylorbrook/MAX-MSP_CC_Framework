@@ -219,10 +219,84 @@ def test_compute_io_counts_honors_overrides_rules_for_lifted_objects():
     assert db.compute_io_counts("cycle", ["5"]) == (1, 5)
     assert db.compute_io_counts("cycle", []) == (1, 2)
 
-    # combine: arg count = inlet count; no-arg = 2 inlets
+    # combine: arg count = inlet count
     assert db.compute_io_counts("combine", ["a", "b", "c"]) == (3, 1)
-    assert db.compute_io_counts("combine", []) == (2, 1)
+    # FN-03 fix (REVIEW 260420-j15): arg_count formula now always evaluates
+    # len(args), so no-args returns 0 inlets, not the default_inlets=2.
+    assert db.compute_io_counts("combine", []) == (0, 1)
 
     # router: first_arg inlets, second_arg outlets; no-arg = 2x2
+    # (first_arg/second_arg keep their default-fallback semantics)
     assert db.compute_io_counts("router", ["4", "6"]) == (4, 6)
     assert db.compute_io_counts("router", []) == (2, 2)
+
+
+# ── compute_io_counts TC-01 (REVIEW 260420-j15) ─────────────────
+
+def test_compute_io_counts_unknown_object_returns_zero_zero():
+    db = ObjectDatabase()
+    assert db.compute_io_counts("__does_not_exist__", []) == (0, 0)
+    assert db.compute_io_counts("__does_not_exist__", ["a", "b"]) == (0, 0)
+
+
+def test_compute_io_counts_non_variable_io_returns_db_arrays():
+    db = ObjectDatabase()
+    # cycle~: 2 inlets (signal freq + phase), 1 outlet (signal). Not variable_io.
+    assert db.compute_io_counts("cycle~", []) == (2, 1)
+    # Args are ignored for non-variable_io objects.
+    assert db.compute_io_counts("cycle~", ["440"]) == (2, 1)
+
+
+def test_compute_io_counts_trigger_with_full_args():
+    db = ObjectDatabase()
+    # trigger b i f -> 1 inlet, 3 outlets (one per type letter)
+    assert db.compute_io_counts("trigger", ["b", "i", "f"]) == (1, 3)
+
+
+def test_compute_io_counts_trigger_no_args_post_fn03():
+    """FN-03: trigger uses outlet_count='arg_count'. Empty args → 0 outlets,
+    not the default 2. Deliberate semantic shift from REVIEW 260420-j15.
+    """
+    db = ObjectDatabase()
+    assert db.compute_io_counts("trigger", []) == (1, 0)
+
+
+def test_compute_io_counts_route_no_args_post_fn03():
+    """FN-03: route uses outlet_count='arg_count+1'. Empty args → 1 outlet
+    (just the unmatched), not the default 3.
+    """
+    db = ObjectDatabase()
+    assert db.compute_io_counts("route", []) == (1, 1)
+
+
+# ── get_outlet_types TC-02 (REVIEW 260420-j15) ──────────────────
+
+def test_get_outlet_types_all_signal():
+    db = ObjectDatabase()
+    # cycle~ has a single signal outlet
+    assert db.get_outlet_types("cycle~", []) == ["signal"]
+
+
+def test_get_outlet_types_mixed_signal_and_control():
+    db = ObjectDatabase()
+    # sfplay~: signal channels + control bang on completion. The exact
+    # channel count varies by argument, but the multi-outlet result must
+    # contain BOTH "signal" and "" entries to prove mixed-type rendering.
+    types = db.get_outlet_types("sfplay~", [])
+    assert "signal" in types, types
+    assert "" in types, types
+
+
+def test_get_outlet_types_variable_expansion_inherits_control():
+    """trigger b i f: 3 control outlets (no signal). Tests the expansion
+    path in get_outlet_types where num_outlets exceeds len(db_outlets) and
+    types are inherited from the last DB outlet.
+    """
+    db = ObjectDatabase()
+    types = db.get_outlet_types("trigger", ["b", "i", "f"])
+    assert types == ["", "", ""], types
+
+
+def test_get_outlet_types_unknown_returns_empty():
+    db = ObjectDatabase()
+    assert db.get_outlet_types("__does_not_exist__", []) == []
