@@ -18,7 +18,7 @@
     "vline~": {"max_equivalent": "line~", "reason": "PD virtual line"},
     "netsend": {"max_equivalent": "udpsend or mxj net.tcp.send", "reason": "PD network send"},
     "netreceive": {"max_equivalent": "udpreceive or mxj net.tcp.recv", "reason": "PD network receive"},
-    "wrap~": {"max_equivalent": "pong~ @mode wrap", "reason": "PD wrap (MAX uses pong~ or %~ operator)"},
+    "wrap~": {"max_equivalent": "wrap~ exists in MAX too -- verify context", "reason": "Both PD and MAX have wrap~ (MAX wrap~ is signal range wrap with 3 inlets / 1 outlet; PD wrap~ is phase wrap). Review-260420-j15 DQ-01."},
     "clip~": {"max_equivalent": "clip~ exists in MAX too -- verify context", "reason": "Both PD and MAX have clip~"}
   }
 }

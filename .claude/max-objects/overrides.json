@@ -7868,6 +7868,42 @@
       "default_inlets": 1,
       "default_outlets": 1,
       "description": "Inlet/outlet count matches the inlet and outlet objects inside the loaded subpatch. Cannot be computed from arguments; inherit from the referenced .maxpat file at load time."
+    },
+    "cycle": {
+      "inlet_count": "fixed:1",
+      "outlet_count": "first_arg",
+      "default_inlets": 1,
+      "default_outlets": 2,
+      "description": "Round-robin router: first arg sets number of outlets (messages cycle through outlets 0..N-1). Default: 2 outlets.",
+      "_audit": {
+        "source": "review-260420-j15",
+        "confidence": "HIGH",
+        "finding": "DQ-02 / FN-01: lifted from per-domain inline io_rule (cycle had variable_io=true but no overrides.json rule; compute_io_counts was mis-counting)."
+      }
+    },
+    "combine": {
+      "inlet_count": "arg_count",
+      "outlet_count": "fixed:1",
+      "default_inlets": 2,
+      "default_outlets": 1,
+      "description": "Number of arguments determines number of inlets. Default: 2 inlets.",
+      "_audit": {
+        "source": "review-260420-j15",
+        "confidence": "HIGH",
+        "finding": "DQ-02 / FN-01: lifted from per-domain inline io_rule (combine had variable_io=true but no overrides.json rule)."
+      }
+    },
+    "router": {
+      "inlet_count": "first_arg",
+      "outlet_count": "second_arg",
+      "default_inlets": 2,
+      "default_outlets": 2,
+      "description": "Variable routing matrix: first arg = inlets, second arg = outlets. Default: 2x2.",
+      "_audit": {
+        "source": "review-260420-j15",
+        "confidence": "HIGH",
+        "finding": "DQ-02 / FN-01: lifted from per-domain inline io_rule (router had variable_io=true but no overrides.json rule; compute_io_counts was returning wrong default counts)."
+      }
     }
   },
   "_uncovered_empty_io": {
