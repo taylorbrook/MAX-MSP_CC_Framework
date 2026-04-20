@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-20 - Completed quick task 260419-w9l: Add empty-I/O health check to db_lookup.py (warn+audit+tests)
+Last activity: 2026-04-20 - Completed quick task 260420-j15: Review objects DB entries and functionality (10 DQ + 7 FN + 6 TC findings; 3 variable_io rule fixes + wrap~ blocklist clarification)
 
 Progress: [██████████] 100%
 
@@ -59,3 +59,4 @@ None.
 | 260417-8p0 | Populate messages/attributes/args + I/O overrides for 9 physics-composition package objects (dada/bach/odot) from refpages | 2026-04-17 | 97e9147 | Verified | [260417-8p0-populate-pkg-object-metadata](./quick/260417-8p0-populate-pkg-object-metadata/) |
 | 260419-vy7 | Populate I/O schemas for 11 critical empty-schema objects (bpatcher, funnel, expr, expr~, codebox, codebox~, pan, pan~, xfade, xfade~, waveform~) | 2026-04-20 | e9ddfa8 | Verified | [260419-vy7-populate-i-o-for-11-critical-empty-schem](./quick/260419-vy7-populate-i-o-for-11-critical-empty-schem/) |
 | 260419-w9l | Add empty-I/O health check to db_lookup.py (has_complete_io, lookup warning, audit_empty_io, 12 tests) | 2026-04-20 | 49caaaa | Verified | [260419-w9l-add-empty-i-o-health-check-to-db-lookup-](./quick/260419-w9l-add-empty-i-o-health-check-to-db-lookup-/) |
+| 260420-j15 | Review objects DB entries and functionality (23 findings: 10 DQ + 7 FN + 6 TC; fixed 3 variable_io rule gaps + wrap~ blocklist) | 2026-04-20 | 1d56295 |  | [260420-j15-review-the-objects-database-entries-and-](./quick/260420-j15-review-the-objects-database-entries-and-/) |
