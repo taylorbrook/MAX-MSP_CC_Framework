@@ -360,10 +360,10 @@ class ObjectDatabase:
             return int(formula.split(":")[1])
 
         if formula == "arg_count":
-            return len(args) if args else default
+            return len(args)
 
         if formula == "arg_count+1":
-            return (len(args) + 1) if args else default
+            return len(args) + 1
 
         if formula == "first_arg":
             if args:
