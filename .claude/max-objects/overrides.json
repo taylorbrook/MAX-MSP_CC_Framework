@@ -7173,6 +7173,554 @@
         "source": "io_count_finding"
       },
       "_note": "No base domain entry -- override inactive until object added to domain JSON"
+    },
+    "bpatcher": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "hot": true,
+          "digest": "Messages routed to the contained patcher's inlet objects (count inherited from loaded patch)"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "digest": "Output routed from the contained patcher's outlet objects (count inherited from loaded patch)"
+        }
+      ],
+      "messages": [
+        "replace",
+        "(drag)",
+        "(mouse)"
+      ],
+      "arguments": [
+        {
+          "name": "patcher_name",
+          "type": "symbol",
+          "optional": true,
+          "description": "Filename of the patcher to load (set via @name attribute or inspector)"
+        }
+      ],
+      "variable_io": true,
+      "_note": "Inlet/outlet count inherited from the contained subpatch (one per inlet/outlet object in the loaded patcher). Default 1/1 represents a typical minimum.",
+      "_audit": {
+        "source": "max_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "funnel": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "hot": true,
+          "digest": "Input - tagged with inlet number on output (int/float/list/bang)"
+        },
+        {
+          "id": 1,
+          "type": "anything",
+          "signal": false,
+          "hot": false,
+          "digest": "Input - tagged with inlet number on output (additional inlets based on first arg)"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "list",
+          "signal": false,
+          "digest": "Two-item list: [inlet_number_with_offset, value]"
+        }
+      ],
+      "messages": [
+        "bang",
+        "int",
+        "float",
+        "list",
+        "anything"
+      ],
+      "arguments": [
+        {
+          "name": "inlets",
+          "type": "int",
+          "optional": true,
+          "description": "Number of inlets (default 2)"
+        },
+        {
+          "name": "offset",
+          "type": "int",
+          "optional": true,
+          "description": "Offset for first inlet number (default 0)"
+        }
+      ],
+      "variable_io": true,
+      "_audit": {
+        "source": "max_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "expr": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "hot": true,
+          "digest": "Replace $i1/$f1/$s1 and evaluate expression; also accepts bang"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "digest": "Expression result (int/float depending on expression)"
+        }
+      ],
+      "messages": [
+        "bang",
+        "int",
+        "float",
+        "list",
+        "symbol",
+        "ft1",
+        "ft2",
+        "ft3",
+        "ft4",
+        "ft5",
+        "ft6",
+        "ft7",
+        "ft8",
+        "ft9",
+        "setall"
+      ],
+      "arguments": [
+        {
+          "name": "expression",
+          "type": "list",
+          "optional": false,
+          "description": "Mathematical expression using $i/$f/$s variables and C-style operators"
+        }
+      ],
+      "variable_io": true,
+      "_note": "Inlet count equals the number of distinct $iN/$fN/$sN variables in the expression. Default 1.",
+      "_audit": {
+        "source": "max_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "waveform~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "float",
+          "signal": false,
+          "hot": true,
+          "digest": "Display Start (ms)"
+        },
+        {
+          "id": 1,
+          "type": "float",
+          "signal": false,
+          "hot": false,
+          "digest": "Display Length (ms)"
+        },
+        {
+          "id": 2,
+          "type": "float",
+          "signal": false,
+          "hot": false,
+          "digest": "Selection Start (ms); list accepted: [start, end]"
+        },
+        {
+          "id": 3,
+          "type": "float",
+          "signal": false,
+          "hot": false,
+          "digest": "Selection End (ms)"
+        },
+        {
+          "id": 4,
+          "type": "float",
+          "signal": false,
+          "hot": false,
+          "digest": "Link In (for multi-channel viewing)"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "float",
+          "signal": false,
+          "digest": "Display Start (ms)"
+        },
+        {
+          "id": 1,
+          "type": "float",
+          "signal": false,
+          "digest": "Display Length (ms)"
+        },
+        {
+          "id": 2,
+          "type": "float",
+          "signal": false,
+          "digest": "Selection Start (ms)"
+        },
+        {
+          "id": 3,
+          "type": "float",
+          "signal": false,
+          "digest": "Selection End (ms)"
+        },
+        {
+          "id": 4,
+          "type": "list",
+          "signal": false,
+          "digest": "Mouse output: x, y, state"
+        },
+        {
+          "id": 5,
+          "type": "float",
+          "signal": false,
+          "digest": "Link Out (for multi-channel viewing)"
+        }
+      ],
+      "messages": [
+        "bang",
+        "int",
+        "float",
+        "list",
+        "set",
+        "setbuffer",
+        "bufname",
+        "displayrange",
+        "selection"
+      ],
+      "arguments": [
+        {
+          "name": "buffer_name",
+          "type": "symbol",
+          "optional": true,
+          "description": "Name of the buffer~ to display"
+        }
+      ],
+      "_audit": {
+        "source": "max_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "expr~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "hot": true,
+          "digest": "Replace $f1/$i1 variable and evaluate expression at audio rate"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal-rate expression result"
+        }
+      ],
+      "messages": [
+        "signal"
+      ],
+      "arguments": [
+        {
+          "name": "expression",
+          "type": "list",
+          "optional": false,
+          "description": "Mathematical expression using $fN/$iN variables"
+        }
+      ],
+      "variable_io": true,
+      "_note": "Inlet count equals number of distinct $fN/$iN variables in the expression. Default 1 signal inlet.",
+      "_audit": {
+        "source": "rnbo_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "codebox": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "hot": true,
+          "digest": "Input value (count matches `in` declarations in the codebox body; default 1)"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "digest": "Output value (count matches `out` declarations in the codebox body; default 1)"
+        }
+      ],
+      "messages": [
+        "int",
+        "float",
+        "list",
+        "bang"
+      ],
+      "arguments": [],
+      "variable_io": true,
+      "_note": "Inlet/outlet count is determined by `in 1`, `in 2`, ... and `out 1`, `out 2`, ... declarations in the codebox code. Default 1/1.",
+      "_audit": {
+        "source": "rnbo_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "codebox~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "hot": true,
+          "digest": "Signal input (count matches `in 1`, `in 2`, ... declarations; default 1)"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Signal output (count matches `out 1`, `out 2`, ... declarations; default 1)"
+        }
+      ],
+      "messages": [
+        "signal"
+      ],
+      "arguments": [],
+      "variable_io": true,
+      "_note": "Inlet/outlet count is determined by `in N`/`out N` declarations in the codebox~ body. Default 1/1 signal.",
+      "_audit": {
+        "source": "rnbo_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "pan": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "float",
+          "signal": false,
+          "hot": true,
+          "digest": "Input value to pan (mono)"
+        },
+        {
+          "id": 1,
+          "type": "float",
+          "signal": false,
+          "hot": false,
+          "digest": "Pan position (0.0 = full left, 1.0 = full right)"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "float",
+          "signal": false,
+          "digest": "Left channel output"
+        },
+        {
+          "id": 1,
+          "type": "float",
+          "signal": false,
+          "digest": "Right channel output"
+        }
+      ],
+      "messages": [
+        "int",
+        "float",
+        "list"
+      ],
+      "arguments": [
+        {
+          "name": "initial_pan",
+          "type": "float",
+          "optional": true,
+          "description": "Initial pan position (default 0.5)"
+        }
+      ],
+      "variable_io": false,
+      "_audit": {
+        "source": "rnbo_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "pan~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "hot": true,
+          "digest": "Signal input to pan (mono)"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "hot": false,
+          "digest": "Pan position (0.0 = full left, 1.0 = full right); accepts signal or float"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Left channel signal output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Right channel signal output"
+        }
+      ],
+      "messages": [
+        "signal",
+        "float"
+      ],
+      "arguments": [
+        {
+          "name": "initial_pan",
+          "type": "float",
+          "optional": true,
+          "description": "Initial pan position (default 0.5)"
+        }
+      ],
+      "variable_io": false,
+      "_audit": {
+        "source": "rnbo_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "xfade": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "float",
+          "signal": false,
+          "hot": true,
+          "digest": "Input A"
+        },
+        {
+          "id": 1,
+          "type": "float",
+          "signal": false,
+          "hot": false,
+          "digest": "Input B"
+        },
+        {
+          "id": 2,
+          "type": "float",
+          "signal": false,
+          "hot": false,
+          "digest": "Crossfade position (0.0 = full A, 1.0 = full B)"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "float",
+          "signal": false,
+          "digest": "Mixed output"
+        }
+      ],
+      "messages": [
+        "int",
+        "float",
+        "list"
+      ],
+      "arguments": [
+        {
+          "name": "initial_mix",
+          "type": "float",
+          "optional": true,
+          "description": "Initial crossfade position (default 0.5)"
+        }
+      ],
+      "variable_io": false,
+      "_audit": {
+        "source": "rnbo_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
+    },
+    "xfade~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "hot": true,
+          "digest": "Signal input A"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "hot": false,
+          "digest": "Signal input B"
+        },
+        {
+          "id": 2,
+          "type": "signal",
+          "signal": true,
+          "hot": false,
+          "digest": "Crossfade position (0.0 = full A, 1.0 = full B); accepts signal or float"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Mixed signal output"
+        }
+      ],
+      "messages": [
+        "signal",
+        "float"
+      ],
+      "arguments": [
+        {
+          "name": "initial_mix",
+          "type": "float",
+          "optional": true,
+          "description": "Initial crossfade position (default 0.5)"
+        }
+      ],
+      "variable_io": false,
+      "_audit": {
+        "source": "rnbo_docs",
+        "confidence": "HIGH",
+        "date": "2026-04-19"
+      }
     }
   },
   "version_map": {
@@ -7273,6 +7821,53 @@
       "outlet_count": "first_arg",
       "default_outlets": 2,
       "description": "First argument sets number of outlets."
+    },
+    "expr": {
+      "inlet_count": "arg_count",
+      "outlet_count": "fixed:1",
+      "default_inlets": 1,
+      "description": "Inlet count equals the number of distinct $iN/$fN/$sN variables in the expression argument (not the simple arg count). Default 1."
+    },
+    "expr~": {
+      "inlet_count": "arg_count",
+      "outlet_count": "fixed:1",
+      "default_inlets": 1,
+      "description": "Inlet count equals the number of distinct $fN/$iN variables in the expression. Default 1 signal inlet."
+    },
+    "codebox": {
+      "inlet_count": "fixed:1",
+      "outlet_count": "fixed:1",
+      "default_inlets": 1,
+      "default_outlets": 1,
+      "description": "Inlet/outlet count is determined by `in N`/`out N` declarations in the codebox body, not by arguments. Default 1/1."
+    },
+    "codebox~": {
+      "inlet_count": "fixed:1",
+      "outlet_count": "fixed:1",
+      "default_inlets": 1,
+      "default_outlets": 1,
+      "description": "Signal inlet/outlet count is determined by `in N`/`out N` declarations in the codebox~ body, not by arguments. Default 1/1."
+    },
+    "pan": {
+      "inlet_count": "fixed:2",
+      "outlet_count": "fixed:2",
+      "default_inlets": 2,
+      "default_outlets": 2,
+      "description": "Fixed mono -> stereo: 2 inlets (input, pan), 2 outlets (L, R). variable_io flag exists only for consistency with pan~ family."
+    },
+    "pan~": {
+      "inlet_count": "fixed:2",
+      "outlet_count": "fixed:2",
+      "default_inlets": 2,
+      "default_outlets": 2,
+      "description": "Fixed mono -> stereo signal pan: 2 signal inlets, 2 signal outlets."
+    },
+    "bpatcher": {
+      "inlet_count": "inherited_from_subpatch",
+      "outlet_count": "inherited_from_subpatch",
+      "default_inlets": 1,
+      "default_outlets": 1,
+      "description": "Inlet/outlet count matches the inlet and outlet objects inside the loaded subpatch. Cannot be computed from arguments; inherit from the referenced .maxpat file at load time."
     }
   },
   "_uncovered_empty_io": {
