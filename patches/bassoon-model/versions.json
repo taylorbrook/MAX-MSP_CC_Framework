@@ -1,0 +1,14 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-04-20T05:11:41.402392+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "Initial build: waveguide bassoon gen~ + host UI (Scavone cone, MW reed LUT, D4 phase-delay compensation, vibrato LFO, live.dial param controls, live.scope~ + spectroscope~, live.gain~ \u2192 *~ 0.5 \u2192 limi~ \u2192 dac~ 1 2)",
+      "timestamp": "2026-04-20T05:53:56.751348+00:00"
+    }
+  ]
+}
