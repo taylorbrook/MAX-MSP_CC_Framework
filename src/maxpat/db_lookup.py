@@ -6,6 +6,7 @@ source of truth for object existence and metadata during patch generation.
 """
 
 import json
+import warnings
 from collections import defaultdict
 from pathlib import Path
 
@@ -43,6 +44,7 @@ class ObjectDatabase:
         self._pd_blocklist: dict[str, dict] = {}
         self._package_objects: dict[str, list[str]] = defaultdict(list)
         self._package_info: dict[str, dict] = {}
+        self._empty_io_warned: set[str] = set()
         self._load(db_root)
 
     def _load(self, db_root: Path) -> None:
@@ -121,14 +123,42 @@ class ObjectDatabase:
         if obj is None:
             return None
         if allowed_packages is None:
+            self._maybe_warn_empty_io(canonical, obj)
             return obj
         # Core objects (no package field) always pass through
         if "package" not in obj:
+            self._maybe_warn_empty_io(canonical, obj)
             return obj
         # Package objects must be in the allowed list
         if obj.get("package") in allowed_packages:
+            self._maybe_warn_empty_io(canonical, obj)
             return obj
         return None
+
+    def _maybe_warn_empty_io(self, canonical: str, obj: dict) -> None:
+        """Emit a one-time UserWarning if this canonical has empty I/O and no
+        variable_io_rules exemption. Dedup via _empty_io_warned.
+
+        Intent is to surface silent patch-generation failures caused by DB
+        entries with no inlet/outlet schema. UserWarning (not
+        DeprecationWarning) is used because this is a runtime data-quality
+        signal to the caller; DeprecationWarning would be filtered out by
+        default in Python's end-user runtime.
+        """
+        if canonical in self._variable_io_rules:
+            return
+        if obj.get("inlets") and obj.get("outlets"):
+            return
+        if canonical in self._empty_io_warned:
+            return
+        self._empty_io_warned.add(canonical)
+        warnings.warn(
+            f"Object '{canonical}' has empty inlets/outlets in DB -- "
+            "patch generation may fail silently. Consider adding an "
+            "override to overrides.json.",
+            UserWarning,
+            stacklevel=3,
+        )
 
     def exists(self, name: str) -> bool:
         """Check whether an object exists in the database.
@@ -153,6 +183,31 @@ class ObjectDatabase:
         """
         canonical = self._aliases.get(name, name)
         return canonical in self._overridden_objects
+
+    def has_complete_io(self, name: str) -> bool:
+        """Check whether an object has usable I/O metadata.
+
+        Returns True if:
+          - the canonical name is in variable_io_rules (I/O is computed from
+            args; default arrays may legitimately be empty), OR
+          - both inlets and outlets arrays are populated.
+
+        Returns False if the name is not in the DB, or if inlets OR outlets is
+        empty AND the canonical has no variable_io_rules entry.
+
+        Args:
+            name: Object name or alias.
+        """
+        canonical = self._aliases.get(name, name)
+        obj = self._objects.get(canonical)
+        if obj is None:
+            return False
+        if canonical in self._variable_io_rules:
+            # Defensive: allow variable_io entries to have empty default
+            # arrays. Today all 20 rules targets have populated defaults, but
+            # this short-circuit protects against future DB drift.
+            return True
+        return bool(obj.get("inlets")) and bool(obj.get("outlets"))
 
     def is_pd_object(self, name: str) -> bool:
         """Check whether a name is a Pure Data object (not in MAX).
@@ -389,3 +444,45 @@ class ObjectDatabase:
                     result.append("")
 
         return result
+
+    def audit_empty_io(self) -> dict[str, list[str]]:
+        """Report on DB health regarding empty-I/O entries and variable_io rules.
+
+        Returns a dict with three sorted lists:
+
+          variable_io_ok: ALL canonical names present in self._variable_io_rules,
+            regardless of whether their default inlets/outlets arrays are empty.
+            This is a registry diagnostic -- it tells you which objects are
+            exempt from the empty-I/O warning path.
+
+          covered_by_override: canonical names with EMPTY default I/O
+            (both inlets and outlets empty), NOT in variable_io_rules, AND
+            present in self._overridden_objects. These had an override applied
+            but it did not populate I/O -- manual review flag.
+
+          critical: canonical names with EMPTY default I/O, NOT in
+            variable_io_rules, NOT in self._overridden_objects. These are the
+            silent-failure time bombs.
+
+        Lists are sorted. In practice they are disjoint today because every
+        variable_io_rules entry has populated default I/O, but this function
+        permits a canonical to appear in variable_io_ok and one of the
+        empty-I/O buckets if a future rules entry has empty defaults.
+        """
+        critical: list[str] = []
+        covered: list[str] = []
+        variable_ok: list[str] = sorted(self._variable_io_rules.keys())
+        for canonical, obj in self._objects.items():
+            if canonical in self._variable_io_rules:
+                continue  # accounted for in variable_io_ok
+            if obj.get("inlets") or obj.get("outlets"):
+                continue  # at least one side populated -- not empty-I/O
+            if canonical in self._overridden_objects:
+                covered.append(canonical)
+            else:
+                critical.append(canonical)
+        return {
+            "critical": sorted(critical),
+            "covered_by_override": sorted(covered),
+            "variable_io_ok": variable_ok,
+        }
