@@ -191,142 +191,27 @@ MODULE_TO_DOMAIN = {
     "rnbo": "RNBO",
 }
 
-# Variable I/O objects with rules
-VARIABLE_IO_RULES = {
-    "trigger": {
-        "description": "Number of arguments determines number of outlets. Each argument (i, f, b, l, s, or a constant) creates one outlet. Default: 2 outlets (int, int).",
-        "inlet_count": "fixed:1",
-        "outlet_count": "arg_count",
-        "default_inlets": 1,
-        "default_outlets": 2,
-    },
-    "t": {
-        "description": "Alias for trigger. Number of arguments determines number of outlets.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "arg_count",
-        "default_inlets": 1,
-        "default_outlets": 2,
-    },
-    "pack": {
-        "description": "Number of arguments determines number of inlets. Default: 2 inlets (0, 0).",
-        "inlet_count": "arg_count",
-        "outlet_count": "fixed:1",
-        "default_inlets": 2,
-        "default_outlets": 1,
-    },
-    "unpack": {
-        "description": "Number of arguments determines number of outlets. Default: 2 outlets.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "arg_count",
-        "default_inlets": 1,
-        "default_outlets": 2,
-    },
-    "route": {
-        "description": "Outlets = arg count + 1 (extra outlet for unmatched). Default: 3 outlets.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "arg_count_plus_1",
-        "default_inlets": 1,
-        "default_outlets": 3,
-    },
-    "routepass": {
-        "description": "Outlets = arg count + 1 (extra outlet passes unmatched). Default: 3 outlets.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "arg_count_plus_1",
-        "default_inlets": 1,
-        "default_outlets": 3,
-    },
-    "select": {
-        "description": "Outlets = arg count + 1 (extra outlet for non-match). Default: 2 outlets.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "arg_count_plus_1",
-        "default_inlets": 1,
-        "default_outlets": 2,
-    },
-    "sel": {
-        "description": "Alias for select. Outlets = arg count + 1.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "arg_count_plus_1",
-        "default_inlets": 1,
-        "default_outlets": 2,
-    },
-    "gate": {
-        "description": "First arg sets outlet count. Inlets = 2 (control + input). Default: 1 outlet.",
-        "inlet_count": "fixed:2",
-        "outlet_count": "first_arg",
-        "default_inlets": 2,
-        "default_outlets": 1,
-    },
-    "switch": {
-        "description": "First arg sets inlet count (+1 for control). Outlets = 1. Default: 2 inlets.",
-        "inlet_count": "first_arg_plus_1",
-        "outlet_count": "fixed:1",
-        "default_inlets": 2,
-        "default_outlets": 1,
-    },
-    "spray": {
-        "description": "First arg sets outlet count. Inlets = 1. Default: 2 outlets.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "first_arg",
-        "default_inlets": 1,
-        "default_outlets": 2,
-    },
-    "funnel": {
-        "description": "First arg sets inlet count. Outlets = 1. Default: 2 inlets.",
-        "inlet_count": "first_arg",
-        "outlet_count": "fixed:1",
-        "default_inlets": 2,
-        "default_outlets": 1,
-    },
-    "matrix~": {
-        "description": "First arg = inlets, second arg = outlets. Default: 1 inlet, 1 outlet.",
-        "inlet_count": "first_arg",
-        "outlet_count": "second_arg",
-        "default_inlets": 1,
-        "default_outlets": 1,
-    },
-    "selector~": {
-        "description": "First arg sets inlet count (+1 for selector). Outlets = 1. Default: 2 inlets.",
-        "inlet_count": "first_arg_plus_1",
-        "outlet_count": "fixed:1",
-        "default_inlets": 2,
-        "default_outlets": 1,
-    },
-    "router": {
-        "description": "First arg = inlets, second arg = outlets. Variable routing matrix.",
-        "inlet_count": "first_arg",
-        "outlet_count": "second_arg",
-        "default_inlets": 2,
-        "default_outlets": 2,
-    },
-    "join": {
-        "description": "Number of arguments determines number of inlets. Default: 2 inlets.",
-        "inlet_count": "arg_count",
-        "outlet_count": "fixed:1",
-        "default_inlets": 2,
-        "default_outlets": 1,
-    },
-    "unjoin": {
-        "description": "Number of arguments determines number of outlets. Default: 2 outlets.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "arg_count",
-        "default_inlets": 1,
-        "default_outlets": 2,
-    },
-    "combine": {
-        "description": "Number of arguments determines number of inlets. Default: 2 inlets.",
-        "inlet_count": "arg_count",
-        "outlet_count": "fixed:1",
-        "default_inlets": 2,
-        "default_outlets": 1,
-    },
-    "cycle": {
-        "description": "First arg sets number of outlets to cycle through. Default: 2 outlets.",
-        "inlet_count": "fixed:1",
-        "outlet_count": "first_arg",
-        "default_inlets": 1,
-        "default_outlets": 2,
-    },
-}
+# Variable I/O rules are loaded from overrides.json (single source of truth).
+# See quick-260421-b3a: previously this module hosted a parallel VARIABLE_IO_RULES
+# constant, which drifted from overrides.json and caused silent
+# compute_io_counts fallbacks (REVIEW-260420-j15 FN-01, DQ-02).
+OVERRIDES_PATH = Path(__file__).resolve().parent.parent / "max-objects" / "overrides.json"
+
+
+def load_variable_io_rules() -> dict:
+    """Load variable_io_rules registry from overrides.json.
+
+    Returns an empty dict if overrides.json is missing or has no
+    variable_io_rules key — extraction still runs; objects simply will not
+    be flagged as variable_io.
+    """
+    if not OVERRIDES_PATH.exists():
+        return {}
+    data = json.loads(OVERRIDES_PATH.read_text())
+    return data.get("variable_io_rules", {})
+
+
+VARIABLE_IO_RULES = load_variable_io_rules()
 
 
 # ---------------------------------------------------------------------------
@@ -576,9 +461,10 @@ def parse_standard_xml(filepath: Path, module_hint: str, domain_hint: str) -> di
     # boxes (gen~, rnbo~) carry their own maxclass.
     maxclass = "newobj" if name not in NON_NEWOBJ_MAXCLASSES else name
 
-    # Check for variable I/O
+    # Check for variable I/O. Rules live in overrides.json (see
+    # load_variable_io_rules); we only flag presence here — no inline
+    # io_rule body is written to per-domain JSON (quick-260421-b3a).
     variable_io = name in VARIABLE_IO_RULES
-    io_rule = VARIABLE_IO_RULES.get(name)
 
     # Determine verified status - true if we have at least basic data
     verified = bool(name and (inlets or outlets or domain == "Gen"))
@@ -602,9 +488,6 @@ def parse_standard_xml(filepath: Path, module_hint: str, domain_hint: str) -> di
         "verified": verified,
         "variable_io": variable_io,
     }
-
-    if io_rule:
-        obj["io_rule"] = io_rule
 
     # Post-process: infer signal types for ~ objects with generic INLET_TYPE
     obj = infer_signal_types_for_tilde_objects(obj)
