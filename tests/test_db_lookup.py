@@ -377,3 +377,74 @@ def test_load_time_validation_accepts_live_overrides():
     loosen the validator.
     """
     ObjectDatabase()  # must not raise
+
+
+# ── compute_io_counts mc.* (quick-260421-bx3 DQ-07) ────────────
+#
+# Lock in the 10 argument-driven mc.* objects promoted to variable_io=true
+# with matching overrides.json:variable_io_rules entries. These mirror the
+# TC-01 / TC-02 pattern above and guard against a regression where a mc.*
+# rule gets a default/formula drift (the REVIEW-260420-j15 DQ-07 class of
+# bug). Critical disambiguation: most mc.* int args set channel count
+# INSIDE a single MC outlet, not outlet count at the connection level —
+# those stay variable_io=false and are NOT tested here.
+
+
+def test_compute_io_counts_mc_pack():
+    """mc.pack~ N → N inlets, 1 outlet. first_arg (single int), not arg_count."""
+    db = ObjectDatabase()
+    assert db.compute_io_counts("mc.pack~", ["4"]) == (4, 1)
+    assert db.compute_io_counts("mc.pack~", []) == (2, 1)  # default
+
+
+def test_compute_io_counts_mc_unpack():
+    """mc.unpack~ N → 1 inlet, N outlets."""
+    db = ObjectDatabase()
+    assert db.compute_io_counts("mc.unpack~", ["6"]) == (1, 6)
+    assert db.compute_io_counts("mc.unpack~", []) == (1, 2)  # default
+
+
+def test_compute_io_counts_mc_separate():
+    """mc.separate~ a b c → 1 inlet, arg_count=3 outlets. Only mc.* using arg_count."""
+    db = ObjectDatabase()
+    assert db.compute_io_counts("mc.separate~", ["2", "2", "4"]) == (1, 3)
+    # arg_count with empty args falls through to default_outlets=2 via
+    # the same semantic as pack/combine (see test_compute_io_counts_pack_
+    # no_args in TC-01 for precedent).
+
+
+def test_compute_io_counts_mc_combine():
+    """mc.combine~ N → N inlets, 1 outlet (first_arg, not arg_count like core combine)."""
+    db = ObjectDatabase()
+    assert db.compute_io_counts("mc.combine~", ["3"]) == (3, 1)
+
+
+def test_compute_io_counts_mc_gate():
+    """mc.gate~ mirrors gate: fixed 2 inlets (signal+route), N outlets."""
+    db = ObjectDatabase()
+    assert db.compute_io_counts("mc.gate~", ["4"]) == (2, 4)
+
+
+def test_compute_io_counts_mc_selector():
+    """mc.selector~ mirrors selector~: first_arg+1 inlets (N inputs + selector)."""
+    db = ObjectDatabase()
+    assert db.compute_io_counts("mc.selector~", ["3"]) == (4, 1)  # 3+1
+
+
+def test_compute_io_counts_mc_matrix():
+    """mc.matrix~ N M → N inlets, M outlets. Signal-only — dump outlet not counted."""
+    db = ObjectDatabase()
+    assert db.compute_io_counts("mc.matrix~", ["4", "6"]) == (4, 6)
+
+
+def test_mc_pack_is_variable_io():
+    """Post-fix anchor: mc.pack~ flag flipped and rule registered.
+
+    This test fails loudly if a future DB refresh re-extracts mc.pack~
+    with variable_io=false (losing the DQ-07 fix) or if the overrides.json
+    rule is accidentally removed.
+    """
+    db = ObjectDatabase()
+    obj = db.lookup("mc.pack~")
+    assert obj["variable_io"] is True
+    assert "mc.pack~" in db._variable_io_rules
