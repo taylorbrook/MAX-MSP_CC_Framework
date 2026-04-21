@@ -7904,6 +7904,18 @@
         "confidence": "HIGH",
         "finding": "DQ-02 / FN-01: lifted from per-domain inline io_rule (router had variable_io=true but no overrides.json rule; compute_io_counts was returning wrong default counts)."
       }
+    },
+    "routepass": {
+      "inlet_count": "fixed:1",
+      "outlet_count": "arg_count+1",
+      "default_inlets": 1,
+      "default_outlets": 3,
+      "description": "Outlets = arg count + 1 (extra outlet passes unmatched through). Default: 3 outlets.",
+      "_audit": {
+        "source": "review-260421-b3a",
+        "confidence": "HIGH",
+        "finding": "FN-01: lifted from extract_objects.py VARIABLE_IO_RULES constant. Formula normalized from 'arg_count_plus_1' to 'arg_count+1' to match _apply_io_formula supported set. Aliases 't' and 'sel' from the old constant are intentionally NOT lifted because alias resolution runs before rule lookup in compute_io_counts."
+      }
     }
   },
   "_uncovered_empty_io": {
