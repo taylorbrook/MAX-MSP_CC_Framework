@@ -300,3 +300,66 @@ def test_get_outlet_types_variable_expansion_inherits_control():
 def test_get_outlet_types_unknown_returns_empty():
     db = ObjectDatabase()
     assert db.get_outlet_types("__does_not_exist__", []) == []
+
+
+# ── variable_io registry refactor (REVIEW 260421-b3a FN-01 / DQ-02) ────
+
+def test_compute_io_counts_routepass_uses_loaded_formula():
+    """Regression: routepass's rule was living in extract_objects.py's
+    VARIABLE_IO_RULES constant, not in overrides.json. compute_io_counts
+    consulted only overrides.json, so routepass fell through to default
+    array lengths. The output (1, 3) was coincidentally right for 2 args
+    because the default_outlets happened to match arg_count+1 at N=2.
+
+    After quick-260421-b3a lifted routepass into overrides.json with the
+    normalized 'arg_count+1' formula, the answer (1, 3) now comes from
+    the formula path — proven by checking a three-arg case where the old
+    fallback would return (1, 3) but the formula returns (1, 4).
+    """
+    db = ObjectDatabase()
+    # The original FN-01 regression case (same number, correct code path):
+    assert db.compute_io_counts("routepass", ["a", "b"]) == (1, 3)
+    # The arg-count-aware check: 3 args → 4 outlets (3 matches + 1 pass-through)
+    assert db.compute_io_counts("routepass", ["a", "b", "c"]) == (1, 4)
+
+
+def test_load_time_validation_rejects_unknown_formula(tmp_path):
+    """Negative test: ObjectDatabase construction raises ValueError when
+    overrides.json:variable_io_rules contains an unsupported formula.
+
+    This validation is the safety net for the refactor — it makes the
+    silent-fallback class of bug (stale formula name like
+    'arg_count_plus_1') impossible at load time.
+    """
+    import json
+
+    import pytest
+
+    overrides = {
+        "variable_io_rules": {
+            "bogus_obj": {
+                "inlet_count": "fixed:1",
+                "outlet_count": "bogus_formula",
+                "default_inlets": 1,
+                "default_outlets": 1,
+            }
+        },
+        "objects": {},
+    }
+    (tmp_path / "overrides.json").write_text(json.dumps(overrides))
+
+    with pytest.raises(ValueError) as excinfo:
+        ObjectDatabase(db_root=tmp_path)
+    msg = str(excinfo.value)
+    assert "bogus_formula" in msg, msg
+    assert "bogus_obj" in msg, msg
+    assert "outlet_count" in msg, msg
+
+
+def test_load_time_validation_accepts_live_overrides():
+    """Sanity: the real overrides.json in .claude/max-objects/ must pass
+    the validator. If this fails, someone added a rule with a formula
+    that _apply_io_formula doesn't know about — fix the rule, don't
+    loosen the validator.
+    """
+    ObjectDatabase()  # must not raise
