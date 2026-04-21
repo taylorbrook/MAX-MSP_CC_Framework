@@ -3851,13 +3851,7 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "rnbo_compatible": true,
-    "io_rule": {
-      "inlet_count": "fixed:2",
-      "outlet_count": "first_arg",
-      "default_outlets": 1,
-      "description": "First argument sets number of outlets."
-    }
+    "rnbo_compatible": true
   },
   "gen": {
     "name": "gen",
@@ -10625,13 +10619,7 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "rnbo_compatible": true,
-    "io_rule": {
-      "inlet_count": "first_arg+1",
-      "outlet_count": "fixed:1",
-      "default_inlets": 2,
-      "description": "First argument + 1 sets number of inlets."
-    }
+    "rnbo_compatible": true
   },
   "swiz": {
     "name": "swiz",

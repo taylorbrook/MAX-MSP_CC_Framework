@@ -8369,13 +8369,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "description": "Number of arguments determines number of inlets. Default: 2 inlets.",
-      "inlet_count": "arg_count",
-      "outlet_count": "fixed:1",
-      "default_inlets": 2,
-      "default_outlets": 1
-    },
     "rnbo_compatible": false
   },
   "comment": {
@@ -9441,13 +9434,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "description": "First arg sets number of outlets to cycle through. Default: 2 outlets.",
-      "inlet_count": "fixed:1",
-      "outlet_count": "first_arg",
-      "default_inlets": 1,
-      "default_outlets": 2
-    },
     "rnbo_compatible": false
   },
   "date": {
@@ -13581,12 +13567,6 @@
     "min_version": 8,
     "verified": false,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "first_arg",
-      "outlet_count": "fixed:1",
-      "default_inlets": 2,
-      "description": "First argument sets number of inlets."
-    },
     "rnbo_compatible": false
   },
   "gamepad": {
@@ -13728,12 +13708,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "fixed:2",
-      "outlet_count": "first_arg",
-      "default_outlets": 1,
-      "description": "First argument sets number of outlets."
-    },
     "rnbo_compatible": true
   },
   "gestalt": {
@@ -15876,12 +15850,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "first_arg",
-      "outlet_count": "fixed:1",
-      "default_inlets": 2,
-      "description": "First argument sets number of inlets."
-    },
     "rnbo_compatible": true
   },
   "js": {
@@ -23011,12 +22979,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "arg_count",
-      "outlet_count": "fixed:1",
-      "default_inlets": 2,
-      "description": "Number of arguments determines number of inlets. Default: 2 inlets."
-    },
     "rnbo_compatible": true
   },
   "pak": {
@@ -27632,12 +27594,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "fixed:1",
-      "outlet_count": "arg_count+1",
-      "default_outlets": 3,
-      "description": "Number of arguments determines outlets + 1 unmatched outlet. Default: 3 outlets."
-    },
     "rnbo_compatible": true
   },
   "routepass": {
@@ -27713,13 +27669,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "description": "Outlets = arg count + 1 (extra outlet passes unmatched). Default: 3 outlets.",
-      "inlet_count": "fixed:1",
-      "outlet_count": "arg_count_plus_1",
-      "default_inlets": 1,
-      "default_outlets": 3
-    },
     "rnbo_compatible": true
   },
   "router": {
@@ -27799,13 +27748,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "description": "First arg = inlets, second arg = outlets. Variable routing matrix.",
-      "inlet_count": "first_arg",
-      "outlet_count": "second_arg",
-      "default_inlets": 2,
-      "default_outlets": 2
-    },
     "rnbo_compatible": false
   },
   "rpnin": {
@@ -28668,12 +28610,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "fixed:1",
-      "outlet_count": "arg_count+1",
-      "default_outlets": 2,
-      "description": "Number of arguments determines outlets + 1 unmatched outlet."
-    },
     "rnbo_compatible": true
   },
   "send": {
@@ -29721,12 +29657,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "fixed:1",
-      "outlet_count": "first_arg",
-      "default_outlets": 2,
-      "description": "First argument sets number of outlets."
-    },
     "rnbo_compatible": false
   },
   "sprintf": {
@@ -33095,12 +33025,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "first_arg+1",
-      "outlet_count": "fixed:1",
-      "default_inlets": 2,
-      "description": "First argument + 1 sets number of inlets."
-    },
     "rnbo_compatible": true
   },
   "sxformat": {
@@ -35962,12 +35886,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "fixed:1",
-      "outlet_count": "arg_count",
-      "default_outlets": 2,
-      "description": "Number of arguments determines number of outlets. Each argument (i, f, b, l, s) creates one outlet. Default: 2 outlets."
-    },
     "rnbo_compatible": true
   },
   "trough": {
@@ -36709,12 +36627,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "fixed:1",
-      "outlet_count": "first_arg",
-      "default_outlets": 2,
-      "description": "First argument sets number of outlets."
-    },
     "rnbo_compatible": true
   },
   "unpack": {
@@ -36780,12 +36692,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "fixed:1",
-      "outlet_count": "arg_count",
-      "default_outlets": 2,
-      "description": "Number of arguments determines number of outlets. Default: 2 outlets."
-    },
     "rnbo_compatible": true
   },
   "urn": {

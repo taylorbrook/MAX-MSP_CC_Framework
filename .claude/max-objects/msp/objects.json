@@ -9552,13 +9552,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "first_arg",
-      "outlet_count": "second_arg",
-      "default_inlets": 1,
-      "default_outlets": 1,
-      "description": "First arg = inputs, second arg = outputs."
-    },
     "rnbo_compatible": true
   },
   "maximum~": {
@@ -16835,12 +16828,6 @@
     "min_version": 8,
     "verified": true,
     "variable_io": true,
-    "io_rule": {
-      "inlet_count": "first_arg+1",
-      "outlet_count": "fixed:1",
-      "default_inlets": 2,
-      "description": "First argument + 1 sets number of inlets."
-    },
     "rnbo_compatible": true
   },
   "send~": {
