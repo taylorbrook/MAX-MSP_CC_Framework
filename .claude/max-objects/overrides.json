@@ -7909,12 +7909,12 @@
       "inlet_count": "fixed:1",
       "outlet_count": "arg_count+1",
       "default_inlets": 1,
-      "default_outlets": 3,
-      "description": "Outlets = arg count + 1 (extra outlet passes unmatched through). Default: 3 outlets.",
+      "default_outlets": 2,
+      "description": "Outlets = arg count + 1 (extra outlet passes unmatched through). Default: 2 outlets (matches routepass DB entry).",
       "_audit": {
-        "source": "review-260421-b3a",
+        "source": "review-260421-b3a + quick-260421-bti",
         "confidence": "HIGH",
-        "finding": "FN-01: lifted from extract_objects.py VARIABLE_IO_RULES constant. Formula normalized from 'arg_count_plus_1' to 'arg_count+1' to match _apply_io_formula supported set. Aliases 't' and 'sel' from the old constant are intentionally NOT lifted because alias resolution runs before rule lookup in compute_io_counts."
+        "finding": "FN-01 / DQ-02: lifted from extract_objects.py VARIABLE_IO_RULES constant with formula normalized from 'arg_count_plus_1' to 'arg_count+1'. 260421-bti aligned default_outlets (3 → 2) with the routepass per-domain DB entry; behaviorally identical because arg_count+1 formula never falls through to default_outlets. Aliases 't' and 'sel' intentionally NOT lifted because alias resolution runs before rule lookup in compute_io_counts."
       }
     }
   },

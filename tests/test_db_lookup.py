@@ -323,6 +323,20 @@ def test_compute_io_counts_routepass_uses_loaded_formula():
     assert db.compute_io_counts("routepass", ["a", "b", "c"]) == (1, 4)
 
 
+def test_compute_io_counts_routepass_normalized_default_outlets():
+    """Quick-260421-bti: lock in the normalized routepass rule shape.
+
+    User spec: inlet_count='fixed:1', outlet_count='arg_count+1',
+    default_inlets=1, default_outlets=2 — the default_outlets value was
+    aligned with the routepass DB entry (2 outlets). The assertion below
+    is redundant with the b3a test above on behavior, but explicitly
+    anchors this quick task's spec so a future default_outlets drift
+    would still have a traceable regression signal.
+    """
+    db = ObjectDatabase()
+    assert db.compute_io_counts("routepass", ["a", "b"]) == (1, 3)
+
+
 def test_load_time_validation_rejects_unknown_formula(tmp_path):
     """Negative test: ObjectDatabase construction raises ValueError when
     overrides.json:variable_io_rules contains an unsupported formula.
