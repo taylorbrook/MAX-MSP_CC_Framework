@@ -16,6 +16,24 @@ DOMAIN_LOAD_ORDER = [
     "rnbo", "packages", "m4l", "gen", "mc", "jitter", "msp", "max"
 ]
 
+# Formulas accepted by _apply_io_formula (inlet_count / outlet_count).
+# Any other value in overrides.json:variable_io_rules is a typo or a
+# silently-broken rule that falls back to the default count. The
+# ObjectDatabase constructor validates every loaded rule against this set
+# (quick-260421-b3a). Special cases:
+#   ""                         → use default count (no formula)
+#   "inherited_from_subpatch"  → bpatcher: I/O inferred from loaded .maxpat,
+#                                not args; _apply_io_formula returns default
+SUPPORTED_IO_FORMULAS = frozenset({
+    "",
+    "arg_count",
+    "arg_count+1",
+    "first_arg",
+    "first_arg+1",
+    "second_arg",
+    "inherited_from_subpatch",
+})
+
 
 class ObjectDatabase:
     """Interface to the MAX object knowledge base.
@@ -56,11 +74,24 @@ class ObjectDatabase:
             data = json.loads(aliases_path.read_text())
             self._aliases = data.get("aliases", {})
 
-        # Load variable I/O rules from overrides
+        # Parse overrides.json exactly once (quick-260421-b3a FN-02). Both
+        # the variable_io_rules registry and the per-object deep-merge
+        # payload come from this file; the prior implementation parsed it
+        # twice.
         overrides_path = db_root / "overrides.json"
+        overrides_data: dict = {}
         if overrides_path.exists():
-            data = json.loads(overrides_path.read_text())
-            self._variable_io_rules = data.get("variable_io_rules", {})
+            overrides_data = json.loads(overrides_path.read_text())
+            self._variable_io_rules = overrides_data.get("variable_io_rules", {})
+
+        # Fail fast on unsupported formulas. Any rule whose inlet_count or
+        # outlet_count is outside SUPPORTED_IO_FORMULAS (or is not a
+        # 'fixed:N' literal) silently falls back to the default count in
+        # compute_io_counts — the exact silent-drift bug that let routepass
+        # return the right answer for the wrong reason (REVIEW-260420-j15
+        # FN-01, DQ-02). This validation makes the bug class impossible at
+        # load time.
+        self._validate_variable_io_rules()
 
         # Load PD blocklist
         pd_path = db_root / "pd-blocklist.json"
@@ -89,24 +120,59 @@ class ObjectDatabase:
                     for name, obj in data.items():
                         self._objects[name] = obj
 
-        # Apply object overrides (deep-merge onto loaded objects)
+        # Apply object overrides (deep-merge onto loaded objects) using the
+        # already-parsed overrides_data — no second disk read.
         self._overridden_objects: set[str] = set()
-        if overrides_path.exists():
-            overrides_data = json.loads(overrides_path.read_text())
-            for name, overrides in overrides_data.get("objects", {}).items():
-                if name.startswith("_"):
-                    continue  # skip comment keys
-                if name in self._objects:
-                    for key, value in overrides.items():
-                        if key.startswith("_"):
-                            continue  # skip comments
-                        self._objects[name][key] = value
-                    self._overridden_objects.add(name)
+        for name, overrides in overrides_data.get("objects", {}).items():
+            if name.startswith("_"):
+                continue  # skip comment keys
+            if name in self._objects:
+                for key, value in overrides.items():
+                    if key.startswith("_"):
+                        continue  # skip comments
+                    self._objects[name][key] = value
+                self._overridden_objects.add(name)
 
         # Load package registry
         pkg_info_path = db_root / "package_info.json"
         if pkg_info_path.exists():
             self._package_info = json.loads(pkg_info_path.read_text())
+
+    def _validate_variable_io_rules(self) -> None:
+        """Assert every loaded rule uses a supported formula.
+
+        Raises ValueError naming the offending object, the role
+        ('inlet_count' or 'outlet_count'), and the unknown formula. The
+        supported set mirrors what _apply_io_formula actually consumes —
+        anything else would silently fall back to the default count.
+        """
+        for name, rule in self._variable_io_rules.items():
+            for role in ("inlet_count", "outlet_count"):
+                formula = rule.get(role, "")
+                if not isinstance(formula, str):
+                    raise ValueError(
+                        f"variable_io_rules[{name!r}].{role} must be a "
+                        f"string, got {type(formula).__name__}: {formula!r}"
+                    )
+                if formula in SUPPORTED_IO_FORMULAS:
+                    continue
+                if formula.startswith("fixed:"):
+                    # Validate the integer payload too — "fixed:" with no
+                    # number or a non-integer is as broken as a typo.
+                    payload = formula.split(":", 1)[1]
+                    try:
+                        int(payload)
+                    except ValueError:
+                        raise ValueError(
+                            f"variable_io_rules[{name!r}].{role} has "
+                            f"non-integer fixed payload: {formula!r}"
+                        )
+                    continue
+                raise ValueError(
+                    f"Unknown variable_io formula {formula!r} for object "
+                    f"{name!r} ({role}). Supported: "
+                    f"{sorted(SUPPORTED_IO_FORMULAS)} or 'fixed:N'."
+                )
 
     def lookup(self, name: str, *, allowed_packages: list[str] | None = None) -> dict | None:
         """Look up an object by name, resolving aliases.
