@@ -3508,7 +3508,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": false
   },
   "mc.comb~": {
@@ -4420,7 +4420,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": false
   },
   "mc.delay~": {
@@ -5210,7 +5210,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": false
   },
   "mc.fft~": {
@@ -6559,7 +6559,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": true
   },
   "mc.gen": {
@@ -7636,7 +7636,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": false
   },
   "mc.in~": {
@@ -8989,7 +8989,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": true
   },
   "mc.maximum~": {
@@ -10777,7 +10777,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": false
   },
   "mc.pattern~": {
@@ -14133,7 +14133,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": true
   },
   "mc.send~": {
@@ -14227,7 +14227,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": false
   },
   "mc.seq~": {
@@ -17869,7 +17869,7 @@
     ],
     "min_version": 8.1,
     "verified": true,
-    "variable_io": false,
+    "variable_io": true,
     "rnbo_compatible": false
   },
   "mc.updown~": {
