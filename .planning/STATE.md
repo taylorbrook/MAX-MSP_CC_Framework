@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-21 - Completed quick task 260421-bti: Normalize routepass variable_io rule (DQ-02 judgment closure — default_outlets 3→2, bti-anchored regression test)
+Last activity: 2026-04-21 - Completed quick task 260421-bx3: Audit mc.* objects for variable_io flags/rules (DQ-07 — 10 mc.* objects promoted to variable_io:true with matching overrides.json rules + 8 regression tests, 34 passing)
 
 Progress: [██████████] 100%
 
@@ -63,3 +63,4 @@ None.
 | 260420-lla | Fix compute_io_counts FN-03 (always-evaluate arg_count) + FN-04 (warn on non-integer first_arg) + add TC-01/TC-02 tests (22 passing) | 2026-04-20 | 8b0c310 | Verified | [260420-lla-fix-compute-io-counts-fn-03-fn-04-bugs-a](./quick/260420-lla-fix-compute-io-counts-fn-03-fn-04-bugs-a/) |
 | 260421-b3a | Consolidate variable_io rules to overrides.json (FN-01) + single-parse overrides (FN-02) + load-time formula validation + delete 19 inline io_rule fields (DQ-02) — 25 tests passing | 2026-04-21 | 57adc3b |  | [260421-b3a-refactor-variable-io-rules-to-single-sou](./quick/260421-b3a-refactor-variable-io-rules-to-single-sou/) |
 | 260421-bti | Normalize routepass variable_io rule — default_outlets 3→2 aligned with DB entry + bti-anchored regression test (26 passing) | 2026-04-21 | 62b2607 | Verified | [260421-bti-normalize-routepass-variable-io-rule](./quick/260421-bti-normalize-routepass-variable-io-rule/) |
+| 260421-bx3 | Audit mc.* for variable_io flags (DQ-07) — 10 mc.* promoted to variable_io:true with formula rules in overrides.json + 8 regression tests (34 passing) | 2026-04-21 | ed338f8 |  | [260421-bx3-audit-mc-objects-for-variable-io-flags-a](./quick/260421-bx3-audit-mc-objects-for-variable-io-flags-a/) |
