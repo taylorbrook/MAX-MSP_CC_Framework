@@ -9,6 +9,14 @@
       "version": "0.0.1",
       "description": "Initial build: waveguide bassoon gen~ + host UI (Scavone cone, MW reed LUT, D4 phase-delay compensation, vibrato LFO, live.dial param controls, live.scope~ + spectroscope~, live.gain~ \u2192 *~ 0.5 \u2192 limi~ \u2192 dac~ 1 2)",
       "timestamp": "2026-04-20T05:53:56.751348+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "Bind live.dial objects to gen~ Params via param_connect; promote live.slider to live.parameter",
+      "timestamp": "2026-04-22T18:51:27.643437+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
