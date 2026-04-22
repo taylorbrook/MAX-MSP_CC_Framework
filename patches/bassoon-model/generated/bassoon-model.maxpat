@@ -21,7 +21,7 @@
                     "numoutlets": 2,
                     "outlettype": [ "", "bang" ],
                     "parameter_enable": 0,
-                    "patching_rect": [ 38.0, 146.0, 50.0, 22.0 ],
+                    "patching_rect": [ 38.0, 186.0, 50.0, 22.0 ],
                     "presentation": 1,
                     "presentation_rect": [ 40.0, 40.0, 80.0, 22.0 ]
                 }
@@ -344,7 +344,7 @@
                     "numoutlets": 0,
                     "patching_rect": [ 473.0, 110.0, 79.0, 20.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 312.0, 486.0, 64.0, 20.0 ],
+                    "presentation_rect": [ 312.0, 486.0, 69.0, 20.0 ],
                     "text": "Bore Damp",
                     "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
                 }
@@ -357,10 +357,10 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 98.0, 110.0, 170.0, 20.0 ],
+                    "patching_rect": [ 90.0, 187.0, 44.0, 20.0 ],
                     "presentation": 1,
                     "presentation_rect": [ 125.0, 40.0, 160.0, 20.0 ],
-                    "text": "freq - fractional MIDI",
+                    "text": "freq ",
                     "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
                 }
             },
@@ -508,7 +508,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 550.0, 10.0, 58.0, 20.0 ],
-                    "text": "v0.3.0"
+                    "text": "v0.3.1"
                 }
             }
         ],
@@ -608,15 +608,8 @@
             "obj-17": [ "bell_bright", "bell_bright", 0 ],
             "obj-19": [ "vib_rate", "vib_rate", 0 ],
             "obj-21": [ "vib_depth", "vib_depth", 0 ],
+            "obj-42": [ "bore_damp", "bore_damp", 0 ],
             "obj-5": [ "amp", "amp", 0 ],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
-                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-                }
-            },
             "inherited_shortname": 1
         },
         "autosave": 0,

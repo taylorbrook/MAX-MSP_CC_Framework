@@ -35,6 +35,15 @@
         "bassoon-model.maxpat",
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.3.1",
+      "description": "Fix bore_damp shifting pitch: add onepole phase-delay compensation for bore LPF (same analytic form as bell LPF) and subtract bore_pd_samples from loop period alongside bell_pd_samples. bore_fc/bore_a moved to phase-comp block and reused in reflection path. Sweeping bore_damp now changes timbre only.",
+      "timestamp": "2026-04-22T20:47:28.246481+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat",
+        "bassoon.gendsp"
+      ]
     }
   ]
 }
