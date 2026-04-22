@@ -20,6 +20,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.0.3",
+      "description": "fix slicer buf2list trigger order + break zl.scramble infinite loop",
+      "timestamp": "2026-04-22T21:22:26.603399+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
