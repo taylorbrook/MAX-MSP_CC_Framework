@@ -53,6 +53,14 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.4.1",
+      "description": "Fix bell_bright detuning: D4 compensation now uses biquad PHASE delay at freq_mod (atan2 of complex B/A response), not group delay. Group delay overshoots phase delay by 3x near resonance; using it detuned the waveguide loop as bell_bright swept. Phase delay is the correct quantity for fundamental tuning, matches v0.3.1's bore/onepole form.",
+      "timestamp": "2026-04-22T21:04:51.461871+00:00",
+      "files_changed": [
+        "bassoon.gendsp"
+      ]
     }
   ]
 }
