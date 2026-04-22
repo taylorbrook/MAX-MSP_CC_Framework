@@ -26,6 +26,15 @@
         "bassoon-model.maxpat",
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "DSP stability pass: onepole LPF in cone reflection path + bore_damp Param (0-1, fc 1k-8k). Exposes live.dial Bore Damp bound via param_connect. cone_loss retained at 0.85 as overall reflection scalar.",
+      "timestamp": "2026-04-22T20:26:51.959945+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat",
+        "bassoon.gendsp"
+      ]
     }
   ]
 }

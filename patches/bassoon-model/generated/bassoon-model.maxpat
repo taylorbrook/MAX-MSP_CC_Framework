@@ -30,19 +30,6 @@
                 "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
-                    "id": "obj-2",
-                    "maxclass": "newobj",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [ "" ],
-                    "patching_rect": [ 38.0, 176.0, 44.0, 22.0 ],
-                    "text": "mtof"
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
                     "id": "obj-3",
                     "maxclass": "newobj",
                     "numinlets": 1,
@@ -322,6 +309,48 @@
             },
             {
                 "box": {
+                    "id": "obj-42",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "param_connect": "gen~_AA::bore_damp",
+                    "parameter_enable": 1,
+                    "patching_rect": [ 413.0, 110.0, 44.0, 48.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 260.0, 470.0, 50.0, 48.0 ],
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [ 0.3 ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "bore_damp",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "bore_damp",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "bore_damp"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-43",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 473.0, 110.0, 79.0, 20.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 312.0, 486.0, 64.0, 20.0 ],
+                    "text": "Bore Damp",
+                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
+                }
+            },
+            {
+                "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "id": "obj-23",
@@ -479,23 +508,15 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 550.0, 10.0, 58.0, 20.0 ],
-                    "text": "v0.2.0"
+                    "text": "v0.3.0"
                 }
             }
         ],
         "lines": [
             {
                 "patchline": {
-                    "destination": [ "obj-2", 0 ],
-                    "midpoints": [ 47.5, 171.0, 47.5, 171.0 ],
-                    "source": [ "obj-1", 0 ]
-                }
-            },
-            {
-                "patchline": {
                     "destination": [ "obj-3", 0 ],
-                    "midpoints": [ 47.5, 201.0, 47.5, 201.0 ],
-                    "source": [ "obj-2", 0 ]
+                    "source": [ "obj-1", 0 ]
                 }
             },
             {
@@ -588,6 +609,14 @@
             "obj-19": [ "vib_rate", "vib_rate", 0 ],
             "obj-21": [ "vib_depth", "vib_depth", 0 ],
             "obj-5": [ "amp", "amp", 0 ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
+                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0,
