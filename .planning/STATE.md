@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Package Integration
 status: complete
-last_updated: "2026-04-20T22:35:00.000Z"
-last_activity: 2026-04-20
+last_updated: "2026-04-22T14:56:00.000Z"
+last_activity: 2026-04-22
 progress:
   total_phases: 6
   completed_phases: 6
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-21 - Completed quick task 260421-bx3: Audit mc.* objects for variable_io flags/rules (DQ-07 — 10 mc.* objects promoted to variable_io:true with matching overrides.json rules + 8 regression tests, 34 passing)
+Last activity: 2026-04-22 - Completed quick task 260422-b0d: README refresh — updated stale counts (3,434 objects / 29 packages / 1,589 tests) and added 4 new patch projects (bassoon-model, intelligent-corpus-remixer, physics-composition, rhythmic-corpus-chopper) to Patches table
 
 Progress: [██████████] 100%
 
@@ -64,3 +64,4 @@ None.
 | 260421-b3a | Consolidate variable_io rules to overrides.json (FN-01) + single-parse overrides (FN-02) + load-time formula validation + delete 19 inline io_rule fields (DQ-02) — 25 tests passing | 2026-04-21 | 57adc3b |  | [260421-b3a-refactor-variable-io-rules-to-single-sou](./quick/260421-b3a-refactor-variable-io-rules-to-single-sou/) |
 | 260421-bti | Normalize routepass variable_io rule — default_outlets 3→2 aligned with DB entry + bti-anchored regression test (26 passing) | 2026-04-21 | 62b2607 | Verified | [260421-bti-normalize-routepass-variable-io-rule](./quick/260421-bti-normalize-routepass-variable-io-rule/) |
 | 260421-bx3 | Audit mc.* for variable_io flags (DQ-07) — 10 mc.* promoted to variable_io:true with formula rules in overrides.json + 8 regression tests (34 passing) | 2026-04-21 | ed338f8 |  | [260421-bx3-audit-mc-objects-for-variable-io-flags-a](./quick/260421-bx3-audit-mc-objects-for-variable-io-flags-a/) |
+| 260422-b0d | README refresh — updated stale counts (2,450→3,434 objects, 20→29 packages, 1,545→1,589 tests) + added 4 new patch projects (bassoon-model, intelligent-corpus-remixer, physics-composition, rhythmic-corpus-chopper) to Patches table | 2026-04-22 | e12b549 |  | [260422-b0d-look-over-recent-updates-to-the-system-a](./quick/260422-b0d-look-over-recent-updates-to-the-system-a/) |
