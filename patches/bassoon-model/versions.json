@@ -44,6 +44,15 @@
         "bassoon-model.maxpat",
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.4.0",
+      "description": "Replace bell onepole with RBJ 2nd-order biquad LPF; repurpose bell_bright as formant morph (fc 500->2200 Hz, Q 2.5->0.7). Update D4 phase-delay compensation to use biquad analytic group delay at freq_mod.",
+      "timestamp": "2026-04-22T20:54:48.343828+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
