@@ -17,6 +17,15 @@
       "files_changed": [
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "DSP stability pass: move breath smoother into gen~ (replace line~ with sig~), rectify reed LUT (positive delta_p only), replace differentiator cone filter with DC-blocked lossy reflection (cone_loss=0.85), fix runaway self-oscillation and breath-driven clicks",
+      "timestamp": "2026-04-22T19:53:42.856573+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat",
+        "bassoon.gendsp"
+      ]
     }
   ]
 }
