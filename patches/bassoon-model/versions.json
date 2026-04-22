@@ -61,6 +61,14 @@
       "files_changed": [
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.4.2",
+      "description": "Move bell biquad out of the feedback loop. The in-loop resonant biquad in v0.4.0/0.4.1 caused the bore to lock onto the filter's resonance instead of freq_mod, detuning wildly as bell_bright swept. Biquad is now a POST-LOOP radiation filter; tuning no longer depends on it. D4 compensation drops bell_pd_samples entirely (bore_damp onepole only).",
+      "timestamp": "2026-04-22T21:19:07.809992+00:00",
+      "files_changed": [
+        "bassoon.gendsp"
+      ]
     }
   ]
 }
