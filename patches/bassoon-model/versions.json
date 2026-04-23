@@ -141,6 +141,15 @@
         "bassoon-model.maxpat",
         "bassoon_presets.json"
       ]
+    },
+    {
+      "version": "0.10.1",
+      "description": "v0.10.1: halve noise_amt scale (too extreme at full range)",
+      "timestamp": "2026-04-23T16:32:41.202798+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
