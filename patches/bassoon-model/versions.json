@@ -114,6 +114,15 @@
         "bassoon-model.maxpat",
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.8.0",
+      "description": "v0.8.0: attack chiff transient (rising-breath envelope + 6 kHz noise burst, chiff_amt Param + live.dial)",
+      "timestamp": "2026-04-23T05:02:18.447931+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }

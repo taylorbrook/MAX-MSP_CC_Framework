@@ -446,6 +446,33 @@
             },
             {
                 "box": {
+                    "id": "obj-52",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "param_connect": "gen~_AA::chiff_amt",
+                    "parameter_enable": 1,
+                    "patching_rect": [ 1173.0, 110.0, 44.0, 48.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 590.0, 470.0, 50.0, 48.0 ],
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [ 0.3 ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "Chiff",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "chiff_amt",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "chiff_amt"
+                }
+            },
+            {
+                "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "id": "obj-23",
@@ -528,7 +555,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 550.0, 10.0, 58.0, 20.0 ],
-                    "text": "v0.7.0"
+                    "text": "v0.8.0"
                 }
             }
         ],
@@ -633,6 +660,7 @@
             "obj-46": [ "reed_res_q", "reed_res_q", 0 ],
             "obj-48": [ "noise_amt", "noise_amt", 0 ],
             "obj-50": [ "Vib Tremolo", "vib_amp", 0 ],
+            "obj-52": [ "Chiff", "chiff_amt", 0 ],
             "obj-5": [ "amp", "amp", 0 ],
             "inherited_shortname": 1
         },
