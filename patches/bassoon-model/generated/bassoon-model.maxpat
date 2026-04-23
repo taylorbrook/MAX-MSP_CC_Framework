@@ -155,7 +155,7 @@
                     "outlettype": [ "bang" ],
                     "patching_rect": [ 294.0, 451.0, 131.0, 131.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 400.0, 40.0, 440.0, 200.0 ]
+                    "presentation_rect": [ 645.0, 40.0, 440.0, 200.0 ]
                 }
             },
             {
@@ -167,7 +167,7 @@
                     "outlettype": [ "" ],
                     "patching_rect": [ 458.0, 266.0, 300.0, 100.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 400.0, 265.0, 440.0, 200.0 ]
+                    "presentation_rect": [ 645.0, 265.0, 440.0, 200.0 ]
                 }
             },
             {
@@ -430,7 +430,7 @@
                     "numoutlets": 0,
                     "patching_rect": [ 903.0, 110.0, 79.0, 20.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 532.0, 406.0, 48.0, 20.0 ],
+                    "presentation_rect": [ 532.0, 406.0, 50.0, 20.0 ],
                     "text": "Reed Q",
                     "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
                 }
@@ -475,7 +475,7 @@
                     "numoutlets": 0,
                     "patching_rect": [ 533.0, 296.0, 107.0, 20.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 400.0, 245.0, 120.0, 20.0 ],
+                    "presentation_rect": [ 645.0, 242.0, 120.0, 20.0 ],
                     "text": "bore waveform",
                     "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
                 }
@@ -490,7 +490,7 @@
                     "numoutlets": 0,
                     "patching_rect": [ 773.0, 266.0, 72.0, 20.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 400.0, 470.0, 120.0, 20.0 ],
+                    "presentation_rect": [ 645.0, 470.0, 120.0, 20.0 ],
                     "text": "spectrum",
                     "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
                 }
@@ -594,7 +594,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 550.0, 10.0, 58.0, 20.0 ],
-                    "text": "v0.5.0"
+                    "text": "v0.5.1"
                 }
             }
         ],
@@ -695,15 +695,9 @@
             "obj-19": [ "vib_rate", "vib_rate", 0 ],
             "obj-21": [ "vib_depth", "vib_depth", 0 ],
             "obj-42": [ "bore_damp", "bore_damp", 0 ],
+            "obj-44": [ "reed_res_freq", "reed_res_freq", 0 ],
+            "obj-46": [ "reed_res_q", "reed_res_q", 0 ],
             "obj-5": [ "amp", "amp", 0 ],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
-                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-                }
-            },
             "inherited_shortname": 1
         },
         "autosave": 0,

@@ -78,6 +78,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.5.1",
+      "description": "Route reed BPF post-loop to bell biquad input; bore injection reverts to dry reed_sig. v0.5.0 placed the BPF in the waveguide feedback path, causing reed_res_freq to pull the bore oscillation frequency (same regression class as v0.4.0/0.4.1 bell-in-loop). Fix preserves bore tuning while reed_res_freq/q sweep honk coloration on the radiated output only.",
+      "timestamp": "2026-04-23T04:27:01.282498+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
