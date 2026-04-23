@@ -96,6 +96,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.6.0",
+      "description": "Add breath turbulence noise: 4 kHz LPF chiff injected into breath pre-reed LUT, gain-following (scaled by breath_state * noise_amt). New Param noise_amt (0-1, init 0.15) exposed on host as live.dial Air Noise via param_connect. Silence stays silent; sustained tones gain subtle breathiness.",
+      "timestamp": "2026-04-23T04:46:48.513906+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat",
+        "bassoon.gendsp"
+      ]
     }
   ]
 }

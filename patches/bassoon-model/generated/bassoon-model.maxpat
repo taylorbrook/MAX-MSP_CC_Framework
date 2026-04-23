@@ -437,6 +437,48 @@
             },
             {
                 "box": {
+                    "id": "obj-48",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "param_connect": "gen~_AA::noise_amt",
+                    "parameter_enable": 1,
+                    "patching_rect": [ 953.0, 110.0, 44.0, 48.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 370.0, 470.0, 50.0, 48.0 ],
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [ 0.15 ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "noise_amt",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "noise_amt",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "noise_amt"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "id": "obj-49",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [ 1013.0, 110.0, 79.0, 20.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 422.0, 486.0, 68.0, 20.0 ],
+                    "text": "Air Noise",
+                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
+                }
+            },
+            {
+                "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "id": "obj-23",
@@ -594,7 +636,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 550.0, 10.0, 58.0, 20.0 ],
-                    "text": "v0.5.2"
+                    "text": "v0.6.0"
                 }
             }
         ],
@@ -697,6 +739,7 @@
             "obj-42": [ "bore_damp", "bore_damp", 0 ],
             "obj-44": [ "reed_res_freq", "reed_res_freq", 0 ],
             "obj-46": [ "reed_res_q", "reed_res_q", 0 ],
+            "obj-48": [ "noise_amt", "noise_amt", 0 ],
             "obj-5": [ "amp", "amp", 0 ],
             "parameterbanks": {
                 "0": {
