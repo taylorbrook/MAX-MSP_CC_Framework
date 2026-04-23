@@ -594,7 +594,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 550.0, 10.0, 58.0, 20.0 ],
-                    "text": "v0.5.1"
+                    "text": "v0.5.2"
                 }
             }
         ],
@@ -698,6 +698,14 @@
             "obj-44": [ "reed_res_freq", "reed_res_freq", 0 ],
             "obj-46": [ "reed_res_q", "reed_res_q", 0 ],
             "obj-5": [ "amp", "amp", 0 ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
+                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0,

@@ -87,6 +87,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.5.2",
+      "description": "Switch reed BPF to RBJ constant-skirt-gain form (b0 = sin(w)/2) so peak gain = Q. Previous form used b0 = alpha which is the constant 0 dB peak-gain form -- sweeping Q only narrowed the passband without boosting the resonance, making the honk inaudible. Q=1 now 0 dB subtle, Q=6 +15 dB ringing.",
+      "timestamp": "2026-04-23T04:41:35.340438+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
