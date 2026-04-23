@@ -159,3 +159,55 @@ None of the following PD objects are used: `osc~`, `lop~`, `hip~`, `bp~`, `tabre
 - Bell filter impulse response data — whether onepole is sufficient or if 2nd-order biquad better matches a real bassoon bell.
 - Register/speaker hole modeling (bassoon has crook + whisper key; can simplify to a single freq-dependent loss filter initially).
 - CPU budget for reed LUT size (1024 should be plenty; 4096 if needed for smoothness).
+
+## Research (v0.3 realism pass — 2026-04-22)
+
+**Goal:** identify highest-ROI realism + expressivity improvements to the current v0.2.0 gen~ bassoon. Sources: Grothe (bassoon tonehole-lattice formants, HAL hal-03365402), Almeida/Vergez/Caussé (double-reed pressure-flow + embouchure losses), Scavone waveguide review, STK `Clarinet`/`BlowBotl`, Bassoon Operator (formant spectrum).
+
+### What a real bassoon does that v0.2.0 does NOT
+
+| Feature | v0.2.0 state | Reality |
+|---------|-------------|---------|
+| **500 Hz radiation formant** | onepole, no formant | Tonehole lattice produces a strong formant peak ~500 Hz — defining bassoon color. |
+| **~2200 Hz tonehole cutoff** | slow onepole rolloff | Sharp rolloff above ~2.2 kHz on first register; gives bassoon its dark/round timbre. |
+| **Spectral notches @ ~1 kHz & ~3.5 kHz** | none | Chimney pipes trap energy at characteristic freqs → audible anti-resonances. |
+| **Reed formant (double-reed linear peak)** | none | Short confined reed channel acts as a BPF peak ~1.2-1.8 kHz; shapes source spectrum before bore. |
+| **Frequency-dependent bore loss** | flat `cone_loss=0.85` | Thermoviscous + radiation losses rise with frequency → HF damping per round trip. |
+| **Breath turbulence / chiff** | none | Confined air jet in embouchure is a turbulence source — small noise component is physically present, not cosmetic. |
+| **Amplitude vibrato (tremolo)** | FM only | Player vibrato couples pressure+pitch; pure FM sounds synthetic. |
+| **Attack transient** | linear breath ramp | Onset has subharmonic noise "chiff" before pitch locks in. |
+| **Pitch bend / cents offset** | vib_depth only | No static detune — needed for microtonal drift/performance. |
+| **Register control** | none | Whisper key + register venting shifts the bore toward 2nd mode. |
+
+### Candidate improvements (tradeoffs)
+
+**Tier A — realism (affects timbre directly, low CPU cost):**
+
+| ID | Change | Adds | Cost |
+|----|--------|------|------|
+| **A1** | Replace onepole bell with **biquad shaped for 500 Hz formant + 2.2 kHz cutoff**. Reuse `bell_bright` → sweeps formant freq + Q. | proper bassoon color | +2 History, +biquad coeffs |
+| **A2** | Insert **reed formant BPF** (2nd-order) on `reed_sig` before bore injection. New params `reed_res_freq` (500-2500 Hz), `reed_res_q` (1-6). | characteristic double-reed honk | +2 History, new params |
+| **A3** | **Freq-dependent bore loss**: replace `cone_loss=0.85` scalar with onepole LPF in reflection path. New param `bore_damp` (0-1). | HF damping realism, prevents shrillness | +1 History, 1 param |
+| **A4** | **Breath noise**: filtered `noise()` added to `breath` before reed LUT, amount scaled by breath level + `noise_amt` param. | chiff, air realism | +1 History, 1 param |
+
+**Tier B — expressivity (new controls):**
+
+| ID | Change | Adds | Cost |
+|----|--------|------|------|
+| **B1** | **Amplitude vibrato (tremolo)**: reuse `vib_phase`, modulate `breath` by `(1 + vib_sin * vib_amp)`. New param `vib_amp` (0-0.3). | lifelike vibrato | 1 param |
+| **B2** | **Static pitch offset**: `Param pitch_cents(0, -100, 100)` added before vibrato, stacks with `mtof` input. | microtonal ergonomics | 1 param |
+| **B3** | **Attack chiff**: breath derivative → gated noise burst at onset. Param `chiff_amt` (0-1). | note attack realism | +2 History, 1 param |
+| **B4** | **Register control**: `register` (0-1) param scales `bore_damp` + shifts reflection polarity/gain to favor 2nd mode at high register. | upper-register tone | 1 param, 1 scaling term |
+
+**Tier C — polish (optional):**
+
+- C1: Host-side MIDI/Hz toggle for freq input (addresses recurring "why is my Hz off" confusion — see MEMORY).
+- C2: `pattrstorage` preset bank for reed/tone snapshots.
+- C3: Lip formant BPF between reed output and bore injection (extra resonance layer).
+- C4: 2nd-order allpass fractional delay (marginal tuning accuracy gain, more CPU).
+
+### Recommendation
+
+Ship **A1 + A2 + A3 + A4 + B1 + B2** as v0.3.0 "realism + expressivity pass." This is ~6 new/changed DSP blocks, 5 new params (`reed_res_freq`, `reed_res_q`, `bore_damp`, `noise_amt`, `vib_amp`, `pitch_cents`), no new History beyond ~6 cells. Host patch adds 6 live.dials.
+
+B3/B4 and Tier C are deferable — they layer cleanly on top of the v0.3.0 baseline.

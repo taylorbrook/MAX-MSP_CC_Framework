@@ -3894,5 +3894,98 @@
     "verified": true,
     "variable_io": false,
     "rnbo_compatible": false
+  },
+  "live.scope~": {
+    "name": "live.scope~",
+    "maxclass": "live.scope~",
+    "module": "m4l",
+    "domain": "M4L",
+    "category": "Live UI Objects, Live MSP Objects",
+    "digest": "Live-style signal scope / oscilloscope display",
+    "description": "live.scope~ is a Live-style oscilloscope for visualizing signal waveforms. Accepts audio-rate signal on its left inlet (waveform to display) and a secondary signal on its right inlet (trigger or second channel depending on mode). Outputs a bang when the display refreshes.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Signal to display",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Second channel / trigger signal",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "bang",
+        "signal": false,
+        "digest": "Refresh notification"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "signal"
+    ],
+    "attributes": {
+      "active": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "bgcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "bufsize": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "calccount": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "color": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "range": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "rounded": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "style": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "scope~",
+      "spectroscope~",
+      "live.meter~"
+    ],
+    "tags": [
+      "Live",
+      "Live MSP Objects",
+      "Live UI Objects"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
   }
 }
