@@ -105,6 +105,15 @@
         "bassoon-model.maxpat",
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.7.0",
+      "description": "v0.7.0: tremolo via vib LFO (vib_amp Param + live.dial)",
+      "timestamp": "2026-04-23T04:56:37.780227+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat",
+        "bassoon.gendsp"
+      ]
     }
   ]
 }

@@ -336,21 +336,6 @@
             },
             {
                 "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-43",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 473.0, 110.0, 79.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 312.0, 486.0, 69.0, 20.0 ],
-                    "text": "Bore Damp",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
-                }
-            },
-            {
-                "box": {
                     "id": "obj-44",
                     "maxclass": "live.dial",
                     "numinlets": 1,
@@ -375,21 +360,6 @@
                         }
                     },
                     "varname": "reed_res_freq"
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-45",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 793.0, 110.0, 79.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 422.0, 406.0, 68.0, 20.0 ],
-                    "text": "Reed Freq",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
                 }
             },
             {
@@ -422,21 +392,6 @@
             },
             {
                 "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-47",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 903.0, 110.0, 79.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 532.0, 406.0, 50.0, 20.0 ],
-                    "text": "Reed Q",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
-                }
-            },
-            {
-                "box": {
                     "id": "obj-48",
                     "maxclass": "live.dial",
                     "numinlets": 1,
@@ -446,7 +401,7 @@
                     "parameter_enable": 1,
                     "patching_rect": [ 953.0, 110.0, 44.0, 48.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 370.0, 470.0, 50.0, 48.0 ],
+                    "presentation_rect": [ 366.0, 470.0, 50.0, 48.0 ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [ 0.15 ],
@@ -464,17 +419,29 @@
             },
             {
                 "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-49",
-                    "maxclass": "comment",
+                    "id": "obj-50",
+                    "maxclass": "live.dial",
                     "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 1013.0, 110.0, 79.0, 20.0 ],
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "param_connect": "gen~_AA::vib_amp",
+                    "parameter_enable": 1,
+                    "patching_rect": [ 1063.0, 110.0, 44.0, 48.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 422.0, 486.0, 68.0, 20.0 ],
-                    "text": "Air Noise",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
+                    "presentation_rect": [ 480.0, 470.0, 50.0, 48.0 ],
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [ 0.08 ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "Vib Tremolo",
+                            "parameter_mmax": 0.3,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "vib_amp",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "vib_amp"
                 }
             },
             {
@@ -556,87 +523,12 @@
                 "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
-                    "id": "obj-28",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 368.0, 110.0, 86.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 92.0, 406.0, 60.0, 20.0 ],
-                    "text": "reed_stiff",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-29",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 263.0, 110.0, 79.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 202.0, 406.0, 63.0, 20.0 ],
-                    "text": "reed_aper",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-30",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 683.0, 110.0, 93.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 312.0, 406.0, 64.0, 20.0 ],
-                    "text": "bell_bright",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-31",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 158.0, 110.0, 72.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 92.0, 486.0, 60.0, 20.0 ],
-                    "text": "vib_rate",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-32",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 563.0, 110.0, 79.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 202.0, 486.0, 61.0, 20.0 ],
-                    "text": "vib_depth",
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
                     "id": "obj-41",
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 550.0, 10.0, 58.0, 20.0 ],
-                    "text": "v0.6.0"
+                    "text": "v0.7.0"
                 }
             }
         ],
@@ -740,15 +632,8 @@
             "obj-44": [ "reed_res_freq", "reed_res_freq", 0 ],
             "obj-46": [ "reed_res_q", "reed_res_q", 0 ],
             "obj-48": [ "noise_amt", "noise_amt", 0 ],
+            "obj-50": [ "Vib Tremolo", "vib_amp", 0 ],
             "obj-5": [ "amp", "amp", 0 ],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
-                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
-                }
-            },
             "inherited_shortname": 1
         },
         "autosave": 0,
