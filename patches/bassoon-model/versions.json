@@ -123,6 +123,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.9.0",
+      "description": "v0.9.0: register control (Param register 0-1, live.dial Register) biases bore toward 2nd-mode for upper register \u2014 cone_return scaled by 0.7 at reg=1, bore_damp interpolated toward 0.6 (less HF loss, favors harmonics). Linear interp; reg=0 preserves v0.8.0 behavior.",
+      "timestamp": "2026-04-23T05:17:29.028028+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat",
+        "bassoon.gendsp"
+      ]
     }
   ]
 }

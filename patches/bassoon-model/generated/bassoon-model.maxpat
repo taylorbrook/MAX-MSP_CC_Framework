@@ -473,6 +473,33 @@
             },
             {
                 "box": {
+                    "id": "obj-54",
+                    "maxclass": "live.dial",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [ "", "float" ],
+                    "param_connect": "gen~_AA::register",
+                    "parameter_enable": 1,
+                    "patching_rect": [ 1283.0, 110.0, 44.0, 48.0 ],
+                    "presentation": 1,
+                    "presentation_rect": [ 590.0, 390.0, 50.0, 48.0 ],
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [ 0.0 ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "Register",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "register",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "register"
+                }
+            },
+            {
+                "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "id": "obj-23",
@@ -555,7 +582,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "patching_rect": [ 550.0, 10.0, 58.0, 20.0 ],
-                    "text": "v0.8.0"
+                    "text": "v0.9.0"
                 }
             }
         ],
@@ -661,6 +688,7 @@
             "obj-48": [ "noise_amt", "noise_amt", 0 ],
             "obj-50": [ "Vib Tremolo", "vib_amp", 0 ],
             "obj-52": [ "Chiff", "chiff_amt", 0 ],
+            "obj-54": [ "Register", "register", 0 ],
             "obj-5": [ "amp", "amp", 0 ],
             "inherited_shortname": 1
         },
