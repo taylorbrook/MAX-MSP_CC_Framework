@@ -701,7 +701,7 @@
                                 0.08
                             ],
                             "parameter_initial_enable": 1,
-                            "parameter_longname": "Vib Tremolo",
+                            "parameter_longname": "vib_amp",
                             "parameter_mmax": 0.3,
                             "parameter_modmode": 3,
                             "parameter_shortname": "vib_amp",
@@ -743,7 +743,7 @@
                                 0.3
                             ],
                             "parameter_initial_enable": 1,
-                            "parameter_longname": "Chiff",
+                            "parameter_longname": "chiff_amt",
                             "parameter_mmax": 1.0,
                             "parameter_modmode": 3,
                             "parameter_shortname": "chiff_amt",
@@ -785,7 +785,7 @@
                                 0.0
                             ],
                             "parameter_initial_enable": 1,
-                            "parameter_longname": "Register",
+                            "parameter_longname": "register",
                             "parameter_mmax": 1.0,
                             "parameter_modmode": 3,
                             "parameter_shortname": "register",
@@ -960,13 +960,15 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.10.0"
+                    "text": "v0.10.1"
                 }
             },
             {
                 "box": {
-                    "maxclass": "newobj",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-55",
+                    "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 4,
                     "outlettype": [
@@ -981,15 +983,60 @@
                         79.0,
                         22.0
                     ],
+                    "restore": {
+                        "amp": [
+                            0.0
+                        ],
+                        "bell_bright": [
+                            0.5
+                        ],
+                        "bore_damp": [
+                            0.3
+                        ],
+                        "chiff_amt": [
+                            0.30000000000000004
+                        ],
+                        "live.gain~": [
+                            0.0
+                        ],
+                        "noise_amt": [
+                            0.15000000000000002
+                        ],
+                        "reed_aper": [
+                            0.0
+                        ],
+                        "reed_res_freq": [
+                            1500.0
+                        ],
+                        "reed_res_q": [
+                            2.5
+                        ],
+                        "reed_stiff": [
+                            0.5
+                        ],
+                        "register": [
+                            0.0
+                        ],
+                        "vib_amp": [
+                            0.08
+                        ],
+                        "vib_depth": [
+                            0.0
+                        ],
+                        "vib_rate": [
+                            5.0
+                        ]
+                    },
                     "text": "autopattr",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
+                    "varname": "u358010894"
                 }
             },
             {
                 "box": {
-                    "maxclass": "newobj",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-56",
+                    "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [
@@ -1001,9 +1048,6 @@
                         401.0,
                         22.0
                     ],
-                    "text": "pattrstorage bassoon_presets @savemode 3 @autorestore 1",
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
                     "saved_object_attributes": {
                         "client_rect": [
                             4,
@@ -1019,20 +1063,22 @@
                             800,
                             400
                         ]
-                    }
+                    },
+                    "text": "pattrstorage bassoon_presets @savemode 3 @autorestore 1",
+                    "varname": "bassoon_presets"
                 }
             },
             {
                 "box": {
-                    "maxclass": "preset",
                     "id": "obj-57",
+                    "maxclass": "preset",
                     "numinlets": 1,
                     "numoutlets": 5,
                     "outlettype": [
-                        "",
-                        "",
-                        "",
-                        "",
+                        "preset",
+                        "int",
+                        "preset",
+                        "int",
                         ""
                     ],
                     "patching_rect": [
@@ -1041,7 +1087,7 @@
                         320.0,
                         60.0
                     ],
-                    "parameter_enable": 0,
+                    "pattrstorage": "bassoon_presets",
                     "presentation": 1,
                     "presentation_rect": [
                         135.0,
@@ -1049,21 +1095,24 @@
                         360.0,
                         60.0
                     ],
-                    "pattrstorage": "bassoon_presets",
-                    "stored1": 1,
-                    "stored2": 1,
-                    "stored3": 1,
-                    "stored4": 1
+                    "stored1": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             },
             {
                 "box": {
-                    "maxclass": "newobj",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-58",
+                    "maxclass": "newobj",
                     "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [
-                        ""
+                        "bang"
                     ],
                     "patching_rect": [
                         45.0,
@@ -1071,15 +1120,15 @@
                         72.0,
                         22.0
                     ],
-                    "text": "loadbang",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
+                    "text": "loadbang"
                 }
             },
             {
                 "box": {
-                    "maxclass": "message",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-59",
+                    "maxclass": "message",
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [
@@ -1091,15 +1140,15 @@
                         72.0,
                         22.0
                     ],
-                    "text": "recall 1",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
+                    "text": "recall 1"
                 }
             },
             {
                 "box": {
-                    "maxclass": "message",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-60",
+                    "maxclass": "message",
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [
@@ -1111,41 +1160,38 @@
                         86.0,
                         22.0
                     ],
-                    "text": "writeagain",
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
                     "presentation": 1,
                     "presentation_rect": [
                         500.0,
                         275.0,
                         70.0,
                         22.0
-                    ]
+                    ],
+                    "text": "writeagain"
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-61",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         470.0,
                         255.0,
                         100.0,
                         20.0
                     ],
-                    "text": "Save Presets",
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
                     "presentation": 1,
                     "presentation_rect": [
                         500.0,
                         255.0,
                         80.0,
-                        18.0
+                        20.0
                     ],
+                    "text": "Save Presets",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -1156,27 +1202,26 @@
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-62",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
                         135.0,
                         240.0,
                         65.0,
                         20.0
                     ],
-                    "text": "Presets",
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
                     "presentation": 1,
                     "presentation_rect": [
                         135.0,
                         240.0,
                         80.0,
-                        18.0
+                        20.0
                     ],
+                    "text": "Presets",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -1303,6 +1348,30 @@
             {
                 "patchline": {
                     "destination": [
+                        "obj-59",
+                        0
+                    ],
+                    "source": [
+                        "obj-58",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-56",
+                        0
+                    ],
+                    "source": [
+                        "obj-59",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
                         "obj-4",
                         1
                     ],
@@ -1314,6 +1383,18 @@
                     ],
                     "source": [
                         "obj-6",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-56",
+                        0
+                    ],
+                    "source": [
+                        "obj-60",
                         0
                     ]
                 }
@@ -1409,42 +1490,6 @@
                         0
                     ]
                 }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-58",
-                        0
-                    ],
-                    "destination": [
-                        "obj-59",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-59",
-                        0
-                    ],
-                    "destination": [
-                        "obj-56",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-60",
-                        0
-                    ],
-                    "destination": [
-                        "obj-56",
-                        0
-                    ]
-                }
             }
         ],
         "parameters": {
@@ -1493,26 +1538,52 @@
                 "noise_amt",
                 0
             ],
-            "obj-50": [
-                "Vib Tremolo",
-                "vib_amp",
-                0
-            ],
-            "obj-52": [
-                "Chiff",
-                "chiff_amt",
-                0
-            ],
-            "obj-54": [
-                "Register",
-                "register",
-                0
-            ],
             "obj-5": [
                 "amp",
                 "amp",
                 0
             ],
+            "obj-50": [
+                "vib_amp",
+                "vib_amp",
+                0
+            ],
+            "obj-52": [
+                "chiff_amt",
+                "chiff_amt",
+                0
+            ],
+            "obj-54": [
+                "register",
+                "register",
+                0
+            ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ],
+                    "buttons": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0,
