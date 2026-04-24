@@ -62,6 +62,22 @@
         "intelligent-corpus-remixer.maxpat",
         "analyze.js"
       ]
+    },
+    {
+      "version": "0.1.0",
+      "description": "slice-voice: sum L+R to mono, add equal-power pan + gain scaling",
+      "timestamp": "2026-04-24T19:41:23.308577+00:00",
+      "files_changed": [
+        "slice-voice.maxpat"
+      ]
+    },
+    {
+      "version": "0.1.1",
+      "description": "gain reduce + center pan default + per-slice random pan",
+      "timestamp": "2026-04-24T19:42:41.239453+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }
