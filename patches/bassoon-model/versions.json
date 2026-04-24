@@ -221,6 +221,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.13.2",
+      "description": "v0.13.2: reed LUT clamp cleanup -- merge 2-line max/min on delta_p into single clamp(delta_p, 0.0, 1.0). Pure cleanup; identical semantics; consistent with clamp() usage elsewhere in the file.",
+      "timestamp": "2026-04-24T19:30:42.101285+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
