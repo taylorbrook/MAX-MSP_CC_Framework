@@ -230,6 +230,14 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.13.3",
+      "description": "trim version-history preamble + inline v-tags from codebox comments; history belongs in versions.json/git blame",
+      "timestamp": "2026-04-24T19:38:22.966328+00:00",
+      "files_changed": [
+        "bassoon.gendsp"
+      ]
     }
   ]
 }
