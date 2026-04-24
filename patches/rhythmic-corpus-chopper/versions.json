@@ -44,6 +44,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.0.6",
+      "description": "fix slicer detecting only 1 slice: metric 1 (HFC) + lower threshold + minslicelength",
+      "timestamp": "2026-04-24T19:29:32.667886+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
