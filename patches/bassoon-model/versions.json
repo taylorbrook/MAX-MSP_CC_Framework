@@ -168,6 +168,15 @@
         "bassoon-model.maxpat",
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.12.0",
+      "description": "kill reed LUT -- closed-form flow = x*sqrt(max(1-(x/0.85)^2, 0)) replaces 1024-pt Data table + init_flag + peek/lerp",
+      "timestamp": "2026-04-24T14:57:08.181296+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
