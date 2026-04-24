@@ -92,8 +92,9 @@
                     "maxclass": "newobj",
                     "id": "obj-4",
                     "numinlets": 1,
-                    "numoutlets": 3,
+                    "numoutlets": 4,
                     "outlettype": [
+                        "",
                         "",
                         "",
                         ""
@@ -101,10 +102,10 @@
                     "patching_rect": [
                         120.0,
                         150.0,
-                        121.0,
+                        150.0,
                         22.0
                     ],
-                    "text": "unpack 0. 0. 0.",
+                    "text": "unpack 0. 0. 0. 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -524,7 +525,27 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.0.6",
+                    "text": "v0.1.0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-17",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        285.0,
+                        240.0,
+                        68.0,
+                        22.0
+                    ],
+                    "text": "pan $1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -805,6 +826,30 @@
                     ],
                     "destination": [
                         "obj-3",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-4",
+                        3
+                    ],
+                    "destination": [
+                        "obj-17",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-17",
+                        0
+                    ],
+                    "destination": [
+                        "obj-13",
                         0
                     ]
                 }
