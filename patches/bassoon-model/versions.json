@@ -204,6 +204,14 @@
         "bassoon.gendsp",
         "bassoon_presets.json"
       ]
+    },
+    {
+      "version": "0.13.0",
+      "description": "Param smoothing: 30 Hz onepole on bell_bright/bore_damp/reed_res_freq/reed_res_q to kill zipper on preset recall and knob sweeps; biquad coefs now read _s smoothed versions",
+      "timestamp": "2026-04-24T19:22:29.605042+00:00",
+      "files_changed": [
+        "bassoon.gendsp"
+      ]
     }
   ]
 }
