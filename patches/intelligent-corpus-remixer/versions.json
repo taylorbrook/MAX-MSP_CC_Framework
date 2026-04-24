@@ -36,6 +36,15 @@
       "files_changed": [
         "intelligent-corpus-remixer.maxpat"
       ]
+    },
+    {
+      "version": "0.0.5",
+      "description": "populate coll slice_meta so playback can look up slice offsets",
+      "timestamp": "2026-04-24T14:58:03.098799+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat",
+        "analyze.js"
+      ]
     }
   ]
 }

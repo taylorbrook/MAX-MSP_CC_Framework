@@ -61,6 +61,8 @@ function bang() {
     }
 
     dataset.message("clear");
+    var slicecoll = this.patcher.getnamed("slicecoll");
+    if (slicecoll) slicecoll.message("clear");
 
     var kept = 0;
     var skipped = 0;
@@ -79,6 +81,7 @@ function bang() {
         bufflatten.message("bang");
 
         dataset.message("addpoint", "slice_" + kept, "mfcc_flat");
+        if (slicecoll) slicecoll.message(kept, start, len);
         kept++;
     }
 
