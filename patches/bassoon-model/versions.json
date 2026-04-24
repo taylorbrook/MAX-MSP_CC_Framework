@@ -212,6 +212,15 @@
       "files_changed": [
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.13.1",
+      "description": "kill magic numbers in vibrato LFO: 0.524 (pi/6) -> HALFPI/3 (both 2nd-harmonic phase offsets); 1.5708 -> HALFPI (AM phase lag). Pure cleanup; gen~ const-folds to identical machine code.",
+      "timestamp": "2026-04-24T19:28:56.757274+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
