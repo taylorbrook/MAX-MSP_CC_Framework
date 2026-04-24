@@ -1185,7 +1185,7 @@
                                     "numoutlets": 2,
                                     "outlettype": [
                                         "",
-                                        "bang"
+                                        ""
                                     ],
                                     "patching_rect": [
                                         105.0,
@@ -1193,7 +1193,7 @@
                                         51.0,
                                         22.0
                                     ],
-                                    "text": "t l b"
+                                    "text": "t b l"
                                 }
                             },
                             {
@@ -1395,46 +1395,6 @@
                             {
                                 "patchline": {
                                     "destination": [
-                                        "obj-17",
-                                        0
-                                    ],
-                                    "midpoints": [
-                                        146.5,
-                                        528.5,
-                                        54.5,
-                                        528.5
-                                    ],
-                                    "source": [
-                                        "obj-19",
-                                        1
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-18",
-                                        1
-                                    ],
-                                    "midpoints": [
-                                        114.5,
-                                        532.0,
-                                        111.0,
-                                        532.0,
-                                        111.0,
-                                        570.0,
-                                        225.5,
-                                        570.0
-                                    ],
-                                    "source": [
-                                        "obj-19",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
                                         "obj-7",
                                         0
                                     ],
@@ -1603,6 +1563,30 @@
                                     "destination": [
                                         "obj-900",
                                         0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-19",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-17",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-19",
+                                        1
+                                    ],
+                                    "destination": [
+                                        "obj-18",
+                                        1
                                     ]
                                 }
                             }
@@ -4290,7 +4274,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.0.6"
+                    "text": "v0.0.7"
                 }
             }
         ],
