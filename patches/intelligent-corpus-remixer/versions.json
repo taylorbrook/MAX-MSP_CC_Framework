@@ -45,6 +45,14 @@
         "intelligent-corpus-remixer.maxpat",
         "analyze.js"
       ]
+    },
+    {
+      "version": "0.0.6",
+      "description": "remove route note in slice-voice (poly~ strips the note selector)",
+      "timestamp": "2026-04-24T17:23:30.857609+00:00",
+      "files_changed": [
+        "slice-voice.maxpat"
+      ]
     }
   ]
 }
