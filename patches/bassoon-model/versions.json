@@ -186,6 +186,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.12.2",
+      "description": "drop redundant noise_env = breath_state * trem_gain; reuse breath (identical at that point, pre-chiff)",
+      "timestamp": "2026-04-24T17:22:23.346085+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
