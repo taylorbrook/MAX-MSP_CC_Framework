@@ -2351,6 +2351,26 @@
                                     ],
                                     "text": "gate"
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-36",
+                                    "numinlets": 2,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        120,
+                                        52,
+                                        30.0,
+                                        22.0
+                                    ],
+                                    "text": "i",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
                             }
                         ],
                         "lines": [
@@ -2860,35 +2880,6 @@
                                     ],
                                     "source": [
                                         "obj-29",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-14",
-                                        0
-                                    ],
-                                    "midpoints": [
-                                        129.5,
-                                        22.0,
-                                        157.0,
-                                        22.0,
-                                        157.0,
-                                        68.0,
-                                        157.0,
-                                        67.0,
-                                        139.0,
-                                        67.0,
-                                        139.0,
-                                        105.0,
-                                        159.5,
-                                        105.0
-                                    ],
-                                    "order": 3,
-                                    "source": [
-                                        "obj-3",
                                         0
                                     ]
                                 }
@@ -3623,6 +3614,30 @@
                                         1
                                     ]
                                 }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-3",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-36",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-36",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-14",
+                                        0
+                                    ]
+                                }
                             }
                         ]
                     },
@@ -3748,7 +3763,7 @@
                                         ""
                                     ],
                                     "patching_rect": [
-                                        30.0,
+                                        75,
                                         120.0,
                                         65.0,
                                         22.0
@@ -3766,7 +3781,7 @@
                                     "numoutlets": 2,
                                     "outlettype": [
                                         "",
-                                        "bang"
+                                        ""
                                     ],
                                     "patching_rect": [
                                         30.0,
@@ -3774,7 +3789,7 @@
                                         51.0,
                                         22.0
                                     ],
-                                    "text": "t s b"
+                                    "text": "t b s"
                                 }
                             },
                             {
@@ -3789,7 +3804,7 @@
                                         ""
                                     ],
                                     "patching_rect": [
-                                        105.0,
+                                        30,
                                         120.0,
                                         65.0,
                                         22.0
@@ -3901,40 +3916,6 @@
                             {
                                 "patchline": {
                                     "destination": [
-                                        "obj-5",
-                                        0
-                                    ],
-                                    "source": [
-                                        "obj-6",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-7",
-                                        0
-                                    ],
-                                    "midpoints": [
-                                        71.5,
-                                        112.0,
-                                        103.0,
-                                        112.0,
-                                        103.0,
-                                        150.0,
-                                        114.5,
-                                        150.0
-                                    ],
-                                    "source": [
-                                        "obj-6",
-                                        1
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
                                         "obj-9",
                                         1
                                     ],
@@ -4011,6 +3992,30 @@
                                     "source": [
                                         "obj-9",
                                         1
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-6",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-7",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-6",
+                                        1
+                                    ],
+                                    "destination": [
+                                        "obj-5",
+                                        0
                                     ]
                                 }
                             }
@@ -4291,7 +4296,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.0.3"
+                    "text": "v0.0.4"
                 }
             }
         ],
