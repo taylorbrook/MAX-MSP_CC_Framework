@@ -1229,6 +1229,150 @@
                         1.0
                     ]
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-63",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1393.0,
+                        110.0,
+                        44.0,
+                        48.0
+                    ],
+                    "parameter_enable": 1,
+                    "param_connect": "gen~_AA::vib_onset_time",
+                    "presentation": 1,
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                0.15
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "vib_onset_time",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "vib_onset_time",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "vib_onset_time"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-64",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1503.0,
+                        110.0,
+                        44.0,
+                        48.0
+                    ],
+                    "parameter_enable": 1,
+                    "param_connect": "gen~_AA::vib_ramp_time",
+                    "presentation": 1,
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                0.3
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "vib_ramp_time",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "vib_ramp_time",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "vib_ramp_time"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-65",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1613.0,
+                        110.0,
+                        44.0,
+                        48.0
+                    ],
+                    "parameter_enable": 1,
+                    "param_connect": "gen~_AA::vib_rate_jit",
+                    "presentation": 1,
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                0.12
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "vib_rate_jit",
+                            "parameter_mmax": 0.3,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "vib_rate_jit",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "vib_rate_jit"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-66",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1723.0,
+                        110.0,
+                        44.0,
+                        48.0
+                    ],
+                    "parameter_enable": 1,
+                    "param_connect": "gen~_AA::vib_amp_lag",
+                    "presentation": 1,
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                0.5
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "vib_amp_lag",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "vib_amp_lag",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    },
+                    "varname": "vib_amp_lag"
+                }
             }
         ],
         "lines": [
