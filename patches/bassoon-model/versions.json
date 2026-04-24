@@ -150,6 +150,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.10.2",
+      "description": "v0.10.2: internal reed_sig gain reduction (x0.75) early in gen~ DSP chain -- lowers overall output via the physical model rather than a post-hoc output multiplier",
+      "timestamp": "2026-04-24T04:35:48.812695+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
