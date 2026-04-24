@@ -1085,10 +1085,10 @@
                                     "patching_rect": [
                                         105.0,
                                         165.0,
-                                        478.0,
+                                        688.0,
                                         22.0
                                     ],
-                                    "text": "fluid.bufonsetslice~ @indices rcc_indices @metric 9 @threshold 0.5"
+                                    "text": "fluid.bufonsetslice~ @indices rcc_indices @metric 1 @threshold 0.3 @minslicelength 2 @blocking 1"
                                 }
                             },
                             {
@@ -4193,7 +4193,7 @@
                         40.0,
                         22.0
                     ],
-                    "text": "50"
+                    "text": "30"
                 }
             },
             {
@@ -4290,7 +4290,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.0.5"
+                    "text": "v0.0.6"
                 }
             }
         ],
