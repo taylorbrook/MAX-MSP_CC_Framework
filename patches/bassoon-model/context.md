@@ -211,3 +211,118 @@ None of the following PD objects are used: `osc~`, `lop~`, `hip~`, `bp~`, `tabre
 Ship **A1 + A2 + A3 + A4 + B1 + B2** as v0.3.0 "realism + expressivity pass." This is ~6 new/changed DSP blocks, 5 new params (`reed_res_freq`, `reed_res_q`, `bore_damp`, `noise_amt`, `vib_amp`, `pitch_cents`), no new History beyond ~6 cells. Host patch adds 6 live.dials.
 
 B3/B4 and Tier C are deferable — they layer cleanly on top of the v0.3.0 baseline.
+
+## Research (v0.11 vibrato realism pass — 2026-04-23)
+
+**Goal:** Identify what makes the current v0.10.2 vibrato sound synthetic and enumerate high-ROI fixes. Sources: Timmers & Desain 2000 (vibrato rate/depth in performance), Dromey et al. 2003 (instrumental vibrato analysis), Gibiat & Castellengo (wind vibrato studies), MacRitchie & Nuti (flute/oboe vibrato), Fletcher 1975 (perturbation modeling), Rossing "Science of Sound" §17 (wind vibrato).
+
+### Current vibrato (v0.10.2) — what it does
+
+- **One LFO**: `vib_phase += TWOPI * vib_rate / sr`; `vib_sin = sin(vib_phase)`
+- **Pitch FM**: `freq * 2^(vib_sin * vib_depth / 1200)` — cents modulation
+- **Tremolo AM**: `breath *= 1 + vib_sin * vib_amp` — same sine, same phase, same envelope
+- **Ranges**: vib_rate 0.1–12 Hz, vib_depth 0–50 cents, vib_amp 0–0.3
+
+### What a real bassoon vibrato does that v0.10.2 does NOT
+
+| Feature | v0.10.2 state | Reality | Why it matters |
+|---------|---------------|---------|----------------|
+| **Delayed onset** | Instant at note start | Starts ~150–300ms after attack, ramps to full over 200–500ms | Instant full vibrato is the #1 tell of synthetic playing |
+| **Rate jitter** | Metronomic | ±10–15% slow random walk around mean rate | Pure periodic LFO is audibly "locked" |
+| **Depth jitter** | Constant | ±15–25% breath-to-breath variation | Real players' diaphragm varies ~0.5 Hz |
+| **Pitch↔Amp phase offset** | 0° (perfectly coupled) | Tremolo typically LAGS pitch by ~30–90° | In-phase coupling sounds mechanical; offset gives "roll" |
+| **Waveshape** | Pure sine | Slight 2nd-harmonic content, mild asymmetry (rise ≠ fall) | Real diaphragm motion isn't sinusoidal |
+| **Register dependence** | Flat | Faster + wider in high register, slower + narrower low | Players physically can't produce 5 Hz vib on pedal notes same as high C |
+| **Pitch asymmetry** | Symmetric ± | Real vibrato often biased (more below than above center) | Embouchure mechanics favor one direction |
+| **Breath micro-jitter** | None | Constant low-amp 1/f noise on pitch independent of LFO | Even "steady" notes have ±2–5 cent wobble |
+| **Release fade** | Cuts at note end | Depth decays over 100–200ms on breath release | Sudden vibrato stop is artificial |
+
+### Candidate improvements (ranked by realism-per-line-of-code)
+
+**Tier A — biggest realism ROI (should ship together as v0.11):**
+
+| ID | Change | What it adds | Cost |
+|----|--------|--------------|------|
+| **V1** | **Delayed onset envelope**. Detect note-on from breath crossing a threshold (e.g., breath > 0.1 for N samples). Ramp `vib_env` from 0→1 over ~300ms starting ~150ms post-onset. Apply multiplicatively to BOTH `vib_depth` and `vib_amp`. New param `vib_onset_ms` (default 150) optional, but can hardcode. | Eliminates synthetic "instant vibrato" — single biggest realism gain | +2 History (env, onset_timer), ~10 lines |
+| **V2** | **Rate jitter**. Add smoothed noise (bandwidth ~0.5–1 Hz via cascaded onepoles) to `vib_rate` with ±12% deviation. New param `vib_rate_jit` (0–0.3, default 0.12). | Breaks metronomic lock, matches real diaphragm irregularity | +2 History (jit_lp1, jit_lp2), 1 param |
+| **V3** | **Pitch↔Amp phase offset**. Compute `amp_phase = vib_phase - phase_offset` then `amp_sin = sin(amp_phase)`. Use `vib_sin` for FM, `amp_sin` for tremolo. Fixed offset ~45° (π/4) works well for bassoon; or param `vib_amp_lag` (0–1, 0=in-phase, 1=90°). | Decouples pitch/amp perceptually, removes "organ" quality | 0 History, 1 param (optional) |
+
+**Tier B — nice polish, low cost (can stack on V1–V3):**
+
+| ID | Change | What it adds | Cost |
+|----|--------|--------------|------|
+| **V4** | **Depth jitter**. Slow smoothed noise (~0.3 Hz) modulating effective depth ±15% around setpoint. Share with V2's jitter bus or separate. | Cycle-to-cycle breath variation | +2 History, minimal |
+| **V5** | **Non-sinusoidal waveshape**. `vib_wave = sin(x) + 0.08 * sin(2x + φ)` — tiny 2nd-harmonic injection with phase φ ≈ π/6 gives asymmetric rise/fall. | Slight "human" curve to the sweep | 0 History, 0 params |
+| **V6** | **Release fade**. When breath drops below onset threshold, decay `vib_env` over ~150ms (don't cut instantly). V1's envelope generalizes to cover this. | Natural vibrato tail on release | shared with V1 |
+
+**Tier C — more involved, deferrable:**
+
+| ID | Change | What it adds | Cost |
+|----|--------|--------------|------|
+| **V7** | **Register-dependent rate/depth**. Scale `vib_rate` and `vib_depth` with freq: e.g., `rate_eff = vib_rate * (0.85 + 0.3 * freq_norm)`, similar for depth. `freq_norm = (log2(freq/110) / 3)` clipped. | Physiological realism across registers | ~5 lines |
+| **V8** | **Pitch asymmetry**. Bias LFO so positive swings are ~15% smaller than negative (or reverse). Shape: `vib_sin_asym = vib_sin - 0.15 * sign(vib_sin) * abs(vib_sin)^2`. | Embouchure realism — not always audible | 0 History |
+| **V9** | **Breath micro-jitter**. Very low-amp (±3 cents) 1/f-shaped noise added to pitch independently of vibrato LFO. Active even when `vib_depth=0`. | "Alive" sustained notes, breath character | +3 History (pink filter) |
+
+### Recommendation
+
+Ship **V1 + V2 + V3 + V5 + V6** as v0.11.0 "vibrato realism pass." These together address the top three synthetic tells (instant onset, metronomic rate, in-phase coupling) plus waveshape asymmetry at near-zero cost. V4 can fold in if depth jitter becomes desirable after listening. V7–V9 are deferrable polish.
+
+**Implementation plan sketch (all inside existing gen~):**
+```
+// Add Params
+Param vib_onset_time(0.15, 0, 1);    // delay before vibrato ramps up (s)
+Param vib_ramp_time(0.3, 0.05, 1);   // ramp duration (s)
+Param vib_rate_jit(0.12, 0, 0.3);    // ±fraction of rate
+Param vib_amp_lag(0.5, 0, 1);        // 0=in-phase, 1=90° lag
+
+// Add History
+History vib_env(0);
+History onset_timer(0);
+History jit_state1(0);
+History jit_state2(0);
+
+// --- Onset / release envelope (V1, V6) ---
+// Breath threshold = 0.05. Count samples above threshold, reset when below.
+breath_on = breath_state > 0.05 ? 1 : 0;
+onset_timer = breath_on ? onset_timer + 1 : 0;
+onset_sec = onset_timer / samplerate;
+// Ramp: 0 until vib_onset_time, then linear 0→1 over vib_ramp_time
+vib_target = clamp((onset_sec - vib_onset_time) / vib_ramp_time, 0, 1);
+// Smoothed envelope: 50ms attack, 150ms release
+env_a = breath_on ? (1 - exp(-1 / (samplerate * 0.05))) : (1 - exp(-1 / (samplerate * 0.15)));
+vib_env = vib_env + env_a * (vib_target * breath_on - vib_env);
+
+// --- Rate jitter (V2) ---
+jit_raw = noise();
+jit_fc = 0.7; // Hz
+jit_a = 1 - exp(-TWOPI * jit_fc / samplerate);
+jit_state1 = jit_state1 + jit_a * (jit_raw - jit_state1);
+jit_state2 = jit_state2 + jit_a * (jit_state1 - jit_state2);  // cascade for smoothness
+rate_eff = vib_rate * (1 + vib_rate_jit * jit_state2 * 3);  // *3 to counter noise() RMS
+
+// --- LFO with V5 waveshape ---
+vib_inc = TWOPI * rate_eff / samplerate;
+vib_phase = vib_phase + vib_inc;
+if (vib_phase > TWOPI) { vib_phase = vib_phase - TWOPI; }
+vib_sin_pure = sin(vib_phase);
+vib_sin = vib_sin_pure + 0.08 * sin(2 * vib_phase + 0.52);  // π/6 phase shift
+
+// --- Phase offset for tremolo (V3) ---
+amp_phase = vib_phase - (PI * 0.5 * vib_amp_lag);
+amp_sin = sin(amp_phase) + 0.08 * sin(2 * amp_phase + 0.52);
+
+// --- Apply envelope to depth + amp ---
+cents_offset = vib_sin * vib_depth * vib_env;
+trem_gain = 1.0 + amp_sin * vib_amp * vib_env;
+```
+
+Net cost: +4 Param, +4 History, ~20 lines in the LFO block. No changes to reed/bore/bell paths.
+
+### Expected audible differences
+
+- **Before**: machine-precise 5 Hz wobble with pitch and loudness in lockstep; present from first sample; feels like ring-mod
+- **After V1**: note speaks clean for ~200ms then vibrato "breathes in"; vibrato decays naturally on release
+- **After V2**: rate drifts 4.5–5.5 Hz organically; no two cycles identical
+- **After V3**: pitch and loudness no longer peak together; feels like a player, not a modulator
+- **After V5**: subtle — removes the last "pure tone" character from the LFO shape
+

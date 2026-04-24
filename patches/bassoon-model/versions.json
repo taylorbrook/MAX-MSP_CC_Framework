@@ -159,6 +159,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.11.0",
+      "description": "v0.11.0: vibrato realism -- delayed onset, rate jitter, AM phase offset, non-sine waveshape",
+      "timestamp": "2026-04-24T14:42:35.519833+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat",
+        "bassoon.gendsp"
+      ]
     }
   ]
 }
