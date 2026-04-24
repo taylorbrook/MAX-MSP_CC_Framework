@@ -960,7 +960,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.11.0"
+                    "text": "v0.12.0"
                 }
             },
             {
@@ -985,46 +985,58 @@
                     ],
                     "restore": {
                         "amp": [
-                            0.0
+                            0.7519827114154494
                         ],
                         "bell_bright": [
-                            0.5
+                            0.007874015748031496
                         ],
                         "bore_damp": [
                             0.3
                         ],
                         "chiff_amt": [
-                            0.30000000000000004
+                            0.2834645669291338
                         ],
                         "live.gain~": [
                             0.0
                         ],
                         "noise_amt": [
-                            0.15000000000000002
+                            0.25196850393700765
                         ],
                         "reed_aper": [
                             0.0
                         ],
                         "reed_res_freq": [
-                            1500.0
+                            2003.9370078740146
                         ],
                         "reed_res_q": [
-                            2.5
+                            4.704724409448817
                         ],
                         "reed_stiff": [
                             0.5
                         ],
                         "register": [
-                            0.0
+                            0.6929133858267713
                         ],
                         "vib_amp": [
-                            0.08
+                            0.03511811023622051
+                        ],
+                        "vib_amp_lag": [
+                            0.5
                         ],
                         "vib_depth": [
                             0.0
                         ],
+                        "vib_onset_time": [
+                            0.15
+                        ],
+                        "vib_ramp_time": [
+                            0.3
+                        ],
                         "vib_rate": [
-                            5.0
+                            1.8141732283464596
+                        ],
+                        "vib_rate_jit": [
+                            0.12
                         ]
                     },
                     "text": "autopattr",
@@ -1232,23 +1244,29 @@
             },
             {
                 "box": {
-                    "maxclass": "live.dial",
                     "id": "obj-63",
+                    "maxclass": "live.dial",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [
                         "",
-                        ""
+                        "float"
                     ],
+                    "param_connect": "gen~_AA::vib_onset_time",
+                    "parameter_enable": 1,
                     "patching_rect": [
                         1393.0,
                         110.0,
                         44.0,
                         48.0
                     ],
-                    "parameter_enable": 1,
-                    "param_connect": "gen~_AA::vib_onset_time",
                     "presentation": 1,
+                    "presentation_rect": [
+                        1393.0,
+                        110.0,
+                        44.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -1268,23 +1286,29 @@
             },
             {
                 "box": {
-                    "maxclass": "live.dial",
                     "id": "obj-64",
+                    "maxclass": "live.dial",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [
                         "",
-                        ""
+                        "float"
                     ],
+                    "param_connect": "gen~_AA::vib_ramp_time",
+                    "parameter_enable": 1,
                     "patching_rect": [
                         1503.0,
                         110.0,
                         44.0,
                         48.0
                     ],
-                    "parameter_enable": 1,
-                    "param_connect": "gen~_AA::vib_ramp_time",
                     "presentation": 1,
+                    "presentation_rect": [
+                        1503.0,
+                        110.0,
+                        44.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -1293,6 +1317,7 @@
                             "parameter_initial_enable": 1,
                             "parameter_longname": "vib_ramp_time",
                             "parameter_mmax": 1.0,
+                            "parameter_mmin": 0.05,
                             "parameter_modmode": 3,
                             "parameter_shortname": "vib_ramp_time",
                             "parameter_type": 0,
@@ -1304,23 +1329,29 @@
             },
             {
                 "box": {
-                    "maxclass": "live.dial",
                     "id": "obj-65",
+                    "maxclass": "live.dial",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [
                         "",
-                        ""
+                        "float"
                     ],
+                    "param_connect": "gen~_AA::vib_rate_jit",
+                    "parameter_enable": 1,
                     "patching_rect": [
                         1613.0,
                         110.0,
                         44.0,
                         48.0
                     ],
-                    "parameter_enable": 1,
-                    "param_connect": "gen~_AA::vib_rate_jit",
                     "presentation": 1,
+                    "presentation_rect": [
+                        1613.0,
+                        110.0,
+                        44.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -1340,23 +1371,29 @@
             },
             {
                 "box": {
-                    "maxclass": "live.dial",
                     "id": "obj-66",
+                    "maxclass": "live.dial",
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [
                         "",
-                        ""
+                        "float"
                     ],
+                    "param_connect": "gen~_AA::vib_amp_lag",
+                    "parameter_enable": 1,
                     "patching_rect": [
                         1723.0,
                         110.0,
                         44.0,
                         48.0
                     ],
-                    "parameter_enable": 1,
-                    "param_connect": "gen~_AA::vib_amp_lag",
                     "presentation": 1,
+                    "presentation_rect": [
+                        1723.0,
+                        110.0,
+                        44.0,
+                        48.0
+                    ],
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
@@ -1702,32 +1739,26 @@
                 "register",
                 0
             ],
-            "parameterbanks": {
-                "0": {
-                    "index": 0,
-                    "name": "",
-                    "parameters": [
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-"
-                    ],
-                    "buttons": [
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-",
-                        "-"
-                    ]
-                }
-            },
+            "obj-63": [
+                "vib_onset_time",
+                "vib_onset_time",
+                0
+            ],
+            "obj-64": [
+                "vib_ramp_time",
+                "vib_ramp_time",
+                0
+            ],
+            "obj-65": [
+                "vib_rate_jit",
+                "vib_rate_jit",
+                0
+            ],
+            "obj-66": [
+                "vib_amp_lag",
+                "vib_amp_lag",
+                0
+            ],
             "inherited_shortname": 1
         },
         "autosave": 0,
