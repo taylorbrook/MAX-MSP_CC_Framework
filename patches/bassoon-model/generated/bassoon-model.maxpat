@@ -960,7 +960,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.13.3"
+                    "text": "v0.14.0"
                 }
             },
             {
@@ -995,6 +995,9 @@
                         ],
                         "chiff_amt": [
                             0.2834645669291338
+                        ],
+                        "drift_on": [
+                            1
                         ],
                         "live.gain~": [
                             0.0
@@ -1410,6 +1413,78 @@
                     },
                     "varname": "vib_amp_lag"
                 }
+            },
+            {
+                "box": {
+                    "id": "obj-67",
+                    "maxclass": "live.toggle",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "param_connect": "gen~_AA::drift_on",
+                    "parameter_enable": 1,
+                    "patching_rect": [
+                        1833.0,
+                        110.0,
+                        24.0,
+                        24.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        1833.0,
+                        110.0,
+                        24.0,
+                        24.0
+                    ],
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_enum": [
+                                "off",
+                                "on"
+                            ],
+                            "parameter_initial": [
+                                1
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "drift_on",
+                            "parameter_shortname": "drift_on",
+                            "parameter_type": 2
+                        }
+                    },
+                    "varname": "drift_on"
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
+                    "id": "obj-68",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        1828.0,
+                        140.0,
+                        50.0,
+                        18.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        1828.0,
+                        140.0,
+                        50.0,
+                        18.0
+                    ],
+                    "text": "drift",
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
             }
         ],
         "lines": [
@@ -1757,6 +1832,11 @@
             "obj-66": [
                 "vib_amp_lag",
                 "vib_amp_lag",
+                0
+            ],
+            "obj-67": [
+                "drift_on",
+                "drift_on",
                 0
             ],
             "inherited_shortname": 1
