@@ -195,6 +195,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.12.3",
+      "description": "v0.12.3: hoist runtime multipliers (0.75 driver attenuation, 0.5 noise scale) into Param calibration; stiff_gain=0.75-reed_stiff*0.45, noise_amt range [0,0.5] default 0.075; presets migrated",
+      "timestamp": "2026-04-24T17:28:13.514112+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon_presets.json"
+      ]
     }
   ]
 }
