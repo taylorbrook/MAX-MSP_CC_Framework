@@ -247,6 +247,15 @@
         "bassoon-model.maxpat",
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.15.0",
+      "description": "split bell_bright into body_formant (fixed peaking EQ @500 Hz Q=3 +6 dB) + bell_bright (Butterworth LPF 1500-5000 Hz). Decouples bore body resonance from radiation rolloff.",
+      "timestamp": "2026-04-24T19:50:24.745198+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
