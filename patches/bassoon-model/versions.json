@@ -177,6 +177,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.12.1",
+      "description": "remove deprecated bell_a stub from gendsp",
+      "timestamp": "2026-04-24T17:17:17.241941+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
