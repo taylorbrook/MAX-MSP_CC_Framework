@@ -80,7 +80,7 @@ function bang() {
         bufstats.message("bang");
         bufflatten.message("bang");
 
-        dataset.message("addpoint", "slice_" + kept, "mfcc_flat");
+        dataset.message("addpoint", kept + "", "mfcc_flat");
         if (slicecoll) slicecoll.message(kept, start, len);
         kept++;
     }

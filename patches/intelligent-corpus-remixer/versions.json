@@ -53,6 +53,15 @@
       "files_changed": [
         "slice-voice.maxpat"
       ]
+    },
+    {
+      "version": "0.0.7",
+      "description": "use fluid.kdtree~ to map plotter xy \u2192 slice index",
+      "timestamp": "2026-04-24T19:28:51.580258+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat",
+        "analyze.js"
+      ]
     }
   ]
 }
