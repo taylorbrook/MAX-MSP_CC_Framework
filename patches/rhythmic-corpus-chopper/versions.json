@@ -52,6 +52,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.0.7",
+      "description": "fix slicer t l b order: slice points to ears.slice~ in1 must precede hot filename trigger",
+      "timestamp": "2026-04-24T19:35:34.590300+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
