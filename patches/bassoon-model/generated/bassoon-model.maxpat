@@ -656,11 +656,11 @@
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
-                                0.15
+                                0.075
                             ],
                             "parameter_initial_enable": 1,
                             "parameter_longname": "noise_amt",
-                            "parameter_mmax": 1.0,
+                            "parameter_mmax": 0.5,
                             "parameter_modmode": 3,
                             "parameter_shortname": "noise_amt",
                             "parameter_type": 0,
@@ -960,7 +960,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.14.0"
+                    "text": "v0.15.0"
                 }
             },
             {
@@ -985,61 +985,61 @@
                     ],
                     "restore": {
                         "amp": [
-                            0.7519827114154494
+                            0.0
                         ],
                         "bell_bright": [
-                            0.007874015748031496
+                            0.5
                         ],
                         "bore_damp": [
                             0.3
                         ],
                         "chiff_amt": [
-                            0.2834645669291338
+                            0.0
                         ],
                         "drift_on": [
-                            1
+                            1.0
                         ],
                         "live.gain~": [
                             0.0
                         ],
                         "noise_amt": [
-                            0.25196850393700765
+                            0.0
                         ],
                         "reed_aper": [
                             0.0
                         ],
                         "reed_res_freq": [
-                            2003.9370078740146
+                            1500.0
                         ],
                         "reed_res_q": [
-                            4.704724409448817
+                            2.5
                         ],
                         "reed_stiff": [
                             0.5
                         ],
                         "register": [
-                            0.6929133858267713
-                        ],
-                        "vib_amp": [
-                            0.03511811023622051
-                        ],
-                        "vib_amp_lag": [
-                            0.5
-                        ],
-                        "vib_depth": [
                             0.0
                         ],
+                        "vib_amp": [
+                            0.08
+                        ],
+                        "vib_amp_lag": [
+                            0.7834645669291336
+                        ],
+                        "vib_depth": [
+                            17.716535433070856
+                        ],
                         "vib_onset_time": [
-                            0.15
+                            0.724409448818898
                         ],
                         "vib_ramp_time": [
-                            0.3
+                            0.6185039370078735
                         ],
                         "vib_rate": [
-                            1.8141732283464596
+                            5.0
                         ],
                         "vib_rate_jit": [
-                            0.12
+                            0.3
                         ]
                     },
                     "text": "autopattr",
@@ -1265,9 +1265,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        1393.0,
-                        110.0,
-                        44.0,
+                        43.0,
+                        582.0,
+                        92.0,
                         48.0
                     ],
                     "saved_attribute_attributes": {
@@ -1307,9 +1307,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        1503.0,
-                        110.0,
-                        44.0,
+                        153.0,
+                        582.0,
+                        92.0,
                         48.0
                     ],
                     "saved_attribute_attributes": {
@@ -1350,9 +1350,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        1613.0,
-                        110.0,
-                        44.0,
+                        263.0,
+                        582.0,
+                        92.0,
                         48.0
                     ],
                     "saved_attribute_attributes": {
@@ -1392,9 +1392,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        1723.0,
-                        110.0,
-                        44.0,
+                        373.0,
+                        582.0,
+                        92.0,
                         48.0
                     ],
                     "saved_attribute_attributes": {
@@ -1433,8 +1433,8 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        1833.0,
-                        110.0,
+                        483.0,
+                        582.0,
                         24.0,
                         24.0
                     ],
@@ -1445,12 +1445,14 @@
                                 "on"
                             ],
                             "parameter_initial": [
-                                1
+                                1.0
                             ],
                             "parameter_initial_enable": 1,
                             "parameter_longname": "drift_on",
+                            "parameter_mmax": 1.0,
+                            "parameter_modmode": 0,
                             "parameter_shortname": "drift_on",
-                            "parameter_type": 2
+                            "parameter_type": 0
                         }
                     },
                     "varname": "drift_on"
@@ -1472,8 +1474,8 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        1828.0,
-                        140.0,
+                        478.0,
+                        612.0,
                         50.0,
                         18.0
                     ],
@@ -1839,6 +1841,32 @@
                 "drift_on",
                 0
             ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ],
+                    "buttons": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0,
