@@ -14,6 +14,14 @@
       "version": "0.0.2",
       "description": "UX pass: split the single Clear button into Reset (re-adds 5 balls + clears notation) and Clear-notation (keeps balls). Fixed bach.llll2list (doesn't exist in installed bach) -> bach.nth per-axis. Fixed expr clip() (not a valid function) -> min(max()). Targeted control labels so they stay near their boxes.",
       "timestamp": "2026-04-18T07:00:00+00:00"
+    },
+    {
+      "version": "0.0.3",
+      "description": "fix collision bach outputs: add @out t so bach.keys/bach.nth produce MAX-compatible atoms",
+      "timestamp": "2026-04-24T14:48:14.623409+00:00",
+      "files_changed": [
+        "physics-composition.maxpat"
+      ]
     }
   ]
 }
