@@ -36,6 +36,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.0.5",
+      "description": "fix inlet x-order (scramble bang no longer reaches expr) and groove~ trigger (startloop)",
+      "timestamp": "2026-04-24T17:29:07.601253+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
