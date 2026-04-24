@@ -28,6 +28,14 @@
       "files_changed": [
         "intelligent-corpus-remixer.maxpat"
       ]
+    },
+    {
+      "version": "0.0.4",
+      "description": "derive umap numneighbours from slice count to avoid crash on tiny datasets",
+      "timestamp": "2026-04-24T14:44:08.374390+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }
