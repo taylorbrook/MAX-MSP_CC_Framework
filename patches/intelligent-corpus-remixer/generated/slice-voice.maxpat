@@ -69,27 +69,6 @@
             {
                 "box": {
                     "maxclass": "newobj",
-                    "id": "obj-2",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        30.0,
-                        75.0,
-                        101.0,
-                        22.0
-                    ],
-                    "text": "route note",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
                     "id": "obj-3",
                     "numinlets": 1,
                     "numoutlets": 2,
@@ -531,39 +510,27 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-16",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        550.0,
+                        10.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "v0.0.6",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
-            {
-                "patchline": {
-                    "source": [
-                        "obj-1",
-                        0
-                    ],
-                    "destination": [
-                        "obj-2",
-                        0
-                    ],
-                    "midpoints": [
-                        52.0,
-                        63.5,
-                        80.5,
-                        63.5
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-2",
-                        0
-                    ],
-                    "destination": [
-                        "obj-3",
-                        0
-                    ]
-                }
-            },
             {
                 "patchline": {
                     "source": [
@@ -826,6 +793,18 @@
                     ],
                     "destination": [
                         "obj-15",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-1",
+                        0
+                    ],
+                    "destination": [
+                        "obj-3",
                         0
                     ]
                 }
