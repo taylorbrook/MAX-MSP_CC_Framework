@@ -289,6 +289,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.16.2",
+      "description": "lift gen~ output trim 0.15 -> 0.25 (~12 dB headroom, more level for typical settings)",
+      "timestamp": "2026-04-25T19:56:20.948058+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
