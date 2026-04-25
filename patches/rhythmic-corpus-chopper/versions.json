@@ -69,6 +69,14 @@
         "rhythmic-corpus-chopper.maxpat",
         "read_indices.js"
       ]
+    },
+    {
+      "version": "0.0.9",
+      "description": "fix slicer: ears.slice~ -> ears.split~ @mode list (binary->multi split)",
+      "timestamp": "2026-04-25T19:54:38.087125+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
