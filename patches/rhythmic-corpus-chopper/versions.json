@@ -60,6 +60,15 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.0.8",
+      "description": "replace fluid.buf2list with js Buffer.peek for reliable indices read",
+      "timestamp": "2026-04-25T04:48:49.900166+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat",
+        "read_indices.js"
+      ]
     }
   ]
 }
