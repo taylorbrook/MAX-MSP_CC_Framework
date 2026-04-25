@@ -264,6 +264,14 @@
       "files_changed": [
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.15.2",
+      "description": "fix staccato line~ message format (single list, set for jump)",
+      "timestamp": "2026-04-25T04:57:58.887926+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
