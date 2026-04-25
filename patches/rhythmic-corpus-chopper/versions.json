@@ -77,6 +77,15 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.0.10",
+      "description": "diagnose 1-slice: bypass t b l (2-outlet js), zl.len 8192, add print rcc_split",
+      "timestamp": "2026-04-25T20:01:22.256944+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat",
+        "read_indices.js"
+      ]
     }
   ]
 }

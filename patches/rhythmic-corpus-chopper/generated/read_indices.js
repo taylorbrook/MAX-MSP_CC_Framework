@@ -1,5 +1,5 @@
 inlets = 1;
-outlets = 1;
+outlets = 2;
 autowatch = 1;
 
 function buffer() {
@@ -34,4 +34,5 @@ function bang() {
 
     post("read_indices: " + n + " onsets -> " + result.slice(0, 8).join(",") + (n > 8 ? "..." : "") + "\n");
     outlet(0, result);
+    outlet(1, "bang");
 }
