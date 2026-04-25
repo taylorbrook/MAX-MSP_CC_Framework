@@ -2,6 +2,14 @@ inlets = 1;
 outlets = 1;
 autowatch = 1;
 
+function buffer() {
+    bang();
+}
+
+function anything() {
+    bang();
+}
+
 function bang() {
     var buf = new Buffer("rcc_indices");
     var n = buf.framecount();
