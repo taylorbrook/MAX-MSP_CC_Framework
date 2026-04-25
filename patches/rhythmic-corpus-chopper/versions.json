@@ -86,6 +86,14 @@
         "rhythmic-corpus-chopper.maxpat",
         "read_indices.js"
       ]
+    },
+    {
+      "version": "0.0.11",
+      "description": "fix orphaned connections from v0.0.9 replace_box: ears.split~ -> t l l, zl.reg -> ears.split~ in0",
+      "timestamp": "2026-04-25T20:02:01.732670+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
