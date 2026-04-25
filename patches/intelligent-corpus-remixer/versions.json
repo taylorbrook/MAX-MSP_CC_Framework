@@ -78,6 +78,14 @@
       "files_changed": [
         "intelligent-corpus-remixer.maxpat"
       ]
+    },
+    {
+      "version": "0.1.2",
+      "description": "clean up layout: organize objects into 3-zone grid (input | pipeline | controls/audio), eliminate overlaps",
+      "timestamp": "2026-04-25T20:02:22.062535+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }
