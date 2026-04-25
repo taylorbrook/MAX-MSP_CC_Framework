@@ -298,6 +298,15 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.17.0",
+      "description": "v0.17.0: attack realism -- attack_time/release_time Params (asymmetric breath smoother, AT1+AT2), fast-tracked breath drives chiff (AT4), pitch drift tau scales with attack_time (AT3), tongue_trig Param + button injects 8ms 5kHz noise burst into bore (AT5)",
+      "timestamp": "2026-04-25T20:35:14.330523+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat",
+        "bassoon.gendsp"
+      ]
     }
   ]
 }
