@@ -326,3 +326,91 @@ Net cost: +4 Param, +4 History, ~20 lines in the LFO block. No changes to reed/b
 - **After V3**: pitch and loudness no longer peak together; feels like a player, not a modulator
 - **After V5**: subtle — removes the last "pure tone" character from the LFO shape
 
+## Research (v0.17 attack realism pass — 2026-04-25)
+
+**Goal:** make bassoon onset sound *sudden* (tongued/articulated) like a real bassoon, while retaining the ability to play gradual attacks. Sources: Almeida/Vergez/Caussé (reed transient analysis), McIntyre/Schumacher/Woodhouse (speak transient = 20–50 cycles to lock), Welch et al (perceptual attack region), STK `Clarinet` tongue model, Scavone thesis §6 (tonguing), Wegel & Lane (attacks <20 ms perceived as "instant"), studio recordings of staccato bassoon notes.
+
+### Why v0.16.2 attacks feel gradual
+
+| Cause | Effect | Severity |
+|-------|--------|----------|
+| **20 ms breath onepole inside gen~** (`breath_tau=0.020`) | Even a step input takes ~60 ms to reach 95%. This is the dominant smearing. | HIGH |
+| **Reed onset pitch drift** (-8 cents, 40 ms decay, fixed) | Audibly "speaks up to pitch" — flags every attack as gradual. | MED |
+| **Chiff under-driven** (`chiff_amt=0.3`, scales with `breath_d * 30`) | The 20 ms onepole has already smeared `breath_d` to ~1/4 its true peak before chiff sees it → chiff is too quiet on hard attacks. | MED |
+| **No tongue event** | Real bassoon attacks include a consonant `t`/`d`/`th` from tongue-on-reed release: a sub-5 ms pressure transient + noise burst. We model none of it. | HIGH |
+| **Staccato-line~ ramp re-smoothed** | Host `line~` 15 ms attack → 20 ms gen~ onepole → effective ~30–40 ms. | MED |
+
+### What a real bassoon attack does
+
+- **Tongued attack ("normale")**: tongue blocks reed → release in 3–5 ms → bore locks within 5–8 cycles (~25–40 ms at A=110 Hz).
+- **Slurred attack ("legato")**: gradual breath rise over 80–200 ms, no tongue — what v0.16.2 currently does well.
+- **Pre-attack noise**: brief turbulent burst (~5–15 ms) immediately preceding pitch lock.
+- **Pitch lock**: real bassoon transient pitch settles within ~30 ms; the 40 ms drift we have is on the long side.
+
+### Candidate improvements (ranked by realism-per-line)
+
+**Tier A — biggest realism ROI (ship together as v0.17):**
+
+| ID | Change | Cost |
+|----|--------|------|
+| **AT1** | **Make breath smoothing user-controllable.** Replace fixed `breath_tau=0.020` with `Param attack_time(0.015, 0, 0.2)` (seconds). User dials 1 ms (sudden) → 200 ms (very gradual). Default 15 ms = compromise between sudden and current. | 1 Param, 1 line change |
+| **AT2** | **Asymmetric breath smoothing.** Use 2 taus: fast on rise (use `attack_time`), slow on fall (`release_time` Param, default 30 ms). Real reed mechanics: pressure rises faster than it falls when tongue stops it. | 1 Param, +3 lines |
+| **AT3** | **Scale reed onset pitch drift duration with attack_time.** Currently fixed -8c/40ms. Make decay tau = `max(attack_time * 2.5, 0.005)` so sudden attacks lock pitch in ~5 ms, gradual attacks keep the 40 ms speak time. | 0 Params, 1 line |
+| **AT4** | **Boost chiff coupling for sudden attacks.** Currently `breath_d * 30` is computed AFTER the breath smoother — onepole flattens the derivative. Fix: compute `breath_d` from the *raw* `in2` (or from a separate fast-tracking copy with 1 ms tau) so the chiff envelope sees the true rise rate. Multiplying scaler `30 → 60` once derivative is real. | 1 History, +5 lines |
+
+**Tier B — articulation polish:**
+
+| ID | Change | Cost |
+|----|--------|------|
+| **AT5** | **Tongue trigger event.** New gen~ Param `tongue_trig` (0/1 latch) or in1-style signal. On rising edge: (a) inject 5–10 ms noise burst into bore directly (bypass reed LUT), (b) prime `cone_dc` History with a small impulse so bore oscillation kickstarts. Models tongue release directly. | +1 History, +10 lines, host UI |
+| **AT6** | **Velocity-mapped attack.** Detect breath rise rate over first ~5 ms; if rise > threshold, automatically shorten `attack_time` and boost chiff. Emergent — no extra Param if user wants it implicit. Conflicts somewhat with AT1 (which is explicit). | +2 Histories, +6 lines |
+
+**Tier C — host-side ergonomics:**
+
+- C1: New "tongue" button on host UI (separate from staccato), bangs `tongue_trig` and triggers a sub-5ms `line~` to breath. Pairs with AT5.
+- C2: `staccato` button refactored: shorter ramp (3 ms instead of 15 ms) + auto-trigger AT5 on click. Reuses existing UI.
+- C3: Velocity input via `live.dial` for "Attack Hardness" (0=legato, 1=sharply tongued) that sets `attack_time`, chiff scale, and pitch drift duration in a single coupled gesture.
+
+### Recommendation (minimum viable + max ergonomics)
+
+**Ship AT1 + AT2 + AT3 + AT4 as v0.17.0** — covers the realism gap with no new gen~ topology, only Params + reads from raw `in2` for chiff. Default values produce a noticeably more sudden attack than v0.16.2 while still allowing 200 ms gradual attacks via the `attack_time` knob. Host adds 2 live.dials (Attack Time, Release Time).
+
+**Defer AT5/AT6 to v0.18** — proper tongue model is worth its own pass; needs articulation UI design.
+
+**One-knob alternative (simplest):** Just AT1 — exposing `attack_time` as a Param solves 80% of the problem. AT3 (drift coupling) is essentially free and prevents the pitch-speak-up giveaway. AT2/AT4 are polish.
+
+### Expected audible differences
+
+- **Before (v0.16.2)**: every attack feels like a slow legato regardless of staccato button — the 20 ms onepole + 40 ms pitch drift dominate.
+- **After AT1 default 15ms**: attacks feel ~30% sharper; staccato button is now distinguishable from sustained.
+- **After AT1 @ 3ms + AT3**: attacks lock in ~10 ms; close to a real tongued bassoon. Pitch drift scaled to ~7 ms — barely audible.
+- **After AT1 @ 100ms**: gradual legato is identical to v0.16.2 behavior — no regression for the use case the model already does well.
+- **After AT4**: chiff becomes a clearly perceived "th"/"d" consonant on sudden attacks (was previously masked). Hard staccato attacks gain consonant character.
+
+### Implementation sketch (gen~ side, all inside existing codebox)
+
+```
+Param attack_time(0.015, 0, 0.2);   // AT1: replaces breath_tau=0.020
+Param release_time(0.030, 0.005, 0.5); // AT2
+
+History breath_d_state(0);  // AT4: fast-tracked breath for chiff
+
+// AT2 asymmetric breath smoother
+breath_in = clamp(in2, 0, 1);
+breath_a_atk = 1 - exp(-1 / (samplerate * max(attack_time, 0.001)));
+breath_a_rel = 1 - exp(-1 / (samplerate * max(release_time, 0.001)));
+breath_a = (breath_in > breath_state) ? breath_a_atk : breath_a_rel;
+breath_state = breath_state + breath_a * (breath_in - breath_state);
+
+// AT4 fast-tracked breath for chiff (independent ~1 ms tracker)
+fast_a = 1 - exp(-1 / (samplerate * 0.001));
+breath_d_state = breath_d_state + fast_a * (breath_in - breath_d_state);
+breath_d_fast = breath_d_state - breath_prev_for_chiff;  // existing History
+
+// AT3 adaptive pitch drift decay
+drift_tau = max(attack_time * 2.5, 0.005);
+onset_pitch_drift = -8.0 * exp(-onset_sec / drift_tau);
+```
+
+Net cost: +2 Param, +1 History, ~10 lines. No topology change.
+
