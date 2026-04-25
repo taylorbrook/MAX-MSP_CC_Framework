@@ -256,14 +256,6 @@
         "bassoon.gendsp",
         "bassoon-model.maxpat"
       ]
-    },
-    {
-      "version": "0.16.0",
-      "description": "replace register hack with true octave switch (period halving + smoothed crossfade); phase-delay compensation now tracks effective oscillation freq",
-      "timestamp": "2026-04-25T04:47:05.629377+00:00",
-      "files_changed": [
-        "bassoon.gendsp"
-      ]
     }
   ]
 }
