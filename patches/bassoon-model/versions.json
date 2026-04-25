@@ -272,6 +272,14 @@
       "files_changed": [
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.16.0",
+      "description": "rebuild presets with 12 diverse slots covering all 18 params",
+      "timestamp": "2026-04-25T19:42:41.471472+00:00",
+      "files_changed": [
+        "bassoon_presets.json"
+      ]
     }
   ]
 }
