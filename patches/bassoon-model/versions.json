@@ -280,6 +280,15 @@
       "files_changed": [
         "bassoon_presets.json"
       ]
+    },
+    {
+      "version": "0.16.1",
+      "description": "final gen~ output trim x0.15 -- guarantees headroom against worst-case peaks (reed BPF Q + body formant)",
+      "timestamp": "2026-04-25T19:53:40.548604+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
