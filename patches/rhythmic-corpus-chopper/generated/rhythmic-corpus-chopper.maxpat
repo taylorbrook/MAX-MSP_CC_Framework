@@ -1137,27 +1137,6 @@
                                 "box": {
                                     "fontname": "Arial",
                                     "fontsize": 12.0,
-                                    "id": "obj-18",
-                                    "maxclass": "newobj",
-                                    "numinlets": 2,
-                                    "numoutlets": 2,
-                                    "outlettype": [
-                                        "",
-                                        ""
-                                    ],
-                                    "patching_rect": [
-                                        30.0,
-                                        585.0,
-                                        205.0,
-                                        22.0
-                                    ],
-                                    "text": "ears.slice~ @timeunit samps"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0,
                                     "id": "obj-19",
                                     "maxclass": "newobj",
                                     "numinlets": 1,
@@ -1233,6 +1212,27 @@
                                         22.0
                                     ],
                                     "text": "js read_indices.js",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-903",
+                                    "numinlets": 2,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "signal",
+                                        "signal"
+                                    ],
+                                    "patching_rect": [
+                                        30.0,
+                                        585.0,
+                                        282.0,
+                                        22.0
+                                    ],
+                                    "text": "ears.split~ @mode list @timeunit samps",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -1323,30 +1323,6 @@
                                     ],
                                     "source": [
                                         "obj-10",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-18",
-                                        0
-                                    ],
-                                    "source": [
-                                        "obj-17",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-20",
-                                        0
-                                    ],
-                                    "source": [
-                                        "obj-18",
                                         0
                                     ]
                                 }
@@ -1474,18 +1450,6 @@
                                     "destination": [
                                         "obj-17",
                                         0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "source": [
-                                        "obj-19",
-                                        1
-                                    ],
-                                    "destination": [
-                                        "obj-18",
-                                        1
                                     ]
                                 }
                             },
@@ -4197,7 +4161,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.0.8"
+                    "text": "v0.0.9"
                 }
             }
         ],
