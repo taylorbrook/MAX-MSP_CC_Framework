@@ -960,7 +960,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.16.2"
+                    "text": "v0.17.0"
                 }
             },
             {
@@ -1601,6 +1601,274 @@
                     ],
                     "text": "+~"
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-74",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1700.0,
+                        200.0,
+                        44.0,
+                        48.0
+                    ],
+                    "parameter_enable": 1,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        43.0,
+                        662.0,
+                        92.0,
+                        48.0
+                    ],
+                    "varname": "attack_time",
+                    "param_connect": "gen~_AA::attack_time",
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                15.0
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "attack_time",
+                            "parameter_mmax": 200.0,
+                            "parameter_mmin": 1.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "attack_time",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "live.dial",
+                    "id": "obj-75",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1760.0,
+                        200.0,
+                        44.0,
+                        48.0
+                    ],
+                    "parameter_enable": 1,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        153.0,
+                        662.0,
+                        92.0,
+                        48.0
+                    ],
+                    "varname": "release_time",
+                    "param_connect": "gen~_AA::release_time",
+                    "saved_attribute_attributes": {
+                        "valueof": {
+                            "parameter_initial": [
+                                30.0
+                            ],
+                            "parameter_initial_enable": 1,
+                            "parameter_longname": "release_time",
+                            "parameter_mmax": 500.0,
+                            "parameter_mmin": 5.0,
+                            "parameter_modmode": 3,
+                            "parameter_shortname": "release_time",
+                            "parameter_type": 0,
+                            "parameter_unitstyle": 1
+                        }
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-76",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1700.0,
+                        252.0,
+                        79.0,
+                        20.0
+                    ],
+                    "text": "attack ms",
+                    "fontname": "Arial",
+                    "fontsize": 9.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        43.0,
+                        692.0,
+                        92.0,
+                        18.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-77",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1760.0,
+                        252.0,
+                        86.0,
+                        20.0
+                    ],
+                    "text": "release ms",
+                    "fontname": "Arial",
+                    "fontsize": 9.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        153.0,
+                        692.0,
+                        92.0,
+                        18.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "button",
+                    "id": "obj-78",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1820.0,
+                        200.0,
+                        24.0,
+                        24.0
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        180.0,
+                        195.0,
+                        20.0,
+                        20.0
+                    ],
+                    "varname": "tongue_btn"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-79",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1820.0,
+                        230.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "tongue",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        202.0,
+                        197.0,
+                        50.0,
+                        18.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-80",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1820.0,
+                        254.0,
+                        50.0,
+                        22.0
+                    ],
+                    "text": "t b b",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-81",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1800.0,
+                        284.0,
+                        95.0,
+                        22.0
+                    ],
+                    "text": "tongue_trig 1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-82",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1900.0,
+                        284.0,
+                        55.0,
+                        22.0
+                    ],
+                    "text": "pipe 20",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-83",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1900.0,
+                        314.0,
+                        95.0,
+                        22.0
+                    ],
+                    "text": "tongue_trig 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
@@ -1971,6 +2239,78 @@
                     ],
                     "source": [
                         "obj-9",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-78",
+                        0
+                    ],
+                    "destination": [
+                        "obj-80",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-80",
+                        0
+                    ],
+                    "destination": [
+                        "obj-81",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-80",
+                        1
+                    ],
+                    "destination": [
+                        "obj-82",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-82",
+                        0
+                    ],
+                    "destination": [
+                        "obj-83",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-81",
+                        0
+                    ],
+                    "destination": [
+                        "obj-4",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-83",
+                        0
+                    ],
+                    "destination": [
+                        "obj-4",
                         0
                     ]
                 }
