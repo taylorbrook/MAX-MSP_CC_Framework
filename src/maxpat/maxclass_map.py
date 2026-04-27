@@ -49,6 +49,11 @@ UI_MAXCLASSES: frozenset[str] = frozenset({
     "live.map", "live.routing", "live.push",
     "live.miditool.in", "live.miditool.out",
     "live.remote~", "live.param~", "live.modulate~",
+    # Specialty / package UI widgets
+    "playlist~",      # Max-bundled clip-player UI widget
+    "dict.view",      # Max-bundled dict viewer UI widget
+    "dada.bounce",    # dada package physics-balls UI widget
+    "bach.roll",      # bach package notation-roll UI widget
 })
 
 
