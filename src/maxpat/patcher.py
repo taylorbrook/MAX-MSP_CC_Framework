@@ -1051,6 +1051,90 @@ class Patcher(GraphMixin, AnalysisMixin):
 
         return EditResult(box=new_box, orphaned=orphaned)
 
+    def replace_box_safe(
+        self,
+        old_box: Box,
+        new_name: str,
+        *,
+        args: list[str] | None = None,
+        rewire: str = "auto",
+    ) -> EditResult:
+        """Replace a box and auto-rewire connections when I/O layout matches.
+
+        Safer default alternative to ``replace_box``. Delegates to
+        ``replace_box`` internally to capture orphans, then in ``"auto"``
+        mode reconnects every orphan by index when the new box has the
+        same inlet AND outlet count as the old box. On match, the returned
+        ``EditResult.orphaned`` is empty -- connections are preserved
+        transparently. On I/O mismatch the orphans are returned unchanged
+        (no exception), so callers always have something to act on.
+        Use ``rewire="manual"`` to opt back into the explicit-orphan
+        workflow of ``replace_box`` regardless of I/O match.
+
+        Mirrors P1-1 in 260427-hox FINDINGS. Use this in preference to
+        ``replace_box`` for new code; ``replace_box`` is preserved for
+        explicit orphan handling.
+
+        Args:
+            old_box: The box to replace (must be in this patcher).
+            new_name: Name of the replacement object (e.g., "saw~").
+            args: Optional arguments for the new object.
+            rewire: ``"auto"`` (default) auto-reconnects orphans by index
+                when I/O counts match; on mismatch falls back to returning
+                orphans. ``"manual"`` always returns orphans without
+                rewiring (same shape as ``replace_box``).
+
+        Returns:
+            EditResult with the new box. ``orphaned`` is empty on
+            successful auto-rewire; populated on manual mode or I/O
+            mismatch.
+
+        Raises:
+            ValueError: If ``old_box`` is not in this patcher (raised by
+                the underlying ``replace_box``), or if ``rewire`` is not
+                ``"auto"`` or ``"manual"``.
+        """
+        if rewire not in ("auto", "manual"):
+            raise ValueError(
+                f"rewire must be 'auto' or 'manual', got {rewire!r}"
+            )
+
+        # Capture old box I/O counts BEFORE delegating, since replace_box
+        # removes the old box and we need the counts to compare against
+        # the new box's I/O.
+        old_numinlets = old_box.numinlets
+        old_numoutlets = old_box.numoutlets
+        old_id = old_box.id
+
+        # Delegate -- handles validation, orphan capture, removal, and
+        # creating the new box at the old position.
+        result = self.replace_box(old_box, new_name, args=args)
+
+        if rewire == "manual":
+            return result
+
+        # Auto mode: rewire only when I/O layout matches exactly.
+        if (
+            result.box.numinlets == old_numinlets
+            and result.box.numoutlets == old_numoutlets
+        ):
+            # Build an id->box map once for O(1) resolution. The new box
+            # stands in for the old id on either side of every orphan
+            # (handles self-loops naturally).
+            box_by_id = {b.id: b for b in self.boxes}
+            for o in result.orphaned:
+                src_id = o["source_id"]
+                dst_id = o["dest_id"]
+                src_box = result.box if src_id == old_id else box_by_id[src_id]
+                dst_box = result.box if dst_id == old_id else box_by_id[dst_id]
+                self.add_connection(
+                    src_box, o["source_outlet"], dst_box, o["dest_inlet"]
+                )
+            return EditResult(box=result.box, orphaned=[])
+
+        # Mismatch: return orphans intact (caller handles rewiring).
+        return result
+
     def insert_into_connection(
         self,
         source: Box,
