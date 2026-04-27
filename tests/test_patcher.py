@@ -1401,6 +1401,108 @@ class TestReplaceBox:
             p.replace_box(foreign, "saw~")
 
 
+class TestReplaceBoxSafe:
+    """P1-1: replace_box_safe auto-rewires connections when I/O matches."""
+
+    def test_auto_rewire_matching_io_zero_orphans(self):
+        """Auto mode + matching I/O: zero orphans, all connections survive on new box."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        # cycle~ and saw~ both have 2 inlets / 1 outlet -- matching I/O.
+        old = p.add_box("cycle~", args=["440"])
+        src = p.add_box("number")
+        dst = p.add_box("ezdac~")
+        p.add_connection(src, 0, old, 0)
+        p.add_connection(old, 0, dst, 0)
+        p.add_connection(old, 0, dst, 1)
+
+        result = p.replace_box_safe(old, "saw~")
+
+        assert isinstance(result, EditResult)
+        assert result.box.name == "saw~"
+        assert result.orphaned == []
+        assert len(p.lines) == 3
+        # All three connections remap old.id -> result.box.id.
+        actual = {
+            (pl.source_id, pl.source_outlet, pl.dest_id, pl.dest_inlet)
+            for pl in p.lines
+        }
+        expected = {
+            (src.id, 0, result.box.id, 0),
+            (result.box.id, 0, dst.id, 0),
+            (result.box.id, 0, dst.id, 1),
+        }
+        assert actual == expected
+
+    def test_auto_mismatched_io_falls_back_to_orphans(self):
+        """Auto mode + mismatched I/O: orphans returned, no auto-rewire."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        # cycle~: 2 in / 1 out. pack 0 0 0: 3 in / 1 out -- numinlets mismatch.
+        old = p.add_box("cycle~", args=["440"])
+        src = p.add_box("number")
+        dst = p.add_box("ezdac~")
+        p.add_connection(src, 0, old, 0)
+        p.add_connection(old, 0, dst, 0)
+
+        result = p.replace_box_safe(old, "pack", args=["0", "0", "0"])
+
+        assert isinstance(result, EditResult)
+        assert result.box.name == "pack"
+        assert len(result.orphaned) == 2
+        # No connections to or from the new box on the patcher.
+        assert all(
+            pl.source_id != result.box.id and pl.dest_id != result.box.id
+            for pl in p.lines
+        )
+        assert len(p.lines) == 0
+
+    def test_manual_mode_skips_rewire_even_on_match(self):
+        """Manual mode: orphans returned even when I/O would have matched."""
+        from src.maxpat.patcher import EditResult
+        p = Patcher()
+        old = p.add_box("cycle~", args=["440"])
+        dst = p.add_box("ezdac~")
+        p.add_connection(old, 0, dst, 0)
+
+        result = p.replace_box_safe(old, "saw~", rewire="manual")
+
+        assert isinstance(result, EditResult)
+        assert result.box.name == "saw~"
+        assert len(result.orphaned) == 1
+        assert len(p.lines) == 0
+
+    def test_ears_slice_to_split_regression_preserves_connections(self):
+        """Bassoon regression: ears.slice~ -> ears.split~ preserves all 3 wires."""
+        from src.maxpat.patcher import EditResult
+        # Both ears.slice~ and ears.split~ are 2 in / 2 out (matching I/O).
+        p = Patcher()
+        old = p.add_box("ears.slice~")
+        trig = p.add_box("trigger", args=["l", "l"])
+        zlreg = p.add_box("zl.reg")
+        trig2 = p.add_box("trigger", args=["b", "l"])
+        p.add_connection(old, 0, trig, 0)
+        p.add_connection(zlreg, 0, old, 0)
+        p.add_connection(trig2, 1, old, 1)
+
+        result = p.replace_box_safe(old, "ears.split~")
+
+        assert isinstance(result, EditResult)
+        assert result.box.name == "ears.split~"
+        assert result.orphaned == []
+        assert len(p.lines) == 3
+        actual = {
+            (pl.source_id, pl.source_outlet, pl.dest_id, pl.dest_inlet)
+            for pl in p.lines
+        }
+        expected = {
+            (result.box.id, 0, trig.id, 0),
+            (zlreg.id, 0, result.box.id, 0),
+            (trig2.id, 1, result.box.id, 1),
+        }
+        assert actual == expected
+
+
 class TestAutoPosition:
     """ED-05: auto-positioning with collision detection and grid snap."""
 
