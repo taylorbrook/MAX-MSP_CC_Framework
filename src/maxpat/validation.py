@@ -258,13 +258,17 @@ def _validate_maxclass_usage(patch_dict: dict) -> list[ValidationResult]:
     """Check that non-UI objects use maxclass='newobj', not their own name.
 
     Objects whose maxclass is neither 'newobj' nor a known UI maxclass are
-    likely authored with incorrect maxclass values. For example, a box with
+    authored with incorrect maxclass values. For example, a box with
     maxclass='cycle~' instead of maxclass='newobj' with text='cycle~' will
-    not work correctly in MAX.
+    not load correctly in MAX (raises "invalid attribute maxclass" errors).
 
-    Skips structural maxclasses (inlet, outlet, patcher, bpatcher).
-    Emits warnings (not errors) since third-party patches may have custom
-    maxclasses.
+    Skips:
+    - Structural maxclasses (inlet, outlet, patcher, bpatcher).
+    - Boxes with an embedded ``patcher`` key (legitimate subpatcher
+      containers like ``gen~``, ``poly~``, ``rnbo~``, ``codebox`` in
+      embedded mode that carry their own maxclass with an inline patcher).
+
+    Emits ``error`` (not warning) — this is a hard correctness check.
     """
     results: list[ValidationResult] = []
 
@@ -276,6 +280,12 @@ def _validate_maxclass_usage(patch_dict: dict) -> list[ValidationResult]:
         if maxclass in _STRUCTURAL_MAXCLASSES:
             continue
 
+        # Subpatcher containers (gen~, poly~, rnbo~, codebox in embedded mode)
+        # carry their own maxclass legitimately when an embedded `patcher` key
+        # is present.
+        if "patcher" in box:
+            continue
+
         # newobj is always correct for non-UI objects
         if maxclass == "newobj":
             continue
@@ -284,12 +294,14 @@ def _validate_maxclass_usage(patch_dict: dict) -> list[ValidationResult]:
         if maxclass in UI_MAXCLASSES:
             continue
 
-        # Non-UI, non-structural maxclass that isn't newobj -- flag it
+        # Non-UI, non-structural maxclass that isn't newobj -- flag as error.
         name = _extract_object_name(box) or maxclass
         results.append(ValidationResult(
-            "objects", "warning",
-            f"Object '{name}' uses maxclass '{maxclass}' instead of "
-            f"'newobj' -- non-UI objects should use maxclass='newobj'",
+            "objects", "error",
+            f"Wrong maxclass: object '{name}' uses maxclass='{maxclass}' "
+            f"but should use maxclass='newobj' with text='{name} ...' "
+            f"(only UI widgets use their own name as maxclass; see "
+            f"UI_MAXCLASSES in src/maxpat/maxclass_map.py)",
         ))
 
     return results
