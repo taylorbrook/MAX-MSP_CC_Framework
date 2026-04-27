@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-27 - Completed quick task 260427-js3: add Patcher.replace_box_safe with auto-rewire on I/O match (FINDINGS § P1-1) — 4 new tests, replace_box untouched, 193/193 test_patcher.py pass
+Last activity: 2026-04-27 - Completed quick task 260427-kbe: promote fan-out-without-trigger from warning to blocker tier in structure_critic.py (FINDINGS § P0-1) — single-line literal flip + 3 test updates incl. signal-rate regression guard, 6/6 TestStructureCritic pass
 
 Progress: [██████████] 100%
 
@@ -69,3 +69,4 @@ None.
 | 260427-j4e | CLAUDE.md ↔ feedback-memory drift audit (FINDINGS § P0-5) — 27 memories audited, 8 batched edits, 16 rules promoted. Closes the gap where feedback memory was the only source of truth for delay()/Delay.read-write, gen~ Param messages, comment-box #N, M4L param_connect, replace_box orphans, etc. Docs only. | 2026-04-27 | f113e53 |  | [260427-j4e-audit-claude-md-files-against-feedback-m](./quick/260427-j4e-audit-claude-md-files-against-feedback-m/) |
 | 260427-jdu | Add `ObjectDatabase.lookup_strict()` that returns None for empty-I/O entries lacking variable_io_rule (FINDINGS § P1-2) — fail-fast at lookup so callers don't get useless hits. lookup() byte-identical, 4 new tests (38/38 pass). | 2026-04-27 | 62aa741 | Verified | [260427-jdu-add-objectdatabase-lookup-strict-name-me](./quick/260427-jdu-add-objectdatabase-lookup-strict-name-me/) |
 | 260427-js3 | Add `Patcher.replace_box_safe(old, new_name, args, rewire="auto")` (FINDINGS § P1-1) — auto-reconnects orphaned connections by index when new box's I/O matches; falls back to manual orphan return on mismatch or `rewire="manual"`. existing replace_box untouched. 4 new tests including ears.slice~→ears.split~ regression case, 193/193 pass. | 2026-04-27 | b48c9e1 | Verified | [260427-js3-add-patcher-replace-box-safe-with-auto-r](./quick/260427-js3-add-patcher-replace-box-safe-with-auto-r/) |
+| 260427-kbe | Promote fan-out-without-trigger severity from `"warning"` to `"blocker"` in structure_critic.py (FINDINGS § P0-1) — single literal flip at line 143; hot/cold + redundant-connection checks remain `"warning"`; signal-rate fan-out unaffected (Rule #3 skip held). 3 test updates including new `test_fan_out_signal_rate_not_blocked` regression guard (cycle~→2×*~ produces no fan-out finding at any tier). 6/6 TestStructureCritic + 2/2 TestReviewPatchCombined pass. | 2026-04-27 | 98bbc3a | Verified | [260427-kbe-promote-fan-out-without-trigger-from-war](./quick/260427-kbe-promote-fan-out-without-trigger-from-war/) |
