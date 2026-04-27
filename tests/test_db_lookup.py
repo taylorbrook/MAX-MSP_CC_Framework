@@ -126,26 +126,30 @@ def test_lookup_does_not_warn_when_package_filtered():
     """Empty-I/O package objects must not warn when allowed_packages excludes them.
 
     Proves _maybe_warn_empty_io runs only on the SUCCESS path of lookup()
-    (after the package filter). "ease" is a known empty-I/O package
-    object from ease-max. Passing allowed_packages=[] rejects it before
-    the warn helper fires.
+    (after the package filter). "opensoundcontrol" is a known empty-I/O
+    package object from CNMAT externals (it's a documentation pseudo-class
+    that survived quick-260427-l2t cleanup). Passing allowed_packages=[]
+    rejects it before the warn helper fires.
+
+    Previously used "ease" as the canary; quick-260427-l2t auto-extracted
+    I/O for it from the ease-max helpfile, so it's no longer empty-I/O.
     """
     db = ObjectDatabase()
-    # Sanity: "ease" IS an empty-I/O package object today. If this
-    # precondition fails, pick another empty-I/O package object by
+    # Sanity: "opensoundcontrol" IS an empty-I/O package object today. If
+    # this precondition fails, pick another empty-I/O package object by
     # scanning: [n for n,o in db._objects.items() if not o.get("inlets")
     #           and not o.get("outlets") and "package" in o]
-    ease = db._objects.get("ease")
-    assert ease is not None, "precondition: 'ease' must exist in DB"
-    assert "package" in ease, "precondition: 'ease' must be a package object"
-    assert not ease.get("inlets") and not ease.get("outlets"), (
-        "precondition: 'ease' must be empty-I/O"
+    osc = db._objects.get("opensoundcontrol")
+    assert osc is not None, "precondition: 'opensoundcontrol' must exist in DB"
+    assert "package" in osc, "precondition: 'opensoundcontrol' must be a package object"
+    assert not osc.get("inlets") and not osc.get("outlets"), (
+        "precondition: 'opensoundcontrol' must be empty-I/O"
     )
 
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
-        result = db.lookup("ease", allowed_packages=[])
-    assert result is None, "'ease' must be filtered out with allowed_packages=[]"
+        result = db.lookup("opensoundcontrol", allowed_packages=[])
+    assert result is None, "'opensoundcontrol' must be filtered out with allowed_packages=[]"
     user_warnings = [w for w in caught if issubclass(w.category, UserWarning)]
     assert len(user_warnings) == 0, (
         f"filtered-out empty-I/O objects must not warn; got {len(user_warnings)}"
@@ -241,15 +245,49 @@ def test_audit_empty_io_segments():
     all_names = crit | cov | var
     assert "cycle~" not in all_names
 
-    # critical bucket is non-empty (live DB baseline ~130; loose bound
-    # tolerates future cleanup)
-    assert len(crit) >= 50, (
+    # critical bucket is non-empty. Lower bound was 50 pre-cleanup; after
+    # quick-260427-l2t the bucket dropped to ~7 (documentation pseudo-classes
+    # left as known leftovers). The >=1 floor proves the bucket exists
+    # without locking in a specific count -- the upper bound is enforced by
+    # test_audit_empty_io_critical_bound below.
+    assert len(crit) >= 1, (
         f"expected critical bucket to have real entries, got {len(crit)}"
     )
 
     # covered_by_override may be empty today (0 empty-I/O entries have
     # overrides); just confirm the key is present and the list is a list
     assert isinstance(audit["covered_by_override"], list)
+
+
+def test_audit_empty_io_critical_bound():
+    """Regression guard for FINDINGS § P1-6 cleanup (quick-260427-l2t).
+
+    After Pass A (4 doc-page non-objects deleted from per-domain JSONs) and
+    Pass B (~120 package objects populated via tools/extract_pkg_io.py), the
+    critical bucket dropped from 130 to ~7. This test locks in the cleanup
+    and surfaces regressions:
+
+      - If a new package gets extracted with empty I/O and added to the DB,
+        this count creeps up and the test fails -- the fix is to extend
+        tools/extract_pkg_io.py (add to MANUAL_FALLBACK or rely on a
+        helpfile match) and re-run it.
+
+      - If overrides.json gets corrupted or the deep-merge logic regresses,
+        this fails.
+
+    Threshold = 20 (current ~7 expected, headroom for natural drift like a
+    new package landing with a few empty-I/O entries before someone runs
+    the curator).
+    """
+    db = ObjectDatabase()
+    audit = db.audit_empty_io()
+    crit = audit["critical"]
+    assert len(crit) < 20, (
+        f"empty-I/O critical bucket regressed: {len(crit)} entries (expected <20).\n"
+        f"Names: {crit}\n"
+        f"Fix: extend tools/extract_pkg_io.py (helpfile match or MANUAL_FALLBACK) "
+        f"and re-run it, or add direct overrides for the new entries."
+    )
 
 
 # ── compute_io_counts regression (REVIEW 260420-j15 FN-01) ──────
