@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v4.0
 milestone_name: Package Integration
 status: complete
-last_updated: "2026-04-22T14:56:00.000Z"
-last_activity: 2026-04-22
+last_updated: "2026-04-27T21:55:00.000Z"
+last_activity: 2026-04-27
 progress:
   total_phases: 6
   completed_phases: 6
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-27 - Completed quick task 260427-kbe: promote fan-out-without-trigger from warning to blocker tier in structure_critic.py (FINDINGS § P0-1) — single-line literal flip + 3 test updates incl. signal-rate regression guard, 6/6 TestStructureCritic pass
+Last activity: 2026-04-27 - Completed quick task 260427-knk: add Layer-2 maxclass-correctness check (FINDINGS § P1-5) — promote `_validate_maxclass_usage` warning→error with wrong-pair→correct-pair message + skip embedded subpatcher containers via `patcher` key; widen `UI_MAXCLASSES` (+playlist~, dict.view, dada.bounce, bach.roll). 8/8 TestMaxclassUsage pass; 0 maxclass errors across 27 real patches
 
 Progress: [██████████] 100%
 
@@ -70,3 +70,4 @@ None.
 | 260427-jdu | Add `ObjectDatabase.lookup_strict()` that returns None for empty-I/O entries lacking variable_io_rule (FINDINGS § P1-2) — fail-fast at lookup so callers don't get useless hits. lookup() byte-identical, 4 new tests (38/38 pass). | 2026-04-27 | 62aa741 | Verified | [260427-jdu-add-objectdatabase-lookup-strict-name-me](./quick/260427-jdu-add-objectdatabase-lookup-strict-name-me/) |
 | 260427-js3 | Add `Patcher.replace_box_safe(old, new_name, args, rewire="auto")` (FINDINGS § P1-1) — auto-reconnects orphaned connections by index when new box's I/O matches; falls back to manual orphan return on mismatch or `rewire="manual"`. existing replace_box untouched. 4 new tests including ears.slice~→ears.split~ regression case, 193/193 pass. | 2026-04-27 | b48c9e1 | Verified | [260427-js3-add-patcher-replace-box-safe-with-auto-r](./quick/260427-js3-add-patcher-replace-box-safe-with-auto-r/) |
 | 260427-kbe | Promote fan-out-without-trigger severity from `"warning"` to `"blocker"` in structure_critic.py (FINDINGS § P0-1) — single literal flip at line 143; hot/cold + redundant-connection checks remain `"warning"`; signal-rate fan-out unaffected (Rule #3 skip held). 3 test updates including new `test_fan_out_signal_rate_not_blocked` regression guard (cycle~→2×*~ produces no fan-out finding at any tier). 6/6 TestStructureCritic + 2/2 TestReviewPatchCombined pass. | 2026-04-27 | 98bbc3a | Verified | [260427-kbe-promote-fan-out-without-trigger-from-war](./quick/260427-kbe-promote-fan-out-without-trigger-from-war/) |
+| 260427-knk | Add Layer-2 maxclass-correctness check (FINDINGS § P1-5) — promote `_validate_maxclass_usage` warning→error with wrong-pair→correct-pair message + skip embedded subpatcher containers via `patcher` key; widen `UI_MAXCLASSES` by 4 (`playlist~`, `dict.view`, `dada.bounce`, `bach.roll`). 8/8 TestMaxclassUsage (4 renamed + 4 new); 0 maxclass errors across 27 real patches and fixtures. | 2026-04-27 | 9d79c48 | Verified | [260427-knk-add-layer-2-maxclass-validation-check](./quick/260427-knk-add-layer-2-maxclass-validation-check/) |
