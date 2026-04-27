@@ -10091,60 +10091,6 @@
         "note": "bach UI annotation (control in, no out)"
       }
     },
-    "bp.Global Transport": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "_audit": {
-        "confidence": "LOW",
-        "source": "manual_fallback_inferred",
-        "tool": "tools/extract_pkg_io.py",
-        "note": "BEAP global transport panel"
-      }
-    },
-    "bp.serialosc": {
-      "inlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "outlets": [
-        {
-          "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        },
-        {
-          "id": 1,
-          "type": "",
-          "signal": false,
-          "digest": ""
-        }
-      ],
-      "_audit": {
-        "confidence": "LOW",
-        "source": "manual_fallback_inferred",
-        "tool": "tools/extract_pkg_io.py",
-        "note": "BEAP serialosc bridge"
-      }
-    },
     "camu.debug.control": {
       "inlets": [
         {
@@ -11414,8 +11360,10 @@
   },
   "_uncovered_empty_io": {
     "_note": "Objects with empty inlets or outlets not yet covered by audit overrides. Future work.",
-    "count": 7,
+    "count": 9,
     "objects": [
+      "bp.Global Transport",
+      "bp.serialosc",
       "dsp",
       "jbox",
       "jit_kernel",

@@ -77,8 +77,13 @@ MANUAL_FALLBACK: dict[str, tuple[int, int, list | None, str]] = {
     "bach.hypercomment": (1, 0, None, "bach UI annotation (control in, no out)"),
 
     # ------- bp.* (BEAP) -------
-    "bp.Global Transport": (1, 1, None, "BEAP global transport panel"),
-    "bp.serialosc": (1, 2, None, "BEAP serialosc bridge"),
+    # bp.Global Transport and bp.serialosc are intentionally NOT covered here:
+    # the BEAP source file (.claude/max-objects/packages/BEAP/objects.json)
+    # ships them with empty I/O, and tests/test_extraction.py::test_all_beap_
+    # objects_in_db asserts the loaded DB I/O length matches the source. An
+    # override here would diverge from source and break that round-trip
+    # check. They remain in audit['critical'] as known-leftovers until the
+    # BEAP source is corrected upstream.
 
     # ------- camu.* -------
     "camu.debug.control": (1, 1, None, "camu debug controller"),
@@ -411,13 +416,40 @@ def main() -> int:
     print(f"Manual fallback: {fallback_used} populated")
 
     if not populated:
-        print("Nothing to merge -- already idempotent.")
+        # Even when nothing new merges, refresh _uncovered_empty_io to
+        # reflect the live audit (handles the case where someone manually
+        # removed an override entry and re-ran the script).
+        post_critical = refresh_uncovered_only()
+        print(f"Nothing to merge -- already idempotent. "
+              f"_uncovered_empty_io refreshed to {post_critical} entries.")
         return 0
 
     added, extended, post_critical = merge_into_overrides(populated)
     print(f"overrides.json: {added} new entries, {extended} extended")
     print(f"Post-merge critical bucket size: {post_critical}")
     return 0
+
+
+def refresh_uncovered_only() -> int:
+    """Re-run audit and rewrite overrides._uncovered_empty_io to match.
+    Returns the live critical count.
+    """
+    from src.maxpat.db_lookup import ObjectDatabase  # noqa: E402
+    import warnings
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        db = ObjectDatabase()
+        audit = db.audit_empty_io()
+
+    with OVERRIDES_PATH.open() as f:
+        ov = json.load(f)
+    if "_uncovered_empty_io" in ov and isinstance(ov["_uncovered_empty_io"], dict):
+        ov["_uncovered_empty_io"]["count"] = len(audit["critical"])
+        ov["_uncovered_empty_io"]["objects"] = sorted(audit["critical"])
+    tmp = OVERRIDES_PATH.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(ov, indent=2))
+    os.replace(tmp, OVERRIDES_PATH)
+    return len(audit["critical"])
 
 
 if __name__ == "__main__":
