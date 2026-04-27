@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-27 - Completed quick task 260427-hox: meta-review synthesizing 30 feedback memories + recent quick-task history into FINDINGS.md with prioritized recommendations (P0/P1/P2) and v5.0 milestone proposal
+Last activity: 2026-04-27 - Completed quick task 260427-jdu: add ObjectDatabase.lookup_strict() that fails fast on empty-I/O entries (FINDINGS § P1-2) — 4 new tests, lookup() byte-identical, 38/38 pytest pass
 
 Progress: [██████████] 100%
 
@@ -67,3 +67,4 @@ None.
 | 260422-b0d | README refresh — updated stale counts (2,450→3,434 objects, 20→29 packages, 1,545→1,589 tests) + added 4 new patch projects (bassoon-model, intelligent-corpus-remixer, physics-composition, rhythmic-corpus-chopper) to Patches table | 2026-04-22 | e12b549 |  | [260422-b0d-look-over-recent-updates-to-the-system-a](./quick/260422-b0d-look-over-recent-updates-to-the-system-a/) |
 | 260427-hox | System meta-review — synthesized 30 feedback memories + 4 prior reviews + current state into FINDINGS.md (15 recommendations P0/P1/P2; top-10 ranking; v5.0 milestone proposal). Synthesis-only, no code changes. | 2026-04-27 | 89e4bde |  | [260427-hox-review-this-system-and-all-of-the-issues](./quick/260427-hox-review-this-system-and-all-of-the-issues/) |
 | 260427-j4e | CLAUDE.md ↔ feedback-memory drift audit (FINDINGS § P0-5) — 27 memories audited, 8 batched edits, 16 rules promoted. Closes the gap where feedback memory was the only source of truth for delay()/Delay.read-write, gen~ Param messages, comment-box #N, M4L param_connect, replace_box orphans, etc. Docs only. | 2026-04-27 | f113e53 |  | [260427-j4e-audit-claude-md-files-against-feedback-m](./quick/260427-j4e-audit-claude-md-files-against-feedback-m/) |
+| 260427-jdu | Add `ObjectDatabase.lookup_strict()` that returns None for empty-I/O entries lacking variable_io_rule (FINDINGS § P1-2) — fail-fast at lookup so callers don't get useless hits. lookup() byte-identical, 4 new tests (38/38 pass). | 2026-04-27 | 62aa741 | Verified | [260427-jdu-add-objectdatabase-lookup-strict-name-me](./quick/260427-jdu-add-objectdatabase-lookup-strict-name-me/) |
