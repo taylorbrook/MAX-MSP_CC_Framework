@@ -86,6 +86,17 @@ def _check_fan_out_without_trigger(
 
     Per CLAUDE.md Rule #4: "Use explicit trigger objects for fan-out
     instead of connecting one outlet to multiple inlets."
+
+    Tier: BLOCKER. Promoted from warning to blocker per 260427-hox-FINDINGS.md
+    §P0-1 (2026-04-27). Agents were emitting 8-16 fan-out warnings per patch
+    and ignoring them because the signal was non-blocking. Aligning with
+    sibling critics' blocker tier (dsp_critic gen~ I/O, rnbo_critic missing
+    in~/out~, ext_critic MIN_EXTERNAL) forces explicit trigger insertion.
+
+    Skips:
+      - Source IS a trigger object (the whole point -- explicit ordering exists)
+      - Source is signal-rate (~) -- Rule #3: all signal inlets are hot, ordering
+        does not apply in the audio domain
     """
     results: list[CriticResult] = []
 
@@ -129,7 +140,7 @@ def _check_fan_out_without_trigger(
                 dst_names.append(dst_id)
 
         results.append(CriticResult(
-            "warning",
+            "blocker",
             f"Fan-out without trigger: '{src_name}' ({src_id}) outlet "
             f"{src_outlet} connected to {len(destinations)} destinations "
             f"({', '.join(dst_names)}) -- execution order is undefined",
