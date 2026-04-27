@@ -46,7 +46,17 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 
 ### Active
 
-(Next milestone requirements TBD — run `/gsd-new-milestone`)
+## Current Milestone: v5.0 DB Schema Hardening + Validator Depth
+
+**Goal:** Move the object DB from flat extracted facts to a typed, install-aware contract; teach validators/critics to read the richer types; add DSP rigor pre-flight simulation.
+
+**Target features:**
+- Schema foundation: per-outlet `signal_role`, `domain_restricted`, `verified_installed`
+- Validator extensions: richer connection errors, domain-restricted hard guard, install-state warnings, external .gendsp validation
+- MSP outlet coverage sweep across ~80 unverified objects
+- Layout & UX builders: companion-pair patterns, overlay readout helper, labeled param bank, M4L gen synth skeleton
+- DSP pre-flight simulation harness for waveguide stability
+- Optional: promote remaining structure-critic warnings to hard-tier errors
 
 ### Future
 
@@ -102,5 +112,22 @@ v4.0 shipped full package integration — bundled and community MAX packages are
 | Expand-then-contract test migration | Add v2.0 read-write tests before removing v1.x write-only tests; CI stays green throughout | ✓ Good — 60+ tests rewritten without breakage |
 | Validation warns (not errors) on unknown objects | DB rejection on load would block third-party packages and user objects | ✓ Good — unknown objects load cleanly |
 
+## Evolution
+
+This document evolves at phase transitions and milestone boundaries.
+
+**After each phase transition** (via `/gsd-transition`):
+1. Requirements invalidated? → Move to Out of Scope with reason
+2. Requirements validated? → Move to Validated with phase reference
+3. New requirements emerged? → Add to Active
+4. Decisions to log? → Add to Key Decisions
+5. "What This Is" still accurate? → Update if drifted
+
+**After each milestone** (via `/gsd-complete-milestone`):
+1. Full review of all sections
+2. Core Value check — still the right priority?
+3. Audit Out of Scope — reasons still valid?
+4. Update Context with current state
+
 ---
-*Last updated: 2026-04-15 after v4.0 milestone*
+*Last updated: 2026-04-27 — v5.0 milestone started*

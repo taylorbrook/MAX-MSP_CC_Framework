@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v4.0
-milestone_name: Package Integration
-status: complete
-last_updated: "2026-04-27T21:55:00.000Z"
+milestone: v5.0
+milestone_name: DB Schema Hardening + Validator Depth
+status: planning
+last_updated: "2026-04-27T23:00:00.030Z"
 last_activity: 2026-04-27
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 17
-  completed_plans: 17
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -24,12 +24,10 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 
 ## Current Position
 
-Phase: v4.0 complete
-Plan: N/A
-Status: Milestone shipped
-Last activity: 2026-04-27 - Completed quick task 260427-l2t: bulk-clean empty-I/O entries (FINDINGS § P1-6) — Pass A deleted 4 doc-page non-objects from per-domain JSON; Pass B populated I/O for ~120 community-package objects (abc.*, fluid.*, jit.mo.*, ease.*, grainflow.*, mira.*, ml.*, etc.) via overrides.json (81 helpfile-extracted, 38 manual fallback) using new `tools/extract_pkg_io.py`. `audit_empty_io()['critical']`: 130 → 9 (93% reduction); regression test asserts < 20. 39/39 tests pass
-
-Progress: [██████████] 100%
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-27 — Milestone v5.0 started
 
 ## Accumulated Context
 
