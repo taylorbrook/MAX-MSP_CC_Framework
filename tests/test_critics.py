@@ -553,23 +553,79 @@ def _clean_structure_patch() -> dict:
 class TestStructureCritic:
     """Test the structure critic checks."""
 
-    def test_fan_out_without_trigger_detected(self):
-        """One outlet to 3 destinations without trigger -> warning."""
+    def test_fan_out_without_trigger_blocks(self):
+        """1-to-3 control fan-out without trigger -> blocker (was warning, promoted per 260427-kbe)."""
         patch = _fan_out_no_trigger_patch()
         results = review_structure(patch)
-        warnings = [r for r in results if r.severity == "warning"]
-        assert len(warnings) >= 1
-        assert any("fan" in r.finding.lower() or "trigger" in r.finding.lower() for r in warnings)
+        blockers = [r for r in results if r.severity == "blocker"]
+        assert len(blockers) >= 1, (
+            f"Expected at least one blocker for 1-to-3 control fan-out, got: "
+            f"{[(r.severity, r.finding) for r in results]}"
+        )
+        assert any(
+            "fan" in r.finding.lower() or "trigger" in r.finding.lower()
+            for r in blockers
+        )
+        # Regression: ensure NO warning-tier fan-out finding remains
+        warning_fan = [
+            r for r in results
+            if r.severity == "warning" and ("fan" in r.finding.lower() or "trigger" in r.finding.lower())
+        ]
+        assert len(warning_fan) == 0, "Fan-out should now be blocker, not warning"
 
     def test_fan_out_with_trigger_no_warning(self):
-        """Trigger object fanning out -> no fan-out warning."""
+        """Trigger object fanning out -> no fan-out finding at any severity."""
         patch = _fan_out_with_trigger_patch()
         results = review_structure(patch)
-        fan_warnings = [
+        # Trigger-mediated fan-out is exempt at BOTH warning and blocker tiers
+        fan_findings = [
             r for r in results
-            if r.severity == "warning" and "fan" in r.finding.lower()
+            if r.severity in ("warning", "blocker") and "fan" in r.finding.lower()
         ]
-        assert len(fan_warnings) == 0
+        assert len(fan_findings) == 0
+
+    def test_fan_out_signal_rate_not_blocked(self):
+        """Signal-rate (~) fan-out is exempt -- Rule #3 says all signal inlets are hot."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "cycle~ 440",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "*~ 0.5",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+            {
+                "id": "obj-3",
+                "maxclass": "newobj",
+                "text": "*~ 0.3",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+            {"source": ["obj-1", 0], "destination": ["obj-3", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_structure(patch)
+        fan_findings = [
+            r for r in results
+            if r.severity in ("warning", "blocker") and ("fan" in r.finding.lower() or "trigger" in r.finding.lower())
+        ]
+        assert len(fan_findings) == 0, (
+            f"Signal-rate fan-out must NOT be flagged. Got: "
+            f"{[(r.severity, r.finding) for r in fan_findings]}"
+        )
 
     def test_hot_cold_ordering_detected(self):
         """Multiple sources feeding hot+cold inlets without trigger -> warning."""
@@ -658,7 +714,7 @@ class TestReviewPatchCombined:
         patch = _make_patch(boxes, lines)
         results = review_patch(patch)
 
-        # Should have both gain staging and fan-out warnings
+        # Should have both gain staging and fan-out blockers
         has_gain = any("gain" in r.finding.lower() for r in results)
         has_fan_out = any("fan" in r.finding.lower() or "trigger" in r.finding.lower() for r in results)
         assert has_gain, "Expected gain staging warning from DSP critic"
