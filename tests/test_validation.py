@@ -971,10 +971,15 @@ class TestLayer4GenExprChecks:
 # ===========================================================================
 
 class TestMaxclassUsage:
-    """Non-UI objects using their own name as maxclass should be flagged."""
+    """Non-UI objects using their own name as maxclass should be flagged.
 
-    def test_non_ui_object_wrong_maxclass_triggers_warning(self, db):
-        """Object like cycle~ using maxclass='cycle~' instead of 'newobj' gets warning."""
+    The check is a hard error: a box with maxclass='cycle~' instead of
+    maxclass='newobj' + text='cycle~ ...' fails to load in MAX with an
+    "invalid attribute maxclass" error, so the validator emits level='error'.
+    """
+
+    def test_non_ui_object_wrong_maxclass_triggers_error(self, db):
+        """Object like cycle~ using maxclass='cycle~' instead of 'newobj' gets error."""
         patch = _make_patch_dict(boxes=[
             {"box": {"maxclass": "cycle~", "text": "cycle~ 440",
                      "id": "obj-1",
@@ -983,13 +988,14 @@ class TestMaxclassUsage:
                      "patching_rect": [100, 100, 80, 22]}},
         ])
         results = validate_patch(patch, db=db)
-        warnings = [r for r in results
-                    if r.layer == "objects" and r.level == "warning"
-                    and "maxclass" in r.message.lower()
-                    and "cycle~" in r.message]
-        assert len(warnings) == 1
+        errors = [r for r in results
+                  if r.layer == "objects" and r.level == "error"
+                  and "wrong maxclass" in r.message.lower()
+                  and "cycle~" in r.message
+                  and "newobj" in r.message]
+        assert len(errors) == 1
 
-    def test_ui_object_own_maxclass_no_warning(self, db):
+    def test_ui_object_own_maxclass_no_error(self, db):
         """UI objects like toggle correctly use their own name as maxclass."""
         patch = _make_patch_dict(boxes=[
             {"box": {"maxclass": "toggle", "id": "obj-1",
@@ -999,13 +1005,13 @@ class TestMaxclassUsage:
                      "patching_rect": [100, 100, 24, 24]}},
         ])
         results = validate_patch(patch, db=db)
-        warnings = [r for r in results
-                    if r.layer == "objects" and r.level == "warning"
-                    and "maxclass" in r.message.lower()]
-        assert warnings == []
+        errors = [r for r in results
+                  if r.layer == "objects" and r.level == "error"
+                  and "maxclass" in r.message.lower()]
+        assert errors == []
 
-    def test_structural_maxclass_no_warning(self, db):
-        """Structural maxclasses (inlet, outlet) do not trigger warning."""
+    def test_structural_maxclass_no_error(self, db):
+        """Structural maxclasses (inlet, outlet) do not trigger error."""
         patch = _make_patch_dict(boxes=[
             {"box": {"maxclass": "inlet", "id": "obj-1",
                      "numinlets": 0, "numoutlets": 1,
@@ -1017,13 +1023,13 @@ class TestMaxclassUsage:
                      "patching_rect": [0, 50, 30, 30]}},
         ])
         results = validate_patch(patch, db=db)
-        warnings = [r for r in results
-                    if r.layer == "objects" and r.level == "warning"
-                    and "maxclass" in r.message.lower()]
-        assert warnings == []
+        errors = [r for r in results
+                  if r.layer == "objects" and r.level == "error"
+                  and "maxclass" in r.message.lower()]
+        assert errors == []
 
-    def test_standard_newobj_no_warning(self, db):
-        """Standard newobj box does not trigger maxclass warning."""
+    def test_standard_newobj_no_error(self, db):
+        """Standard newobj box does not trigger maxclass error."""
         patch = _make_patch_dict(boxes=[
             {"box": {"maxclass": "newobj", "text": "cycle~ 440",
                      "id": "obj-1",
@@ -1032,10 +1038,97 @@ class TestMaxclassUsage:
                      "patching_rect": [100, 100, 80, 22]}},
         ])
         results = validate_patch(patch, db=db)
-        warnings = [r for r in results
-                    if r.layer == "objects" and r.level == "warning"
-                    and "maxclass" in r.message.lower()]
-        assert warnings == []
+        errors = [r for r in results
+                  if r.layer == "objects" and r.level == "error"
+                  and "maxclass" in r.message.lower()]
+        assert errors == []
+
+    def test_ui_widgets_button_dial_gain_pass(self, db):
+        """Three UI widgets (button, dial, gain~) using their own maxclass pass."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "button", "id": "obj-1",
+                     "numinlets": 1, "numoutlets": 1,
+                     "outlettype": ["bang"],
+                     "parameter_enable": 0,
+                     "patching_rect": [100, 100, 24, 24]}},
+            {"box": {"maxclass": "dial", "id": "obj-2",
+                     "numinlets": 1, "numoutlets": 1,
+                     "outlettype": ["float"],
+                     "parameter_enable": 0,
+                     "patching_rect": [150, 100, 40, 40]}},
+            {"box": {"maxclass": "gain~", "id": "obj-3",
+                     "numinlets": 2, "numoutlets": 2,
+                     "outlettype": ["signal", ""],
+                     "parameter_enable": 0,
+                     "patching_rect": [200, 100, 22, 140]}},
+        ])
+        results = validate_patch(patch, db=db)
+        errors = [r for r in results
+                  if r.layer == "objects" and r.level == "error"
+                  and "maxclass" in r.message.lower()]
+        assert errors == []
+
+    def test_multiple_non_ui_own_maxclass_each_errors(self, db):
+        """Three boxes each using own name as maxclass produce three errors."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "cycle~", "text": "cycle~ 440",
+                     "id": "obj-1",
+                     "numinlets": 2, "numoutlets": 1,
+                     "outlettype": ["signal"],
+                     "patching_rect": [100, 100, 80, 22]}},
+            {"box": {"maxclass": "*~", "text": "*~ 0.5",
+                     "id": "obj-2",
+                     "numinlets": 2, "numoutlets": 1,
+                     "outlettype": ["signal"],
+                     "patching_rect": [200, 100, 60, 22]}},
+            {"box": {"maxclass": "pack", "text": "pack 0 0",
+                     "id": "obj-3",
+                     "numinlets": 2, "numoutlets": 1,
+                     "outlettype": [""],
+                     "patching_rect": [300, 100, 60, 22]}},
+        ])
+        results = validate_patch(patch, db=db)
+        errors = [r for r in results
+                  if r.layer == "objects" and r.level == "error"
+                  and "wrong maxclass" in r.message.lower()]
+        assert len(errors) == 3
+
+    def test_subpatcher_container_with_patcher_key_passes(self, db):
+        """Box with maxclass='gen~' AND embedded patcher key is a legitimate
+        subpatcher container — should not trigger maxclass error."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "gen~", "id": "obj-1",
+                     "numinlets": 1, "numoutlets": 1,
+                     "outlettype": ["signal"],
+                     "patching_rect": [100, 100, 80, 22],
+                     "patcher": {"boxes": [], "lines": []}}},
+        ])
+        results = validate_patch(patch, db=db)
+        errors = [r for r in results
+                  if r.layer == "objects" and r.level == "error"
+                  and "maxclass" in r.message.lower()]
+        assert errors == []
+
+    def test_error_message_includes_correct_pair(self, db):
+        """Error message must contain both wrong pair AND correct pair."""
+        patch = _make_patch_dict(boxes=[
+            {"box": {"maxclass": "cycle~", "text": "cycle~ 440",
+                     "id": "obj-1",
+                     "numinlets": 2, "numoutlets": 1,
+                     "outlettype": ["signal"],
+                     "patching_rect": [100, 100, 80, 22]}},
+        ])
+        results = validate_patch(patch, db=db)
+        errors = [r for r in results
+                  if r.layer == "objects" and r.level == "error"
+                  and "wrong maxclass" in r.message.lower()]
+        assert len(errors) == 1
+        msg = errors[0].message
+        # Wrong pair
+        assert "maxclass='cycle~'" in msg
+        # Correct pair components
+        assert "maxclass='newobj'" in msg
+        assert "text='cycle~" in msg
 
 
 class TestPackageValidation:
