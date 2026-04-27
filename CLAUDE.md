@@ -139,6 +139,8 @@ Every patch save MUST be committed to git. The `save_patch_roundtrip()`, `write_
 
 After every `replace_box` call, iterate `result.orphaned` and re-add the connections via `add_connection(...)`, mapping outlet/inlet indices through if the new object's I/O layout matches. If the I/O layout differs, manually rewire each connection. **Never assume connections survive a replace.** Silent disconnection from this trap has cost multi-version debugging cycles.
 
+**Prefer `Patcher.replace_box_safe(old, new_name, args=..., rewire="auto")` for new code.** It delegates to `replace_box` internally, then auto-rewires every orphaned connection by index when the new box's I/O layout matches (same inlet AND outlet counts). On match, the returned `EditResult.orphaned` is empty — connections are preserved transparently. On I/O mismatch, it falls back to the existing orphan-return behavior so callers always have something to act on. Use `rewire="manual"` to opt back into the explicit-orphan workflow. The underlying `replace_box` is unchanged and still appropriate when you need to inspect or transform orphans before rewiring.
+
 ## Domain-Specific Rules
 
 ### MSP (Audio/Signal)
