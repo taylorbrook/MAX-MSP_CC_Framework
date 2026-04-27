@@ -202,6 +202,42 @@ class ObjectDatabase:
             return obj
         return None
 
+    def lookup_strict(self, name: str, *, allowed_packages: list[str] | None = None) -> dict | None:
+        """Look up an object by name, returning None for unusable empty-I/O entries.
+
+        Stricter variant of `lookup()` for patch-builder call sites that need
+        to fail fast. An entry is treated as "not found" when BOTH `inlets`
+        and `outlets` are empty AND there is no `variable_io_rules` entry
+        for the canonical name -- i.e., when the entry has no usable I/O
+        schema and is not a dynamically-sized object.
+
+        Variable-I/O objects (e.g., `trigger`, `pack`, `route`) are returned
+        even when their static `inlets`/`outlets` arrays are empty, because
+        their I/O is computed from arguments at runtime via
+        `compute_io_counts()`.
+
+        Aliases, package filtering, and the one-time empty-I/O UserWarning
+        emitted by `lookup()` are preserved (this method delegates to
+        `lookup()` for those concerns).
+
+        Args:
+            name: Object name or alias.
+            allowed_packages: Package filter, identical to lookup().
+
+        Returns:
+            Object dict, or None if not found, filtered out, or empty-I/O
+            without a variable_io_rules exemption.
+        """
+        obj = self.lookup(name, allowed_packages=allowed_packages)
+        if obj is None:
+            return None
+        canonical = self._aliases.get(name, name)
+        if canonical in self._variable_io_rules:
+            return obj
+        if obj.get("inlets") and obj.get("outlets"):
+            return obj
+        return None
+
     def _maybe_warn_empty_io(self, canonical: str, obj: dict) -> None:
         """Emit a one-time UserWarning if this canonical has empty I/O and no
         variable_io_rules exemption. Dedup via _empty_io_warned.
