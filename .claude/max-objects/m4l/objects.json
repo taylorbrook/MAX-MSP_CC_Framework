@@ -68,26 +68,6 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
-  "Parameter Properties": {
-    "name": "Parameter Properties",
-    "maxclass": "Parameter Properties",
-    "module": "m4l",
-    "domain": "M4L",
-    "category": "Unlisted",
-    "digest": "Properties common to parameter-aware objects.",
-    "description": "This refpage lists the roperties common to all parameter-aware objects. You can adjust these values\n    using either the Inspector or the Parameters window.",
-    "inlets": [],
-    "outlets": [],
-    "arguments": [],
-    "messages": [],
-    "attributes": {},
-    "seealso": [],
-    "tags": [],
-    "min_version": 8,
-    "verified": false,
-    "variable_io": false,
-    "rnbo_compatible": false
-  },
   "amxd~": {
     "name": "amxd~",
     "maxclass": "amxd~",
