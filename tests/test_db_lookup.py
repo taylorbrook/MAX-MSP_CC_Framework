@@ -152,6 +152,60 @@ def test_lookup_does_not_warn_when_package_filtered():
     )
 
 
+# ── lookup_strict() ─────────────────────────────────────────────
+
+def test_lookup_strict_returns_object_for_normal_hit():
+    db = ObjectDatabase()
+    result = db.lookup_strict("cycle~")
+    assert result is not None
+    assert result["name"] == "cycle~"
+
+
+def test_lookup_strict_returns_none_for_empty_io_entry():
+    """'dsp' is the same stable empty-I/O canary used by has_complete_io
+    tests above. lookup() still returns it (with a UserWarning); the
+    strict variant must return None so callers fail fast."""
+    db = ObjectDatabase()
+    # Suppress the expected one-time UserWarning from the lookup()
+    # delegation -- it's the documented behavior, not what this test guards.
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        assert db.lookup("dsp") is not None  # baseline: lookup still hits
+        assert db.lookup_strict("dsp") is None  # strict variant rejects
+
+
+def test_lookup_strict_returns_object_for_variable_io_with_empty_defaults():
+    """Defensive variable_io exemption: an entry with empty default I/O
+    but a variable_io_rules registration is a legitimate dynamically-
+    sized object (its real I/O is computed by compute_io_counts at
+    connection time). Must NOT be rejected.
+
+    Real DB has no such entry today (every variable_io_rules target ships
+    with populated defaults), so we inject one -- same pattern as
+    test_has_complete_io_respects_variable_io_exemption."""
+    db = ObjectDatabase()
+    db._objects["__test_var_io_strict__"] = {
+        "name": "__test_var_io_strict__",
+        "inlets": [],
+        "outlets": [],
+    }
+    db._variable_io_rules["__test_var_io_strict__"] = {
+        "inlet_count": "arg_count",
+        "outlet_count": "arg_count",
+    }
+    result = db.lookup_strict("__test_var_io_strict__")
+    assert result is not None
+    assert result["name"] == "__test_var_io_strict__"
+
+
+def test_lookup_strict_resolves_alias():
+    """t -> trigger; lookup_strict must use the same alias map as lookup()."""
+    db = ObjectDatabase()
+    result = db.lookup_strict("t")
+    assert result is not None
+    assert result["name"] == "trigger"
+
+
 # ── audit_empty_io() ────────────────────────────────────────────
 
 def test_audit_empty_io_segments():
