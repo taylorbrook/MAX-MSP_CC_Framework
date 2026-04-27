@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-15)
 Phase: v4.0 complete
 Plan: N/A
 Status: Milestone shipped
-Last activity: 2026-04-27 - Completed quick task 260427-jdu: add ObjectDatabase.lookup_strict() that fails fast on empty-I/O entries (FINDINGS § P1-2) — 4 new tests, lookup() byte-identical, 38/38 pytest pass
+Last activity: 2026-04-27 - Completed quick task 260427-js3: add Patcher.replace_box_safe with auto-rewire on I/O match (FINDINGS § P1-1) — 4 new tests, replace_box untouched, 193/193 test_patcher.py pass
 
 Progress: [██████████] 100%
 
@@ -68,3 +68,4 @@ None.
 | 260427-hox | System meta-review — synthesized 30 feedback memories + 4 prior reviews + current state into FINDINGS.md (15 recommendations P0/P1/P2; top-10 ranking; v5.0 milestone proposal). Synthesis-only, no code changes. | 2026-04-27 | 89e4bde |  | [260427-hox-review-this-system-and-all-of-the-issues](./quick/260427-hox-review-this-system-and-all-of-the-issues/) |
 | 260427-j4e | CLAUDE.md ↔ feedback-memory drift audit (FINDINGS § P0-5) — 27 memories audited, 8 batched edits, 16 rules promoted. Closes the gap where feedback memory was the only source of truth for delay()/Delay.read-write, gen~ Param messages, comment-box #N, M4L param_connect, replace_box orphans, etc. Docs only. | 2026-04-27 | f113e53 |  | [260427-j4e-audit-claude-md-files-against-feedback-m](./quick/260427-j4e-audit-claude-md-files-against-feedback-m/) |
 | 260427-jdu | Add `ObjectDatabase.lookup_strict()` that returns None for empty-I/O entries lacking variable_io_rule (FINDINGS § P1-2) — fail-fast at lookup so callers don't get useless hits. lookup() byte-identical, 4 new tests (38/38 pass). | 2026-04-27 | 62aa741 | Verified | [260427-jdu-add-objectdatabase-lookup-strict-name-me](./quick/260427-jdu-add-objectdatabase-lookup-strict-name-me/) |
+| 260427-js3 | Add `Patcher.replace_box_safe(old, new_name, args, rewire="auto")` (FINDINGS § P1-1) — auto-reconnects orphaned connections by index when new box's I/O matches; falls back to manual orphan return on mismatch or `rewire="manual"`. existing replace_box untouched. 4 new tests including ears.slice~→ears.split~ regression case, 193/193 pass. | 2026-04-27 | b48c9e1 | Verified | [260427-js3-add-patcher-replace-box-safe-with-auto-r](./quick/260427-js3-add-patcher-replace-box-safe-with-auto-r/) |
