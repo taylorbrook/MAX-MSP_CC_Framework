@@ -11,13 +11,13 @@ DB Schema Hardening + Validator Depth. Each requirement maps to exactly one phas
 
 Migrate the object DB from flat extracted facts to a typed, install-aware contract. Foundation for downstream validator depth (Phase 29) and coverage payoff (Phase 30).
 
-- [ ] **SCHEMA-01**: Every outlet entry can declare a `signal_role` of `audio` | `trigger` | `status` | `float` | `data` | `list` (replacing the boolean `signal:true/false` as the precise type)
-- [ ] **SCHEMA-02**: Existing `signal: bool` continues to work — derived from `signal_role` so no consumer breaks during migration
-- [ ] **SCHEMA-03**: Object entries can declare `domain_restricted: ["rnbo"]` (or other domains) to mark availability constraints
-- [ ] **SCHEMA-04**: Object entries carry a `verified_installed: bool` flag indicating whether the object was confirmed against `_pkg-source/`
-- [ ] **SCHEMA-05**: `overrides.json` schema extended to accept the three new fields and deep-merge them onto base objects
-- [ ] **SCHEMA-06**: `db_lookup.ObjectDatabase` loads, validates, and exposes the new schema fields via getter methods (e.g. `get_signal_role(name, outlet)`, `is_domain_restricted(name)`, `is_verified_installed(name)`)
-- [ ] **SCHEMA-07**: Three sibling audit functions — `db.audit_empty_io()` (unchanged), `db.audit_install_coverage()` (unverified-installed), `db.audit_domain_coverage()` (domain-restricted-without-coverage) — surface coverage gaps from focused entry points (per locked decision D-12 in 28-CONTEXT.md)
+- [x] **SCHEMA-01**: Every outlet entry can declare a `signal_role` of `audio` | `trigger` | `status` | `float` | `data` | `list` (replacing the boolean `signal:true/false` as the precise type)
+- [x] **SCHEMA-02**: Existing `signal: bool` continues to work — derived from `signal_role` so no consumer breaks during migration
+- [x] **SCHEMA-03**: Object entries can declare `domain_restricted: ["rnbo"]` (or other domains) to mark availability constraints
+- [x] **SCHEMA-04**: Object entries carry a `verified_installed: bool` flag indicating whether the object was confirmed against `_pkg-source/`
+- [x] **SCHEMA-05**: `overrides.json` schema extended to accept the three new fields and deep-merge them onto base objects
+- [x] **SCHEMA-06**: `db_lookup.ObjectDatabase` loads, validates, and exposes the new schema fields via getter methods (e.g. `get_signal_role(name, outlet)`, `is_domain_restricted(name)`, `is_verified_installed(name)`)
+- [x] **SCHEMA-07**: Three sibling audit functions — `db.audit_empty_io()` (unchanged), `db.audit_install_coverage()` (unverified-installed), `db.audit_domain_coverage()` (domain-restricted-without-coverage) — surface coverage gaps from focused entry points (per locked decision D-12 in 28-CONTEXT.md)
 
 ### Validator Depth (Phase 29)
 
