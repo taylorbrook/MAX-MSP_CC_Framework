@@ -2,15 +2,14 @@
 gsd_state_version: 1.0
 milestone: v5.0
 milestone_name: DB Schema Hardening + Validator Depth
-status: roadmapped
-last_updated: "2026-04-27T23:30:00.000Z"
-last_activity: 2026-04-27
+status: completed
+last_updated: "2026-04-28T01:31:21.466Z"
+last_activity: 2026-04-27 — Roadmap written for v5.0 (Phases 28-32)
 progress:
   total_phases: 5
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
-  percent: 0
 ---
 
 # Project State
@@ -24,10 +23,10 @@ See: .planning/PROJECT.md (updated 2026-04-27)
 
 ## Current Position
 
-Phase: 28 — Schema Foundation (not started)
+Phase: 28 — Schema Foundation (context gathered)
 Plan: —
-Status: Roadmap complete; ready for `/gsd-plan-phase 28`
-Last activity: 2026-04-27 — Roadmap written for v5.0 (Phases 28-32)
+Status: CONTEXT.md written; ready for `/gsd-plan-phase 28`
+Last activity: 2026-04-27 — Phase 28 context gathered (4 gray areas resolved: back-compat, domain_restricted, verified_installed, audit shape)
 
 ## Performance Metrics
 
@@ -46,6 +45,7 @@ Last activity: 2026-04-27 — Roadmap written for v5.0 (Phases 28-32)
 Decisions archived in PROJECT.md Key Decisions table.
 
 v5.0-specific roadmap decisions:
+
 - Phase 33 (Critic Tier Hardening) intentionally excluded from `total_phases` — kept as conditional follow-on contingent on Phase 29 evidence.
 - Phase 32 (DSP Pre-Flight Simulation) declared independent of Phase 28 — could ship first or last; agent picks ordering at planning time.
 - Schema delta scoped to three fields only (`signal_role`, `domain_restricted`, `verified_installed`); broader schema evolution (inlet roles, message taxonomy) deferred to v6.0+.
@@ -68,6 +68,7 @@ None.
 **Next action:** `/gsd-plan-phase 28` to decompose Schema Foundation into plans.
 
 **Phase order recommendation:**
+
 1. Phase 28 (foundation — blocks 29, 30, 31)
 2. Phase 29 OR 32 (29 depends on 28; 32 is independent — can parallelize)
 3. Phase 30 (depends on 28; payoff for the schema)
