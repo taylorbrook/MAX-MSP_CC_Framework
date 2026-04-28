@@ -34,6 +34,21 @@ SUPPORTED_IO_FORMULAS = frozenset({
     "inherited_from_subpatch",
 })
 
+# Closed enum for per-outlet signal_role (SCHEMA-01, D-04). Any other value
+# in overrides.json:objects[name].outlets[i].signal_role is a typo. The
+# ObjectDatabase constructor validates every loaded role against this set,
+# mirroring _validate_variable_io_rules (the quick-260421-b3a precedent).
+_SIGNAL_ROLE_ENUM = frozenset({
+    "audio", "trigger", "status", "float", "data", "list",
+})
+
+# Closed enum for per-object domain_restricted whitelist (SCHEMA-03, D-06).
+# Means "this object is only legal in the listed domain(s)."
+# Adding a new domain later = one-line enum extension.
+_DOMAIN_ENUM = frozenset({
+    "rnbo", "m4l", "gen",
+})
+
 
 class ObjectDatabase:
     """Interface to the MAX object knowledge base.
@@ -133,6 +148,12 @@ class ObjectDatabase:
                     self._objects[name][key] = value
                 self._overridden_objects.add(name)
 
+        # Fail-fast on the v5.0 schema-extension fields (signal_role,
+        # domain_restricted, verified_installed). Runs AFTER deep-merge so
+        # the validator sees the final merged shape, BEFORE package_info
+        # so any load-time error surfaces during DB construction.
+        self._validate_schema_extensions()
+
         # Load package registry
         pkg_info_path = db_root / "package_info.json"
         if pkg_info_path.exists():
@@ -173,6 +194,63 @@ class ObjectDatabase:
                     f"{name!r} ({role}). Supported: "
                     f"{sorted(SUPPORTED_IO_FORMULAS)} or 'fixed:N'."
                 )
+
+    def _validate_schema_extensions(self) -> None:
+        """Fail-fast validator for the v5.0 schema-extension fields.
+
+        Walks self._objects after the overrides deep-merge has completed and
+        enforces three schema invariants (SCHEMA-01..03, D-04, D-06, D-15):
+
+          1. Every outlet's `signal_role` (when present) is a member of
+             _SIGNAL_ROLE_ENUM.
+          2. Every object's `domain_restricted` (when present) is a list of
+             strings, each a member of _DOMAIN_ENUM.
+          3. Every object's `verified_installed` (when present) is exactly
+             a bool — `type(value) is bool`, NOT isinstance() (which would
+             silently accept Python ints since bool is an int subclass).
+
+        Raises ValueError naming the offending object, the field, and the
+        unknown / wrong-typed value. Mirrors _validate_variable_io_rules
+        (the quick-260421-b3a fail-fast precedent).
+        """
+        for name, obj in self._objects.items():
+            # 1. signal_role per-outlet enum check
+            for i, outlet in enumerate(obj.get("outlets", [])):
+                if "signal_role" not in outlet:
+                    continue
+                role = outlet["signal_role"]
+                if role not in _SIGNAL_ROLE_ENUM:
+                    raise ValueError(
+                        f"Unknown signal_role {role!r} on outlet index {i} "
+                        f"of object {name!r}. Supported: "
+                        f"{sorted(_SIGNAL_ROLE_ENUM)}."
+                    )
+
+            # 2. domain_restricted per-object list-of-enum check
+            if "domain_restricted" in obj:
+                value = obj["domain_restricted"]
+                if not isinstance(value, list):
+                    raise ValueError(
+                        f"domain_restricted on object {name!r} must be a "
+                        f"list, got {type(value).__name__}: {value!r}"
+                    )
+                for elem in value:
+                    if elem not in _DOMAIN_ENUM:
+                        raise ValueError(
+                            f"Unknown domain {elem!r} in domain_restricted "
+                            f"for object {name!r}. Supported: "
+                            f"{sorted(_DOMAIN_ENUM)}."
+                        )
+
+            # 3. verified_installed strict-bool check (not isinstance — Python
+            # treats True/False as int subclass; we want to reject 1/0/"yes").
+            if "verified_installed" in obj:
+                value = obj["verified_installed"]
+                if type(value) is not bool:
+                    raise ValueError(
+                        f"verified_installed on object {name!r} must be "
+                        f"bool, got {type(value).__name__}: {value!r}"
+                    )
 
     def lookup(self, name: str, *, allowed_packages: list[str] | None = None) -> dict | None:
         """Look up an object by name, resolving aliases.
