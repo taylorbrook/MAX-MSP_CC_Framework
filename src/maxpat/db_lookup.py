@@ -839,13 +839,21 @@ class ObjectDatabase:
         Returns a dict with one sorted list:
 
           restricted_no_coverage: canonical names flagged
-            domain_restricted: ["X"] whose canonical name does NOT appear in the
-            X domain JSON. An orphaned restriction usually means the override
-            contains a typo or the object was never extracted into the listed
-            domain -- either way it's a coverage gap to surface.
+            domain_restricted: [...] whose canonical entry's `domain` does
+            NOT match ANY of the listed restrictions. An orphaned
+            restriction usually means the override contains a typo or the
+            object was never extracted into any listed domain -- either way
+            it's a coverage gap to surface.
 
-        A name appears in the result if AT LEAST ONE listed domain has no
-        matching object entry under that domain's `domain` field.
+        Multi-domain semantic (D-12 refinement): a name appears in the
+        result only when NONE of the listed restrictions match
+        `obj['domain']`. For an object with
+        `domain_restricted: ["rnbo", "m4l"]` whose canonical entry lives in
+        the RNBO domain JSON, the RNBO restriction matches and the M4L
+        restriction is treated as a legitimate compatibility tag (not an
+        orphan). Reporting on a per-restriction basis would always flag
+        multi-domain entries since the canonical entry can only live in
+        one domain JSON file.
         """
         no_coverage: list[str] = []
         for canonical, obj in self._objects.items():
@@ -859,9 +867,14 @@ class ObjectDatabase:
                     # Should be unreachable -- _validate_schema_extensions rejects
                     # unknown domains at load. Defensive skip anyway.
                     continue
-                if obj_domain != expected_field:
-                    no_coverage.append(canonical)
-                    break  # one mismatch is enough; don't double-report
+                if obj_domain == expected_field:
+                    # At least one listed restriction matches the canonical
+                    # entry's domain -> coverage is intact, stop scanning.
+                    break
+            else:
+                # for/else: ran to completion without break -> no listed
+                # restriction matched obj_domain -> orphaned coverage.
+                no_coverage.append(canonical)
         return {
             "restricted_no_coverage": sorted(no_coverage),
         }
