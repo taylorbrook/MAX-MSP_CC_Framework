@@ -154,6 +154,11 @@ class ObjectDatabase:
         # so any load-time error surfaces during DB construction.
         self._validate_schema_extensions()
 
+        # Project signal_role onto the legacy outlet['signal'] bool so all
+        # existing back-compat readers see unchanged data. Runs after the
+        # validator so role values are known valid (D-01, D-03).
+        self._apply_signal_role_writethrough()
+
         # Load package registry
         pkg_info_path = db_root / "package_info.json"
         if pkg_info_path.exists():
@@ -251,6 +256,25 @@ class ObjectDatabase:
                         f"verified_installed on object {name!r} must be "
                         f"bool, got {type(value).__name__}: {value!r}"
                     )
+
+    def _apply_signal_role_writethrough(self) -> None:
+        """Materialize outlet['signal'] from outlet['signal_role'] (D-01, D-03).
+
+        Curators write signal_role only; the loader projects it onto the legacy
+        signal: bool so existing readers (patcher.py:250, dsp_critic outlettype
+        derivation, get_outlet_types) need zero code changes during the v5.0
+        back-compat window. signal_role == "audio" → True; every other role
+        (trigger, status, float, data, list) → False.
+
+        Must run AFTER _validate_schema_extensions() so role values are known
+        valid, and BEFORE any audit/getter reads self._objects.
+        """
+        for name, obj in self._objects.items():
+            for outlet in obj.get("outlets", []):
+                role = outlet.get("signal_role")
+                if role is None:
+                    continue
+                outlet["signal"] = (role == "audio")
 
     def lookup(self, name: str, *, allowed_packages: list[str] | None = None) -> dict | None:
         """Look up an object by name, resolving aliases.
