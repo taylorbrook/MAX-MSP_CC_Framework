@@ -34,6 +34,9 @@ from src.maxpat.db_lookup import (
 # ── Test helpers ──────────────────────────────────────────────────
 
 
+_SEED_OBJECT_NAMES = {"cycle~"}
+
+
 def _make_db_root(tmp_path: Path, bad_overrides: dict) -> Path:
     """Build a minimal isolated DB root for fail-fast tests.
 
@@ -44,7 +47,32 @@ def _make_db_root(tmp_path: Path, bad_overrides: dict) -> Path:
     The lone msp object is the override target; only `cycle~` exists in this
     isolated DB so any override entry must target it. The constructor fails
     fast on validation errors per D-15 (mirrors _validate_variable_io_rules).
+
+    Override-key validation: the deep-merge in ObjectDatabase._load silently
+    drops override entries whose key isn't in self._objects (line ~154),
+    which means a typo'd override target (e.g., {"nonexistant~": {...}})
+    would never reach the validator. This helper asserts every non-comment
+    override key is in _SEED_OBJECT_NAMES so tests fail loudly instead of
+    silently green-passing on a never-validated override.
+
+    Note on supplementary files: aliases.json, pd-blocklist.json, and
+    package_info.json are deliberately omitted -- the constructor uses
+    `if path.exists()` guards, so omitting them works today. If a future
+    refactor changes those guards to required reads, every test built on
+    this helper would fail with confusing FileNotFoundError; add stubs
+    here at that point.
     """
+    bad_keys = {
+        key
+        for key in bad_overrides
+        if not key.startswith("_") and key not in _SEED_OBJECT_NAMES
+    }
+    assert not bad_keys, (
+        f"_make_db_root override targets must be in _SEED_OBJECT_NAMES "
+        f"({sorted(_SEED_OBJECT_NAMES)}); deep-merge silently drops "
+        f"unknown keys, so a typo here means the validator never sees "
+        f"the override. Offending keys: {sorted(bad_keys)}."
+    )
     (tmp_path / "msp").mkdir()
     (tmp_path / "msp" / "objects.json").write_text(
         json.dumps(
