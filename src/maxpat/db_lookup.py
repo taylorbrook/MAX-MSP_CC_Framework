@@ -49,6 +49,16 @@ _DOMAIN_ENUM = frozenset({
     "rnbo", "m4l", "gen",
 })
 
+# Maps domain_restricted enum values to the corresponding object 'domain' field
+# string. Used by audit_domain_coverage() to detect orphaned restrictions
+# (e.g., an override claiming domain_restricted: ["rnbo"] for an object whose
+# canonical entry is in the MSP domain JSON, not RNBO).
+_DOMAIN_TO_FIELD = {
+    "rnbo": "RNBO",
+    "m4l": "M4L",
+    "gen": "Gen",
+}
+
 
 class ObjectDatabase:
     """Interface to the MAX object knowledge base.
@@ -791,4 +801,67 @@ class ObjectDatabase:
             "critical": sorted(critical),
             "covered_by_override": sorted(covered),
             "variable_io_ok": variable_ok,
+        }
+
+    def audit_install_coverage(self) -> dict[str, list[str]]:
+        """Report on verified_installed coverage across the DB (SCHEMA-07, D-12).
+
+        Returns a dict with two sorted lists:
+
+          unaudited: canonical names where the verified_installed field is absent.
+            Per D-09, absent means "unaudited" (not "known missing"). Per D-11,
+            Phase 30's coverage metric is to drive this list down.
+
+          verified_false: canonical names with explicit verified_installed: false,
+            meaning the object was audited and is known missing from this install.
+            Per D-10, Phase 29's install-state warning fires only on this set,
+            NOT on `unaudited` (which would generate a 2,000+ warning storm).
+
+        Lists are sorted alphabetically. The two lists are disjoint by construction.
+        """
+        unaudited: list[str] = []
+        verified_false: list[str] = []
+        for canonical, obj in self._objects.items():
+            state = obj.get("verified_installed")
+            if state is None:
+                unaudited.append(canonical)
+            elif state is False:
+                verified_false.append(canonical)
+            # state is True -> "verified present" -> not in either bucket
+        return {
+            "unaudited": sorted(unaudited),
+            "verified_false": sorted(verified_false),
+        }
+
+    def audit_domain_coverage(self) -> dict[str, list[str]]:
+        """Report on domain_restricted coverage (SCHEMA-07, D-12).
+
+        Returns a dict with one sorted list:
+
+          restricted_no_coverage: canonical names flagged
+            domain_restricted: ["X"] whose canonical name does NOT appear in the
+            X domain JSON. An orphaned restriction usually means the override
+            contains a typo or the object was never extracted into the listed
+            domain -- either way it's a coverage gap to surface.
+
+        A name appears in the result if AT LEAST ONE listed domain has no
+        matching object entry under that domain's `domain` field.
+        """
+        no_coverage: list[str] = []
+        for canonical, obj in self._objects.items():
+            restrictions = obj.get("domain_restricted", [])
+            if not restrictions:
+                continue
+            obj_domain = obj.get("domain", "")
+            for restricted_to in restrictions:
+                expected_field = _DOMAIN_TO_FIELD.get(restricted_to)
+                if expected_field is None:
+                    # Should be unreachable -- _validate_schema_extensions rejects
+                    # unknown domains at load. Defensive skip anyway.
+                    continue
+                if obj_domain != expected_field:
+                    no_coverage.append(canonical)
+                    break  # one mismatch is enough; don't double-report
+        return {
+            "restricted_no_coverage": sorted(no_coverage),
         }
