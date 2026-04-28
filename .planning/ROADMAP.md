@@ -69,7 +69,7 @@ Full details: `.planning/milestones/v4.0-ROADMAP.md`
 
 ### 🚧 v5.0 DB Schema Hardening + Validator Depth (Phases 28-32)
 
-- [ ] **Phase 28: Schema Foundation** — Typed signal_role / domain_restricted / verified_installed fields land in overrides + db_lookup with back-compat shim
+- [x] **Phase 28: Schema Foundation** — Typed signal_role / domain_restricted / verified_installed fields land in overrides + db_lookup with back-compat shim (completed 2026-04-28)
 - [ ] **Phase 29: Validator Depth** — Layer-3 role-aware errors, RNBO domain hard guard, install-state warnings, external `.gendsp` validation
 - [ ] **Phase 30: MSP Outlet Coverage Sweep** — Migrate 16 existing overrides + populate ~80 unverified MSP objects + bulk audit script
 - [ ] **Phase 31: Layout & UX Builders** — `add_overlay_readout`, `add_labeled_param_bank`, signal_role-aware companion pairs, `m4l_gen_synth` skeleton
@@ -92,7 +92,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 **Plans**: 3 plans
 - [x] 28-01-PLAN.md — Schema validation infrastructure (enums + fail-fast validator + signal_role write-through)
 - [x] 28-02-PLAN.md — Five getter methods (get_signal_role, get_install_state, is_verified_installed, get_domain_restrictions, is_domain_restricted)
-- [ ] 28-03-PLAN.md — Audit functions + example fixtures + test suite (>=15 tests)
+- [x] 28-03-PLAN.md — Audit functions + example fixtures + test suite (>=15 tests)
 
 ### Phase 29: Validator Depth
 **Goal**: Validators and critics read the new schema and produce specific, actionable errors instead of generic type-mismatch warnings; external `.gendsp` files get the same DSP rigor as embedded codeboxes
@@ -172,7 +172,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 23. Agent Package Intelligence | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 24. Community Package Support | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 25. Templates + Critics | v4.0 | 3/3 | Complete    | 2026-04-15 |
-| 28. Schema Foundation | v5.0 | 2/3 | In Progress|  |
+| 28. Schema Foundation | v5.0 | 3/3 | Complete   | 2026-04-28 |
 | 29. Validator Depth | v5.0 | 0/0 | Not started | - |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 0/0 | Not started | - |
 | 31. Layout & UX Builders | v5.0 | 0/0 | Not started | - |
