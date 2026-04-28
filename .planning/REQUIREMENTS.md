@@ -86,12 +86,42 @@ Explicit exclusions and why:
 
 ## Traceability
 
-Filled by roadmap.
-
 | REQ-ID | Phase | Plan | Validation |
 |--------|-------|------|------------|
-| _(populated by gsd-roadmapper)_ | | | |
+| SCHEMA-01 | Phase 28 | TBD | Pending |
+| SCHEMA-02 | Phase 28 | TBD | Pending |
+| SCHEMA-03 | Phase 28 | TBD | Pending |
+| SCHEMA-04 | Phase 28 | TBD | Pending |
+| SCHEMA-05 | Phase 28 | TBD | Pending |
+| SCHEMA-06 | Phase 28 | TBD | Pending |
+| SCHEMA-07 | Phase 28 | TBD | Pending |
+| VALID-01 | Phase 29 | TBD | Pending |
+| VALID-02 | Phase 29 | TBD | Pending |
+| VALID-03 | Phase 29 | TBD | Pending |
+| VALID-04 | Phase 29 | TBD | Pending |
+| VALID-05 | Phase 29 | TBD | Pending |
+| MSPCOV-01 | Phase 30 | TBD | Pending |
+| MSPCOV-02 | Phase 30 | TBD | Pending |
+| MSPCOV-03 | Phase 30 | TBD | Pending |
+| MSPCOV-04 | Phase 30 | TBD | Pending |
+| MSPCOV-05 | Phase 30 | TBD | Pending |
+| LAYOUT-01 | Phase 31 | TBD | Pending |
+| LAYOUT-02 | Phase 31 | TBD | Pending |
+| LAYOUT-03 | Phase 31 | TBD | Pending |
+| LAYOUT-04 | Phase 31 | TBD | Pending |
+| LAYOUT-05 | Phase 31 | TBD | Pending |
+| DSPSIM-01 | Phase 32 | TBD | Pending |
+| DSPSIM-02 | Phase 32 | TBD | Pending |
+| DSPSIM-03 | Phase 32 | TBD | Pending |
+| DSPSIM-04 | Phase 32 | TBD | Pending |
+| DSPSIM-05 | Phase 32 | TBD | Pending |
+| CRITIC-01 | Phase 33 (optional) | TBD | Pending |
+| CRITIC-02 | Phase 33 (optional) | TBD | Pending |
+| CRITIC-03 | Phase 33 (optional) | TBD | Pending |
+
+**Coverage:** 28/28 v5.0 requirements mapped (Phases 28-32). Phase 33 (3 CRITIC reqs) tracked separately as optional/conditional follow-on.
 
 ---
 *Requirements created: 2026-04-27*
+*Traceability filled: 2026-04-27 by gsd-roadmapper*
 *Source: FINDINGS.md (260427-hox) + user-provided v5.0 scope proposal*
