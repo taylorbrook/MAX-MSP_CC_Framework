@@ -90,7 +90,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
   4. A developer can mark an object `verified_installed: true/false` and query it via `db.is_verified_installed(name)` to know whether it was confirmed against `_pkg-source/`
   5. Three sibling audit functions — `db.audit_empty_io()` (unchanged), `db.audit_install_coverage()` (unverified-installed), `db.audit_domain_coverage()` (domain-restricted-without-coverage) — surface coverage gaps from focused entry points (per locked decision D-12)
 **Plans**: 3 plans
-- [ ] 28-01-PLAN.md — Schema validation infrastructure (enums + fail-fast validator + signal_role write-through)
+- [x] 28-01-PLAN.md — Schema validation infrastructure (enums + fail-fast validator + signal_role write-through)
 - [ ] 28-02-PLAN.md — Five getter methods (get_signal_role, get_install_state, is_verified_installed, get_domain_restrictions, is_domain_restricted)
 - [ ] 28-03-PLAN.md — Audit functions + example fixtures + test suite (>=15 tests)
 
@@ -172,7 +172,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 23. Agent Package Intelligence | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 24. Community Package Support | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 25. Templates + Critics | v4.0 | 3/3 | Complete    | 2026-04-15 |
-| 28. Schema Foundation | v5.0 | 0/3 | Not started | - |
+| 28. Schema Foundation | v5.0 | 1/3 | In Progress|  |
 | 29. Validator Depth | v5.0 | 0/0 | Not started | - |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 0/0 | Not started | - |
 | 31. Layout & UX Builders | v5.0 | 0/0 | Not started | - |
