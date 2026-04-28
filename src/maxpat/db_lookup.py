@@ -231,6 +231,11 @@ class ObjectDatabase:
         for name, obj in self._objects.items():
             # 1. signal_role per-outlet enum check
             for i, outlet in enumerate(obj.get("outlets", [])):
+                if not isinstance(outlet, dict):
+                    raise ValueError(
+                        f"outlets[{i}] on object {name!r} must be a dict, "
+                        f"got {type(outlet).__name__}: {outlet!r}"
+                    )
                 if "signal_role" not in outlet:
                     continue
                 role = outlet["signal_role"]
@@ -281,6 +286,12 @@ class ObjectDatabase:
         """
         for name, obj in self._objects.items():
             for outlet in obj.get("outlets", []):
+                if not isinstance(outlet, dict):
+                    # _validate_schema_extensions runs first and rejects
+                    # non-dict outlet entries, so this branch is defensive
+                    # only -- skip silently rather than crash if validation
+                    # is ever bypassed.
+                    continue
                 role = outlet.get("signal_role")
                 if role is None:
                     continue
