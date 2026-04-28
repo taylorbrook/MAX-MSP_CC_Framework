@@ -2134,7 +2134,20 @@
       }
     },
     "cycle~": {
-      "min_version": 4
+      "min_version": 4,
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal_role": "audio",
+          "digest": "(signal) Periodic waveform output"
+        }
+      ],
+      "_audit": {
+        "source": "Phase 28 Plan 03 fixture -- canonical audio-rate oscillator outlet",
+        "confidence": "HIGH",
+        "finding": "cycle~ outlet 0 emits an audio-rate periodic signal; signal_role: audio is the canonical example role for the back-compat write-through projection (D-01)"
+      }
     },
     "dac~": {
       "inlets": [
@@ -11040,6 +11053,37 @@
         "source": "manual_fallback_inferred",
         "tool": "tools/extract_pkg_io.py",
         "note": "CNMAT OSC timetag"
+      }
+    },
+    "floor~": {
+      "domain_restricted": ["rnbo"],
+      "_audit": {
+        "source": "CLAUDE.md MSP section -- floor~ is RNBO-only; in standard MSP use trunc~",
+        "confidence": "HIGH",
+        "finding": "floor~ is RNBO-only; canonical example for domain_restricted whitelist (D-05, D-06)"
+      }
+    },
+    "bach.llll2list": {
+      "verified_installed": false,
+      "_audit": {
+        "source": "memory/feedback_bach_no_llll2list.md -- bach.llll2list/list2llll do not exist in installed bach package",
+        "confidence": "HIGH",
+        "finding": "audited and known missing from this install; canonical example for verified_installed: false (D-09, D-10)"
+      }
+    },
+    "snapshot~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "float",
+          "signal_role": "float",
+          "digest": "(float) Sampled signal value at control rate"
+        }
+      ],
+      "_audit": {
+        "source": "Phase 28 Plan 03 fixture -- snapshot~ converts signal-rate to control-rate float",
+        "confidence": "HIGH",
+        "finding": "snapshot~ outlet 0 emits a control-rate float (sampled signal value); signal_role: float is the canonical non-audio role example -- write-through projects to signal: false"
       }
     }
   },
