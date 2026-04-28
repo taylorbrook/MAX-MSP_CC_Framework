@@ -234,7 +234,7 @@ class TestWriteThrough:
         outlet = db.lookup("cycle~")["outlets"][0]
         assert outlet["signal"] is False
 
-    def test_no_signal_role_preserves_legacy_signal(self, all_objects):
+    def test_no_signal_role_preserves_legacy_signal(self):
         """Pristine outlets (no signal_role) keep their legacy signal: bool.
 
         Verified against the production DB (no isolated tmp_path): every
