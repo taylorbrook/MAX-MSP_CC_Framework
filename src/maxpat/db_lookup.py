@@ -307,6 +307,19 @@ class ObjectDatabase:
 
         Returns:
             Object dict from the database, or None if not found or filtered.
+
+        Note:
+            When an outlet has both `signal_role` and `signal` set in the
+            source JSON, the loader projects `signal_role` onto `signal`
+            at load time (D-01, D-03). The returned outlet's `signal`
+            value reflects the projection, NOT the raw JSON value:
+            `signal_role == "audio"` -> `signal == True`; every other
+            role -> `signal == False`. This is the back-compat shim that
+            lets legacy `outlet.get("signal")` readers work unchanged
+            while curators write only the typed `signal_role` field.
+            See `_apply_signal_role_writethrough` for the contract and
+            `tests/test_schema_extensions.py::TestWriteThrough` for
+            verification.
         """
         canonical = self._aliases.get(name, name)
         obj = self._objects.get(canonical)
