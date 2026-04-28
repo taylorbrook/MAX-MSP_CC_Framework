@@ -516,6 +516,84 @@ class ObjectDatabase:
         """
         return self._package_info.get(package)
 
+    def get_signal_role(self, name: str, outlet: int) -> str | None:
+        """Return the signal_role for a specific outlet, with honest reverse derivation.
+
+        Per D-02 (28-CONTEXT.md): for outlets that have only the legacy signal: bool
+        (no curated signal_role), this returns "audio" when signal: true and None
+        when signal: false. None means "not yet curated" — Phase 29's role-aware
+        validators MUST treat None as "fall back to the boolean check, do not emit
+        a role-mismatch error."
+
+        Args:
+            name: Object name or alias.
+            outlet: Zero-indexed outlet position.
+
+        Returns:
+            One of {"audio","trigger","status","float","data","list"} when curated,
+            "audio" when only legacy signal: true exists, None when signal: false
+            or out-of-range outlet or unknown object.
+        """
+        canonical = self._aliases.get(name, name)
+        obj = self._objects.get(canonical)
+        if obj is None:
+            return None
+        outlets = obj.get("outlets", [])
+        if outlet < 0 or outlet >= len(outlets):
+            return None
+        outlet_dict = outlets[outlet]
+        role = outlet_dict.get("signal_role")
+        if role is not None:
+            return role
+        # Reverse derivation from legacy signal: bool (D-02).
+        if outlet_dict.get("signal"):
+            return "audio"
+        return None
+
+    def get_install_state(self, name: str) -> bool | None:
+        """Return the tri-state install verification flag.
+
+        Per D-09: absent → None ("unaudited"); explicit true → True ("audited and
+        present in _pkg-source/"); explicit false → False ("audited and known
+        missing from this install"). Phase 29 must distinguish these — it warns
+        ONLY on explicit False, NEVER on None, so the existing 2,015 absent-field
+        objects don't generate a warning storm before Phase 30's audit lands.
+        """
+        canonical = self._aliases.get(name, name)
+        obj = self._objects.get(canonical)
+        if obj is None:
+            return None
+        return obj.get("verified_installed")
+
+    def is_verified_installed(self, name: str) -> bool:
+        """Return True ONLY when the object is explicitly verified installed.
+
+        Per D-10: collapses to `state is True`. Any other state (including None
+        "unaudited" and explicit False "known missing") returns False. Phase 29's
+        install-state warning must NOT fire on the False return alone — it
+        inspects get_install_state() to distinguish None from False.
+        """
+        return self.get_install_state(name) is True
+
+    def get_domain_restrictions(self, name: str) -> list[str]:
+        """Return the list of domains this object is restricted to, [] if unrestricted.
+
+        Per D-07: absent → [] (no tri-state ceremony). Per D-08: Phase 29 iterates
+        this to emit errors like "object X is restricted to {rnbo}; not allowed at
+        MSP top level".
+
+        Returns a fresh list copy so callers can't mutate the underlying schema.
+        """
+        canonical = self._aliases.get(name, name)
+        obj = self._objects.get(canonical)
+        if obj is None:
+            return []
+        return list(obj.get("domain_restricted", []))
+
+    def is_domain_restricted(self, name: str) -> bool:
+        """bool sugar for `bool(get_domain_restrictions(name))` (D-08)."""
+        return bool(self.get_domain_restrictions(name))
+
     def compute_io_counts(self, name: str, args: list[str] | None = None) -> tuple[int, int]:
         """Compute actual inlet/outlet counts, handling variable I/O objects.
 
