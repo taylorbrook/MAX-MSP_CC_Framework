@@ -32,7 +32,7 @@ Extend the object database with three typed first-class fields — `signal_role`
 ### verified_installed Default
 - **D-09:** **Tri-state, symmetric with signal_role.** `get_install_state(name) -> Optional[bool]`. Absent → `None` ("unaudited"); explicit `true` → `True` ("audited and present in `_pkg-source/`"); explicit `false` → `False` ("audited and known missing from this install").
 - **D-10:** **`is_verified_installed(name)` collapses to `state is True`.** Returns `True` only when the object is explicitly verified. Any other state (including `None`) returns `False` — but Phase 29 must distinguish: it warns ONLY on explicit `False`, NOT on `None`. `None` is silent so the existing 2,015 absent-field objects don't generate a warning storm before Phase 30's audit lands.
-- **D-11:** **Phase 30 coverage metric is "drive None count down."** The audit script classifies each absent-field object as a coverage gap; Phase 30 success is measured against shrinking that bucket, not against a verified/unverified ratio.
+- **D-11:** `[informational]` **Phase 30 coverage metric is "drive None count down."** The audit script classifies each absent-field object as a coverage gap; Phase 30 success is measured against shrinking that bucket, not against a verified/unverified ratio. Not a Phase 28 deliverable — recorded here so Phase 30 planning sees the locked metric definition.
 
 ### Audit Function Shape (SCHEMA-07)
 - **D-12:** **Three focused functions, not one bloated dict.**

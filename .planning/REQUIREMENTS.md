@@ -17,7 +17,7 @@ Migrate the object DB from flat extracted facts to a typed, install-aware contra
 - [ ] **SCHEMA-04**: Object entries carry a `verified_installed: bool` flag indicating whether the object was confirmed against `_pkg-source/`
 - [ ] **SCHEMA-05**: `overrides.json` schema extended to accept the three new fields and deep-merge them onto base objects
 - [ ] **SCHEMA-06**: `db_lookup.ObjectDatabase` loads, validates, and exposes the new schema fields via getter methods (e.g. `get_signal_role(name, outlet)`, `is_domain_restricted(name)`, `is_verified_installed(name)`)
-- [ ] **SCHEMA-07**: `audit_empty_io()` is extended to also surface unverified-installed entries and domain-restricted entries with no domain coverage
+- [ ] **SCHEMA-07**: Three sibling audit functions — `db.audit_empty_io()` (unchanged), `db.audit_install_coverage()` (unverified-installed), `db.audit_domain_coverage()` (domain-restricted-without-coverage) — surface coverage gaps from focused entry points (per locked decision D-12 in 28-CONTEXT.md)
 
 ### Validator Depth (Phase 29)
 
@@ -125,3 +125,4 @@ Explicit exclusions and why:
 *Requirements created: 2026-04-27*
 *Traceability filled: 2026-04-27 by gsd-roadmapper*
 *Source: FINDINGS.md (260427-hox) + user-provided v5.0 scope proposal*
+*SCHEMA-07 wording realigned to D-12 three-sibling shape: 2026-04-27 (revision iteration 1)*
