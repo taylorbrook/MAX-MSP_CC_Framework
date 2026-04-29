@@ -131,4 +131,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-28 — Phase 28 (Schema Foundation) complete; signal_role / domain_restricted / verified_installed land as typed first-class fields with back-compat write-through*
+*Last updated: 2026-04-29 — Phase 29 (Validator Depth) complete; VALID-01..05 satisfied — role-aware tier dispatch, domain-restriction guard, install-state warnings, .gendsp + embedded codebox parity*
