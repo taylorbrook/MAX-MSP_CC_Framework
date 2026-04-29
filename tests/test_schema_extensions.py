@@ -448,3 +448,31 @@ class TestAuditFunctions:
         phase (deferred to Phase 30 if a CLI entry point is wanted).
         """
         assert not hasattr(db, "audit")
+
+
+# ── TestInstallWarningSurface (Plan 29-01 Task 1 RED probe) ──────
+#
+# Drives the existence of the _install_warned cache and
+# _maybe_warn_install_state helper on ObjectDatabase. Task 2 expands this
+# into the full TestInstallWarning class with end-to-end coverage of
+# D-09..D-12 behaviors via db.lookup().
+
+
+class TestInstallWarningSurface:
+    """Minimal surface check: cache field + helper method exist.
+
+    This is the Task 1 RED anchor — the helper and cache must be present
+    on every ObjectDatabase instance. Behavioral coverage (emit-once,
+    silent-on-None, UserWarning category, no ValidationResult) is in
+    TestInstallWarning below.
+    """
+
+    def test_install_warned_cache_exists(self):
+        db = ObjectDatabase()
+        assert hasattr(db, "_install_warned")
+        assert isinstance(db._install_warned, set)
+
+    def test_maybe_warn_install_state_method_exists(self):
+        db = ObjectDatabase()
+        assert hasattr(db, "_maybe_warn_install_state")
+        assert callable(db._maybe_warn_install_state)
