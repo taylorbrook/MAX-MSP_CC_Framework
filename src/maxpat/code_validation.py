@@ -62,11 +62,15 @@ def validate_genexpr(
     """Validate GenExpr DSP code.
 
     Checks:
-    1. Balanced braces
-    2. Semicolons on statement lines
-    3. in/out declarations (info-level)
-    4. Param syntax (min/max presence)
-    5. Operator existence against gen/objects.json
+    1. Balanced braces (error)
+    2. Semicolons on statement lines (warning)
+    3. in/out declarations (info)
+    4. Param syntax min/max (warning)
+    5. Declaration ordering (error)
+    6. Operator existence against gen/objects.json (error)
+    7. delay() rejection -- not supported in codebox (error, D-14)
+    8. clip() rejection -- not supported in expr/GenExpr (error, D-15)
+    9. Init-before-if/else flow analysis (error, D-16)
 
     All results use layer="code". Report-only, no auto-fix.
 
