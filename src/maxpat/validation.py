@@ -172,6 +172,9 @@ def validate_patch(
     # Layer 4: Domain-specific rules
     results.extend(_validate_domain_rules(patch_dict, db))
 
+    # Layer 4b: Domain restriction guard (Phase 29 / VALID-02)
+    results.extend(_validate_domain_restrictions(patch_dict, db))
+
     return results
 
 
@@ -818,6 +821,49 @@ def _validate_domain_rules(
     # --- Rule: Assistance comments ---
     results.extend(_check_assistance_comments(box_lookup))
 
+    return results
+
+
+# ===========================================================================
+# Layer 4b: Domain Restriction Guard (Phase 29 / VALID-02 / D-05..D-08)
+# ===========================================================================
+
+def _validate_domain_restrictions(
+    patch_dict: dict,
+    db: ObjectDatabase,
+) -> list[ValidationResult]:
+    """Hard-block top-level boxes whose domain_restricted whitelist forbids
+    the outer (non-rnbo, non-m4l, non-gen) MSP/Max context.
+
+    Per D-05: explicit `domain_restricted` only — no canonical-domain
+    inference. Per D-07: top-level scope only — no recursion into
+    subpatchers or rnbo~ inner patchers. Per D-08: always ERROR severity,
+    auto_fixed=False (auto-removing the box would mangle the patch; emit
+    error and let the caller decide).
+
+    Catches the canonical violation (`floor~` at MSP top level outside
+    an `rnbo~` container) and stays simple. Edge cases like nested
+    `p subpatcher` containing a domain-restricted object outside any
+    rnbo~ are explicitly out of scope this phase (D-07).
+    """
+    results: list[ValidationResult] = []
+    for box_entry in patch_dict["patcher"]["boxes"]:
+        box = box_entry.get("box", {})
+        name = _extract_object_name(box)
+        if name is None:
+            continue
+        restrictions = db.get_domain_restrictions(name)
+        if not restrictions:
+            continue
+        # Top-level patcher is by definition NOT inside any rnbo~/m4l/gen~
+        # container. Any restriction list is a violation here (D-07).
+        results.append(ValidationResult(
+            "domain", "error",
+            f"'{name}' is restricted to {restrictions}; "
+            f"not allowed at MSP/Max top level. "
+            f"Wrap in {restrictions[0]}~ container or use a non-restricted equivalent.",
+            auto_fixed=False,
+        ))
     return results
 
 
