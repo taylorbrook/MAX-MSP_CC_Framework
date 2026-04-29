@@ -88,6 +88,7 @@ class ObjectDatabase:
         self._package_objects: dict[str, list[str]] = defaultdict(list)
         self._package_info: dict[str, dict] = {}
         self._empty_io_warned: set[str] = set()
+        self._install_warned: set[str] = set()
         self._first_arg_warned: set[tuple[str, str]] = set()
         self._load(db_root)
 
@@ -327,14 +328,17 @@ class ObjectDatabase:
             return None
         if allowed_packages is None:
             self._maybe_warn_empty_io(canonical, obj)
+            self._maybe_warn_install_state(canonical, obj)  # VALID-03 / D-09
             return obj
         # Core objects (no package field) always pass through
         if "package" not in obj:
             self._maybe_warn_empty_io(canonical, obj)
+            self._maybe_warn_install_state(canonical, obj)  # VALID-03 / D-09
             return obj
         # Package objects must be in the allowed list
         if obj.get("package") in allowed_packages:
             self._maybe_warn_empty_io(canonical, obj)
+            self._maybe_warn_install_state(canonical, obj)  # VALID-03 / D-09
             return obj
         return None
 
@@ -397,6 +401,31 @@ class ObjectDatabase:
             "override to overrides.json.",
             UserWarning,
             stacklevel=3,
+        )
+
+    def _maybe_warn_install_state(self, canonical: str, obj: dict) -> None:
+        """Emit a one-time UserWarning when this canonical is explicitly
+        verified_installed: false. Dedup via _install_warned. Per D-10,
+        absent (None) is silent — only explicit False fires.
+
+        UserWarning category matches _maybe_warn_empty_io so callers can
+        silence both with a single
+        warnings.filterwarnings("ignore", category=UserWarning,
+        module="db_lookup"). stacklevel=4 matches the empty-io sibling
+        (call path: user -> lookup -> _maybe_warn_install_state ->
+        warnings.warn).
+        """
+        if obj.get("verified_installed") is not False:
+            return
+        if canonical in self._install_warned:
+            return
+        self._install_warned.add(canonical)
+        warnings.warn(
+            f"{canonical} marked verified_installed: false — not present "
+            f"in this install. Run package extraction or remove from "
+            f"overrides.json if intentional.",
+            UserWarning,
+            stacklevel=4,
         )
 
     def _warn_non_integer_first_arg(
