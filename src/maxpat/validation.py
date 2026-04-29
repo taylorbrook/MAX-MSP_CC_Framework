@@ -175,6 +175,9 @@ def validate_patch(
     # Layer 4b: Domain restriction guard (Phase 29 / VALID-02)
     results.extend(_validate_domain_restrictions(patch_dict, db))
 
+    # Layer 5: Embedded GenExpr codebox walker (Phase 29 / VALID-04)
+    results.extend(_validate_embedded_genexpr(patch_dict, db))
+
     return results
 
 
@@ -864,6 +867,72 @@ def _validate_domain_restrictions(
             f"Wrap in {restrictions[0]}~ container or use a non-restricted equivalent.",
             auto_fixed=False,
         ))
+    return results
+
+
+# ===========================================================================
+# Layer 5: Embedded GenExpr Codebox Walker (Phase 29 / VALID-04 / D-17)
+# ===========================================================================
+
+def _validate_embedded_genexpr(
+    patch_dict: dict,
+    db: ObjectDatabase,
+) -> list[ValidationResult]:
+    """Walk top-level gen~ boxes; for each embedded codebox with a 'code'
+    attribute, run validate_genexpr (which carries Checks 1-9 including
+    the new Phase 29 Checks 7/8/9 -- delay() / clip() / init-before-if/else).
+
+    Findings flow through the ValidationResult pipeline (consistent with
+    .gendsp files going through hooks.validate_code_file). Tags each
+    finding with the gen~ box id for debuggability.
+
+    Top-level only -- does not recurse into nested gen~ subpatchers (D-07
+    scope-rule alignment with the domain-restriction guard). Survey of 28
+    real .maxpat files showed zero nested gen~ inside gen~; recursion is a
+    one-line change if Phase 30 surfaces a real case.
+
+    Note (RESEARCH.md R1): existing Layer 4 helpers
+    `_check_genexpr_io_syntax` and `_check_genexpr_delay_usage` ALSO fire on
+    embedded codeboxes -- duplicate emission for `delay(` is acknowledged
+    and accepted this phase. Consolidating to a single channel is OUT OF
+    SCOPE here; Phase 33-class cleanup.
+    """
+    # Deferred import -- code_validation imports validation, so avoid a
+    # circular import at module top.
+    from src.maxpat.code_validation import validate_genexpr
+
+    results: list[ValidationResult] = []
+    for box_entry in patch_dict["patcher"]["boxes"]:
+        box = box_entry.get("box", {})
+        # gen~ at the outer level can carry maxclass='newobj' with text
+        # 'gen~ ...' OR maxclass='gen~' directly (subpatcher container --
+        # see _validate_maxclass_usage for the existing convention check).
+        # Accept both shapes.
+        maxclass = box.get("maxclass", "")
+        text = box.get("text", "")
+        is_gen_tilde = (
+            maxclass == "gen~"
+            or (maxclass == "newobj" and text.startswith("gen~"))
+        )
+        if not is_gen_tilde:
+            continue
+        inner = box.get("patcher")
+        if not inner:
+            continue
+        gen_id = box.get("id", "<unknown>")
+        for inner_entry in inner.get("boxes", []):
+            inner_box = inner_entry.get("box", {})
+            if inner_box.get("maxclass") != "codebox":
+                continue
+            code = inner_box.get("code")
+            if not code:
+                continue
+            for r in validate_genexpr(code, db=db):
+                results.append(ValidationResult(
+                    r.layer, r.level,
+                    f"gen~ '{gen_id}' codebox: {r.message}",
+                    auto_fixed=r.auto_fixed,
+                ))
     return results
 
 
