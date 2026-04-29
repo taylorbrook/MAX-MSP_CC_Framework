@@ -43,6 +43,7 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - ✓ Agent package intelligence — DB-driven bpatcher sizing, adaptive layout, PACKAGES.md reference, SKILL.md guidance — v4.0
 - ✓ Community package support — stub DB entries for 10 community packages, --package CLI extraction — v4.0
 - ✓ Package-aware critics — BEAP signal conventions, Bach llll type checker, workflow templates — v4.0
+- ✓ Validator depth — role-aware tier dispatch, domain-restriction guard, install-state warnings, embedded codebox parity (VALID-01..05) — v5.0 (Phase 29)
 
 ### Active
 
