@@ -524,6 +524,32 @@ def _validate_connections(
             ))
             remove_this = True
 
+        # --- Role-aware tier dispatch (VALID-01, D-01..D-04) ---
+        # Runs BEFORE legacy signal:bool check. When src outlet has a
+        # curated signal_role (Phase 28), look up (role, dst_kind) in
+        # _ROLE_TIER_TABLE. Hit -> emit and skip legacy branch (D-02).
+        # Miss / None / audio source -> fall through unchanged.
+        if not remove_this:
+            src_name = _extract_object_name(src_box)
+            if src_name is not None:
+                src_role = db.get_signal_role(src_name, src_outlet)
+                if src_role is not None and src_role != "audio":
+                    tier = _classify_role_mismatch(
+                        src_role, dst_box, dst_inlet, db
+                    )
+                    if tier is not None:
+                        level, _dst_kind, message, auto_fix = tier
+                        results.append(ValidationResult(
+                            "connections", level, message,
+                            auto_fixed=auto_fix,
+                        ))
+                        if auto_fix:
+                            remove_this = True
+                            to_remove.append(idx)
+                        # Tier result is final — skip legacy is_signal_source
+                        # branch for this line (D-02 clean separation).
+                        continue
+
         # --- Signal type compatibility (only if bounds are OK) ---
         if not remove_this:
             src_outlettype = src_box.get("outlettype", [])
