@@ -108,7 +108,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 - [x] 29-01-PLAN.md — Install-state warning in db.lookup() (VALID-03)
 - [x] 29-02-PLAN.md — GenExpr Checks 7/8/9 in validate_genexpr (VALID-04)
 - [x] 29-03-PLAN.md — Layer 3 role-aware tier dispatch (VALID-01, VALID-05)
-- [ ] 29-04-PLAN.md — Layer 4b domain restriction guard (VALID-02, VALID-05)
+- [x] 29-04-PLAN.md — Layer 4b domain restriction guard (VALID-02, VALID-05)
 - [ ] 29-05-PLAN.md — Embedded gen~ codebox walker (VALID-04 parity, VALID-05)
 
 ### Phase 30: MSP Outlet Coverage Sweep
@@ -178,7 +178,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 24. Community Package Support | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 25. Templates + Critics | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 28. Schema Foundation | v5.0 | 3/3 | Complete    | 2026-04-28 |
-| 29. Validator Depth | v5.0 | 3/5 | In Progress|  |
+| 29. Validator Depth | v5.0 | 4/5 | In Progress|  |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 0/0 | Not started | - |
 | 31. Layout & UX Builders | v5.0 | 0/0 | Not started | - |
 | 32. DSP Pre-Flight Simulation | v5.0 | 0/0 | Not started | - |
