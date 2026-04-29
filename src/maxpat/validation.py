@@ -635,12 +635,13 @@ def _classify_dst_inlet(dst_box: dict, dst_inlet: int, db: ObjectDatabase) -> st
     """Classify a destination inlet for role-aware tier-table lookup.
 
     Returns one of:
-      "signal"        — inlet only accepts signal connections
-      "float"         — inlet only accepts float / control values
-      "signal/float"  — inlet accepts both (CLAUDE.md exception)
-      "control"       — generic control inlet OR unknown / structural box
+      "signal"   — inlet accepts signal (includes signal/float hybrid inlets;
+                   the tier table treats both as a mechanical-fix mismatch
+                   when the source role is status/trigger/data/list)
+      "float"    — inlet stores/displays a numeric value (UI float widgets
+                   like flonum/number, or control inlets with type='float')
+      "control"  — generic control inlet OR unknown / structural box
 
-    Mirrors _inlet_accepts_signal but returns a label instead of bool.
     Used by _classify_role_mismatch to look up the dst_kind side of
     _ROLE_TIER_TABLE keys (D-04 message-format requirement).
     """
@@ -662,8 +663,11 @@ def _classify_dst_inlet(dst_box: dict, dst_inlet: int, db: ObjectDatabase) -> st
         return "control"
     inlet = inlets[dst_inlet]
     inlet_type = (inlet.get("type") or "").lower()
-    if inlet.get("signal") and "float" in inlet_type:
-        return "signal/float"
+    # "signal/float" inlets are still classified as "signal" for tier-table
+    # purposes: a status/trigger/list/data outlet is an event-message stream,
+    # not a numeric value, so the mechanical-fix tier still applies (snapshot~,
+    # sig~, etc.). The tier table itself decides what's a mismatch — the
+    # dst-kind label is intentionally coarse here.
     if inlet.get("signal"):
         return "signal"
     if "float" in inlet_type or inlet_type == "float":
