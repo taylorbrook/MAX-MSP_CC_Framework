@@ -79,6 +79,12 @@ def validate_genexpr(
     """
     results: list[ValidationResult] = []
 
+    # Strip // line comments once so Checks 7/8 don't false-positive on
+    # commented examples. Preserves line count for Check 9 line-number
+    # reporting (Check 9 walks `lines` directly and uses its own //
+    # skipping, so it does NOT use code_stripped).
+    code_stripped = _strip_line_comments(code)
+
     # Check 1: Balanced braces
     open_count = code.count("{")
     close_count = code.count("}")
@@ -196,6 +202,78 @@ def validate_genexpr(
                 f"Unknown GenExpr operator: '{func_name}' "
                 f"(not found in gen/objects.json)",
             ))
+
+    # Check 7: delay() rejection (D-14, VALID-04). Compile-fatal in MAX,
+    # so ERROR severity. Word-boundary prevents matching Delay(...) or
+    # myDelay.read(...). Comment-stripped via code_stripped.
+    if re.search(r"\bdelay\s*\(", code_stripped):
+        results.append(ValidationResult(
+            "code", "error",
+            "delay() is not supported in GenExpr codebox; "
+            "use Delay.read/write (declare Delay myDelay(max_samples) first)",
+        ))
+
+    # Check 8: clip() rejection (D-15, VALID-04). expr/GenExpr have no
+    # clip(). Compile-fatal, so ERROR. Word-boundary on \bclip\s*\(.
+    if re.search(r"\bclip\s*\(", code_stripped):
+        results.append(ValidationResult(
+            "code", "error",
+            "clip() does not exist in expr/GenExpr; "
+            "use min(max(x, lo), hi)",
+        ))
+
+    # Check 9: init-before-if/else (D-16, D-20, VALID-04). Light flow
+    # analysis -- for each variable assigned inside an if/else block at
+    # brace depth >= 1, verify the same name is either assigned at depth
+    # 0 before the block OR declared via Param/History/Delay/Buffer/Data.
+    # First-error-and-stop matches Check 5 posture. Documented false-
+    # positive limitations (D-20) surfaced in the suggestion line.
+    declared = set()
+    for match in re.finditer(
+        r"(?:Param|History|Delay|Buffer|Data)\s+(\w+)\s*\(", code
+    ):
+        declared.add(match.group(1))
+
+    if_else_inits: list[tuple[str, int]] = []
+    pre_block_inits: set[str] = set()
+    depth = 0
+    block_start_line = -1
+    assign_pattern = re.compile(r"^(\w+)\s*=")
+
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("//") or stripped.startswith("#"):
+            continue
+        opens = stripped.count("{")
+        closes = stripped.count("}")
+        if depth == 0 and re.match(r"\b(if|else)\b", stripped) and opens > 0:
+            block_start_line = i
+        m = assign_pattern.match(stripped)
+        if m:
+            name = m.group(1)
+            if depth == 0:
+                pre_block_inits.add(name)
+            else:
+                if name not in pre_block_inits and name not in declared:
+                    if_else_inits.append((name, block_start_line))
+        depth += opens - closes
+        if depth < 0:
+            depth = 0  # unbalanced; Check 1 already flagged it
+
+    seen = set()
+    for name, line_no in if_else_inits:
+        if name in seen:
+            continue
+        seen.add(name)
+        results.append(ValidationResult(
+            "code", "error",
+            f"variable '{name}' used inside if/else without prior init "
+            f"(line {line_no + 1}); GenExpr errors with 'not defined'. "
+            f"Restructure to assign '{name}' before the if/else, or "
+            f"if this is a false positive (e.g., shadowed inner "
+            f"declaration), declare via Param/History/Delay/Buffer/Data.",
+        ))
+        break  # first-error-and-stop, matches Check 5
 
     return results
 
