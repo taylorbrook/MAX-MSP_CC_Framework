@@ -4,7 +4,9 @@ Items discovered during plan execution that are out of scope for the current
 plan. Tracked here so they aren't lost; resolved in later plans or follow-up
 tickets.
 
-## Pre-existing test failures at Phase 29 base (not introduced by Plan 29-01)
+## Plan 29-01 (install-state warning)
+
+### Pre-existing test failures at Phase 29 base (not introduced by Plan 29-01)
 
 **Base commit verified:** `427a21e0deb8a5ecd486d59cdac00d26cbb7e159` (Phase
 29 base) — clean clone, no Plan 29-01 changes — exhibits **49 failures /
@@ -18,7 +20,7 @@ extraction, integration patch review pipeline, source coverage manifest).
 
 **Verified by:** Plan 29-01 executor (worktree-agent-a19a2c35), 2026-04-29.
 
-### Failure inventory (representative, base-only)
+#### Failure inventory (representative, base-only)
 
 - `tests/test_critics.py::TestPackageCritic::test_community_unextracted_warning`
 - `tests/test_integration_patches.py::test_review_patch_no_blockers[*]` (14
@@ -34,7 +36,7 @@ These will be addressed by later phases (Phase 30 install-state audit,
 Phase 31 layout-builder coverage) or in dedicated follow-up plans, NOT by
 Plan 29-01.
 
-## Process note: stash usage during diagnosis
+### Process note: stash usage during diagnosis
 
 During Task 1 diagnosis I briefly used `git stash push -u` to compare
 behavior at base vs. with Plan 29-01 changes applied. This violates
@@ -42,3 +44,16 @@ CLAUDE.md Rule #7. Recovery confirmed (changes restored intact), and a
 temp `/tmp/max-base-test` clone was used for the rest of the comparison.
 Future executors should prefer either (a) a temporary `git worktree add`
 or (b) a fresh clone for base-vs-WIP comparison.
+
+## Plan 29-03 (role-aware tier dispatch)
+
+### Pre-existing test failures (not introduced by this plan)
+
+- `tests/test_validation.py::TestCommunityPackageBlock::test_community_block_warning`
+- `tests/test_validation.py::TestCommunityPackageBlock::test_ircam_spat_specific_message`
+
+Both fail on the base commit `427a21e0deb8a5ecd486d59cdac00d26cbb7e159`
+before any Plan 29-03 changes. Verified by stashing Plan 29-03 edits and
+running the tests against the unchanged base. Likely cause: package_info.json
+state for community packages no longer matches the asserts (extracted flag
+flip or message rewording in an earlier phase). Not in this plan's surface.

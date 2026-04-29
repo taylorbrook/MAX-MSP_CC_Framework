@@ -44,6 +44,36 @@ _TERMINAL_NAMES = frozenset({"dac~", "ezdac~", "send~", "out~"})
 _DELAY_NAMES = frozenset({"tapin~", "tapout~", "gen~"})
 
 
+# Role-aware connection tier table (D-04, D-19, VALID-01). Maps
+# (src_outlet_role, dst_inlet_kind) -> (level, suggestion, auto_fix).
+# Absent keys mean "fall through to legacy signal:bool branch unchanged"
+# (D-02). Audio-source keys are INTENTIONALLY ABSENT — the legacy branch
+# retains exclusive control of audio source paths so existing
+# test_signal_to_signal_passes / test_signal_to_control_only_inlet_detected
+# regression anchors remain unchanged (RESEARCH.md R2, R10).
+_ROLE_TIER_TABLE: dict[tuple[str, str], tuple[str, str, bool]] = {
+    # ERROR + auto-remove (mechanical fix exists)
+    ("status",  "signal"): ("error", "use snapshot~", True),
+    ("trigger", "signal"): ("error", "use sig~ or click~", True),
+    ("data",    "signal"): ("error", "role mismatch; data outlet cannot drive signal inlet", True),
+    ("list",    "signal"): ("error", "role mismatch; list outlet cannot drive signal inlet", True),
+    # WARNING + preserve (judgment-laden intent)
+    ("trigger", "float"):  ("warning", "trigger feeding float; user may intend bang counting", False),
+    ("list",    "float"):  ("warning", "list outlet feeding float; bach.* often does this — verify", False),
+}
+
+
+# UI maxclasses whose primary inlet displays a float number. The DB
+# annotates these inlets as type="control" because they accept any control
+# message, but for role-aware tier-table lookup they classify as "float"
+# (so trigger/list -> flonum/number triggers the WARNING tier). Keep this
+# list narrow: only widgets whose inlet 0 explicitly stores/displays a
+# numeric value.
+_FLOAT_DISPLAY_MAXCLASSES = frozenset({
+    "flonum", "number", "live.numbox",
+})
+
+
 # ===========================================================================
 # ValidationResult
 # ===========================================================================
@@ -494,6 +524,32 @@ def _validate_connections(
             ))
             remove_this = True
 
+        # --- Role-aware tier dispatch (VALID-01, D-01..D-04) ---
+        # Runs BEFORE legacy signal:bool check. When src outlet has a
+        # curated signal_role (Phase 28), look up (role, dst_kind) in
+        # _ROLE_TIER_TABLE. Hit -> emit and skip legacy branch (D-02).
+        # Miss / None / audio source -> fall through unchanged.
+        if not remove_this:
+            src_name = _extract_object_name(src_box)
+            if src_name is not None:
+                src_role = db.get_signal_role(src_name, src_outlet)
+                if src_role is not None and src_role != "audio":
+                    tier = _classify_role_mismatch(
+                        src_role, dst_box, dst_inlet, db
+                    )
+                    if tier is not None:
+                        level, _dst_kind, message, auto_fix = tier
+                        results.append(ValidationResult(
+                            "connections", level, message,
+                            auto_fixed=auto_fix,
+                        ))
+                        if auto_fix:
+                            remove_this = True
+                            to_remove.append(idx)
+                        # Tier result is final — skip legacy is_signal_source
+                        # branch for this line (D-02 clean separation).
+                        continue
+
         # --- Signal type compatibility (only if bounds are OK) ---
         if not remove_this:
             src_outlettype = src_box.get("outlettype", [])
@@ -573,6 +629,75 @@ def _inlet_accepts_signal(box_dict: dict, inlet_idx: int, db: ObjectDatabase) ->
     # Inlet index beyond what database knows (e.g., variable I/O)
     # Be permissive
     return True
+
+
+def _classify_dst_inlet(dst_box: dict, dst_inlet: int, db: ObjectDatabase) -> str:
+    """Classify a destination inlet for role-aware tier-table lookup.
+
+    Returns one of:
+      "signal"   — inlet accepts signal (includes signal/float hybrid inlets;
+                   the tier table treats both as a mechanical-fix mismatch
+                   when the source role is status/trigger/data/list)
+      "float"    — inlet stores/displays a numeric value (UI float widgets
+                   like flonum/number, or control inlets with type='float')
+      "control"  — generic control inlet OR unknown / structural box
+
+    Used by _classify_role_mismatch to look up the dst_kind side of
+    _ROLE_TIER_TABLE keys (D-04 message-format requirement).
+    """
+    # UI maxclass float-display widgets (flonum, number, live.numbox) carry
+    # type="control" inlets in the DB but are float-display by nature — the
+    # WARNING tier (trigger/list -> float) targets these by intent.
+    maxclass = dst_box.get("maxclass", "")
+    if maxclass in _FLOAT_DISPLAY_MAXCLASSES and dst_inlet == 0:
+        return "float"
+
+    name = _extract_object_name(dst_box)
+    if name is None:
+        return "control"  # structural maxclass; conservative
+    obj = db.lookup(name)
+    if obj is None:
+        return "control"
+    inlets = obj.get("inlets", [])
+    if dst_inlet >= len(inlets):
+        return "control"
+    inlet = inlets[dst_inlet]
+    inlet_type = (inlet.get("type") or "").lower()
+    # "signal/float" inlets are still classified as "signal" for tier-table
+    # purposes: a status/trigger/list/data outlet is an event-message stream,
+    # not a numeric value, so the mechanical-fix tier still applies (snapshot~,
+    # sig~, etc.). The tier table itself decides what's a mismatch — the
+    # dst-kind label is intentionally coarse here.
+    if inlet.get("signal"):
+        return "signal"
+    if "float" in inlet_type or inlet_type == "float":
+        return "float"
+    return "control"
+
+
+def _classify_role_mismatch(
+    src_role: str,
+    dst_box: dict,
+    dst_inlet: int,
+    db: ObjectDatabase,
+) -> tuple[str, str, str, bool] | None:
+    """Look up (src_role, dst_kind) in _ROLE_TIER_TABLE.
+
+    Returns (level, dst_kind, message, auto_fix) when a tier-table entry
+    matches, or None to signal "fall through to legacy signal:bool branch"
+    (D-02).
+
+    Per D-04, the message is formatted as
+    "{src_role} outlet → {dst_kind} inlet: {suggestion}" — concrete and
+    suggestion-bearing, never generic "type mismatch".
+    """
+    dst_kind = _classify_dst_inlet(dst_box, dst_inlet, db)
+    entry = _ROLE_TIER_TABLE.get((src_role, dst_kind))
+    if entry is None:
+        return None
+    level, suggestion, auto_fix = entry
+    message = f"{src_role} outlet → {dst_kind} inlet: {suggestion}"
+    return (level, dst_kind, message, auto_fix)
 
 
 # ===========================================================================

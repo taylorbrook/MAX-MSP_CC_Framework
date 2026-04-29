@@ -288,6 +288,256 @@ class TestLayer3SignalTypes:
 
 
 # ===========================================================================
+# Layer 3: Role-Aware Tier Dispatch (Phase 29 / VALID-01 / D-01..D-04)
+# ===========================================================================
+
+class TestRoleAwareValidation:
+    """VALID-01 / D-01..D-04 / D-19: Role-aware tier dispatch ahead of legacy
+    signal:bool branch. ERROR + auto-remove for status/trigger/data/list ->
+    signal-only inlets; WARNING + preserve for trigger/list -> float;
+    silent fall-through for audio sources and uncurated (None) roles.
+
+    Uses monkeypatch to control db.get_signal_role return values without
+    polluting overrides.json. Production fixtures (snapshot~ float role,
+    cycle~ audio role) drive the regression-anchor tests.
+    """
+
+    def _patch_with_connection(
+        self,
+        src_name="snapshot~",
+        dst_name="*~ 0.5",
+        src_outlet=0,
+        dst_inlet=0,
+        src_outlettype=None,
+    ):
+        """Build a 2-box patch with one source -> destination line.
+
+        src_outlettype defaults to ['signal'] which sets is_signal_source=True
+        in the legacy branch (so we can verify the tier dispatch overrides
+        legacy auto-remove for the new role-aware paths).
+        """
+        boxes = [
+            _make_box(
+                "obj-1", text=src_name,
+                numoutlets=1, outlettype=src_outlettype or ["signal"],
+            ),
+            _make_box(
+                "obj-2", text=dst_name,
+                numinlets=2, numoutlets=1, outlettype=["signal"],
+            ),
+        ]
+        lines = [_make_line("obj-1", src_outlet, "obj-2", dst_inlet)]
+        return _make_patch_dict(boxes=boxes, lines=lines)
+
+    def test_status_to_signal_emits_use_snapshot(self, db, monkeypatch):
+        """status outlet -> signal inlet: ERROR with 'use snapshot~'
+        suggestion; line auto-removed."""
+        monkeypatch.setattr(
+            db, "get_signal_role",
+            lambda name, outlet: "status" if name.startswith("status") else None
+        )
+        patch = self._patch_with_connection(src_name="status_src")
+        results = validate_patch(patch, db=db)
+        tier_errors = [
+            r for r in results
+            if r.layer == "connections" and r.level == "error"
+            and "status outlet" in r.message and "use snapshot~" in r.message
+        ]
+        assert len(tier_errors) >= 1, [r.message for r in results]
+        assert tier_errors[0].auto_fixed is True
+        # Line auto-removed
+        assert len(patch["patcher"]["lines"]) == 0
+
+    def test_trigger_to_signal_emits_use_sig(self, db, monkeypatch):
+        """trigger outlet -> signal inlet: ERROR with 'use sig~ or click~'."""
+        monkeypatch.setattr(
+            db, "get_signal_role",
+            lambda name, outlet: "trigger" if name.startswith("trig") else None
+        )
+        patch = self._patch_with_connection(src_name="trig_src")
+        results = validate_patch(patch, db=db)
+        tier_errors = [
+            r for r in results
+            if r.level == "error" and "trigger outlet" in r.message
+            and "use sig~ or click~" in r.message
+        ]
+        assert len(tier_errors) >= 1
+        assert tier_errors[0].auto_fixed is True
+
+    def test_data_list_to_signal_emits_role_mismatch(self, db, monkeypatch):
+        """data and list -> signal: ERROR + auto-remove, no canonical fix."""
+        for role in ("data", "list"):
+            monkeypatch.setattr(
+                db, "get_signal_role",
+                lambda name, outlet, _r=role: _r if name.startswith(_r) else None
+            )
+            patch = self._patch_with_connection(src_name=f"{role}_src")
+            results = validate_patch(patch, db=db)
+            tier_errors = [
+                r for r in results
+                if r.level == "error" and f"{role} outlet" in r.message
+                and "role mismatch" in r.message
+            ]
+            assert len(tier_errors) >= 1, (role, [r.message for r in results])
+            assert tier_errors[0].auto_fixed is True
+
+    def test_trigger_to_float_warning_preserves(self, db, monkeypatch):
+        """trigger -> float: WARNING with 'bang counting' hint; line preserved."""
+        monkeypatch.setattr(
+            db, "get_signal_role",
+            lambda name, outlet: "trigger" if name.startswith("trig") else None
+        )
+        # Destination must classify as 'float' inlet — flonum is a UI
+        # float-display widget recognized by _classify_dst_inlet.
+        patch = _make_patch_dict(
+            boxes=[
+                _make_box("obj-1", text="trig_src", outlettype=["signal"]),
+                _make_box("obj-2", maxclass="flonum", text="",
+                          numinlets=1, numoutlets=2, outlettype=["", "bang"]),
+            ],
+            lines=[_make_line("obj-1", 0, "obj-2", 0)],
+        )
+        results = validate_patch(patch, db=db)
+        warnings_found = [
+            r for r in results
+            if r.level == "warning" and "trigger outlet" in r.message
+            and "bang counting" in r.message
+        ]
+        assert len(warnings_found) >= 1, [r.message for r in results]
+        # Line preserved (auto_fixed=False)
+        assert warnings_found[0].auto_fixed is False
+        assert len(patch["patcher"]["lines"]) == 1
+
+    def test_list_to_float_warning_bach_hint(self, db, monkeypatch):
+        """list -> float: WARNING with 'bach.* often does this' hint."""
+        monkeypatch.setattr(
+            db, "get_signal_role",
+            lambda name, outlet: "list" if name.startswith("list") else None
+        )
+        patch = _make_patch_dict(
+            boxes=[
+                _make_box("obj-1", text="list_src", outlettype=["signal"]),
+                _make_box("obj-2", maxclass="flonum", text="",
+                          numinlets=1, numoutlets=2, outlettype=["", "bang"]),
+            ],
+            lines=[_make_line("obj-1", 0, "obj-2", 0)],
+        )
+        results = validate_patch(patch, db=db)
+        warnings_found = [
+            r for r in results
+            if r.level == "warning" and "list outlet" in r.message
+            and "bach.*" in r.message
+        ]
+        assert len(warnings_found) >= 1
+        assert warnings_found[0].auto_fixed is False
+        assert len(patch["patcher"]["lines"]) == 1
+
+    def test_audio_to_signal_silent_via_legacy(self, db):
+        """REGRESSION (R2/R10): cycle~ (audio) -> *~ (signal) emits no
+        tier finding; legacy branch handles it silently. Production fixture
+        cycle~ has signal_role='audio' per Phase 28."""
+        patch = self._patch_with_connection(
+            src_name="cycle~ 440", dst_name="*~ 0.5"
+        )
+        results = validate_patch(patch, db=db)
+        # No connection-layer error or warning carrying tier-format wording
+        type_issues = [
+            r for r in results
+            if r.layer == "connections"
+            and r.level in ("error", "warning")
+            and "outlet \u2192" in r.message
+        ]
+        assert type_issues == [], [r.message for r in type_issues]
+        # Line preserved
+        assert len(patch["patcher"]["lines"]) == 1
+
+    def test_audio_to_control_legacy_branch_runs(self, db):
+        """REGRESSION (R10): cycle~ -> print (control-only inlet) is
+        auto-removed by the LEGACY signal:bool branch — tier dispatch
+        must not bypass it. Mirrors test_signal_to_control_only_inlet_detected."""
+        boxes = [
+            _make_box("obj-1", text="cycle~ 440", numoutlets=1, outlettype=["signal"]),
+            _make_box("obj-2", text="print", numinlets=1, numoutlets=0, outlettype=[]),
+        ]
+        lines = [_make_line("obj-1", 0, "obj-2", 0)]
+        patch = _make_patch_dict(boxes=boxes, lines=lines)
+        results = validate_patch(patch, db=db)
+        # Legacy branch produces an auto_fixed error mentioning signal -> control
+        legacy_errors = [
+            r for r in results
+            if r.layer == "connections" and r.auto_fixed
+            and "signal" in r.message.lower()
+        ]
+        assert len(legacy_errors) >= 1, (
+            f"Legacy auto-remove for audio -> control inlet was bypassed. "
+            f"Got: {[r.message for r in results]}"
+        )
+
+    def test_uncurated_role_falls_through(self, db, monkeypatch):
+        """Source whose get_signal_role returns None falls through to legacy
+        branch unchanged. Mirrors test_control_to_signal_inlet_passes."""
+        monkeypatch.setattr(db, "get_signal_role", lambda name, outlet: None)
+        patch = _make_patch_dict(
+            boxes=[
+                _make_box("obj-1", maxclass="message", text="440",
+                          numinlets=2, numoutlets=1, outlettype=[""]),
+                _make_box("obj-2", text="cycle~ 440",
+                          numinlets=2, numoutlets=1, outlettype=["signal"]),
+            ],
+            lines=[_make_line("obj-1", 0, "obj-2", 0)],
+        )
+        results = validate_patch(patch, db=db)
+        tier_findings = [
+            r for r in results
+            if r.layer == "connections" and "outlet \u2192" in r.message
+        ]
+        assert tier_findings == []
+
+    def test_role_tier_table_excludes_audio_keys(self):
+        """DEFENSIVE INVARIANT (R2): _ROLE_TIER_TABLE must not contain any
+        ('audio', *) key. Audio sources are owned by the legacy signal:bool
+        branch; adding an audio key would silently change auto-fix behavior
+        for every existing audio-source test."""
+        from src.maxpat.validation import _ROLE_TIER_TABLE
+        audio_keys = [k for k in _ROLE_TIER_TABLE.keys() if k[0] == "audio"]
+        assert audio_keys == [], (
+            f"_ROLE_TIER_TABLE contains forbidden audio keys: {audio_keys}. "
+            f"Per RESEARCH.md R2/R10, audio sources must remain in the "
+            f"exclusive control of the legacy signal:bool branch."
+        )
+
+    def test_severity_auto_fix_contract(self, db, monkeypatch):
+        """D-19 row: ERROR tier has auto_fixed=True; WARNING tier has
+        auto_fixed=False."""
+        # ERROR case
+        monkeypatch.setattr(
+            db, "get_signal_role",
+            lambda name, outlet: "status" if name.startswith("s") else None
+        )
+        patch_err = self._patch_with_connection(src_name="status_x")
+        for r in validate_patch(patch_err, db=db):
+            if "status outlet" in r.message:
+                assert r.level == "error" and r.auto_fixed is True
+
+        # WARNING case
+        monkeypatch.setattr(
+            db, "get_signal_role",
+            lambda name, outlet: "trigger" if name.startswith("t") else None
+        )
+        patch_warn = _make_patch_dict(
+            boxes=[
+                _make_box("obj-1", text="trig", outlettype=["signal"]),
+                _make_box("obj-2", maxclass="flonum", text="",
+                          numinlets=1, numoutlets=2, outlettype=["", "bang"]),
+            ],
+            lines=[_make_line("obj-1", 0, "obj-2", 0)],
+        )
+        for r in validate_patch(patch_warn, db=db):
+            if "trigger outlet" in r.message and "float inlet" in r.message:
+                assert r.level == "warning" and r.auto_fixed is False
+
+
+# ===========================================================================
 # Layer 4: Domain-Specific Rules
 # ===========================================================================
 
