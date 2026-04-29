@@ -250,7 +250,9 @@ def validate_genexpr(
             continue
         opens = stripped.count("{")
         closes = stripped.count("}")
-        if depth == 0 and re.match(r"\b(if|else)\b", stripped) and opens > 0:
+        # Detect if/else opening at depth 0, allowing leading '}' (e.g., '} else {')
+        # so we don't miss the line and leave block_start_line at -1.
+        if depth == 0 and re.match(r"^[}\s]*(if|else)\b", stripped) and opens > 0:
             block_start_line = i
         m = assign_pattern.match(stripped)
         if m:
@@ -269,10 +271,16 @@ def validate_genexpr(
         if name in seen:
             continue
         seen.add(name)
+        # Guard against block_start_line=-1 (assignment seen at depth>=1
+        # without a tracked outermost-block opening line, e.g., malformed
+        # input). Avoid misleading "(line 0)" output.
+        line_display = (
+            f"line {line_no + 1}" if line_no >= 0 else "in an if/else block"
+        )
         results.append(ValidationResult(
             "code", "error",
             f"variable '{name}' used inside if/else without prior init "
-            f"(line {line_no + 1}); GenExpr errors with 'not defined'. "
+            f"({line_display}); GenExpr errors with 'not defined'. "
             f"Restructure to assign '{name}' before the if/else, or "
             f"if this is a false positive (e.g., shadowed inner "
             f"declaration), declare via Param/History/Delay/Buffer/Data.",
