@@ -747,6 +747,205 @@ class TestDomainGuard:
 
 
 # ===========================================================================
+# Layer 5: Embedded GenExpr Codebox Walker (Phase 29 / VALID-04 / D-17)
+# ===========================================================================
+
+class TestEmbeddedGenExpr:
+    """VALID-04 / D-17: embedded gen~ codeboxes inside .maxpat files get
+    Checks 1-9 from validate_genexpr piped through as ValidationResult
+    findings, tagged with the gen~ box id. Top-level only (D-07 scope
+    alignment with the domain guard)."""
+
+    def _patch_with_gen_codebox(self, code, gen_id="g1"):
+        """Build a minimal patch with one top-level gen~ wrapping a single
+        codebox containing the given code."""
+        gen_box = {
+            "box": {
+                "id": gen_id,
+                "maxclass": "newobj",
+                "text": "gen~",
+                "numinlets": 0,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+                "patching_rect": [0, 0, 80, 22],
+                "patcher": {
+                    "boxes": [
+                        {"box": {
+                            "id": "cb1",
+                            "maxclass": "codebox",
+                            "code": code,
+                        }}
+                    ],
+                    "lines": [],
+                },
+            }
+        }
+        return {"patcher": {"boxes": [gen_box], "lines": []}}
+
+    def test_embedded_delay_emits_error(self, db):
+        """delay( in embedded codebox triggers Check 7 via the walker."""
+        patch = self._patch_with_gen_codebox("out1 = delay(in1, 100);")
+        results = validate_patch(patch, db=db)
+        delay_errors = [
+            r for r in results
+            if r.level == "error" and "delay()" in r.message
+            and "gen~ 'g1'" in r.message
+        ]
+        assert len(delay_errors) >= 1, [r.message for r in results]
+
+    def test_embedded_clip_emits_error(self, db):
+        """clip( in embedded codebox triggers Check 8 via the walker."""
+        patch = self._patch_with_gen_codebox("out1 = clip(in1, 0., 1.);")
+        results = validate_patch(patch, db=db)
+        clip_errors = [
+            r for r in results
+            if r.level == "error" and "clip()" in r.message
+            and "gen~ 'g1'" in r.message
+        ]
+        assert len(clip_errors) >= 1, [r.message for r in results]
+
+    def test_embedded_init_before_if_emits_error(self, db):
+        """Variable assigned only inside if/else triggers Check 9."""
+        code = "if (in1 > 0) {\n    y = in1 * 2;\n}\nout1 = y;"
+        patch = self._patch_with_gen_codebox(code)
+        results = validate_patch(patch, db=db)
+        init_errors = [
+            r for r in results
+            if r.level == "error" and "without prior init" in r.message
+            and "gen~ 'g1'" in r.message
+        ]
+        assert len(init_errors) >= 1, [r.message for r in results]
+
+    def test_clean_codebox_silent(self, db):
+        """A codebox with no Check 7/8/9 violations produces no walker error."""
+        patch = self._patch_with_gen_codebox("out1 = in1 * 0.5;")
+        results = validate_patch(patch, db=db)
+        walker_findings = [
+            r for r in results
+            if "gen~ 'g1' codebox:" in r.message
+            and r.level == "error"
+        ]
+        # Walker may emit 'info' (Check 3 in/out detection) but no errors
+        assert walker_findings == [], [r.message for r in walker_findings]
+
+    def test_no_gen_no_findings(self, db):
+        """Patch with no gen~ boxes produces no walker findings."""
+        boxes = [
+            _make_box("c1", text="cycle~ 440",
+                      numinlets=2, numoutlets=1, outlettype=["signal"]),
+        ]
+        patch = _make_patch_dict(boxes=boxes, lines=[])
+        results = validate_patch(patch, db=db)
+        walker_findings = [
+            r for r in results
+            if "codebox:" in r.message
+        ]
+        assert walker_findings == []
+
+    def test_gen_without_codebox_silent(self, db):
+        """gen~ with an inner patcher that has no codeboxes produces no
+        walker findings."""
+        gen_box = {
+            "box": {
+                "id": "g1",
+                "maxclass": "newobj",
+                "text": "gen~",
+                "numinlets": 0,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+                "patcher": {
+                    "boxes": [
+                        {"box": {
+                            "id": "in1",
+                            "maxclass": "inlet",
+                            "numinlets": 0,
+                            "numoutlets": 1,
+                        }}
+                    ],
+                    "lines": [],
+                },
+            }
+        }
+        patch = {"patcher": {"boxes": [gen_box], "lines": []}}
+        results = validate_patch(patch, db=db)
+        walker_findings = [
+            r for r in results
+            if "gen~ 'g1' codebox:" in r.message
+        ]
+        assert walker_findings == []
+
+    def test_severity_carried_through(self, db):
+        """Walker preserves level and auto_fixed from validate_genexpr.
+        D-19: Check 7 is ERROR with auto_fixed=False."""
+        patch = self._patch_with_gen_codebox("out1 = delay(in1, 100);")
+        results = validate_patch(patch, db=db)
+        target = next(
+            (r for r in results
+             if "delay()" in r.message and "gen~ 'g1'" in r.message),
+            None,
+        )
+        assert target is not None, [r.message for r in results]
+        assert target.level == "error"
+        assert target.auto_fixed is False
+
+    def test_box_id_in_tag(self, db):
+        """Two distinct gen~ boxes produce two distinct tagged findings,
+        each citing the correct gen~ id."""
+        gen_box_a = {
+            "box": {
+                "id": "alpha",
+                "maxclass": "newobj",
+                "text": "gen~",
+                "numinlets": 0,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+                "patcher": {
+                    "boxes": [
+                        {"box": {
+                            "id": "cba",
+                            "maxclass": "codebox",
+                            "code": "out1 = delay(in1, 100);",
+                        }}
+                    ],
+                    "lines": [],
+                },
+            }
+        }
+        gen_box_b = {
+            "box": {
+                "id": "beta",
+                "maxclass": "newobj",
+                "text": "gen~",
+                "numinlets": 0,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+                "patcher": {
+                    "boxes": [
+                        {"box": {
+                            "id": "cbb",
+                            "maxclass": "codebox",
+                            "code": "out1 = clip(in1, 0., 1.);",
+                        }}
+                    ],
+                    "lines": [],
+                },
+            }
+        }
+        patch = {"patcher": {"boxes": [gen_box_a, gen_box_b], "lines": []}}
+        results = validate_patch(patch, db=db)
+        alpha_findings = [
+            r for r in results
+            if "gen~ 'alpha'" in r.message and "delay()" in r.message
+        ]
+        beta_findings = [
+            r for r in results
+            if "gen~ 'beta'" in r.message and "clip()" in r.message
+        ]
+        assert len(alpha_findings) >= 1, [r.message for r in results]
+        assert len(beta_findings) >= 1, [r.message for r in results]
+
+
+# ===========================================================================
 # has_blocking_errors
 # ===========================================================================
 
