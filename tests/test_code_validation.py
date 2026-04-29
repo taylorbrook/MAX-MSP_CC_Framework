@@ -197,6 +197,34 @@ class TestGenExprChecks:
         assert len(init_errors) >= 1
         assert "if this is a false positive" in init_errors[0].message
 
+    def test_check9_single_line_if_block_false_negative(self):
+        """D-20 documented limitation: single-line `if (cond) { y = 1; }`
+        constructs are missed by the line-by-line depth walker.
+
+        The assignment `y = 1` lives on the same line as the `if`, so
+        `assign_pattern.match(stripped)` (anchored at start-of-line) sees
+        `if`, not `y`, and the inner assignment is silently skipped.
+        GenExpr would still error if `y` is later read without prior
+        init, so this is a false-negative gap. The depth-walking heuristic
+        is brittle by design; documenting the gap here ensures future
+        contributors understand the limitation rather than assuming the
+        check is exhaustive.
+        """
+        from src.maxpat.code_validation import validate_genexpr
+        # Single-line if-block: walker misses the inner `y = 1` assignment.
+        code = "if (in1 > 0) { y = 1; }\nout1 = y;"
+        results = validate_genexpr(code)
+        init_errors = [
+            r for r in results
+            if r.level == "error" and "without prior init" in r.message
+        ]
+        # Documented false-negative: no error emitted even though `y`
+        # is used at depth 0 without a tracked init.
+        assert init_errors == [], (
+            "Check 9 unexpectedly caught single-line if-block init -- "
+            "if you've added single-line scanning, update this test."
+        )
+
     def test_severity_contract(self):
         """D-19: Checks 7/8/9 are always level='error', never 'warning'."""
         from src.maxpat.code_validation import validate_genexpr
