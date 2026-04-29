@@ -37,6 +37,24 @@ _GENEXPR_KEYWORDS = frozenset({
 })
 
 
+# Declaration prefixes for Check 5 (declaration ordering) and Check 9 (init-
+# before-if/else). Module-level so multiple checks can reuse without rebinding.
+# Hoisted from validate_genexpr local scope (Phase 29 / VALID-04 / D-16).
+_DECL_PREFIXES = ("Param ", "History ", "Delay ", "Buffer ", "Data ")
+
+
+def _strip_line_comments(code: str) -> str:
+    """Remove `//` line comments so regex checks (Checks 7, 8) can scan
+    code text without false-positive matches inside commented-out
+    examples. Block comments (`/* ... */`) are not used in GenExpr and
+    are not handled. Single pass; preserves line count for error
+    line-number reporting in Check 9.
+    """
+    return "\n".join(
+        re.sub(r"//.*$", "", line) for line in code.split("\n")
+    )
+
+
 def validate_genexpr(
     code: str,
     db: "ObjectDatabase | None" = None,
@@ -126,7 +144,7 @@ def validate_genexpr(
             ))
 
     # Check 5: Declaration ordering -- all declarations must precede expressions
-    _DECL_PREFIXES = ("Param ", "History ", "Delay ", "Buffer ", "Data ")
+    # _DECL_PREFIXES is module-level (hoisted Phase 29 for Check 9 reuse).
     last_decl_line = -1
     first_expr_line = -1
     for i, line in enumerate(lines):
