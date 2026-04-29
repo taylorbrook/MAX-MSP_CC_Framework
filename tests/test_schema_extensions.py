@@ -19,6 +19,7 @@ Plan-03 references: audit_install_coverage / audit_domain_coverage / no
 from __future__ import annotations
 
 import json
+import warnings
 from pathlib import Path
 
 import pytest
@@ -29,6 +30,7 @@ from src.maxpat.db_lookup import (
     _DOMAIN_TO_FIELD,
     _SIGNAL_ROLE_ENUM,
 )
+from src.maxpat.validation import validate_patch
 
 
 # ── Test helpers ──────────────────────────────────────────────────
@@ -476,3 +478,149 @@ class TestInstallWarningSurface:
         db = ObjectDatabase()
         assert hasattr(db, "_maybe_warn_install_state")
         assert callable(db._maybe_warn_install_state)
+
+
+# ── TestInstallWarning (Plan 29-01 Task 2 — D-09..D-12) ──────────
+
+
+class TestInstallWarning:
+    """VALID-03 / D-09..D-12: db.lookup() once-per-name UserWarning when
+    verified_installed is explicitly False. Silent on None (unaudited) and
+    True (verified present). No ValidationResult emission (D-12: lookup
+    warning is the single channel).
+
+    Fixture: bach.llll2list is the canonical verified_installed: false
+    entry in overrides.json (line ~11066), confirmed by Phase 28 tests
+    and 29-RESEARCH.md anchor table.
+    """
+
+    def _fresh_db(self):
+        """Return a production ObjectDatabase with empty _install_warned cache.
+
+        ObjectDatabase() construction itself emits 0 install warnings (the
+        warning fires only on lookup() calls), so a fresh instance is
+        equivalent to clearing the cache.
+        """
+        db = ObjectDatabase()
+        db._install_warned.clear()
+        return db
+
+    def test_bach_emits_warning_once(self):
+        """First lookup of bach.llll2list emits exactly 1 UserWarning with
+        the canonical message text."""
+        db = self._fresh_db()
+        with warnings.catch_warnings(record=True) as captured:
+            warnings.simplefilter("always")
+            db.lookup("bach.llll2list")
+        install_warns = [
+            w for w in captured
+            if "verified_installed" in str(w.message)
+        ]
+        assert len(install_warns) == 1
+        msg = str(install_warns[0].message)
+        assert "bach.llll2list" in msg
+        assert "verified_installed: false" in msg
+        assert "Run package extraction" in msg
+
+    def test_warning_cached_per_name(self):
+        """Second lookup of the same name is silent (cache hit)."""
+        db = self._fresh_db()
+        with warnings.catch_warnings(record=True) as captured:
+            warnings.simplefilter("always")
+            db.lookup("bach.llll2list")
+            db.lookup("bach.llll2list")
+        install_warns = [
+            w for w in captured
+            if "verified_installed" in str(w.message)
+        ]
+        assert len(install_warns) == 1, (
+            f"Expected exactly 1 cached warning, got {len(install_warns)}"
+        )
+
+    def test_unaudited_silent(self):
+        """Objects with verified_installed absent (None per D-09) emit no
+        install warning. cycle~ is the canonical unaudited fixture."""
+        db = self._fresh_db()
+        # Sanity: confirm the fixture is genuinely unaudited
+        assert db.get_install_state("cycle~") is None
+        with warnings.catch_warnings(record=True) as captured:
+            warnings.simplefilter("always")
+            db.lookup("cycle~")
+        install_warns = [
+            w for w in captured
+            if "verified_installed" in str(w.message)
+        ]
+        assert install_warns == []
+
+    def test_userwarning_category_matches(self):
+        """Warning category is UserWarning (not a subclass) per D-11."""
+        db = self._fresh_db()
+        with warnings.catch_warnings(record=True) as captured:
+            warnings.simplefilter("always")
+            db.lookup("bach.llll2list")
+        install_warns = [
+            w for w in captured
+            if "verified_installed" in str(w.message)
+        ]
+        assert len(install_warns) == 1
+        assert install_warns[0].category is UserWarning
+
+    def test_no_validation_result_emitted(self):
+        """validate_patch() emits no ValidationResult for install state.
+        D-12: db.lookup warning is the single channel."""
+        # Minimal patch using bach.llll2list as a newobj
+        patch = {
+            "patcher": {
+                "boxes": [
+                    {"box": {
+                        "id": "obj-1",
+                        "maxclass": "newobj",
+                        "text": "bach.llll2list",
+                        "numinlets": 1,
+                        "numoutlets": 1,
+                        "outlettype": [""],
+                        "patching_rect": [0, 0, 80, 22],
+                    }}
+                ],
+                "lines": [],
+            }
+        }
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            results = validate_patch(patch)
+        install_results = [
+            r for r in results
+            if "verified_installed" in r.message.lower()
+            or "install" in r.message.lower()
+        ]
+        assert install_results == [], (
+            f"D-12 violated: validate_patch emitted install ValidationResults: "
+            f"{install_results}"
+        )
+
+    def test_explicit_true_silent(self):
+        """An object with verified_installed: true does not emit an install
+        warning on lookup. Per D-10, only explicit False fires.
+
+        Use _make_db_root with an isolated cycle~ fixture marked True so the
+        test does not depend on which production objects happen to be marked
+        true today (audit progress could change that set).
+        """
+        # Use tmp_path via the existing helper. cycle~ verified_installed:true
+        # is the cleanest controlled fixture; no other object in the isolated
+        # DB participates.
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = _make_db_root(
+                Path(tmp),
+                {"cycle~": {"verified_installed": True}},
+            )
+            db = ObjectDatabase(db_root=root)
+            with warnings.catch_warnings(record=True) as captured:
+                warnings.simplefilter("always")
+                db.lookup("cycle~")
+            install_warns = [
+                w for w in captured
+                if "verified_installed" in str(w.message)
+            ]
+            assert install_warns == []
