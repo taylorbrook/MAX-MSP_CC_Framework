@@ -743,20 +743,22 @@ class ObjectDatabase:
                 return default
 
         if formula == "first_arg+1":
-            if args:
-                try:
-                    return int(args[0]) + 1
-                except (ValueError, IndexError):
-                    return default
-            return default
+            if not args:
+                return default
+            try:
+                return int(args[0]) + 1
+            except ValueError:
+                self._warn_non_integer_first_arg(formula, args[0], default)
+                return default
 
         if formula == "second_arg":
-            if len(args) >= 2:
-                try:
-                    return int(args[1])
-                except (ValueError, IndexError):
-                    return default
-            return default
+            if len(args) < 2:
+                return default
+            try:
+                return int(args[1])
+            except ValueError:
+                self._warn_non_integer_first_arg(formula, args[1], default)
+                return default
 
         return default
 
