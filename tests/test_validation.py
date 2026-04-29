@@ -622,6 +622,131 @@ class TestLayer4DomainRules:
 
 
 # ===========================================================================
+# Layer 4b: Domain Restriction Guard (Phase 29 / VALID-02 / D-05..D-08)
+# ===========================================================================
+
+class TestDomainGuard:
+    """VALID-02 / D-05..D-08: top-level boxes with domain_restricted
+    annotations emit an ERROR ValidationResult. Top-level only — no
+    recursion into subpatchers (D-07). Always ERROR + auto_fixed=False
+    (D-08). Production fixture: floor~ has domain_restricted: ['rnbo']
+    in overrides.json (line ~11058)."""
+
+    def test_floor_tilde_top_level_error(self, db):
+        """floor~ at top level (outside rnbo~) emits ERROR naming the
+        object, the restriction list, and the wrap-in suggestion."""
+        boxes = [
+            _make_box("f1", text="floor~ 0.5",
+                      numinlets=1, numoutlets=1, outlettype=["signal"]),
+        ]
+        patch = _make_patch_dict(boxes=boxes, lines=[])
+        results = validate_patch(patch, db=db)
+        domain_errors = [
+            r for r in results
+            if r.layer == "domain" and r.level == "error"
+            and "floor~" in r.message
+            and "is restricted to" in r.message
+        ]
+        assert len(domain_errors) == 1, [r.message for r in results]
+        assert domain_errors[0].auto_fixed is False
+        # Restriction list cited verbatim
+        assert "rnbo" in domain_errors[0].message
+        # Suggestion to wrap
+        assert "Wrap in" in domain_errors[0].message
+
+    def test_floor_tilde_in_gen_subpatcher_silent(self, db):
+        """REGRESSION (R6): floor~ nested in gen~ inner patcher must NOT
+        fire — D-07 top-level only. The walker iterates outer boxes only."""
+        # Outer patcher contains a single gen~ box; its inner patcher
+        # contains floor~. Domain guard MUST NOT recurse.
+        outer_gen_box = {
+            "box": {
+                "id": "gen-1",
+                "maxclass": "newobj",
+                "text": "gen~",
+                "numinlets": 0,
+                "numoutlets": 1,
+                "outlettype": ["signal"],
+                "patching_rect": [0, 0, 80, 22],
+                "patcher": {
+                    "boxes": [
+                        {"box": {
+                            "id": "f1",
+                            "maxclass": "newobj",
+                            "text": "floor~ 0.5",
+                            "numinlets": 1,
+                            "numoutlets": 1,
+                            "outlettype": ["signal"],
+                        }}
+                    ],
+                    "lines": [],
+                },
+            }
+        }
+        patch = {"patcher": {"boxes": [outer_gen_box], "lines": []}}
+        results = validate_patch(patch, db=db)
+        floor_errors = [
+            r for r in results
+            if r.layer == "domain" and r.level == "error"
+            and "floor~" in r.message
+            and "is restricted to" in r.message
+        ]
+        assert floor_errors == [], (
+            f"D-07 violated: domain guard recursed into gen~ inner patcher. "
+            f"Got: {floor_errors}"
+        )
+
+    def test_unrestricted_object_silent(self, db):
+        """Only unrestricted objects -> no domain-restriction error."""
+        boxes = [
+            _make_box("c1", text="cycle~ 440",
+                      numinlets=2, numoutlets=1, outlettype=["signal"]),
+            _make_box("m1", text="*~ 0.5",
+                      numinlets=2, numoutlets=1, outlettype=["signal"]),
+        ]
+        patch = _make_patch_dict(boxes=boxes, lines=[])
+        results = validate_patch(patch, db=db)
+        domain_restriction_errors = [
+            r for r in results
+            if r.layer == "domain" and r.level == "error"
+            and "is restricted to" in r.message
+        ]
+        assert domain_restriction_errors == []
+
+    def test_severity_contract(self, db):
+        """D-08, D-19: domain restriction is always ERROR + auto_fixed=False."""
+        boxes = [
+            _make_box("f1", text="floor~ 0.5",
+                      numinlets=1, numoutlets=1, outlettype=["signal"]),
+        ]
+        patch = _make_patch_dict(boxes=boxes, lines=[])
+        results = validate_patch(patch, db=db)
+        for r in results:
+            if r.layer == "domain" and "is restricted to" in r.message:
+                assert r.level == "error", r
+                assert r.auto_fixed is False, r
+
+    def test_message_cites_restriction_list(self, db):
+        """Error message contains the literal restriction list (e.g.,
+        ['rnbo']) so callers can grep on it."""
+        boxes = [
+            _make_box("f1", text="floor~ 0.5",
+                      numinlets=1, numoutlets=1, outlettype=["signal"]),
+        ]
+        patch = _make_patch_dict(boxes=boxes, lines=[])
+        results = validate_patch(patch, db=db)
+        target = next(
+            (r for r in results
+             if r.layer == "domain" and r.level == "error"
+             and "floor~" in r.message),
+            None,
+        )
+        assert target is not None, [r.message for r in results]
+        # The list itself is in the message (Python list repr)
+        assert "['rnbo']" in target.message
+
+
+# ===========================================================================
 # has_blocking_errors
 # ===========================================================================
 
