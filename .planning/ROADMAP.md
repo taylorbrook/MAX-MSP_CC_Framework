@@ -70,7 +70,7 @@ Full details: `.planning/milestones/v4.0-ROADMAP.md`
 ### 🚧 v5.0 DB Schema Hardening + Validator Depth (Phases 28-32)
 
 - [x] **Phase 28: Schema Foundation** — Typed signal_role / domain_restricted / verified_installed fields land in overrides + db_lookup with back-compat shim (completed 2026-04-28)
-- [ ] **Phase 29: Validator Depth** — Layer-3 role-aware errors, RNBO domain hard guard, install-state warnings, external `.gendsp` validation
+- [x] **Phase 29: Validator Depth** — Layer-3 role-aware errors, RNBO domain hard guard, install-state warnings, external `.gendsp` validation (completed 2026-04-29)
 - [ ] **Phase 30: MSP Outlet Coverage Sweep** — Migrate 16 existing overrides + populate ~80 unverified MSP objects + bulk audit script
 - [ ] **Phase 31: Layout & UX Builders** — `add_overlay_readout`, `add_labeled_param_bank`, signal_role-aware companion pairs, `m4l_gen_synth` skeleton
 - [ ] **Phase 32: DSP Pre-Flight Simulation** — numpy waveguide stability sweep harness wired into max-dsp-agent
@@ -109,7 +109,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 - [x] 29-02-PLAN.md — GenExpr Checks 7/8/9 in validate_genexpr (VALID-04)
 - [x] 29-03-PLAN.md — Layer 3 role-aware tier dispatch (VALID-01, VALID-05)
 - [x] 29-04-PLAN.md — Layer 4b domain restriction guard (VALID-02, VALID-05)
-- [ ] 29-05-PLAN.md — Embedded gen~ codebox walker (VALID-04 parity, VALID-05)
+- [x] 29-05-PLAN.md — Embedded gen~ codebox walker (VALID-04 parity, VALID-05)
 
 ### Phase 30: MSP Outlet Coverage Sweep
 **Goal**: The typed signal-role contract is dense enough across MSP that role-aware validation (Phase 29) actually fires on real patches instead of falling back to the boolean shim
@@ -178,7 +178,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 24. Community Package Support | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 25. Templates + Critics | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 28. Schema Foundation | v5.0 | 3/3 | Complete    | 2026-04-28 |
-| 29. Validator Depth | v5.0 | 4/5 | In Progress|  |
+| 29. Validator Depth | v5.0 | 5/5 | Complete   | 2026-04-29 |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 0/0 | Not started | - |
 | 31. Layout & UX Builders | v5.0 | 0/0 | Not started | - |
 | 32. DSP Pre-Flight Simulation | v5.0 | 0/0 | Not started | - |
