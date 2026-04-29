@@ -105,9 +105,9 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
   4. Saving a standalone `.gendsp` file runs the DSP critic with the same checks as embedded codeboxes — declaration-ordering, `Delay.read/write` vs `delay()`, init-before-if/else, `clip()` rejection
   5. Every validation finding clearly distinguishes `error` (blocks output) from `warning` (surfaces but allows) across all four new check families, so callers can reliably gate on severity
 **Plans**: 5 plans
-- [ ] 29-01-PLAN.md — Install-state warning in db.lookup() (VALID-03)
-- [ ] 29-02-PLAN.md — GenExpr Checks 7/8/9 in validate_genexpr (VALID-04)
-- [ ] 29-03-PLAN.md — Layer 3 role-aware tier dispatch (VALID-01, VALID-05)
+- [x] 29-01-PLAN.md — Install-state warning in db.lookup() (VALID-03)
+- [x] 29-02-PLAN.md — GenExpr Checks 7/8/9 in validate_genexpr (VALID-04)
+- [x] 29-03-PLAN.md — Layer 3 role-aware tier dispatch (VALID-01, VALID-05)
 - [ ] 29-04-PLAN.md — Layer 4b domain restriction guard (VALID-02, VALID-05)
 - [ ] 29-05-PLAN.md — Embedded gen~ codebox walker (VALID-04 parity, VALID-05)
 
@@ -178,7 +178,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 24. Community Package Support | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 25. Templates + Critics | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 28. Schema Foundation | v5.0 | 3/3 | Complete    | 2026-04-28 |
-| 29. Validator Depth | v5.0 | 0/5 | Planned | - |
+| 29. Validator Depth | v5.0 | 3/5 | In Progress|  |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 0/0 | Not started | - |
 | 31. Layout & UX Builders | v5.0 | 0/0 | Not started | - |
 | 32. DSP Pre-Flight Simulation | v5.0 | 0/0 | Not started | - |
