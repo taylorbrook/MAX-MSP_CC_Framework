@@ -544,7 +544,7 @@ def _validate_connections(
                         src_role, dst_box, dst_inlet, db
                     )
                     if tier is not None:
-                        level, _dst_kind, message, auto_fix = tier
+                        level, message, auto_fix = tier
                         results.append(ValidationResult(
                             "connections", level, message,
                             auto_fixed=auto_fix,
@@ -686,16 +686,18 @@ def _classify_role_mismatch(
     dst_box: dict,
     dst_inlet: int,
     db: ObjectDatabase,
-) -> tuple[str, str, str, bool] | None:
+) -> tuple[str, str, bool] | None:
     """Look up (src_role, dst_kind) in _ROLE_TIER_TABLE.
 
-    Returns (level, dst_kind, message, auto_fix) when a tier-table entry
-    matches, or None to signal "fall through to legacy signal:bool branch"
-    (D-02).
+    Returns (level, message, auto_fix) when a tier-table entry matches, or
+    None to signal "fall through to legacy signal:bool branch" (D-02).
 
     Per D-04, the message is formatted as
     "{src_role} outlet → {dst_kind} inlet: {suggestion}" — concrete and
-    suggestion-bearing, never generic "type mismatch".
+    suggestion-bearing, never generic "type mismatch". The dst_kind label
+    is folded into the pre-formatted message and not returned separately;
+    the only caller (the role-aware tier dispatch in
+    `_validate_connection_bounds`) consumed the message verbatim.
     """
     dst_kind = _classify_dst_inlet(dst_box, dst_inlet, db)
     entry = _ROLE_TIER_TABLE.get((src_role, dst_kind))
@@ -703,7 +705,7 @@ def _classify_role_mismatch(
         return None
     level, suggestion, auto_fix = entry
     message = f"{src_role} outlet → {dst_kind} inlet: {suggestion}"
-    return (level, dst_kind, message, auto_fix)
+    return (level, message, auto_fix)
 
 
 # ===========================================================================
