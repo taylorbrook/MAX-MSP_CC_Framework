@@ -80,6 +80,146 @@ class TestGenExprValidator:
 
 
 # ---------------------------------------------------------------------------
+# TestGenExprChecks -- VALID-04 / D-14, D-15, D-16, D-19, D-20
+# Three new ERROR-level checks: delay() (Check 7), clip() (Check 8),
+# init-before-if/else (Check 9). All severity 'error', no auto-fix.
+# ---------------------------------------------------------------------------
+
+class TestGenExprChecks:
+    """VALID-04 / D-14, D-15, D-16, D-19, D-20: Three new ERROR-level checks
+    in validate_genexpr -- delay() (Check 7), clip() (Check 8),
+    init-before-if/else (Check 9). All severity 'error', no auto-fix.
+    """
+
+    def test_check7_delay_rejection(self):
+        from src.maxpat.code_validation import validate_genexpr
+        code = "Delay myDelay(1024);\nout1 = delay(in1, 100);"
+        results = validate_genexpr(code)
+        delay_errors = [
+            r for r in results
+            if r.level == "error" and "delay()" in r.message
+        ]
+        assert len(delay_errors) >= 1
+        assert "Delay.read/write" in delay_errors[0].message
+
+    def test_check7_skips_capital_Delay(self):
+        """Word-boundary regex must not match Delay() or myDelay.read()."""
+        from src.maxpat.code_validation import validate_genexpr
+        code = "Delay myDelay(1024);\nout1 = myDelay.read(100);"
+        results = validate_genexpr(code)
+        delay_errors = [
+            r for r in results
+            if r.level == "error" and "delay()" in r.message
+        ]
+        assert delay_errors == [], (
+            f"Word-boundary failure -- Delay() or myDelay.read() falsely "
+            f"matched: {delay_errors}"
+        )
+
+    def test_check8_clip_rejection(self):
+        from src.maxpat.code_validation import validate_genexpr
+        code = "out1 = clip(in1, 0., 1.);"
+        results = validate_genexpr(code)
+        clip_errors = [
+            r for r in results
+            if r.level == "error" and "clip()" in r.message
+        ]
+        assert len(clip_errors) >= 1
+        assert "min(max(x, lo), hi)" in clip_errors[0].message
+
+    def test_check9_init_before_if(self):
+        from src.maxpat.code_validation import validate_genexpr
+        code = "if (in1 > 0) {\n    y = in1 * 2;\n}\nout1 = y;"
+        results = validate_genexpr(code)
+        init_errors = [
+            r for r in results
+            if r.level == "error" and "without prior init" in r.message
+        ]
+        assert len(init_errors) >= 1
+        assert "variable 'y'" in init_errors[0].message
+
+    def test_check9_param_exempt(self):
+        """Names declared via Param/History/Delay/Buffer/Data are exempt
+        from Check 9 init detection (D-16)."""
+        from src.maxpat.code_validation import validate_genexpr
+        code = (
+            "Param y(0, min=0, max=1);\n"
+            "if (in1 > 0) {\n    y = 2;\n}\n"
+            "out1 = y;"
+        )
+        results = validate_genexpr(code)
+        init_errors = [
+            r for r in results
+            if r.level == "error" and "without prior init" in r.message
+        ]
+        assert init_errors == []
+
+    def test_check9_pre_init_exempt(self):
+        """Depth-0 assignment before the if/else block exempts the name."""
+        from src.maxpat.code_validation import validate_genexpr
+        code = "y = 0;\nif (in1 > 0) {\n    y = 2;\n}\nout1 = y;"
+        results = validate_genexpr(code)
+        init_errors = [
+            r for r in results
+            if r.level == "error" and "without prior init" in r.message
+        ]
+        assert init_errors == []
+
+    def test_checks_skip_comments(self):
+        """delay/clip inside // comments must NOT trigger Check 7/8."""
+        from src.maxpat.code_validation import validate_genexpr
+        code = (
+            "// out1 = delay(in1, 100);\n"
+            "// out1 = clip(in1, 0, 1);\n"
+            "out1 = in1;"
+        )
+        results = validate_genexpr(code)
+        check_7_8 = [
+            r for r in results
+            if r.level == "error" and (
+                "delay()" in r.message or "clip()" in r.message
+            )
+        ]
+        assert check_7_8 == [], (
+            f"Comment-stripping failure -- // comments triggered checks: "
+            f"{check_7_8}"
+        )
+
+    def test_check9_suggestion_documents_limitations(self):
+        """D-20: error message includes 'if this is a false positive'."""
+        from src.maxpat.code_validation import validate_genexpr
+        code = "if (in1 > 0) {\n    y = 2;\n}\nout1 = y;"
+        results = validate_genexpr(code)
+        init_errors = [
+            r for r in results
+            if "without prior init" in r.message
+        ]
+        assert len(init_errors) >= 1
+        assert "if this is a false positive" in init_errors[0].message
+
+    def test_severity_contract(self):
+        """D-19: Checks 7/8/9 are always level='error', never 'warning'."""
+        from src.maxpat.code_validation import validate_genexpr
+        code = (
+            "out1 = delay(in1, 100);\n"
+            "out2 = clip(in1, 0, 1);\n"
+            "if (in1 > 0) { z = 1; }\n"
+            "out3 = z;"
+        )
+        results = validate_genexpr(code)
+        for r in results:
+            if (
+                "delay()" in r.message
+                or "clip()" in r.message
+                or "without prior init" in r.message
+            ):
+                assert r.level == "error", (
+                    f"D-19 violated: check emitted level='{r.level}' "
+                    f"instead of 'error': {r.message}"
+                )
+
+
+# ---------------------------------------------------------------------------
 # TestJsValidator -- js object V8 validation
 # ---------------------------------------------------------------------------
 
@@ -264,3 +404,33 @@ class TestValidateCodeFile:
         import pytest
         with pytest.raises(FileNotFoundError):
             validate_code_file("/nonexistent/path/test.js")
+
+    def test_gendsp_with_delay_blocks(self, tmp_path):
+        """VALID-04 round-trip: a .gendsp containing delay( in its codebox
+        produces an ERROR ValidationResult via the hooks.validate_code_file
+        route -- confirms Check 7 pipes through with no extra wiring.
+        """
+        import json
+        from src.maxpat.hooks import validate_code_file
+
+        gendsp_data = {
+            "patcher": {
+                "boxes": [
+                    {"box": {
+                        "maxclass": "codebox",
+                        "code": "out1 = delay(in1, 100);"
+                    }}
+                ]
+            }
+        }
+        path = tmp_path / "test.gendsp"
+        path.write_text(json.dumps(gendsp_data))
+        results = validate_code_file(path)
+        delay_errors = [
+            r for r in results
+            if r.level == "error" and "delay()" in r.message
+        ]
+        assert len(delay_errors) >= 1, (
+            f"hooks.validate_code_file did not pipe Check 7 through. "
+            f"Got: {[r.message for r in results]}"
+        )
