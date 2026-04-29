@@ -23,11 +23,11 @@ Migrate the object DB from flat extracted facts to a typed, install-aware contra
 
 Teach validators and critics to read the richer schema. Plus the schema-independent external `.gendsp` validation that pairs naturally with this pipeline-shaped phase.
 
-- [ ] **VALID-01**: Layer-3 connection validator emits role-aware errors (e.g. `"status outlet → signal inlet (use snapshot~)"`, `"trigger outlet → float inlet"`) instead of generic type-mismatch warnings
-- [ ] **VALID-02**: A domain-restricted guard fails hard when an `rnbo`-only object (e.g. `floor~`) appears at MSP top level outside an `rnbo~` container
-- [ ] **VALID-03**: Lookup-time install-state warnings fire when an object marked `verified_installed: false` is used (e.g. `"bach.llll2list not present in this install"`)
-- [ ] **VALID-04**: External `.gendsp` files are validated by the DSP critic with the same rigor as embedded gen~ codeboxes (declaration ordering, `Delay.read/write` vs `delay()`, init-before-if/else, `clip()` rejection)
-- [ ] **VALID-05**: Validation outputs distinguish `error` (blocks output) from `warning` (surfaces but allows) consistently across role-aware checks, domain guard, install warnings, and `.gendsp` checks
+- [x] **VALID-01**: Layer-3 connection validator emits role-aware errors (e.g. `"status outlet → signal inlet (use snapshot~)"`, `"trigger outlet → float inlet"`) instead of generic type-mismatch warnings
+- [x] **VALID-02**: A domain-restricted guard fails hard when an `rnbo`-only object (e.g. `floor~`) appears at MSP top level outside an `rnbo~` container
+- [x] **VALID-03**: Lookup-time install-state warnings fire when an object marked `verified_installed: false` is used (e.g. `"bach.llll2list not present in this install"`)
+- [x] **VALID-04**: External `.gendsp` files are validated by the DSP critic with the same rigor as embedded gen~ codeboxes (declaration ordering, `Delay.read/write` vs `delay()`, init-before-if/else, `clip()` rejection)
+- [x] **VALID-05**: Validation outputs distinguish `error` (blocks output) from `warning` (surfaces but allows) consistently across role-aware checks, domain guard, install warnings, and `.gendsp` checks
 
 ### MSP Outlet Coverage (Phase 30)
 

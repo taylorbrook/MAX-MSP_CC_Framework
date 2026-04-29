@@ -178,7 +178,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 24. Community Package Support | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 25. Templates + Critics | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 28. Schema Foundation | v5.0 | 3/3 | Complete    | 2026-04-28 |
-| 29. Validator Depth | v5.0 | 5/5 | Complete   | 2026-04-29 |
+| 29. Validator Depth | v5.0 | 5/5 | Complete    | 2026-04-29 |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 0/0 | Not started | - |
 | 31. Layout & UX Builders | v5.0 | 0/0 | Not started | - |
 | 32. DSP Pre-Flight Simulation | v5.0 | 0/0 | Not started | - |
