@@ -917,7 +917,13 @@ def _validate_embedded_genexpr(
         if not is_gen_tilde:
             continue
         inner = box.get("patcher")
-        if not inner:
+        # Defensive type guard: malformed .maxpat files may set
+        # "patcher" to a non-dict value (e.g., []). Membership-only
+        # checks pass `if not inner` for None/{}, but a non-empty
+        # list survives the truthy check and AttributeErrors on
+        # `.get()`. Mirrors the dict-guard pattern in
+        # `_apply_signal_role_writethrough`.
+        if not isinstance(inner, dict):
             continue
         gen_id = box.get("id", "<unknown>")
         for inner_entry in inner.get("boxes", []):
