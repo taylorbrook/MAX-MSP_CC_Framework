@@ -252,7 +252,9 @@ def validate_genexpr(
         closes = stripped.count("}")
         # Detect if/else opening at depth 0, allowing leading '}' (e.g., '} else {')
         # so we don't miss the line and leave block_start_line at -1.
-        if depth == 0 and re.match(r"^[}\s]*(if|else)\b", stripped) and opens > 0:
+        # Note: re.match is anchored at start, so a leading \b is redundant;
+        # the trailing \b prevents matching tokens like 'ifelse'.
+        if depth == 0 and re.match(r"[}\s]*(if|else)\b", stripped) and opens > 0:
             block_start_line = i
         m = assign_pattern.match(stripped)
         if m:
