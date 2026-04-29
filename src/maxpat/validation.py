@@ -892,10 +892,14 @@ def _validate_embedded_genexpr(
     one-line change if Phase 30 surfaces a real case.
 
     Note (RESEARCH.md R1): existing Layer 4 helpers
-    `_check_genexpr_io_syntax` and `_check_genexpr_delay_usage` ALSO fire on
-    embedded codeboxes -- duplicate emission for `delay(` is acknowledged
-    and accepted this phase. Consolidating to a single channel is OUT OF
-    SCOPE here; Phase 33-class cleanup.
+    `_check_genexpr_io_syntax` and `_check_genexpr_delay_usage` iterate
+    box_lookup (top-level only) and match boxes whose maxclass=='newobj'
+    with text starting 'codebox'. Embedded codeboxes inside gen~ have
+    maxclass=='codebox' (not 'newobj') and live in inner.boxes (not
+    box_lookup), so the two channels do NOT overlap in the canonical
+    embedded-codebox case. Top-level codeboxes remain a duplicate-emission
+    corner case (rare in practice). Consolidating to a single channel is
+    OUT OF SCOPE here; Phase 33-class cleanup.
     """
     # Deferred import -- code_validation imports validation, so avoid a
     # circular import at module top.
