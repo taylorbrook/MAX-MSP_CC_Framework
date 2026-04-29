@@ -852,6 +852,13 @@ def _validate_domain_restrictions(
     results: list[ValidationResult] = []
     for box_entry in patch_dict["patcher"]["boxes"]:
         box = box_entry.get("box", {})
+        # Subpatcher containers (gen~/rnbo~/m4l-anything) carry their own
+        # maxclass legitimately and may someday acquire domain_restricted
+        # markers — skip them so we don't false-positive on the canonical
+        # gen~/rnbo~ at top level. Mirrors the escape hatch in
+        # _validate_maxclass_usage.
+        if "patcher" in box:
+            continue
         name = _extract_object_name(box)
         if name is None:
             continue
