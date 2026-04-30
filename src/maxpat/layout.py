@@ -51,6 +51,11 @@ _COMPANION_NAMES = frozenset({
     "meter~", "levelmeter~", "scope~", "number~", "spectroscope~",
 })
 
+# Role-driven companion mapping (Phase 31 LAYOUT-03, D-14).
+# Wave 0 placeholder; populated with the D-14 six-key shape in Task 1.
+# See test_role_companion_map_shape in tests/test_companion_role_layout.py.
+_ROLE_COMPANION_MAP: dict[str, dict[str, str | None]] = {}
+
 # Gap between a parent and its companion object placed beside it
 _COMPANION_GAP = 5.0
 
