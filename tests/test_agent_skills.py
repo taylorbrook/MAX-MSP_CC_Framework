@@ -679,3 +679,87 @@ def test_rnbo_agent_has_incompatibility_warning() -> None:
     """RNBO agent must warn that BEAP/Vizzie are NOT RNBO-compatible."""
     content = _read_skill("max-rnbo-agent")
     assert "NOT RNBO-compatible" in content or "not RNBO-compatible" in content
+
+
+# ── Test: Builder API surface in SKILL.md (LAYOUT-05) ─────────────
+
+SKILL_FILES = [
+    ".claude/skills/max-patch-agent/SKILL.md",
+    ".claude/skills/max-ui-agent/SKILL.md",
+]
+BUILDER_NAMES = [
+    "add_overlay_readout",
+    "add_labeled_param_bank",
+    "add_m4l_gen_synth",
+]
+
+
+@pytest.mark.parametrize("skill_path", SKILL_FILES)
+def test_skill_md_has_builder_api_section(skill_path: str) -> None:
+    """LAYOUT-05: Both agent SKILL.md files contain a Builder API section."""
+    text = Path(skill_path).read_text()
+    assert "## Builder API" in text, (
+        f"{skill_path} missing '## Builder API' section"
+    )
+
+
+@pytest.mark.parametrize("skill_path", SKILL_FILES)
+@pytest.mark.parametrize("builder_name", BUILDER_NAMES)
+def test_skill_md_references_builder(skill_path: str, builder_name: str) -> None:
+    """LAYOUT-05: Each builder method is referenced in both SKILL.md files."""
+    text = Path(skill_path).read_text()
+    assert builder_name in text, (
+        f"{skill_path} does not reference {builder_name}"
+    )
+
+
+@pytest.mark.parametrize("skill_path", SKILL_FILES)
+def test_skill_md_references_role_companion_map(skill_path: str) -> None:
+    """LAYOUT-05: Role-driven companion-pair hook is documented."""
+    text = Path(skill_path).read_text()
+    assert "_ROLE_COMPANION_MAP" in text, (
+        f"{skill_path} does not document role-driven companion placement"
+    )
+
+
+def test_builder_api_sections_byte_identical() -> None:
+    """D-02: Builder API section is verbatim copy in both SKILL.md files."""
+    import re
+
+    def extract_builder_api(text: str) -> str | None:
+        # Capture from "## Builder API" up to (but not including) the next
+        # "## " heading (top-level only — "### " subsections stay inside).
+        m = re.search(
+            r"(## Builder API.*?)(?=\n## [^#]|\Z)",
+            text, re.DOTALL,
+        )
+        return m.group(1) if m else None
+
+    patch_text = Path(SKILL_FILES[0]).read_text()
+    ui_text = Path(SKILL_FILES[1]).read_text()
+    patch_section = extract_builder_api(patch_text)
+    ui_section = extract_builder_api(ui_text)
+    assert patch_section is not None, (
+        "max-patch-agent missing Builder API section"
+    )
+    assert ui_section is not None, (
+        "max-ui-agent missing Builder API section"
+    )
+    assert patch_section == ui_section, (
+        "Builder API sections differ between max-patch-agent and "
+        "max-ui-agent SKILL.md (D-02 requires verbatim copy)"
+    )
+
+
+def test_claude_md_pointer_to_builders() -> None:
+    """D-02: CLAUDE.md recipe sections point at the new builder names."""
+    text = Path("CLAUDE.md").read_text()
+    assert "add_overlay_readout" in text, (
+        "CLAUDE.md does not point to add_overlay_readout from any recipe section"
+    )
+    assert "add_labeled_param_bank" in text, (
+        "CLAUDE.md does not point to add_labeled_param_bank"
+    )
+    assert "add_m4l_gen_synth" in text, (
+        "CLAUDE.md does not point to add_m4l_gen_synth"
+    )
