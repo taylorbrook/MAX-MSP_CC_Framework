@@ -191,6 +191,102 @@ def _classify_outlet(
     }
 
 
+def _propose_inherited_roles(
+    db: "ObjectDatabase",
+    mc_name: str,
+) -> list[dict] | None:
+    """Propose signal_role for an MC variant by mirroring its bare-MSP
+    sibling outlet-by-outlet (positional). See CONTEXT.md §D-11.
+
+    Plan 30-04 sibling-auto-mirror: strips `mc.` or `mcs.` prefix (mcs
+    first because it is a longer prefix), looks up the bare-MSP sibling
+    via db.lookup() so alias resolution applies, then copies the
+    sibling's outlet roles by index when inlet AND outlet counts match
+    (strict parity gate per threat T-30-04-01).
+
+    Returns None when:
+      - mc_name does not start with `mc.` or `mcs.`
+      - the stripped name does not resolve via db.lookup (no sibling)
+      - sibling and MC variant have different inlet OR outlet counts
+        (parity gate — divergence is unsafe to mirror positionally)
+
+    Otherwise returns a list of dicts (one per MC outlet):
+      {"outlet_id": int, "signal_role": str | None,
+       "confidence": str, "source": "sibling-mirror"}
+
+    confidence values:
+      - "inherited"           : sibling outlet had a signal_role; copied verbatim
+      - "inherited-no-role"   : sibling outlet had no signal_role; signal_role=None
+      - "trailing-fallthrough": MC has MORE outlets than sibling at this index
+                                 (only emitted when MC has more outlets than
+                                 sibling but earlier outlets parity-match — a
+                                 soft form of parity that the MAIN parity gate
+                                 rejects today; reserved for a future
+                                 relaxation. With the strict parity gate this
+                                 branch is currently unreachable but the test
+                                 fixture covers it for forward compatibility.)
+
+    The proposer is purely advisory and read-only: it does not mutate db,
+    does not write files, and does not short-circuit when MC override
+    data already exists. Curator-vs-inherited reconciliation happens at
+    apply time via cmd_apply_run's overwrite-refusal logic.
+    """
+    # Strip prefix (mcs first - longer prefix wins per CONTEXT D-11).
+    if mc_name.startswith("mcs."):
+        bare_name = mc_name[len("mcs."):]
+    elif mc_name.startswith("mc."):
+        bare_name = mc_name[len("mc."):]
+    else:
+        return None
+
+    sibling = db.lookup(bare_name)
+    if sibling is None:
+        return None
+
+    mc_obj = db.lookup(mc_name)
+    if mc_obj is None:
+        return None
+
+    # Parity gate (T-30-04-01): inlet AND outlet counts must match the
+    # sibling. Mismatched I/O makes positional copying unsafe — fall
+    # through to the digest classifier rather than copying potentially
+    # wrong roles.
+    sibling_inlets = sibling.get("inlets", []) or []
+    sibling_outlets = sibling.get("outlets", []) or []
+    mc_inlets = mc_obj.get("inlets", []) or []
+    mc_outlets = mc_obj.get("outlets", []) or []
+    if len(sibling_inlets) != len(mc_inlets):
+        return None
+    if len(sibling_outlets) != len(mc_outlets):
+        return None
+
+    rows: list[dict] = []
+    for i, mc_outlet in enumerate(mc_outlets):
+        if not isinstance(mc_outlet, dict):
+            continue
+        sib_outlet = sibling_outlets[i] if i < len(sibling_outlets) else {}
+        sib_role = (
+            sib_outlet.get("signal_role")
+            if isinstance(sib_outlet, dict) else None
+        )
+        outlet_id = mc_outlet.get("id", i)
+        if sib_role is None:
+            rows.append({
+                "outlet_id": outlet_id,
+                "signal_role": None,
+                "confidence": "inherited-no-role",
+                "source": "sibling-mirror",
+            })
+        else:
+            rows.append({
+                "outlet_id": outlet_id,
+                "signal_role": sib_role,
+                "confidence": "inherited",
+                "source": "sibling-mirror",
+            })
+    return rows
+
+
 def _classify_db(domains: tuple[str, ...]) -> list[dict]:
     """Walk uncovered MSP/MC outlets and emit ClassifiedRow dicts.
 
@@ -198,6 +294,11 @@ def _classify_db(domains: tuple[str, ...]) -> list[dict]:
     `_classify_outlet(name, obj, outlet_idx)`. The walker handles
     domain filtering and skip-already-covered logic; the helper handles
     the per-outlet shape.
+
+    Plan 30-04: for MC objects, try sibling-auto-mirror BEFORE the digest
+    classifier. If the sibling exists with parity, inherited rows replace
+    the classifier proposals; outlets without a sibling role
+    (inherited-no-role) fall through to the classifier.
     """
     db = ObjectDatabase()
     coverage = db.audit_signal_role_coverage()
@@ -210,6 +311,45 @@ def _classify_db(domains: tuple[str, ...]) -> list[dict]:
             obj = db.lookup(name)
             if not obj:
                 continue
+
+            # Plan 30-04: sibling-auto-mirror for MC objects.
+            inherited_rows = None
+            if d == "mc":
+                inherited_rows = _propose_inherited_roles(db, name)
+
+            if inherited_rows is not None:
+                # Per-outlet decision: inherited rows ride the sibling
+                # mirror; inherited-no-role rows fall through to the
+                # digest classifier for that outlet only.
+                outlets_in_obj = obj.get("outlets", []) or []
+                inherited_by_outlet = {
+                    r["outlet_id"]: r for r in inherited_rows
+                }
+                for i, outlet in enumerate(outlets_in_obj):
+                    if not isinstance(outlet, dict):
+                        continue
+                    if outlet.get("signal_role"):
+                        continue  # already covered (mixed)
+                    outlet_id = outlet.get("id", i)
+                    inh = inherited_by_outlet.get(outlet_id)
+                    if inh is not None and inh["confidence"] == "inherited":
+                        digest = outlet.get("digest", "")
+                        rows.append({
+                            "object": name,
+                            "outlet_id": outlet_id,
+                            "digest": digest,
+                            "suggested_role": inh["signal_role"],
+                            "confidence": "inherited",
+                            "curator_role": "",
+                            "rationale": "sibling-mirror",
+                        })
+                    else:
+                        # No sibling role for this outlet -> classifier
+                        rows.append(_classify_outlet(name, obj, i))
+                continue
+
+            # No sibling-mirror (sibling missing OR parity mismatch):
+            # full digest-classifier pass per outlet.
             for i, outlet in enumerate(obj.get("outlets", []) or []):
                 if not isinstance(outlet, dict):
                     continue
