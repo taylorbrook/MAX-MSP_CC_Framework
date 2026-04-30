@@ -273,14 +273,17 @@ class TestWriteThrough:
         2,015-object regression anchor.
         """
         # Find any object whose outlet 0 has signal: True and no signal_role.
-        # phasor~ is a stable choice: MSP, signal:true outlet 0, no curated role.
-        # (cycle~ NOW has signal_role from Plan 03 Task 2; phasor~ stays bare.)
+        # accum~ is a stable choice: RNBO domain, signal:true outlet 0, no
+        # curated signal_role. Phase 30 only populates MSP+MC roles per D-09,
+        # so RNBO objects stay bare and serve as a permanent probe.
+        # (cycle~/phasor~ NOW have signal_role from Phase 30 plans 02/03;
+        # accum~ is RNBO and out of scope, so it remains bare.)
         db = ObjectDatabase()
-        obj = db.lookup("phasor~")
-        assert obj is not None, "phasor~ missing from DB -- pick another bare-signal probe"
+        obj = db.lookup("accum~")
+        assert obj is not None, "accum~ missing from DB -- pick another bare-signal probe"
         outlet0 = obj["outlets"][0]
         assert "signal_role" not in outlet0, (
-            "phasor~ now has a curated signal_role -- pick another bare probe"
+            "accum~ now has a curated signal_role -- pick another bare probe"
         )
         # Legacy bool preserved unchanged
         assert outlet0["signal"] is True
