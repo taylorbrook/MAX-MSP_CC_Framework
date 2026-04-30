@@ -1,0 +1,3224 @@
+[
+  {
+    "object": "!-~",
+    "outlet_id": 0,
+    "digest": "(signal) Difference Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "!/~",
+    "outlet_id": 0,
+    "digest": "(signal) Quotient Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "!=~",
+    "outlet_id": 0,
+    "digest": "(signal) Comparison Result (1 or 0)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "%~",
+    "outlet_id": 0,
+    "digest": "(signal) Modulo Result",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "*~",
+    "outlet_id": 0,
+    "digest": "(signal) Multiplication Result",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "+=~",
+    "outlet_id": 0,
+    "digest": "(signal) Accumulator Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "+~",
+    "outlet_id": 0,
+    "digest": "(signal) Addition Result",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "-~",
+    "outlet_id": 0,
+    "digest": "(signal) Subtraction Result",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "/~",
+    "outlet_id": 0,
+    "digest": "(signal) Division Result",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "<=~",
+    "outlet_id": 0,
+    "digest": "(signal) Comparison Result (1 or 0)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "<~",
+    "outlet_id": 0,
+    "digest": "(signal) Comparison Result (1 or 0)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "==~",
+    "outlet_id": 0,
+    "digest": "(signal) Comparison Result (1 or 0)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": ">=~",
+    "outlet_id": 0,
+    "digest": "(signal) Comparison Result (1 or 0)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": ">~",
+    "outlet_id": 0,
+    "digest": "(signal) Comparison Result (1 or 0)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "abs~",
+    "outlet_id": 0,
+    "digest": "(signal) Absolute Value of Input",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "acosh~",
+    "outlet_id": 0,
+    "digest": "Acosh (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "acos~",
+    "outlet_id": 0,
+    "digest": "Acos (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "adoutput~",
+    "outlet_id": 0,
+    "digest": "(signal) Output of Audio Channel 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "adoutput~",
+    "outlet_id": 1,
+    "digest": "(signal) Output of Audio Channel 2",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "adsr~",
+    "outlet_id": 0,
+    "digest": "ADSR envelope",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "adsr~",
+    "outlet_id": 1,
+    "digest": "new envelope trigger",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "adsr~",
+    "outlet_id": 2,
+    "digest": "mute outlet",
+    "suggested_role": "status",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "status_keyword"
+  },
+  {
+    "object": "adsr~",
+    "outlet_id": 3,
+    "digest": "dump outlet",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "adstatus",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "adstatus",
+    "outlet_id": 1,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "allpass~",
+    "outlet_id": 0,
+    "digest": "(signal) Filter Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "asinh~",
+    "outlet_id": 0,
+    "digest": "Asinh (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "asin~",
+    "outlet_id": 0,
+    "digest": "Asin (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "atan2~",
+    "outlet_id": 0,
+    "digest": "atan2(y/x)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "atanh~",
+    "outlet_id": 0,
+    "digest": "Atanh (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "atan~",
+    "outlet_id": 0,
+    "digest": "Atan (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "atodb~",
+    "outlet_id": 0,
+    "digest": "(signal) Gain/Attenuation dB",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "average~",
+    "outlet_id": 0,
+    "digest": "(signal) Running Mean Average Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "avg~",
+    "outlet_id": 0,
+    "digest": "(float) Average Value of Input Signal",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "begin~",
+    "outlet_id": 0,
+    "digest": "(signal) Connect to Objects to Turn On and Off",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "biquad~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "bitand~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "bitnot~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "bitor~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "bitsafe~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "bitshift~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "bitxor~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "buffer~",
+    "outlet_id": 0,
+    "digest": "Mouse position in editing window (ms)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "buffer~",
+    "outlet_id": 1,
+    "digest": "bang when read/write operation completed",
+    "suggested_role": "trigger",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "trigger_keyword"
+  },
+  {
+    "object": "buffir~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cartopol~",
+    "outlet_id": 0,
+    "digest": "(signal) amplitude/alpha output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cartopol~",
+    "outlet_id": 1,
+    "digest": "(signal) phase/theta output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cascade~",
+    "outlet_id": 0,
+    "digest": "(signal) filtered signal out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "change~",
+    "outlet_id": 0,
+    "digest": "(signal) 0. if Unchanged; -1. (decreasing) or 1. (increasing) if Changed.",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "chucker~",
+    "outlet_id": 0,
+    "digest": "",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "chucker~",
+    "outlet_id": 1,
+    "digest": "Right Audio Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "chucker~",
+    "outlet_id": 2,
+    "digest": "Current Step Number",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "click~",
+    "outlet_id": 0,
+    "digest": "(signal) Impulse Signal Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "clip~",
+    "outlet_id": 0,
+    "digest": "(signal) Clipped Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "comb~",
+    "outlet_id": 0,
+    "digest": "(signal) Filter Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cosh~",
+    "outlet_id": 0,
+    "digest": "Cosh (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cosx~",
+    "outlet_id": 0,
+    "digest": "Cos (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cos~",
+    "outlet_id": 0,
+    "digest": "(signal) Cosine Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "count~",
+    "outlet_id": 0,
+    "digest": "Count Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cross~",
+    "outlet_id": 0,
+    "digest": "(signal) Lowpass Filtered Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cross~",
+    "outlet_id": 1,
+    "digest": "(signal) Highpass Filtered Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "cverb~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "dbtoa~",
+    "outlet_id": 0,
+    "digest": "(signal) Amplitude Scalar",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "ddg.mono",
+    "outlet_id": 0,
+    "digest": "MIDI Note out",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "ddg.mono",
+    "outlet_id": 1,
+    "digest": "MIDI Velocity out",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "degrade~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "delay~",
+    "outlet_id": 0,
+    "digest": "Delayed Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "deltaclip~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "delta~",
+    "outlet_id": 0,
+    "digest": "(signal) Differences Between Input Samples",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "downsamp~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "dspstate~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "dspstate~",
+    "outlet_id": 1,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "dspstate~",
+    "outlet_id": 2,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "dspstate~",
+    "outlet_id": 3,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "dsptime~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "edge~",
+    "outlet_id": 0,
+    "digest": "(bang) Output on zero to non-zero transition",
+    "suggested_role": "trigger",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "trigger_keyword"
+  },
+  {
+    "object": "edge~",
+    "outlet_id": 1,
+    "digest": "(bang) Output on non-zero to zero transition",
+    "suggested_role": "trigger",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "trigger_keyword"
+  },
+  {
+    "object": "ezadc~",
+    "outlet_id": 0,
+    "digest": "Audio In ch 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "ezadc~",
+    "outlet_id": 1,
+    "digest": "Audio In ch 2",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fbinshift~",
+    "outlet_id": 0,
+    "digest": "bin-shifted real/x output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fbinshift~",
+    "outlet_id": 1,
+    "digest": "bin-shifted imaginary/y output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fftinfo~",
+    "outlet_id": 0,
+    "digest": "(int) FFT Frame Size",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "fftinfo~",
+    "outlet_id": 1,
+    "digest": "(int) Spectral Frame Size",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "fftinfo~",
+    "outlet_id": 2,
+    "digest": "(int) FFT Hop Size",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "fftinfo~",
+    "outlet_id": 3,
+    "digest": "(int) Full Spectrum Flag (0/1)",
+    "suggested_role": "status",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "status_keyword"
+  },
+  {
+    "object": "fftin~",
+    "outlet_id": 0,
+    "digest": "Real Input 1 to Patcher",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fftin~",
+    "outlet_id": 1,
+    "digest": "Imaginary Input 1 to Patcher",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fftin~",
+    "outlet_id": 2,
+    "digest": "FFT Bin Index",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fft~",
+    "outlet_id": 0,
+    "digest": "(signal) Real Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fft~",
+    "outlet_id": 1,
+    "digest": "(signal) Imaginary Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fft~",
+    "outlet_id": 2,
+    "digest": "(signal) Ramp from 0 to Number of Points - 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "filtercoeff~",
+    "outlet_id": 0,
+    "digest": "(signal) Gain (FF Coefficient 0)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "filtercoeff~",
+    "outlet_id": 1,
+    "digest": "(signal) FF Coefficient 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "filtercoeff~",
+    "outlet_id": 2,
+    "digest": "(signal) FF Coefficient 2",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "filtercoeff~",
+    "outlet_id": 3,
+    "digest": "(signal) FB Coefficient 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "filtercoeff~",
+    "outlet_id": 4,
+    "digest": "(signal) FB Coefficient 2",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "filterdesign",
+    "outlet_id": 0,
+    "digest": "filter coefficients",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filterdetail",
+    "outlet_id": 0,
+    "digest": "magnitude response",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filterdetail",
+    "outlet_id": 1,
+    "digest": "phase response",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filterdetail",
+    "outlet_id": 2,
+    "digest": "phase delay",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filterdetail",
+    "outlet_id": 3,
+    "digest": "group delay",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filterdetail",
+    "outlet_id": 4,
+    "digest": "impulse response",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filterdetail",
+    "outlet_id": 5,
+    "digest": "step response",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filtergraph~",
+    "outlet_id": 0,
+    "digest": "List of Filter Coefficients",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "filtergraph~",
+    "outlet_id": 1,
+    "digest": "Frequency Out",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filtergraph~",
+    "outlet_id": 2,
+    "digest": "Gain (Linear) Out",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filtergraph~",
+    "outlet_id": 3,
+    "digest": "Q (Resonance) or S (Slope) Out",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filtergraph~",
+    "outlet_id": 4,
+    "digest": "Bandwidth Out",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filtergraph~",
+    "outlet_id": 5,
+    "digest": "Query Result (amp, phase)",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "filtergraph~",
+    "outlet_id": 6,
+    "digest": "Filter Index Out",
+    "suggested_role": "data",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "data_synonym"
+  },
+  {
+    "object": "frameaccum~",
+    "outlet_id": 0,
+    "digest": "(signal) FFT Running Phase Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "frameaverage~",
+    "outlet_id": 0,
+    "digest": "FFT Running Phase Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "framedelta~",
+    "outlet_id": 0,
+    "digest": "(signal) FFT Phase Deviation",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "framesmooth~",
+    "outlet_id": 0,
+    "digest": "FFT Running Phase Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "framesnap~",
+    "outlet_id": 0,
+    "digest": "Output Frame as a list",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "frame~",
+    "outlet_id": 0,
+    "digest": "output frame",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "freqshift~",
+    "outlet_id": 0,
+    "digest": "(signal) Frequency-shifted Signal (Positive Sideband)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "freqshift~",
+    "outlet_id": 1,
+    "digest": "(signal) Frequency-shifted Signal (Negative Sideband)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "ftom~",
+    "outlet_id": 0,
+    "digest": "Floating-point MIDI Note Number",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "fzero~",
+    "outlet_id": 0,
+    "digest": "Estimated fundamental pitch",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "fzero~",
+    "outlet_id": 1,
+    "digest": "Peak amplitude in analysis vector",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "fzero~",
+    "outlet_id": 2,
+    "digest": "onset detected",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "gate~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "gen",
+    "outlet_id": 0,
+    "digest": "out 1",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "gen.codebox",
+    "outlet_id": 0,
+    "digest": "out1",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "gen.codebox~",
+    "outlet_id": 0,
+    "digest": "out 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "gen~",
+    "outlet_id": 0,
+    "digest": "out 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "gizmo~",
+    "outlet_id": 0,
+    "digest": "(signal) Pitch-shifted Real Signal",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "gizmo~",
+    "outlet_id": 1,
+    "digest": "(signal) Pitch-shifted Imaginary Signal",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "groove~",
+    "outlet_id": 0,
+    "digest": "Channel 1 Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "groove~",
+    "outlet_id": 1,
+    "digest": "Loop Sync Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "hilbert~",
+    "outlet_id": 0,
+    "digest": "(signal) cosine/real output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "hilbert~",
+    "outlet_id": 1,
+    "digest": "(signal) sine/imag output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "ifft~",
+    "outlet_id": 0,
+    "digest": "(signal) Real Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "ifft~",
+    "outlet_id": 1,
+    "digest": "(signal) Imaginary Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "ifft~",
+    "outlet_id": 2,
+    "digest": "(signal) Ramp from 0 to Number of Points - 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "in",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 0,
+    "digest": "Sample rate (float)",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 1,
+    "digest": "Instrument info / MIDI pitch (list)",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 2,
+    "digest": "Sustain loop start in ms (float)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 3,
+    "digest": "Sustain loop end in ms (float)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 4,
+    "digest": "Release loop start in ms (float)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 5,
+    "digest": "Release loop end in ms (float)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 6,
+    "digest": "Total time of buffer in ms (float)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 7,
+    "digest": "Filename of most recently read audio file (symbol)",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 8,
+    "digest": "Number of channels (int)",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "info~",
+    "outlet_id": 9,
+    "digest": "State / valid flag",
+    "suggested_role": "status",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "status_keyword"
+  },
+  {
+    "object": "in~",
+    "outlet_id": 0,
+    "digest": "Input 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "ioscbank~",
+    "outlet_id": 0,
+    "digest": "(signal) output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "kink~",
+    "outlet_id": 0,
+    "digest": "(signal) Disorted Phase Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "levelmeter~",
+    "outlet_id": 0,
+    "digest": "RMS level in dB (float)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "log~",
+    "outlet_id": 0,
+    "digest": "(signal) log of Input to Base",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "lookup~",
+    "outlet_id": 0,
+    "digest": "Distorted Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "lores~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "loudness~",
+    "outlet_id": 0,
+    "digest": "Momentary Loudness in LUFS",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "loudness~",
+    "outlet_id": 1,
+    "digest": "Short-Term Loudness in LUFS",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "loudness~",
+    "outlet_id": 2,
+    "digest": "Integrated Loudness in LUFS",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "loudness~",
+    "outlet_id": 3,
+    "digest": "Loudness Range",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "loudness~",
+    "outlet_id": 4,
+    "digest": "Peak Sample Value",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "loudness~",
+    "outlet_id": 5,
+    "digest": "True Peak Value",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "matrix~",
+    "outlet_id": 0,
+    "digest": "Output 0",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "matrix~",
+    "outlet_id": 1,
+    "digest": "Output 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "matrix~",
+    "outlet_id": 2,
+    "digest": "Inlets Outlets Gains",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "maximum~",
+    "outlet_id": 0,
+    "digest": "(signal) Maximum of Left and Right Signals",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.2d.wave~",
+    "outlet_id": 0,
+    "digest": "(signal) Channel 1 Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.amxd~",
+    "outlet_id": 0,
+    "digest": "Signal output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.amxd~",
+    "outlet_id": 1,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.amxd~",
+    "outlet_id": 2,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.fffb~",
+    "outlet_id": 0,
+    "digest": "signal output from filter 0",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.gate~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.gen~",
+    "outlet_id": 0,
+    "digest": "out 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.groove~",
+    "outlet_id": 0,
+    "digest": "Multichannel output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.groove~",
+    "outlet_id": 1,
+    "digest": "Loop Sync Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.limi~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.matrix~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.matrix~",
+    "outlet_id": 1,
+    "digest": "inlets outlets gains",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.play~",
+    "outlet_id": 0,
+    "digest": "Signal output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.play~",
+    "outlet_id": 1,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.poly~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.selector~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.sig~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.tapout~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.vst~",
+    "outlet_id": 0,
+    "digest": "Signal output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mcs.vst~",
+    "outlet_id": 1,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.vst~",
+    "outlet_id": 2,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.vst~",
+    "outlet_id": 3,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.vst~",
+    "outlet_id": 4,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.vst~",
+    "outlet_id": 5,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.vst~",
+    "outlet_id": 6,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mcs.wave~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "meter~",
+    "outlet_id": 0,
+    "digest": "Peak value for each metering interval (float)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "minimum~",
+    "outlet_id": 0,
+    "digest": "(signal) Minimum of Left and Right Signals",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "minmax~",
+    "outlet_id": 0,
+    "digest": "(signal) Minimum",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "minmax~",
+    "outlet_id": 1,
+    "digest": "(signal) Maximum",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "minmax~",
+    "outlet_id": 2,
+    "digest": "(float) Minimum",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "minmax~",
+    "outlet_id": 3,
+    "digest": "(float) Maximum",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "mstosamps~",
+    "outlet_id": 0,
+    "digest": "(signal) Samples At Input signal or Current Sampling Rate",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "mstosamps~",
+    "outlet_id": 1,
+    "digest": "(float) Samples At Input signal or Current Sampling Rate",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "mtof~",
+    "outlet_id": 0,
+    "digest": "Frequency in Hz",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "multirange",
+    "outlet_id": 0,
+    "digest": "Interpolated Y1, Y2, Phase for Input X",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "multirange",
+    "outlet_id": 1,
+    "digest": "All Points in line Format",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "multirange",
+    "outlet_id": 2,
+    "digest": "dump Message Output (list)",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "multirange",
+    "outlet_id": 3,
+    "digest": "bang When Changed With Mouse",
+    "suggested_role": "trigger",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "trigger_keyword"
+  },
+  {
+    "object": "mute~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "noise~",
+    "outlet_id": 0,
+    "digest": "(signal) The Noise",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "normalize~",
+    "outlet_id": 0,
+    "digest": "(signal) Normalized Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "number~",
+    "outlet_id": 0,
+    "digest": "Number Value as a Signal",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "number~",
+    "outlet_id": 1,
+    "digest": "Signal Value",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "omx.4band~",
+    "outlet_id": 0,
+    "digest": "(signal) Left Output Channel",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "omx.4band~",
+    "outlet_id": 1,
+    "digest": "(signal) Right Output Channel",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "omx.4band~",
+    "outlet_id": 2,
+    "digest": "(list) Parameter Output",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "omx.4band~",
+    "outlet_id": 3,
+    "digest": "(list) Meter Output",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "omx.5band~",
+    "outlet_id": 0,
+    "digest": "(signal) Left Output Channel",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "omx.5band~",
+    "outlet_id": 1,
+    "digest": "(signal) Right Output Channel",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "omx.5band~",
+    "outlet_id": 2,
+    "digest": "(list) Parameter Output",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "omx.5band~",
+    "outlet_id": 3,
+    "digest": "(list) Meter Output",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "omx.comp~",
+    "outlet_id": 0,
+    "digest": "(signal) Left Output Channel",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "omx.comp~",
+    "outlet_id": 1,
+    "digest": "(signal) Right Output Channel",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "omx.comp~",
+    "outlet_id": 2,
+    "digest": "(list) Parameter Output",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "omx.comp~",
+    "outlet_id": 3,
+    "digest": "(list) Meter Output",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "omx.peaklim~",
+    "outlet_id": 0,
+    "digest": "(signal) Left Output Channel",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "omx.peaklim~",
+    "outlet_id": 1,
+    "digest": "(signal) Right Output Channel",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "omx.peaklim~",
+    "outlet_id": 2,
+    "digest": "(list) Parameter Output",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "omx.peaklim~",
+    "outlet_id": 3,
+    "digest": "(list) Meter Output",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "onepole~",
+    "outlet_id": 0,
+    "digest": "(signal) filter output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "oscbank~",
+    "outlet_id": 0,
+    "digest": "(signal) output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "overdrive~",
+    "outlet_id": 0,
+    "digest": "Signal Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "pass~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "peakamp~",
+    "outlet_id": 0,
+    "digest": "(float) peak amplitude of input",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "peek~",
+    "outlet_id": 0,
+    "digest": "buffer~ value at sample index (float)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "pfft~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "phasegroove~",
+    "outlet_id": 0,
+    "digest": "Connect to groove~",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "phaseshift~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "phasewrap~",
+    "outlet_id": 0,
+    "digest": "Phase-Wrapped Signal Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "phasor~",
+    "outlet_id": 0,
+    "digest": "Output (ramp cycle from 0 to 1)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "pink~",
+    "outlet_id": 0,
+    "digest": "(signal) The Noise",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "pitchshift~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "pitchshift~",
+    "outlet_id": 1,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "pitchshift~",
+    "outlet_id": 2,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "plot~",
+    "outlet_id": 0,
+    "digest": "Mouse interaction data",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "plugin~",
+    "outlet_id": 0,
+    "digest": "(signal) Channel 1 audio input from the Live application.",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "plugin~",
+    "outlet_id": 1,
+    "digest": "(signal) Channel 2 audio input from the Live application.",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "plugout~",
+    "outlet_id": 0,
+    "digest": "(signal) Test output to pass thru for audio device channel 1.",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "plugout~",
+    "outlet_id": 1,
+    "digest": "(signal) Test output to pass thru for audio device channel 2.",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "plugphasor~",
+    "outlet_id": 0,
+    "digest": "Beat-Synchronized 0-1 Ramp",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "plugphasor~",
+    "outlet_id": 1,
+    "digest": "Debug Output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "plugreceive~",
+    "outlet_id": 0,
+    "digest": "Receive From plugsend~",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 0,
+    "digest": "(int) Transport State (1 = Play, 0 = Off)",
+    "suggested_role": "status",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "status_keyword"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 1,
+    "digest": "(int) Current Bar Count",
+    "suggested_role": "data",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "data_synonym"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 2,
+    "digest": "(int) Current Beat Count",
+    "suggested_role": "data",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "data_synonym"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 3,
+    "digest": "(float) Current Ticks Within a Beat (1 PPQ)",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 4,
+    "digest": "(list) Time Signature",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 5,
+    "digest": "(float) Tempo",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 6,
+    "digest": "(float) Ticks (1 PPQ)",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 7,
+    "digest": "(int) Sample Count",
+    "suggested_role": "data",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "data_synonym"
+  },
+  {
+    "object": "plugsync~",
+    "outlet_id": 8,
+    "digest": "(long) Flags Indicating Which Data Are Valid",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "poltocar~",
+    "outlet_id": 0,
+    "digest": "real/x output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "poltocar~",
+    "outlet_id": 1,
+    "digest": "imaginary/y output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "polybuffer~",
+    "outlet_id": 0,
+    "digest": "Messages and buffer info",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "polybuffer~",
+    "outlet_id": 1,
+    "digest": "bang when file/folder read operation completed",
+    "suggested_role": "trigger",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "trigger_keyword"
+  },
+  {
+    "object": "poly~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "pong~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "pow~",
+    "outlet_id": 0,
+    "digest": "(signal) Base raised to Input",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "rampsmooth~",
+    "outlet_id": 0,
+    "digest": "(signal) Smoothed result",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "rand~",
+    "outlet_id": 0,
+    "digest": "(signal) The Noise Path",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "rate~",
+    "outlet_id": 0,
+    "digest": "(signal) Time-Scaled Version of the Input",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "receive~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "record~",
+    "outlet_id": 0,
+    "digest": "Sync Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "rect~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "reson~",
+    "outlet_id": 0,
+    "digest": "(signal) Filtered Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "round~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "sah~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "sampstoms~",
+    "outlet_id": 0,
+    "digest": "(signal) Milliseconds At Input signal or Current Sampling Rate",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "sampstoms~",
+    "outlet_id": 1,
+    "digest": "(float) Milliseconds At Input signal or Current Sampling Rate",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sash~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "saw~",
+    "outlet_id": 0,
+    "digest": "(signal) Input signal",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "scale~",
+    "outlet_id": 0,
+    "digest": "(signal) scaled output value",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "selector~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "seq~",
+    "outlet_id": 0,
+    "digest": "sequence output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "seq~",
+    "outlet_id": 1,
+    "digest": "dump output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "seq~",
+    "outlet_id": 2,
+    "digest": "id on read, (bang) when done reading",
+    "suggested_role": "trigger",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "trigger_keyword"
+  },
+  {
+    "object": "sfinfo~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sfinfo~",
+    "outlet_id": 1,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sfinfo~",
+    "outlet_id": 2,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sfinfo~",
+    "outlet_id": 3,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sfinfo~",
+    "outlet_id": 4,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sfinfo~",
+    "outlet_id": 5,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sflist~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sfrecord~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "shape~",
+    "outlet_id": 0,
+    "digest": "Time-Scaled Function",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "sig~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "sinh~",
+    "outlet_id": 0,
+    "digest": "Sinh (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "sinx~",
+    "outlet_id": 0,
+    "digest": "Sin (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "slide~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "snowfall~",
+    "outlet_id": 0,
+    "digest": "Particle Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "spike~",
+    "outlet_id": 0,
+    "digest": "(float) Outputs interval on zero to non-zero transition",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "sqrt~",
+    "outlet_id": 0,
+    "digest": "(signal) Square Root",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stepcounter~",
+    "outlet_id": 0,
+    "digest": "Impulse When Current Step Count Reached",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stepcounter~",
+    "outlet_id": 1,
+    "digest": "Impulse When Sequence Resets",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stepcounter~",
+    "outlet_id": 2,
+    "digest": "Step Index (0-Relative)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stepcounter~",
+    "outlet_id": 3,
+    "digest": "Counter Index (0-Relative)",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stepdiv~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stepdiv~",
+    "outlet_id": 1,
+    "digest": "Step Number",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stepfun~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stepfun~",
+    "outlet_id": 1,
+    "digest": "Step Number",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "stutter~",
+    "outlet_id": 0,
+    "digest": "(signal) Playback Output 1",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "subdiv~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "subdiv~",
+    "outlet_id": 1,
+    "digest": "Step Number",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "subdiv~",
+    "outlet_id": 2,
+    "digest": "",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "svf~",
+    "outlet_id": 0,
+    "digest": "(signal) Low-pass Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "svf~",
+    "outlet_id": 1,
+    "digest": "(signal) High-pass Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "svf~",
+    "outlet_id": 2,
+    "digest": "(signal) Band-pass Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "svf~",
+    "outlet_id": 3,
+    "digest": "(signal) Notch Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "swing~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "swing~",
+    "outlet_id": 1,
+    "digest": "Step Number",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "swing~",
+    "outlet_id": 2,
+    "digest": "Step Number",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "table~",
+    "outlet_id": 0,
+    "digest": "Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "tanh~",
+    "outlet_id": 0,
+    "digest": "Tanh (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "tanx~",
+    "outlet_id": 0,
+    "digest": "Tan (x) Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "tapin~",
+    "outlet_id": 0,
+    "digest": "Control output",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "tapout~",
+    "outlet_id": 0,
+    "digest": "(signal) Delayed Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "techno~",
+    "outlet_id": 0,
+    "digest": "(signal) frequency",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "techno~",
+    "outlet_id": 1,
+    "digest": "(signal) amplitude envelope",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "techno~",
+    "outlet_id": 2,
+    "digest": "(signal) step position",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "teeth~",
+    "outlet_id": 0,
+    "digest": "(signal) Filter Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "thispoly~",
+    "outlet_id": 0,
+    "digest": "Instance index of patcher (int)",
+    "suggested_role": "data",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "data_synonym"
+  },
+  {
+    "object": "thispoly~",
+    "outlet_id": 1,
+    "digest": "Mute flag 0/1 for instance (int)",
+    "suggested_role": "status",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "status_keyword"
+  },
+  {
+    "object": "thresh~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "trapezoid~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "triangle~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "tri~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "trunc~",
+    "outlet_id": 0,
+    "digest": "(signal) Integer Part of Input",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "twist~",
+    "outlet_id": 0,
+    "digest": "Curved Ramp Out",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "typeroute~",
+    "outlet_id": 0,
+    "digest": "(signal) An audio signal, if the input type is an audio signal",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "typeroute~",
+    "outlet_id": 1,
+    "digest": "(bang) A bang, if the input type is a bang",
+    "suggested_role": "trigger",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "trigger_keyword"
+  },
+  {
+    "object": "typeroute~",
+    "outlet_id": 2,
+    "digest": "(int) An int, if the input type is an int",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "typeroute~",
+    "outlet_id": 3,
+    "digest": "(float) A float, if the input type is a float",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "typeroute~",
+    "outlet_id": 4,
+    "digest": "(symbol) A symbol, if the input type is a symbol",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "typeroute~",
+    "outlet_id": 5,
+    "digest": "(list) A list, if the input type is a list",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "updown~",
+    "outlet_id": 0,
+    "digest": "Trapezoidal Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "vectral~",
+    "outlet_id": 0,
+    "digest": "(signal) Output Value",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "waveform~",
+    "outlet_id": 0,
+    "digest": "Display Start (ms)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "waveform~",
+    "outlet_id": 1,
+    "digest": "Display Length (ms)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "waveform~",
+    "outlet_id": 2,
+    "digest": "Selection Start (ms)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "waveform~",
+    "outlet_id": 3,
+    "digest": "Selection End (ms)",
+    "suggested_role": "float",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "float_synonym"
+  },
+  {
+    "object": "waveform~",
+    "outlet_id": 4,
+    "digest": "Mouse output: x, y, state",
+    "suggested_role": "status",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "status_keyword"
+  },
+  {
+    "object": "waveform~",
+    "outlet_id": 5,
+    "digest": "Link Out (for multi-channel viewing)",
+    "suggested_role": "",
+    "confidence": "low",
+    "curator_role": "",
+    "rationale": "no_match"
+  },
+  {
+    "object": "wave~",
+    "outlet_id": 0,
+    "digest": "(signal) Output",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "what~",
+    "outlet_id": 0,
+    "digest": "Impulse if Values Detect, 0 Otherwise",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "what~",
+    "outlet_id": 1,
+    "digest": "Index of Matched Item",
+    "suggested_role": "data",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "data_synonym"
+  },
+  {
+    "object": "where~",
+    "outlet_id": 0,
+    "digest": "Elapsed Time",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "where~",
+    "outlet_id": 1,
+    "digest": "Predicted Time Until Reset",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "zerox~",
+    "outlet_id": 0,
+    "digest": "(signal) Number of Zero-Crossings per Signal Vector",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "zerox~",
+    "outlet_id": 1,
+    "digest": "Clicks at Zero-Crossings",
+    "suggested_role": "audio",
+    "confidence": "high",
+    "curator_role": "",
+    "rationale": "signal_true"
+  },
+  {
+    "object": "zplane~",
+    "outlet_id": 0,
+    "digest": "List of 2nd Order Filter Coefficients",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "zplane~",
+    "outlet_id": 1,
+    "digest": "List of Zero Coordinate Pairs",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "zplane~",
+    "outlet_id": 2,
+    "digest": "List of Pole Coordinate Pairs",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  },
+  {
+    "object": "zplane~",
+    "outlet_id": 3,
+    "digest": "List of 2nd Order Filter Gains",
+    "suggested_role": "list",
+    "confidence": "medium",
+    "curator_role": "",
+    "rationale": "list_synonym"
+  }
+]
