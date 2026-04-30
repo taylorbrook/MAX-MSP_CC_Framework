@@ -21,7 +21,7 @@ Running the full suite (`pytest tests/ -q --ignore=tests/test_integration_patche
 | Test | Reason |
 |------|--------|
 | `tests/test_critics.py::TestPackageCritic::test_community_unextracted_warning` | Community-package critic warning text drift. |
-| `tests/test_inlet_types.py::TestMSPSignalInlets::test_tilde_objects_have_signal_io` | MC tilde objects lack signal I/O in DB (data gap). |
+| ~~`tests/test_inlet_types.py::TestMSPSignalInlets::test_tilde_objects_have_signal_io`~~ | ~~MC tilde objects lack signal I/O in DB (data gap).~~ **RESOLVED in Phase 30 Plan 04 (see `.planning/phases/30-msp-outlet-coverage-sweep/30-04-SUMMARY.md`): `mc.capture~`/`mc.send~`/`mcs.loudness~` got inlet `signal:true` overrides in `overrides.json` (with `_role_source: "phase-30-04-deferred-fix"` annotation); `info~` added to `TILDE_UI_EXCEPTIONS` (control-only despite ~ suffix — buffer-info reporter). Because `tests/conftest.py::all_objects` reads raw domain JSON and does NOT apply overrides, the three override-resolved objects also landed in `TILDE_UI_EXCEPTIONS` as documented carve-outs alongside `info~` so the test fixture sees them as known control-only-at-raw-JSON; ObjectDatabase consumers correctly see the signal-rate inlets via the override deep-merge.** |
 | `tests/test_source_coverage.py::TestSourceCoverage::test_extraction_log_total` | Extraction-log totals. |
 | `tests/test_validation.py::TestCommunityPackageBlock::test_community_block_warning` | Community-block validation message drift. |
 | `tests/test_validation.py::TestCommunityPackageBlock::test_ircam_spat_specific_message` | IRCAM Spat block-message text drift. |
