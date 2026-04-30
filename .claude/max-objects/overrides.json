@@ -3940,32 +3940,32 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 3,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 4,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -3980,32 +3980,32 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 3,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 4,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4040,20 +4040,20 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4108,20 +4108,20 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4136,50 +4136,50 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 2,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 3,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 4,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 5,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 6,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 7,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         }
       ],
       "_audit": {
@@ -4210,14 +4210,14 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4232,20 +4232,20 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 2,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         }
       ],
       "_audit": {
@@ -4280,20 +4280,20 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4322,38 +4322,38 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 3,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 4,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 5,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4382,14 +4382,14 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4404,20 +4404,20 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4440,8 +4440,8 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4484,8 +4484,8 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4500,14 +4500,14 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "trigger"
         }
       ],
       "_audit": {
@@ -4536,14 +4536,14 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4572,14 +4572,14 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4594,8 +4594,8 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4610,20 +4610,20 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 2,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         }
       ],
       "_audit": {
@@ -4684,14 +4684,14 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4707,20 +4707,20 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4755,14 +4755,14 @@
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -4777,56 +4777,56 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 1,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 3,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 4,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 5,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 6,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 7,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         },
         {
           "id": 8,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "status"
         }
       ],
       "_audit": {
@@ -6886,9 +6886,10 @@
       "inlets": [
         {
           "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Multichannel input to capture",
+          "_role_source": "phase-30-04-deferred-fix"
         }
       ],
       "outlets": [],
@@ -6898,15 +6899,15 @@
         "agreement": 1.0,
         "source": "io_count_finding"
       },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
+      "_note": "No base domain entry -- override inactive until object added to domain JSON. inlets[0].signal flipped true in Plan 30-04 (deferred-items.md MC tilde test resolution)."
     },
     "mc.receive~": {
       "outlets": [
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         }
       ],
       "_audit": {
@@ -6929,9 +6930,10 @@
       "inlets": [
         {
           "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Multichannel input to broadcast",
+          "_role_source": "phase-30-04-deferred-fix"
         }
       ],
       "outlets": [],
@@ -6941,15 +6943,15 @@
         "agreement": 1.0,
         "source": "io_count_finding"
       },
-      "_note": "No base domain entry -- override inactive until object added to domain JSON"
+      "_note": "No base domain entry -- override inactive until object added to domain JSON. inlets[0].signal flipped true in Plan 30-04 (deferred-items.md MC tilde test resolution)."
     },
     "mc.sum~": {
       "outlets": [
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         }
       ],
       "_audit": {
@@ -6973,8 +6975,8 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         }
       ],
       "_audit": {
@@ -7009,47 +7011,48 @@
       "inlets": [
         {
           "id": 0,
-          "type": "",
-          "signal": false,
-          "digest": ""
+          "type": "signal",
+          "signal": true,
+          "digest": "(signal) Multichannel signal to analyze for loudness",
+          "_role_source": "phase-30-04-deferred-fix"
         }
       ],
       "outlets": [
         {
           "id": 0,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "float"
         },
         {
           "id": 1,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "float"
         },
         {
           "id": 2,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "float"
         },
         {
           "id": 3,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "float"
         },
         {
           "id": 4,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "float"
         },
         {
           "id": 5,
           "type": "",
-          "signal": false,
-          "digest": "Control output"
+          "digest": "Control output",
+          "signal_role": "float"
         }
       ],
       "_audit": {
@@ -7065,8 +7068,8 @@
         {
           "id": 0,
           "type": "signal",
-          "signal": true,
-          "digest": "Signal output"
+          "digest": "Signal output",
+          "signal_role": "audio"
         }
       ],
       "_audit": {
@@ -13594,6 +13597,2510 @@
           "type": "",
           "digest": "",
           "signal_role": "list"
+        }
+      ]
+    },
+    "mc.!-~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.!/~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.!=~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.%~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.*~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.+=~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.+~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.-~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc./~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.2d.wave~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.<=~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.<~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.==~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.>=~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.>~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.abs~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.acosh~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.acos~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.adc~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.allpass~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.apply~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.asinh~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.asin~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.assign": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.atan2~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.atanh~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.atan~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.atodb~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.average~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.avg~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.biquad~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.bitand~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.bitnot~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.bitor~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.bitsafe~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.bitshift~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.bitxor~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.buffir~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.cartopol~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.cascade~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.cell": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.change~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.channelcount~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "data"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.chord~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "data"
+        }
+      ]
+    },
+    "mc.click~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.clip~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.combine~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.comb~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.cosh~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.cosx~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.cos~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.count~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.cross~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.curve~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "trigger"
+        }
+      ]
+    },
+    "mc.cycle~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.dbtoa~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.degrade~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.deinterleave~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.delay~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.deltaclip~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.delta~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.downsamp~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.dup~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.evolve~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.ezadc~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.fft~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.filtercoeff~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.frameaccum~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.frameaverage~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.framedelta~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.framesmooth~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.freqshift~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.ftom~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.function": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "trigger"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "digest": "",
+          "signal_role": "data"
+        }
+      ]
+    },
+    "mc.fzero~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "trigger"
+        }
+      ]
+    },
+    "mc.gain~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.gate~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.generate~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.gen~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.getattr": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.gradient~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.hilbert~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.ifft~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.index~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.interleave~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.in~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.jit.peek~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.kink~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.limi~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.line": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "trigger"
+        }
+      ]
+    },
+    "mc.list~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.live.gain~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.log~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.lookup~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.lores~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.loudness~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 5,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.makelist": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.matrix~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.maximum~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.midiplayer~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.miditarget": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "data"
+        }
+      ]
+    },
+    "mc.minimum~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.minmax~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.mixdown~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.mstosamps~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.mtof~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.noise~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.normalize~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.number~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.omx.4band~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.omx.5band~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.omx.comp~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.omx.peaklim~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.onepole~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.op~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.overdrive~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.pack~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.pattern~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.peek~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.phasegroove~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.phaseshift~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.phasewrap~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.phasor~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.pink~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.pitchshift~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.playlist~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        }
+      ]
+    },
+    "mc.poltocar~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.pong~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.pow~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.rampsmooth~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.ramp~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "trigger"
+        }
+      ]
+    },
+    "mc.rand~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.range~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.rate~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.record~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.rect~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.resize~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.reson~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.retune~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 4,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.round~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.route": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.r~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.sah~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.sampstoms~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.sash~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.saw~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.scale~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.separate~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.seq~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "trigger"
+        }
+      ]
+    },
+    "mc.sfizz~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.sfrecord~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.shape~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.sig~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.sinh~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.sinx~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.slide~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.snowfall~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.snowphasor~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.sqrt~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.stash~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "data"
+        }
+      ]
+    },
+    "mc.stepdiv~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.stepfun~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.stereo~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.stutter~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.subdiv~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "status"
+        }
+      ]
+    },
+    "mc.svf~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.swing~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "float"
+        }
+      ]
+    },
+    "mc.sync~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "status"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "status"
+        }
+      ]
+    },
+    "mc.table~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.tanh~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.tanx~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.target": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "status"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "data"
+        }
+      ]
+    },
+    "mc.teeth~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.thresh~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.transpose~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.trapezoid~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.triangle~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.tri~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.trunc~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.twist~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.unpack~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.updown~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.vectral~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.wave~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.what~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "data"
+        }
+      ]
+    },
+    "mc.where~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.zerox~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        }
+      ]
+    },
+    "mc.zigzag~": {
+      "outlets": [
+        {
+          "id": 0,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 1,
+          "type": "",
+          "digest": "",
+          "signal_role": "audio"
+        },
+        {
+          "id": 2,
+          "type": "",
+          "digest": "",
+          "signal_role": "list"
+        },
+        {
+          "id": 3,
+          "type": "",
+          "digest": "",
+          "signal_role": "trigger"
         }
       ]
     }
