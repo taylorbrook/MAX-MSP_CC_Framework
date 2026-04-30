@@ -51,6 +51,20 @@ _COMPANION_NAMES = frozenset({
     "meter~", "levelmeter~", "scope~", "number~", "spectroscope~",
 })
 
+# Role-driven companion mapping (Phase 31 LAYOUT-03, D-14).
+# Consulted FIRST in `_identify_companions`; falls through to
+# `_COMPANION_NAMES` when `db.get_signal_role(name, outlet)` returns None
+# (unaudited outlet, Phase 28 D-02). Augments -- does NOT replace --
+# `_COMPANION_NAMES` (D-13). Six keys verbatim per D-14.
+_ROLE_COMPANION_MAP: dict[str, dict[str, str | None]] = {
+    "audio":   {"companion": "meter~", "placement": "right"},
+    "status":  {"companion": "flonum", "placement": "overlay"},
+    "trigger": {"companion": None,     "placement": None},
+    "float":   {"companion": None,     "placement": None},
+    "data":    {"companion": None,     "placement": None},
+    "list":    {"companion": None,     "placement": None},
+}
+
 # Gap between a parent and its companion object placed beside it
 _COMPANION_GAP = 5.0
 
@@ -115,7 +129,14 @@ def apply_layout(patcher: Patcher, options: LayoutOptions | None = None) -> None
             continue
 
         # Identify and extract companion objects (meter~, etc.)
-        companions = _identify_companions(component_boxes, patcher.lines, rows)
+        # Pass db so role-driven dispatch (Phase 31 LAYOUT-03, D-13) can
+        # consult `_ROLE_COMPANION_MAP`. Recursive `apply_layout` calls
+        # below pass `box._inner_patcher` whose `.db` was set in
+        # `add_subpatcher`, so the recursion preserves db threading
+        # automatically (Pitfall 3).
+        companions = _identify_companions(
+            component_boxes, patcher.lines, rows, db=patcher.db,
+        )
         for box_id in companions:
             for row in rows:
                 row[:] = [b for b in row if b.id != box_id]
@@ -569,33 +590,72 @@ def _identify_companions(
     boxes: list[Box],
     lines: list,
     rows: list[list[Box]],
+    db=None,
 ) -> dict[str, Box]:
     """Identify companion objects that should be placed beside their parent.
 
-    A companion qualifies if:
-    1. Its name is in _COMPANION_NAMES (e.g., meter~, scope~)
+    Dispatch order (D-13 augment-don't-replace):
+      Pass A -- role-driven via `_ROLE_COMPANION_MAP` consulting
+        `db.get_signal_role(src.name, outlet)`. Outlets with curated roles
+        whose downstream box matches the role's companion name are claimed
+        as companions of the upstream source.
+      Pass B -- legacy `_COMPANION_NAMES` heuristic for any companion-name
+        boxes the role pass did not already claim. This catches both the
+        unaudited-outlet case (db.get_signal_role returns None) and the
+        no-db case (db=None for back-compat).
+
+    A legacy companion qualifies if:
+    1. Its name is in `_COMPANION_NAMES` (e.g., meter~, scope~)
     2. It has exactly one incoming connection (a single parent)
-    3. It is a display/monitoring sink (no downstream connections used for signal)
+    3. It is a display/monitoring sink
+
+    Args:
+        boxes: All boxes in the current patcher (or subpatcher).
+        lines: All connection lines.
+        rows: Row groupings produced by topological sort (unused; kept for
+            signature stability with sibling identification helpers).
+        db: ObjectDatabase; pass `patcher.db` to enable role-driven
+            dispatch. When None, only the legacy heuristic runs.
     """
     box_map = {b.id: b for b in boxes}
     comp_ids = {b.id for b in boxes}
 
-    # Count incoming connections per box
+    # Count incoming connections per box (used by both passes)
     incoming: dict[str, list[str]] = {}
-    outgoing: dict[str, int] = {}
     for line in lines:
         if line.source_id in comp_ids and line.dest_id in comp_ids:
             incoming.setdefault(line.dest_id, []).append(line.source_id)
-            outgoing[line.source_id] = outgoing.get(line.source_id, 0) + 1
 
     result: dict[str, Box] = {}
+
+    # Pass A: role-driven dispatch (D-13 fires first).
+    if db is not None:
+        for line in lines:
+            src = box_map.get(line.source_id)
+            dst = box_map.get(line.dest_id)
+            if src is None or dst is None:
+                continue
+            try:
+                role = db.get_signal_role(src.name, line.source_outlet)
+            except Exception:
+                role = None
+            if role is None:
+                continue
+            spec = _ROLE_COMPANION_MAP.get(role) or {}
+            companion_name = spec.get("companion")
+            if companion_name and dst.name == companion_name:
+                # dst is a companion of src per the role map.
+                result[dst.id] = src
+
+    # Pass B: legacy `_COMPANION_NAMES` heuristic (UNCHANGED -- fall-through).
     for box in boxes:
         if box.name not in _COMPANION_NAMES:
+            continue
+        if box.id in result:    # role pass already claimed this companion
             continue
         parents = incoming.get(box.id, [])
         if len(parents) != 1:
             continue
-        # Companion has exactly one parent - place beside it
         parent = box_map.get(parents[0])
         if parent is not None:
             result[box.id] = parent
