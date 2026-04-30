@@ -33,11 +33,11 @@ Teach validators and critics to read the richer schema. Plus the schema-independ
 
 Migrate existing overrides to the new schema and expand coverage so the typed contract is dense enough to be useful.
 
-- [ ] **MSPCOV-01**: All ~16 existing MSP outlet-type overrides migrated from `signal: bool` to `signal_role`
-- [ ] **MSPCOV-02**: At least 80 previously unverified MSP objects (from 260331-n24's flagged list — `saw~`, `*~`, `noise~`, `sig~`, `gen~`, `selector~`, etc.) get `signal_role` populated per outlet
-- [ ] **MSPCOV-03**: A bulk audit script classifies any remaining `signal: true` outlet by digest keyword (bang/done/index/status) and produces a candidate-overrides report
-- [ ] **MSPCOV-04**: Audit script's output is committed alongside the migration so future drift is visible
-- [ ] **MSPCOV-05**: Post-migration `audit_empty_io()` and a new `audit_signal_role_coverage()` show fewer than 20 remaining gaps in MSP
+- [x] **MSPCOV-01**: All ~16 existing MSP outlet-type overrides migrated from `signal: bool` to `signal_role`
+- [x] **MSPCOV-02**: At least 80 previously unverified MSP objects (from 260331-n24's flagged list — `saw~`, `*~`, `noise~`, `sig~`, `gen~`, `selector~`, etc.) get `signal_role` populated per outlet
+- [x] **MSPCOV-03**: A bulk audit script classifies any remaining `signal: true` outlet by digest keyword (bang/done/index/status) and produces a candidate-overrides report
+- [x] **MSPCOV-04**: Audit script's output is committed alongside the migration so future drift is visible
+- [x] **MSPCOV-05**: Post-migration `audit_empty_io()` and a new `audit_signal_role_coverage()` show fewer than 20 remaining gaps in MSP
 
 ### Layout & UX Builders (Phase 31)
 
