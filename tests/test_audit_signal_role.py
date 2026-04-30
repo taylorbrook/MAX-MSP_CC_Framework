@@ -724,3 +724,311 @@ class TestAuditOutputs:
         json_data = json.loads((review_dir / "signal-role-audit.json").read_text())
         if any(r["confidence"] == "medium" for r in json_data):
             assert "# verify" in md
+
+
+# ── Plan 30-04: TestSiblingAutoMirror ─────────────────────────────
+
+
+def _make_db_with_mc_sibling(
+    tmp_path,
+    *,
+    mc_outlets,
+    msp_outlets,
+    mc_inlets=None,
+    msp_inlets=None,
+):
+    """Build an isolated DB root with one MC object (mc.cycle~) and its
+    bare-MSP sibling (cycle~). Used by Plan 30-04 sibling-mirror tests.
+
+    The fixture seeds BOTH a bare-MSP entry AND an MC entry with the
+    supplied inlet/outlet shapes so the parity gate has real data.
+    """
+    msp_dir = tmp_path / "msp"
+    msp_dir.mkdir(parents=True, exist_ok=True)
+    (msp_dir / "objects.json").write_text(json.dumps({
+        "cycle~": {
+            "name": "cycle~",
+            "domain": "MSP",
+            "maxclass": "newobj",
+            "inlets": msp_inlets or [{"id": 0, "type": "signal/float", "signal": True}],
+            "outlets": msp_outlets,
+        }
+    }, indent=2))
+    mc_dir = tmp_path / "mc"
+    mc_dir.mkdir(parents=True, exist_ok=True)
+    (mc_dir / "objects.json").write_text(json.dumps({
+        "mc.cycle~": {
+            "name": "mc.cycle~",
+            "domain": "MC",
+            "maxclass": "newobj",
+            "inlets": mc_inlets or [{"id": 0, "type": "signal/float", "signal": True}],
+            "outlets": mc_outlets,
+        }
+    }, indent=2))
+    for d in ["max", "jitter", "gen", "m4l", "rnbo", "packages"]:
+        domain_dir = tmp_path / d
+        domain_dir.mkdir(parents=True, exist_ok=True)
+        (domain_dir / "objects.json").write_text("{}")
+    (tmp_path / "aliases.json").write_text("{}")
+    (tmp_path / "overrides.json").write_text(json.dumps({"objects": {}}))
+    (tmp_path / "pd-blocklist.json").write_text("{}")
+    return ObjectDatabase(db_root=tmp_path)
+
+
+def _make_db_with_mc_only(tmp_path, *, mc_name, mc_outlets, mc_inlets=None):
+    """Build an isolated DB with an MC variant that has NO bare-MSP sibling.
+    Used by test_no_sibling_returns_none."""
+    msp_dir = tmp_path / "msp"
+    msp_dir.mkdir(parents=True, exist_ok=True)
+    (msp_dir / "objects.json").write_text("{}")  # NO sibling
+    mc_dir = tmp_path / "mc"
+    mc_dir.mkdir(parents=True, exist_ok=True)
+    (mc_dir / "objects.json").write_text(json.dumps({
+        mc_name: {
+            "name": mc_name,
+            "domain": "MC",
+            "maxclass": "newobj",
+            "inlets": mc_inlets or [{"id": 0, "type": "signal/float", "signal": True}],
+            "outlets": mc_outlets,
+        }
+    }, indent=2))
+    for d in ["max", "jitter", "gen", "m4l", "rnbo", "packages"]:
+        domain_dir = tmp_path / d
+        domain_dir.mkdir(parents=True, exist_ok=True)
+        (domain_dir / "objects.json").write_text("{}")
+    (tmp_path / "aliases.json").write_text("{}")
+    (tmp_path / "overrides.json").write_text(json.dumps({"objects": {}}))
+    (tmp_path / "pd-blocklist.json").write_text("{}")
+    return ObjectDatabase(db_root=tmp_path)
+
+
+def _make_db_with_mcs_sibling(
+    tmp_path,
+    *,
+    mcs_outlets,
+    msp_outlets,
+    mcs_inlets=None,
+    msp_inlets=None,
+):
+    """Build an isolated DB with an MCS variant + bare-MSP sibling.
+    Used by test_mcs_prefix_strips_correctly."""
+    msp_dir = tmp_path / "msp"
+    msp_dir.mkdir(parents=True, exist_ok=True)
+    (msp_dir / "objects.json").write_text(json.dumps({
+        "cycle~": {
+            "name": "cycle~",
+            "domain": "MSP",
+            "maxclass": "newobj",
+            "inlets": msp_inlets or [{"id": 0, "type": "signal/float", "signal": True}],
+            "outlets": msp_outlets,
+        }
+    }, indent=2))
+    mc_dir = tmp_path / "mc"
+    mc_dir.mkdir(parents=True, exist_ok=True)
+    (mc_dir / "objects.json").write_text(json.dumps({
+        "mcs.cycle~": {
+            "name": "mcs.cycle~",
+            "domain": "MC",
+            "maxclass": "newobj",
+            "inlets": mcs_inlets or [{"id": 0, "type": "signal/float", "signal": True}],
+            "outlets": mcs_outlets,
+        }
+    }, indent=2))
+    for d in ["max", "jitter", "gen", "m4l", "rnbo", "packages"]:
+        domain_dir = tmp_path / d
+        domain_dir.mkdir(parents=True, exist_ok=True)
+        (domain_dir / "objects.json").write_text("{}")
+    (tmp_path / "aliases.json").write_text("{}")
+    (tmp_path / "overrides.json").write_text(json.dumps({"objects": {}}))
+    (tmp_path / "pd-blocklist.json").write_text("{}")
+    return ObjectDatabase(db_root=tmp_path)
+
+
+class TestSiblingAutoMirror:
+    """Plan 30-04: _propose_inherited_roles sibling-auto-mirror tests.
+
+    Covers CONTEXT D-11 (positional copy from bare-MSP sibling), threat
+    model T-30-04-01 (strict inlet+outlet parity gate), and curator-override
+    audit-trail semantics (proposer is purely advisory).
+    """
+
+    def test_sibling_mirror_copies_role_positionally(self, tmp_path):
+        """When MC variant's name strips to a known MSP sibling and I/O parity
+        holds, the sibling's outlet roles are copied outlet-by-outlet."""
+        db = _make_db_with_mc_sibling(
+            tmp_path,
+            msp_outlets=[{"id": 0, "type": "signal", "signal_role": "audio", "digest": "Audio out"}],
+            mc_outlets=[{"id": 0, "type": "signal", "digest": "Audio out (multichannel)"}],
+        )
+        rows = audit_cli._propose_inherited_roles(db, "mc.cycle~")
+        assert rows is not None
+        assert len(rows) == 1
+        assert rows[0]["outlet_id"] == 0
+        assert rows[0]["signal_role"] == "audio"
+        assert rows[0]["confidence"] == "inherited"
+
+    def test_no_sibling_returns_none(self, tmp_path):
+        """MC-only object (no bare-MSP entry after stripping prefix) returns None.
+
+        Builds a DB containing only mc.bands~ with NO bands~ sibling and
+        asserts the proposer returns None so the caller falls through to
+        the digest classifier."""
+        db = _make_db_with_mc_only(
+            tmp_path,
+            mc_name="mc.bands~",
+            mc_outlets=[{"id": 0, "type": "signal", "digest": "Per-band signal out"}],
+        )
+        result = audit_cli._propose_inherited_roles(db, "mc.bands~")
+        assert result is None, (
+            f"Expected None for MC-only object with no bare-MSP sibling; "
+            f"got {result!r}"
+        )
+
+    def test_sibling_mirror_io_parity_gate_outlets(self, tmp_path):
+        """MC variant with different outlet count from sibling returns None."""
+        db = _make_db_with_mc_sibling(
+            tmp_path,
+            msp_outlets=[
+                {"id": 0, "type": "signal", "signal_role": "audio"},
+                {"id": 1, "type": "", "signal_role": "status"},
+            ],
+            mc_outlets=[
+                {"id": 0, "type": "signal", "digest": "Audio"},
+                {"id": 1, "type": "", "digest": "Status"},
+                {"id": 2, "type": "", "digest": "Channel count (MC-only extra)"},
+            ],
+        )
+        # 2 vs 3 outlets -> parity fails -> classifier handles whole object
+        assert audit_cli._propose_inherited_roles(db, "mc.cycle~") is None
+
+    def test_sibling_mirror_io_parity_gate_inlets(self, tmp_path):
+        """MC variant with different INLET count from sibling returns None."""
+        db = _make_db_with_mc_sibling(
+            tmp_path,
+            msp_inlets=[{"id": 0, "type": "signal/float", "signal": True}],
+            mc_inlets=[
+                {"id": 0, "type": "signal/float", "signal": True},
+                {"id": 1, "type": "", "digest": "Channel control (MC-only)"},
+            ],
+            msp_outlets=[{"id": 0, "type": "signal", "signal_role": "audio"}],
+            mc_outlets=[{"id": 0, "type": "signal", "digest": "Audio"}],
+        )
+        # Same outlet count but inlet counts differ -> parity fails
+        assert audit_cli._propose_inherited_roles(db, "mc.cycle~") is None
+
+    def test_sibling_with_no_role_yet_falls_through(self, tmp_path):
+        """When the bare-MSP sibling exists but has no signal_role yet on an
+        outlet, the corresponding row gets confidence='inherited-no-role' so
+        the caller routes that outlet to the digest classifier."""
+        db = _make_db_with_mc_sibling(
+            tmp_path,
+            msp_outlets=[{"id": 0, "type": "signal", "digest": "unmigrated"}],
+            mc_outlets=[{"id": 0, "type": "signal", "digest": "Audio out"}],
+        )
+        rows = audit_cli._propose_inherited_roles(db, "mc.cycle~")
+        assert rows is not None
+        assert rows[0]["signal_role"] is None
+        assert rows[0]["confidence"] == "inherited-no-role"
+
+    def test_mcs_prefix_strips_correctly(self, tmp_path):
+        """`mcs.X~` resolves to bare `X~` sibling identically to `mc.X~`.
+
+        Builds a DB with mcs.cycle~ + cycle~, asserts the proposer correctly
+        strips the longer `mcs.` prefix and finds the same bare-MSP sibling
+        that `mc.cycle~` would find."""
+        db = _make_db_with_mcs_sibling(
+            tmp_path,
+            msp_outlets=[
+                {"id": 0, "type": "signal", "signal_role": "audio", "digest": "Audio out"},
+            ],
+            mcs_outlets=[
+                {"id": 0, "type": "signal", "digest": "Audio out (mcs-merged)"},
+            ],
+        )
+        rows = audit_cli._propose_inherited_roles(db, "mcs.cycle~")
+        assert rows is not None, (
+            "mcs.cycle~ must resolve to bare cycle~ via the mcs.-prefix "
+            "stripping rule; got None"
+        )
+        assert len(rows) == 1
+        assert rows[0]["outlet_id"] == 0
+        assert rows[0]["signal_role"] == "audio"
+        assert rows[0]["confidence"] == "inherited"
+
+    def test_trailing_outlet_fallthrough(self, tmp_path):
+        """When MC has more outlets than the sibling (trailing extras),
+        the strict parity gate (T-30-04-01) currently rejects the whole
+        object — the digest classifier handles all three outlets via the
+        cmd_audit fall-through path. This test documents the strict-gate
+        behavior (None) and ensures no trailing outlet sneaks through."""
+        db = _make_db_with_mc_sibling(
+            tmp_path,
+            msp_outlets=[
+                {"id": 0, "type": "signal", "signal_role": "audio"},
+                {"id": 1, "type": "", "signal_role": "status"},
+            ],
+            mc_outlets=[
+                {"id": 0, "type": "signal", "digest": "Audio"},
+                {"id": 1, "type": "", "digest": "Status"},
+                {"id": 2, "type": "", "digest": "Channel count (MC-only trailing)"},
+            ],
+        )
+        result = audit_cli._propose_inherited_roles(db, "mc.cycle~")
+        # Strict parity gate (current implementation): outlet count
+        # mismatch returns None, and the digest classifier handles all
+        # three outlets via the cmd_audit fall-through path.
+        assert result is None, (
+            "Strict parity gate must reject MC variants with trailing "
+            "extras (sibling has 2 outlets, mc has 3). The cmd_audit "
+            "fall-through routes ALL three outlets to _classify_outlet."
+        )
+
+    def test_curator_override_preserved(self, tmp_path):
+        """The proposer is purely advisory: even when the MC override entry
+        already has signal_role on outlet i, _propose_inherited_roles still
+        proposes a role for it. The curator's value takes precedence at
+        apply-time (cmd_apply_run's overwrite-refusal logic), NOT in the
+        proposer.
+
+        Asserts the proposer is read-only and does NOT short-circuit when
+        curator data already exists. Critical because cmd_apply_run uses
+        --force to honor curator overrides; the proposer must still emit a
+        row so the review file captures the inherited proposal alongside
+        the curator's choice for audit-trail purposes."""
+        db = _make_db_with_mc_sibling(
+            tmp_path,
+            msp_outlets=[
+                {"id": 0, "type": "signal", "signal_role": "audio", "digest": "Audio out"},
+            ],
+            mc_outlets=[
+                # MC outlet ALREADY has a signal_role (set by a prior plan
+                # or by curator). The proposer should STILL emit a row.
+                {"id": 0, "type": "signal", "signal_role": "trigger",
+                 "digest": "Audio out (overridden by curator to trigger)"},
+            ],
+        )
+        rows = audit_cli._propose_inherited_roles(db, "mc.cycle~")
+        assert rows is not None, (
+            "Proposer must NOT short-circuit when curator data exists; "
+            "it must still emit an inherited proposal for audit trail."
+        )
+        assert len(rows) == 1
+        # The inherited proposal mirrors the SIBLING's role ("audio"),
+        # NOT the MC's pre-existing curator override ("trigger"). The
+        # curator-vs-inherited reconciliation happens at apply time.
+        assert rows[0]["signal_role"] == "audio", (
+            f"Inherited proposal must mirror the sibling's role (audio), "
+            f"not the MC's curator override; got {rows[0]['signal_role']!r}"
+        )
+        assert rows[0]["confidence"] == "inherited"
+
+    def test_real_db_smoke_mc_cycle(self):
+        """Smoke: real DB returns a non-None proposal for mc.cycle~."""
+        db = ObjectDatabase()
+        rows = audit_cli._propose_inherited_roles(db, "mc.cycle~")
+        assert rows is not None  # cycle~ has a known sibling
+
+    def test_real_db_mc_only_returns_none(self):
+        """Real DB: mc.bands~ has no bare bands~ sibling -> None."""
+        db = ObjectDatabase()
+        assert audit_cli._propose_inherited_roles(db, "mc.bands~") is None
