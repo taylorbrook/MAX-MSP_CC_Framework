@@ -342,6 +342,7 @@ def _classify_db(domains: tuple[str, ...]) -> list[dict]:
                             "confidence": "inherited",
                             "curator_role": "",
                             "rationale": "sibling-mirror",
+                            "source": "sibling-mirror",
                         })
                     else:
                         # No sibling role for this outlet -> classifier
