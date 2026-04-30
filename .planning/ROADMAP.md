@@ -133,7 +133,12 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
   3. A developer creates a `gain~`, `meter~`, dial+flonum overlay, or live.dial+text-label and the framework auto-places the companion using `signal_role` (e.g. `status` outlets get readout overlays, `audio` outlets get meter companions)
   4. A developer calls `m4l_gen_synth(params=[...])` and gets a Live-ready `.amxd` skeleton with gen~ + `live.dial`s correctly bound via `param_connect`, no `gain~` before `plugout~`
   5. `max-patch-agent` and `max-ui-agent` reach all four builders via documented entry points — agents pick up the new APIs without prose-rule retraining
-**Plans**: TBD
+**Plans**: 5 plans
+- [ ] 31-01-PLAN.md — Patcher.add_overlay_readout builder (LAYOUT-01) + unit tests
+- [ ] 31-02-PLAN.md — Patcher.add_labeled_param_bank builder (LAYOUT-02) + unit tests
+- [ ] 31-03-PLAN.md — _ROLE_COMPANION_MAP + role-driven companion dispatch in apply_layout (LAYOUT-03) + integration test
+- [ ] 31-04-PLAN.md — Patcher.add_m4l_gen_synth M4L skeleton builder (LAYOUT-04) + unit tests (T-31-04 mitigation)
+- [ ] 31-05-PLAN.md — Builder API section in both SKILL.md files + CLAUDE.md pointers + test_agent_skills.py (LAYOUT-05)
 **UI hint**: yes
 
 ### Phase 32: DSP Pre-Flight Simulation
@@ -180,9 +185,9 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 28. Schema Foundation | v5.0 | 3/3 | Complete    | 2026-04-28 |
 | 29. Validator Depth | v5.0 | 5/5 | Complete    | 2026-04-29 |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 4/4 | Complete    | 2026-04-30 |
-| 31. Layout & UX Builders | v5.0 | 0/0 | Not started | - |
+| 31. Layout & UX Builders | v5.0 | 0/5 | In progress | - |
 | 32. DSP Pre-Flight Simulation | v5.0 | 0/0 | Not started | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-27 -- v5.0 milestone phases added (28-32); SCHEMA-07 success-criterion realigned to D-12 three-sibling shape*
+*Last updated: 2026-04-30 -- Phase 31 plans created (5 plans across 3 waves)*

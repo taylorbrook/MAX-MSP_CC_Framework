@@ -636,27 +636,27 @@ def add_m4l_gen_synth(
 | A5 | The planner can fit the four builders + tests + skill updates into 4-5 plans without exceeding plan size budget | Plan Boundaries (CONTEXT.md Discretion) | Plans may need bundling/splitting. Mitigation: planner judgment, not blocking |
 | A6 | gen~ inner patcher works with `num_inputs=0` for a pure synthesizer (no MIDI, no signal in) | Skeleton: add_m4l_gen_synth | If `add_gen` requires at least one input, default code needs adjustment. [VERIFIED partial] add_gen takes `num_inputs: int | None`, auto-detects from code; `out1 = 0` has no `in1` reference so detection should yield 0 |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Should `add_m4l_gen_synth` also add a `live.thisdevice`?**
    - What we know: D-15 explicitly says "minimum-viable" and lists `gen~ + live.dials + plugout~` only.
    - What's unclear: A polished M4L device usually has `live.thisdevice` somewhere; without it, some Live integration features may not work.
-   - Recommendation: Stick with D-15 (no `live.thisdevice`); planner can flag for follow-up if test reveals a gap. Don't expand scope.
+   - RESOLVED: Stick with D-15 (no `live.thisdevice`). Phase 31 ships the minimum-viable skeleton; if a real Live integration test surfaces a gap, capture as a deferred follow-up rather than expanding scope here.
 
 2. **How does `_identify_companions` get access to `patcher.db`?**
    - What we know: `apply_layout` receives `patcher` (which has `.db`); it currently passes only `boxes, lines, rows` to `_identify_companions`.
    - What's unclear: Cleanest threading is to add a `db` parameter to `_identify_companions` and pass `patcher.db`. Recursive call (line 170) already passes `box._inner_patcher`, which has its own `.db` set in `add_subpatcher` (patcher.py:1491-1492 — `Patcher(db=self.db, ...)`).
-   - Recommendation: Add `db` parameter, default `None` for back-compat with other callers if any.
+   - RESOLVED: Add `db: ObjectDatabase | None = None` parameter to `_identify_companions`; `apply_layout` threads `patcher.db`. Subpatcher recursion already carries its own `db` via the inner patcher's `.db` attribute, so the role-driven dispatch fires at every nesting level.
 
 3. **Does the format string for `add_overlay_readout` need prepend-chain support?**
    - What we know: D-03 allows `'%.1f Hz'` to map to a prepend chain emitting `set %.1f Hz` to a comment.
    - What's unclear: Whether to ship that auto-detection now (parses format for unit suffix) or only set `flonum.format` (CONTEXT.md "Claude's Discretion": ship simple version first, escalate if real case demands).
-   - Recommendation: Phase 31 ships only the `flonum.format` attribute path. Add a comment in the docstring: "format strings with literal text (e.g. `'%.1f Hz'`) are accepted but the unit text is not rendered without a separate prepend chain — set type='comment' and feed via prepend if needed". Promote to first-class if real use cases demand.
+   - RESOLVED: Phase 31 ships only the `flonum.format` attribute path. Docstring notes that format strings with literal text (e.g. `'%.1f Hz'`) are accepted but the unit suffix is not rendered without a separate prepend chain — caller can pass `type='comment'` and feed via a prepend chain if needed. Auto-detection is a deferred follow-up, not a Phase 31 deliverable.
 
 4. **Does `multislider.add_box` produce a box with the right default I/O?**
    - What we know: `multislider` is in UI_MAXCLASSES (maxclass_map.py:20). DB lookup should provide I/O counts.
    - What's unclear: Whether the DB entry's I/O is non-empty (CLAUDE.md "verify lookup results have non-empty I/O" warning).
-   - Recommendation: Plan task should verify with `db.lookup("multislider")` and check `len(inlets) > 0 and len(outlets) > 0`. If empty, populate via `overrides.json` BEFORE the builder lands. Use `db.audit_empty_io()` to confirm.
+   - RESOLVED: Plan 31-02 Wave-0 task includes a precondition verification step that runs `db.lookup("multislider")` and asserts `len(inlets) > 0 and len(outlets) > 0`. If the entry is empty (none expected based on Phase 30 audit results), the plan halts and `overrides.json` must be populated before the builder lands. Use `db.audit_empty_io()` to confirm.
 
 ## Environment Availability
 
