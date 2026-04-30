@@ -685,6 +685,64 @@ class Patcher(GraphMixin, AnalysisMixin):
         self.boxes.insert(0, marker)
         return marker
 
+    def add_overlay_readout(
+        self,
+        target: "Box",
+        *,
+        format: str = "%.2f",
+        type: str = "flonum",
+        editable: bool = False,
+        offset_x: float = 0.0,
+        offset_y: float = 0.0,
+    ) -> "Box":
+        """Create a flonum/comment/number readout overlapping a target control.
+
+        Codifies the CLAUDE.md Rule #6 overlay-readout recipe: ``bring_to_front``
+        (overlay renders on top) plus ``ignoreclick=1`` (clicks pass through to
+        the underlying control). The readout copies ``target.patching_rect`` by
+        default; ``offset_x``/``offset_y`` fine-tune the position without
+        aliasing the target's rect.
+
+        Args:
+            target: The Box to overlay (typically a dial or numeric control).
+            format: printf-style format string (D-03). Stored on
+                ``readout.extra_attrs["format"]``. Format strings with literal
+                text (e.g. ``'%.1f Hz'``) are accepted but the unit suffix is
+                NOT auto-rendered without a separate prepend chain — callers
+                wanting unit-suffix display should set ``type='comment'`` and
+                feed via prepend.
+            type: One of ``'flonum'`` (default, D-04), ``'comment'``,
+                ``'number'``.
+            editable: If True, ``ignoreclick`` is NOT set (caller wants the
+                readout itself editable). Default False bakes ``ignoreclick=1``
+                so clicks pass through to the underlying control.
+            offset_x: Horizontal offset relative to target's x (D-05).
+            offset_y: Vertical offset relative to target's y.
+
+        Returns:
+            The newly-created readout Box, already z-ordered to index 0
+            (renders on top of target via ``bring_to_front``).
+
+        Raises:
+            ValueError: If ``type`` is not one of the allowed maxclasses.
+        """
+        if type not in ("flonum", "comment", "number"):
+            raise ValueError(
+                f"type must be 'flonum'|'comment'|'number', got {type!r}"
+            )
+        rect = list(target.patching_rect)  # COPY — Pitfall 1: don't alias
+        x = rect[0] + offset_x
+        y = rect[1] + offset_y
+        readout = self.add_box(type, x=x, y=y, skip_overlap_check=True)
+        # Re-set patching_rect so width/height match target exactly (D-05)
+        readout.patching_rect = [x, y, rect[2], rect[3]]
+        readout.extra_attrs["format"] = format
+        if not editable:
+            readout.extra_attrs["ignoreclick"] = 1
+        # Unconditional bring_to_front per D-06 (always renders on top)
+        self.bring_to_front(readout)
+        return readout
+
     def bring_to_front(self, box: Box) -> None:
         """Move box to index 0 in boxes array (renders on top of all other objects).
 
