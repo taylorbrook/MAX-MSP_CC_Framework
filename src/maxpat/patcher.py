@@ -743,6 +743,99 @@ class Patcher(GraphMixin, AnalysisMixin):
         self.bring_to_front(readout)
         return readout
 
+    def add_labeled_param_bank(
+        self,
+        params: list[tuple[str, float, float]],
+        x: float,
+        y: float,
+        *,
+        label_side: str = "left",
+        extra_attrs: dict | None = None,
+    ) -> tuple["Box", list["Box"]]:
+        """Build a multislider parameter bank with aligned comment labels.
+
+        Codifies the CLAUDE.md "Multislider as Labeled Parameter Bank" recipe:
+        size*24 px height, contdata=1, setstyle=1, orientation=0 (horizontal
+        bars stacked vertically), setminmax derived as ``[min(mins),
+        max(maxes)]`` envelope across all params (D-10). Returns
+        ``(multislider, [comment, ...])``; caller wires ``fetch $1`` -> the
+        multislider input themselves and reads values from the multislider's
+        RIGHT outlet (outlet 1) per D-09 and memory note
+        ``feedback_multislider_fetch.md`` (``fetch`` not ``fetchindex``;
+        outlet 1 not 0; do NOT insert ``split`` between multislider and
+        consumer).
+
+        Note on per-bar ranges: multislider supports a single ``setminmax``
+        for all bars; per-bar ranges require runtime config messages, not
+        attrs (deferred per CONTEXT.md). Use this builder for params with
+        similar ranges; widely-varying ranges yield an envelope that doesn't
+        enforce per-bar limits.
+
+        Args:
+            params: List of ``(name, min, max)`` tuples (D-07). One bar per
+                tuple. Drives label text, ``setminmax`` envelope, and bar count.
+            x: Multislider x position.
+            y: Multislider y position. Labels start at the same y.
+            label_side: Only ``'left'`` is supported in Phase 31 (D-08).
+                Raises ValueError on any other value.
+            extra_attrs: Optional dict deep-merged over baked defaults (D-10).
+                Caller values win on collisions.
+
+        Returns:
+            ``(multislider_box, [comment_box, ...])`` where comments are in
+            the same order as ``params``.
+
+        Raises:
+            ValueError: If params is empty, or label_side is not 'left'.
+        """
+        if not params:
+            raise ValueError("params must not be empty")
+        if label_side != "left":
+            raise ValueError(
+                f"only label_side='left' is supported in Phase 31, got "
+                f"{label_side!r}"
+            )
+
+        size = len(params)
+        height = size * 24.0
+        mins = [p[1] for p in params]
+        maxes = [p[2] for p in params]
+        setminmax = [min(mins), max(maxes)]
+        ms_width = 200.0  # sensible default; CLAUDE.md doesn't lock width
+
+        ms = self.add_box("multislider", x=x, y=y, skip_overlap_check=True)
+        ms.patching_rect = [x, y, ms_width, height]
+
+        # Bake defaults (D-10), then deep-merge caller's extra_attrs over
+        # them. Caller wins on collisions per the locked semantic.
+        baked = {
+            "size": size,
+            "setminmax": setminmax,
+            "orientation": 0,
+            "contdata": 1,
+            "setstyle": 1,
+        }
+        if extra_attrs:
+            baked.update(extra_attrs)  # caller wins on collisions
+        ms.extra_attrs.update(baked)
+
+        # Place labels left of bars; y formula matches CLAUDE.md fontsize=10
+        # spacing (D-08): each label at ms.y + i * 24.
+        label_gap = 8.0
+        labels: list[Box] = []
+        for i, (name, _mn, _mx) in enumerate(params):
+            # Approximate label width so labels sit left of the multislider.
+            approx_w = len(name) * 6.0 + 14.0
+            lx = x - approx_w - label_gap
+            ly = y + i * 24.0
+            c = self.add_comment(name, x=lx, y=ly)
+            # Tighten height to 18px (CLAUDE.md fontsize=10 spec).
+            c.patching_rect[3] = 18.0
+            c.fontsize = 10.0
+            labels.append(c)
+
+        return ms, labels
+
     def bring_to_front(self, box: Box) -> None:
         """Move box to index 0 in boxes array (renders on top of all other objects).
 
