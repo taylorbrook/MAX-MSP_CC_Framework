@@ -136,7 +136,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 **Plans**: 5 plans
 - [x] 31-01-PLAN.md — Patcher.add_overlay_readout builder (LAYOUT-01) + unit tests
 - [x] 31-02-PLAN.md — Patcher.add_labeled_param_bank builder (LAYOUT-02) + unit tests
-- [ ] 31-03-PLAN.md — _ROLE_COMPANION_MAP + role-driven companion dispatch in apply_layout (LAYOUT-03) + integration test
+- [x] 31-03-PLAN.md — _ROLE_COMPANION_MAP + role-driven companion dispatch in apply_layout (LAYOUT-03) + integration test
 - [x] 31-04-PLAN.md — Patcher.add_m4l_gen_synth M4L skeleton builder (LAYOUT-04) + unit tests (T-31-04 mitigation)
 - [ ] 31-05-PLAN.md — Builder API section in both SKILL.md files + CLAUDE.md pointers + test_agent_skills.py (LAYOUT-05)
 **UI hint**: yes
@@ -185,7 +185,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 28. Schema Foundation | v5.0 | 3/3 | Complete    | 2026-04-28 |
 | 29. Validator Depth | v5.0 | 5/5 | Complete    | 2026-04-29 |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 4/4 | Complete    | 2026-04-30 |
-| 31. Layout & UX Builders | v5.0 | 3/5 | In Progress|  |
+| 31. Layout & UX Builders | v5.0 | 4/5 | In Progress|  |
 | 32. DSP Pre-Flight Simulation | v5.0 | 0/0 | Not started | - |
 
 ---
