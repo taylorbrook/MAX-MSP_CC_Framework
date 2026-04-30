@@ -77,6 +77,104 @@ Before any generation:
 
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
+## Builder API (Phase 31)
+
+Four high-level builders on `Patcher` codify recipes that previously lived as
+prose in CLAUDE.md. Prefer these over restating the recipes per patch.
+
+### `Patcher.add_overlay_readout(target, *, format='%.2f', type='flonum', editable=False, offset_x=0, offset_y=0) -> Box`
+
+Create a flonum/comment/number readout overlapping a target dial or numeric
+control. Codifies the CLAUDE.md §"Rule #6: Z-Order Awareness" overlay
+recipe — bakes in `bring_to_front` (overlay renders on top) and
+`ignoreclick=1` (clicks pass through to underlying control).
+
+- `target`: The Box to overlay (typically `dial` or another numeric control).
+- `format`: printf-style format string (e.g. `'%.2f'`, `'%.1f Hz'`). Stored
+  as `extra_attrs["format"]`. Unit suffixes are accepted but not auto-rendered;
+  use `type='comment'` + a prepend chain for unit text display.
+- `type`: `'flonum'` (default), `'comment'`, or `'number'`.
+- `editable`: Default False bakes `ignoreclick=1`. Pass `True` for the rare
+  M4L case where the readout itself is editable.
+- `offset_x` / `offset_y`: Fine-tune position relative to target's rect.
+
+**When to call:** Anytime you create a dial-with-flonum-readout pattern.
+Replaces the 5-step manual recipe in CLAUDE.md §"Rule #6".
+
+### `Patcher.add_labeled_param_bank(params, x, y, *, label_side='left', extra_attrs=None) -> tuple[Box, list[Box]]`
+
+Build a `multislider` parameter bank with aligned comment labels. Codifies
+CLAUDE.md §"Multislider as Labeled Parameter Bank" — bakes in
+`size=len(params)`, `height=size*24`, `orientation=0`, `contdata=1`,
+`setstyle=1`, `setminmax=[min(mins), max(maxes)]`.
+
+- `params`: List of `(name, min, max)` tuples — one bar per tuple.
+- `x` / `y`: Multislider position. Labels start at the same y.
+- `label_side`: Only `'left'` is supported in Phase 31.
+- `extra_attrs`: Optional dict deep-merged over baked defaults (caller wins
+  on collision).
+
+Returns `(multislider, [comment, ...])`. **Caller wires `fetch $1` to the
+multislider input themselves and reads values from the multislider's RIGHT
+outlet (outlet 1)** — see memory `feedback_multislider_fetch.md`.
+
+**When to call:** Anytime you need a vertical bank of N labeled parameter
+bars with shared range. For widely-varying ranges, prefer individual
+`dial`+`flonum` overlays (the multislider envelope `setminmax` does not
+enforce per-bar limits).
+
+### `Patcher.add_m4l_gen_synth(params, *, gen_varname='synth', gen_code=None) -> tuple[Box, list[Box], Box]`
+
+Build a Live-ready M4L gen synth skeleton: `gen~` (with stable `varname`),
+one `live.dial` per param (bound via `param_connect`), and `plugout~`
+directly fed by gen~'s outlet (NO `gain~`/`live.gain~`/`ezdac~` between —
+CLAUDE.md M4L rule).
+
+- `params`: List of `(name, min, max)` tuples — one `live.dial` per param.
+  Names MUST be valid MAX symbols.
+- `gen_varname`: gen~'s `varname` (default `'synth'`). Must be unique per
+  patcher when adding multiple skeletons.
+- `gen_code`: Optional GenExpr body. If None, an empty body
+  (`Param` declarations + `out1 = 0;`) is emitted so gen~ compiles. Caller
+  replaces with real DSP.
+
+Returns `(gen, [live_dial, ...], plugout)`. Each `live.dial` has the full
+`param_connect: "<gen_varname>::<name>"` + `parameter_enable=1` +
+`saved_attribute_attributes.valueof` block. The skeleton is polish-ready;
+run `polish_m4l_device(patcher.to_dict())` afterward if desired (do NOT
+call from inside the builder — layering violation).
+
+**When to call:** Starting a new M4L `.amxd` device with a synth/effect
+body. Replaces the manual `param_connect` setup recipe.
+
+### Role-driven companion-pair placement (passive — applied by `apply_layout`)
+
+`apply_layout` consults a `_ROLE_COMPANION_MAP` in `layout.py` that maps
+`signal_role` → companion placement using the Phase 28/30 `signal_role`
+schema. Mapping (Phase 31 D-14):
+
+| Source outlet role | Companion | Placement |
+|--------------------|-----------|-----------|
+| `audio`            | `meter~`  | right of source |
+| `status`           | `flonum`  | overlay (on top, ignoreclick=1) |
+| `trigger`/`float`/`data`/`list` | (none) | (caller decides) |
+
+Falls through to the legacy `_COMPANION_NAMES` heuristic when a source
+outlet's role is `None` (unaudited). **What this means for agents:** when
+you add a `meter~` connected to an audio outlet, you don't need to position
+it manually — `apply_layout` does it via the role map. Same for `flonum`
+overlays on `status` outlets. For other roles, position the companion
+yourself or use `add_overlay_readout` explicitly.
+
+### Quick reference
+
+| Use case | Builder | Replaces (CLAUDE.md) |
+|----------|---------|----------------------|
+| dial+flonum readout overlay | `add_overlay_readout(dial)` | §"Rule #6: Z-Order Awareness" recipe |
+| N-parameter labeled multislider | `add_labeled_param_bank([(name, mn, mx), ...], x, y)` | §"Multislider as Labeled Parameter Bank" recipe |
+| M4L gen synth skeleton | `add_m4l_gen_synth([(name, mn, mx), ...])` | §"Domain-Specific Rules → Max for Live (M4L)" recipe |
+| Auto-place meter~ on audio outlet / flonum on status outlet | (none — `apply_layout` does it via `_ROLE_COMPANION_MAP`) | manual companion positioning |
+
 ## Package Intelligence
 
 When generating patches with package objects (BEAP, Vizzie, etc.), read `.claude/max-objects/PACKAGES.md` for:

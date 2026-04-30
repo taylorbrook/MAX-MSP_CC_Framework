@@ -91,6 +91,8 @@ Getting this wrong causes silent bugs where objects compute with stale values. A
 
 #### Multislider as Labeled Parameter Bank
 
+> Codified: `Patcher.add_labeled_param_bank(params, x, y)` (Phase 31). The recipe below is the prose version; prefer the builder.
+
 When multislider bars represent labeled parameters (with comment labels alongside):
 - Set `orientation: 0` (horizontal bars stacked vertically) explicitly
 - Bar-to-label alignment formula: multislider height = `size * label_spacing` where label_spacing matches comment spacing (typically 24px for fontsize=10 labels)
@@ -110,6 +112,8 @@ Never create `generate.py` or similar intermediary Python scripts that regenerat
 This rule exists because the generator pattern causes regeneration to overwrite manual edits and iterate improvements. It was deprecated in milestone 2.0.
 
 ### Rule #6: Z-Order Awareness
+
+> Codified: `Patcher.add_overlay_readout(target, format='%.2f')` (Phase 31). The recipe below is the prose version; prefer the builder.
 
 In `.maxpat` files, z-order is implicit: objects **earlier** in the `boxes` array render **on top** of later ones (index 0 = topmost).
 
@@ -219,6 +223,8 @@ inner.add_connection(some_box, 0, inlets[2], 0)
 - Use for: UI logic, data transformation, algorithmic composition, anything needing scripted control
 
 ### Max for Live (M4L / .amxd)
+
+> Codified (synth skeleton): `Patcher.add_m4l_gen_synth(params)` (Phase 31). The rules below still apply; the builder enforces them by construction.
 
 - **No `gain~` / `live.gain~` / `ezdac~` before `plugout~`.** Ableton's channel strip handles volume; an extra gain stage is redundant and `gain~` defaults to 0 (silence on load). Route the final signal-processing stage directly to `plugout~`. Volume, pan, and mute live in Ableton's mixer.
 - **`live.dial` / `live.slider` bind to gen~ Params via `param_connect`, not message-box patching.** Set `param_connect: "<gen~_varname>::<param_name>"`, `parameter_enable: 1`, plus the `saved_attribute_attributes.valueof` block (`parameter_initial`, `parameter_longname`, `parameter_shortname`, `parameter_mmin`, `parameter_mmax`, `parameter_modmode`, `parameter_type`, `parameter_unitstyle`). The gen~ object MUST have a stable `varname` matching the prefix in `param_connect`. No patch cord between the dial and gen~ -- `param_connect` IS the binding.
