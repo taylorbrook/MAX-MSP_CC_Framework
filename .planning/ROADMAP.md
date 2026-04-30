@@ -71,7 +71,7 @@ Full details: `.planning/milestones/v4.0-ROADMAP.md`
 
 - [x] **Phase 28: Schema Foundation** — Typed signal_role / domain_restricted / verified_installed fields land in overrides + db_lookup with back-compat shim (completed 2026-04-28)
 - [x] **Phase 29: Validator Depth** — Layer-3 role-aware errors, RNBO domain hard guard, install-state warnings, external `.gendsp` validation (completed 2026-04-29)
-- [ ] **Phase 30: MSP Outlet Coverage Sweep** — Migrate 16 existing overrides + populate ~80 unverified MSP objects + bulk audit script
+- [x] **Phase 30: MSP Outlet Coverage Sweep** — Migrate 16 existing overrides + populate ~80 unverified MSP objects + bulk audit script (completed 2026-04-30)
 - [ ] **Phase 31: Layout & UX Builders** — `add_overlay_readout`, `add_labeled_param_bank`, signal_role-aware companion pairs, `m4l_gen_synth` skeleton
 - [ ] **Phase 32: DSP Pre-Flight Simulation** — numpy waveguide stability sweep harness wired into max-dsp-agent
 
@@ -179,7 +179,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 25. Templates + Critics | v4.0 | 3/3 | Complete    | 2026-04-15 |
 | 28. Schema Foundation | v5.0 | 3/3 | Complete    | 2026-04-28 |
 | 29. Validator Depth | v5.0 | 5/5 | Complete    | 2026-04-29 |
-| 30. MSP Outlet Coverage Sweep | v5.0 | 3/4 | In Progress|  |
+| 30. MSP Outlet Coverage Sweep | v5.0 | 4/4 | Complete   | 2026-04-30 |
 | 31. Layout & UX Builders | v5.0 | 0/0 | Not started | - |
 | 32. DSP Pre-Flight Simulation | v5.0 | 0/0 | Not started | - |
 
