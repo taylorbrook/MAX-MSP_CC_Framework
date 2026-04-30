@@ -933,3 +933,95 @@ class ObjectDatabase:
         return {
             "restricted_no_coverage": sorted(no_coverage),
         }
+
+    def audit_signal_role_coverage(self) -> dict[str, dict]:
+        """Report on signal_role coverage across MSP and MC tilde domains
+        (MSPCOV-05, Phase 30 D-13).
+
+        Returns a per-domain nested dict:
+
+          {
+            "msp": {
+              "covered":   [sorted list of object names whose every outlet
+                            has signal_role],
+              "uncovered": [sorted list of object names with at least one
+                            outlet missing signal_role],
+              "by_role":   {"audio": N, "trigger": N, "status": N,
+                            "float": N, "data": N, "list": N},
+              "gap_count": int,  # equals len(uncovered)
+            },
+            "mc": { ...same shape... },
+          }
+
+        Excludes objects with empty outlets (those are in audit_empty_io's
+        buckets) -- the disjoint-bucket guarantee with audit_empty_io is
+        preserved by D-13.
+
+        Pure read-only -- no mutation, no classifier coupling. Audits the
+        source-of-truth `signal_role` field, NOT the projected `signal:bool`
+        (which would over-count `audio` and miss control roles).
+
+        Domains other than MSP and MC (Max, Jitter, RNBO, Gen, M4L, package)
+        are silently skipped per Phase 30 D-09 (this phase is MSP+MC only).
+        """
+        msp_covered: list[str] = []
+        msp_uncovered: list[str] = []
+        mc_covered: list[str] = []
+        mc_uncovered: list[str] = []
+        # Initialize from the closed enum so dict ordering is deterministic
+        # and only the six canonical roles are tallied.
+        msp_by_role: dict[str, int] = {role: 0 for role in sorted(_SIGNAL_ROLE_ENUM)}
+        mc_by_role: dict[str, int] = {role: 0 for role in sorted(_SIGNAL_ROLE_ENUM)}
+
+        for canonical, obj in self._objects.items():
+            domain = obj.get("domain", "")
+            if domain == "MSP":
+                covered_bucket = msp_covered
+                uncovered_bucket = msp_uncovered
+                by_role = msp_by_role
+            elif domain == "MC":
+                covered_bucket = mc_covered
+                uncovered_bucket = mc_uncovered
+                by_role = mc_by_role
+            else:
+                # Non-MSP/MC domains are out of scope for Phase 30 (D-09).
+                continue
+
+            outlets = obj.get("outlets", [])
+            if not outlets:
+                # Empty-outlets objects belong to audit_empty_io's buckets
+                # (D-13 disjoint-bucket guarantee with audit_empty_io).
+                continue
+
+            # Tally by_role across every outlet (covered or uncovered).
+            # by_role counts OUTLETS, not objects (D-13 wording).
+            all_audited = True
+            for outlet in outlets:
+                role = outlet.get("signal_role")
+                if role is None:
+                    all_audited = False
+                elif role in by_role:
+                    by_role[role] += 1
+                # Unknown roles cannot reach here -- the loader's
+                # _validate_schema_extensions fails fast on any signal_role
+                # outside _SIGNAL_ROLE_ENUM.
+
+            if all_audited:
+                covered_bucket.append(canonical)
+            else:
+                uncovered_bucket.append(canonical)
+
+        return {
+            "msp": {
+                "covered": sorted(msp_covered),
+                "uncovered": sorted(msp_uncovered),
+                "by_role": msp_by_role,
+                "gap_count": len(msp_uncovered),
+            },
+            "mc": {
+                "covered": sorted(mc_covered),
+                "uncovered": sorted(mc_uncovered),
+                "by_role": mc_by_role,
+                "gap_count": len(mc_uncovered),
+            },
+        }
