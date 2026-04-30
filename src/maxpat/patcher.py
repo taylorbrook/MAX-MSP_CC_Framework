@@ -2056,6 +2056,122 @@ class Patcher(GraphMixin, AnalysisMixin):
         self.boxes.append(parent_box)
         return (parent_box, inner)
 
+    def add_m4l_gen_synth(
+        self,
+        params: list[tuple[str, float, float]],
+        *,
+        gen_varname: str = "synth",
+        gen_code: str | None = None,
+    ) -> tuple["Box", list["Box"], "Box"]:
+        """Build a Live-ready M4L gen synth skeleton.
+
+        D-15 minimum-viable skeleton: ``gen~`` + ``live.dial`` row +
+        ``plugout~``. Each ``live.dial`` is bound to a gen~ ``Param`` via:
+          - top-level ``param_connect: "<gen_varname>::<param_name>"``
+          - top-level ``varname: <param_name>``
+          - ``parameter_enable: 1``
+          - full ``saved_attribute_attributes.valueof`` block
+            (``parameter_initial`` as a 1-element list, ``parameter_longname``,
+            ``parameter_shortname``, ``parameter_mmin``, ``parameter_mmax``,
+            ``parameter_modmode = ABSOLUTE``, ``parameter_type = FLOAT``,
+            ``parameter_unitstyle = FLOAT``, ``parameter_initial_enable``).
+
+        ``gen~`` gets a stable ``varname`` matching the prefix in
+        ``param_connect``. There is NO ``gain~``/``live.gain~``/``ezdac~``
+        between ``gen~`` and ``plugout~`` (CLAUDE.md M4L rule -- Ableton's
+        channel strip handles volume). Caller fills in DSP via ``gen_code``
+        or by editing the gen~ inner patcher returned via ``gen_obj``.
+
+        The skeleton is polish-pipeline compatible: running
+        ``ensure_parameter_enable`` / ``polish_m4l_device`` from
+        ``m4l_polish.py`` over ``patcher.to_dict()`` is a no-op for the
+        ``parameter_enable`` field on every dial produced here.
+
+        T-31-04 mitigation: ``param_connect`` is constructed as a single
+        f-string ``f"{gen_varname}::{name}"`` so the unit test
+        ``test_param_connect_prefix_matches_gen_varname`` catches mutations
+        before they silently break Live binding.
+
+        Args:
+            params: List of ``(name, min, max)`` tuples. One ``live.dial`` is
+                emitted per param. ``name`` MUST be a valid MAX symbol (used
+                as both ``varname`` and Param suffix; no spaces, leading
+                letter).
+            gen_varname: gen~'s ``varname`` (default ``'synth'``). Must be
+                unique within a patcher (Pitfall 7); caller must pass distinct
+                values when adding multiple skeletons to the same patcher.
+            gen_code: Optional GenExpr body. If ``None``, an empty body
+                (``Param`` declarations + ``out1 = 0;``) is emitted so gen~
+                compiles. Caller is expected to replace this with real DSP.
+
+        Returns:
+            ``(gen_obj, [live_dial, ...], plugout_obj)``.
+
+        Raises:
+            ValueError: If ``params`` is empty.
+        """
+        from src.maxpat.m4l_constants import ParamType, UnitStyle, ModMode
+
+        if not params:
+            raise ValueError("params must not be empty")
+
+        # Default empty-but-compilable body so gen~ has Params declared.
+        if gen_code is None:
+            param_decls = "\n".join(
+                f"Param {n}({(mn + mx) / 2.0}, min={mn}, max={mx});"
+                for n, mn, mx in params
+            )
+            gen_code = param_decls + "\nout1 = 0;"
+
+        # Reuse add_gen -- it handles I/O detection, declaration reordering,
+        # validate_genexpr diagnostics, and inner patcher construction.
+        gen_obj, _gen_inner = self.add_gen(
+            gen_code, num_inputs=0, num_outputs=1, x=200.0, y=200.0,
+        )
+        gen_obj.extra_attrs["varname"] = gen_varname
+
+        # plugout~ is NOT in UI_MAXCLASSES (newobj with text "plugout~ 1").
+        # add_box handles maxclass resolution via DB.
+        plugout = self.add_box("plugout~", args=["1"], x=200.0, y=400.0)
+        # Direct gen~ -> plugout~ wiring (D-15: NO gain~/live.gain~/ezdac~).
+        self.add_connection(gen_obj, 0, plugout, 0)
+
+        # live.dial row above gen~. live.dial is in UI_MAXCLASSES + DB.
+        dials: list[Box] = []
+        dial_x = 50.0
+        dial_y = 100.0
+        dial_spacing_x = 60.0
+        for i, (name, mn, mx) in enumerate(params):
+            d = self.add_box(
+                "live.dial",
+                x=dial_x + i * dial_spacing_x,
+                y=dial_y,
+                skip_overlap_check=True,
+            )
+            # Top-level box attributes -- Box.to_dict flattens extra_attrs
+            # last (patcher.py creation path), so these surface at the box
+            # dict's top level. Pitfall 4 mitigation: round-trip test
+            # asserts param_connect lands at top-level.
+            d.extra_attrs["varname"] = name
+            d.extra_attrs["param_connect"] = f"{gen_varname}::{name}"
+            d.extra_attrs["parameter_enable"] = 1
+            d.extra_attrs["saved_attribute_attributes"] = {
+                "valueof": {
+                    "parameter_initial": [(mn + mx) / 2.0],
+                    "parameter_initial_enable": 1,
+                    "parameter_longname": name,
+                    "parameter_shortname": name,
+                    "parameter_mmin": mn,
+                    "parameter_mmax": mx,
+                    "parameter_modmode": int(ModMode.ABSOLUTE),
+                    "parameter_type": int(ParamType.FLOAT),
+                    "parameter_unitstyle": int(UnitStyle.FLOAT),
+                },
+            }
+            dials.append(d)
+
+        return gen_obj, dials, plugout
+
     def add_node_script(
         self,
         filename: str,
