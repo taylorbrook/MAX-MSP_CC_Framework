@@ -44,6 +44,7 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - ✓ Community package support — stub DB entries for 10 community packages, --package CLI extraction — v4.0
 - ✓ Package-aware critics — BEAP signal conventions, Bach llll type checker, workflow templates — v4.0
 - ✓ Validator depth — role-aware tier dispatch, domain-restriction guard, install-state warnings, embedded codebox parity (VALID-01..05) — v5.0 (Phase 29)
+- ✓ Layout & UX builders — `add_overlay_readout`, `add_labeled_param_bank`, `add_m4l_gen_synth`, role-driven companion dispatch with overlay placement + single-parent guard; SKILL.md byte-identical Builder API sections (LAYOUT-01..05) — v5.0 (Phase 31)
 
 ### Active
 
