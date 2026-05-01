@@ -93,9 +93,15 @@ recipe — bakes in `bring_to_front` (overlay renders on top) and
 `ignoreclick=1` (clicks pass through to underlying control).
 
 - `target`: The Box to overlay (typically `dial` or another numeric control).
-- `format`: printf-style format string (e.g. `'%.2f'`, `'%.1f Hz'`). Stored
-  as `extra_attrs["format"]`. Unit suffixes are accepted but not auto-rendered;
-  use `type='comment'` + a prepend chain for unit text display.
+- `format`: printf-style format string (e.g. `'%.2f'`). For
+  `type='flonum'`/`type='number'`, the builder translates `'%.Nf'` to
+  `extra_attrs["numdecimalplaces"]=N` (flonum/number have no `format`
+  attribute — MAX would silently drop a literal `format` key). Format
+  strings with literal text or non-`%.Nf` patterns (e.g. `'%.1f Hz'`,
+  `'%d'`, `'%.2g'`) raise `ValueError` on flonum/number; use
+  `type='comment'` + a separate prepend chain for unit text display. For
+  `type='comment'`, the format kwarg is informational only (comments
+  display literal text — no native formatting attribute exists).
 - `type`: `'flonum'` (default), `'comment'`, or `'number'`.
 - `editable`: Default False bakes `ignoreclick=1`. Pass `True` for the rare
   M4L case where the readout itself is editable.
