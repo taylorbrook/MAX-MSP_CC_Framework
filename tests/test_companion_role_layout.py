@@ -87,7 +87,10 @@ class TestRoleDrivenCompanions:
             list(p.boxes), list(p.lines), [], db=p.db,
         )
         assert sink.id in result
-        assert result[sink.id] is src
+        # Plan 31-07: result entries are now (parent, placement) tuples.
+        parent, placement = result[sink.id]
+        assert parent is src
+        assert placement == "right"
 
     def test_unaudited_role_falls_through_to_heuristic(self):
         """D-13: when db is None, legacy `_COMPANION_NAMES` still places meter~.
@@ -136,3 +139,137 @@ class TestRoleDrivenCompanions:
         )
         # meter~ is in _COMPANION_NAMES so heuristic still works
         assert sink.id in result
+
+    # ------------------------------------------------------------------
+    # Plan 31-07 — WR-01 (overlay placement) and WR-02 (single-parent guard)
+    # ------------------------------------------------------------------
+
+    def test_status_role_overlays_source(self, monkeypatch):
+        """WR-01 fix: status outlet -> flonum overlays source rect.
+
+        No MSP outlet has signal_role='status' curated yet, so we monkey-patch
+        ObjectDatabase.get_signal_role to return 'status' for a fixed (name,
+        outlet) pair. The role map then drives placement='overlay':
+        flonum.patching_rect == source.patching_rect, ignoreclick=1, flonum
+        at boxes[0] (renders on top).
+        """
+        from src.maxpat.db_lookup import ObjectDatabase
+
+        # Force `cycle~` outlet 0 to report role='status' so the overlay path
+        # fires (cycle~ is normally 'audio'; this is a test-only injection).
+        original_get_role = ObjectDatabase.get_signal_role
+
+        def fake_get_role(self, name, outlet):
+            if name == "cycle~" and outlet == 0:
+                return "status"
+            return original_get_role(self, name, outlet)
+
+        monkeypatch.setattr(
+            ObjectDatabase, "get_signal_role", fake_get_role
+        )
+
+        p = Patcher()
+        src = p.add_box("cycle~", ["440"])
+        # Use a flonum as the companion (matches _ROLE_COMPANION_MAP['status']).
+        readout = p.add_box("flonum")
+        p.add_connection(src, 0, readout, 0)
+        apply_layout(p)
+
+        # Rect equality: overlay copies all four components.
+        assert list(readout.patching_rect) == list(src.patching_rect), (
+            f"overlay placement should copy parent rect; got "
+            f"readout={readout.patching_rect} src={src.patching_rect}"
+        )
+        # ignoreclick=1 baked.
+        assert readout.extra_attrs.get("ignoreclick") == 1
+        # z-order: flonum at index 0 (renders on top).
+        assert p.boxes[0] is readout, (
+            f"overlay companion should be brought to front; "
+            f"boxes[0].name={p.boxes[0].name!r}"
+        )
+
+    def test_status_role_overlay_rect_not_aliased(self, monkeypatch):
+        """Pitfall 1 (mirror of add_overlay_readout): mutating the readout's
+        patching_rect must NOT mutate the source's patching_rect.
+        """
+        from src.maxpat.db_lookup import ObjectDatabase
+
+        original_get_role = ObjectDatabase.get_signal_role
+
+        def fake_get_role(self, name, outlet):
+            if name == "cycle~" and outlet == 0:
+                return "status"
+            return original_get_role(self, name, outlet)
+
+        monkeypatch.setattr(
+            ObjectDatabase, "get_signal_role", fake_get_role
+        )
+
+        p = Patcher()
+        src = p.add_box("cycle~", ["440"])
+        readout = p.add_box("flonum")
+        p.add_connection(src, 0, readout, 0)
+        apply_layout(p)
+
+        original_src_x = src.patching_rect[0]
+        readout.patching_rect[0] = 9999.0
+        assert src.patching_rect[0] == original_src_x, (
+            "overlay placement aliased patching_rect — should be a copy"
+        )
+
+    def test_pass_a_skips_multi_parent_companion(self):
+        """WR-02 fix: a meter~ summing two cycle~ sources is NOT claimed
+        by Pass A (single-parent guard matches Pass B's invariant).
+        """
+        p = Patcher()
+        src1 = p.add_box("cycle~", ["440"])
+        src2 = p.add_box("cycle~", ["880"])
+        sink = p.add_box("meter~")
+        p.add_connection(src1, 0, sink, 0)
+        p.add_connection(src2, 0, sink, 0)
+        result = _identify_companions(
+            list(p.boxes), list(p.lines), [], db=p.db,
+        )
+        # Pass A skips because len(incoming[sink.id]) == 2.
+        # Pass B also skips because of its own len(parents) != 1 guard.
+        # Therefore meter~ is unclaimed by either pass.
+        assert sink.id not in result, (
+            "Pass A's single-parent guard (WR-02) should skip a meter~ "
+            "with multiple incoming audio sources"
+        )
+
+    def test_pass_a_single_parent_still_claimed(self):
+        """WR-02 regression check: the happy single-parent case still works."""
+        p = Patcher()
+        src = p.add_box("cycle~", ["440"])
+        sink = p.add_box("meter~")
+        p.add_connection(src, 0, sink, 0)
+        result = _identify_companions(
+            list(p.boxes), list(p.lines), [], db=p.db,
+        )
+        assert sink.id in result
+        # Result entries are now (parent, placement) tuples.
+        parent_box, placement = result[sink.id]
+        assert parent_box is src
+        assert placement == "right"  # audio role -> right placement
+
+    def test_identify_companions_returns_tuple_shape(self):
+        """Contract: _identify_companions returns dict[str, tuple[Box, str]].
+
+        Each value is (parent_box, placement) where placement is 'right' or
+        'overlay'. Plan 31-07 enforces this shape so _place_companions can
+        branch on placement without re-querying the DB.
+        """
+        p = Patcher()
+        src = p.add_box("cycle~", ["440"])
+        sink = p.add_box("meter~")
+        p.add_connection(src, 0, sink, 0)
+        result = _identify_companions(
+            list(p.boxes), list(p.lines), [], db=p.db,
+        )
+        assert sink.id in result
+        value = result[sink.id]
+        assert isinstance(value, tuple) and len(value) == 2
+        parent, placement = value
+        assert parent.name == "cycle~"
+        assert placement in ("right", "overlay")
