@@ -43,11 +43,11 @@ Migrate existing overrides to the new schema and expand coverage so the typed co
 
 Move the layout/UX recipes currently sitting in CLAUDE.md into first-class builder functions. Companion-pair patterns get smarter on the new `signal_role` data.
 
-- [ ] **LAYOUT-01**: `add_overlay_readout(target, format=...)` builder creates a flonum/comment readout overlapping a target dial/control with `bring_to_front` + `ignoreclick=1` baked in
-- [ ] **LAYOUT-02**: `add_labeled_param_bank(params, ...)` builder codifies the multislider formula (size×24, contdata=1, setstyle=1) currently a CLAUDE.md recipe; produces multislider plus aligned comment labels
-- [ ] **LAYOUT-03**: Companion-pair layout patterns auto-place gain~/meter~ side-by-side, dial+flonum overlay, live.dial+text label using `signal_role` to decide placement (e.g. `status` outlets get readout overlays, `audio` outlets get meter companions)
-- [ ] **LAYOUT-04**: `m4l_gen_synth(params=[...])` skeleton builder generates a Live-ready M4L device with gen~ + `live.dial`s correctly bound via `param_connect` (per CLAUDE.md M4L rules), no `gain~` before `plugout~`
-- [ ] **LAYOUT-05**: All four builders are reachable from `max-patch-agent` and `max-ui-agent` via documented entry points
+- [x] **LAYOUT-01**: `add_overlay_readout(target, format=...)` builder creates a flonum/comment readout overlapping a target dial/control with `bring_to_front` + `ignoreclick=1` baked in
+- [x] **LAYOUT-02**: `add_labeled_param_bank(params, ...)` builder codifies the multislider formula (size×24, contdata=1, setstyle=1) currently a CLAUDE.md recipe; produces multislider plus aligned comment labels
+- [x] **LAYOUT-03**: Companion-pair layout patterns auto-place gain~/meter~ side-by-side, dial+flonum overlay, live.dial+text label using `signal_role` to decide placement (e.g. `status` outlets get readout overlays, `audio` outlets get meter companions)
+- [x] **LAYOUT-04**: `m4l_gen_synth(params=[...])` skeleton builder generates a Live-ready M4L device with gen~ + `live.dial`s correctly bound via `param_connect` (per CLAUDE.md M4L rules), no `gain~` before `plugout~`
+- [x] **LAYOUT-05**: All four builders are reachable from `max-patch-agent` and `max-ui-agent` via documented entry points
 
 ### DSP Pre-Flight Simulation (Phase 32)
 
