@@ -153,8 +153,9 @@ def apply_layout(patcher: Patcher, options: LayoutOptions | None = None) -> None
         # Position UI controls above their targets
         _place_ui_controls(patcher.boxes, ui_controls, options)
 
-        # Position companion objects beside their parents
-        _place_companions(patcher.boxes, companions)
+        # Position companion objects beside their parents (or as overlays;
+        # placement spec carried in the companions dict per Plan 31-07 WR-01).
+        _place_companions(patcher, companions)
 
         # Recalculate component width after companion placement
         comp_right = max(
@@ -591,18 +592,25 @@ def _identify_companions(
     lines: list,
     rows: list[list[Box]],
     db=None,
-) -> dict[str, Box]:
-    """Identify companion objects that should be placed beside their parent.
+) -> dict[str, tuple[Box, str]]:
+    """Identify companion objects + their placement strategy.
+
+    Returns a dict mapping each companion's id to a `(parent_box, placement)`
+    tuple. `placement` is one of:
+      - "right"   -- place companion to the right of the parent (legacy).
+      - "overlay" -- copy parent's patching_rect to companion, set
+                     ignoreclick=1, and z-order companion above parent.
 
     Dispatch order (D-13 augment-don't-replace):
       Pass A -- role-driven via `_ROLE_COMPANION_MAP` consulting
         `db.get_signal_role(src.name, outlet)`. Outlets with curated roles
         whose downstream box matches the role's companion name are claimed
-        as companions of the upstream source.
+        as companions of the upstream source. Single-parent guard applies
+        (matches Pass B's invariant) per WR-02 (Plan 31-07).
       Pass B -- legacy `_COMPANION_NAMES` heuristic for any companion-name
         boxes the role pass did not already claim. This catches both the
         unaudited-outlet case (db.get_signal_role returns None) and the
-        no-db case (db=None for back-compat).
+        no-db case (db=None for back-compat). Always emits placement="right".
 
     A legacy companion qualifies if:
     1. Its name is in `_COMPANION_NAMES` (e.g., meter~, scope~)
@@ -626,7 +634,7 @@ def _identify_companions(
         if line.source_id in comp_ids and line.dest_id in comp_ids:
             incoming.setdefault(line.dest_id, []).append(line.source_id)
 
-    result: dict[str, Box] = {}
+    result: dict[str, tuple[Box, str]] = {}
 
     # Pass A: role-driven dispatch (D-13 fires first).
     if db is not None:
@@ -634,6 +642,12 @@ def _identify_companions(
             src = box_map.get(line.source_id)
             dst = box_map.get(line.dest_id)
             if src is None or dst is None:
+                continue
+            # Single-parent guard (WR-02 fix, Plan 31-07): a companion with
+            # multiple incoming edges is genuinely shared and should NOT be
+            # claimed as a single source's display. Matches Pass B's existing
+            # invariant. Also avoids a wasted DB query.
+            if len(incoming.get(dst.id, [])) != 1:
                 continue
             try:
                 role = db.get_signal_role(src.name, line.source_outlet)
@@ -643,11 +657,13 @@ def _identify_companions(
                 continue
             spec = _ROLE_COMPANION_MAP.get(role) or {}
             companion_name = spec.get("companion")
-            if companion_name and dst.name == companion_name:
+            placement = spec.get("placement")
+            if companion_name and dst.name == companion_name and placement:
                 # dst is a companion of src per the role map.
-                result[dst.id] = src
+                result[dst.id] = (src, placement)
 
-    # Pass B: legacy `_COMPANION_NAMES` heuristic (UNCHANGED -- fall-through).
+    # Pass B: legacy `_COMPANION_NAMES` heuristic (UNCHANGED behavior --
+    # placement is always "right" to preserve back-compat).
     for box in boxes:
         if box.name not in _COMPANION_NAMES:
             continue
@@ -658,27 +674,54 @@ def _identify_companions(
             continue
         parent = box_map.get(parents[0])
         if parent is not None:
-            result[box.id] = parent
+            result[box.id] = (parent, "right")
 
     return result
 
 
 def _place_companions(
-    all_boxes: list[Box],
-    companions: dict[str, Box],
+    patcher: "Patcher",
+    companions: dict[str, tuple[Box, str]],
 ) -> None:
-    """Position companion objects beside their parent at the same y.
+    """Position companion objects beside / overlapping their parent.
 
-    The companion is placed to the right of the parent with a small gap.
+    Placement strategies (carried in the companions dict from
+    `_identify_companions`):
+      - "right"   -- companion sits at parent.x + parent.w + _COMPANION_GAP,
+                     same y. Stacks if multiple companions share a parent.
+      - "overlay" -- companion.patching_rect = list(parent.patching_rect)
+                     (same x, y, w, h). Sets extra_attrs['ignoreclick']=1
+                     so clicks pass through to the source. Calls
+                     `patcher.bring_to_front(companion)` so the overlay
+                     renders on top (z-order to index 0). Mirrors the
+                     contract enforced by `Patcher.add_overlay_readout`.
+
+    WR-01 fix (Plan 31-07): the `placement='overlay'` branch
+    (status->flonum from `_ROLE_COMPANION_MAP`) was previously dead code;
+    this implementation wires it.
+
+    Args:
+        patcher: The Patcher instance whose boxes/state are being placed.
+            Needed for `bring_to_front` (a Patcher method) on the overlay
+            path.
+        companions: Map from companion box id to (parent_box, placement).
     """
+    all_boxes = patcher.boxes
     box_map = {b.id: b for b in all_boxes}
 
-    # Group companions by parent to handle multiple companions on one parent
-    parent_companions: dict[str, list[str]] = {}
-    for comp_id, parent_box in companions.items():
-        parent_companions.setdefault(parent_box.id, []).append(comp_id)
+    # Group right-placed companions by parent for stacking.
+    right_groups: dict[str, list[str]] = {}
+    overlay_pairs: list[tuple[str, Box]] = []  # (comp_id, parent_box)
 
-    for parent_id, comp_ids in parent_companions.items():
+    for comp_id, (parent_box, placement) in companions.items():
+        if placement == "overlay":
+            overlay_pairs.append((comp_id, parent_box))
+        else:
+            # Default to "right" for any unrecognized placement (defensive).
+            right_groups.setdefault(parent_box.id, []).append(comp_id)
+
+    # Right placement (existing behavior, unchanged).
+    for parent_id, comp_ids in right_groups.items():
         parent = box_map.get(parent_id)
         if parent is None:
             continue
@@ -692,6 +735,24 @@ def _place_companions(
             comp_box.patching_rect[0] = cursor_x
             comp_box.patching_rect[1] = parent.patching_rect[1]
             cursor_x += comp_box.patching_rect[2] + _COMPANION_GAP
+
+    # Overlay placement (WR-01 fix). Mirrors Patcher.add_overlay_readout's
+    # recipe: copy rect, set ignoreclick=1, bring_to_front.
+    for comp_id, parent_box in overlay_pairs:
+        comp_box = box_map.get(comp_id)
+        if comp_box is None:
+            continue
+        # Copy (NOT alias) the parent's patching_rect -- same Pitfall 1
+        # mitigation as add_overlay_readout (don't share list refs).
+        comp_box.patching_rect = list(parent_box.patching_rect)
+        comp_box.extra_attrs["ignoreclick"] = 1
+        try:
+            patcher.bring_to_front(comp_box)
+        except ValueError:
+            # Defensive: if comp_box isn't actually in patcher.boxes
+            # (shouldn't happen -- it came from box_map), don't crash
+            # the layout pass.
+            pass
 
 
 # ---------------------------------------------------------------------------
