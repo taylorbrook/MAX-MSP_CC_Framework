@@ -153,7 +153,12 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
   3. `max-dsp-agent` invokes the simulator before committing waveguide patches and surfaces the stability report in its summary — the agent will not commit a patch that fails its own simulation
   4. The simulator detects both the high-Q-in-loop failure mode and the group-vs-phase-delay failure mode that motivated the bassoon-model rework, validated against the known-bad bassoon v0.4 fixture
   5. Simulator output is reproducible from a `(patch_path, param_name, sweep_range)` triple so any failure can be reduced to a regression test
-**Plans**: TBD
+**Plans**: 5 plans
+- [ ] 32-01-PLAN.md — runner + measurement primitives + classifier with verdict cascade + thresholds (DSPSIM-01, DSPSIM-02, DSPSIM-04, DSPSIM-05)
+- [ ] 32-02-PLAN.md — topology library: bore_only, reed_bore, reed_bore_post_radiation (v0.4.2+ shape) (DSPSIM-01, DSPSIM-04)
+- [ ] 32-03-PLAN.md — max-dsp-agent SKILL.md DSP Pre-Flight Simulation section + tests/dsp_sim/README.md + drift-detector tests (DSPSIM-03)
+- [ ] 32-04-PLAN.md — bassoon v0.4.0 + v0.4.1 regression mirrors + live-patch gate (D-06 three discriminating verdicts) (DSPSIM-04, DSPSIM-05)
+- [ ] 32-05-PLAN.md — python -m src.maxpat.dsp_sim CLI + verdict→exit-code mapping + tests (DSPSIM-05)
 
 ## Progress
 
@@ -188,8 +193,8 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 29. Validator Depth | v5.0 | 5/5 | Complete    | 2026-04-29 |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 4/4 | Complete    | 2026-04-30 |
 | 31. Layout & UX Builders | v5.0 | 7/7 | Complete    | 2026-05-01 |
-| 32. DSP Pre-Flight Simulation | v5.0 | 0/0 | Not started | - |
+| 32. DSP Pre-Flight Simulation | v5.0 | 0/5 | Planning  | - |
 
 ---
 *Roadmap created: 2026-03-08*
-*Last updated: 2026-04-30 -- Phase 31 plans created (5 plans across 3 waves)*
+*Last updated: 2026-05-01 -- Phase 32 plans created (5 plans across 3 waves)*
