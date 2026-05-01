@@ -17,17 +17,17 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-27)
+See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 
 **Core value:** Claude can generate valid, well-structured MAX/MSP patches and code that an expert user opens in MAX and they work -- with as much automated validation as possible before manual testing.
-**Current focus:** Phase 32 — dsp-pre-flight-simulation
+**Current focus:** Planning next milestone (v5.0 shipped 2026-05-01)
 
 ## Current Position
 
-Phase: 32
-Plan: Not started
-Status: Milestone complete
-Last activity: 2026-05-01
+Phase: —
+Plan: —
+Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
+Last activity: 2026-05-01 — milestone close
 
 ## Performance Metrics
 
@@ -93,13 +93,17 @@ Full audit detail: `.planning/v5.0-MILESTONE-AUDIT.md` (will be archived to `.pl
 
 ## Session Continuity
 
-**Next action:** `/gsd-plan-phase 32` to decompose DSP Pre-Flight Simulation into plans (CONTEXT.md captured 2026-05-01).
+**Next action:** `/gsd-new-milestone` to scope v6.0 (questioning → research → requirements → roadmap). Fresh REQUIREMENTS.md will be created.
 
-**Phase order recommendation:**
+**Carryover candidates for next milestone (judgment calls — not auto-promoted):**
 
-1. Phase 28 (foundation — blocks 29, 30, 31)
-2. Phase 29 OR 32 (29 depends on 28; 32 is independent — can parallelize)
-3. Phase 30 (depends on 28; payoff for the schema)
-4. Phase 31 (depends on 28; layout builders use signal_role)
-5. Phase 32 (anytime — independent)
-6. Phase 33 (optional, judgment call after 29)
+1. **Nyquist VALIDATION.md remediation** — 5 phases (28, 29, 30, 31, 32) need `/gsd-validate-phase` runs to reach `nyquist_compliant: true`. Process-level fix: bake into phase-completion gate per RETROSPECTIVE lesson #5.
+2. **Phase 31 human-UAT runtime checks** — 4 scenarios (LAYOUT-01 overlay drag, LAYOUT-02 14-param bank pixel alignment, LAYOUT-03 auto-companion visual, LAYOUT-04 M4L parameter binding in Live) require MAX 9 / Ableton Live session.
+3. **Phase 30 metadata fidelity (WR-01)** — 703/795 signal_role outlets have empty `type` field; 588 have empty `digest`. Fix the `cmd_apply_run` synthesis path so curated outlets carry full metadata.
+4. **`signal: bool` removal** — back-compat shim retained through v5.0 (D-15); removal scheduled for v6.0+ per PROJECT.md Key Decisions.
+5. **Quick-task orphan cleanup** — 80 historical entries with empty descriptions/dates surfaced during v5.0 audit-open scan.
+6. **Phase 33 (Critic Tier Hardening)** — deferred from v5.0; promote only if empirical case clear post-v5.0 use.
+
+**Open blockers:** None.
+
+**Resolved at v5.0 close:** Phase 32 context session, all 24 v5.0 plans, v5.0 milestone audit (status: tech_debt, accepted at close).
