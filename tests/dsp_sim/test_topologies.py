@@ -36,28 +36,54 @@ def _post_settle_rms(buf: np.ndarray, settle_samples: int) -> float:
     return float(np.sqrt(np.mean(tail * tail)))
 
 
-def _measure_fundamental_hz(buf: np.ndarray, sample_rate: float) -> float:
-    """Crude FFT peak fundamental tracker (parabolic interp on rfft mag)."""
+def _measure_fundamental_hz(
+    buf: np.ndarray,
+    sample_rate: float,
+    target_hz: float | None = None,
+    search_octaves: float = 0.5,
+) -> float:
+    """FFT-based fundamental tracker with optional narrow-band search.
+
+    When `target_hz` is provided, searches only within +/-`search_octaves`
+    around the target. This is essential for post-radiation topologies where
+    the bell LPF / reed BPF can produce louder spectral peaks than the
+    loop's actual fundamental -- the v0.4.2+ invariant test cares about the
+    LOOP fundamental, not the loudest radiated component.
+
+    When `target_hz` is None, falls back to global peak detection.
+    """
     if buf.size < 64:
         return 0.0
     # Hann window to suppress sidelobe leakage
     w = np.hanning(buf.size)
     spec = np.abs(np.fft.rfft(buf * w))
-    # Skip DC bin
     if spec.size < 4:
         return 0.0
-    k = int(np.argmax(spec[1:])) + 1
+    bin_hz = sample_rate / buf.size
+
+    if target_hz is not None and target_hz > 0:
+        lo_hz = target_hz / (2.0 ** search_octaves)
+        hi_hz = target_hz * (2.0 ** search_octaves)
+        lo_bin = max(1, int(lo_hz / bin_hz))
+        hi_bin = min(spec.size - 1, int(hi_hz / bin_hz) + 1)
+        if hi_bin <= lo_bin:
+            return 0.0
+        sub = spec[lo_bin:hi_bin]
+        k = int(np.argmax(sub)) + lo_bin
+    else:
+        k = int(np.argmax(spec[1:])) + 1
+
     if k <= 0 or k >= spec.size - 1:
-        return float(k * sample_rate / buf.size)
+        return float(k * bin_hz)
     # Parabolic interpolation around peak bin
     a = spec[k - 1]
     b = spec[k]
     c = spec[k + 1]
     denom = (a - 2.0 * b + c)
     if abs(denom) < 1e-12:
-        return float(k * sample_rate / buf.size)
+        return float(k * bin_hz)
     delta = 0.5 * (a - c) / denom
-    return float((k + delta) * sample_rate / buf.size)
+    return float((k + delta) * bin_hz)
 
 
 # ===========================================================================
@@ -257,7 +283,9 @@ class TestReedBorePostRadiation:
         for bb in np.linspace(0.0, 1.0, 8):
             r = self._make(bell_bright=float(bb))
             buf = _drive(r, target_freq, 0.6, n_samples)
-            measured = _measure_fundamental_hz(buf[settle:], _SAMPLE_RATE)
+            measured = _measure_fundamental_hz(
+                buf[settle:], _SAMPLE_RATE, target_hz=target_freq
+            )
             if measured <= 0.0:
                 pytest.skip(f"FFT could not detect fundamental at bell_bright={bb}")
             cents = 1200.0 * math.log2(measured / target_freq)
