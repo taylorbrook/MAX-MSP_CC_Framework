@@ -45,6 +45,7 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - ✓ Package-aware critics — BEAP signal conventions, Bach llll type checker, workflow templates — v4.0
 - ✓ Validator depth — role-aware tier dispatch, domain-restriction guard, install-state warnings, embedded codebox parity (VALID-01..05) — v5.0 (Phase 29)
 - ✓ Layout & UX builders — `add_overlay_readout`, `add_labeled_param_bank`, `add_m4l_gen_synth`, role-driven companion dispatch with overlay placement + single-parent guard; SKILL.md byte-identical Builder API sections (LAYOUT-01..05) — v5.0 (Phase 31)
+- ✓ DSP pre-flight simulation — offline numpy waveguide simulator (`src/maxpat/dsp_sim/`) with autocorrelation pitch tracker, D-09 verdict cascade (`runaway > no_oscillation > mode_competition > phase_drift`), three curated topologies, regression mirrors for bassoon v0.4.0/v0.4.1, live-patch gate via `tests/dsp_sim/test_<stem>.py` filename convention; `python -m src.maxpat.dsp_sim` CLI with verdict-priority exit codes; max-dsp-agent SKILL.md gate (DSPSIM-01..05) — v5.0 (Phase 32)
 
 ### Active
 
@@ -132,4 +133,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-29 — Phase 29 (Validator Depth) complete; VALID-01..05 satisfied — role-aware tier dispatch, domain-restriction guard, install-state warnings, .gendsp + embedded codebox parity*
+*Last updated: 2026-05-01 — Phase 32 (DSP Pre-Flight Simulation) complete; DSPSIM-01..05 satisfied — offline numpy simulator catches high-Q-in-loop and group-vs-phase-delay failure modes before patches ship. v5.0 milestone phases 28–32 all complete.*
