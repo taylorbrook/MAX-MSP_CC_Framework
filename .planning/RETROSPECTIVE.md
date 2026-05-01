@@ -131,6 +131,58 @@
 
 ---
 
+## Milestone: v5.0 — DB Schema Hardening + Validator Depth
+
+**Shipped:** 2026-05-01
+**Phases:** 5 | **Plans:** 24
+
+### What Was Built
+- Schema foundation: typed `signal_role` (audio/trigger/status/float/data/list), `domain_restricted`, `verified_installed` with fail-fast validator and `signal:bool` write-through back-compat shim (D-15)
+- Five new ObjectDatabase getter methods (get_signal_role, get_install_state, is_verified_installed, get_domain_restrictions, is_domain_restricted) + three sibling audit functions per D-12 (audit_empty_io, audit_install_coverage, audit_domain_coverage)
+- Validator depth: Layer-3 role-aware connection errors with mechanical-fix suggestions (snapshot~ / sig~ / click~), Layer-4b RNBO domain hard-block, lookup-time install-state warnings via `warnings.warn`, embedded gen~ codebox + standalone .gendsp parity (delay/clip rejection, init-before-if/else flow analysis)
+- MSP outlet coverage: 16 existing overrides migrated, ~80 unverified MSP objects populated, sibling-auto-mirror dropped MC gap_count 215→0, bulk audit script (audit_signal_role.py) committed
+- Layout/UX builders: add_overlay_readout (Rule #6 z-order + ignoreclick), add_labeled_param_bank (size×24 multislider formula), add_m4l_gen_synth (Live-ready skeleton with param_connect bindings), role-driven companion auto-place dispatch consuming Phase 30 signal_role data
+- DSP pre-flight simulation: numpy waveguide loop simulator with autocorrelation pitch tracker, D-09 verdict cascade (runaway > no_oscillation > mode_competition > phase_drift), three curated topologies (bore_only / reed_bore / reed_bore_post_radiation), bassoon v0.4.0 + v0.4.1 regression mirrors, live-patch gate via tests/dsp_sim/test_<stem>.py filename convention, `python -m src.maxpat.dsp_sim` CLI with verdict-priority exit codes, max-dsp-agent SKILL.md mandate
+
+### What Worked
+- Foundation-first ordering (Phase 28 schema → Phase 29 validators → Phase 30 coverage → Phase 31 UX builders) — every downstream phase had typed schema to consume
+- Phase 32 (DSP pre-flight) declared independent of Phase 28 in advance — parallelization opportunity preserved without forcing sync
+- Wave-based parallel plan execution within phases (visible in 28, 29, 30, 31, 32 wave-by-wave commit cadence)
+- Sibling-auto-mirror code path for MC: one targeted invariant (inlet+outlet parity gate) replaced ~215 manual override entries
+- D-09 verdict cascade with priority-ordered exit codes makes DSP failures programmatically reducible to regression tests
+- Pre-existing `_validate_variable_io_rules` precedent gave Phase 28 a clean fail-fast template (matches D-15 load order)
+
+### What Was Inefficient
+- Nyquist VALIDATION.md generation never automated — 0/5 phases compliant (3 missing, 2 draft with `nyquist_compliant: false`); same gap pattern as v1.0/v3.0.0 retros warned about, persisted into v5.0
+- Phase 31 ended with 11 tracked debt items — concentration suggests the phase was scoped too broad (4 builders + companion dispatch + skill docs + 2 gap-closure plans)
+- SUMMARY.md `requirements_completed` frontmatter empty for 7 plans across phases 30/31/32 — same documentation drift the v1.0/v3.0.0 retros flagged; the gsd-sdk milestone.complete one-liner extraction surfaced the gap as garbage strings ("One-liner:", "Files claimed:")
+- `replace_box` orphan trap (Rule #8) caused multi-version debug cycles before `replace_box_safe` shipped late in milestone — should have been the default from v3.0.0
+- 4 Phase 31 human-UAT scenarios (overlay readout drag, M4L parameter binding in Live, auto-companion visual layout, 14-param bank pixel alignment) blocked at the runtime check — no plan to schedule the manual MAX 9 / Live session
+- 80 quick-task orphans surfaced during pre-close audit — accumulated since v1.0; cleanup deferred again
+
+### Patterns Established
+- Closed-enum frozenset → fail-fast validator → in-place mutation projection (matches `_validate_variable_io_rules`); reusable for future schema extensions
+- Three-sibling audit-function pattern (D-12): focused entry points beat one mega-audit with flag combinations
+- Role-aware Layer-3 dispatch with curated-source / legacy-fallback split: new schema lights up where data is dense, falls back transparently where it isn't
+- D-09 priority-ordered DSP verdict cascade: runaway > no_oscillation > mode_competition > phase_drift; CLI exit code follows verdict priority
+- Filename-convention live-patch gate (tests/dsp_sim/test_<stem>.py) — opt-in, no global hook, matches D-04 SKILL.md-only DSP gate pattern
+- "Extract Backlog before rewriting ROADMAP, re-append after" — codified in complete-milestone workflow but no Backlog existed in v5.0 (clean rewrite)
+
+### Key Lessons
+1. **Nyquist gap is a process problem, not a one-off oversight.** Three milestones in a row (v1.0, v3.0.0, v5.0) shipped with VALIDATION.md gaps. Either bake `/gsd-validate-phase` into the phase-completion gate or stop pretending Nyquist is a target.
+2. **Empty `requirements_completed` arrays in SUMMARY frontmatter shouldn't be possible to ship.** Add a hook or pre-commit check; the v5.0 audit had to manually cross-reference VERIFICATION.md to confirm coverage.
+3. **By-design bypass mechanisms (D-04 SKILL.md-only DSP gate, D-09/D-10 warnings.warn install-state) are bypassable.** They're acceptable architectural choices, but track them as known surface area where regressions can slip through silently — log to retro lesson #1's process gate when one ever fires unnoticed.
+4. **`replace_box_safe` should have shipped at v3.0.0.** The orphan-return semantics caught real bugs but the silent-disconnection trap cost more than the explicit-orphan workflow ever saved. Default-safe with opt-in legacy is the right shape.
+5. **Schema delta scoped to 3 fields (signal_role / domain_restricted / verified_installed) was the right size.** Larger schema evolution would have ballooned Phase 28 and forced premature design choices on inlet roles / message taxonomy. Reversibility preserved via `signal: bool` write-through.
+
+### Cost Observations
+- Model mix: primarily Opus for execution and gap-closure, Sonnet for research/planning/integration agents
+- 5-day execution window (2026-04-27 to 2026-05-01) across 5 phases — fastest milestone density yet
+- 204 commits, 344 files modified, +52,496/-13,921 lines
+- Notable: Phases 30, 31, 32 all completed within 48 hours — late-milestone parallelism enabled by foundation phases (28, 29) shipping cleanly
+
+---
+
 ## Cross-Milestone Trends
 
 ### Process Evolution
@@ -140,6 +192,7 @@
 | v1.0 | 7 | 21 | Initial framework build — established all patterns |
 | v3.0.0 | 7 | 15 | Write-only to read-write editor — .maxpat as single source of truth |
 | v4.0 | 6 | 17 | Package integration — bundled + community packages as first-class citizens |
+| v5.0 | 5 | 24 | Schema hardening — flat extracted facts → typed install-aware contract; DSP pre-flight simulation |
 
 ### Cumulative Quality
 
@@ -148,10 +201,13 @@
 | v1.0 | 624 | 40/40 | passed |
 | v3.0.0 | 700+ | 26/26 | passed (76/76 must-haves) |
 | v4.0 | 750+ | 26/26 | no audit (yolo mode) |
+| v5.0 | 800+ | 28/28 | tech_debt (28/28 reqs satisfied; 32 debt items + 4 human-UAT pending) |
 
 ### Top Lessons (Verified Across Milestones)
 
 1. TDD with xfail-to-pass promotion works well for both gap closure (v1.0) and architectural changes (v3.0.0)
 2. Dependency-ordered phases consistently deliver — each phase has a solid foundation from the previous one
-3. Documentation accuracy should be verified at plan completion, not deferred — both v1.0 and v3.0.0 had doc gaps caught at audit time
-4. Proposal-driven milestones with upfront phase/requirement mapping produce the cleanest execution — validated in v4.0
+3. Documentation accuracy should be verified at plan completion, not deferred — v1.0, v3.0.0, **and v5.0** all had doc gaps caught at audit time. **This is now a process problem requiring a hook, not a per-milestone reminder.**
+4. Proposal-driven milestones with upfront phase/requirement mapping produce the cleanest execution — validated in v4.0 and v5.0
+5. **Nyquist VALIDATION.md generation must be a phase-completion gate, not a milestone audit finding.** Three milestones now (v1.0 partial, v3.0.0 partial, v5.0 0/5 compliant) have shipped with this gap.
+6. **Default-safe APIs with opt-in legacy paths beat explicit-orphan defaults.** The `replace_box` → `replace_box_safe` migration in v5.0 confirms what v3.0.0's Box._raw dual-path established: silent-disconnection bugs cost more than verbose-but-explicit error paths save.
