@@ -1,5 +1,27 @@
 # Milestones
 
+## v5.0 DB Schema Hardening + Validator Depth (Shipped: 2026-05-01)
+
+**Phases completed:** 5 phases (28-32), 24 plans, 37 tasks
+**Timeline:** 5 days (2026-04-27 to 2026-05-01)
+**Stats:** 204 commits, 344 files modified, +52,496/-13,921 lines, ~45,300 LOC Python
+**Requirements:** 28/28 satisfied (SCHEMA-01..07, VALID-01..05, MSPCOV-01..05, LAYOUT-01..05, DSPSIM-01..05)
+**Audit:** tech_debt — 28/28 reqs satisfied, 3/3 E2E flows pass; 32 tracked tech-debt items + 4 Phase 31 human-UAT runtime checks deferred (see `.planning/milestones/v5.0-MILESTONE-AUDIT.md`)
+
+**Delivered:** Promoted the object database from flat extracted facts to a typed, install-aware contract; taught validators and critics to read the richer schema with role-aware errors and a domain-restriction hard guard; codified four layout/UX recipes as builder APIs; added a numpy-based DSP pre-flight simulator that catches waveguide stability bugs before patches ship.
+
+**Key accomplishments:**
+
+1. **Schema foundation (Phase 28)** — Typed `signal_role` (audio / trigger / status / float / data / list), `domain_restricted`, and `verified_installed` fields land as first-class with a fail-fast validator and a `signal_role → signal:bool` write-through projection that keeps every existing consumer working. Five new getter methods + three sibling audit functions (`audit_empty_io`, `audit_install_coverage`, `audit_domain_coverage` per D-12) surface coverage gaps as focused entry points.
+2. **Validator depth (Phase 29)** — Layer-3 emits role-aware ERROR with mechanical-fix suggestions ("use snapshot~", "use sig~ or click~") for status/trigger/data/list→signal mismatches; Layer-4b hard-blocks RNBO-only objects (`floor~`) at MSP top level with an explicit domain-restriction error; lookup-time install-state warnings fire on `verified_installed: false`; Layer-5 walker pulls embedded gen~ codeboxes into `validate_genexpr` so `.maxpat` patches and standalone `.gendsp` files get the same DSP rigor (delay/clip rejection, init-before-if/else flow analysis).
+3. **MSP outlet coverage sweep (Phase 30)** — All 16 existing MSP outlet-type overrides migrated from `signal: bool` to `signal_role`; ~80 previously unverified MSP objects (`saw~`, `*~`, `noise~`, `sig~`, `gen~`, `selector~`, etc.) populated; sibling-auto-mirror code path drove MC `gap_count` from 215 → 0 via inlet+outlet parity gate; bulk audit script committed alongside migration.
+4. **Layout & UX builders (Phase 31)** — Four builders codify CLAUDE.md prose recipes into APIs: `add_overlay_readout` (Rule #6 bring_to_front + ignoreclick=1, flonum/comment/number variants with `numdecimalplaces`), `add_labeled_param_bank` (multislider size×24 formula with pixel-aligned comment labels), `add_m4l_gen_synth` (gen~ varname + live.dial `param_connect` bindings, no `gain~` before `plugout~`), and a role-driven companion auto-place dispatch consuming Phase 30's curated `signal_role` data with overlay placement and a single-parent guard. `max-patch-agent` and `max-ui-agent` SKILL.md files updated with byte-identical Builder API sections.
+5. **DSP pre-flight simulation (Phase 32)** — New `src/maxpat/dsp_sim/` module exposes a sample-accurate waveguide loop simulator with autocorrelation pitch tracker and a D-09 verdict cascade (`runaway > no_oscillation > mode_competition > phase_drift`). Three curated topologies (bore_only, reed_bore, reed_bore_post_radiation) cover the bassoon shape with the v0.4.2+ post-loop placement invariant verified by FFT stability sweeps. Bassoon v0.4.0 / v0.4.1 regression mirrors lock the high-Q-in-loop and group-vs-phase-delay failure modes; live-patch gate via `tests/dsp_sim/test_<stem>.py` filename convention; `python -m src.maxpat.dsp_sim` CLI with verdict-priority exit codes; `max-dsp-agent` SKILL.md mandates simulation pre-flight before commits.
+
+**Git range:** quick-260427-l2t-* through docs(phase-32) — 2026-04-27 to 2026-05-01
+
+---
+
 ## v4.0 Package Integration (Shipped: 2026-04-15)
 
 **Phases completed:** 6 phases (20-25), 17 plans

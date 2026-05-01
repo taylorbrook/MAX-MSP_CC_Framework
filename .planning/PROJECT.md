@@ -43,23 +43,15 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - ✓ Agent package intelligence — DB-driven bpatcher sizing, adaptive layout, PACKAGES.md reference, SKILL.md guidance — v4.0
 - ✓ Community package support — stub DB entries for 10 community packages, --package CLI extraction — v4.0
 - ✓ Package-aware critics — BEAP signal conventions, Bach llll type checker, workflow templates — v4.0
+- ✓ Schema foundation — typed `signal_role` (audio/trigger/status/float/data/list), `domain_restricted`, `verified_installed` with fail-fast validator + signal:bool back-compat write-through; five getter methods + three audit functions (audit_empty_io, audit_install_coverage, audit_domain_coverage) (SCHEMA-01..07) — v5.0 (Phase 28)
 - ✓ Validator depth — role-aware tier dispatch, domain-restriction guard, install-state warnings, embedded codebox parity (VALID-01..05) — v5.0 (Phase 29)
+- ✓ MSP outlet coverage sweep — 16 existing overrides migrated to signal_role + ~80 unverified MSP objects populated + sibling-auto-mirror dropped MC gap_count 215→0; bulk audit script committed alongside migration (MSPCOV-01..05) — v5.0 (Phase 30)
 - ✓ Layout & UX builders — `add_overlay_readout`, `add_labeled_param_bank`, `add_m4l_gen_synth`, role-driven companion dispatch with overlay placement + single-parent guard; SKILL.md byte-identical Builder API sections (LAYOUT-01..05) — v5.0 (Phase 31)
 - ✓ DSP pre-flight simulation — offline numpy waveguide simulator (`src/maxpat/dsp_sim/`) with autocorrelation pitch tracker, D-09 verdict cascade (`runaway > no_oscillation > mode_competition > phase_drift`), three curated topologies, regression mirrors for bassoon v0.4.0/v0.4.1, live-patch gate via `tests/dsp_sim/test_<stem>.py` filename convention; `python -m src.maxpat.dsp_sim` CLI with verdict-priority exit codes; max-dsp-agent SKILL.md gate (DSPSIM-01..05) — v5.0 (Phase 32)
 
 ### Active
 
-## Current Milestone: v5.0 DB Schema Hardening + Validator Depth
-
-**Goal:** Move the object DB from flat extracted facts to a typed, install-aware contract; teach validators/critics to read the richer types; add DSP rigor pre-flight simulation.
-
-**Target features:**
-- Schema foundation: per-outlet `signal_role`, `domain_restricted`, `verified_installed`
-- Validator extensions: richer connection errors, domain-restricted hard guard, install-state warnings, external .gendsp validation
-- MSP outlet coverage sweep across ~80 unverified objects
-- Layout & UX builders: companion-pair patterns, overlay readout helper, labeled param bank, M4L gen synth skeleton
-- DSP pre-flight simulation harness for waveguide stability
-- Optional: promote remaining structure-critic warnings to hard-tier errors
+(None — v5.0 shipped 2026-05-01. Next milestone TBD via `/gsd-new-milestone`.)
 
 ### Future
 
@@ -79,12 +71,13 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 
 ## Context
 
-Shipped v4.0 with ~88,000 LOC Python.
-Tech stack: Python (editing + validation), JSON (object DB + .maxpat), C++ (Min-DevKit externals), GenExpr (DSP code), JavaScript (js/N4M).
-Object database: 2,015+ objects across 8 domains (Max, MSP, Jitter, MC, Gen, M4L, RNBO, Packages) plus bundled packages (BEAP, Vizzie, Jitter Geometry, Jitter Tools) and 10 community package stubs.
-Agent system: 6 specialists + router, DSP/structure/RNBO/external/package critics, dual-scope memory.
-Package integration: DB-driven bpatcher sizing, allowed_packages gating, extraction CLI for community packages.
-v4.0 shipped full package integration — bundled and community MAX packages are first-class citizens with DB entries, validation, agent intelligence, critics, and workflow templates.
+Shipped v5.0 (2026-05-01) with ~45,300 LOC Python (post-refactor; `patcher.py` decomposition continues).
+Tech stack: Python (editing + validation + DSP simulation), JSON (object DB + .maxpat), C++ (Min-DevKit externals), GenExpr (DSP code), JavaScript (js/N4M), numpy (offline DSP pre-flight simulator).
+Object database: 2,015+ objects across 8 domains, now with typed `signal_role` per outlet (~96 MSP objects curated), `domain_restricted` for RNBO-only objects, `verified_installed` flag. Three audit functions surface coverage gaps as first-class entry points.
+Agent system: 6 specialists + router, DSP/structure/RNBO/external/package critics, dual-scope memory; `max-dsp-agent` runs offline waveguide simulation pre-flight before committing patches.
+Validator pipeline: Layer-3 role-aware connection errors (snapshot~ / sig~ / click~ suggestions), Layer-4b RNBO domain hard guard, lookup-time install-state warnings, embedded gen~ codebox + standalone .gendsp parity (delay() / clip() rejection, init-before-if/else flow analysis).
+Layout/UX: 4 builders (`add_overlay_readout`, `add_labeled_param_bank`, `add_m4l_gen_synth`, role-driven companion auto-place) replace prose recipes in CLAUDE.md.
+Known v5.0 tech debt: 5 phases need VALIDATION.md to reach Nyquist compliance; 4 Phase 31 human-UAT scenarios pending MAX 9 / Live runtime checks; 32 deferred items tracked in `.planning/milestones/v5.0-MILESTONE-AUDIT.md` and STATE.md Deferred Items.
 
 ## Key Decisions
 
@@ -114,6 +107,13 @@ v4.0 shipped full package integration — bundled and community MAX packages are
 | Box._raw preservation for round-trip | Dual-path to_dict (raw-based round-trip vs scratch creation) eliminates all data loss categories | ✓ Good — zero-diff on all 10 project patches |
 | Expand-then-contract test migration | Add v2.0 read-write tests before removing v1.x write-only tests; CI stays green throughout | ✓ Good — 60+ tests rewritten without breakage |
 | Validation warns (not errors) on unknown objects | DB rejection on load would block third-party packages and user objects | ✓ Good — unknown objects load cleanly |
+| Schema delta scoped to 3 fields (signal_role, domain_restricted, verified_installed) | Larger schema evolution would balloon Phase 28 and risk breaking existing consumers | ✓ Good — v5.0 landed cleanly; broader inlet-role / message-taxonomy work deferred to v6.0+ |
+| `signal: bool` retained as derived back-compat shim through v5.0 (D-15) | Removing the boolean field mid-milestone would break every existing consumer that reads `outlet["signal"]` | ✓ Good — write-through projection from `signal_role` keeps v5.0 reversible; removal scheduled for v6.0+ |
+| Install-state surfaces as `warnings.warn`, not ValidationResult (D-09/D-10) | Matches existing empty-I/O warning pattern; lookup is the right chokepoint | ⚠️ Revisit — silenced if a caller suppresses UserWarnings; reconsider channel if visibility complaints arise |
+| DSP pre-flight gate is SKILL.md-enforced, not a hooks.py hard block (D-04) | Opt-in agent gate matches the simulator's domain (waveguides only); a global hook would over-fire on non-waveguide DSP | ⚠️ Revisit — bypassable if agent skips the SKILL.md check; consider programmatic backstop if waveguide regressions slip through |
+| Three-sibling audit functions: `audit_empty_io`, `audit_install_coverage`, `audit_domain_coverage` (D-12) | Focused entry points beat one mega-audit with flag combinations; matches D-12 locked decision | ✓ Good — each surfaces a distinct gap class for curator/CI workflows |
+| Schema validators land between deep-merge and package_info load (D-15) | Validators must see the final merged shape; package_info needs validated state | ✓ Good — load-order locked; matches `_validate_variable_io_rules` precedent |
+| `replace_box_safe` introduced as default for new code; legacy `replace_box` orphan-return preserved | Auto-rewire by I/O index for matching layouts eliminates the silent-disconnection footgun while keeping explicit-orphan path for I/O mismatches | ✓ Good — new code path defaults to safe; legacy callers keep working |
 
 ## Evolution
 
@@ -133,4 +133,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-01 — Phase 32 (DSP Pre-Flight Simulation) complete; DSPSIM-01..05 satisfied — offline numpy simulator catches high-Q-in-loop and group-vs-phase-delay failure modes before patches ship. v5.0 milestone phases 28–32 all complete.*
+*Last updated: 2026-05-01 after v5.0 milestone — DB Schema Hardening + Validator Depth shipped (Phases 28-32). 28/28 requirements validated; 32 tracked tech-debt items + 4 human-UAT runtime checks deferred (see `.planning/milestones/v5.0-MILESTONE-AUDIT.md` and STATE.md Deferred Items).*
