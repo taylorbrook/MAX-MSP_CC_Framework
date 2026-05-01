@@ -73,7 +73,7 @@ Full details: `.planning/milestones/v4.0-ROADMAP.md`
 - [x] **Phase 29: Validator Depth** — Layer-3 role-aware errors, RNBO domain hard guard, install-state warnings, external `.gendsp` validation (completed 2026-04-29)
 - [x] **Phase 30: MSP Outlet Coverage Sweep** — Migrate 16 existing overrides + populate ~80 unverified MSP objects + bulk audit script (completed 2026-04-30)
 - [x] **Phase 31: Layout & UX Builders** — `add_overlay_readout`, `add_labeled_param_bank`, signal_role-aware companion pairs, `m4l_gen_synth` skeleton (initial 5 plans 2026-04-30; gap-closure 31-06/31-07 pending — CR-01 + WR-01 + WR-02) (completed 2026-05-01)
-- [ ] **Phase 32: DSP Pre-Flight Simulation** — numpy waveguide stability sweep harness wired into max-dsp-agent
+- [x] **Phase 32: DSP Pre-Flight Simulation** — numpy waveguide stability sweep harness wired into max-dsp-agent (completed 2026-05-01)
 
 Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase 29 lands. Promoted to scope only if empirical case is clear.
 
@@ -157,7 +157,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 - [x] 32-01-PLAN.md — runner + measurement primitives + classifier with verdict cascade + thresholds (DSPSIM-01, DSPSIM-02, DSPSIM-04, DSPSIM-05)
 - [x] 32-02-PLAN.md — topology library: bore_only, reed_bore, reed_bore_post_radiation (v0.4.2+ shape) (DSPSIM-01, DSPSIM-04)
 - [x] 32-03-PLAN.md — max-dsp-agent SKILL.md DSP Pre-Flight Simulation section + tests/dsp_sim/README.md + drift-detector tests (DSPSIM-03)
-- [ ] 32-04-PLAN.md — bassoon v0.4.0 + v0.4.1 regression mirrors + live-patch gate (D-06 three discriminating verdicts) (DSPSIM-04, DSPSIM-05)
+- [x] 32-04-PLAN.md — bassoon v0.4.0 + v0.4.1 regression mirrors + live-patch gate (D-06 three discriminating verdicts) (DSPSIM-04, DSPSIM-05)
 - [x] 32-05-PLAN.md — python -m src.maxpat.dsp_sim CLI + verdict→exit-code mapping + tests (DSPSIM-05)
 
 ## Progress
@@ -193,7 +193,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 29. Validator Depth | v5.0 | 5/5 | Complete    | 2026-04-29 |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 4/4 | Complete    | 2026-04-30 |
 | 31. Layout & UX Builders | v5.0 | 7/7 | Complete    | 2026-05-01 |
-| 32. DSP Pre-Flight Simulation | v5.0 | 4/5 | In Progress|  |
+| 32. DSP Pre-Flight Simulation | v5.0 | 5/5 | Complete   | 2026-05-01 |
 
 ---
 *Roadmap created: 2026-03-08*
