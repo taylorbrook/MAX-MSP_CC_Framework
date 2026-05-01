@@ -705,12 +705,18 @@ class Patcher(GraphMixin, AnalysisMixin):
 
         Args:
             target: The Box to overlay (typically a dial or numeric control).
-            format: printf-style format string (D-03). Stored on
-                ``readout.extra_attrs["format"]``. Format strings with literal
-                text (e.g. ``'%.1f Hz'``) are accepted but the unit suffix is
-                NOT auto-rendered without a separate prepend chain — callers
-                wanting unit-suffix display should set ``type='comment'`` and
-                feed via prepend.
+            format: printf-style format template (D-03). Translates ``"%.Nf"``
+                to the readout's ``numdecimalplaces`` int attribute (the actual
+                MAX attribute on flonum/number — flonum has no printf-string
+                ``format`` attribute; number's ``format`` is an int enum, not
+                a template). For ``type='flonum'`` and ``type='number'``, only
+                pure ``"%.Nf"`` templates are accepted; unit suffixes
+                (``'%.1f Hz'``) or literal-text prefixes raise ValueError —
+                route those through ``type='comment'`` plus a prepend chain
+                (e.g. ``message 'set %.1f Hz' -> comment``). For
+                ``type='comment'``, the format kwarg is informational only;
+                comments display literal text and have no native formatting
+                attribute (the kwarg is NOT stored on extra_attrs).
             type: One of ``'flonum'`` (default, D-04), ``'comment'``,
                 ``'number'``.
             editable: If True, ``ignoreclick`` is NOT set (caller wants the
@@ -724,7 +730,9 @@ class Patcher(GraphMixin, AnalysisMixin):
             (renders on top of target via ``bring_to_front``).
 
         Raises:
-            ValueError: If ``type`` is not one of the allowed maxclasses.
+            ValueError: If ``type`` is not one of the allowed maxclasses, or
+                if ``type`` is ``'flonum'``/``'number'`` and ``format`` is not
+                a pure ``"%.Nf"`` template.
         """
         if type not in ("flonum", "comment", "number"):
             raise ValueError(
@@ -736,7 +744,28 @@ class Patcher(GraphMixin, AnalysisMixin):
         readout = self.add_box(type, x=x, y=y, skip_overlap_check=True)
         # Re-set patching_rect so width/height match target exactly (D-05)
         readout.patching_rect = [x, y, rect[2], rect[3]]
-        readout.extra_attrs["format"] = format
+        # Translate printf-style `format=` kwarg to the actual MAX attribute.
+        # flonum/number have no `format` printf attribute (flonum has none;
+        # number's `format` is an int enum, not a template). The only decimals
+        # control on both is `numdecimalplaces` (int). Strict pure-`%.Nf` only —
+        # unit suffixes ("%.1f Hz") and prefixes have no flonum/number rendering
+        # path and must route through type='comment' + a prepend chain.
+        # Reconciles CONTEXT.md D-03 against the DB (CR-01 from 31-VERIFICATION).
+        import re as _re_overlay
+        _PURE_PCT_NF = _re_overlay.compile(r"^%\.(\d+)f$")
+        if type in ("flonum", "number"):
+            m = _PURE_PCT_NF.match(format)
+            if m is None:
+                raise ValueError(
+                    f"format={format!r} is not a pure '%.Nf' template; flonum/number "
+                    f"only support decimal-place control via numdecimalplaces. For "
+                    f"unit suffixes or literal text, use type='comment' with a "
+                    f"separate prepend chain (e.g. message 'set %.1f Hz' -> comment)."
+                )
+            readout.extra_attrs["numdecimalplaces"] = int(m.group(1))
+        # type='comment' has no native format/decimals attribute; the format kwarg
+        # is informational only (callers wanting unit display wire prepend->comment).
+        # Intentionally NOT written to extra_attrs (CR-01: don't ship dead keys).
         if not editable:
             readout.extra_attrs["ignoreclick"] = 1
         # Unconditional bring_to_front per D-06 (always renders on top)
