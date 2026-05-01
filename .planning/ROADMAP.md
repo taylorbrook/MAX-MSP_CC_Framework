@@ -72,7 +72,7 @@ Full details: `.planning/milestones/v4.0-ROADMAP.md`
 - [x] **Phase 28: Schema Foundation** — Typed signal_role / domain_restricted / verified_installed fields land in overrides + db_lookup with back-compat shim (completed 2026-04-28)
 - [x] **Phase 29: Validator Depth** — Layer-3 role-aware errors, RNBO domain hard guard, install-state warnings, external `.gendsp` validation (completed 2026-04-29)
 - [x] **Phase 30: MSP Outlet Coverage Sweep** — Migrate 16 existing overrides + populate ~80 unverified MSP objects + bulk audit script (completed 2026-04-30)
-- [x] **Phase 31: Layout & UX Builders** — `add_overlay_readout`, `add_labeled_param_bank`, signal_role-aware companion pairs, `m4l_gen_synth` skeleton (completed 2026-04-30)
+- [ ] **Phase 31: Layout & UX Builders** — `add_overlay_readout`, `add_labeled_param_bank`, signal_role-aware companion pairs, `m4l_gen_synth` skeleton (initial 5 plans 2026-04-30; gap-closure 31-06/31-07 pending — CR-01 + WR-01 + WR-02)
 - [ ] **Phase 32: DSP Pre-Flight Simulation** — numpy waveguide stability sweep harness wired into max-dsp-agent
 
 Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase 29 lands. Promoted to scope only if empirical case is clear.
@@ -133,12 +133,14 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
   3. A developer creates a `gain~`, `meter~`, dial+flonum overlay, or live.dial+text-label and the framework auto-places the companion using `signal_role` (e.g. `status` outlets get readout overlays, `audio` outlets get meter companions)
   4. A developer calls `m4l_gen_synth(params=[...])` and gets a Live-ready `.amxd` skeleton with gen~ + `live.dial`s correctly bound via `param_connect`, no `gain~` before `plugout~`
   5. `max-patch-agent` and `max-ui-agent` reach all four builders via documented entry points — agents pick up the new APIs without prose-rule retraining
-**Plans**: 5 plans
+**Plans**: 7 plans
 - [x] 31-01-PLAN.md — Patcher.add_overlay_readout builder (LAYOUT-01) + unit tests
 - [x] 31-02-PLAN.md — Patcher.add_labeled_param_bank builder (LAYOUT-02) + unit tests
 - [x] 31-03-PLAN.md — _ROLE_COMPANION_MAP + role-driven companion dispatch in apply_layout (LAYOUT-03) + integration test
 - [x] 31-04-PLAN.md — Patcher.add_m4l_gen_synth M4L skeleton builder (LAYOUT-04) + unit tests (T-31-04 mitigation)
 - [x] 31-05-PLAN.md — Builder API section in both SKILL.md files + CLAUDE.md pointers + test_agent_skills.py (LAYOUT-05)
+- [ ] 31-06-PLAN.md — Gap closure CR-01: translate `format='%.Nf'` to `numdecimalplaces=N` on flonum/number; reject unit-suffix on flonum/number (LAYOUT-01)
+- [ ] 31-07-PLAN.md — Gap closure WR-01 + WR-02: implement `placement='overlay'` branch in `_place_companions`; add single-parent guard to Pass A in `_identify_companions` (LAYOUT-03)
 **UI hint**: yes
 
 ### Phase 32: DSP Pre-Flight Simulation
