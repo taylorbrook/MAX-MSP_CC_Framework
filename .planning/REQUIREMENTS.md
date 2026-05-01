@@ -53,11 +53,11 @@ Move the layout/UX recipes currently sitting in CLAUDE.md into first-class build
 
 A numpy-based simulation harness that catches DSP stability bugs (the bassoon v0.4–0.5 saga) before they ship.
 
-- [ ] **DSPSIM-01**: New `src/maxpat/dsp_sim/` module exposes a waveguide loop simulator with sample-accurate Param sweeps
-- [ ] **DSPSIM-02**: Simulator measures fundamental stability via autocorrelation/FFT and flags Q values where the loop fails to oscillate or drifts
-- [ ] **DSPSIM-03**: `max-dsp-agent` invokes the simulator before committing waveguide patches and surfaces the stability report in its summary
-- [ ] **DSPSIM-04**: Simulator covers the high-Q-in-loop and group-vs-phase-delay failure modes that motivated the bassoon-model rework
-- [ ] **DSPSIM-05**: Simulator output is reproducible from a `(patch_path, param_name, sweep_range)` triple so failures can be regression-tested
+- [x] **DSPSIM-01**: New `src/maxpat/dsp_sim/` module exposes a waveguide loop simulator with sample-accurate Param sweeps
+- [x] **DSPSIM-02**: Simulator measures fundamental stability via autocorrelation/FFT and flags Q values where the loop fails to oscillate or drifts
+- [x] **DSPSIM-03**: `max-dsp-agent` invokes the simulator before committing waveguide patches and surfaces the stability report in its summary
+- [x] **DSPSIM-04**: Simulator covers the high-Q-in-loop and group-vs-phase-delay failure modes that motivated the bassoon-model rework
+- [x] **DSPSIM-05**: Simulator output is reproducible from a `(patch_path, param_name, sweep_range)` triple so failures can be regression-tested
 
 ### Critic Tier Hardening (Phase 33 — Optional)
 

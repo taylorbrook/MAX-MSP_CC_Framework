@@ -193,7 +193,7 @@ Optional Phase 33 (Critic Tier Hardening) deferred — judgment call after Phase
 | 29. Validator Depth | v5.0 | 5/5 | Complete    | 2026-04-29 |
 | 30. MSP Outlet Coverage Sweep | v5.0 | 4/4 | Complete    | 2026-04-30 |
 | 31. Layout & UX Builders | v5.0 | 7/7 | Complete    | 2026-05-01 |
-| 32. DSP Pre-Flight Simulation | v5.0 | 5/5 | Complete   | 2026-05-01 |
+| 32. DSP Pre-Flight Simulation | v5.0 | 5/5 | Complete    | 2026-05-01 |
 
 ---
 *Roadmap created: 2026-03-08*
