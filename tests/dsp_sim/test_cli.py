@@ -223,10 +223,14 @@ class TestExitCodes:
         assert rc == 3
 
     def test_unimportable_mirror_exits_2(self, capsys):
-        rc = main(_BASE_ARGS + [
-            "--mirror", "module.does.not.exist:foo",
-        ])
-        assert rc == 2
+        # _load_mirror raises SystemExit(2) directly (it doesn't return);
+        # main() does not catch it, so it propagates -- matches the
+        # behaviour of `audit_signal_role.py` argparse usage errors.
+        with pytest.raises(SystemExit) as exc:
+            main(_BASE_ARGS + [
+                "--mirror", "module.does.not.exist:foo",
+            ])
+        assert exc.value.code == 2
 
     def test_topology_and_mirror_mutually_exclusive(self, capsys):
         # argparse mutually-exclusive group rejects this at parse time
