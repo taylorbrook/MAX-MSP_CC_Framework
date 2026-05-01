@@ -285,6 +285,92 @@ Extends the canonical BEAP templates in PACKAGES.md with additional modular patt
 5. Return for critic review
 6. Save via `save_patch_roundtrip()`
 
+## DSP Pre-Flight Simulation
+
+Before saving a waveguide patch, agent checks for an opt-in numpy
+stability fixture and gates the save on its result. See
+`src/maxpat/dsp_sim/` and `tests/dsp_sim/README.md` for the topology
+catalogue and threshold defaults.
+
+### When to Run (D-07) -- filename convention
+
+- Compute `stem = Path(patch_path).stem` (e.g.,
+  `patches/bassoon-model/generated/bassoon-model.maxpat` -> `bassoon-model`).
+- Look for `tests/dsp_sim/test_<stem>.py`.
+- Present -> run pytest BEFORE `save_patch_roundtrip()`.
+- Absent -> no gate; non-waveguide patches and patches without a sim
+  fixture commit freely (D-04).
+
+### How to Invoke (T-02 mitigation: argv form, no shell)
+
+```python
+import subprocess
+from pathlib import Path
+from src.maxpat.hooks import PatchValidationError
+
+stem = Path(patch_path).stem
+fixture = Path("tests/dsp_sim") / f"test_{stem}.py"
+if fixture.exists():
+    result = subprocess.run(
+        ["pytest", str(fixture), "-q"],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        # VALID-05 'error' severity -- HARD BLOCK the save (D-04).
+        raise PatchValidationError(
+            f"DSP pre-flight simulation failed for {stem}:\n{result.stdout}\n{result.stderr}"
+        )
+```
+
+Use the argv list form ALWAYS. Never invoke pytest through a shell (no
+`shell` kwarg set to true) and never string-interpolate `stem` or
+`patch_path` into a command string -- the path comes from the filesystem
+and may contain metacharacters; argv form treats it as a single opaque
+token.
+
+### How to Register a New Sim Test
+
+For a patch at `patches/<project>/generated/<name>.maxpat`:
+
+1. Pick a topology from `src/maxpat/dsp_sim/topologies/` (`bore_only`,
+   `reed_bore`, `reed_bore_post_radiation`) or write a custom mirror.
+2. Create `tests/dsp_sim/test_<name>.py` calling
+   `run_simulation(patch_path=..., topology=..., params=..., sweep_param=..., sweep=(lo, hi, n))`.
+3. Assert `report.verdict == "pass"`.
+
+The `(patch_path, param_name, sweep_range)` triple in that fixture file is
+the ENTIRE binding (D-02 / DSPSIM-05). No sidecar JSON, no patch-comment
+annotation, no config block.
+
+### Failure Handling (VALID-05 'error' tier)
+
+If the gate fails, surface in the agent's summary:
+
+- The verdict (one of `phase_drift`, `mode_competition`, `no_oscillation`,
+  `runaway`).
+- The sweep parameter name and the worst-step's `param_value`.
+- Worst step's `measured_hz` vs `target_hz` (and `cents_offset`).
+- The `suggested_fix` string from `SimulationReport.suggested_fix`.
+
+Then HARD BLOCK the commit. The author either fixes the DSP issue OR, if
+intentional, deletes / skip-marks the fixture (D-10) -- opt-out is
+auditable in git history; there is no `--skip-dsp-sim` flag.
+
+### Verdict & Fix Reference
+
+| Verdict | Threshold | Suggested fix (lifted from `feedback_waveguide_loop_phase_comp.md`) |
+|---------|-----------|----------------------------------------------------------------------|
+| `phase_drift` | range > 5 cents across sweep | Use phase delay (atan2-based) compensation, not group delay |
+| `mode_competition` | any step > 50 cents jump | Move the high-Q (Q > ~1) filter post-loop |
+| `no_oscillation` | RMS < 1e-4 at any step | Loop dissipation likely too high; check damping coefficients |
+| `runaway` | peak > 10.0 OR NaN/Inf | Loop gain >= 1; add saturator or reduce reflection scalar |
+
+Verdict priority on multi-mode runs (D-09):
+`runaway` > `no_oscillation` > `mode_competition` > `phase_drift` > `pass`.
+Single verdict per run.
+
 ## When to Use
 
 - Any task involving audio signal processing
