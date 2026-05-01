@@ -763,3 +763,51 @@ def test_claude_md_pointer_to_builders() -> None:
     assert "add_m4l_gen_synth" in text, (
         "CLAUDE.md does not point to add_m4l_gen_synth"
     )
+
+
+# ── Phase 32-03: max-dsp-agent SKILL.md DSP Pre-Flight Simulation drift detectors ──
+
+_DSP_AGENT_SKILL = (
+    Path(__file__).resolve().parents[1]
+    / ".claude" / "skills" / "max-dsp-agent" / "SKILL.md"
+)
+
+
+def test_max_dsp_agent_skill_documents_dsp_sim_section():
+    """SKILL.md must contain the 'DSP Pre-Flight Simulation' section (Phase 32-03)."""
+    text = _DSP_AGENT_SKILL.read_text()
+    assert "## DSP Pre-Flight Simulation" in text, (
+        "max-dsp-agent SKILL.md must contain the 'DSP Pre-Flight Simulation' "
+        "section (Phase 32 DSPSIM-03)."
+    )
+
+
+def test_max_dsp_agent_skill_documents_filename_convention():
+    """SKILL.md must document the Path(patch_path).stem discovery rule (D-07)."""
+    text = _DSP_AGENT_SKILL.read_text()
+    assert "Path(patch_path).stem" in text, (
+        "max-dsp-agent SKILL.md must document the D-07 filename convention "
+        "via the literal phrase 'Path(patch_path).stem'."
+    )
+
+
+def test_max_dsp_agent_skill_lists_all_four_verdicts():
+    """SKILL.md must reference all four failure-mode verdicts (D-03)."""
+    text = _DSP_AGENT_SKILL.read_text()
+    for verdict in ("phase_drift", "mode_competition", "no_oscillation", "runaway"):
+        assert verdict in text, (
+            f"max-dsp-agent SKILL.md must reference verdict '{verdict}' (D-03)."
+        )
+
+
+def test_max_dsp_agent_skill_uses_argv_subprocess_form():
+    """SKILL.md must NOT document shell=True invocation (T-02 mitigation)."""
+    text = _DSP_AGENT_SKILL.read_text()
+    assert "shell=True" not in text, (
+        "max-dsp-agent SKILL.md must use argv-form subprocess invocation; "
+        "shell=True is a command-injection footgun (T-02)."
+    )
+    # Positive: ensure the argv form snippet is present.
+    assert '"pytest", str(fixture), "-q"' in text, (
+        "max-dsp-agent SKILL.md must include the argv-form subprocess snippet."
+    )
