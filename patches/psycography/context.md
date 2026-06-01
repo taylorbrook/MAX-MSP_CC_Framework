@@ -240,3 +240,35 @@ uses MAX `cycle~`, not PD `osc~`.
 - Count-in length default = 1 bar.
 - Click timbre: accent = higher pitch/louder `cycle~` burst; subdivision = quieter.
 - Confirm total file durations for RAM budget before committing all-RAM playback.
+
+---
+
+## 7. Build log
+
+### Module 1 — transport (BUILT, committed)
+Files: `generated/transport.maxpat`, `generated/transport_barbeat.js`. Stage = build.
+Validation clean; critic 0 blockers (warnings = benign control→signal on `count~` inlet 0 + cosmetic
+cable midpoints). Built as a standalone `.maxpat` to be embedded later as a bpatcher.
+
+**Integration contract (what other modules rely on):**
+- **Audio broadcast:** `send~ master` carries the absolute sample position. Consumers `receive~ master`.
+- **Control inlet 0** accepts messages (route `go stop seeksample seekmeasure`):
+  - `go` → start clock · `stop` → halt · `seeksample <N>` → jump to sample N ·
+    `seekmeasure <M>` → jump to measure M (looks up `coll psycography_measures`).
+- **Outlet 0:** current sample (control, from `snapshot~ 50`). **Outlet 1:** `bar beat` list (or `—`).
+- Built-in test UI inside the patch (GO/STOP buttons, seek number boxes, sample + bar:beat displays).
+
+**Data contracts the timeline tool (next) must satisfy:**
+- `coll psycography_measures`: key = measure number → `sample_offset, num, den` (forward seek).
+- `transport_barbeat.js` beat grid: feed via messages `clear` then `add <sample> <bar> <beat>` per beat
+  (ascending). Reverse-lookup emits `bar beat`. Until loaded, readout shows `—`.
+
+**Verify in MAX (test items):**
+- `set <sample>` then `bang` seeks-then-starts `count~` from the set value (not from 0). If `bang` resets
+  to initial, switch GO to send the position as an int, or use the `set`→`go` ordering confirmed in MAX.
+- `count~` free-runs without a count-limit for the full piece duration (no premature wrap).
+- `textbutton` GO/STOP emit a usable trigger in `mode 0` (normalized via `t b` / message box).
+
+### Next: Module — timeline (Python MIDI→data tool)
+Parse the provided MIDI tempo track → write `psycography_measures` coll data + drive the
+`transport_barbeat.js` beat grid. This is the data layer that makes seek-to-measure and bar:beat live.
