@@ -1,0 +1,242 @@
+# psycography
+
+A performance + rehearsal patch for a fully-notated, multi-section piece. Drives a
+generated click track and tightly-synchronized multichannel soundfile playback from a
+single tempo map, and can start from any measure with everything correctly placed.
+
+Stage: ideation → research
+
+---
+
+## 1. Kickoff brief (user)
+
+- Performance patch for a fully-notated piece of music.
+- Needs a **click track** and **multichannel playback** of soundfiles, **tightly synchronized**.
+- Piece has **several sections**; some need the click, some do not. Sections are launched by **cues**.
+- **Rehearsal requirement (critical):** the ensemble must be able to **start at any measure** and have
+  both the click and the audio files land in the correct place.
+- A **tempo map** is required (user will provide one for testing).
+- Audio playback = **mono WAV files**, each routed to a **discrete audio channel** (~**9 channels**).
+- **10 mic inputs** will be analyzed and may have processing applied.
+- Large/complex → **build modularly**.
+
+---
+
+## 2. Locked architectural decisions (kickoff Q&A)
+
+### Synchronization model — pre-rendered, seek & play
+- The 9 mono WAVs are **bounced at final performance tempo** (all tempo changes baked into the audio).
+- Playback = **seek to a sample offset + linear play**, sample-locked to a **master clock**.
+- The **click is GENERATED from the tempo map**, not recorded.
+- ⇒ No time-stretching needed. The tempo map exists to (a) generate the click and
+  (b) map measure number → absolute time/sample for seeking both click and audio.
+
+### Playback engine — RAM buffers + play~
+- Each WAV loads into a `buffer~`; playback driven by a **shared signal-rate position ramp** into `play~`.
+- Gives **sample-accurate seek**, instant jump to any measure, and perfect phase-lock across all files.
+- Cost: RAM (~10 MB / min / mono 48k file). Verify total duration during research.
+
+### Mic subsystem — scaffold + metering now
+- Build the **10-channel input routing**, **per-channel metering**, and a **modular processing-insert
+  slot per mic**, but leave actual analysis/DSP as **stubs** to fill in later.
+- Keeps v1 focused on the timing core.
+
+### Control surface — cue list + measure entry + GO
+- On-screen **cue list** for sections, a **measure-number field** to jump anywhere, and a **GO/Stop** transport.
+
+### Tempo map source — MIDI tempo track
+- User provides a **MIDI file** whose tempo/meta track encodes the map.
+- **Tempo changes are both sudden AND gradual** — the system must **follow the MIDI tempo track precisely**
+  (ramps = dense series of Set-Tempo events; must integrate tick→time exactly).
+- Implication: parse Set-Tempo (FF 51 03) + Time-Signature (FF 58) meta events + PPQ division;
+  integrate to a precise **tick → seconds** map; derive **measure → tick** from meter events.
+
+### Click design (all selected)
+- **Downbeat accent** (needs meter from tempo map) + plain click on other beats.
+- **Count-in** (e.g. one bar) before audio when launching from a measure.
+- **Subdivisions** (eighths/triplets) toggleable per section.
+- **Synth click sound** (cycle~/click~ burst), not a sample.
+
+### Click routing — dedicated extra channel
+- Click goes to its **own output** (e.g. ch 10) → conductor/performer monitor or headphone mix,
+  separate from the 9 program channels.
+- ⇒ Hardware target: **10 outputs** (9 program + 1 click) and **10 mic inputs**.
+
+---
+
+## 3. Core technical concept — master sample clock
+
+Everything is a function of a single **absolute master clock** (samples/seconds since the piece's zero):
+
+1. **Preprocess the MIDI tempo track → a precise timeline:**
+   - cumulative **tick → seconds** (integrate piecewise-constant tempo segments; ramps are fine-grained),
+   - **measure/beat → tick → seconds → sample** lookup,
+   - a precomputed **click-event list** (time, accent | beat | subdivision) so clicks fire sample-accurately
+     even through tempo ramps (do NOT drive a live metro off a changing tempo).
+2. **Master transport** broadcasts the current absolute sample position (e.g. via `send~`).
+3. **Consumers read off the master clock:**
+   - playback `play~` reads each buffer at `(master − file_start_offset)`,
+   - click scheduler fires the next precomputed event when the master crosses its time.
+4. **Start at measure N** = set master clock to `seconds(N) × SR`; every consumer follows automatically.
+
+---
+
+## 4. Proposed modular breakdown (to refine in research)
+
+| Module | Responsibility |
+|--------|----------------|
+| `timeline` (node.script/js) | Parse MIDI tempo+meter track → measure↔sample map + click-event list (coll/dict) |
+| `transport` | Master sample clock; GO/STOP; seek-to-sample; seek-to-measure; broadcast position |
+| `cues` | Section/cue list; per-cue click on/off, subdivision, active files; advance + measure-jump |
+| `click` | Read click-event list + master pos → accented/plain/subdivision synth click; count-in; dedicated out |
+| `playback` | 9× `buffer~`+`play~` driven by master pos → discrete channels (per-file bpatcher, `#1` args) |
+| `mics` | 10-ch `adc~`/`mc` input; per-channel meter; modular processing-insert slot (stub) (per-mic bpatcher) |
+| `io` | `dac~` 10 out (9 program + click) / `adc~` 10 in; mc-based routing |
+| `main` UI | Cue list, measure field, GO/STOP, bar:beat clock display, meters (presentation mode) |
+
+Modularity via bpatchers with standalone `#N` args (per CLAUDE.md bpatcher rule).
+
+---
+
+## 5. Open items / defaults to confirm later
+- Sample rate / interface channel layout (assume 48k, 10-in/10-out).
+- Count-in length (default 1 bar) and how it interacts with mid-piece starts.
+- Subdivision options per section (eighths / triplets).
+- Click synth timbre + accent differentiation (pitch/level).
+- Whether a Python build-time MIDI→timeline tool is acceptable vs. in-patch node.script parsing
+  (lean in-patch node.script to keep runtime self-contained; not a banned generator script either way).
+- Mic analysis types when that subsystem is filled in (amplitude/onset/pitch/spectral).
+
+---
+
+## 6. Research findings (DB-verified)
+
+All objects below were verified against `.claude/max-objects/` via `ObjectDatabase`. I/O counts shown
+are the no-arg defaults; objects flagged `variable_io` change with arguments.
+
+### 6.0 KEY DECISION — MIDI parsing is a build-time Python tool, NOT in-patch
+
+**`node.script` (Node for Max) is NOT in the object database** → Rule #1 forbids using it. Rather than
+fall back to fragile in-patch binary SMF parsing (`js`/`v8` reading the file byte-by-byte), the precise
+tempo-track integration is done **offline** by a small build-time tool:
+
+- `tools/midi_to_timeline.py` — parses the SMF: PPQ division, all Set-Tempo (FF 51 03) and
+  Time-Signature (FF 58 04) meta events. Integrates piecewise-constant tempo segments to an exact
+  **tick → seconds** function (dense ramp events integrate naturally → gradual changes handled precisely).
+  Emits two `coll`-format text files the patch loads at runtime:
+    - `<piece>_measures.txt` — `index(measure) → sample_offset, num, den` (measure → absolute sample)
+    - `<piece>_clicks.txt`   — `index → sample_offset, type` (type 0=beat, 1=accent/downbeat, 2=subdivision)
+- This is **NOT a banned generator script** (Rule #5 forbids regenerating `.maxpat`; this only produces
+  *data*). The runtime patch stays 100% DB-verified objects.
+- Tradeoff vs. self-contained: re-importing a new MIDI requires re-running the tool. Acceptable — the user
+  authors MIDI offline anyway. (Could add `node.script` to the DB later for in-patch parsing if desired.)
+- **TODO:** add `node.script` to the object DB (gap discovered this session).
+
+### 6.1 Master sample clock (`transport` module)
+
+The whole system is driven by ONE absolute sample counter. Everything else reads off it, so
+"start at measure N" = seek the clock and every consumer follows automatically.
+
+- **`count~`** (MSP, in=2 sig, out=1 sig) — free-running sample counter = master clock. `set <sample>`
+  seeks; int 1/0 (or `stop`) starts/stops. Its signal output = current absolute sample position.
+- Broadcast position with **`send~ master` / `receive~ master`** (verified, rnbo ok) so every module taps
+  the same sample-locked signal without spaghetti cords.
+- Seek-to-measure: cue manager looks up `measures.txt` coll → `set <sample>` to `count~`.
+- Bar:beat readout: `snapshot~` the master signal at ~50ms → reverse-lookup against the measures coll
+  (control rate is fine for a display).
+
+### 6.2 Multichannel playback (`playback` module) — sample-accurate, seekable
+
+Per file (×9), wrapped in a bpatcher `playvoice` with standalone `#N` args (`#1`=buffer name, `#2`=channel,
+`#3`=start-offset-samples):
+
+- **`buffer~ #1`** (in=1, out=2) — holds the mono WAV; `read`/`replace` to load. **`info~`** reads length.
+- Position math: `receive~ master` → **`-~ #3`** (subtract file start offset in samples) →
+  **`*~ 0.020833`** (samples→ms at 48k = `1000/sr`) → **`play~ #1`** (in=1 sig position-in-ms, out0 sig,
+  out1 sync). `play~` outputs **0 outside the buffer range**, so each file is automatically silent before
+  its entrance and after its end — no gating needed.
+- All 9 `play~` read the same `master` signal ⇒ inherently phase-locked, sample-accurate, instant seek.
+- Output: each voice's signal → its discrete channel. Two routing options (see 6.4).
+- RAM note: ~10 MB/min per mono 48k file. Confirm total piece duration; if all 9 run full-length and the
+  piece is long, watch total RAM. (Alternative `sfplay~`/disk-stream exists but seeking is coarser — only
+  fall back if RAM is a real constraint.)
+
+### 6.3 Click engine (`click` module) — sample-accurate crossing detection
+
+Drive the click off the master clock so it never drifts and survives seeks, while staying per-section
+flexible (accent / subdivision / on-off):
+
+- Click events live in a **`coll`** (`clicks.txt`), sorted by sample. A pointer holds the next event.
+- Crossing detection in the signal domain (sample-accurate): `receive~ master` and a `sig~ <next_sample>`
+  into **`>=~`** → **`edge~`** (out 0 = rising-edge bang). The bang = "fire this click", then advance the
+  coll pointer and load the next event's sample into the `sig~`. `edge~`/`>=~` verified.
+- Click synth (verified, all rnbo-ok): trigger a short tone burst — **`cycle~`** (pitched) or **`click~`**
+  (impulse) → **`*~`** shaped by a fast **`line~`** or **`adsr~`/`curve~`** envelope. Accent vs. plain vs.
+  subdivision = different pitch/level chosen from the event `type` field.
+- **Count-in**: when launching from measure N, the cue manager seeks `count~` to N minus the count-in span
+  (looked up in the measures coll) so the precomputed click events play the lead-in naturally.
+- **Subdivision / click on-off per section**: gate the synth output with a **`*~`** whose coefficient the
+  cue manager sets per section; subdivision events (`type 2`) are additionally gated by a per-section toggle.
+- Routes to its **dedicated output channel** (see 6.4), separate from the 9 program channels.
+
+### 6.4 I/O & routing (`io` module) — 10 out / 10 in via MC
+
+- **Outputs (10 = 9 program + 1 click):** assemble with **`mc.pack~ 10`** (variable_io → 10 sig inlets,
+  1 mc outlet) → **`mc.dac~ 1 2 3 4 5 6 7 8 9 10`** (in=1 mc). Program voices → inlets 1–9, click → inlet 10.
+  - Simpler non-MC alternative: **`dac~ 1 2 3 4 5 6 7 8 9 10`** (variable_io → 10 sig inlets) with discrete
+    cords. Either is valid; MC keeps the patch tidy and matches the requested mc scaffolding.
+- **Inputs (10 mics):** **`mc.adc~ 1 2 3 4 5 6 7 8 9 10`** (in=1, out=1 mc) → **`mc.unpack~ 10`**
+  (variable_io → 10 sig outlets) for per-channel access.
+- Assume 48 kHz; interface with ≥10 in / ≥10 out.
+
+### 6.5 Mic subsystem scaffold (`mics` module)
+
+Per mic (×10), bpatcher `micstrip` with `#1`=channel index:
+
+- One `mc.unpack~` outlet → **`meter~`** (in=1, out=1) or **`levelmeter~`** per channel for monitoring.
+- **Modular processing-insert slot:** route the channel through a **`send~`/`receive~`** pair or a
+  bypassable **`*~`** + placeholder `gain~`, leaving an empty insert point. DSP/analysis (amplitude,
+  onset, pitch, spectral) added later — stubbed for v1.
+- Verified candidates for later DSP: `onepole~`, `biquad~`, `svf~`, `clip~`, `scale~` (all in DB).
+
+### 6.6 Cue / section manager (`cues` module)
+
+- Section table in a **`coll`** (cue index → start measure, click on/off, subdivision on/off, active files).
+- **GO/Stop**: `textbutton`/`button` → drives the master `count~` (seek + start/stop).
+- **Jump to measure**: `number`/`flonum` → measures coll → `count~ set`.
+- Cue list UI: **`umenu`** or **`tab`** (verified) for section selection; `coll` holds the data.
+- Optional state recall via **`pattrstorage`**/`preset` for per-section settings.
+
+### 6.7 Main UI (`main` / presentation)
+
+- `textbutton` GO/STOP, `number` measure field, bar:beat `comment`/`number` display, per-channel `meter~`
+  bank, cue `umenu`/`tab`. Background `panel` (background=1). Presentation-mode layout per CLAUDE.md.
+
+### 6.8 Verified object set (quick reference)
+
+| Module | Objects (all DB-verified) |
+|--------|---------------------------|
+| transport | `count~`, `send~`/`receive~`, `snapshot~`, `coll` |
+| playback | `buffer~`, `play~`, `info~`, `-~`, `*~`, `bpatcher` (per-voice `#N` args) |
+| click | `coll`, `sig~`, `>=~`, `edge~`, `cycle~`/`click~`, `line~`/`adsr~`/`curve~`, `*~` |
+| io | `mc.pack~`, `mc.dac~`, `mc.adc~`, `mc.unpack~` (or `dac~`/`adc~` with channel args) |
+| mics | `mc.unpack~`, `meter~`/`levelmeter~`, `send~`/`receive~`, `*~`, `bpatcher` |
+| cues | `coll`, `textbutton`/`button`, `number`/`flonum`, `umenu`/`tab`, `pattrstorage` |
+| ui | `textbutton`, `number`, `comment`, `meter~`, `umenu`/`tab`, `panel` |
+
+**PD-confusion guard cleared:** no PD objects used (no `osc~`/`lop~`/`tabread~`/`throw~`). Pitched click
+uses MAX `cycle~`, not PD `osc~`.
+
+### 6.9 Resolved decisions from research
+- MIDI parsing → **build-time Python tool** emitting `coll` data (node.script not in DB).
+- Master clock → **single `count~`**, broadcast via `send~ master`.
+- Playback seek → `play~` reading shared master position; out-of-range auto-silence (no manual gating).
+- Click sync → **signal-domain `>=~` + `edge~` crossing detection** against a precomputed `coll`
+  (sample-accurate, seek-safe, per-section flexible).
+- I/O → **MC** (`mc.pack~`→`mc.dac~`, `mc.adc~`→`mc.unpack~`); discrete `dac~`/`adc~` is the fallback.
+
+### 6.10 Still open (sensible defaults for build)
+- Exact `count~` seek message form — verify in MAX (`set <sample>` assumed).
+- Count-in length default = 1 bar.
+- Click timbre: accent = higher pitch/louder `cycle~` burst; subdivision = quieter.
+- Confirm total file durations for RAM budget before committing all-RAM playback.
