@@ -363,3 +363,38 @@ at the next free boundary, free sections park the clock. `jump N` for rehearsal.
 `cues` outlet 0 / status display; full loop needs both modules connected.)
 
 ### Next: Module — playback (per-section program voices + free-running bed path)
+
+---
+
+## 9. RESUME POINTER / build playbook (read this first in a fresh window)
+
+**State (stage=build):** transport (clock+seek+GO/STOP+bar:beat+auto-stop), timeline tool (MIDI→coll data,
+Flow 1 loaded), cue/section manager — all BUILT & committed. Tree clean. **Next: playback module** (§6.2,
+§8: per-section program voices off `receive~ master` + separate free-running bed for free sections).
+
+**Module files** in `generated/`: `transport.maxpat`+`transport_barbeat.js`, `cues.maxpat`+`cues_engine.js`,
+`psycography_sections.txt` (placeholder), `psycography_measures.txt`/`_beats.txt`/`_timeline.json` (Flow 1).
+Tools in `tools/`: `midi_to_timeline.py`, `make_synth_midi.py`. Not yet assembled into one main patch.
+
+**How patches are built here (mechanics):**
+- Build a `Patcher` in-memory in an EPHEMERAL script under `/tmp` (NOT in the repo — Rule #5), run with
+  `cd /Users/taylorbrook/Dev/MAX && PYTHONPATH=/Users/taylorbrook/Dev/MAX python3 /tmp/x.py`.
+- Pipeline: `validate_patch(p.to_dict(), db)` → `review_patch(...)` (returns a LIST of findings with
+  `.severity`/`.finding`/`.suggestion`; gate save on 0 blockers) → `save_patch_roundtrip(dict, path,
+  original_text=orig)` → `auto_commit_patch(proj, base, description=..., files=[...])`.
+- To EDIT an existing patch, `Patcher.from_dict(json.loads(path.read_text()), db=db)` then add boxes/cords.
+  **Round-trip preserves the user's manual Max edits** (e.g. their `number~` debug monitor survived).
+- js files: write with the Write tool to `generated/`; `add_js(filename, num_inlets, num_outlets)` only
+  references them. Unit-test js logic in Node (mock `outlet/post/arrayfromargs`) before wiring.
+
+**Gotchas:** Bash cwd PERSISTS across calls — a prior `cd` into `generated/` doubled `Path.cwd()` paths;
+hardcode `base = Path("/Users/taylorbrook/Dev/MAX")` in build scripts. `find_box(text=...)` throws on
+boxes whose `text` is None (UI boxes post-round-trip) — scan `p.boxes` guarding None instead, and match
+exact text when a substring (e.g. "stop") also appears inside another box ("route ... stop ..."). Empty-IO
+UserWarnings for `outlet`/`comment`/`send~`/`dac~` are benign (serialized I/O is correct). Control→signal
+and missing-midpoint critic warnings on this project are benign/cosmetic.
+
+**Open verify-in-Max items:** `count~` `set`-then-`go` resumes from the set sample (underpins all seek +
+section re-entry); 12-min piece = 34.2M samples > 2²⁴ float precision (common-mode, likely fine — check
+~min 11); coll read latency vs the `delay 300` before dump; `textbutton` button-mode output (normalized
+via `t b`). Edit `psycography_sections.txt` with the real Flow 1 sections (current list is a placeholder).
