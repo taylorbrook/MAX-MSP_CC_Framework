@@ -269,6 +269,28 @@ cable midpoints). Built as a standalone `.maxpat` to be embedded later as a bpat
 - `count~` free-runs without a count-limit for the full piece duration (no premature wrap).
 - `textbutton` GO/STOP emit a usable trigger in `mode 0` (normalized via `t b` / message box).
 
-### Next: Module — timeline (Python MIDI→data tool)
-Parse the provided MIDI tempo track → write `psycography_measures` coll data + drive the
-`transport_barbeat.js` beat grid. This is the data layer that makes seek-to-measure and bar:beat live.
+### Module 2 — timeline (BUILT, committed)
+Files: `tools/midi_to_timeline.py` (pure-Python SMF parser → coll data), `tools/make_synth_midi.py`
+(test fixture), `tools/synthetic_tempo.mid`. Wired a data-loader into `transport.maxpat` (loadbang →
+read measures coll, clear+dump beats → `add` into `transport_barbeat.js`, `delay 300` before dump for
+coll read latency).
+
+**Validated on real data — Flow 1** (`Psychography - Full score - Flow 1.mid`):
+- 480 PPQ, 64 tempo events (incl. ritardandi 33–96 bpm), 33 meter changes (4/4, 2/4, 3/4, 5/4).
+- 218 measures, 824 beats, ~11.9 min. m2 = sample 174545 = 3.636 s (= 4/4 @66 bpm), integration exact.
+- Active data files in `generated/`: `psycography_measures.txt`, `psycography_beats.txt`, `_timeline.json`.
+- Tool default `--outdir` resolves to project `generated/` via `__file__` (input MIDI may live anywhere).
+- Regenerate per flow: `python3 tools/midi_to_timeline.py <flow.mid> --sr 48000`.
+
+**⚠ Precision test item (12-min piece → 34.2M samples > 2²⁴):** the master `count~` clock as an absolute
+sample counter exceeds 32-bit-float integer precision (~16.7M = 5.8 min). Max 6+ uses 64-bit double
+signals, so this is almost certainly fine. Even if signals were 32-bit, every consumer reads the SAME
+master signal, so quantization is COMMON-MODE → inter-channel + click-vs-audio sync is preserved (only a
+few-sample absolute offset late in the piece, inaudible). **Verify in Max:** playback/click stay tight at
+~minute 11. Mitigation if needed: reset master to 0 at each section start (cue manager seeks anyway, so
+the counter never needs to grow huge).
+
+**Multi-flow note:** folder is "Flows from Psychography" → piece likely has multiple flows/movements.
+The cue/section manager (later) should load per-flow timeline data (swap the coll files / parameterize name).
+
+### Next: Module — playback (9× buffer~ → play~ off receive~ master → discrete channels)
