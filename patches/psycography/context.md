@@ -332,4 +332,34 @@ Implementation impact:
 - Supersedes the earlier "one absolute monotonic timeline" framing in §3; the master clock is still
   absolute-sample within a section, just parked across free sections.
 
-### Next: Module — cue/section manager + transport auto-stop, then playback
+### Module 3a — transport auto-stop (BUILT, committed)
+Additive edit to `transport.maxpat`. New command vocabulary on the command inlet (via the existing
+route's unmatched outlet → `route endstop endstopmeasure`):
+- `endstop <sample>` — arm auto-stop at an absolute sample (or `endstop 1000000000` to disarm).
+- `endstopmeasure <m>` — arm at a measure (resolved via a 2nd, data-sharing `coll psycography_measures`).
+Mechanism: `receive~ master` → `>=~ <thresh>` → `edge~` → `t b b` → [`stop` → count~] + [**new outlet 2:
+"ended"** bang]. Default threshold `1e9` = disarmed (no spurious stop at load). NEW transport outlet 2 =
+section-ended notification for the cue manager.
+
+### Module 3b — cue/section manager (BUILT, committed)
+Files: `cues.maxpat`, `cues_engine.js`, `psycography_sections.txt` (placeholder — EDIT with real sections).
+Engine logic unit-tested in Node (all scenarios pass). Section model: a click run flows continuously
+through consecutive click sections and auto-stops at the next FREE section; on transport "ended" the
+engine enters that free section and waits for GO.
+- **Section list format** (`psycography_sections.txt`, a coll): `index, start_measure type;` where
+  type `1`=click, `0`=free. Placeholder = `1,1 1; 2,40 0; 3,56 1; 4,100 0; 5,120 1;` (illustrative only).
+- **cues.maxpat I/O:** inlet 0 = operator (`go`, `jump N`, `reset`); inlet 1 = `ended` (bang from
+  transport); outlet 0 = transport commands; outlet 1 = status (`section n start type total`);
+  outlet 2 = hooks (`clickmute 0|1`, free-audio later).
+- Built-in test UI: GO button, jump number, status display.
+
+**Integration (wire in the main patch later):**
+- `cues` outlet 0 → `transport` command inlet 0.
+- `transport` outlet 2 (ended) → `cues` inlet 1.
+- `cues` outlet 2 (clickmute / free-audio) → click + playback modules (when built).
+
+**Verify in Max:** with `cues` driving `transport`, GO walks sections — click sections seek+run+auto-stop
+at the next free boundary, free sections park the clock. `jump N` for rehearsal. (Standalone, watch
+`cues` outlet 0 / status display; full loop needs both modules connected.)
+
+### Next: Module — playback (per-section program voices + free-running bed path)
