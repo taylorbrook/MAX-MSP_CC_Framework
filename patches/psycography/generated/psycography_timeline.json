@@ -4,98 +4,323 @@
  "tempo_events": [
   {
    "tick": 0,
-   "us_per_q": 500000,
-   "bpm": 120.0
+   "us_per_q": 909090,
+   "bpm": 66.0001
   },
   {
-   "tick": 7680,
-   "us_per_q": 666667,
-   "bpm": 90.0
+   "tick": 84600,
+   "us_per_q": 969697,
+   "bpm": 61.875
   },
   {
-   "tick": 15360,
-   "us_per_q": 666667,
-   "bpm": 90.0
+   "tick": 84720,
+   "us_per_q": 1038961,
+   "bpm": 57.75
   },
   {
-   "tick": 15840,
-   "us_per_q": 642857,
-   "bpm": 93.3334
+   "tick": 84840,
+   "us_per_q": 1118881,
+   "bpm": 53.625
   },
   {
-   "tick": 16320,
-   "us_per_q": 620690,
-   "bpm": 96.6666
+   "tick": 84960,
+   "us_per_q": 1212121,
+   "bpm": 49.5
   },
   {
-   "tick": 16800,
-   "us_per_q": 600000,
-   "bpm": 100.0
+   "tick": 85080,
+   "us_per_q": 1322314,
+   "bpm": 45.375
   },
   {
-   "tick": 17280,
-   "us_per_q": 580645,
-   "bpm": 103.3334
+   "tick": 85200,
+   "us_per_q": 1454545,
+   "bpm": 41.25
   },
   {
-   "tick": 17760,
-   "us_per_q": 562500,
-   "bpm": 106.6667
+   "tick": 85320,
+   "us_per_q": 1616161,
+   "bpm": 37.125
   },
   {
-   "tick": 18240,
-   "us_per_q": 545455,
-   "bpm": 109.9999
+   "tick": 85440,
+   "us_per_q": 1818180,
+   "bpm": 33.0
   },
   {
-   "tick": 18720,
-   "us_per_q": 529412,
-   "bpm": 113.3333
+   "tick": 88320,
+   "us_per_q": 909090,
+   "bpm": 66.0001
   },
   {
-   "tick": 19200,
-   "us_per_q": 514286,
-   "bpm": 116.6666
+   "tick": 90360,
+   "us_per_q": 1038960,
+   "bpm": 57.7501
   },
   {
-   "tick": 19680,
-   "us_per_q": 500000,
-   "bpm": 120.0
+   "tick": 90480,
+   "us_per_q": 1212120,
+   "bpm": 49.5
   },
   {
-   "tick": 20160,
-   "us_per_q": 486486,
-   "bpm": 123.3335
+   "tick": 92160,
+   "us_per_q": 625000,
+   "bpm": 96.0
   },
   {
-   "tick": 20640,
-   "us_per_q": 473684,
-   "bpm": 126.6667
+   "tick": 128160,
+   "us_per_q": 833333,
+   "bpm": 72.0
   },
   {
-   "tick": 21120,
-   "us_per_q": 461538,
-   "bpm": 130.0001
+   "tick": 132120,
+   "us_per_q": 839895,
+   "bpm": 71.4375
   },
   {
-   "tick": 21600,
-   "us_per_q": 450000,
-   "bpm": 133.3333
+   "tick": 132240,
+   "us_per_q": 846560,
+   "bpm": 70.8751
   },
   {
-   "tick": 22080,
-   "us_per_q": 439024,
-   "bpm": 136.6668
+   "tick": 132360,
+   "us_per_q": 853333,
+   "bpm": 70.3125
   },
   {
-   "tick": 22560,
-   "us_per_q": 428571,
-   "bpm": 140.0001
+   "tick": 132480,
+   "us_per_q": 860215,
+   "bpm": 69.75
   },
   {
-   "tick": 23040,
-   "us_per_q": 428571,
-   "bpm": 140.0001
+   "tick": 132600,
+   "us_per_q": 867208,
+   "bpm": 69.1876
+  },
+  {
+   "tick": 132720,
+   "us_per_q": 874316,
+   "bpm": 68.6251
+  },
+  {
+   "tick": 132840,
+   "us_per_q": 881542,
+   "bpm": 68.0626
+  },
+  {
+   "tick": 132960,
+   "us_per_q": 888888,
+   "bpm": 67.5001
+  },
+  {
+   "tick": 133080,
+   "us_per_q": 896358,
+   "bpm": 66.9375
+  },
+  {
+   "tick": 133200,
+   "us_per_q": 903954,
+   "bpm": 66.3751
+  },
+  {
+   "tick": 133320,
+   "us_per_q": 911680,
+   "bpm": 65.8126
+  },
+  {
+   "tick": 133440,
+   "us_per_q": 919540,
+   "bpm": 65.25
+  },
+  {
+   "tick": 133560,
+   "us_per_q": 927536,
+   "bpm": 64.6875
+  },
+  {
+   "tick": 133680,
+   "us_per_q": 935672,
+   "bpm": 64.125
+  },
+  {
+   "tick": 133800,
+   "us_per_q": 943952,
+   "bpm": 63.5626
+  },
+  {
+   "tick": 133920,
+   "us_per_q": 952380,
+   "bpm": 63.0001
+  },
+  {
+   "tick": 134040,
+   "us_per_q": 960960,
+   "bpm": 62.4376
+  },
+  {
+   "tick": 134160,
+   "us_per_q": 969697,
+   "bpm": 61.875
+  },
+  {
+   "tick": 134280,
+   "us_per_q": 978593,
+   "bpm": 61.3125
+  },
+  {
+   "tick": 134400,
+   "us_per_q": 987654,
+   "bpm": 60.75
+  },
+  {
+   "tick": 134520,
+   "us_per_q": 996884,
+   "bpm": 60.1875
+  },
+  {
+   "tick": 134640,
+   "us_per_q": 1006289,
+   "bpm": 59.625
+  },
+  {
+   "tick": 134760,
+   "us_per_q": 1015873,
+   "bpm": 59.0625
+  },
+  {
+   "tick": 134880,
+   "us_per_q": 1025641,
+   "bpm": 58.5
+  },
+  {
+   "tick": 135000,
+   "us_per_q": 1035598,
+   "bpm": 57.9375
+  },
+  {
+   "tick": 135120,
+   "us_per_q": 1045751,
+   "bpm": 57.375
+  },
+  {
+   "tick": 135240,
+   "us_per_q": 1056105,
+   "bpm": 56.8125
+  },
+  {
+   "tick": 135360,
+   "us_per_q": 1066666,
+   "bpm": 56.25
+  },
+  {
+   "tick": 135480,
+   "us_per_q": 1077441,
+   "bpm": 55.6875
+  },
+  {
+   "tick": 135600,
+   "us_per_q": 1088435,
+   "bpm": 55.125
+  },
+  {
+   "tick": 135720,
+   "us_per_q": 1099656,
+   "bpm": 54.5625
+  },
+  {
+   "tick": 135840,
+   "us_per_q": 1153846,
+   "bpm": 52.0
+  },
+  {
+   "tick": 186720,
+   "us_per_q": 833333,
+   "bpm": 72.0
+  },
+  {
+   "tick": 282720,
+   "us_per_q": 625000,
+   "bpm": 96.0
+  },
+  {
+   "tick": 284760,
+   "us_per_q": 634920,
+   "bpm": 94.5001
+  },
+  {
+   "tick": 284880,
+   "us_per_q": 645161,
+   "bpm": 93.0
+  },
+  {
+   "tick": 285000,
+   "us_per_q": 655737,
+   "bpm": 91.5001
+  },
+  {
+   "tick": 285120,
+   "us_per_q": 666666,
+   "bpm": 90.0001
+  },
+  {
+   "tick": 285240,
+   "us_per_q": 677966,
+   "bpm": 88.5
+  },
+  {
+   "tick": 285360,
+   "us_per_q": 689655,
+   "bpm": 87.0
+  },
+  {
+   "tick": 285480,
+   "us_per_q": 701754,
+   "bpm": 85.5
+  },
+  {
+   "tick": 285600,
+   "us_per_q": 714285,
+   "bpm": 84.0001
+  },
+  {
+   "tick": 285720,
+   "us_per_q": 727272,
+   "bpm": 82.5001
+  },
+  {
+   "tick": 285840,
+   "us_per_q": 740740,
+   "bpm": 81.0001
+  },
+  {
+   "tick": 285960,
+   "us_per_q": 754717,
+   "bpm": 79.5
+  },
+  {
+   "tick": 286080,
+   "us_per_q": 769230,
+   "bpm": 78.0001
+  },
+  {
+   "tick": 286200,
+   "us_per_q": 784313,
+   "bpm": 76.5001
+  },
+  {
+   "tick": 286320,
+   "us_per_q": 800000,
+   "bpm": 75.0
+  },
+  {
+   "tick": 286440,
+   "us_per_q": 816326,
+   "bpm": 73.5
+  },
+  {
+   "tick": 286560,
+   "us_per_q": 789473,
+   "bpm": 76.0001
   }
  ],
  "meter_events": [
@@ -105,8 +330,163 @@
    "den": 4
   },
   {
-   "tick": 23040,
+   "tick": 21120,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "tick": 22080,
    "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 23520,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 36960,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 38400,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 92160,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 103680,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "tick": 104640,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 110400,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 111840,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 113760,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 128160,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 169440,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 170880,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 176640,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 183840,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 185760,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "tick": 186720,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 202080,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 213600,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 273120,
+   "num": 5,
+   "den": 4
+  },
+  {
+   "tick": 282720,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 303840,
+   "num": 5,
+   "den": 4
+  },
+  {
+   "tick": 306240,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 377280,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 378720,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "tick": 379680,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 384000,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "tick": 384960,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 389280,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "tick": 390240,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "tick": 391680,
+   "num": 4,
    "den": 4
   }
  ],
@@ -121,124 +501,1524 @@
   {
    "measure": 2,
    "tick": 1920,
-   "sample": 96000,
+   "sample": 174545,
    "num": 4,
    "den": 4
   },
   {
    "measure": 3,
    "tick": 3840,
-   "sample": 192000,
+   "sample": 349091,
    "num": 4,
    "den": 4
   },
   {
    "measure": 4,
    "tick": 5760,
-   "sample": 288000,
+   "sample": 523636,
    "num": 4,
    "den": 4
   },
   {
    "measure": 5,
    "tick": 7680,
-   "sample": 384000,
+   "sample": 698181,
    "num": 4,
    "den": 4
   },
   {
    "measure": 6,
    "tick": 9600,
-   "sample": 512000,
+   "sample": 872726,
    "num": 4,
    "den": 4
   },
   {
    "measure": 7,
    "tick": 11520,
-   "sample": 640000,
+   "sample": 1047272,
    "num": 4,
    "den": 4
   },
   {
    "measure": 8,
    "tick": 13440,
-   "sample": 768000,
+   "sample": 1221817,
    "num": 4,
    "den": 4
   },
   {
    "measure": 9,
    "tick": 15360,
-   "sample": 896000,
+   "sample": 1396362,
    "num": 4,
    "den": 4
   },
   {
    "measure": 10,
    "tick": 17280,
-   "sample": 1017451,
+   "sample": 1570908,
    "num": 4,
    "den": 4
   },
   {
    "measure": 11,
    "tick": 19200,
-   "sample": 1123915,
+   "sample": 1745453,
    "num": 4,
    "den": 4
   },
   {
    "measure": 12,
    "tick": 21120,
-   "sample": 1218689,
-   "num": 4,
+   "sample": 1919998,
+   "num": 2,
    "den": 4
   },
   {
    "measure": 13,
-   "tick": 23040,
-   "sample": 1304087,
+   "tick": 22080,
+   "sample": 2007271,
    "num": 3,
    "den": 4
   },
   {
    "measure": 14,
-   "tick": 24480,
-   "sample": 1365802,
-   "num": 3,
+   "tick": 23520,
+   "sample": 2138180,
+   "num": 4,
    "den": 4
   },
   {
    "measure": 15,
-   "tick": 25920,
-   "sample": 1427516,
-   "num": 3,
+   "tick": 25440,
+   "sample": 2312725,
+   "num": 4,
    "den": 4
   },
   {
    "measure": 16,
    "tick": 27360,
-   "sample": 1489230,
-   "num": 3,
+   "sample": 2487270,
+   "num": 4,
    "den": 4
   },
   {
    "measure": 17,
-   "tick": 28800,
-   "sample": 1550944,
-   "num": 3,
+   "tick": 29280,
+   "sample": 2661816,
+   "num": 4,
    "den": 4
   },
   {
    "measure": 18,
-   "tick": 30240,
-   "sample": 1612658,
+   "tick": 31200,
+   "sample": 2836361,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 19,
+   "tick": 33120,
+   "sample": 3010906,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 20,
+   "tick": 35040,
+   "sample": 3185451,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 21,
+   "tick": 36960,
+   "sample": 3359997,
    "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 22,
+   "tick": 38400,
+   "sample": 3490906,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 23,
+   "tick": 40320,
+   "sample": 3665451,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 24,
+   "tick": 42240,
+   "sample": 3839996,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 25,
+   "tick": 44160,
+   "sample": 4014541,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 26,
+   "tick": 46080,
+   "sample": 4189087,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 27,
+   "tick": 48000,
+   "sample": 4363632,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 28,
+   "tick": 49920,
+   "sample": 4538177,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 29,
+   "tick": 51840,
+   "sample": 4712723,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 30,
+   "tick": 53760,
+   "sample": 4887268,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 31,
+   "tick": 55680,
+   "sample": 5061813,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 32,
+   "tick": 57600,
+   "sample": 5236358,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 33,
+   "tick": 59520,
+   "sample": 5410904,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 34,
+   "tick": 61440,
+   "sample": 5585449,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 35,
+   "tick": 63360,
+   "sample": 5759994,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 36,
+   "tick": 65280,
+   "sample": 5934540,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 37,
+   "tick": 67200,
+   "sample": 6109085,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 38,
+   "tick": 69120,
+   "sample": 6283630,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 39,
+   "tick": 71040,
+   "sample": 6458175,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 40,
+   "tick": 72960,
+   "sample": 6632721,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 41,
+   "tick": 74880,
+   "sample": 6807266,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 42,
+   "tick": 76800,
+   "sample": 6981811,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 43,
+   "tick": 78720,
+   "sample": 7156356,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 44,
+   "tick": 80640,
+   "sample": 7330902,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 45,
+   "tick": 82560,
+   "sample": 7505447,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 46,
+   "tick": 84480,
+   "sample": 7679992,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 47,
+   "tick": 86400,
+   "sample": 7970239,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 48,
+   "tick": 88320,
+   "sample": 8319329,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 49,
+   "tick": 90240,
+   "sample": 8493875,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 50,
+   "tick": 92160,
+   "sample": 8720887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 51,
+   "tick": 93600,
+   "sample": 8810887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 52,
+   "tick": 95040,
+   "sample": 8900887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 53,
+   "tick": 96480,
+   "sample": 8990887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 54,
+   "tick": 97920,
+   "sample": 9080887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 55,
+   "tick": 99360,
+   "sample": 9170887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 56,
+   "tick": 100800,
+   "sample": 9260887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 57,
+   "tick": 102240,
+   "sample": 9350887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 58,
+   "tick": 103680,
+   "sample": 9440887,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "measure": 59,
+   "tick": 104640,
+   "sample": 9500887,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 60,
+   "tick": 106560,
+   "sample": 9620887,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 61,
+   "tick": 108480,
+   "sample": 9740887,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 62,
+   "tick": 110400,
+   "sample": 9860887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 63,
+   "tick": 111840,
+   "sample": 9950887,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 64,
+   "tick": 113760,
+   "sample": 10070887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 65,
+   "tick": 115200,
+   "sample": 10160887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 66,
+   "tick": 116640,
+   "sample": 10250887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 67,
+   "tick": 118080,
+   "sample": 10340887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 68,
+   "tick": 119520,
+   "sample": 10430887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 69,
+   "tick": 120960,
+   "sample": 10520887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 70,
+   "tick": 122400,
+   "sample": 10610887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 71,
+   "tick": 123840,
+   "sample": 10700887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 72,
+   "tick": 125280,
+   "sample": 10790887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 73,
+   "tick": 126720,
+   "sample": 10880887,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 74,
+   "tick": 128160,
+   "sample": 10970887,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 75,
+   "tick": 130080,
+   "sample": 11130887,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 76,
+   "tick": 132000,
+   "sample": 11290887,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 77,
+   "tick": 133920,
+   "sample": 11461095,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 78,
+   "tick": 135840,
+   "sample": 11657459,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 79,
+   "tick": 137760,
+   "sample": 11878997,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 80,
+   "tick": 139680,
+   "sample": 12100535,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 81,
+   "tick": 141600,
+   "sample": 12322074,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 82,
+   "tick": 143520,
+   "sample": 12543612,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 83,
+   "tick": 145440,
+   "sample": 12765151,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 84,
+   "tick": 147360,
+   "sample": 12986689,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 85,
+   "tick": 149280,
+   "sample": 13208228,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 86,
+   "tick": 151200,
+   "sample": 13429766,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 87,
+   "tick": 153120,
+   "sample": 13651304,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 88,
+   "tick": 155040,
+   "sample": 13872843,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 89,
+   "tick": 156960,
+   "sample": 14094381,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 90,
+   "tick": 158880,
+   "sample": 14315920,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 91,
+   "tick": 160800,
+   "sample": 14537458,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 92,
+   "tick": 162720,
+   "sample": 14758997,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 93,
+   "tick": 164640,
+   "sample": 14980535,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 94,
+   "tick": 166560,
+   "sample": 15202073,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 95,
+   "tick": 168480,
+   "sample": 15423612,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 96,
+   "tick": 170400,
+   "sample": 15645150,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 97,
+   "tick": 171840,
+   "sample": 15811304,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 98,
+   "tick": 173760,
+   "sample": 16032843,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 99,
+   "tick": 175680,
+   "sample": 16254381,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 100,
+   "tick": 177600,
+   "sample": 16475919,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 101,
+   "tick": 179040,
+   "sample": 16642073,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 102,
+   "tick": 180480,
+   "sample": 16808227,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 103,
+   "tick": 181920,
+   "sample": 16974381,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 104,
+   "tick": 183360,
+   "sample": 17140535,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 105,
+   "tick": 184800,
+   "sample": 17306689,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 106,
+   "tick": 186720,
+   "sample": 17528227,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 107,
+   "tick": 188640,
+   "sample": 17688227,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 108,
+   "tick": 190560,
+   "sample": 17848227,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 109,
+   "tick": 192480,
+   "sample": 18008227,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 110,
+   "tick": 194400,
+   "sample": 18168227,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 111,
+   "tick": 196320,
+   "sample": 18328227,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 112,
+   "tick": 198240,
+   "sample": 18488227,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 113,
+   "tick": 200160,
+   "sample": 18648227,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 114,
+   "tick": 202080,
+   "sample": 18808227,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 115,
+   "tick": 203520,
+   "sample": 18928226,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 116,
+   "tick": 204960,
+   "sample": 19048226,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 117,
+   "tick": 206400,
+   "sample": 19168226,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 118,
+   "tick": 207840,
+   "sample": 19288226,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 119,
+   "tick": 209280,
+   "sample": 19408226,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 120,
+   "tick": 210720,
+   "sample": 19528226,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 121,
+   "tick": 212160,
+   "sample": 19648226,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 122,
+   "tick": 213600,
+   "sample": 19768226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 123,
+   "tick": 215520,
+   "sample": 19928226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 124,
+   "tick": 217440,
+   "sample": 20088226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 125,
+   "tick": 219360,
+   "sample": 20248226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 126,
+   "tick": 221280,
+   "sample": 20408226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 127,
+   "tick": 223200,
+   "sample": 20568226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 128,
+   "tick": 225120,
+   "sample": 20728226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 129,
+   "tick": 227040,
+   "sample": 20888226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 130,
+   "tick": 228960,
+   "sample": 21048226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 131,
+   "tick": 230880,
+   "sample": 21208226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 132,
+   "tick": 232800,
+   "sample": 21368225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 133,
+   "tick": 234720,
+   "sample": 21528225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 134,
+   "tick": 236640,
+   "sample": 21688225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 135,
+   "tick": 238560,
+   "sample": 21848225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 136,
+   "tick": 240480,
+   "sample": 22008225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 137,
+   "tick": 242400,
+   "sample": 22168225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 138,
+   "tick": 244320,
+   "sample": 22328225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 139,
+   "tick": 246240,
+   "sample": 22488225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 140,
+   "tick": 248160,
+   "sample": 22648225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 141,
+   "tick": 250080,
+   "sample": 22808225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 142,
+   "tick": 252000,
+   "sample": 22968225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 143,
+   "tick": 253920,
+   "sample": 23128225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 144,
+   "tick": 255840,
+   "sample": 23288225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 145,
+   "tick": 257760,
+   "sample": 23448225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 146,
+   "tick": 259680,
+   "sample": 23608225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 147,
+   "tick": 261600,
+   "sample": 23768225,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 148,
+   "tick": 263520,
+   "sample": 23928224,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 149,
+   "tick": 265440,
+   "sample": 24088224,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 150,
+   "tick": 267360,
+   "sample": 24248224,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 151,
+   "tick": 269280,
+   "sample": 24408224,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 152,
+   "tick": 271200,
+   "sample": 24568224,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 153,
+   "tick": 273120,
+   "sample": 24728224,
+   "num": 5,
+   "den": 4
+  },
+  {
+   "measure": 154,
+   "tick": 275520,
+   "sample": 24928224,
+   "num": 5,
+   "den": 4
+  },
+  {
+   "measure": 155,
+   "tick": 277920,
+   "sample": 25128224,
+   "num": 5,
+   "den": 4
+  },
+  {
+   "measure": 156,
+   "tick": 280320,
+   "sample": 25328224,
+   "num": 5,
+   "den": 4
+  },
+  {
+   "measure": 157,
+   "tick": 282720,
+   "sample": 25528224,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 158,
+   "tick": 284640,
+   "sample": 25648224,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 159,
+   "tick": 286560,
+   "sample": 25785069,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 160,
+   "tick": 288480,
+   "sample": 25936648,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 161,
+   "tick": 290400,
+   "sample": 26088226,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 162,
+   "tick": 292320,
+   "sample": 26239805,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 163,
+   "tick": 294240,
+   "sample": 26391384,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 164,
+   "tick": 296160,
+   "sample": 26542963,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 165,
+   "tick": 298080,
+   "sample": 26694542,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 166,
+   "tick": 300000,
+   "sample": 26846120,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 167,
+   "tick": 301920,
+   "sample": 26997699,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 168,
+   "tick": 303840,
+   "sample": 27149278,
+   "num": 5,
+   "den": 4
+  },
+  {
+   "measure": 169,
+   "tick": 306240,
+   "sample": 27338752,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 170,
+   "tick": 308160,
+   "sample": 27490330,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 171,
+   "tick": 310080,
+   "sample": 27641909,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 172,
+   "tick": 312000,
+   "sample": 27793488,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 173,
+   "tick": 313920,
+   "sample": 27945067,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 174,
+   "tick": 315840,
+   "sample": 28096646,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 175,
+   "tick": 317760,
+   "sample": 28248224,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 176,
+   "tick": 319680,
+   "sample": 28399803,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 177,
+   "tick": 321600,
+   "sample": 28551382,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 178,
+   "tick": 323520,
+   "sample": 28702961,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 179,
+   "tick": 325440,
+   "sample": 28854540,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 180,
+   "tick": 327360,
+   "sample": 29006119,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 181,
+   "tick": 329280,
+   "sample": 29157697,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 182,
+   "tick": 331200,
+   "sample": 29309276,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 183,
+   "tick": 333120,
+   "sample": 29460855,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 184,
+   "tick": 335040,
+   "sample": 29612434,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 185,
+   "tick": 336960,
+   "sample": 29764013,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 186,
+   "tick": 338880,
+   "sample": 29915591,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 187,
+   "tick": 340800,
+   "sample": 30067170,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 188,
+   "tick": 342720,
+   "sample": 30218749,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 189,
+   "tick": 344640,
+   "sample": 30370328,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 190,
+   "tick": 346560,
+   "sample": 30521907,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 191,
+   "tick": 348480,
+   "sample": 30673486,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 192,
+   "tick": 350400,
+   "sample": 30825064,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 193,
+   "tick": 352320,
+   "sample": 30976643,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 194,
+   "tick": 354240,
+   "sample": 31128222,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 195,
+   "tick": 356160,
+   "sample": 31279801,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 196,
+   "tick": 358080,
+   "sample": 31431380,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 197,
+   "tick": 360000,
+   "sample": 31582958,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 198,
+   "tick": 361920,
+   "sample": 31734537,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 199,
+   "tick": 363840,
+   "sample": 31886116,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 200,
+   "tick": 365760,
+   "sample": 32037695,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 201,
+   "tick": 367680,
+   "sample": 32189274,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 202,
+   "tick": 369600,
+   "sample": 32340853,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 203,
+   "tick": 371520,
+   "sample": 32492431,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 204,
+   "tick": 373440,
+   "sample": 32644010,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 205,
+   "tick": 375360,
+   "sample": 32795589,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 206,
+   "tick": 377280,
+   "sample": 32947168,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 207,
+   "tick": 378720,
+   "sample": 33060852,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "measure": 208,
+   "tick": 379680,
+   "sample": 33136641,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 209,
+   "tick": 381120,
+   "sample": 33250325,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 210,
+   "tick": 382560,
+   "sample": 33364010,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 211,
+   "tick": 384000,
+   "sample": 33477694,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "measure": 212,
+   "tick": 384960,
+   "sample": 33553483,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 213,
+   "tick": 386400,
+   "sample": 33667167,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 214,
+   "tick": 387840,
+   "sample": 33780851,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 215,
+   "tick": 389280,
+   "sample": 33894535,
+   "num": 2,
+   "den": 4
+  },
+  {
+   "measure": 216,
+   "tick": 390240,
+   "sample": 33970325,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 217,
+   "tick": 391680,
+   "sample": 34084009,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 218,
+   "tick": 393600,
+   "sample": 34235588,
+   "num": 4,
    "den": 4
   }
  ],
- "beat_count": 66,
+ "beat_count": 824,
  "beats_head": [
   {
    "sample": 0,
@@ -246,57 +2026,57 @@
    "beat": 1
   },
   {
-   "sample": 24000,
+   "sample": 43636,
    "bar": 1,
    "beat": 2
   },
   {
-   "sample": 48000,
+   "sample": 87273,
    "bar": 1,
    "beat": 3
   },
   {
-   "sample": 72000,
+   "sample": 130909,
    "bar": 1,
    "beat": 4
   },
   {
-   "sample": 96000,
+   "sample": 174545,
    "bar": 2,
    "beat": 1
   },
   {
-   "sample": 120000,
+   "sample": 218182,
    "bar": 2,
    "beat": 2
   },
   {
-   "sample": 144000,
+   "sample": 261818,
    "bar": 2,
    "beat": 3
   },
   {
-   "sample": 168000,
+   "sample": 305454,
    "bar": 2,
    "beat": 4
   },
   {
-   "sample": 192000,
+   "sample": 349091,
    "bar": 3,
    "beat": 1
   },
   {
-   "sample": 216000,
+   "sample": 392727,
    "bar": 3,
    "beat": 2
   },
   {
-   "sample": 240000,
+   "sample": 436363,
    "bar": 3,
    "beat": 3
   },
   {
-   "sample": 264000,
+   "sample": 480000,
    "bar": 3,
    "beat": 4
   }

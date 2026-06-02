@@ -256,7 +256,9 @@ def main():
     if args.outdir:
         outdir = Path(args.outdir)
     else:
-        outdir = in_path.resolve().parent.parent / "generated"
+        # Always the project's generated/ dir (relative to this tool), regardless
+        # of where the input MIDI lives.
+        outdir = Path(__file__).resolve().parent.parent / "generated"
     outdir.mkdir(parents=True, exist_ok=True)
 
     ppq, tempo_events, meter_events, max_tick = parse_smf(in_path)
