@@ -1,0 +1,304 @@
+{
+ "sr": 48000,
+ "ppq": 480,
+ "tempo_events": [
+  {
+   "tick": 0,
+   "us_per_q": 500000,
+   "bpm": 120.0
+  },
+  {
+   "tick": 7680,
+   "us_per_q": 666667,
+   "bpm": 90.0
+  },
+  {
+   "tick": 15360,
+   "us_per_q": 666667,
+   "bpm": 90.0
+  },
+  {
+   "tick": 15840,
+   "us_per_q": 642857,
+   "bpm": 93.3334
+  },
+  {
+   "tick": 16320,
+   "us_per_q": 620690,
+   "bpm": 96.6666
+  },
+  {
+   "tick": 16800,
+   "us_per_q": 600000,
+   "bpm": 100.0
+  },
+  {
+   "tick": 17280,
+   "us_per_q": 580645,
+   "bpm": 103.3334
+  },
+  {
+   "tick": 17760,
+   "us_per_q": 562500,
+   "bpm": 106.6667
+  },
+  {
+   "tick": 18240,
+   "us_per_q": 545455,
+   "bpm": 109.9999
+  },
+  {
+   "tick": 18720,
+   "us_per_q": 529412,
+   "bpm": 113.3333
+  },
+  {
+   "tick": 19200,
+   "us_per_q": 514286,
+   "bpm": 116.6666
+  },
+  {
+   "tick": 19680,
+   "us_per_q": 500000,
+   "bpm": 120.0
+  },
+  {
+   "tick": 20160,
+   "us_per_q": 486486,
+   "bpm": 123.3335
+  },
+  {
+   "tick": 20640,
+   "us_per_q": 473684,
+   "bpm": 126.6667
+  },
+  {
+   "tick": 21120,
+   "us_per_q": 461538,
+   "bpm": 130.0001
+  },
+  {
+   "tick": 21600,
+   "us_per_q": 450000,
+   "bpm": 133.3333
+  },
+  {
+   "tick": 22080,
+   "us_per_q": 439024,
+   "bpm": 136.6668
+  },
+  {
+   "tick": 22560,
+   "us_per_q": 428571,
+   "bpm": 140.0001
+  },
+  {
+   "tick": 23040,
+   "us_per_q": 428571,
+   "bpm": 140.0001
+  }
+ ],
+ "meter_events": [
+  {
+   "tick": 0,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "tick": 23040,
+   "num": 3,
+   "den": 4
+  }
+ ],
+ "measures": [
+  {
+   "measure": 1,
+   "tick": 0,
+   "sample": 0,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 2,
+   "tick": 1920,
+   "sample": 96000,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 3,
+   "tick": 3840,
+   "sample": 192000,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 4,
+   "tick": 5760,
+   "sample": 288000,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 5,
+   "tick": 7680,
+   "sample": 384000,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 6,
+   "tick": 9600,
+   "sample": 512000,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 7,
+   "tick": 11520,
+   "sample": 640000,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 8,
+   "tick": 13440,
+   "sample": 768000,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 9,
+   "tick": 15360,
+   "sample": 896000,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 10,
+   "tick": 17280,
+   "sample": 1017451,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 11,
+   "tick": 19200,
+   "sample": 1123915,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 12,
+   "tick": 21120,
+   "sample": 1218689,
+   "num": 4,
+   "den": 4
+  },
+  {
+   "measure": 13,
+   "tick": 23040,
+   "sample": 1304087,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 14,
+   "tick": 24480,
+   "sample": 1365802,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 15,
+   "tick": 25920,
+   "sample": 1427516,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 16,
+   "tick": 27360,
+   "sample": 1489230,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 17,
+   "tick": 28800,
+   "sample": 1550944,
+   "num": 3,
+   "den": 4
+  },
+  {
+   "measure": 18,
+   "tick": 30240,
+   "sample": 1612658,
+   "num": 3,
+   "den": 4
+  }
+ ],
+ "beat_count": 66,
+ "beats_head": [
+  {
+   "sample": 0,
+   "bar": 1,
+   "beat": 1
+  },
+  {
+   "sample": 24000,
+   "bar": 1,
+   "beat": 2
+  },
+  {
+   "sample": 48000,
+   "bar": 1,
+   "beat": 3
+  },
+  {
+   "sample": 72000,
+   "bar": 1,
+   "beat": 4
+  },
+  {
+   "sample": 96000,
+   "bar": 2,
+   "beat": 1
+  },
+  {
+   "sample": 120000,
+   "bar": 2,
+   "beat": 2
+  },
+  {
+   "sample": 144000,
+   "bar": 2,
+   "beat": 3
+  },
+  {
+   "sample": 168000,
+   "bar": 2,
+   "beat": 4
+  },
+  {
+   "sample": 192000,
+   "bar": 3,
+   "beat": 1
+  },
+  {
+   "sample": 216000,
+   "bar": 3,
+   "beat": 2
+  },
+  {
+   "sample": 240000,
+   "bar": 3,
+   "beat": 3
+  },
+  {
+   "sample": 264000,
+   "bar": 3,
+   "beat": 4
+  }
+ ]
+}
