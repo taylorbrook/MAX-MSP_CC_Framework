@@ -362,19 +362,65 @@ engine enters that free section and waits for GO.
 at the next free boundary, free sections park the clock. `jump N` for rehearsal. (Standalone, watch
 `cues` outlet 0 / status display; full loop needs both modules connected.)
 
-### Next: Module — playback (per-section program voices + free-running bed path)
+### Module 4 — playback (BUILT, committed)
+Files: `generated/playvoice.maxpat` (per-voice bpatcher), `generated/playback.maxpat` (9-voice engine + free bed).
+Validation clean; critic 0 blockers (warnings = benign control→signal on the meter/mc taps + cosmetic
+cable midpoints). Built against empty/silent buffers (no WAVs yet); `read` path loads files later.
+
+**`playvoice.maxpat`** — standalone `#N` args: **`#1` = buffer name, `#2` = start-offset-samples**
+(no channel arg — channel is assigned externally by which `mc.pack~` inlet the voice feeds).
+- Position math: `receive~ master` → `-~ #2` (subtract this file's start offset) → `sampstoms~`
+  (samples→ms at the **real SR**, replaces the old hardcoded `*~ 0.020833`) → `play~ #1` (signal
+  position inlet). `play~` outputs 0 outside the buffer range ⇒ each voice is silent before its entrance
+  and after its end — no gating.
+- `buffer~ #1` (RAM; `read`/`replace` via the cmd inlet). `info~ #1` banged by `buffer~`'s read-complete
+  outlet → total-time-ms (outlet 6) → length readout + outlet 1. `meter~` taps `play~` out 0.
+- **I/O contract:** inlet 0 = buffer cmds (`read`/`replace <file>`); outlet 0 = audio (signal);
+  outlet 1 = buffer length (ms). Visible top band (meter + length) = the per-voice tile dashboard.
+
+**`playback.maxpat`** — 9× `playvoice` bpatchers (`name=playvoice.maxpat`, args `slot-N 0`; arg2 offset =
+placeholder 0, set per-segment from the timeline later) → `mc.pack~ 9` → **`mc.*~` (master test mute,
+toggle: on=pass via loadbang, uncheck=mute)** → `mc.dac~ 1 2 3 4 5 6 7 8 9` (program channels 1–9; click
+owns ch 10 via transport). Per-voice metering = each playvoice tile's internal `meter~`.
+- Per-voice load: 9 `read` message boxes (one per slot) → each bpatcher cmd inlet (file dialog).
+- **Free-section bed (SEPARATE free-running path, NOT master-locked):** `buffer~ freebed` + `groove~
+  freebed @loop 1` self-clocked by `sig~ 1.`; started/stopped by the cues free-audio hook
+  (`inlet → route freeaudio clickmute → sel 1 0 → [0 ms start | stop] → groove~`). Output through a
+  gain-safe `clip 0. 1.` → `*~ 0.` (init silent) → `meter~` tap + **`send~ freebed_out`** (named bus for
+  per-section routing — full per-section bed config comes later). The `clickmute` route branch is consumed
+  by the click module (wired elsewhere).
+
+**Integration (wire in the main patch later):**
+- Each `playvoice` `receive~ master` taps `transport`'s `send~ master` (no explicit wire needed).
+- `cues` outlet 2 (clickmute / free-audio) → `playback` hooks inlet.
+- `playback` `mc.dac~` → program out 1–9; click → out 10 (from the click module via transport).
+
+**Verify in Max (§9 open items this module depends on):**
+- `count~` `set <sample>`-then-`go` resumes from the set sample (seek + section re-entry rely on it).
+- `play~` with a signal ms-position from `sampstoms~` tracks the master clock and auto-silences out of
+  range (no clicks at buffer edges); all 9 voices stay phase-locked since they share `receive~ master`.
+- `groove~ @loop 1` + `sig~ 1.` + a `0` (ms) message starts a looping bed; `stop` halts it.
+- bpatcher `#1`/`#2` substitution: `buffer~ slot-N`, `-~ <offset>`, `play~ slot-N`, `info~ slot-N` resolve
+  per instance.
+
+### Next: Module — click engine (§6.3) + main UI assembly (§6.7) wiring transport + cues + playback together
 
 ---
 
 ## 9. RESUME POINTER / build playbook (read this first in a fresh window)
 
 **State (stage=build):** transport (clock+seek+GO/STOP+bar:beat+auto-stop), timeline tool (MIDI→coll data,
-Flow 1 loaded), cue/section manager — all BUILT & committed. Tree clean. **Next: playback module** (§6.2,
-§8: per-section program voices off `receive~ master` + separate free-running bed for free sections).
+Flow 1 loaded), cue/section manager, **playback (playvoice + 9-voice engine + free bed)** — all BUILT &
+committed. **Next: click engine** (§6.3: signal-domain `>=~`/`edge~` crossing detection off `receive~
+master` against `clicks` coll → accent/plain/subdivision synth → dedicated ch 10) **then main-patch
+assembly** (wire transport + cues + playback together; presentation UI §6.7).
 
 **Module files** in `generated/`: `transport.maxpat`+`transport_barbeat.js`, `cues.maxpat`+`cues_engine.js`,
-`psycography_sections.txt` (placeholder), `psycography_measures.txt`/`_beats.txt`/`_timeline.json` (Flow 1).
+`playvoice.maxpat`, `playback.maxpat`, `psycography_sections.txt` (placeholder),
+`psycography_measures.txt`/`_beats.txt`/`_timeline.json` (Flow 1).
 Tools in `tools/`: `midi_to_timeline.py`, `make_synth_midi.py`. Not yet assembled into one main patch.
+NOTE: the timeline tool does NOT yet emit `clicks` coll data — the click engine needs a `<piece>_clicks.txt`
+(index → sample_offset, type 0=beat/1=accent/2=subdivision); add that emitter when building the click module.
 
 **How patches are built here (mechanics):**
 - Build a `Patcher` in-memory in an EPHEMERAL script under `/tmp` (NOT in the repo — Rule #5), run with
