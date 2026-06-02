@@ -293,4 +293,43 @@ the counter never needs to grow huge).
 **Multi-flow note:** folder is "Flows from Psychography" → piece likely has multiple flows/movements.
 The cue/section manager (later) should load per-flow timeline data (swap the coll files / parameterize name).
 
-### Next: Module — playback (9× buffer~ → play~ off receive~ master → discrete channels)
+---
+
+## 8. Conductor / free-section handling (ARCHITECTURE DECISION)
+
+**Problem:** some sections drop the click and the conductor controls time (rubato/fermata, unknown
+duration); later sections the click returns. A single monotonic master timeline can't span these.
+
+**Resolution — the piece is an ordered list of *sections*, not one continuous timeline.**
+Sample-accuracy only needs to hold *within* a click section. A free section is a gap where the master
+clock is PARKED; re-entry re-establishes sync via the existing seek-to-measure + GO primitive (the same
+"start anywhere" rehearsal feature, used in performance at each boundary). **The transport core does not
+change.**
+
+Two section types:
+- **CLICK** — master clock runs, sample-accurate; click + audio locked (as built).
+- **FREE** — clock parked (stopped), click muted, conductor leads. Audio is per-section configurable.
+
+Decisions (Q&A):
+- **Free-section audio = per-section configurable.** Some free sections silent; others play a sustained
+  bed on a SEPARATE **free-running** path (NOT clock-locked) — conductor plays over it.
+- **File continuity = segment per section.** No click-locked program file crosses a free boundary; each
+  click section's audio is rendered/segmented to its own range.
+- **Section list = manually authored, editable** (a coll/data file or in-patch table):
+  `section -> start_measure, type(click|free), click_opts, free_audio(none|file refs)`.
+- **Click re-entry = operator GO, no count-in** (immediate on the conductor's downbeat). Count-in remains
+  a REHEARSAL-only toggle (mid-piece starts), not used for performance re-entry.
+
+Implementation impact:
+- **Transport:** add **auto-stop at section end** — `>=~ <section_end_sample>` → `edge~` → `stop` (same
+  crossing-detector pattern as the click engine), so a click section halts at the next section's downbeat
+  and can't run into conductor time. Core clock/seek/GO untouched.
+- **New cue/section manager module:** drives the section list. GO advances. CLICK → seek master to
+  start measure + GO + arm auto-stop at end. FREE → park clock, mute click, trigger sustained free-audio
+  (if any), wait for operator GO to advance.
+- **Playback module:** click-locked program voices (segmented per section, positioned by master clock)
+  PLUS a separate free-running audio path for sustained free-section beds.
+- Supersedes the earlier "one absolute monotonic timeline" framing in §3; the master clock is still
+  absolute-sample within a section, just parked across free sections.
+
+### Next: Module — cue/section manager + transport auto-stop, then playback
