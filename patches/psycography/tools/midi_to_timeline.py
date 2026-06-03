@@ -187,6 +187,7 @@ def build_grids(ppq, tempo_events, meter_events, max_tick, sr, extra_measures=1)
 
     measures = []  # (measure_no, tick, sample, num, den)
     beats = []     # (sample, bar, beat)
+    clicks = []    # (sample, type)  type: 0=plain beat, 1=accent/downbeat, 2=subdivision
 
     tick = 0
     measure_no = 1
@@ -201,6 +202,11 @@ def build_grids(ppq, tempo_events, meter_events, max_tick, sr, extra_measures=1)
         for k in range(num):
             bt = tick + k * beat_ticks
             beats.append((round(tl.seconds(bt) * sr), measure_no, k + 1))
+            # click events: downbeat (k==0) is an accent, other beats are plain
+            clicks.append((round(tl.seconds(bt) * sr), 1 if k == 0 else 0))
+            # eighth-note subdivision at the beat midpoint (gated per-section at runtime)
+            sub_tick = bt + beat_ticks // 2
+            clicks.append((round(tl.seconds(sub_tick) * sr), 2))
         measure_ticks = num * ppq * 4 // den
         tick += measure_ticks
         measure_no += 1
@@ -211,7 +217,8 @@ def build_grids(ppq, tempo_events, meter_events, max_tick, sr, extra_measures=1)
         if measure_no > 100000:  # runaway guard
             break
 
-    return tl, measures, beats
+    clicks.sort()  # ascending by sample (the crossing detector needs sorted order)
+    return tl, measures, beats, clicks
 
 
 # --------------------------------------------------------------------------- #
@@ -227,7 +234,13 @@ def write_beats_coll(path: Path, beats):
     path.write_text("\n".join(lines) + "\n")
 
 
-def write_debug_json(path: Path, ppq, tempo_events, meter_events, measures, beats, sr):
+def write_clicks_coll(path: Path, clicks):
+    # coll:  index(0-based) -> "sample type"  (type 0=beat, 1=accent, 2=subdivision)
+    lines = [f"{i}, {sample} {ctype};" for i, (sample, ctype) in enumerate(clicks)]
+    path.write_text("\n".join(lines) + "\n")
+
+
+def write_debug_json(path: Path, ppq, tempo_events, meter_events, measures, beats, clicks, sr):
     obj = {
         "sr": sr,
         "ppq": ppq,
@@ -238,6 +251,8 @@ def write_debug_json(path: Path, ppq, tempo_events, meter_events, measures, beat
                      for (m, tk, s, n, d) in measures],
         "beat_count": len(beats),
         "beats_head": [{"sample": s, "bar": b, "beat": be} for (s, b, be) in beats[:12]],
+        "click_count": len(clicks),
+        "clicks_head": [{"sample": s, "type": t} for (s, t) in clicks[:16]],
     }
     path.write_text(json.dumps(obj, indent=1) + "\n")
 
@@ -262,20 +277,22 @@ def main():
     outdir.mkdir(parents=True, exist_ok=True)
 
     ppq, tempo_events, meter_events, max_tick = parse_smf(in_path)
-    tl, measures, beats = build_grids(ppq, tempo_events, meter_events, max_tick, args.sr,
-                                      args.extra_measures)
+    tl, measures, beats, clicks = build_grids(ppq, tempo_events, meter_events, max_tick, args.sr,
+                                              args.extra_measures)
 
     mpath = outdir / f"{args.name}_measures.txt"
     bpath = outdir / f"{args.name}_beats.txt"
+    cpath = outdir / f"{args.name}_clicks.txt"
     jpath = outdir / f"{args.name}_timeline.json"
     write_measures_coll(mpath, measures)
     write_beats_coll(bpath, beats)
-    write_debug_json(jpath, ppq, tempo_events, meter_events, measures, beats, args.sr)
+    write_clicks_coll(cpath, clicks)
+    write_debug_json(jpath, ppq, tempo_events, meter_events, measures, beats, clicks, args.sr)
 
     print(f"PPQ={ppq}  tempo_events={len(tempo_events)}  meter_events={len(meter_events)}  "
           f"max_tick={max_tick}")
-    print(f"measures={len(measures)}  beats={len(beats)}  sr={args.sr}")
-    print(f"wrote: {mpath.name}, {bpath.name}, {jpath.name}  -> {outdir}")
+    print(f"measures={len(measures)}  beats={len(beats)}  clicks={len(clicks)}  sr={args.sr}")
+    print(f"wrote: {mpath.name}, {bpath.name}, {cpath.name}, {jpath.name}  -> {outdir}")
 
 
 if __name__ == "__main__":

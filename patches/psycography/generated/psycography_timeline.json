@@ -2080,5 +2080,72 @@
    "bar": 3,
    "beat": 4
   }
+ ],
+ "click_count": 1648,
+ "clicks_head": [
+  {
+   "sample": 0,
+   "type": 1
+  },
+  {
+   "sample": 21818,
+   "type": 2
+  },
+  {
+   "sample": 43636,
+   "type": 0
+  },
+  {
+   "sample": 65454,
+   "type": 2
+  },
+  {
+   "sample": 87273,
+   "type": 0
+  },
+  {
+   "sample": 109091,
+   "type": 2
+  },
+  {
+   "sample": 130909,
+   "type": 0
+  },
+  {
+   "sample": 152727,
+   "type": 2
+  },
+  {
+   "sample": 174545,
+   "type": 1
+  },
+  {
+   "sample": 196363,
+   "type": 2
+  },
+  {
+   "sample": 218182,
+   "type": 0
+  },
+  {
+   "sample": 240000,
+   "type": 2
+  },
+  {
+   "sample": 261818,
+   "type": 0
+  },
+  {
+   "sample": 283636,
+   "type": 2
+  },
+  {
+   "sample": 305454,
+   "type": 0
+  },
+  {
+   "sample": 327272,
+   "type": 2
+  }
  ]
 }
