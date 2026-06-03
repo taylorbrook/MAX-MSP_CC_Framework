@@ -12,8 +12,8 @@
         "rect": [
             85.0,
             104.0,
-            993.0,
-            300.0
+            640.0,
+            480.0
         ],
         "bglocked": 0,
         "openinpresentation": 0,
@@ -56,8 +56,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        30.0,
-                        30.0,
+                        20,
+                        30,
                         30.0,
                         30.0
                     ],
@@ -73,8 +73,8 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        60.0,
-                        120.0,
+                        20,
+                        260,
                         30.0,
                         30.0
                     ],
@@ -90,8 +90,8 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        195.0,
-                        120.0,
+                        95,
+                        28,
                         40.0,
                         20.0
                     ],
@@ -110,8 +110,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        150.0,
-                        30.0,
+                        150,
+                        70,
                         72.0,
                         22.0
                     ],
@@ -130,8 +130,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        180.0,
-                        75.0,
+                        150,
+                        100,
                         86.0,
                         22.0
                     ],
@@ -150,8 +150,8 @@
                         "signal"
                     ],
                     "patching_rect": [
-                        45.0,
-                        75.0,
+                        20,
+                        150,
                         51.0,
                         22.0
                     ],
@@ -170,8 +170,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        90.0,
-                        75.0,
+                        110,
+                        200,
                         15.0,
                         100.0
                     ],
@@ -186,30 +186,12 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        300.0,
-                        30.0,
+                        95,
+                        152,
                         653.0,
                         20.0
                     ],
                     "text": "INSERT: *~ 1. = passthrough. Replace/extend for analysis (amp/onset/pitch/spectral) or DSP.",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "comment",
-                    "id": "obj-9",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [
-                        923.0,
-                        8.0,
-                        58.0,
-                        20.0
-                    ],
-                    "text": "v0.1.2",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -261,14 +243,6 @@
                     "destination": [
                         "obj-7",
                         0
-                    ],
-                    "midpoints": [
-                        112.0,
-                        102.0,
-                        112.0,
-                        67.0,
-                        97.5,
-                        67.0
                     ]
                 }
             },
