@@ -515,10 +515,38 @@ object` (hit on the 9 playvoice offsets; fixed in playback.maxpat, commit 5bd83f
 **Verify in Max:** `mc.adc~` needs ≥10 hardware inputs; each `micstrip` tile shows its channel meter; the
 `*~ 1.` insert passes audio at unity.
 
-### Next: presentation-mode UI polish (§6.7) — a clean performance front panel over the wired modules. Then
-the real-data pass: author the real Flow 1 section list (`psycography_sections.txt`), bounce + load the 9
-program WAVs (per-slot `read`), and run the Max integration verify checklist. (All seven build modules are
-now done; what remains is UI polish + real material.)
+### Module 8 — presentation-mode performance panel (BUILT, committed)
+`main.maxpat` rebuilt (commit 43218c1) with a §6.7 performance front panel; opens in presentation mode
+(`openinpresentation: 1`). Validation clean; critic 0 blockers. The patch is now both a wired dev patch
+(patching view) and a clean operator surface (presentation view).
+
+**Presentation panel (17 UI objects over a dark `panel` backdrop):**
+- Title "PSYCOGRAPHY — Flow 1".
+- **GO / STOP / RESET** `textbutton`s (GO green, STOP red) — GO advances cues (+ delayed `resync` to click),
+  STOP halts transport, RESET resets cues. Same logic as the patching controls (single control set, given
+  both `patching_rect` and `presentation_rect`).
+- **BAR : BEAT** display — a `message` box fed by `transport` out1 via **inlet 1 (set)**, so it shows the
+  live "bar beat" (or "—") with NO unpack/symbol errors.
+- **master sample** number ← `transport` out0.
+- **start @ measure** number (rehearsal jump) → seek+go+resync.
+- **section** status display — `message` fed by `cues` out1 via inlet 1 ("section n start type total").
+- **DSP** toggle → `sel 1 0` → `; dsp start` / `; dsp stop`.
+- **PROGRAM VOICE METERS** — the `playback` bpatcher placed in presentation (its 9 voice tiles/meters show).
+
+**Pattern notes (reusable):** set `openinpresentation` via `p.props["openinpresentation"] = 1`. Put a UI
+object in the panel with `modify_box(box, extra_attrs={"presentation":1, "presentation_rect":[x,y,w,h], ...})`
+(syncs to `box.presentation`/`presentation_rect`; to_dict serializes). For bpatchers set
+`bp.presentation=True; bp.presentation_rect=[...]` directly. Use a `message` box fed via **inlet 1** as a
+read-only list display (avoids `unpack` erroring on the "—" symbol). `textbutton` out0 = bang on mouse-up.
+
+**Verify in Max:** open `main.maxpat` → it opens in presentation showing the panel; GO/STOP/measure/DSP work;
+bar:beat + sample + section update live; program meters move when audio plays. Toggle to patching view (Cmd+E)
+to see the full wiring + all module tiles (click, mics).
+
+### Next (no more build modules): real-data pass — author the real Flow 1 section list
+(`psycography_sections.txt`), bounce + load the 9 program WAVs (per-slot `read`) with per-segment offsets,
+and run the Max integration verify checklist. Optional polish: curate each module's own presentation layout
+so the tiles show only meters/controls (not plumbing), and add click/mics meters to the main panel.
 
 ---
 
@@ -528,9 +556,10 @@ now done; what remains is UI polish + real material.)
 GO/STOP+bar:beat+auto-stop), timeline tool (MIDI→coll data incl. clicks, Flow 1 loaded), cue/section
 manager, playback (playvoice + 9-voice engine + free bed), click engine (crossing detector + synth +
 per-section gates), io/mics scaffold (micstrip + mics), and **`main.maxpat`** (all five module tiles
-embedded + wired + master control strip). **The piece is assembled and runnable in Max.** What remains is
-NOT new modules: presentation-mode UI polish (§6.7), and
-a real-data pass (author Flow 1 section list, bounce+load 9 WAVs, run the Max verify checklist).
+embedded + wired + master control strip + **presentation-mode performance panel**, opens in presentation).
+**The piece is assembled, has a performance UI, and is runnable in Max.** What remains is NOT code: a
+real-data pass (author Flow 1 section list, bounce+load 9 WAVs, run the Max verify checklist) + optional
+UI polish (curate per-module presentation layouts; add click/mics meters to the panel).
 
 **Module files** in `generated/`: `main.maxpat`, `transport.maxpat`+`transport_barbeat.js`,
 `cues.maxpat`+`cues_engine.js`, `playvoice.maxpat`, `playback.maxpat`, `click.maxpat`+`clicks_engine.js`,
