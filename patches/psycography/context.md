@@ -491,23 +491,50 @@ and wired into one runnable patch. **The full piece is now assembled.**
   real rehearsal run.
 - Load real WAVs into the 9 voices (per-slot `read` in the playback tile) — buffers are empty until then.
 
-### Next: io/mics scaffold (§6.4–6.5: `mc.adc~ 1..10` → per-mic `meter~` + bypassable processing-insert
-slot, stubbed) and presentation-mode UI polish (§6.7). Then real-data pass: author the Flow 1 section list,
-bounce + load the 9 program WAVs, and run the Max verify checklist.
+### Module 7 — io/mics scaffold (BUILT, committed)
+Files: `generated/micstrip.maxpat` (per-mic strip), `generated/mics.maxpat` (10-ch input), embedded as a
+bpatcher in `main.maxpat`. Validation clean; critic 0 blockers (benign warnings only). The mic INPUT side of
+§6.4 + the §6.5 mic subsystem scaffold. DSP/analysis intentionally stubbed.
+
+- **`micstrip.maxpat`** — per mic, arg **`#1` = channel index (INT)** (label only). `inlet (signal)` →
+  **insert slot `*~ 1.` (passthrough placeholder)** → `meter~` (monitor) + `outlet (signal)`. The `*~ 1.` is
+  the empty insert point — replace/extend for amplitude/onset/pitch/spectral analysis or DSP later. Channel
+  label set at load via `loadbang → "set mic #1" → comment` (comments don't do `#N`, message boxes do).
+  Signal fan-out is from the `*~` (a `~` source, allowed), not the `inlet`, to avoid the fan-out blocker.
+  I/O: 1 signal in, 1 signal out.
+- **`mics.maxpat`** — `mc.adc~ 1 2 … 10` → `mc.unpack~ 10` → 10× `micstrip` bpatchers (one per channel,
+  `#1`=1…10). Self-contained (0 in / 0 out): input routing + per-channel metering. The micstrip outlets
+  (post-insert signals) are available for future recording/analysis routing; unused for now.
+- **Embedded in `main.maxpat`** (746b674): mics is self-contained, so it's placement only — no inter-module
+  cords. main now hosts all five module tiles (transport, cues, click, playback, mics).
+
+**Note (lesson):** numeric bpatcher args MUST be JSON numbers, not strings — `args=[slot, 0]` not
+`args=[slot, "0"]`. A string `"0"` makes `#N` substitute a quoted symbol → `-~: bad arguments creating
+object` (hit on the 9 playvoice offsets; fixed in playback.maxpat, commit 5bd83f7). micstrip args use ints.
+
+**Verify in Max:** `mc.adc~` needs ≥10 hardware inputs; each `micstrip` tile shows its channel meter; the
+`*~ 1.` insert passes audio at unity.
+
+### Next: presentation-mode UI polish (§6.7) — a clean performance front panel over the wired modules. Then
+the real-data pass: author the real Flow 1 section list (`psycography_sections.txt`), bounce + load the 9
+program WAVs (per-slot `read`), and run the Max integration verify checklist. (All seven build modules are
+now done; what remains is UI polish + real material.)
 
 ---
 
 ## 9. RESUME POINTER / build playbook (read this first in a fresh window)
 
-**State (stage=build):** ALL CORE MODULES + MAIN ASSEMBLY BUILT & committed — transport (clock+seek+GO/STOP+
-bar:beat+auto-stop), timeline tool (MIDI→coll data incl. clicks, Flow 1 loaded), cue/section manager,
-playback (playvoice + 9-voice engine + free bed), click engine (crossing detector + synth + per-section
-gates), and **`main.maxpat`** (all four modules embedded + wired + master control strip). **The piece is
-assembled and runnable in Max.** Next: io/mics scaffold (§6.4–6.5), presentation-mode UI polish (§6.7), and
+**State (stage=build):** ALL SEVEN BUILD MODULES + MAIN ASSEMBLY BUILT & committed — transport (clock+seek+
+GO/STOP+bar:beat+auto-stop), timeline tool (MIDI→coll data incl. clicks, Flow 1 loaded), cue/section
+manager, playback (playvoice + 9-voice engine + free bed), click engine (crossing detector + synth +
+per-section gates), io/mics scaffold (micstrip + mics), and **`main.maxpat`** (all five module tiles
+embedded + wired + master control strip). **The piece is assembled and runnable in Max.** What remains is
+NOT new modules: presentation-mode UI polish (§6.7), and
 a real-data pass (author Flow 1 section list, bounce+load 9 WAVs, run the Max verify checklist).
 
 **Module files** in `generated/`: `main.maxpat`, `transport.maxpat`+`transport_barbeat.js`,
 `cues.maxpat`+`cues_engine.js`, `playvoice.maxpat`, `playback.maxpat`, `click.maxpat`+`clicks_engine.js`,
+`micstrip.maxpat`, `mics.maxpat`,
 `psycography_sections.txt` (placeholder), `psycography_measures.txt`/`_beats.txt`/`_clicks.txt`/`_timeline.json`
 (Flow 1). Tools in `tools/`: `midi_to_timeline.py` (emits measures/beats/clicks colls), `make_synth_midi.py`.
 
