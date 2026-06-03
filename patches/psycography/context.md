@@ -451,31 +451,69 @@ test toggles.
 - `edge~` does not double-fire when `sig~` jumps up after a fire (1→0 is a falling edge, ignored).
 - coll read latency vs the `delay 300` before dump (same caveat as transport).
 
-### Next: main-patch assembly (§6.7) — wire transport + cues + playback + click into one main.maxpat
-(send~ master bus; cues→transport/playback/click hooks; click out→ch10; presentation UI), then the
-io/mics scaffold (§6.4–6.5).
+### Module 6 — main-patch assembly (BUILT, committed)
+File: `generated/main.maxpat`. Validation clean; critic 0 blockers (warnings = cosmetic midpoints/tile
+overlaps + one benign hot/cold note on cues' `ended` message inlet). All four modules embedded as bpatchers
+and wired into one runnable patch. **The full piece is now assembled.**
+
+**Embedded modules (bpatchers):** `transport.maxpat` (1 in / 3 out), `cues.maxpat` (2 in / 3 out),
+`click.maxpat` (1 in / 2 out, outlet 0 typed signal), `playback.maxpat` (1 in / 0 out; contains the 9
+`playvoice` tiles + free bed). Each module's built-in test UI shows inside its tile.
+
+**Wiring (as designed in §8/§9 map):**
+- `cues` out0 → `transport` in0 (section commands: seekmeasure / endstop / go / stop).
+- `transport` out2 (ended) → `cues` in1 (auto-stop at free boundary advances the section logic).
+- `cues` out2 (clickmute / free-audio) → `send hooks` → two `receive hooks` → `click` in0 + `playback` in0.
+- Master clock bus is implicit: `transport`'s `send~ master` → every `receive~ master` (playback voices +
+  click). No explicit cord.
+- `click` out0 → `dac~ 10` (dedicated click channel); `playback` drives program ch 1–9 via its internal
+  `mc.dac~`.
+- `transport` out0 (sample) → master-sample number readout.
+
+**Master control strip:**
+- `; dsp start` / `; dsp stop` message buttons (audio engine on/off).
+- **SECTION GO** button → `t b b`: fires `go` → `cues` (advance), then (after `delay 20`) `resync` → `click`
+  so the click pointer re-syncs once the master has settled at the new seek position.
+- **STOP** → `stop` → `transport`. **RESET** → `reset` → `cues`.
+- **start @ measure** number (rehearsal start-anywhere) → `t b i`: `seekmeasure $1` → `transport`, then `go`
+  + `resync` (`delay 20`).
+- master-sample number readout.
+
+**Verify in Max (integration):**
+- Load `main.maxpat`; the four module tiles should load their sub-patches (all in `generated/`). Turn DSP
+  on. SECTION GO walks the section list (click sections seek+run+auto-stop at free boundaries); STOP halts.
+- `start @ measure` N jumps the whole rig (click + 9 audio voices) to measure N — confirm click and audio
+  land together (sample-lock) and the click pointer re-syncs (`resync` 20 ms delay is enough before the
+  first beat).
+- Confirm the per-module verify items still hold in the assembled context (count~ set-then-go; play~
+  auto-silence; click crossing/seek-resync; groove~ bed start/stop).
+- Edit `psycography_sections.txt` with the **real Flow 1 sections** (still the placeholder list) before a
+  real rehearsal run.
+- Load real WAVs into the 9 voices (per-slot `read` in the playback tile) — buffers are empty until then.
+
+### Next: io/mics scaffold (§6.4–6.5: `mc.adc~ 1..10` → per-mic `meter~` + bypassable processing-insert
+slot, stubbed) and presentation-mode UI polish (§6.7). Then real-data pass: author the Flow 1 section list,
+bounce + load the 9 program WAVs, and run the Max verify checklist.
 
 ---
 
 ## 9. RESUME POINTER / build playbook (read this first in a fresh window)
 
-**State (stage=build):** transport (clock+seek+GO/STOP+bar:beat+auto-stop), timeline tool (MIDI→coll data
-incl. clicks, Flow 1 loaded), cue/section manager, playback (playvoice + 9-voice engine + free bed),
-**click engine (crossing detector + synth + per-section gates)** — all BUILT & committed. **All five core
-modules done. Next: main-patch assembly** — wire transport + cues + playback + click into one `main.maxpat`
-(§6.7), then the io/mics scaffold (§6.4–6.5).
+**State (stage=build):** ALL CORE MODULES + MAIN ASSEMBLY BUILT & committed — transport (clock+seek+GO/STOP+
+bar:beat+auto-stop), timeline tool (MIDI→coll data incl. clicks, Flow 1 loaded), cue/section manager,
+playback (playvoice + 9-voice engine + free bed), click engine (crossing detector + synth + per-section
+gates), and **`main.maxpat`** (all four modules embedded + wired + master control strip). **The piece is
+assembled and runnable in Max.** Next: io/mics scaffold (§6.4–6.5), presentation-mode UI polish (§6.7), and
+a real-data pass (author Flow 1 section list, bounce+load 9 WAVs, run the Max verify checklist).
 
-**Module files** in `generated/`: `transport.maxpat`+`transport_barbeat.js`, `cues.maxpat`+`cues_engine.js`,
-`playvoice.maxpat`, `playback.maxpat`, `click.maxpat`+`clicks_engine.js`, `psycography_sections.txt`
-(placeholder), `psycography_measures.txt`/`_beats.txt`/`_clicks.txt`/`_timeline.json` (Flow 1).
-Tools in `tools/`: `midi_to_timeline.py` (emits measures/beats/clicks colls), `make_synth_midi.py`.
-Not yet assembled into one main patch.
+**Module files** in `generated/`: `main.maxpat`, `transport.maxpat`+`transport_barbeat.js`,
+`cues.maxpat`+`cues_engine.js`, `playvoice.maxpat`, `playback.maxpat`, `click.maxpat`+`clicks_engine.js`,
+`psycography_sections.txt` (placeholder), `psycography_measures.txt`/`_beats.txt`/`_clicks.txt`/`_timeline.json`
+(Flow 1). Tools in `tools/`: `midi_to_timeline.py` (emits measures/beats/clicks colls), `make_synth_midi.py`.
 
-**Main-patch wiring map (for assembly):** one `send~ master` (transport) feeds all `receive~ master`
-(playback voices + click). `cues` out0 → `transport` cmd inlet; `transport` out2 (ended) → `cues` in1;
-`cues` out2 (clickmute/free-audio) → `click` inlet + `playback` hooks inlet. On each transport seek/GO,
-also send `resync` to `click`. `click` out0 → io ch 10; `playback` `mc.dac~` → ch 1–9. Edit
-`psycography_sections.txt` with the real Flow 1 sections (still a placeholder).
+**Main patch is assembled** (see Module 6 in §8 for the full wiring + control strip). Open `main.maxpat`,
+turn DSP on, SECTION GO to walk sections, `start @ measure` for rehearsal jumps. Still TODO before a real
+run: edit `psycography_sections.txt` with real Flow 1 sections; load the 9 program WAVs (empty buffers).
 
 **How patches are built here (mechanics):**
 - Build a `Patcher` in-memory in an EPHEMERAL script under `/tmp` (NOT in the repo — Rule #5), run with
