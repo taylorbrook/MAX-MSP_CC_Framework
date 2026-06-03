@@ -403,24 +403,79 @@ owns ch 10 via transport). Per-voice metering = each playvoice tile's internal `
 - bpatcher `#1`/`#2` substitution: `buffer~ slot-N`, `-~ <offset>`, `play~ slot-N`, `info~ slot-N` resolve
   per instance.
 
-### Next: Module — click engine (§6.3) + main UI assembly (§6.7) wiring transport + cues + playback together
+### Module 5 — click engine (BUILT, committed)
+Files: `generated/click.maxpat`, `generated/clicks_engine.js`; timeline tool extended to emit
+`generated/psycography_clicks.txt`. Validation clean; critic 0 blockers (warnings = benign control→signal
+on the js→sig~ / msg→cycle~ taps + cosmetic midpoints + one benign gate hot/cold note — the subdiv gate's
+control is set per-section, well before per-click bangs). Sample-accurate, seek-safe, per-section flexible.
+
+**Timeline tool (`midi_to_timeline.py`) now emits clicks** (Module 2 extension): `<name>_clicks.txt` coll,
+`index → "sample type"` (type 0=plain beat, 1=accent/downbeat, 2=eighth subdivision), sorted ascending.
+Flow 1 = 1648 events. Eighth subdivisions sit at each beat midpoint (gated per-section at runtime).
+Regenerate per flow: `python3 tools/midi_to_timeline.py <flow.mid> --sr 48000`.
+
+**Mechanism (§6.3):** timing lives in the SIGNAL domain; the js owns only pointer bookkeeping + seek-resync.
+- `receive~ master` → `>=~` ← `sig~ <next_sample>` → `edge~` (rising bang) → `js fire`. On fire the js
+  emits the event TYPE (→ synth) then advances the pointer and arms the next event's sample into `sig~`.
+- `sig~` initial value = 1e9 (> any sample) = **disarmed**; arming happens only on `resync`/`seek` so DSP-on
+  never spuriously fires.
+- **`clicks_engine.js`** (Node-tested, 16 cases): `clear` / `add <sample> <type>` (loaded by dumping the
+  coll, `prepend add`) / `seek <sample>` (binary-search first event ≥ sample → arm) / `fire`|bang (emit
+  type, advance, arm next) / `reset`. Outlet 0 = next threshold → `sig~`; outlet 1 = type → synth;
+  outlet 2 = status (armed/done/count).
+- **Synth:** one `cycle~` + one `line~` 40 ms burst envelope, params per type via `sel 0 1 2` → `t b b`
+  (set freq cold, then trigger env): **accent 1500 Hz/1.0 · beat 1000 Hz/0.6 · subdiv 800 Hz/0.4**.
+  `cycle~` × `line~` (env) × clickmute-gate `*~` → click outlet. (§6.10 defaults; easy to retune.)
+- **Per-section gating:** `clickmute` (cues hook: 0=on→`== 0`→1 pass, 1=off→0 mute) gates the whole synth;
+  `subdiv 0|1` opens/closes a `gate` on type-2 events only. Defaults at load: click ON, subdivision OFF.
+- **Count-in** needs no special logic here — the cue manager seeks `count~` to (start − count-in span) and
+  the precomputed events play the lead-in naturally.
+
+**`click.maxpat` I/O contract:** inlet 0 = control (`seek <n>` · `clickmute 0|1` · `subdiv 0|1` ·
+`resync` · `reset`); outlet 0 = click audio (signal) → dedicated **ch 10** in main; outlet 1 = scheduler
+status. Built-in test UI: 3 buttons audition accent/beat/subdiv timbres (bypass the clock); subdiv + click
+test toggles.
+
+**Integration (wire in the main patch later):**
+- `click` `receive~ master` taps `transport`'s `send~ master` (no explicit wire).
+- `cues` outlet 2 `clickmute` → `click` inlet 0 (and `playback` shares the same hook line).
+- On every transport seek/GO, send **`resync`** to `click` inlet 0 so the pointer re-syncs to the new master
+  position (the click module snapshots master itself — no need to thread the sample through).
+- `click` outlet 0 → io module channel 10 (e.g. a `mc.pack~ 10` inlet 10, or `dac~ 10`).
+
+**Verify in Max (carry forward):**
+- Seek landing exactly on an event sample (e.g. seek-to-downbeat): master set to S == threshold S makes
+  `>=~` read 1 with no rising edge → that first click may not fire. Mitigated in practice by count-in /
+  arming via `resync` (which seeks to the *current* master, before the next event). Confirm behavior; if the
+  exact-downbeat click is dropped, arm one sample early (`threshold − 1`) in `clicks_engine.js`.
+- `edge~` does not double-fire when `sig~` jumps up after a fire (1→0 is a falling edge, ignored).
+- coll read latency vs the `delay 300` before dump (same caveat as transport).
+
+### Next: main-patch assembly (§6.7) — wire transport + cues + playback + click into one main.maxpat
+(send~ master bus; cues→transport/playback/click hooks; click out→ch10; presentation UI), then the
+io/mics scaffold (§6.4–6.5).
 
 ---
 
 ## 9. RESUME POINTER / build playbook (read this first in a fresh window)
 
-**State (stage=build):** transport (clock+seek+GO/STOP+bar:beat+auto-stop), timeline tool (MIDI→coll data,
-Flow 1 loaded), cue/section manager, **playback (playvoice + 9-voice engine + free bed)** — all BUILT &
-committed. **Next: click engine** (§6.3: signal-domain `>=~`/`edge~` crossing detection off `receive~
-master` against `clicks` coll → accent/plain/subdivision synth → dedicated ch 10) **then main-patch
-assembly** (wire transport + cues + playback together; presentation UI §6.7).
+**State (stage=build):** transport (clock+seek+GO/STOP+bar:beat+auto-stop), timeline tool (MIDI→coll data
+incl. clicks, Flow 1 loaded), cue/section manager, playback (playvoice + 9-voice engine + free bed),
+**click engine (crossing detector + synth + per-section gates)** — all BUILT & committed. **All five core
+modules done. Next: main-patch assembly** — wire transport + cues + playback + click into one `main.maxpat`
+(§6.7), then the io/mics scaffold (§6.4–6.5).
 
 **Module files** in `generated/`: `transport.maxpat`+`transport_barbeat.js`, `cues.maxpat`+`cues_engine.js`,
-`playvoice.maxpat`, `playback.maxpat`, `psycography_sections.txt` (placeholder),
-`psycography_measures.txt`/`_beats.txt`/`_timeline.json` (Flow 1).
-Tools in `tools/`: `midi_to_timeline.py`, `make_synth_midi.py`. Not yet assembled into one main patch.
-NOTE: the timeline tool does NOT yet emit `clicks` coll data — the click engine needs a `<piece>_clicks.txt`
-(index → sample_offset, type 0=beat/1=accent/2=subdivision); add that emitter when building the click module.
+`playvoice.maxpat`, `playback.maxpat`, `click.maxpat`+`clicks_engine.js`, `psycography_sections.txt`
+(placeholder), `psycography_measures.txt`/`_beats.txt`/`_clicks.txt`/`_timeline.json` (Flow 1).
+Tools in `tools/`: `midi_to_timeline.py` (emits measures/beats/clicks colls), `make_synth_midi.py`.
+Not yet assembled into one main patch.
+
+**Main-patch wiring map (for assembly):** one `send~ master` (transport) feeds all `receive~ master`
+(playback voices + click). `cues` out0 → `transport` cmd inlet; `transport` out2 (ended) → `cues` in1;
+`cues` out2 (clickmute/free-audio) → `click` inlet + `playback` hooks inlet. On each transport seek/GO,
+also send `resync` to `click`. `click` out0 → io ch 10; `playback` `mc.dac~` → ch 1–9. Edit
+`psycography_sections.txt` with the real Flow 1 sections (still a placeholder).
 
 **How patches are built here (mechanics):**
 - Build a `Patcher` in-memory in an EPHEMERAL script under `/tmp` (NOT in the repo — Rule #5), run with
