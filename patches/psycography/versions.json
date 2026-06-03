@@ -12,6 +12,14 @@
       "files_changed": [
         "click.maxpat"
       ]
+    },
+    {
+      "version": "0.1.1",
+      "description": "clean gen~ click comments (validator false-positive fix)",
+      "timestamp": "2026-06-03T21:02:10.307648+00:00",
+      "files_changed": [
+        "click.maxpat"
+      ]
     }
   ]
 }
