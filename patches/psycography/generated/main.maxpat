@@ -794,6 +794,52 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-38",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        40,
+                        965,
+                        506.0,
+                        20.0
+                    ],
+                    "text": "mics (10-ch input: per-channel meter + stubbed processing-insert slot)",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "bpatcher",
+                    "id": "obj-39",
+                    "numinlets": 0,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        40,
+                        985,
+                        1420,
+                        340
+                    ],
+                    "args": [],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "lockeddragscroll": 0,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "viewvisibility": 1,
+                    "name": "mics.maxpat"
+                }
             }
         ],
         "lines": [
