@@ -121,7 +121,7 @@
                     ],
                     "args": [
                         "slot-1",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -193,7 +193,7 @@
                     ],
                     "args": [
                         "slot-2",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -265,7 +265,7 @@
                     ],
                     "args": [
                         "slot-3",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -337,7 +337,7 @@
                     ],
                     "args": [
                         "slot-4",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -409,7 +409,7 @@
                     ],
                     "args": [
                         "slot-5",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -481,7 +481,7 @@
                     ],
                     "args": [
                         "slot-6",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -553,7 +553,7 @@
                     ],
                     "args": [
                         "slot-7",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -625,7 +625,7 @@
                     ],
                     "args": [
                         "slot-8",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -697,7 +697,7 @@
                     ],
                     "args": [
                         "slot-9",
-                        "0"
+                        0
                     ],
                     "bgmode": 0,
                     "border": 0,
