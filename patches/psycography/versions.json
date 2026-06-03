@@ -4,6 +4,14 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-06-01T20:32:01.999274+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "noise-based gen~ click (replaces pitched cycle~/line~ sine)",
+      "timestamp": "2026-06-03T21:00:17.701169+00:00",
+      "files_changed": [
+        "click.maxpat"
+      ]
     }
   ]
 }
