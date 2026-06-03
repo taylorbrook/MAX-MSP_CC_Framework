@@ -896,8 +896,26 @@
             },
             {
                 "box": {
+                    "maxclass": "comment",
+                    "id": "obj-54",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        550.0,
+                        10.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "v0.1.1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
                     "maxclass": "newobj",
-                    "id": "obj-53",
+                    "id": "obj-55",
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [
@@ -1015,7 +1033,7 @@
                                         200.0
                                     ],
                                     "parameter_enable": 0,
-                                    "code": "\n// Noisy click generator -- replaces the pitched cycle~/line~ sine click.\n// in1: trigger impulse (from click~).  in2: click type (0=beat, 1=accent, 2=subdiv).\n// out1: click audio (signal).\nHistory env(0.);\nHistory lp(0.);\n\ntrig = in1 > 0.;\ntyp = in2;\n\n// per-type amplitude, brightness (1-pole LP coef), decay time (ms)\ntamp   = (typ >= 1.5) ? 0.4  : (typ >= 0.5) ? 1.0 : 0.6;\nbright = (typ >= 1.5) ? 0.35 : (typ >= 0.5) ? 0.9 : 0.6;\ntdec   = (typ >= 1.5) ? 14.  : (typ >= 0.5) ? 30. : 22.;\n\n// exponential decay envelope: snap to amp on trigger, decay otherwise\ndecaysamps = tdec * 0.001 * samplerate;\ncoef = exp(-1. / decaysamps);\nenvval = trig ? tamp : env * coef;\nenv = envval;\n\n// tone-shaped white noise (1-pole lowpass; brighter for accents)\nn = noise();\nlpval = lp + bright * (n - lp);\nlp = lpval;\n\nout1 = lpval * envval;\n",
+                                    "code": "\n// Noisy click generator -- replaces the pitched cycle~/line~ sine click.\n// in1: 1-sample tick from click tilde.  in2: which click. 0=beat 1=accent 2=subdiv.\n// out1: click signal.\nHistory env(0.);\nHistory lp(0.);\n\ntrig = in1 > 0.;\ntyp = in2;\n\n// per-click level, lowpass coef, and decay in ms\ntamp   = (typ >= 1.5) ? 0.4  : (typ >= 0.5) ? 1.0 : 0.6;\nbright = (typ >= 1.5) ? 0.35 : (typ >= 0.5) ? 0.9 : 0.6;\ntdec   = (typ >= 1.5) ? 14.  : (typ >= 0.5) ? 30. : 22.;\n\n// exp decay env: snap to level on tick, otherwise decay\ndecaysamps = tdec * 0.001 * samplerate;\ncoef = exp(-1. / decaysamps);\nenvval = trig ? tamp : env * coef;\nenv = envval;\n\n// 1-pole lowpass on white noise, higher coef is brighter for accents\nn = noise();\nlpval = lp + bright * (n - lp);\nlp = lpval;\n\nout1 = lpval * envval;\n",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -1086,24 +1104,6 @@
                             1.0
                         ]
                     }
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "comment",
-                    "id": "obj-54",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [
-                        550.0,
-                        10.0,
-                        58.0,
-                        20.0
-                    ],
-                    "text": "v0.1.0",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
                 }
             }
         ],
@@ -1639,11 +1639,47 @@
             {
                 "patchline": {
                     "source": [
+                        "obj-30",
+                        0
+                    ],
+                    "destination": [
+                        "obj-52",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-31",
+                        0
+                    ],
+                    "destination": [
+                        "obj-52",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-52",
+                        0
+                    ],
+                    "destination": [
+                        "obj-55",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
                         "obj-29",
                         1
                     ],
                     "destination": [
-                        "obj-53",
+                        "obj-55",
                         1
                     ]
                 }
@@ -1652,35 +1688,11 @@
                 "patchline": {
                     "source": [
                         "obj-30",
-                        0
-                    ],
-                    "destination": [
-                        "obj-52",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-30",
                         1
                     ],
                     "destination": [
-                        "obj-53",
+                        "obj-55",
                         1
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-31",
-                        0
-                    ],
-                    "destination": [
-                        "obj-52",
-                        0
                     ]
                 }
             },
@@ -1691,7 +1703,7 @@
                         1
                     ],
                     "destination": [
-                        "obj-53",
+                        "obj-55",
                         1
                     ]
                 }
@@ -1699,19 +1711,7 @@
             {
                 "patchline": {
                     "source": [
-                        "obj-52",
-                        0
-                    ],
-                    "destination": [
-                        "obj-53",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-53",
+                        "obj-55",
                         0
                     ],
                     "destination": [
