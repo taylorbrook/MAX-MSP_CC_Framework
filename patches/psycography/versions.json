@@ -20,6 +20,11 @@
       "files_changed": [
         "click.maxpat"
       ]
+    },
+    {
+      "version": "0.1.2",
+      "description": "layout cleanup (re-apply): tidy boxes + segment cords across all patches",
+      "timestamp": "2026-06-04T14:57:22.080879+00:00"
     }
   ]
 }
