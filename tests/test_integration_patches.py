@@ -63,7 +63,7 @@ def test_validate_patch_no_errors(patch_path: Path, db: ObjectDatabase) -> None:
     with open(patch_path) as f:
         patch_dict = json.load(f)
 
-    results = validate_patch(patch_dict, db, patch_dir=patch_path.parent)
+    results = validate_patch(patch_dict, db)
     blocking = [r for r in results if r.level == "error" and not r.auto_fixed]
 
     assert not blocking, (
