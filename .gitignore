@@ -1,2 +1,13 @@
 # Local Max package source files copied for DB audits — never committed
 .claude/max-objects/_pkg-source/
+
+# Python build artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# OS junk
+.DS_Store
+
+# Claude Code agent worktrees
+.claude/worktrees/
