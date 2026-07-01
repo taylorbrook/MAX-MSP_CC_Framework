@@ -1,22 +1,22 @@
 {
-  "total_files_found": 4,
-  "total_objects": 4,
+  "total_files_found": 36,
+  "total_objects": 3430,
   "domain_counts": {
-    "max": 0,
-    "msp": 0,
-    "jitter": 0,
-    "mc": 0,
-    "gen": 0,
-    "m4l": 0,
-    "rnbo": 0,
-    "packages": 4
+    "max": 471,
+    "msp": 246,
+    "jitter": 218,
+    "mc": 222,
+    "gen": 189,
+    "m4l": 35,
+    "rnbo": 560,
+    "packages": 1489
   },
   "error_count": 0,
   "errors": [],
   "inlet_type_fallback_count": 0,
-  "variable_io_count": 0,
-  "empty_inlets_count": 4,
-  "empty_outlets_count": 4,
-  "extraction_timestamp": "2026-04-17T05:53:44.734664+00:00",
-  "max_installation_path": ".claude/max-objects/_pkg-source/nn_tilde"
+  "variable_io_count": 30,
+  "empty_inlets_count": 270,
+  "empty_outlets_count": 293,
+  "extraction_timestamp": "2026-07-01T21:43:50.189201+00:00",
+  "max_installation_path": ".claude/max-objects"
 }
