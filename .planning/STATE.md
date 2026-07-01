@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-05-01 — milestone close
+Last activity: 2026-07-01 - Completed quick task 260701-jxg: repo review + improvement report
 
 ## Performance Metrics
 
@@ -63,6 +63,10 @@ None.
 ### Quick Tasks Completed
 
 (See history in prior STATE.md snapshots; archived at milestone close.)
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260701-jxg | Repo review + improvement report | 2026-07-01 | (docs commit) | [260701-jxg-review-repo-and-produce-improvement-repo](./quick/260701-jxg-review-repo-and-produce-improvement-repo/) |
 
 ## Deferred Items
 
