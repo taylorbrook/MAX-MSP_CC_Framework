@@ -1791,8 +1791,18 @@ class TestPackageValidation:
 class TestCommunityPackageBlock:
     """PKG-21: Warn when patch uses objects from unextracted community packages."""
 
-    def test_community_block_warning(self, db):
-        """Patch with fluid.ampfeature~ produces warning when FluCoMa extracted=false."""
+    def test_community_block_warning(self, db, monkeypatch):
+        """Patch with fluid.ampfeature~ produces warning when FluCoMa extracted=false.
+
+        FluCoMa is now extracted=true in the DB (intentional backfill), so the
+        warning branch is exercised by forcing extracted=false -- the inverse
+        of the sibling test_no_warning_when_extracted. This still verifies the
+        real behavior under test: unextracted community package -> warning."""
+        original_info = db.get_package_info("FluCoMa")
+        patched_info = dict(original_info) if original_info else {}
+        patched_info["extracted"] = False
+        monkeypatch.setitem(db._package_info, "FluCoMa", patched_info)
+
         patch = _make_patch_dict(boxes=[
             _make_box("obj-1", text="fluid.ampfeature~",
                       numinlets=1, numoutlets=2, outlettype=["signal", ""]),
@@ -1848,8 +1858,16 @@ class TestCommunityPackageBlock:
                         and "not extracted" in r.message]
         assert len(pkg_warnings) == 0
 
-    def test_ircam_spat_specific_message(self, db):
-        """IRCAM Spat gets a specific download message, not Package Manager."""
+    def test_ircam_spat_specific_message(self, db, monkeypatch):
+        """IRCAM Spat gets a specific download message, not Package Manager.
+
+        IRCAM Spat is now extracted=true in the DB (intentional backfill), so
+        force extracted=false to exercise the warning branch this test targets."""
+        original_info = db.get_package_info("IRCAM Spat")
+        patched_info = dict(original_info) if original_info else {}
+        patched_info["extracted"] = False
+        monkeypatch.setitem(db._package_info, "IRCAM Spat", patched_info)
+
         patch = _make_patch_dict(boxes=[
             _make_box("obj-1", text="spat5.panning~",
                       numinlets=2, numoutlets=2, outlettype=["signal", ""]),

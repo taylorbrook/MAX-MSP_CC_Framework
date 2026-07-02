@@ -2055,8 +2055,21 @@ class TestPackageCritic:
 
     # --- Community extraction tests ---
 
-    def test_community_unextracted_warning(self):
-        """Patch with FluCoMa object (community, extracted=false) produces warning."""
+    def test_community_unextracted_warning(self, monkeypatch):
+        """Patch with FluCoMa object (community, extracted=false) produces warning.
+
+        FluCoMa is now extracted=true in the DB (intentional backfill), so force
+        extracted=false on a local db to exercise the warning branch this test
+        targets: unextracted community package -> warning. Mirrors the
+        monkeypatch pattern in test_validation.py::test_no_warning_when_extracted."""
+        from src.maxpat.db_lookup import ObjectDatabase
+
+        db = ObjectDatabase()
+        original_info = db.get_package_info("FluCoMa")
+        patched_info = dict(original_info) if original_info else {}
+        patched_info["extracted"] = False
+        monkeypatch.setitem(db._package_info, "FluCoMa", patched_info)
+
         boxes = [
             {
                 "id": "obj-1",
@@ -2068,7 +2081,7 @@ class TestPackageCritic:
             },
         ]
         patch = _make_patch(boxes, [])
-        results = review_packages(patch)
+        results = review_packages(patch, db=db)
         community_warnings = [r for r in results if r.severity == "warning" and "unextracted" in r.finding.lower()]
         assert len(community_warnings) >= 1, f"Expected community extraction warning, got: {results}"
 
