@@ -1,0 +1,1304 @@
+{
+  "_doc": "Documents pre-existing review-blocker DEBT in committed .maxpat files so tests/test_integration_patches.py::test_review_patch_no_blockers can exempt ONLY these specific findings. Committed patches are frozen (never edited to satisfy critics -- regression constraint). Exemptions are per-patch AND per-blocker-signature: a new patch (path not listed here) or a new blocker (signature not explicitly listed for its patch) is NEVER exempted and still fails. Fan-out entries (CLAUDE.md Rule #4 fan-out-without-trigger) match on (source_id, outlet); Bach-llll entries (send/receive routing-bridge false positives -- a receive object's output llll-ness is statically unknowable) match on (source_id, inlet, sorted destinations). source/destinations names are kept for human auditability. This is a TEST-only exemption; critic behavior at generation time is unchanged.",
+  "patches": {
+    "patches/gen-eq/generated/gen-eq.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "expr",
+        "source_id": "obj-12",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "expr",
+        "source_id": "obj-23",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-28",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-34",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "loadbang",
+        "source_id": "obj-4",
+        "outlet": 0,
+        "destinations": [
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message",
+          "message"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "expr",
+        "source_id": "obj-41",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-46",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-52",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "expr",
+        "source_id": "obj-59",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-64",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-70",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "expr",
+        "source_id": "obj-77",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-87",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-93",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "prepend"
+        ]
+      }
+    ],
+    "patches/gong-model/generated/gong-model.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "live.dial",
+        "source_id": "obj-308",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "receive",
+        "source_id": "obj-335",
+        "outlet": 0,
+        "destinations": [
+          "js",
+          "i"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "toggle",
+        "source_id": "obj-349",
+        "outlet": 0,
+        "destinations": [
+          "p",
+          "metro"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "metro",
+        "source_id": "obj-354",
+        "outlet": 0,
+        "destinations": [
+          "button",
+          "p"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "vexpr",
+        "source_id": "obj-409",
+        "outlet": 0,
+        "destinations": [
+          "p",
+          "prepend"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "/",
+        "source_id": "obj-6",
+        "outlet": 0,
+        "destinations": [
+          ">",
+          "prepend",
+          "prepend"
+        ]
+      }
+    ],
+    "patches/intelligent-corpus-remixer/generated/intelligent-corpus-remixer.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "p",
+        "source_id": "obj-25",
+        "outlet": 1,
+        "destinations": [
+          "number",
+          "p"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "p",
+        "source_id": "obj-26",
+        "outlet": 0,
+        "destinations": [
+          "message",
+          "message"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "route",
+        "source_id": "obj-42",
+        "outlet": 0,
+        "destinations": [
+          "jsui",
+          "dict.view"
+        ]
+      }
+    ],
+    "patches/kicksynth/generated/kicksynth.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "number",
+        "source_id": "obj-129",
+        "outlet": 0,
+        "destinations": [
+          "int",
+          "int"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "prepend",
+        "source_id": "obj-31",
+        "outlet": 0,
+        "destinations": [
+          "gen~",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "prepend",
+        "source_id": "obj-35",
+        "outlet": 0,
+        "destinations": [
+          "gen~",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "prepend",
+        "source_id": "obj-39",
+        "outlet": 0,
+        "destinations": [
+          "gen~",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "prepend",
+        "source_id": "obj-43",
+        "outlet": 0,
+        "destinations": [
+          "gen~",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "prepend",
+        "source_id": "obj-47",
+        "outlet": 0,
+        "destinations": [
+          "gen~",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "prepend",
+        "source_id": "obj-51",
+        "outlet": 0,
+        "destinations": [
+          "gen~",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "prepend",
+        "source_id": "obj-55",
+        "outlet": 0,
+        "destinations": [
+          "gen~",
+          "js"
+        ]
+      }
+    ],
+    "patches/minitaur/generated/minitaur.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-100",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-106",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-112",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-121",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-127",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-13",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "message",
+        "source_id": "obj-168",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "message",
+        "source_id": "obj-170",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "message",
+        "source_id": "obj-172",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "message",
+        "source_id": "obj-174",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "message",
+        "source_id": "obj-176",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "message",
+        "source_id": "obj-178",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "message",
+        "source_id": "obj-180",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "message",
+        "source_id": "obj-182",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-19",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "kslider",
+        "source_id": "obj-219",
+        "outlet": 0,
+        "destinations": [
+          "clip",
+          "message"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "kslider",
+        "source_id": "obj-219",
+        "outlet": 1,
+        "destinations": [
+          ">",
+          "message"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "clip",
+        "source_id": "obj-220",
+        "outlet": 0,
+        "destinations": [
+          "mtof",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-239",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-245",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-250",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-256",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-265",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-277",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-282",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-31",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-37",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-43",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-49",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-55",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-61",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-67",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-73",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-79",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-85",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-91",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "send"
+        ]
+      }
+    ],
+    "patches/mixer/generated/mixer-bus.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "!-",
+        "source_id": "obj-12",
+        "outlet": 0,
+        "destinations": [
+          "*~",
+          "*~"
+        ]
+      }
+    ],
+    "patches/performancepatchtest/generated/comp-band.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-16",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-18",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-20",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-22",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-24",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      }
+    ],
+    "patches/physics-composition/generated/physics-composition.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "button",
+        "source_id": "obj-25",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "message"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "bach_llll",
+        "source": "receive",
+        "source_id": "obj-72",
+        "inlet": 0,
+        "destinations": [
+          "bach.roll"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "bach_llll",
+        "source": "receive",
+        "source_id": "obj-73",
+        "inlet": 0,
+        "destinations": [
+          "bach.roll"
+        ]
+      }
+    ],
+    "patches/rhythmic-sampler/generated/rhythmic-sampler.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "number",
+        "source_id": "obj-3",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "expr"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "toggle",
+        "source_id": "obj-4",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "metro"
+        ]
+      }
+    ],
+    "patches/rhythmic-sampler/generated/slot.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-138",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "*",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "*",
+        "source_id": "obj-149",
+        "outlet": 0,
+        "destinations": [
+          "expr",
+          "groove~",
+          "message"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-44",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "expr"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-46",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "sig~"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-48",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "sig~"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-52",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "sig~"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-54",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "sig~"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-56",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "pack"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-57",
+        "outlet": 0,
+        "destinations": [
+          "*",
+          "flonum"
+        ]
+      }
+    ],
+    "patches/scala-synth/generated/scala-synth-voice.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "split",
+        "source_id": "obj-6",
+        "outlet": 0,
+        "destinations": [
+          "scale",
+          "message",
+          "message"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "split",
+        "source_id": "obj-6",
+        "outlet": 1,
+        "destinations": [
+          "message",
+          "delay"
+        ]
+      }
+    ],
+    "patches/scala-synth/generated/scala-synth.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "button",
+        "source_id": "obj-13",
+        "outlet": 0,
+        "destinations": [
+          "message",
+          "trigger"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "button",
+        "source_id": "obj-14",
+        "outlet": 0,
+        "destinations": [
+          "message",
+          "trigger"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "notein",
+        "source_id": "obj-2",
+        "outlet": 1,
+        "destinations": [
+          "poly",
+          "pack",
+          "number"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "notein",
+        "source_id": "obj-2",
+        "outlet": 0,
+        "destinations": [
+          "poly",
+          "pack",
+          "number"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "number",
+        "source_id": "obj-26",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-28",
+        "outlet": 0,
+        "destinations": [
+          "scale",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-29",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-31",
+        "outlet": 0,
+        "destinations": [
+          "scale",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-34",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "scale"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-35",
+        "outlet": 0,
+        "destinations": [
+          "send",
+          "js"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-37",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "scale"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-40",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "scale"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-43",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "scale"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-46",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "scale"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-49",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "scale"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "dial",
+        "source_id": "obj-52",
+        "outlet": 0,
+        "destinations": [
+          "flonum",
+          "sig~"
+        ]
+      }
+    ],
+    "patches/stutter/generated/stutter.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "+",
+        "source_id": "obj-22",
+        "outlet": 0,
+        "destinations": [
+          "selector~",
+          "selector~"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "toggle",
+        "source_id": "obj-28",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "led"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-32",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-37",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-40",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-45",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-48",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      },
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "scale",
+        "source_id": "obj-51",
+        "outlet": 0,
+        "destinations": [
+          "prepend",
+          "flonum"
+        ]
+      }
+    ],
+    "patches/wormhole/generated/wormhole-test.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "umenu",
+        "source_id": "obj-6",
+        "outlet": 0,
+        "destinations": [
+          "selector~",
+          "selector~"
+        ]
+      }
+    ]
+  }
+}
