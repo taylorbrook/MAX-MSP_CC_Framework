@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-07-01 - Completed quick task 260701-r9s: backfilled signal_role type/digest metadata (WR-01 closed, 703/588 → 0/0)
+Last activity: 2026-07-02 - Completed quick task 260702-gk6: audit_empty_io by_source coverage across all domain files (43 → 164)
 
 ## Performance Metrics
 
@@ -69,6 +69,7 @@ None.
 | 260701-jxg | Repo review + improvement report | 2026-07-01 | (docs commit) | | [260701-jxg-review-repo-and-produce-improvement-repo](./quick/260701-jxg-review-repo-and-produce-improvement-repo/) |
 | 260701-k92 | Fix P0 items from 260701-jxg review: patch_dir kwarg, gitignore junk files, extraction-log regen | 2026-07-01 | d85289d | | [260701-k92-fix-p0-items-from-260701-jxg-review-patc](./quick/260701-k92-fix-p0-items-from-260701-jxg-review-patc/) |
 | 260701-r9s | Backfill signal_role metadata (WR-01): fix cmd_apply_run synthesis path, backfill empty type/digest in overrides.json | 2026-07-01 | f9b4f05 | Verified | [260701-r9s-backfill-signal-role-metadata](./quick/260701-r9s-backfill-signal-role-metadata/) |
+| 260702-gk6 | Extend audit_empty_io() with by_source coverage across all domain files (43 → 164 entries; 121 shadowed package entries surfaced) | 2026-07-02 | 676b638 | | [260702-gk6-extend-objectdatabase-audit-empty-io-to-](./quick/260702-gk6-extend-objectdatabase-audit-empty-io-to-/) |
 
 ## Deferred Items
 
