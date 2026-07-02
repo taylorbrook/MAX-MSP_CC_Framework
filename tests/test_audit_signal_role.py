@@ -1032,3 +1032,135 @@ class TestSiblingAutoMirror:
         """Real DB: mc.bands~ has no bare bands~ sibling -> None."""
         db = ObjectDatabase()
         assert audit_cli._propose_inherited_roles(db, "mc.bands~") is None
+
+
+# ── quick-260701-r9s: TestOutletMetaSynthesis + TestBackfillMetadata ──
+
+
+class TestOutletMetaSynthesis:
+    """quick-260701-r9s: cmd_apply_run's new-outlet synthesis path must
+    populate type/digest from canonical domain metadata (or a role-derived
+    fallback) instead of the empty-string stub."""
+
+    def test_new_outlet_gets_canonical_meta(self, tmp_path):
+        """Applying a role to an outlet NOT already present, with a domain
+        objects.json seeded under the isolated db_root, creates the outlet
+        with the canonical type/digest copied verbatim."""
+        overrides = _make_overrides(tmp_path, {})
+        db_root = overrides.parent
+        (db_root / "msp").mkdir(parents=True, exist_ok=True)
+        (db_root / "msp" / "objects.json").write_text(json.dumps({
+            "saw~": {
+                "name": "saw~", "domain": "MSP",
+                "outlets": [{"id": 0, "type": "signal", "digest": "Sawtooth wave"}],
+            }
+        }))
+        review = _make_review_file(tmp_path, [
+            {"object": "saw~", "outlet_id": 0, "digest": "Sawtooth wave",
+             "suggested_role": "audio", "confidence": "high", "curator_role": ""},
+        ])
+        rc = audit_cli.cmd_apply_run(review_file=review, overrides_file=overrides, force=False)
+        assert rc == 0
+        outlet = json.loads(overrides.read_text())["objects"]["saw~"]["outlets"][0]
+        assert outlet["signal_role"] == "audio"
+        assert outlet["type"] == "signal"
+        assert outlet["digest"] == "Sawtooth wave"
+
+    def test_new_outlet_audio_fallback_when_no_domain_file(self, tmp_path):
+        """No domain file present -> role-derived fallback for an audio role
+        is ('signal', 'Signal output')."""
+        overrides = _make_overrides(tmp_path, {})
+        review = _make_review_file(tmp_path, [
+            {"object": "myaudio~", "outlet_id": 0, "digest": "",
+             "suggested_role": "audio", "confidence": "high", "curator_role": ""},
+        ])
+        rc = audit_cli.cmd_apply_run(review_file=review, overrides_file=overrides, force=False)
+        assert rc == 0
+        outlet = json.loads(overrides.read_text())["objects"]["myaudio~"]["outlets"][0]
+        assert outlet["type"] == "signal"
+        assert outlet["digest"] == "Signal output"
+
+    def test_new_outlet_control_fallback_when_no_domain_file(self, tmp_path):
+        """No domain file present -> role-derived fallback for a non-audio
+        role is ('control', 'Control output')."""
+        overrides = _make_overrides(tmp_path, {})
+        review = _make_review_file(tmp_path, [
+            {"object": "myctrl", "outlet_id": 0, "digest": "some data",
+             "suggested_role": "data", "confidence": "medium", "curator_role": ""},
+        ])
+        rc = audit_cli.cmd_apply_run(review_file=review, overrides_file=overrides, force=False)
+        assert rc == 0
+        outlet = json.loads(overrides.read_text())["objects"]["myctrl"]["outlets"][0]
+        assert outlet["type"] == "control"
+        assert outlet["digest"] == "Control output"
+
+    def test_resolve_outlet_meta_helpers_exist(self):
+        """The two helpers are top-level callables."""
+        assert callable(audit_cli._canonical_outlet_meta)
+        assert callable(audit_cli._resolve_outlet_meta)
+
+
+class TestBackfillMetadata:
+    """quick-260701-r9s: backfill-metadata subcommand fills EMPTY type/digest
+    on signal_role outlets only; never clobbers, never touches role-less
+    outlets, and is idempotent (byte-stable no-op on re-run)."""
+
+    def test_backfill_fills_empty_leaves_nonempty(self, tmp_path):
+        overrides = _make_overrides(tmp_path, {
+            "adc~": {"outlets": [
+                {"id": 0, "type": "", "digest": "", "signal_role": "audio"},
+                {"id": 1, "type": "", "digest": "Right channel", "signal_role": "audio"},
+            ]},
+        })
+        rc = audit_cli.cmd_backfill_run(overrides_file=overrides)
+        assert rc == 0
+        outs = json.loads(overrides.read_text())["objects"]["adc~"]["outlets"]
+        assert outs[0]["type"] == "signal"
+        assert outs[0]["digest"] == "Signal output"
+        assert outs[1]["type"] == "signal"
+        assert outs[1]["digest"] == "Right channel"  # non-empty digest untouched
+
+    def test_backfill_uses_canonical_when_available(self, tmp_path):
+        overrides = _make_overrides(tmp_path, {
+            "saw~": {"outlets": [{"id": 0, "type": "", "digest": "", "signal_role": "audio"}]},
+        })
+        db_root = overrides.parent
+        (db_root / "msp").mkdir(parents=True, exist_ok=True)
+        (db_root / "msp" / "objects.json").write_text(json.dumps({
+            "saw~": {"name": "saw~", "domain": "MSP",
+                     "outlets": [{"id": 0, "type": "signal", "digest": "Sawtooth wave"}]},
+        }))
+        rc = audit_cli.cmd_backfill_run(overrides_file=overrides)
+        assert rc == 0
+        outlet = json.loads(overrides.read_text())["objects"]["saw~"]["outlets"][0]
+        assert outlet["type"] == "signal"
+        assert outlet["digest"] == "Sawtooth wave"
+
+    def test_backfill_idempotent_byte_stable(self, tmp_path):
+        overrides = _make_overrides(tmp_path, {
+            "adc~": {"outlets": [{"id": 0, "type": "", "digest": "", "signal_role": "audio"}]},
+        })
+        rc1 = audit_cli.cmd_backfill_run(overrides_file=overrides)
+        assert rc1 == 0
+        after_first = overrides.read_bytes()
+        rc2 = audit_cli.cmd_backfill_run(overrides_file=overrides)
+        assert rc2 == 0
+        assert overrides.read_bytes() == after_first
+
+    def test_backfill_ignores_roleless_outlets(self, tmp_path):
+        overrides = _make_overrides(tmp_path, {
+            "foo~": {"outlets": [{"id": 0, "type": "", "digest": ""}]},  # no signal_role
+        })
+        before = overrides.read_bytes()
+        rc = audit_cli.cmd_backfill_run(overrides_file=overrides)
+        assert rc == 0
+        assert overrides.read_bytes() == before  # no mutation
+
+    def test_backfill_never_mutates_signal_role(self, tmp_path):
+        overrides = _make_overrides(tmp_path, {
+            "adc~": {"outlets": [{"id": 0, "type": "", "digest": "", "signal_role": "audio"}]},
+        })
+        rc = audit_cli.cmd_backfill_run(overrides_file=overrides)
+        assert rc == 0
+        outlet = json.loads(overrides.read_text())["objects"]["adc~"]["outlets"][0]
+        assert outlet["signal_role"] == "audio"  # role unchanged
