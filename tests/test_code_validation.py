@@ -197,6 +197,56 @@ class TestGenExprChecks:
         assert len(init_errors) >= 1
         assert "if this is a false positive" in init_errors[0].message
 
+    def test_check6_ignores_allcaps_comment_banner(self):
+        """Check 6 must not treat an ALL-CAPS section-banner word that sits
+        before a '(' inside a // comment as a GenExpr operator call. The
+        token scan runs over comment-stripped code, so a banner like
+        '// === SATURATION (Pade tanh) ===' produces zero operator errors.
+        Regression for tape-wobble (DRIFT/EQ/LFO/ROLLOFF/SATURATION/SIGNAL).
+        """
+        from src.maxpat.code_validation import validate_genexpr
+        code = (
+            "// === SATURATION (Pade tanh) ===\n"
+            "// === HF ROLLOFF (Butterworth LPF) ===\n"
+            "out1 = tanh(in1);"
+        )
+        results = validate_genexpr(code)
+        op_errors = [
+            r for r in results
+            if r.level == "error" and "Unknown GenExpr operator" in r.message
+        ]
+        assert op_errors == [], (
+            f"Comment banner misparsed as GenExpr operator: {op_errors}"
+        )
+
+    def test_check9_block_local_assign_before_use(self):
+        """A variable assigned then read entirely within the same branch is
+        valid GenExpr and must NOT be flagged as used-without-init. The real
+        'not defined' error is a READ before any assignment on the taken
+        path, not an in-block write. Mirrors the wormhole morph else-block
+        (morphL = ...; outL = ... + morphL * blend;). Regression for
+        scala-synth-voice, timestretch, wormhole.
+        """
+        from src.maxpat.code_validation import validate_genexpr
+        code = (
+            "outL = 0;\n"
+            "if (mode < 0.5) {\n"
+            "    outL = in1;\n"
+            "} else {\n"
+            "    morphL = in1 * clamp(in2, 0, 1);\n"
+            "    outL = in1 + morphL * 0.5;\n"
+            "}\n"
+            "out1 = outL;"
+        )
+        results = validate_genexpr(code)
+        init_errors = [
+            r for r in results
+            if r.level == "error" and "without prior init" in r.message
+        ]
+        assert init_errors == [], (
+            f"Block-local assign-before-use falsely flagged: {init_errors}"
+        )
+
     def test_check9_single_line_if_block_false_negative(self):
         """D-20 documented limitation: single-line `if (cond) { y = 1; }`
         constructs are missed by the line-by-line depth walker.

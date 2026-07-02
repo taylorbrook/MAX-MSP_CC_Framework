@@ -182,16 +182,20 @@ def validate_genexpr(
         db = ObjectDatabase()
 
     # Extract names declared by Param/History/Buffer/Data so we can skip them
-    # as operators. These are variable names, not function calls.
+    # as operators. These are variable names, not function calls. Scan the
+    # comment-stripped source so an ALL-CAPS banner like
+    # `// === SATURATION (Pade tanh) ===` is not tokenized -- the word before
+    # `(` inside a // comment must never be treated as an operator call
+    # (tape-wobble false positive: DRIFT/EQ/LFO/ROLLOFF/SATURATION/SIGNAL).
     declared_names = set()
     decl_pattern = re.compile(r"(?:Param|History|Delay|Buffer|Data)\s+(\w+)\s*\(")
-    for match in decl_pattern.finditer(code):
+    for match in decl_pattern.finditer(code_stripped):
         declared_names.add(match.group(1))
 
     # Extract function-call-style tokens: word followed by (
     func_pattern = re.compile(r"\b(\w+)\s*\(")
     used_funcs = set()
-    for match in func_pattern.finditer(code):
+    for match in func_pattern.finditer(code_stripped):
         func_name = match.group(1)
         if func_name not in _GENEXPR_KEYWORDS and func_name not in declared_names:
             used_funcs.add(func_name)
@@ -227,9 +231,19 @@ def validate_genexpr(
         ))
 
     # Check 9: init-before-if/else (D-16, D-20, VALID-04). Light flow
-    # analysis -- for each variable assigned inside an if/else block at
-    # brace depth >= 1, verify the same name is either assigned at depth
-    # 0 before the block OR declared via Param/History/Delay/Buffer/Data.
+    # analysis. The genuine GenExpr "not defined" error is a READ of a name
+    # at brace depth 0 whose only assignments live inside an if/else block --
+    # i.e. on a path where the block did not run, the name was never
+    # defined. A name assigned AND read entirely within the same branch is
+    # valid GenExpr and must NOT be flagged (fixes scala-synth-voice,
+    # timestretch, wormhole false positives). Two passes over `lines`:
+    #   Pass 1: collect pre_block_inits (depth-0 LHS), declared
+    #           (Param/History/Delay/Buffer/Data), and block_assigned
+    #           (names assigned at depth >= 1 that are neither pre-init nor
+    #           declared) with the line of first in-block assignment.
+    #   Pass 2: walk again; on a depth-0 read of a block_assigned name
+    #           (not pre-init, not a GenExpr keyword/builtin), record it as
+    #           a genuine read-before-init occurrence.
     # First-error-and-stop matches Check 5 posture. Documented false-
     # positive limitations (D-20) surfaced in the suggestion line.
     declared = set()
@@ -238,35 +252,67 @@ def validate_genexpr(
     ):
         declared.add(match.group(1))
 
-    if_else_inits: list[tuple[str, int]] = []
-    pre_block_inits: set[str] = set()
-    depth = 0
-    block_start_line = -1
-    assign_pattern = re.compile(r"^(\w+)\s*=")
+    # `assign_pattern` anchored at line start; a `(?!=)` guard keeps it from
+    # matching equality (`==`). The start anchor preserves the documented
+    # single-line-if false negative (`if (c) { y = 1; }` -> matches 'if').
+    assign_pattern = re.compile(r"^(\w+)\s*=(?!=)")
+    ident_pattern = re.compile(r"[A-Za-z_]\w*")
 
+    # Pass 1: assignments.
+    pre_block_inits: set[str] = set()
+    block_assigned: dict[str, int] = {}
+    depth = 0
     for i, line in enumerate(lines):
         stripped = line.strip()
         if not stripped or stripped.startswith("//") or stripped.startswith("#"):
             continue
         opens = stripped.count("{")
         closes = stripped.count("}")
-        # Detect if/else opening at depth 0, allowing leading '}' (e.g., '} else {')
-        # so we don't miss the line and leave block_start_line at -1.
-        # Note: re.match is anchored at start, so a leading \b is redundant;
-        # the trailing \b prevents matching tokens like 'ifelse'.
-        if depth == 0 and re.match(r"[}\s]*(if|else)\b", stripped) and opens > 0:
-            block_start_line = i
         m = assign_pattern.match(stripped)
         if m:
             name = m.group(1)
             if depth == 0:
                 pre_block_inits.add(name)
-            else:
-                if name not in pre_block_inits and name not in declared:
-                    if_else_inits.append((name, block_start_line))
+            elif name not in pre_block_inits and name not in declared:
+                block_assigned.setdefault(name, i)
         depth += opens - closes
         if depth < 0:
             depth = 0  # unbalanced; Check 1 already flagged it
+
+    # Pass 2: reads at depth 0. Depth is evaluated at the START of each line
+    # (before applying this line's braces) so an `if (cond) {` condition and
+    # a bare `out1 = name;` statement both count as depth-0 reads.
+    if_else_inits: list[tuple[str, int]] = []
+    seen_reads: set[str] = set()
+    depth = 0
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("//") or stripped.startswith("#"):
+            opens = stripped.count("{")
+            closes = stripped.count("}")
+            depth += opens - closes
+            if depth < 0:
+                depth = 0
+            continue
+        opens = stripped.count("{")
+        closes = stripped.count("}")
+        if depth == 0:
+            # Read portion: RHS of an assignment (LHS is a write, not a
+            # read), else the whole line.
+            m = assign_pattern.match(stripped)
+            read_src = stripped[m.end():] if m else stripped
+            for tok in ident_pattern.findall(read_src):
+                if (
+                    tok in block_assigned
+                    and tok not in pre_block_inits
+                    and tok not in _GENEXPR_KEYWORDS
+                    and tok not in seen_reads
+                ):
+                    seen_reads.add(tok)
+                    if_else_inits.append((tok, block_assigned[tok]))
+        depth += opens - closes
+        if depth < 0:
+            depth = 0
 
     seen = set()
     for name, line_no in if_else_inits:
