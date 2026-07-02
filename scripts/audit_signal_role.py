@@ -37,7 +37,11 @@ _PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from src.maxpat.db_lookup import ObjectDatabase, _SIGNAL_ROLE_ENUM  # noqa: E402
+from src.maxpat.db_lookup import (  # noqa: E402
+    DOMAIN_LOAD_ORDER,
+    ObjectDatabase,
+    _SIGNAL_ROLE_ENUM,
+)
 
 
 # ── Module constants ──────────────────────────────────────────────
@@ -525,6 +529,80 @@ def cmd_audit(args: argparse.Namespace) -> int:
     )
 
 
+# ── canonical outlet-metadata helpers (quick-260701-r9s) ──────────
+
+
+def _canonical_outlet_meta(
+    db_root: Path,
+) -> dict[tuple[str, int], tuple[str, str]]:
+    """Map (object_name, outlet_id) -> (type, digest) from domain JSON.
+
+    Reads {db_root}/{domain}/objects.json for each domain in
+    DOMAIN_LOAD_ORDER (plus the packages/*/objects.json subdir scan),
+    mirroring the ObjectDatabase loader's merge order so core domains
+    (msp/max, loaded last) win over rnbo duplicates. Missing domain files
+    are skipped silently so isolated tmp_path roots that only create
+    overrides.json still resolve to an empty map (falling back to
+    role-derived metadata downstream).
+    """
+    db_root = Path(db_root)
+    result: dict[tuple[str, int], tuple[str, str]] = {}
+
+    def _ingest(objects: dict) -> None:
+        for name, obj in objects.items():
+            if not isinstance(obj, dict):
+                continue
+            for outlet in obj.get("outlets", []) or []:
+                if not isinstance(outlet, dict):
+                    continue
+                oid = outlet.get("id")
+                if oid is None:
+                    continue
+                result[(name, oid)] = (
+                    outlet.get("type", "") or "",
+                    outlet.get("digest", "") or "",
+                )
+
+    for domain in DOMAIN_LOAD_ORDER:
+        if domain == "packages":
+            pkg_root = db_root / "packages"
+            if pkg_root.is_dir():
+                for pkg_dir in sorted(pkg_root.iterdir()):
+                    if pkg_dir.is_dir():
+                        json_path = pkg_dir / "objects.json"
+                        if json_path.exists():
+                            _ingest(json.loads(json_path.read_text()))
+        else:
+            json_path = db_root / domain / "objects.json"
+            if json_path.exists():
+                _ingest(json.loads(json_path.read_text()))
+    return result
+
+
+def _resolve_outlet_meta(
+    name: str,
+    outlet_id: int,
+    role: str,
+    canon_map: dict[tuple[str, int], tuple[str, str]],
+) -> tuple[str, str]:
+    """Resolve (type, digest) for a signal_role outlet.
+
+    Uses canonical domain metadata when present and non-empty; otherwise
+    falls back to role-derived defaults that already exist verbatim in
+    overrides.json (e.g. adc~ / adstatus):
+      type   = "signal"        if role == "audio" else "control"
+      digest = "Signal output" if role == "audio" else "Control output"
+    """
+    canon = canon_map.get((name, outlet_id))
+    canon_type = canon[0] if canon else ""
+    canon_digest = canon[1] if canon else ""
+    otype = canon_type or ("signal" if role == "audio" else "control")
+    odigest = canon_digest or (
+        "Signal output" if role == "audio" else "Control output"
+    )
+    return (otype, odigest)
+
+
 # ── apply subcommand ──────────────────────────────────────────────
 
 
@@ -612,6 +690,10 @@ def cmd_apply_run(
     # Load overrides, mutate, validate, write atomically.
     data = json.loads(overrides_file.read_text(encoding="utf-8"))
     objects = data.setdefault("objects", {})
+    # Canonical domain metadata for the new-outlet synthesis path
+    # (quick-260701-r9s). Derived from overrides_file.parent so isolated
+    # test roots resolve correctly; built lazily on first new outlet.
+    canon_map: dict[tuple[str, int], tuple[str, str]] | None = None
     changed = False
     for obj_name, outlet_id, role in resolved:
         entry = objects.setdefault(obj_name, {"outlets": []})
@@ -623,7 +705,15 @@ def cmd_apply_run(
                 target = o
                 break
         if target is None:
-            target = {"id": outlet_id, "type": "", "digest": ""}
+            # quick-260701-r9s: populate type/digest from canonical domain
+            # metadata (or role-derived fallback) instead of empty stubs, so
+            # the override deep-merge doesn't shadow the loader with blanks.
+            if canon_map is None:
+                canon_map = _canonical_outlet_meta(overrides_file.parent)
+            otype, odigest = _resolve_outlet_meta(
+                obj_name, outlet_id, role, canon_map
+            )
+            target = {"id": outlet_id, "type": otype, "digest": odigest}
             outlets.append(target)
         existing = target.get("signal_role")
         if existing == role:
@@ -682,6 +772,108 @@ def cmd_apply(args: argparse.Namespace) -> int:
     )
 
 
+# ── backfill-metadata subcommand (quick-260701-r9s) ───────────────
+
+
+def cmd_backfill_run(overrides_file: Path | None = None) -> int:
+    """Backfill EMPTY type/digest on signal_role outlets in overrides.json.
+
+    Closes WR-01: curated signal_role outlets carry empty type/digest
+    because cmd_apply_run synthesized empty stubs and the override
+    deep-merge replaces the canonical outlets array wholesale. This walks
+    every outlet that HAS a signal_role AND an empty type OR empty digest,
+    filling only the empty field(s) from canonical domain metadata (or a
+    role-derived fallback via _resolve_outlet_meta).
+
+    Guarantees (threat model T-r9s-01/02):
+    - Fills ONLY empty type/digest; never clobbers a non-empty value.
+    - Never mutates signal_role, and never touches outlets without one.
+    - Idempotent: no change -> returns 0 without writing.
+    - Atomic write (.json.tmp + replace) with round-trip JSON validation
+      and a post-write ObjectDatabase() loader-acceptance check when
+      operating on the canonical default file (mirrors cmd_apply_run).
+
+    Returns:
+      0  on success (including idempotent no-op)
+      1  if overrides_file is missing
+      2  on any validation/loader failure
+    """
+    overrides_file = Path(overrides_file or _DEFAULT_OVERRIDES).resolve()
+    if not overrides_file.is_file():
+        print(
+            f"ERROR: overrides file does not exist: {overrides_file}",
+            file=sys.stderr,
+        )
+        return 1
+
+    data = json.loads(overrides_file.read_text(encoding="utf-8"))
+    objects = data.get("objects", {})
+    canon_map = _canonical_outlet_meta(overrides_file.parent)
+
+    changed = False
+    for obj_name, entry in objects.items():
+        if obj_name.startswith("_"):
+            continue  # skip comment keys
+        if not isinstance(entry, dict):
+            continue
+        for outlet in entry.get("outlets", []) or []:
+            if not isinstance(outlet, dict):
+                continue
+            role = outlet.get("signal_role")
+            if role is None:
+                continue  # WR-01 scope: signal_role outlets only
+            empty_type = outlet.get("type", "") == ""
+            empty_digest = outlet.get("digest", "") == ""
+            if not (empty_type or empty_digest):
+                continue
+            otype, odigest = _resolve_outlet_meta(
+                obj_name, outlet.get("id"), role, canon_map
+            )
+            if empty_type:
+                outlet["type"] = otype
+                changed = True
+            if empty_digest:
+                outlet["digest"] = odigest
+                changed = True
+
+    if not changed:
+        return 0
+
+    new_text = json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+    # Round-trip validate before writing.
+    try:
+        json.loads(new_text)
+    except json.JSONDecodeError as e:
+        print(f"ERROR: produced invalid JSON: {e}", file=sys.stderr)
+        return 2
+
+    # Atomic write.
+    tmp = overrides_file.with_suffix(".json.tmp")
+    tmp.write_text(new_text, encoding="utf-8")
+    tmp.replace(overrides_file)
+
+    # Loader-acceptance check on the canonical default only (isolated test
+    # paths don't live under .claude/max-objects/).
+    if overrides_file == _DEFAULT_OVERRIDES.resolve():
+        try:
+            ObjectDatabase()
+        except Exception as e:  # noqa: BLE001
+            print(
+                f"ERROR: post-write loader rejected overrides.json: {e}",
+                file=sys.stderr,
+            )
+            return 2
+
+    return 0
+
+
+def cmd_backfill(args: argparse.Namespace) -> int:
+    overrides_file = (
+        Path(args.overrides_file) if args.overrides_file else None
+    )
+    return cmd_backfill_run(overrides_file=overrides_file)
+
+
 # ── argparse wiring ───────────────────────────────────────────────
 
 
@@ -731,6 +923,20 @@ def build_parser() -> argparse.ArgumentParser:
         help="Overwrite existing signal_role values (D-04 conflict consent).",
     )
     apply_cmd.set_defaults(func=cmd_apply)
+
+    backfill_cmd = sub.add_parser(
+        "backfill-metadata",
+        help=(
+            "Fill EMPTY type/digest on signal_role outlets from canonical "
+            "domain metadata (quick-260701-r9s / WR-01). Idempotent."
+        ),
+    )
+    backfill_cmd.add_argument(
+        "--overrides-file",
+        default=None,
+        help=f"Default: {_DEFAULT_OVERRIDES}",
+    )
+    backfill_cmd.set_defaults(func=cmd_backfill)
 
     return parser
 
