@@ -2029,13 +2029,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2060,13 +2060,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Mouse position in editing window (ms)",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "bang when read/write operation completed",
           "signal_role": "trigger"
         }
@@ -2083,7 +2083,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "trigger",
           "digest": "bang when curve reaches destination"
         }
@@ -2176,25 +2176,25 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2210,7 +2210,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2298,7 +2298,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "float",
           "digest": "Slider value (int)"
         }
@@ -2322,7 +2322,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2405,7 +2405,7 @@
         },
         {
           "id": 7,
-          "type": "",
+          "type": "control",
           "digest": "Filename of most recently read audio file (symbol)",
           "signal_role": "list"
         },
@@ -2417,7 +2417,7 @@
         },
         {
           "id": 9,
-          "type": "",
+          "type": "control",
           "digest": "State / valid flag",
           "signal_role": "status"
         }
@@ -2439,7 +2439,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "RMS level in dB (float)",
           "signal_role": "float"
         }
@@ -2496,7 +2496,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "trigger",
           "digest": "bang when line reaches destination"
         }
@@ -2550,13 +2550,13 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2578,7 +2578,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2602,7 +2602,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2636,7 +2636,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2658,37 +2658,37 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 4,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 5,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 6,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2704,7 +2704,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Peak value for each metering interval (float)",
           "signal_role": "float"
         }
@@ -2715,7 +2715,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2731,7 +2731,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "buffer~ value at sample index (float)",
           "signal_role": "float"
         }
@@ -2756,7 +2756,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2790,19 +2790,19 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2830,7 +2830,7 @@
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "signal_role": "status",
           "digest": "Playback state messages"
         }
@@ -2852,7 +2852,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "trigger",
           "digest": "bang when playback reaches destination or is stopped"
         }
@@ -2863,7 +2863,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Mouse interaction data",
           "signal_role": "list"
         }
@@ -2886,13 +2886,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Messages and buffer info",
           "signal_role": "list"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "bang when file/folder read operation completed",
           "signal_role": "trigger"
         }
@@ -2911,7 +2911,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -2931,7 +2931,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "trigger",
           "digest": "bang when ramp completes"
         }
@@ -2954,7 +2954,7 @@
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "signal_role": "status",
           "digest": "Voice allocation data",
           "_role_source": "default-status"
@@ -2970,37 +2970,37 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 4,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 5,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -3088,7 +3088,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -3110,7 +3110,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "trigger",
           "digest": "bang when done playing"
         }
@@ -3135,7 +3135,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -3165,7 +3165,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "data",
           "digest": "Index (int)"
         }
@@ -3182,7 +3182,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "trigger",
           "digest": "bang when done"
         }
@@ -3199,14 +3199,14 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "status",
           "digest": "Control output",
           "_role_source": "default-status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "signal_role": "status",
           "digest": "Control output",
           "_role_source": "default-status"
@@ -3223,7 +3223,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -3239,13 +3239,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Instance index of patcher (int)",
           "signal_role": "data"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Mute flag 0/1 for instance (int)",
           "signal_role": "status"
         }
@@ -3293,7 +3293,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "signal_role": "trigger",
           "digest": "bang on 0 to 1 transition"
         }
@@ -3316,13 +3316,13 @@
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "signal_role": "list",
           "digest": "Dump output"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "signal",
           "signal_role": "data",
           "digest": "Parameter index and value when changed"
         }
@@ -3430,13 +3430,13 @@
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "signal_role": "list",
           "digest": "Contents of current list"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "signal",
           "signal_role": "trigger",
           "digest": "bang when line reaches destination"
         }
@@ -3939,31 +3939,31 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "message",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "message",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 4,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -3991,19 +3991,19 @@
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 4,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4045,13 +4045,13 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4107,19 +4107,19 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "bang",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "bang",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4209,13 +4209,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4285,13 +4285,13 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4321,37 +4321,37 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 4,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 5,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4381,13 +4381,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "float",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4409,13 +4409,13 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4483,7 +4483,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4505,7 +4505,7 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "trigger"
         }
@@ -4535,13 +4535,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "float",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4571,13 +4571,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "double",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4593,7 +4593,7 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4683,13 +4683,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "int",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4712,13 +4712,13 @@
         },
         {
           "id": 1,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4754,13 +4754,13 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "mc_signal",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -4788,43 +4788,43 @@
         },
         {
           "id": 2,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 4,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 5,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 6,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 7,
-          "type": "",
+          "type": "signal",
           "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 8,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "status"
         }
@@ -7020,37 +7020,37 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "float"
         },
         {
           "id": 4,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "float"
         },
         {
           "id": 5,
-          "type": "",
+          "type": "control",
           "digest": "Control output",
           "signal_role": "float"
         }
@@ -10973,7 +10973,7 @@
           "id": 0,
           "type": "signal",
           "signal_role": "audio",
-          "digest": ""
+          "digest": "Signal output"
         }
       ],
       "_audit": {
@@ -11098,8 +11098,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Difference Out",
           "signal_role": "audio"
         }
       ]
@@ -11108,8 +11108,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Quotient Out",
           "signal_role": "audio"
         }
       ]
@@ -11118,8 +11118,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -11128,8 +11128,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Modulo Result",
           "signal_role": "audio"
         }
       ]
@@ -11138,8 +11138,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Multiplication Result",
           "signal_role": "audio"
         }
       ]
@@ -11148,8 +11148,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Accumulator Output",
           "signal_role": "audio"
         }
       ]
@@ -11158,8 +11158,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Addition Result",
           "signal_role": "audio"
         }
       ]
@@ -11168,8 +11168,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Subtraction Result",
           "signal_role": "audio"
         }
       ]
@@ -11178,8 +11178,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Division Result",
           "signal_role": "audio"
         }
       ]
@@ -11188,8 +11188,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -11198,8 +11198,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -11208,8 +11208,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -11218,8 +11218,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -11228,8 +11228,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -11238,8 +11238,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Absolute Value of Input",
           "signal_role": "audio"
         }
       ]
@@ -11248,8 +11248,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Acosh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -11258,8 +11258,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Acos (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -11268,14 +11268,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output of Audio Channel 1",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output of Audio Channel 2",
           "signal_role": "audio"
         }
       ]
@@ -11284,26 +11284,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "ADSR envelope",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "new envelope trigger",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "message",
+          "digest": "mute outlet",
           "signal_role": "status"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "message",
+          "digest": "dump outlet",
           "signal_role": "list"
         }
       ]
@@ -11312,8 +11312,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Filter Output",
           "signal_role": "audio"
         }
       ]
@@ -11322,8 +11322,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Asinh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -11332,8 +11332,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Asin (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -11342,8 +11342,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "atan2(y/x)",
           "signal_role": "audio"
         }
       ]
@@ -11352,8 +11352,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Atanh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -11362,8 +11362,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Atan (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -11372,8 +11372,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Gain/Attenuation dB",
           "signal_role": "audio"
         }
       ]
@@ -11382,8 +11382,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Running Mean Average Out",
           "signal_role": "audio"
         }
       ]
@@ -11392,8 +11392,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "(float) Average Value of Input Signal",
           "signal_role": "float"
         }
       ]
@@ -11402,8 +11402,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Connect to Objects to Turn On and Off",
           "signal_role": "audio"
         }
       ]
@@ -11412,8 +11412,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -11422,8 +11422,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11432,8 +11432,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11442,8 +11442,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11452,8 +11452,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11462,8 +11462,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11472,8 +11472,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11482,8 +11482,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11492,14 +11492,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) amplitude/alpha output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) phase/theta output",
           "signal_role": "audio"
         }
       ]
@@ -11508,8 +11508,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) filtered signal out",
           "signal_role": "audio"
         }
       ]
@@ -11518,8 +11518,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) 0. if Unchanged; -1. (decreasing) or 1. (increasing) if Changed.",
           "signal_role": "audio"
         }
       ]
@@ -11528,20 +11528,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Signal output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Right Audio Output",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Current Step Number",
           "signal_role": "audio"
         }
       ]
@@ -11550,8 +11550,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Impulse Signal Out",
           "signal_role": "audio"
         }
       ]
@@ -11560,8 +11560,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Clipped Output",
           "signal_role": "audio"
         }
       ]
@@ -11570,8 +11570,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Filter Output",
           "signal_role": "audio"
         }
       ]
@@ -11580,8 +11580,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Cosh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -11590,8 +11590,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Cos (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -11600,8 +11600,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Cosine Output",
           "signal_role": "audio"
         }
       ]
@@ -11610,8 +11610,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Count Output",
           "signal_role": "audio"
         }
       ]
@@ -11620,14 +11620,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Lowpass Filtered Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Highpass Filtered Output",
           "signal_role": "audio"
         }
       ]
@@ -11636,8 +11636,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11646,8 +11646,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Amplitude Scalar",
           "signal_role": "audio"
         }
       ]
@@ -11656,14 +11656,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "MIDI Note out",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "MIDI Velocity out",
           "signal_role": "float"
         }
       ]
@@ -11672,8 +11672,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11682,8 +11682,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Delayed Output",
           "signal_role": "audio"
         }
       ]
@@ -11692,8 +11692,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11702,8 +11702,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Differences Between Input Samples",
           "signal_role": "audio"
         }
       ]
@@ -11712,8 +11712,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -11722,14 +11722,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "bang",
+          "digest": "(bang) Output on zero to non-zero transition",
           "signal_role": "trigger"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "bang",
+          "digest": "(bang) Output on non-zero to zero transition",
           "signal_role": "trigger"
         }
       ]
@@ -11738,14 +11738,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Audio In ch 1",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Audio In ch 2",
           "signal_role": "audio"
         }
       ]
@@ -11754,14 +11754,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "bin-shifted real/x output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "bin-shifted imaginary/y output",
           "signal_role": "audio"
         }
       ]
@@ -11770,26 +11770,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) FFT Frame Size",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) Spectral Frame Size",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) FFT Hop Size",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) Full Spectrum Flag (0/1)",
           "signal_role": "status"
         }
       ]
@@ -11798,20 +11798,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Real Input 1 to Patcher",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Imaginary Input 1 to Patcher",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "FFT Bin Index",
           "signal_role": "audio"
         }
       ]
@@ -11820,20 +11820,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Real Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Imaginary Output",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Ramp from 0 to Number of Points - 1",
           "signal_role": "audio"
         }
       ]
@@ -11842,32 +11842,32 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Gain (FF Coefficient 0)",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FF Coefficient 1",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FF Coefficient 2",
           "signal_role": "audio"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FB Coefficient 1",
           "signal_role": "audio"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FB Coefficient 2",
           "signal_role": "audio"
         }
       ]
@@ -11876,8 +11876,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "filter coefficients",
           "signal_role": "list"
         }
       ]
@@ -11886,38 +11886,38 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "magnitude response",
           "signal_role": "list"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "phase response",
           "signal_role": "list"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "phase delay",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "group delay",
           "signal_role": "list"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "impulse response",
           "signal_role": "list"
         },
         {
           "id": 5,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "step response",
           "signal_role": "list"
         }
       ]
@@ -11926,44 +11926,44 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "List of Filter Coefficients",
           "signal_role": "list"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Frequency Out",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Gain (Linear) Out",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Q (Resonance) or S (Slope) Out",
           "signal_role": "float"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Bandwidth Out",
           "signal_role": "float"
         },
         {
           "id": 5,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Query Result (amp, phase)",
           "signal_role": "list"
         },
         {
           "id": 6,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Filter Index Out",
           "signal_role": "data"
         }
       ]
@@ -11972,8 +11972,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FFT Running Phase Output",
           "signal_role": "audio"
         }
       ]
@@ -11982,8 +11982,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "FFT Running Phase Output",
           "signal_role": "audio"
         }
       ]
@@ -11992,8 +11992,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FFT Phase Deviation",
           "signal_role": "audio"
         }
       ]
@@ -12002,8 +12002,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "FFT Running Phase Output",
           "signal_role": "audio"
         }
       ]
@@ -12012,8 +12012,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Output Frame as a list",
           "signal_role": "list"
         }
       ]
@@ -12022,8 +12022,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "output frame",
           "signal_role": "audio"
         }
       ]
@@ -12032,14 +12032,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Frequency-shifted Signal (Positive Sideband)",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Frequency-shifted Signal (Negative Sideband)",
           "signal_role": "audio"
         }
       ]
@@ -12048,8 +12048,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Floating-point MIDI Note Number",
           "signal_role": "audio"
         }
       ]
@@ -12058,20 +12058,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Estimated fundamental pitch",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Peak amplitude in analysis vector",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "bang",
+          "digest": "onset detected",
           "signal_role": "trigger"
         }
       ]
@@ -12080,8 +12080,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12090,8 +12090,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "out 1",
           "signal_role": "audio"
         }
       ]
@@ -12100,8 +12100,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "out1",
           "signal_role": "audio"
         }
       ]
@@ -12110,8 +12110,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "out 1",
           "signal_role": "audio"
         }
       ]
@@ -12120,8 +12120,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "out 1",
           "signal_role": "audio"
         }
       ]
@@ -12130,14 +12130,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Pitch-shifted Real Signal",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Pitch-shifted Imaginary Signal",
           "signal_role": "audio"
         }
       ]
@@ -12146,14 +12146,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Channel 1 Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Loop Sync Output",
           "signal_role": "audio"
         }
       ]
@@ -12162,14 +12162,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) cosine/real output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) sine/imag output",
           "signal_role": "audio"
         }
       ]
@@ -12178,20 +12178,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Real Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Imaginary Output",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Ramp from 0 to Number of Points - 1",
           "signal_role": "audio"
         }
       ]
@@ -12200,8 +12200,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Input 1",
           "signal_role": "audio"
         }
       ]
@@ -12210,8 +12210,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) output",
           "signal_role": "audio"
         }
       ]
@@ -12220,8 +12220,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Disorted Phase Output",
           "signal_role": "audio"
         }
       ]
@@ -12230,8 +12230,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) log of Input to Base",
           "signal_role": "audio"
         }
       ]
@@ -12240,8 +12240,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Distorted Output",
           "signal_role": "audio"
         }
       ]
@@ -12250,8 +12250,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12260,38 +12260,38 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Momentary Loudness in LUFS",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Short-Term Loudness in LUFS",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Integrated Loudness in LUFS",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Loudness Range",
           "signal_role": "float"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Peak Sample Value",
           "signal_role": "float"
         },
         {
           "id": 5,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "True Peak Value",
           "signal_role": "float"
         }
       ]
@@ -12300,20 +12300,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output 0",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output 1",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Inlets Outlets Gains",
           "signal_role": "list"
         }
       ]
@@ -12322,8 +12322,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Maximum of Left and Right Signals",
           "signal_role": "audio"
         }
       ]
@@ -12332,8 +12332,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "(signal) Channel 1 Output",
           "signal_role": "audio"
         }
       ]
@@ -12342,8 +12342,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "signal output from filter 0",
           "signal_role": "audio"
         }
       ]
@@ -12352,8 +12352,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12362,8 +12362,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "out 1",
           "signal_role": "audio"
         }
       ]
@@ -12372,14 +12372,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Multichannel output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Loop Sync Output",
           "signal_role": "audio"
         }
       ]
@@ -12388,8 +12388,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -12398,14 +12398,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "inlets outlets gains",
           "signal_role": "list"
         }
       ]
@@ -12414,8 +12414,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12424,8 +12424,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -12434,8 +12434,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12444,8 +12444,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Minimum of Left and Right Signals",
           "signal_role": "audio"
         }
       ]
@@ -12454,26 +12454,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Minimum",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Maximum",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Minimum",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Maximum",
           "signal_role": "float"
         }
       ]
@@ -12482,14 +12482,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Samples At Input signal or Current Sampling Rate",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Samples At Input signal or Current Sampling Rate",
           "signal_role": "float"
         }
       ]
@@ -12498,8 +12498,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Frequency in Hz",
           "signal_role": "audio"
         }
       ]
@@ -12508,26 +12508,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "Interpolated Y1, Y2, Phase for Input X",
           "signal_role": "list"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "All Points in line Format",
           "signal_role": "list"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "dump Message Output (list)",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "bang When Changed With Mouse",
           "signal_role": "trigger"
         }
       ]
@@ -12536,8 +12536,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) The Noise",
           "signal_role": "audio"
         }
       ]
@@ -12546,8 +12546,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Normalized Output",
           "signal_role": "audio"
         }
       ]
@@ -12556,14 +12556,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Number Value as a Signal",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Signal Value",
           "signal_role": "float"
         }
       ]
@@ -12572,26 +12572,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Left Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Right Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Parameter Output",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Meter Output",
           "signal_role": "list"
         }
       ]
@@ -12600,26 +12600,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Left Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Right Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Parameter Output",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Meter Output",
           "signal_role": "list"
         }
       ]
@@ -12628,26 +12628,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Left Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Right Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Parameter Output",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Meter Output",
           "signal_role": "list"
         }
       ]
@@ -12656,26 +12656,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Left Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Right Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Parameter Output",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Meter Output",
           "signal_role": "list"
         }
       ]
@@ -12684,8 +12684,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) filter output",
           "signal_role": "audio"
         }
       ]
@@ -12694,8 +12694,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) output",
           "signal_role": "audio"
         }
       ]
@@ -12704,8 +12704,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Signal Output",
           "signal_role": "audio"
         }
       ]
@@ -12714,8 +12714,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12724,8 +12724,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "(float) peak amplitude of input",
           "signal_role": "float"
         }
       ]
@@ -12734,8 +12734,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Connect to groove~",
           "signal_role": "audio"
         }
       ]
@@ -12744,8 +12744,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12754,8 +12754,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Phase-Wrapped Signal Out",
           "signal_role": "audio"
         }
       ]
@@ -12764,8 +12764,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output (ramp cycle from 0 to 1)",
           "signal_role": "audio"
         }
       ]
@@ -12774,8 +12774,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) The Noise",
           "signal_role": "audio"
         }
       ]
@@ -12784,14 +12784,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Channel 1 audio input from the Live application.",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Channel 2 audio input from the Live application.",
           "signal_role": "audio"
         }
       ]
@@ -12800,14 +12800,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Test output to pass thru for audio device channel 1.",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Test output to pass thru for audio device channel 2.",
           "signal_role": "audio"
         }
       ]
@@ -12816,14 +12816,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Beat-Synchronized 0-1 Ramp",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Debug Output",
           "signal_role": "status"
         }
       ]
@@ -12832,8 +12832,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Receive From plugsend~",
           "signal_role": "audio"
         }
       ]
@@ -12842,56 +12842,56 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) Transport State (1 = Play, 0 = Off)",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) Current Bar Count",
           "signal_role": "data"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) Current Beat Count",
           "signal_role": "data"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Current Ticks Within a Beat (1 PPQ)",
           "signal_role": "float"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Time Signature",
           "signal_role": "list"
         },
         {
           "id": 5,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Tempo",
           "signal_role": "float"
         },
         {
           "id": 6,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Ticks (1 PPQ)",
           "signal_role": "float"
         },
         {
           "id": 7,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) Sample Count",
           "signal_role": "data"
         },
         {
           "id": 8,
-          "type": "",
-          "digest": "",
+          "type": "long",
+          "digest": "(long) Flags Indicating Which Data Are Valid",
           "signal_role": "float"
         }
       ]
@@ -12900,14 +12900,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "real/x output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "imaginary/y output",
           "signal_role": "audio"
         }
       ]
@@ -12916,8 +12916,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12926,8 +12926,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Base raised to Input",
           "signal_role": "audio"
         }
       ]
@@ -12936,8 +12936,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Smoothed result",
           "signal_role": "audio"
         }
       ]
@@ -12946,8 +12946,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) The Noise Path",
           "signal_role": "audio"
         }
       ]
@@ -12956,8 +12956,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Time-Scaled Version of the Input",
           "signal_role": "audio"
         }
       ]
@@ -12966,8 +12966,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -12976,8 +12976,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Sync Out",
           "signal_role": "audio"
         }
       ]
@@ -12986,8 +12986,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -12996,8 +12996,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Filtered Output",
           "signal_role": "audio"
         }
       ]
@@ -13006,8 +13006,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -13016,8 +13016,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -13026,14 +13026,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Milliseconds At Input signal or Current Sampling Rate",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Milliseconds At Input signal or Current Sampling Rate",
           "signal_role": "float"
         }
       ]
@@ -13042,8 +13042,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -13052,8 +13052,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Input signal",
           "signal_role": "audio"
         }
       ]
@@ -13062,8 +13062,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) scaled output value",
           "signal_role": "audio"
         }
       ]
@@ -13072,8 +13072,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13082,20 +13082,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "anything",
+          "digest": "sequence output",
           "signal_role": "list"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "dump output",
           "signal_role": "list"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "symbol",
+          "digest": "id on read, (bang) when done reading",
           "signal_role": "trigger"
         }
       ]
@@ -13104,8 +13104,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Time-Scaled Function",
           "signal_role": "audio"
         }
       ]
@@ -13114,8 +13114,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13124,8 +13124,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Sinh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13134,8 +13134,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Sin (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13144,8 +13144,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13154,8 +13154,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Particle Output",
           "signal_role": "audio"
         }
       ]
@@ -13164,8 +13164,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Outputs interval on zero to non-zero transition",
           "signal_role": "float"
         }
       ]
@@ -13174,8 +13174,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Square Root",
           "signal_role": "audio"
         }
       ]
@@ -13184,26 +13184,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Impulse When Current Step Count Reached",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Impulse When Sequence Resets",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Index (0-Relative)",
           "signal_role": "audio"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Counter Index (0-Relative)",
           "signal_role": "audio"
         }
       ]
@@ -13212,14 +13212,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Number",
           "signal_role": "audio"
         }
       ]
@@ -13228,14 +13228,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Number",
           "signal_role": "audio"
         }
       ]
@@ -13244,8 +13244,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Playback Output 1",
           "signal_role": "audio"
         }
       ]
@@ -13254,20 +13254,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Number",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Control output",
           "signal_role": "status"
         }
       ]
@@ -13276,26 +13276,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Low-pass Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) High-pass Output",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Band-pass Output",
           "signal_role": "audio"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Notch Output",
           "signal_role": "audio"
         }
       ]
@@ -13304,20 +13304,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Number",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Step Number",
           "signal_role": "float"
         }
       ]
@@ -13326,8 +13326,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -13336,8 +13336,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Tanh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13346,8 +13346,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Tan (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13356,8 +13356,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Delayed Output",
           "signal_role": "audio"
         }
       ]
@@ -13366,20 +13366,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) frequency",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) amplitude envelope",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) step position",
           "signal_role": "audio"
         }
       ]
@@ -13388,8 +13388,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Filter Output",
           "signal_role": "audio"
         }
       ]
@@ -13398,8 +13398,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13408,8 +13408,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13418,8 +13418,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13428,8 +13428,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13438,8 +13438,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Integer Part of Input",
           "signal_role": "audio"
         }
       ]
@@ -13448,8 +13448,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Curved Ramp Out",
           "signal_role": "audio"
         }
       ]
@@ -13458,38 +13458,38 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) An audio signal, if the input type is an audio signal",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "bang",
+          "digest": "(bang) A bang, if the input type is a bang",
           "signal_role": "trigger"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "(int) An int, if the input type is an int",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "(float) A float, if the input type is a float",
           "signal_role": "float"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "symbol",
+          "digest": "(symbol) A symbol, if the input type is a symbol",
           "signal_role": "list"
         },
         {
           "id": 5,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) A list, if the input type is a list",
           "signal_role": "list"
         }
       ]
@@ -13498,8 +13498,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Trapezoidal Output",
           "signal_role": "audio"
         }
       ]
@@ -13508,8 +13508,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output Value",
           "signal_role": "audio"
         }
       ]
@@ -13518,8 +13518,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13528,14 +13528,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Impulse if Values Detect, 0 Otherwise",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Index of Matched Item",
           "signal_role": "data"
         }
       ]
@@ -13544,14 +13544,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Elapsed Time",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Predicted Time Until Reset",
           "signal_role": "audio"
         }
       ]
@@ -13560,14 +13560,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Number of Zero-Crossings per Signal Vector",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Clicks at Zero-Crossings",
           "signal_role": "audio"
         }
       ]
@@ -13576,26 +13576,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "List of 2nd Order Filter Coefficients",
           "signal_role": "list"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "List of Zero Coordinate Pairs",
           "signal_role": "list"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "List of Pole Coordinate Pairs",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "List of 2nd Order Filter Gains",
           "signal_role": "list"
         }
       ]
@@ -13604,8 +13604,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Difference Out",
           "signal_role": "audio"
         }
       ]
@@ -13614,8 +13614,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Quotient Out",
           "signal_role": "audio"
         }
       ]
@@ -13624,8 +13624,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -13634,8 +13634,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Modulo Result",
           "signal_role": "audio"
         }
       ]
@@ -13644,8 +13644,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Multiplication Result",
           "signal_role": "audio"
         }
       ]
@@ -13654,8 +13654,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Accumulator Output",
           "signal_role": "audio"
         }
       ]
@@ -13664,8 +13664,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Addition Result",
           "signal_role": "audio"
         }
       ]
@@ -13674,8 +13674,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Subtraction Result",
           "signal_role": "audio"
         }
       ]
@@ -13684,8 +13684,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Division Result",
           "signal_role": "audio"
         }
       ]
@@ -13694,8 +13694,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Channel 1 Output",
           "signal_role": "audio"
         }
       ]
@@ -13704,8 +13704,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -13714,8 +13714,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -13724,8 +13724,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -13734,8 +13734,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -13744,8 +13744,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Comparison Result (1 or 0)",
           "signal_role": "audio"
         }
       ]
@@ -13754,8 +13754,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Absolute Value of Input",
           "signal_role": "audio"
         }
       ]
@@ -13764,8 +13764,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Acosh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13774,8 +13774,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Acos (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13784,8 +13784,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Audio Input (multichannel)",
           "signal_role": "audio"
         }
       ]
@@ -13794,8 +13794,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Filter Output",
           "signal_role": "audio"
         }
       ]
@@ -13804,8 +13804,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Function Applied to Channels",
           "signal_role": "audio"
         }
       ]
@@ -13814,8 +13814,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Asinh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13824,8 +13824,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Asin (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13834,8 +13834,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "setvalue Message Output",
           "signal_role": "list"
         }
       ]
@@ -13844,8 +13844,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "atan2(y/x)",
           "signal_role": "audio"
         }
       ]
@@ -13854,8 +13854,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Atanh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13864,8 +13864,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Atan (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -13874,8 +13874,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Gain/Attenuation dB",
           "signal_role": "audio"
         }
       ]
@@ -13884,8 +13884,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Running Mean Average Out",
           "signal_role": "audio"
         }
       ]
@@ -13894,8 +13894,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "(float) Average Value of Input Signal",
           "signal_role": "float"
         }
       ]
@@ -13904,8 +13904,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -13914,8 +13914,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13924,8 +13924,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13934,8 +13934,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13944,8 +13944,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13954,8 +13954,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13964,8 +13964,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13974,8 +13974,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -13984,14 +13984,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) amplitude/alpha output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) phase/theta output",
           "signal_role": "audio"
         }
       ]
@@ -14000,8 +14000,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) filtered signal out",
           "signal_role": "audio"
         }
       ]
@@ -14010,8 +14010,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "setvalue Message Output",
           "signal_role": "list"
         }
       ]
@@ -14020,8 +14020,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) 0. if Unchanged; -1. (decreasing) or 1. (increasing) if Changed.",
           "signal_role": "audio"
         }
       ]
@@ -14030,14 +14030,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Channel Count of Input as int",
           "signal_role": "data"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Channel Count of Input as signal",
           "signal_role": "audio"
         }
       ]
@@ -14046,26 +14046,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "List Values",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "1 if On, 0 if Off",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Chord as a List",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Last Index Recalled",
           "signal_role": "data"
         }
       ]
@@ -14074,8 +14074,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Impulse Signal Out",
           "signal_role": "audio"
         }
       ]
@@ -14084,8 +14084,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Clipped Output",
           "signal_role": "audio"
         }
       ]
@@ -14094,8 +14094,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -14104,8 +14104,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Filter Output",
           "signal_role": "audio"
         }
       ]
@@ -14114,8 +14114,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Cosh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -14124,8 +14124,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Cos (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -14134,8 +14134,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Cosine Output",
           "signal_role": "audio"
         }
       ]
@@ -14144,8 +14144,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Count Output",
           "signal_role": "audio"
         }
       ]
@@ -14154,14 +14154,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Lowpass Filtered Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Highpass Filtered Output",
           "signal_role": "audio"
         }
       ]
@@ -14170,14 +14170,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output Ramp",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "bang When Curve Reaches Destination",
           "signal_role": "trigger"
         }
       ]
@@ -14186,8 +14186,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -14196,8 +14196,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Amplitude Scalar",
           "signal_role": "audio"
         }
       ]
@@ -14206,8 +14206,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -14216,14 +14216,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Deinterleaved Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Deinterleaved Output",
           "signal_role": "audio"
         }
       ]
@@ -14232,8 +14232,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Delayed Output",
           "signal_role": "audio"
         }
       ]
@@ -14242,8 +14242,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -14252,8 +14252,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Differences Between Input Samples",
           "signal_role": "audio"
         }
       ]
@@ -14262,8 +14262,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -14272,8 +14272,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "input duplicated",
           "signal_role": "audio"
         }
       ]
@@ -14282,20 +14282,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Query value for an output channel",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Query value of the output range",
           "signal_role": "float"
         }
       ]
@@ -14304,8 +14304,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output from Audio Device Input",
           "signal_role": "audio"
         }
       ]
@@ -14314,20 +14314,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Real Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Imaginary Output",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Ramp from 0 to Number of Points - 1",
           "signal_role": "audio"
         }
       ]
@@ -14336,32 +14336,32 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Gain (FF Coefficient 0)",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FF Coefficient 1",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FF Coefficient 2",
           "signal_role": "audio"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FB Coefficient 1",
           "signal_role": "audio"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FB Coefficient 2",
           "signal_role": "audio"
         }
       ]
@@ -14370,8 +14370,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FFT Running Phase Output",
           "signal_role": "audio"
         }
       ]
@@ -14380,8 +14380,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "FFT Running Phase Output",
           "signal_role": "audio"
         }
       ]
@@ -14390,8 +14390,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) FFT Phase Deviation",
           "signal_role": "audio"
         }
       ]
@@ -14400,8 +14400,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "FFT Running Phase Output",
           "signal_role": "audio"
         }
       ]
@@ -14410,14 +14410,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Frequency-shifted Signal (Positive Sideband)",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Frequency-shifted Signal (Negative Sideband)",
           "signal_role": "audio"
         }
       ]
@@ -14426,8 +14426,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Floating-point MIDI Note Number",
           "signal_role": "audio"
         }
       ]
@@ -14436,32 +14436,32 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "Interpolated Y (float) for Input X",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "All Points in line Format",
           "signal_role": "list"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "dump Message Output (list)",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "bang When Changed With Mouse",
           "signal_role": "trigger"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "Output Channel",
           "signal_role": "data"
         }
       ]
@@ -14470,20 +14470,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Estimated fundamental pitch",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Peak amplitude in analysis vector",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "bang",
+          "digest": "onset detected",
           "signal_role": "trigger"
         }
       ]
@@ -14492,14 +14492,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Scaled Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Slider Value",
           "signal_role": "float"
         }
       ]
@@ -14508,8 +14508,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -14518,8 +14518,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -14528,8 +14528,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "out 1",
           "signal_role": "audio"
         }
       ]
@@ -14538,20 +14538,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "Attribute Value",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "Connect to An Object",
           "signal_role": "list"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "dumpout",
           "signal_role": "list"
         }
       ]
@@ -14560,20 +14560,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Channel value in response to chanval message",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Output function values for input",
           "signal_role": "list"
         }
       ]
@@ -14582,14 +14582,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) cosine/real output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) sine/imag output",
           "signal_role": "audio"
         }
       ]
@@ -14598,20 +14598,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Real Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Imaginary Output",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Ramp from 0 to Number of Points - 1",
           "signal_role": "audio"
         }
       ]
@@ -14620,14 +14620,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Sample Value at Index",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Audio Channel In buffer~",
           "signal_role": "audio"
         }
       ]
@@ -14636,8 +14636,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Interleaved Output",
           "signal_role": "audio"
         }
       ]
@@ -14646,8 +14646,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Inputs",
           "signal_role": "audio"
         }
       ]
@@ -14656,14 +14656,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "value",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "dumpout",
           "signal_role": "audio"
         }
       ]
@@ -14672,8 +14672,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Disorted Phase Output",
           "signal_role": "audio"
         }
       ]
@@ -14682,8 +14682,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -14692,14 +14692,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "Ramp Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "Signals End of Ramp",
           "signal_role": "trigger"
         }
       ]
@@ -14708,8 +14708,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -14718,26 +14718,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Scaled Signal (ch 1)",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "number",
+          "digest": "Scaled Signal (ch 2)",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "number",
+          "digest": "Parameter Value (-70.00-6.00)",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "float/list",
+          "digest": "Parameter Raw Value (0.-1.)",
           "signal_role": "float"
         }
       ]
@@ -14746,8 +14746,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) log of Input to Base",
           "signal_role": "audio"
         }
       ]
@@ -14756,8 +14756,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Distorted Output",
           "signal_role": "audio"
         }
       ]
@@ -14766,8 +14766,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -14776,38 +14776,38 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Momentary Loudness in LUFS",
           "signal_role": "float"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Short-Term Loudness in LUFS",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Integrated Loudness in LUFS",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Loudness Range",
           "signal_role": "float"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Peak Sample Value",
           "signal_role": "float"
         },
         {
           "id": 5,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "True Peak Value",
           "signal_role": "float"
         }
       ]
@@ -14816,8 +14816,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "List Output",
           "signal_role": "list"
         }
       ]
@@ -14826,20 +14826,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output 0",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output 1",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Inlets Outlets Gains",
           "signal_role": "list"
         }
       ]
@@ -14848,8 +14848,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Maximum of Left and Right Signals",
           "signal_role": "audio"
         }
       ]
@@ -14858,14 +14858,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "MIDI Events for vst~",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "midievent",
+          "digest": "MIDI Event Output Not for vst~",
           "signal_role": "list"
         }
       ]
@@ -14874,8 +14874,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "setvalue Index Followed by midievent Message",
           "signal_role": "data"
         }
       ]
@@ -14884,8 +14884,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Minimum of Left and Right Signals",
           "signal_role": "audio"
         }
       ]
@@ -14894,26 +14894,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Minimum",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Maximum",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Minimum",
           "signal_role": "float"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Maximum",
           "signal_role": "float"
         }
       ]
@@ -14922,8 +14922,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -14932,14 +14932,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Samples At Input signal or Current Sampling Rate",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Samples At Input signal or Current Sampling Rate",
           "signal_role": "float"
         }
       ]
@@ -14948,8 +14948,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Frequency in Hz",
           "signal_role": "audio"
         }
       ]
@@ -14958,8 +14958,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) The Noise",
           "signal_role": "audio"
         }
       ]
@@ -14968,8 +14968,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Normalized Output",
           "signal_role": "audio"
         }
       ]
@@ -14978,20 +14978,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Entered or received float values as a multichannel signal",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Sampled values from incoming signal",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "float",
+          "digest": "Output Channel for Signal Value",
           "signal_role": "float"
         }
       ]
@@ -15000,26 +15000,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Left Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Right Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Parameter Output",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Meter Output",
           "signal_role": "list"
         }
       ]
@@ -15028,26 +15028,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Left Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Right Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Parameter Output",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Meter Output",
           "signal_role": "list"
         }
       ]
@@ -15056,26 +15056,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Left Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Right Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Parameter Output",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Meter Output",
           "signal_role": "list"
         }
       ]
@@ -15084,26 +15084,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Left Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Right Output Channel",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Parameter Output",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "(list) Meter Output",
           "signal_role": "list"
         }
       ]
@@ -15112,8 +15112,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) filter output",
           "signal_role": "audio"
         }
       ]
@@ -15122,8 +15122,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Computed Output",
           "signal_role": "audio"
         }
       ]
@@ -15132,8 +15132,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Signal Output",
           "signal_role": "audio"
         }
       ]
@@ -15142,8 +15142,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -15152,20 +15152,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Pattern(s)",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Pattern Data in Response to getcontent Message",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "dict",
+          "digest": "Pattern Data in Response to getcontent Message",
           "signal_role": "list"
         }
       ]
@@ -15174,8 +15174,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "buffer~ Value at Sample Index",
           "signal_role": "float"
         }
       ]
@@ -15184,8 +15184,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Connect to groove~",
           "signal_role": "audio"
         }
       ]
@@ -15194,8 +15194,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15204,8 +15204,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Phase-Wrapped Signal Out",
           "signal_role": "audio"
         }
       ]
@@ -15214,8 +15214,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output (ramp cycle from 0 to 1)",
           "signal_role": "audio"
         }
       ]
@@ -15224,8 +15224,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) The Noise",
           "signal_role": "audio"
         }
       ]
@@ -15234,14 +15234,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "pitchshifted signal, channel: 1",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Current latency, reported in samples",
           "signal_role": "audio"
         }
       ]
@@ -15250,26 +15250,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Sync Output",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Playback Notifications",
           "signal_role": "audio"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "dict",
+          "digest": "Current content",
           "signal_role": "list"
         }
       ]
@@ -15278,14 +15278,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "real/x output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "imaginary/y output",
           "signal_role": "audio"
         }
       ]
@@ -15294,8 +15294,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15304,8 +15304,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Base raised to Input",
           "signal_role": "audio"
         }
       ]
@@ -15314,8 +15314,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Smoothed result",
           "signal_role": "audio"
         }
       ]
@@ -15324,14 +15324,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Ramp Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "bang When Ramp Completes",
           "signal_role": "trigger"
         }
       ]
@@ -15340,8 +15340,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) The Noise Path",
           "signal_role": "audio"
         }
       ]
@@ -15350,20 +15350,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Range",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "Range",
           "signal_role": "float"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "setvalue",
+          "digest": "Range",
           "signal_role": "float"
         }
       ]
@@ -15372,8 +15372,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Time-Scaled Version of the Input",
           "signal_role": "audio"
         }
       ]
@@ -15382,8 +15382,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Sync Out",
           "signal_role": "audio"
         }
       ]
@@ -15392,8 +15392,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15402,8 +15402,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -15412,8 +15412,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Filtered Output",
           "signal_role": "audio"
         }
       ]
@@ -15422,32 +15422,32 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "retuned signal",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "detected frequency",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "closest note",
           "signal_role": "audio"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "deviation in cents",
           "signal_role": "audio"
         },
         {
           "id": 4,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "closest note and deviation in cents",
           "signal_role": "float"
         }
       ]
@@ -15456,8 +15456,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -15466,14 +15466,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Per-Voice Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Output for Voice 2",
           "signal_role": "audio"
         }
       ]
@@ -15482,8 +15482,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -15492,8 +15492,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -15502,14 +15502,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Milliseconds At Input signal or Current Sampling Rate",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "double",
+          "digest": "(float) Milliseconds At Input signal or Current Sampling Rate",
           "signal_role": "float"
         }
       ]
@@ -15518,8 +15518,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -15528,8 +15528,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Input signal",
           "signal_role": "audio"
         }
       ]
@@ -15538,8 +15538,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) scaled output value",
           "signal_role": "audio"
         }
       ]
@@ -15548,14 +15548,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Separated Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Separated Output 2 (1 Channels)",
           "signal_role": "audio"
         }
       ]
@@ -15564,20 +15564,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "anything",
+          "digest": "sequence output",
           "signal_role": "list"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "list",
+          "digest": "dump output",
           "signal_role": "list"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "symbol",
+          "digest": "id on read, (bang) when done reading",
           "signal_role": "trigger"
         }
       ]
@@ -15586,14 +15586,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Audio Output 1",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Audio Output 2",
           "signal_role": "audio"
         }
       ]
@@ -15602,8 +15602,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) elapsed time (ms)",
           "signal_role": "audio"
         }
       ]
@@ -15612,8 +15612,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Time-Scaled Function",
           "signal_role": "audio"
         }
       ]
@@ -15622,8 +15622,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15632,8 +15632,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Sinh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -15642,8 +15642,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Sin (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -15652,8 +15652,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15662,8 +15662,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Particle Output",
           "signal_role": "audio"
         }
       ]
@@ -15672,8 +15672,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Phasors",
           "signal_role": "audio"
         }
       ]
@@ -15682,8 +15682,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Square Root",
           "signal_role": "audio"
         }
       ]
@@ -15692,14 +15692,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Index",
           "signal_role": "data"
         }
       ]
@@ -15708,14 +15708,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Number",
           "signal_role": "audio"
         }
       ]
@@ -15724,14 +15724,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Number",
           "signal_role": "audio"
         }
       ]
@@ -15740,8 +15740,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Output (2 Channels)",
           "signal_role": "audio"
         }
       ]
@@ -15750,8 +15750,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Playback Output 1",
           "signal_role": "audio"
         }
       ]
@@ -15760,20 +15760,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Number",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Control output",
           "signal_role": "status"
         }
       ]
@@ -15782,26 +15782,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Low-pass Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) High-pass Output",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Band-pass Output",
           "signal_role": "audio"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Notch Output",
           "signal_role": "audio"
         }
       ]
@@ -15810,20 +15810,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Step Number",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Step Number",
           "signal_role": "float"
         }
       ]
@@ -15832,20 +15832,20 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "synchronized ramp (0-1)",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "BPM and beat detect information",
           "signal_role": "status"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "MIDI beat clock",
           "signal_role": "status"
         }
       ]
@@ -15854,8 +15854,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output",
           "signal_role": "audio"
         }
       ]
@@ -15864,8 +15864,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Tanh (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -15874,8 +15874,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Tan (x) Out",
           "signal_role": "audio"
         }
       ]
@@ -15884,14 +15884,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "control",
+          "digest": "Control output",
           "signal_role": "status"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "int, voice",
+          "digest": "Voice Index",
           "signal_role": "data"
         }
       ]
@@ -15900,8 +15900,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Filter Output",
           "signal_role": "audio"
         }
       ]
@@ -15910,8 +15910,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15920,14 +15920,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Transposed Output",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "mc_signal",
+          "digest": "Transposed Output 2",
           "signal_role": "audio"
         }
       ]
@@ -15936,8 +15936,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15946,8 +15946,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15956,8 +15956,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -15966,8 +15966,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Integer Part of Input",
           "signal_role": "audio"
         }
       ]
@@ -15976,8 +15976,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Curved Ramp Out",
           "signal_role": "audio"
         }
       ]
@@ -15986,14 +15986,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output 1",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Output 2",
           "signal_role": "audio"
         }
       ]
@@ -16002,8 +16002,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Trapezoidal Output",
           "signal_role": "audio"
         }
       ]
@@ -16012,8 +16012,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output Value",
           "signal_role": "audio"
         }
       ]
@@ -16022,8 +16022,8 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output",
           "signal_role": "audio"
         }
       ]
@@ -16032,14 +16032,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Impulse if Values Detect, 0 Otherwise",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "int",
+          "digest": "Index of Matched Item",
           "signal_role": "data"
         }
       ]
@@ -16048,14 +16048,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Elapsed Time",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Predicted Time Until Reset",
           "signal_role": "audio"
         }
       ]
@@ -16064,14 +16064,14 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Number of Zero-Crossings per Signal Vector",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Clicks at Zero-Crossings",
           "signal_role": "audio"
         }
       ]
@@ -16080,26 +16080,26 @@
       "outlets": [
         {
           "id": 0,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Output Ramp",
           "signal_role": "audio"
         },
         {
           "id": 1,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "(signal) Current Index",
           "signal_role": "audio"
         },
         {
           "id": 2,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "Contents of Current List",
           "signal_role": "list"
         },
         {
           "id": 3,
-          "type": "",
-          "digest": "",
+          "type": "signal",
+          "digest": "bang When Line Reaches Destination",
           "signal_role": "trigger"
         }
       ]
