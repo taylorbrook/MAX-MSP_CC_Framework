@@ -437,12 +437,17 @@ class TestAuditFunctions:
         assert "cycle~" in result["restricted_no_coverage"]
 
     def test_audit_empty_io_shape_unchanged(self, db):
-        """Back-compat anchor (D-12): audit_empty_io still returns its three keys."""
+        """Back-compat anchor (D-12): the three original keys and their
+        semantics are unchanged. `by_source` (quick-260702-gk6) is purely
+        additive -- it does not alter critical/covered_by_override/
+        variable_io_ok, so the D-12 intent is preserved.
+        """
         result = db.audit_empty_io()
         assert set(result.keys()) == {
             "critical",
             "covered_by_override",
             "variable_io_ok",
+            "by_source",
         }
 
     def test_no_umbrella_audit_method(self, db):

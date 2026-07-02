@@ -216,9 +216,13 @@ def test_audit_empty_io_segments():
     db = ObjectDatabase()
     audit = db.audit_empty_io()
 
-    # Shape
-    assert set(audit.keys()) == {"critical", "covered_by_override", "variable_io_ok"}
-    for key, bucket in audit.items():
+    # Shape (by_source is an additive dict view -- checked separately in
+    # test_audit_empty_io_covers_all_domain_files)
+    assert set(audit.keys()) == {
+        "critical", "covered_by_override", "variable_io_ok", "by_source"
+    }
+    for key in ("critical", "covered_by_override", "variable_io_ok"):
+        bucket = audit[key]
         assert isinstance(bucket, list), f"{key} must be a list"
         assert all(isinstance(x, str) for x in bucket), f"{key} must contain only str"
         assert bucket == sorted(bucket), f"{key} must be sorted"

@@ -87,6 +87,12 @@ class ObjectDatabase:
         self._pd_blocklist: dict[str, dict] = {}
         self._package_objects: dict[str, list[str]] = defaultdict(list)
         self._package_info: dict[str, dict] = {}
+        # Raw per-file empty-I/O provenance, captured during _load BEFORE the
+        # override deep-merge and BEFORE canonical-name shadowing collapses
+        # duplicates. Maps source label ("max", "packages/Bach", ...) to the
+        # empty-I/O object names in that raw file. Surfaces package entries
+        # that self._objects shadows behind populated same-named core entries.
+        self._empty_io_by_source: dict[str, list[str]] = defaultdict(list)
         self._empty_io_warned: set[str] = set()
         self._install_warned: set[str] = set()
         self._first_arg_warned: set[tuple[str, str]] = set()
@@ -136,15 +142,20 @@ class ObjectDatabase:
                             json_path = pkg_dir / "objects.json"
                             if json_path.exists():
                                 data = json.loads(json_path.read_text())
+                                source = f"packages/{pkg_dir.name}"
                                 for name, obj in data.items():
                                     self._objects[name] = obj
                                     self._package_objects[pkg_dir.name].append(name)
+                                    if not obj.get("inlets") and not obj.get("outlets"):
+                                        self._empty_io_by_source[source].append(name)
             else:
                 json_path = db_root / domain_dir / "objects.json"
                 if json_path.exists():
                     data = json.loads(json_path.read_text())
                     for name, obj in data.items():
                         self._objects[name] = obj
+                        if not obj.get("inlets") and not obj.get("outlets"):
+                            self._empty_io_by_source[domain_dir].append(name)
 
         # Apply object overrides (deep-merge onto loaded objects) using the
         # already-parsed overrides_data — no second disk read.
@@ -835,10 +846,20 @@ class ObjectDatabase:
             variable_io_rules, NOT in self._overridden_objects. These are the
             silent-failure time bombs.
 
-        Lists are sorted. In practice they are disjoint today because every
-        variable_io_rules entry has populated default I/O, but this function
-        permits a canonical to appear in variable_io_ok and one of the
-        empty-I/O buckets if a future rules entry has empty defaults.
+          by_source: additive view mapping each raw source label (bare domain
+            name like "max", or "packages/<pkgdir>" like "packages/Bach") to a
+            sorted list of empty-I/O object names captured directly from that
+            file at load time. Unlike the three canonical-name buckets above,
+            this is NOT deduplicated by canonical name -- it is the mechanism
+            that surfaces package entries shadowed in self._objects by a
+            populated same-named core-domain object (e.g. bach.hypercomment,
+            osc-route, jit.gl.textureset). Its grand total equals the raw
+            empty-I/O count across every domain file on disk.
+
+        The first three lists are sorted. In practice they are disjoint today
+        because every variable_io_rules entry has populated default I/O, but
+        this function permits a canonical to appear in variable_io_ok and one
+        of the empty-I/O buckets if a future rules entry has empty defaults.
         """
         critical: list[str] = []
         covered: list[str] = []
@@ -856,6 +877,10 @@ class ObjectDatabase:
             "critical": sorted(critical),
             "covered_by_override": sorted(covered),
             "variable_io_ok": variable_ok,
+            "by_source": {
+                src: sorted(names)
+                for src, names in self._empty_io_by_source.items()
+            },
         }
 
     def audit_install_coverage(self) -> dict[str, list[str]]:
