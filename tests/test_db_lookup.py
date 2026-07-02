@@ -290,6 +290,93 @@ def test_audit_empty_io_critical_bound():
     )
 
 
+def test_audit_empty_io_covers_all_domain_files():
+    """audit_empty_io()['by_source'] surfaces EVERY raw empty-I/O entry.
+
+    The merged self._objects dict holds one entry per canonical name, so
+    package entries that share a name with a populated core-domain object
+    are shadowed and never appear in critical/covered/variable_io_ok. The
+    additive by_source key mirrors the raw per-file state and must expose
+    them.
+
+    This test is an INDEPENDENT oracle: it walks the domain JSON files
+    itself and never calls any production helper to compute the expected
+    total or per-source counts.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    import src.maxpat.db_lookup as _dbmod
+
+    max_objects_root = (
+        _Path(_dbmod.__file__).resolve().parents[2] / ".claude" / "max-objects"
+    )
+
+    # Exact empty predicate -- must match production capture bit-for-bit.
+    def _is_empty(obj):
+        return not obj.get("inlets") and not obj.get("outlets")
+
+    # Independent brute-force per-source counts.
+    expected_by_source_count: dict[str, int] = {}
+    for domain in ("max", "msp", "jitter", "mc", "gen", "m4l", "rnbo"):
+        json_path = max_objects_root / domain / "objects.json"
+        if not json_path.exists():
+            continue
+        data = _json.loads(json_path.read_text())
+        count = sum(1 for obj in data.values() if _is_empty(obj))
+        if count:
+            expected_by_source_count[domain] = count
+
+    pkg_root = max_objects_root / "packages"
+    if pkg_root.is_dir():
+        for pkg_dir in sorted(pkg_root.iterdir()):
+            if not pkg_dir.is_dir():
+                continue
+            json_path = pkg_dir / "objects.json"
+            if not json_path.exists():
+                continue
+            data = _json.loads(json_path.read_text())
+            count = sum(1 for obj in data.values() if _is_empty(obj))
+            if count:
+                expected_by_source_count[f"packages/{pkg_dir.name}"] = count
+
+    brute_force_total = sum(expected_by_source_count.values())
+
+    db = ObjectDatabase()
+    audit = db.audit_empty_io()
+
+    # Additive key exists and is a dict of sorted str lists.
+    assert isinstance(audit["by_source"], dict)
+    for src, names in audit["by_source"].items():
+        assert isinstance(names, list), f"by_source[{src}] must be a list"
+        assert all(isinstance(x, str) for x in names)
+        assert names == sorted(names), f"by_source[{src}] must be sorted"
+
+    # Grand total equals the independent brute-force count.
+    audit_total = sum(len(v) for v in audit["by_source"].values())
+    assert audit_total == brute_force_total, (
+        f"by_source total {audit_total} != brute-force {brute_force_total}"
+    )
+
+    # Per-source grouping matches the brute-force per-file counts.
+    audit_by_source_count = {
+        src: len(names) for src, names in audit["by_source"].items()
+    }
+    assert audit_by_source_count == expected_by_source_count
+
+    # Shadow-fix regression: previously-invisible package entries surface
+    # under their source, but do NOT appear in critical (they are shadowed
+    # by populated same-named core entries).
+    assert "bach.hypercomment" in audit["by_source"]["packages/Bach"]
+    assert "osc-route" in audit["by_source"]["packages/CNMAT"]
+    assert "jit.gl.textureset" in audit["by_source"]["packages/Jitter Tools"]
+
+    critical = set(audit["critical"])
+    assert "bach.hypercomment" not in critical
+    assert "osc-route" not in critical
+    assert "jit.gl.textureset" not in critical
+
+
 # ── compute_io_counts regression (REVIEW 260420-j15 FN-01) ──────
 
 def test_compute_io_counts_honors_overrides_rules_for_lifted_objects():
