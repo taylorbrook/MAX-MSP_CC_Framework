@@ -24,7 +24,6 @@ from src.maxpat.aesthetics import (
     is_complex_patch,
     apply_auto_styling,
     ensure_text_contrast,
-    _AUTO_HIGHLIGHT,
 )
 from src.maxpat.defaults import LayoutOptions
 from src.maxpat.sizing import text_width
