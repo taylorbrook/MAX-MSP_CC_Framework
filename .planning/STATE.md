@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-07-03 - Completed quick task 260703-knu: documented dsp_sim as bassoon-specific, deferred general-topology broadening to v6.0
+Last activity: 2026-07-03 - Completed quick task 260703-lwq: pruned 2 orphaned quick-task dirs (audit found 2, not ~80; 89 keepers have SUMMARY.md); confirmed .claude/worktrees/ gitignored
 
 ## Performance Metrics
 
@@ -76,6 +76,7 @@ None.
 | 260703-hrl | Direct tests for graph.py and maxclass_map.py + smoke tests for 6 untested modules (68 new tests; 2098 passed, 4 xfailed, zero regressions) | 2026-07-03 | 819ccc8 | | [260703-hrl-add-direct-test-files-for-graph-py-and-m](./quick/260703-hrl-add-direct-test-files-for-graph-py-and-m/) |
 | 260703-i0t | De-duplicate CLAUDE.md against 30 feedback memory entries: CLAUDE.md canonical, 15 nuances promoted, 30 memories archived + deleted, MEMORY.md pruned to pointer | 2026-07-03 | c888f14 | | [260703-i0t-de-duplicate-claude-md-against-the-30-fe](./quick/260703-i0t-de-duplicate-claude-md-against-the-30-fe/) |
 | 260703-knu | Document dsp_sim as bassoon-specific (module docstring + README covering 3 topologies); deferred general-topology broadening recorded as v6.0 in PROJECT.md Future | 2026-07-03 | d2d008f | | [260703-knu-document-src-maxpat-dsp-sim-as-bassoon-p](./quick/260703-knu-document-src-maxpat-dsp-sim-as-bassoon-p/) |
+| 260703-lwq | Prune orphaned quick-task dirs (2 removed, 89 keepers with SUMMARY.md); confirmed .claude/worktrees/ gitignored | 2026-07-03 | (docs commit) | | [260703-lwq-prune-orphaned-empty-quick-task-slugs-un](./quick/260703-lwq-prune-orphaned-empty-quick-task-slugs-un/) |
 
 ## Deferred Items
 
