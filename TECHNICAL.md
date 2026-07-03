@@ -14,6 +14,7 @@ For setup and usage, see [README.md](README.md).
 - [Python Generation Engine](#python-generation-engine)
 - [Validation Pipeline](#validation-pipeline)
 - [Critic System](#critic-system)
+- [DSP Pre-Flight Simulation](#dsp-pre-flight-simulation)
 - [Code Generation](#code-generation)
 - [Layout Engine](#layout-engine)
 - [Memory System](#memory-system)
@@ -48,12 +49,12 @@ User Request (build new or iterate on existing)
          │
          ▼
 ┌─────────────────┐
-│   Validation     │  4-layer structural validation (auto-fixes where safe)
+│   Validation     │  5-layer structural validation (auto-fixes where safe)
 └────────┬────────┘
          │
          ▼
 ┌─────────────────┐
-│   Critic Loop    │  Semantic review (DSP, structure, RNBO, C++)
+│   Critic Loop    │  Semantic review (DSP, structure, layout, RNBO, C++, package)
 │                  │  Blockers → revision → re-review until clean
 └────────┬────────┘
          │
@@ -71,16 +72,19 @@ The knowledge base lives at `.claude/max-objects/` with one JSON file per domain
 
 | File | Domain | Objects | Coverage |
 |------|--------|---------|----------|
-| `max/objects.json` | Control, data, UI, MIDI, OSC | 470 | Core MAX objects |
-| `msp/objects.json` | Audio, signal processing | 248 | All MSP~ objects |
-| `jitter/objects.json` | Video, matrix, OpenGL | 210 | Jitter pipeline |
-| `mc/objects.json` | Multichannel wrappers | 215 | MC signal routing |
+| `max/objects.json` | Control, data, UI, MIDI, OSC | 471 | Core MAX objects |
+| `msp/objects.json` | Audio, signal processing | 246 | All MSP~ objects |
+| `jitter/objects.json` | Video, matrix, OpenGL | 218 | Jitter pipeline |
+| `mc/objects.json` | Multichannel wrappers | 222 | MC signal routing |
 | `gen/objects.json` | Gen~ DSP operators | 189 | GenExpr operators |
-| `m4l/objects.json` | Max for Live | 33 | Live API objects |
+| `m4l/objects.json` | Max for Live | 35 | Live API objects |
 | `rnbo/objects.json` | RNBO export-compatible | 560 | Export-safe subset |
-| `packages/objects.json` | Package objects | 87 | Third-party packages |
 
-**Total: 2,015 objects**
+**Core domains: 1,941 objects across 7 files.**
+
+Package objects no longer live in a single `packages/objects.json`. As of v4.0 package integration they are stored as **29 per-package files** under `.claude/max-objects/packages/<Name>/objects.json` (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more), totaling **1,489 objects** with per-package source tracking.
+
+**Grand total: 3,430 objects** (1,941 core + 1,489 package).
 
 ### Object Entry Schema
 
@@ -133,6 +137,14 @@ Key fields:
 - **`variable_io`**: If `true`, actual I/O count depends on arguments — use `io_rule` formulas
 - **`rnbo_compatible`**: Whether the object can be used in RNBO export patches
 - **`min_version`**: Minimum MAX version required (all patches target MAX 9)
+
+#### Schema-Hardening Fields (v5.0, Phase 28)
+
+The v5.0 schema delta added three curated fields, validated fail-fast at load by `_validate_schema_extensions` (which runs after the deep-merge of `overrides.json`):
+
+- **`signal_role`**: Per-outlet closed enum describing what the outlet actually carries. The loader projects it onto the legacy `outlet['signal']` bool via `_apply_signal_role_writethrough` (`signal_role == "audio"` → `signal: true`), so **`signal: bool` is now a derived back-compat shim** rather than authoritative data. Removal of the shim is scheduled for v6.0+.
+- **`domain_restricted`**: Per-object list of domain enums marking objects that are only valid inside specific domains.
+- **`verified_installed`**: Per-object strict bool recording whether the object was confirmed present in an actual installation (as opposed to community-extracted stub metadata).
 
 ### Variable I/O Rules
 
@@ -211,6 +223,20 @@ Relationship types: `required_pair`, `common_pair`, `equivalent`, `required_grou
 | `compute_io_counts(name, args)` | `(int, int)` | Actual (inlets, outlets) accounting for variable I/O |
 | `get_outlet_types(name, args)` | `list[str]` | Outlet type array (`"signal"`, `""`, `"multichannelsignal"`) |
 
+**Schema-hardening accessors (v5.0):**
+
+| Method | Returns | Purpose |
+|--------|---------|---------|
+| `get_signal_role(name, outlet)` | `str \| None` | Curated per-outlet `signal_role` enum |
+| `get_domain_restrictions(name)` | `list[str]` | Domain enums the object is restricted to |
+| `is_domain_restricted(name)` | `bool` | Whether the object carries any domain restriction |
+| `get_install_state(name)` | `bool \| None` | Raw `verified_installed` value |
+| `is_verified_installed(name)` | `bool` | Strict install-verification check |
+| `audit_signal_role_coverage()` | `dict` | Coverage report for `signal_role` metadata |
+| `audit_install_coverage()` | `dict` | Coverage report for `verified_installed` |
+| `audit_domain_coverage()` | `dict` | Coverage report for `domain_restricted` |
+| `audit_empty_io()` | `dict` | Entries with empty inlets/outlets, with a `by_source` per-package breakdown |
+
 **Load order**: `rnbo → packages → m4l → gen → mc → jitter → msp → max`. Later domains override earlier ones, so core MAX definitions take precedence.
 
 ---
@@ -258,13 +284,14 @@ After generation, the router passes output through the critic loop before writin
 |-------|------|----------|
 | **max-critic** | Quality assurance | Orchestrates generate-review-revise loop using Python critics. No hard round limit — loops until clean. |
 | **max-lifecycle** | Project management | Creates projects, tracks stages (ideation → discuss → research → build → verify), generates test checklists |
-| **max-memory-agent** | Pattern persistence | *Retired in v2.2.* The MemoryStore API and `patterns.md` files remain, but auto-inject/write-back is now handled directly by generating agents rather than a dedicated memory agent. |
+
+> **No memory agent.** There is no `max-memory-agent` skill. Memory persistence is a **library only**: the `MemoryStore` API (`src/maxpat/memory.py`) and `patterns.md` files remain available, but nothing auto-injects memory into generation or writes new patterns back automatically.
 
 ---
 
 ## Python Engine
 
-`src/maxpat/` contains the core Python library (~13,200 LOC).
+`src/maxpat/` contains the core Python library (~18,600 LOC).
 
 ### Core Classes (`patcher.py`)
 
@@ -296,6 +323,15 @@ After generation, the router passes output through the critic loop before writin
 | `bring_to_front(box)` | Move box to index 0 (renders on top) |
 | `send_to_back(box)` | Move box to end of array (renders behind) |
 | `set_z_index(box, index)` | Set explicit z-order position |
+
+**Codified layout/UX builders (v5.0, Phase 31)** — one-call helpers that encode the CLAUDE.md recipes by construction:
+
+| Method | Purpose |
+|--------|---------|
+| `add_overlay_readout(target, *, format="%.2f", type="flonum", editable=False, offset_x=0.0, offset_y=0.0) -> Box` | Overlay a readout on an interactive control (Rule #6 recipe: `bring_to_front` + `ignoreclick` click pass-through) |
+| `add_labeled_param_bank(params, x, y, *, label_side="left", extra_attrs=None) -> (multislider, [comment, ...])` | Build a labeled multislider parameter bank (size×24 height, `contdata=1`, `setstyle=1`, `orientation=0`) with aligned comment labels |
+| `replace_box_safe(old_box, new_name, *, args=None, rewire="auto") -> EditResult` | Replace a box and auto-rewire orphaned connections by index when the new I/O layout matches |
+| `add_m4l_gen_synth(params, *, gen_varname="synth", gen_code=None) -> (gen_obj, [live_dial, ...], plugout_obj)` | Build a Live-ready M4L gen-synth skeleton (`live.dial`↔`Param` via `param_connect`; no `gain~` before `plugout~`) |
 
 Patcher internals are decomposed into mixins for maintainability: `GraphMixin` (`graph.py`) handles adjacency/traversal and `AnalysisMixin` (`analysis.py`) handles patch analysis. `utils.py` provides shared helpers like `get_box_name()`. The public API is unchanged.
 
@@ -333,7 +369,7 @@ Patcher internals are decomposed into mixins for maintainability: `GraphMixin` (
 
 ## Validation Pipeline
 
-Every generated patch passes through a 4-layer validation pipeline (`src/maxpat/validation.py`). The pipeline runs automatically via write hooks (`hooks.py`).
+Every generated patch passes through a 5-layer validation pipeline (`src/maxpat/validation.py`), several layers with sub-layers. The pipeline runs on demand via `validate_patch()` (see write hooks below).
 
 ### Layer 1: JSON Structure
 
@@ -351,6 +387,11 @@ Checks every object exists in the ObjectDatabase:
 - Checks PD blocklist and suggests MAX equivalents
 - Skips structural maxclasses (`inlet`, `outlet`, `patcher`, `bpatcher`)
 
+Sub-layers:
+- **Layer 2b — maxclass usage**: flags a non-UI `maxclass` set on `newobj`-style objects (and vice versa)
+- **Layer 2c — package gating**: defense-in-depth check that package objects used are within the project's `allowed_packages`
+- **Layer 2d — community-extracted check**: flags objects backed only by community-extracted stub metadata (not `verified_installed`)
+
 **Severity**: error
 
 ### Layer 3: Connection Validation
@@ -358,7 +399,7 @@ Checks every object exists in the ObjectDatabase:
 Validates all patchlines:
 - **Outlet bounds**: source outlet index < source object's outlet count
 - **Inlet bounds**: destination inlet index < destination object's inlet count
-- **Signal compatibility**: signal outlets only connect to signal-accepting inlets (exception: `signal/float` inlets accept both)
+- **Signal compatibility**: signal-type checks now consult the curated `signal_role` metadata — signal outlets only connect to signal-accepting inlets (exception: `signal/float` inlets accept both)
 
 **Severity**: error with **auto-fix** — invalid connections are removed in-place
 
@@ -375,6 +416,12 @@ Semantic checks for common MAX pitfalls:
 | Maxclass mismatch | `newobj` maxclass on non-UI objects that should use specific maxclass | warning |
 | External .gendsp I/O mismatch | Gen~ box I/O count doesn't match referenced .gendsp file | warning |
 | MC oscillator gain staging | MC oscillators reaching mc.dac~ without gain control | warning |
+
+**Layer 4b — domain-restriction guard (VALID-02)**: flags objects used outside the domains listed in their `domain_restricted` metadata.
+
+### Layer 5: Embedded GenExpr Codebox Walker (VALID-04)
+
+Walks embedded `gen~` codebox contents inside the patch and applies GenExpr checks (declaration ordering, operator existence, balanced structure) to code that lives inline in the `.maxpat` rather than in a standalone `.gendsp` file.
 
 ### Blocking Behavior
 
@@ -482,7 +529,29 @@ Reviews C++ external source code (Min-DevKit). Only invoked when external code i
 | Missing archetype methods | DSP missing `sample_operator`, scheduler missing `timer<>` | blocker |
 | TODO comments | Unimplemented sections | note |
 
+### Layout Critic (`layout_critic.py`)
+
+Reviews visual/spatial design and adherence to the codified layout recipes.
+
+| Check | Detects | Severity |
+|-------|---------|----------|
+| Overlapping boxes | Non-overlay boxes sharing screen space | warning |
+| Off-canvas objects | Boxes positioned outside the visible patch area | warning |
+| Companion misalignment | Readouts/labels not aligned with their target controls | warning |
+
+### Package Critic (`package_critic.py`)
+
+Reviews package-object conventions across the enabled packages.
+
+| Check | Detects | Severity |
+|-------|---------|----------|
+| BEAP signal standards | BEAP objects wired outside their expected signal conventions | warning |
+| Bach llll typing | `bach.*` objects fed plain-MAX types without `@out t` | warning |
+| Community extraction | Use of community-extracted objects not verified against an install | warning |
+
 ### Critic Loop
+
+`review_patch()` in `critics/__init__.py` wires **six** critics into the review pass: DSP, structure, layout, RNBO, external, and package. (An `m4l_critic.py` module exists but is **not** called by `review_patch()`.)
 
 The `max-critic` agent orchestrates the generate-review-revise cycle:
 
@@ -492,6 +561,44 @@ The `max-critic` agent orchestrates the generate-review-revise cycle:
 4. Re-run critics on revised output
 5. Loop continues until clean (no hard round limit)
 6. Escalates after 5 consecutive identical findings
+
+---
+
+## DSP Pre-Flight Simulation
+
+`src/maxpat/dsp_sim/` (v5.0, Phase 32) is an **offline numpy waveguide-stability harness** that runs a patch's DSP topology numerically before it is ever opened in MAX. It is not a general audio preview — it targets specific reed/bore waveguide topologies and answers a single question: will this configuration oscillate stably, or misbehave?
+
+### Public API
+
+```python
+run_simulation(patch_path, topology, params, sweep_param, sweep) -> SimulationReport
+```
+
+Runs the simulation for a given topology and parameter set, optionally sweeping one parameter across a range, and returns a `SimulationReport`.
+
+### Classifier Verdicts
+
+`classify()` emits one of five verdicts:
+
+| Verdict | Meaning |
+|---------|---------|
+| `PASS` | Stable, self-sustaining oscillation |
+| `PHASE_DRIFT` | Oscillation present but phase/pitch drifts |
+| `MODE_COMPETITION` | Multiple modes competing (unstable timbre) |
+| `NO_OSCILLATION` | Fails to start oscillating |
+| `RUNAWAY` | Amplitude diverges (unstable) |
+
+### Curated Topologies
+
+Three waveguide topologies are supported: `bore_only`, `reed_bore`, and `reed_bore_post_radiation`.
+
+### CLI
+
+```bash
+python3 -m src.maxpat.dsp_sim --patch <p> --topology <t> [--param ... --sweep ...]
+```
+
+Exit codes mirror the verdict priority so the harness can gate a build. The `max-dsp-agent` skill gates waveguide patches on a matching `tests/dsp_sim/test_<stem>.py` (SKILL.md-level gate).
 
 ---
 
@@ -572,7 +679,9 @@ Boxes with `presentation: 1` are separately laid out in a grid for the patch's p
 
 ## Memory System
 
-The framework learns patterns across sessions using a dual-scope persistent memory system (`src/maxpat/memory.py`).
+A dual-scope persistent memory **library** (`src/maxpat/memory.py`) is available for storing patterns across sessions.
+
+> **Library, not agent.** There is no memory agent, and nothing drives auto-inject or auto-write-back. `MemoryStore` is a plain API — code that wants to persist or recall patterns calls it explicitly.
 
 ### Scopes
 
@@ -595,8 +704,8 @@ MemoryEntry(
 
 ### Behavior
 
-- **Auto-inject**: Before generation, the memory agent loads all project memory plus domain-filtered global memory and provides it as context to the generating agent
-- **Auto-write-back**: After successful generation, the memory agent identifies genuinely new patterns and writes them back
+- **Manual inject/recall**: There is no automatic injection. A caller reads project memory plus domain-filtered global memory via `MemoryStore.read()` when it wants prior patterns as context.
+- **Manual write-back**: New patterns are persisted only when a caller explicitly invokes `MemoryStore.write()` — nothing writes back automatically after generation.
 - **Deduplication**: Entries are deduplicated by pattern name (case-insensitive) within the same domain
 
 ### MemoryStore API
@@ -667,7 +776,7 @@ Results are saved to `test-results/` for tracking.
 
 ## Test Suite
 
-The project includes 1,276 tests across 33 test files covering all modules. Run with:
+The project includes 2,034 tests across 46 test files covering all modules. Run with:
 
 ```bash
 python3 -m pytest tests/ -v
@@ -680,10 +789,11 @@ Key test areas:
 - Intelligent editing (modify, insert, replace, graph queries)
 - Patch analysis (inventory, sections, signal chains, complexity)
 - Layout engine (topological ordering, component detection, midpoints)
-- All validation layers (structure, bounds, signal flow, domain rules)
+- All validation layers (structure, object existence + sub-layers, signal-role-aware connections, domain rules + restriction guard, embedded GenExpr)
 - Code validation (GenExpr, js, N4M)
-- All critics (structure, DSP, RNBO, external)
-- Object database schema and lookup
+- All six wired critics (structure, DSP, layout, RNBO, external, package)
+- DSP pre-flight simulation (topologies, classifier verdicts, CLI exit codes)
+- Object database schema and lookup, including v5.0 schema-hardening fields and audit accessors
 - RNBO database and validation
 - Memory store operations
 - Write hooks and file operations
