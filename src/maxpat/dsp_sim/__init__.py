@@ -1,5 +1,17 @@
 """DSP pre-flight simulator -- offline numpy waveguide stability harness.
 
+SCOPE: This is the bassoon-waveguide-specific pre-flight harness for the
+bassoon-model patch, NOT a general-purpose DSP simulator. It exists to serve
+the CLAUDE.md Gen~ rule that any new in-loop waveguide filter must be
+pre-flighted with a numpy simulation before committing (catch pitch-lock /
+mode-competition / runaway / no-oscillation before a bassoon patch ships).
+The curated topology library ships three bassoon shapes -- `bore_only`,
+`reed_bore`, and `reed_bore_post_radiation` (the last encodes the v0.4.2+
+"resonant filters go POST-LOOP" invariant) -- each mirroring
+patches/bassoon-model/generated/bassoon.gendsp. The `mirror=` escape hatch
+(run_simulation(mirror=callable)) covers off-catalogue patches without adding
+a topology. See README.md in this package for scope, topologies, and usage.
+
 Per Phase 32 CONTEXT.md D-01 (topology + mirror on-ramps), D-03 (four
 distinct failure-mode verdicts), D-04 (max-dsp-agent gate), D-05 (tight
 default thresholds), D-09 (verdict priority cascade).
