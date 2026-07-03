@@ -48,7 +48,7 @@ db.get_outlet_types("cycle~")                      # ["signal"]
 
 **Check common companions:** Look up the object name in `relationships.json` to find commonly paired objects.
 
-**Verify lookup results have non-empty I/O.** Some DB entries (especially in `packages/`) were extracted with `inlets: []` and `outlets: []`. `lookup()` returns these as real hits, but the patch builder cannot connect them — they are indistinguishable from "missing" at the connection site. Treat empty-I/O entries as missing and populate them via `overrides.json`. Use `db.audit_empty_io()` to enumerate them. When a user reports an object "missing" you've used before, check both `lookup()` returns AND inlet/outlet lengths -- not just `exists()`.
+**Verify lookup results have non-empty I/O.** Some DB entries (especially in `packages/`) were extracted with `inlets: []` and `outlets: []`. `lookup()` returns these as real hits, but the patch builder cannot connect them — they are indistinguishable from "missing" at the connection site. Treat empty-I/O entries as missing and populate them via `overrides.json`. Use `db.audit_empty_io()` to enumerate them. When a user reports an object "missing" you've used before, check both `lookup()` returns AND inlet/outlet lengths -- not just `exists()`. The `by_source` key of `audit_empty_io()` enumerates empty-I/O gaps per domain/package file. Before adding an object fresh to a domain file, search the `packages/` subdirectories and `overrides.json` first — it may already exist with partial data worth merging (same-named package entries can shadow populated core entries). Before declaring an object unknown, also grep existing `.maxpat` files under `patches/` — `live.*` UI objects were incompletely extracted, and user-confirmed objects should be added to the appropriate domain file so future lookups succeed.
 
 **The `maxclass` field in the DB is NOT authoritative.** Most MAX objects (`gen~`, `click~`, `expr`, `expr~`, `pack`, `route`, etc.) use `maxclass: "newobj"` with the object name in the `text` field. Only true UI widgets (`button`, `toggle`, `dial`, `meter~`, `gain~`, `ezdac~`, `flonum`, `number`, `scope~`, `spectroscope~`, `levelmeter~`, `multislider`, etc.) use their own name as `maxclass` with no `text` field. The authoritative source is `UI_MAXCLASSES` in `src/maxpat/maxclass_map.py`, NOT the database's `maxclass` field. Setting `maxclass` to a non-UI name causes "invalid attribute maxclass" errors at load.
 
@@ -88,6 +88,8 @@ Getting this wrong causes silent bugs where objects compute with stale values. A
 - Prefer named `send`/`receive` (and `send~`/`receive~`) over long patch cords that cross the patch
 - Use `patcher` (subpatchers) to organize complex logic into named sections
 - Standard object spacing: ~20px vertical, ~15px horizontal gutter (matches defaults.py; user-confirmed tight spacing)
+- Companion pairs (e.g. `meter~` beside `gain~`) sit side-by-side at ~5px horizontal gap, not stacked below (companion detection lives in defaults.py)
+- MAX renders message boxes wider than their stored `patching_rect` width. For overlap-free layout, estimate rendered width as `len(text) * 8 + 25` px of chrome and keep at least 8px between boxes — never rely on `patching_rect[2]` for spacing
 
 #### Multislider as Labeled Parameter Bank
 
@@ -110,6 +112,8 @@ When multislider bars represent labeled parameters (with comment labels alongsid
 Never create `generate.py` or similar intermediary Python scripts that regenerate `.maxpat` files from scratch. The Patcher API (`src.maxpat`) is the only sanctioned way to create and edit patches. Agents build Patcher instances in-memory during the `/max-build` or `/max-iterate` commands, then write via `save_patch_roundtrip()`. There is no separate generator script to maintain or re-run.
 
 This rule exists because the generator pattern causes regeneration to overwrite manual edits and iterate improvements. It was deprecated in milestone 2.0.
+
+`Patcher.from_dict` -> `Patcher.to_dict()` round-trips are lossless (raw box JSON is preserved in `box._raw` and merged back on serialize); the standalone `Box.to_dict()` is lossy (drops `extra_attrs`/`_raw`, recomputes inlet counts, mangles message text) — never serialize a single Box directly, always go through `Patcher.to_dict()`. When investigating a suspected `.maxpat` regression, diff committed git objects (`git show A:file` vs `git show B:file`), never the working tree — a working-tree copy can be a transient degraded save from another instance and produce phantom diffs.
 
 ### Rule #6: Z-Order Awareness
 
@@ -135,6 +139,8 @@ Every patch save MUST be committed to git. The `save_patch_roundtrip()`, `write_
 
 **Prohibited:** `git stash` during any patch workflow. Three orphaned stashes containing significant patch work were discovered and recovered. Use `git commit` instead. If you need to context-switch, commit your current work first.
 
+To verify whether a change caused a failure, check out a prior commit into a temp worktree or run tests against `git show HEAD~N:path` — never stash. After any worktree merge, check `git stash list` for orphaned stashes: a `stash && merge && pop` chain short-circuits on conflict and silently strands uncommitted work.
+
 **Multi-instance safety:** When multiple Claude instances work on the repo simultaneously, each MUST only commit files within its active project directory. Never use `git add .` or `git add -A` during patch work.
 
 ### Rule #8: `replace_box()` Orphans Connections — Always Rewire
@@ -157,7 +163,8 @@ After every `replace_box` call, iterate `result.orphaned` and re-add the connect
 - Use `meter~` or `levelmeter~` for audio level monitoring
 - Multichannel: `mc.` prefix objects handle multiple channels -- use `mc.pack~`/`mc.unpack~` to convert between MC and individual channels
 - `line~` (signal-rate) **replaces** the active ramp on every new message. For multi-segment envelopes send a single space-delimited list (`$1 $2 0. $3` -- no comma). Comma-separated segments arrive as separate messages in the same scheduler tick and only the last takes effect (envelope never opens). Control-rate `line` queues comma-segments correctly; `line~` does not.
-- `buffer~` has no `info` query and bare attribute names (`sizeinsamps`, `samplerate`) are setters, not getters. To read buffer contents/size, bridge through `fluid.buf2list` (FluCoMa: `buffer <name>` then `bang`) or `jit.buffer~` + `jit.matrixinfo` for dimensions. The right outlet only emits state after operations like `read`.
+- `buffer~` has no `info` query and bare attribute names (`sizeinsamps`, `samplerate`) are setters, not getters. To read buffer contents/size, bridge through `fluid.buf2list` (FluCoMa: `buffer <name>` then `bang`) or `jit.buffer~` + `jit.matrixinfo` for dimensions, or drive `peek~` with `uzi N` when an upper bound on length is known. The right outlet only emits state after operations like `read`.
+- If a control connection from an MSP object's non-primary outlet gets stripped by validation, the DB likely mis-marks that outlet as signal (bulk-extraction bug — many MSP right outlets are actually bangs/floats/indices). Fix the outlet types in `overrides.json` rather than rerouting the patch.
 - `expr` and `expr~` do NOT have a `clip()` function. Use `min(max(x, lo), hi)` instead. `expr clip($f1, 0., 1.)` errors with "function clip not found".
 - `floor~` is RNBO-only. In standard MSP use `trunc~` (equivalent for non-negative input -- covers `phasor * N` use cases). For signed input or true floor semantics, do the math in a Gen~ codebox where `floor` is native. Always check `domain` on DB lookups before using a tilde object at the top level.
 - `umenu` items in `.maxpat` JSON use a comma-as-element format: `"items": ["LP", ",", "HP", ",", "BP", ",", "Notch"]`. Plain arrays and comma-separated strings both render as a single menu entry. Alternative: populate at runtime via `loadbang -> "clear, append X, append Y, ..."`.
@@ -175,6 +182,8 @@ After every `replace_box` call, iterate `result.orphaned` and re-add the connect
 - Codebox objects embed GenExpr in `.maxpat` patches; `.gendsp` files are standalone Gen~ patchers
 - **Declaration ordering**: ALL declarations (`Param`, `History`, `Delay`, `Buffer`, `Data`) MUST appear before ANY expressions or assignments. gen~ will refuse to compile code with declarations after expressions. The `add_gen()` method auto-reorders declarations, but always write code with declarations at the top: Params first, then Delay, then History, then Buffer/Data, then all expressions.
 - **Setting Param values from MAX:** send `param_name $1` messages to the gen~ inlet (NO `@` prefix). `@param_name $1` is attribute syntax and does NOT work with gen~ -- gen~ matches the first symbol against Param names directly. Use `attrui` connected to gen~ for an auto-generated all-params interface.
+- **Waveguide loop filters:** resonant filters (Q >= ~1.5) go POST-LOOP (radiation/output path), never inside the feedback loop — an in-loop resonance competes with the bore's self-excited mode and pitch locks/jumps to the filter fc; no phase compensation fixes it. This includes "source-side" filters between a driver nonlinearity and the delay-line injection. Low-Q (Q <= ~1) filters may stay in-loop but must subtract analytic **phase delay** (-phi(w)/w) — never group delay (overshoots 3x+ for resonant sections) — from the target period. Onepole (b = 1-a): `pd_samples = atan(b*sin(w) / (1 - b*cos(w))) / max(w, 0.0001)`. For biquads, evaluate B(e^jw)/A(e^jw) as complex numbers, take the atan2 phase difference, unwrap past -pi, clamp compensation to a sane range (e.g. [0, 64] samples), and share coefficients between the filter and the comp block (full derivation: `.planning/quick/260703-i0t-de-duplicate-claude-md-against-the-30-fe/260703-i0t-archived-memories.md`).
+- **Pre-flight any new in-loop waveguide filter with a numpy simulation** before committing: sweep the filter's controlling Param across its full range at several target freqs and measure the output fundamental (autocorrelation/FFT). If pitch moves more than a few cents across the sweep, the architecture is wrong. Post-loop filters need no compensation.
 
 ### Subpatcher Inlet/Outlet Access
 
@@ -204,6 +213,7 @@ inner.add_connection(some_box, 0, inlets[2], 0)
 
 ### Node for Max (N4M / node.script)
 
+- **`node.script` is NOT in the object database** — per Rule #1 it cannot be used in generated patches until it is added (with verified I/O) to the DB. For tasks that would naturally use N4M (file I/O, binary parsing, npm libraries), prefer a build-time Python data tool that emits `coll`/`dict` data files the patch loads with verified objects — this is not a Rule #5 violation (Rule #5 only forbids regenerating `.maxpat` files).
 - `node.script` objects run Node.js -- use `const maxAPI = require('max-api')` for MAX communication
 - `maxAPI.addHandler('message_name', callback)` to receive messages from MAX
 - `maxAPI.outlet(value)` to send data back to MAX
@@ -227,9 +237,14 @@ inner.add_connection(some_box, 0, inlets[2], 0)
 > Codified (synth skeleton): `Patcher.add_m4l_gen_synth(params)` (Phase 31). The rules below still apply; the builder enforces them by construction.
 
 - **No `gain~` / `live.gain~` / `ezdac~` before `plugout~`.** Ableton's channel strip handles volume; an extra gain stage is redundant and `gain~` defaults to 0 (silence on load). Route the final signal-processing stage directly to `plugout~`. Volume, pan, and mute live in Ableton's mixer.
-- **`live.dial` / `live.slider` bind to gen~ Params via `param_connect`, not message-box patching.** Set `param_connect: "<gen~_varname>::<param_name>"`, `parameter_enable: 1`, plus the `saved_attribute_attributes.valueof` block (`parameter_initial`, `parameter_longname`, `parameter_shortname`, `parameter_mmin`, `parameter_mmax`, `parameter_modmode`, `parameter_type`, `parameter_unitstyle`). The gen~ object MUST have a stable `varname` matching the prefix in `param_connect`. No patch cord between the dial and gen~ -- `param_connect` IS the binding.
+- **`live.dial` / `live.slider` bind to gen~ Params via `param_connect`, not message-box patching.** Set `param_connect: "<gen~_varname>::<param_name>"`, `parameter_enable: 1`, plus the `saved_attribute_attributes.valueof` block (`parameter_initial`, `parameter_initial_enable`, `parameter_longname`, `parameter_shortname`, `parameter_mmin`, `parameter_mmax`, `parameter_modmode`, `parameter_type`, `parameter_unitstyle`). The gen~ object MUST have a stable `varname` matching the prefix in `param_connect`. No patch cord between the dial and gen~ -- `param_connect` IS the binding.
 - Without `param_connect`, the dial passes values via message routing but does NOT appear in Live's parameter list and is not Live-automatable.
 - **Slider -> line~ -> gen~ signal-rate exception:** when a slider feeds a signal inlet via `line~`, you cannot use `param_connect` (it only binds to Params, not signal inputs). Keep the `slider -> line~ -> gen~` signal path and add `parameter_enable: 1` + `saved_attribute_attributes.valueof` to the slider itself so Live still sees it as a standalone live.parameter. Its value flows through `line~` to the signal inlet while remaining Live-automatable.
+
+### bach (package)
+
+- `bach.llll2list` and `bach.list2llll` do NOT exist in the installed bach package — the DB entries are stale; patches fail at load with "No such object". Extract sub-llll values with `bach.nth N` (1-based, one call per index); add `@unwrap 1` when the extracted element is itself a sublist. MAX lists connect directly to bach inlets in flat cases; for complex conversions use `bach.flat`, `bach.iter`, or `bach.pack`.
+- Every bach object's `@out` attribute defaults to `n` (native), which plain MAX objects (`f`, `select`, `unpack`, `expr`) reject with "wrong message or type". Set `@out t` (text) on any bach object whose outlet feeds a non-bach consumer; the attribute string has one char per llll outlet. In text format a flat sublist emerges as a regular MAX list, so `unpack f f` works directly.
 
 ## PD Confusion Guard
 
@@ -276,6 +291,8 @@ Inside the subpatch, use `#1` and `#2` directly:
 - `send~ #2` becomes `send~ slot-1-out`
 
 This applies equally to newobj boxes and message boxes (`set #1`, `setbuffer #1`).
+
+**Numeric bpatcher args must be serialized as JSON numbers, not strings.** `"args": ["slot-1", "0"]` makes MAX substitute `#2` as the quoted symbol `0`, and object boxes like `-~ #2` fail with "bad arguments creating object" (once per instance). Pass Python ints — `args=[slot, 0]`, not `args=[slot, "0"]`; symbol args (e.g. `"slot-1"`) stay strings. To fix an existing patch surgically, convert numeric strings in `box._raw["args"]` (post-round-trip `box.args` is empty) and `save_patch_roundtrip`.
 
 **Comment boxes do NOT perform `#N` substitution.** Only `newobj` and `message` boxes do. Putting `#1` (or `Bus #1`) in a `comment` box's text leaves the literal string in place. For dynamic labels in bpatchers, use a `loadbang` -> `message "set Label #1"` -> `comment` chain: the message box performs the substitution and sends `set` to update the comment's display text.
 
