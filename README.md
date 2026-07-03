@@ -10,10 +10,12 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 - **Conversational patch creation** — describe what you want in natural language; Claude generates valid `.maxpat` files
 - **Patch analysis and onboarding** — analyze any existing `.maxpat` file to understand its structure, signal flow, and sections before editing or extending it
 - **Intelligent editing** — modify objects in-place, insert into signal chains, replace/swap objects, query upstream/downstream signal paths, and auto-position new objects
-- **3,434-object knowledge base** — verified database covering MAX, MSP, Jitter, MC, Gen~, Max for Live, RNBO, and 29 packages (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more) with full inlet/outlet schemas
+- **3,430-object knowledge base** — verified database covering MAX, MSP, Jitter, MC, Gen~, Max for Live, RNBO, and 29 packages (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more) with full inlet/outlet schemas and typed per-outlet signal metadata (`signal_role`) backing the connection validator
 - **Package-aware generation** — project-level package selection, DB-driven bpatcher sizing, allowed_packages gating, and community package stubs with extraction CLI for installed packages
 - **9 specialist agents** — router, patch, DSP/Gen~, RNBO, JavaScript, UI layout, C++ externals, critic, and lifecycle management with package-specific domain guidance
-- **5-layer validation pipeline** — structure checks, connection verification, domain-specific critics (DSP signal flow, RNBO compatibility, C++ review, package conventions), and iterative revision
+- **5-layer validation pipeline** — structure checks, `signal_role`-aware connection verification, domain-restriction guards, six domain-specific critics (DSP signal flow, structure, layout, RNBO compatibility, C++ review, package conventions), and iterative revision
+- **Codified layout/UX builders** — one-call helpers for labeled parameter banks, overlay readouts, safe box replacement with auto-rewiring, and Max for Live gen-synth skeletons
+- **Offline DSP pre-flight simulation** — a numerical waveguide-stability harness (`dsp_sim`) that classifies specific reed/bore topologies before you open the patch in MAX (not a general audio preview)
 - **Gen~ / GenExpr code generation** — sample-rate DSP code with proper declaration ordering, feedback loops, and parameter mapping
 - **RNBO export support** — generate export-ready patches for VST3/AU plugins, Web Audio, and C++ embedded targets
 - **Node for Max & js scripting** — generate JavaScript for both V8 `js` objects and Node.js `node.script`
@@ -66,7 +68,7 @@ claude
 Claude walks you through a full project kickoff in one continuous conversation:
 1. **Kickoff** — asks about your goals, audio/MIDI requirements, signal flow, UI needs, and which packages to use (BEAP, Vizzie, FluCoMa, etc.)
 2. **Discuss** — dives deeper into implementation decisions (object choices, signal architecture, control design)
-3. **Research** — looks up the best MAX objects, patterns, and techniques from the 3,434-object database
+3. **Research** — looks up the best MAX objects, patterns, and techniques from the 3,430-object database
 
 By the end, all findings are saved to `patches/my-synth/context.md` and Claude suggests a concrete `/max-build` command.
 
@@ -169,11 +171,11 @@ The framework has four core layers:
 
 **Direct .maxpat Editing (v3.0)** — The `.maxpat` file is the single source of truth. Patches are loaded into `Patcher`/`Box`/`Patchline` objects, edited with search, mutation, and graph query methods, and written back with lossless round-trip preservation. All user state — positions, colors, varnames, custom attributes, manual edits made in MAX — survives the load-edit-save cycle. Every patch save auto-commits to git for safety. No intermediate code generation step.
 
-**Object Database** — A verified knowledge base of 3,434 MAX objects (`.claude/max-objects/`) across 8 core domains plus 29 packages (bundled and community) with full inlet/outlet schemas, signal types, argument formats, variable I/O rules, RNBO compatibility flags, and package source tracking. Package objects include DB-driven bpatcher dimensions for layout. Every object used in generation is looked up here — nothing is guessed.
+**Object Database** — A verified knowledge base of 3,430 MAX objects (`.claude/max-objects/`) across 7 core domains plus 29 packages (bundled and community) with full inlet/outlet schemas, typed per-outlet signal metadata (`signal_role`), domain-restriction and install-state flags, argument formats, variable I/O rules, RNBO compatibility flags, and package source tracking. Package objects include DB-driven bpatcher dimensions for layout. Every object used in generation is looked up here — nothing is guessed.
 
 **Agent System** — A router analyzes your task description and dispatches to one or more specialist agents (DSP, patch, RNBO, js, UI, externals). Agents read existing patches, analyze their structure, make surgical edits or build new ones, and write the result directly.
 
-**Validation Pipeline** — Every patch passes through structure validation, connection bounds checking, domain-specific critics (DSP signal flow, RNBO compatibility, C++ code review), and package convention critics (BEAP signal standards, Bach llll type checking, community package extraction verification). Blockers trigger automatic revision before output is written. Aesthetic styling (panels, comments, patcher colors) is applied automatically during generation.
+**Validation Pipeline** — Every patch passes through structure validation, `signal_role`-aware connection bounds and signal-type checking, package gating, domain-restriction guards, and an embedded GenExpr codebox walker, followed by six domain-specific critics (DSP signal flow, structure, layout, RNBO compatibility, C++ code review, and package conventions — BEAP signal standards, Bach llll type checking, community package extraction verification). Blockers trigger automatic revision before output is written. Aesthetic styling (panels, comments, patcher colors) is applied automatically during generation.
 
 For full technical documentation — agent internals, validation details, object database schema, memory system, and architecture — see [TECHNICAL.md](TECHNICAL.md).
 
@@ -182,11 +184,11 @@ For full technical documentation — agent internals, validation details, object
 ```
 MAX-MSP_CC_Framework/
 ├── .claude/
-│   ├── max-objects/        # Object database (3,434 objects across 8 domains + 29 packages)
+│   ├── max-objects/        # Object database (3,430 objects across 7 core domains + 29 packages)
 │   ├── skills/             # Agent definitions (9 specialist agents)
 │   └── commands/           # Slash command definitions
-├── src/maxpat/             # Python editing, validation, and analysis engine (~15,500 LOC)
-├── tests/                  # Test suite (1,589 tests)
+├── src/maxpat/             # Python editing, validation, and analysis engine (~18,600 LOC)
+├── tests/                  # Test suite (2,034 tests)
 ├── patches/                # Your projects live here
 │   ├── .active-project.json
 │   └── {project-name}/
@@ -231,6 +233,7 @@ Planning artifacts live in `.planning/`:
 | **v2.4.0 Visual Organization** | 2026-04-05 | — | �� | Obstacle-aware cord routing (dog-leg around intermediate objects), 21 live.* objects added to UI system, contrast-adaptive text colors, subpatcher grouping heuristic |
 | **v3.0.0 Milestone Archive** | 2026-04-09 | 7 | 15 | v2.0 milestone archived — 26/26 requirements verified, full PROJECT.md evolution, retrospective |
 | **v4.0 Package Integration** | 2026-04-15 | 6 | 17 | Package-aware DB (2,450 objects), bundled extraction (BEAP/Vizzie/Jitter), generation gating, agent intelligence, community stubs (10 packages), package critics |
+| **v5.0 DB Schema Hardening + Validator Depth** | 2026-05-01 | 5 | 24 | `signal_role`/`domain_restricted`/`verified_installed` schema fields, deepened validation pipeline (Layers 1-5 with sub-layers), MSP outlet coverage sweep, Phase 31 layout/UX builders (labeled param banks, overlay readouts, safe box replacement, M4L gen-synth), dsp_sim pre-flight simulation |
 
 ## License
 
