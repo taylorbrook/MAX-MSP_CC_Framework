@@ -1,0 +1,604 @@
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 24%]
+........................................................................ [ 28%]
+........................................................................ [ 31%]
+........................................................................ [ 35%]
+........................................................................ [ 38%]
+........................................................................ [ 42%]
+........................................................................ [ 46%]
+........................................................................ [ 49%]
+....................................................x................... [ 53%]
+........................................................................ [ 56%]
+........................................................................ [ 60%]
+........................................................................ [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 70%]
+........................................................................ [ 74%]
+........................................................................ [ 77%]
+........................................................................ [ 81%]
+...............................................xx.........x............. [ 84%]
+........................................................................ [ 88%]
+........................................................................ [ 92%]
+........................................................................ [ 95%]
+........................................................................ [ 99%]
+..................                                                       [100%]
+=============================== warnings summary ===============================
+tests/test_aesthetics.py: 24 warnings
+tests/test_analysis.py: 1 warning
+tests/test_externals.py: 7 warnings
+tests/test_generation.py: 2 warnings
+tests/test_labeled_param_bank.py: 13 warnings
+tests/test_layout.py: 5 warnings
+tests/test_overlay_readout.py: 3 warnings
+tests/test_patcher.py: 6 warnings
+tests/test_project.py: 5 warnings
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'comment' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_aesthetics.py: 7 warnings
+tests/test_analysis.py: 18 warnings
+tests/test_codegen.py: 1 warning
+tests/test_externals.py: 1 warning
+tests/test_layout.py: 2 warnings
+tests/test_patcher.py: 24 warnings
+tests/test_rnbo.py: 1 warning
+tests/test_round_trip.py: 1 warning
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'dac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_aesthetics.py: 1 warning
+tests/test_generation.py: 4 warnings
+tests/test_hooks.py: 1 warning
+tests/test_layout.py: 1 warning
+tests/test_patcher.py: 32 warnings
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'outlet' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_analysis.py::TestSendReceivePairs::test_signal_send_receive
+tests/test_analysis.py::TestSendReceivePairs::test_alias_s_tilde_r_tilde
+tests/test_analysis.py::TestSendReceivePairs::test_empty_args_skipped
+tests/test_analysis.py::TestSendReceivePairs::test_multiple_senders_single_channel
+tests/test_analysis.py::TestSendReceiveMerge::test_signal_merge
+tests/test_analysis.py::TestSendReceiveMerge::test_alias_merge
+tests/test_analysis.py::TestSections::test_send_receive_merge_in_sections
+tests/test_analysis.py::TestSignalChainsWireless::test_wireless_notation
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'send~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_analysis.py::TestSendReceivePairs::test_control_send_receive
+tests/test_analysis.py::TestSendReceivePairs::test_alias_s_r
+tests/test_analysis.py::TestSendReceiveMerge::test_control_merge
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'send' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_analysis.py::TestSendReceivePairs::test_control_send_receive
+tests/test_analysis.py::TestSendReceivePairs::test_alias_s_r
+tests/test_analysis.py::TestSendReceiveMerge::test_control_merge
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'receive' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_analysis.py: 6 warnings
+tests/test_externals.py: 1 warning
+tests/test_layout.py: 2 warnings
+tests/test_patcher.py: 6 warnings
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'print' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_analysis.py::TestOnboard::test_performancepatchtest
+  /Users/taylorbrook/Dev/MAX/src/maxpat/analysis.py:123: UserWarning: Object 'panel' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = self.db.lookup(box.name)
+
+tests/test_analysis.py::TestOnboard::test_performancepatchtest
+  /Users/taylorbrook/Dev/MAX/src/maxpat/analysis.py:123: UserWarning: Object 'comment' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = self.db.lookup(box.name)
+
+tests/test_analysis.py::TestOnboard::test_performancepatchtest
+  /Users/taylorbrook/Dev/MAX/src/maxpat/analysis.py:123: UserWarning: Object 'send~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = self.db.lookup(box.name)
+
+tests/test_analysis.py::TestOnboard::test_performancepatchtest
+  /Users/taylorbrook/Dev/MAX/src/maxpat/analysis.py:123: UserWarning: Object 'dac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = self.db.lookup(box.name)
+
+tests/test_analysis.py::TestOnboard::test_performancepatchtest
+  /Users/taylorbrook/Dev/MAX/src/maxpat/analysis.py:123: UserWarning: Object 'receive' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = self.db.lookup(box.name)
+
+tests/test_analysis.py::TestOnboard::test_performancepatchtest
+  /Users/taylorbrook/Dev/MAX/src/maxpat/analysis.py:123: UserWarning: Object 'send' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = self.db.lookup(box.name)
+
+tests/test_audit_parser.py::TestDegenerateFiltering::test_unconnected_matching_io_is_not_filtered
+tests/test_audit_parser.py::TestDegenerateFiltering::test_filter_degenerate_preserves_order
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/parser.py:170: UserWarning: Object 'print' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    db_obj = db.lookup(instance.name)
+
+tests/test_audit_parser.py::TestDegenerateFiltering::test_legitimate_sinks_not_filtered
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/parser.py:170: UserWarning: Object 'dac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    db_obj = db.lookup(instance.name)
+
+tests/test_code_validation.py::TestGenExprChecks::test_check7_skips_capital_Delay
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/tape-wobble/generated/tape-wobble.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/code_validation.py:206: UserWarning: Object 'read' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(func_name)
+
+tests/test_critics.py::TestPackageCritic::test_beap_missing_vca
+tests/test_critics.py::TestPackageCritic::test_beap_clean_chain
+tests/test_critics.py::TestPackageCritic::test_beap_mixed_patch
+tests/test_critics.py::TestPackageCritic::test_community_extracted_clean
+tests/test_critics.py::TestReviewPatchPackageIntegration::test_review_patch_includes_package_critic
+  /Users/taylorbrook/Dev/MAX/src/maxpat/critics/package_critic.py:160: UserWarning: Object 'bp.Stereo' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_entry = db.lookup(name)
+
+tests/test_critics.py::TestPackageCritic::test_beap_mixed_patch
+  /Users/taylorbrook/Dev/MAX/src/maxpat/critics/package_critic.py:160: UserWarning: Object 'dac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_entry = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Calibrated' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Calibrated_64bit' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Constant' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Gate Pad' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Global Transport' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Input' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Keyboard' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.LFO' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.M4L In' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.M4L Out' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.MIDI' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.MIDI In' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.MIDI Out' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Metonomic Pulse' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Metro Pulse' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Mono' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Noise' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Pulse Designer' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.QUNEO Drumpad' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Recordr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.Stereo' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.XY Pad' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_beap_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:186: UserWarning: Object 'bp.serialosc' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_vizzie_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:198: UserWarning: Object 'vz.avrecordr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_vizzie_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:198: UserWarning: Object 'vz.midictrlr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_vizzie_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:198: UserWarning: Object 'vz.nanoctrlr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_vizzie_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:198: UserWarning: Object 'vz.recordr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_vizzie_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:198: UserWarning: Object 'vz.snappr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_vizzie_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:198: UserWarning: Object 'vz.startr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_vizzie_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:198: UserWarning: Object 'vz.viewr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_extraction.py::TestDBRoundTrip::test_all_jitter_tools_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_extraction.py:212: UserWarning: Object 'jit.gl.textmult' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(name)
+
+tests/test_generation.py: 17 warnings
+tests/test_hooks.py: 8 warnings
+tests/test_layout.py: 18 warnings
+tests/test_patcher.py: 39 warnings
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'ezdac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_generation.py::TestWriteAndValidate::test_write_and_validate
+tests/test_generation.py::TestFullPipeline::test_full_pipeline
+tests/test_hooks.py::test_validate_file_loads_and_validates
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/FDNVerb/generated/FDNVerb.maxpat]
+tests/test_validation.py::TestLayer3ConnectionBounds::test_valid_connection_passes
+  /Users/taylorbrook/Dev/MAX/src/maxpat/validation.py:617: UserWarning: Object 'ezdac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name)
+
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/bassoon-model/generated/bassoon-model.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/validation.py:617: UserWarning: Object 'live.scope~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name)
+
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/bassoon-model/generated/bassoon-model.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/validation.py:617: UserWarning: Object 'spectroscope~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name)
+
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/intelligent-corpus-remixer/generated/slice-voice.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/validation.py:617: UserWarning: Object 'out~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name)
+
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/mixer/generated/mixer-bus.maxpat]
+tests/test_validation.py::TestLayer4DomainRules::test_terminated_via_send_no_warning
+  /Users/taylorbrook/Dev/MAX/src/maxpat/validation.py:617: UserWarning: Object 'send~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name)
+
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/performancepatchtest/generated/performance-patch-template.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/validation.py:617: UserWarning: Object 'dac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name)
+
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/psycography/generated/playback.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/validation.py:617: UserWarning: Object 'mc.dac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name)
+
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/tape-wobble/generated/tape-wobble.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/code_validation.py:206: UserWarning: Object 'write' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(func_name)
+
+tests/test_integration_patches.py::test_validate_patch_no_errors[patches/timestretch/generated/timestretch.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/code_validation.py:206: UserWarning: Object 'dim' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = db.lookup(func_name)
+
+tests/test_integration_patches.py::test_review_patch_no_blockers[patches/physics-composition/generated/physics-composition.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/critics/package_critic.py:335: UserWarning: Object 'send' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    dst_entry = db.lookup(dst_name)
+
+tests/test_integration_patches.py::test_review_patch_no_blockers[patches/physics-composition/generated/physics-composition.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/critics/package_critic.py:350: UserWarning: Object 'receive' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    src_entry = db.lookup(src_name)
+
+tests/test_integration_patches.py::test_review_patch_no_blockers[patches/physics-composition/generated/physics-composition.maxpat]
+  /Users/taylorbrook/Dev/MAX/src/maxpat/critics/package_critic.py:335: UserWarning: Object 'dac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    dst_entry = db.lookup(dst_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'mappings' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'param' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'print' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'receive' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'udpsend' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'dac~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'gridmeter~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'in' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'poke~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'spectroscope~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'buffer' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'cell' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'channels' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'constant' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'dim' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'noise' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'norm' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'pi' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'poke' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'samplerate' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'live.miditool.out' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'live.scope~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'M4L.api.ToggleTransport' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'mc.capture~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'mc.send~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'abc.env.noise~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'abc.generatorinterface~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'abc.musdur' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'abc.quadriout~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'abc.scope' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'abc.scopeembedded' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'abc.stereoout~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'bach.writesdif' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'mc.nn~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'bach.hypercomment' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'fluid.waveform~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'grainflow.spatview~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'grainflow.waveform~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:225: UserWarning: bach.llll2list marked verified_installed: false — not present in this install. Run package extraction or remove from overrides.json if intentional.
+    domain = self._get_domain(name)
+
+tests/test_merger.py::TestExistingManualEntriesPreserved::test_real_overrides_manual_entries_preserved
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_with_proposed_file
+tests/test_merger.py::TestCLIMergeFlag::test_merge_flag_does_not_require_help_dir
+  /Users/taylorbrook/Dev/MAX/src/maxpat/audit/merger.py:179: UserWarning: Object 'begin~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj = self._db.lookup(obj_name)
+
+tests/test_package_schema.py::TestPackageRelationships::test_package_pair_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_package_schema.py:261: UserWarning: Object 'bp.Keyboard' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    assert db.lookup(obj_name) is not None, (
+
+tests/test_package_schema.py::TestPackageRelationships::test_package_pair_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_package_schema.py:261: UserWarning: Object 'bp.Stereo' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    assert db.lookup(obj_name) is not None, (
+
+tests/test_package_schema.py::TestPackageRelationships::test_package_pair_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_package_schema.py:261: UserWarning: Object 'bp.Mono' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    assert db.lookup(obj_name) is not None, (
+
+tests/test_package_schema.py::TestPackageRelationships::test_package_pair_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_package_schema.py:261: UserWarning: Object 'bp.LFO' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    assert db.lookup(obj_name) is not None, (
+
+tests/test_package_schema.py::TestPackageRelationships::test_package_pair_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_package_schema.py:261: UserWarning: Object 'bp.Noise' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    assert db.lookup(obj_name) is not None, (
+
+tests/test_package_schema.py::TestPackageRelationships::test_package_pair_objects_in_db
+  /Users/taylorbrook/Dev/MAX/tests/test_package_schema.py:261: UserWarning: Object 'vz.viewr' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    assert db.lookup(obj_name) is not None, (
+
+tests/test_patcher.py::TestLiveScopeOverride::test_live_scope_has_signal_inlets
+tests/test_patcher.py::TestLiveScopeOverride::test_live_scope_connectable
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:186: UserWarning: Object 'live.scope~' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name, allowed_packages=allowed_packages)
+
+tests/test_sizing.py::TestBpatcherDBSizing::test_bpatcher_db_dimensions_mono
+  /Users/taylorbrook/Dev/MAX/src/maxpat/patcher.py:1771: UserWarning: Object 'bp.Mono' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_info = self.db.lookup(object_name)
+
+tests/test_validation.py::TestLayer3SignalTypes::test_signal_to_control_only_inlet_detected
+  /Users/taylorbrook/Dev/MAX/src/maxpat/validation.py:617: UserWarning: Object 'print' has empty inlets/outlets in DB -- patch generation may fail silently. Consider adding an override to overrides.json.
+    obj_data = db.lookup(name)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+2030 passed, 4 xfailed, 466 warnings in 31.65s
