@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-07-03 - Completed quick task 260703-hrl: direct tests for graph.py/maxclass_map.py + smoke tests for 6 untested modules (68 new tests)
+Last activity: 2026-07-03 - Completed quick task 260703-i0t: de-duplicated CLAUDE.md against 30 feedback memory entries (CLAUDE.md now canonical rule surface)
 
 ## Performance Metrics
 
@@ -74,6 +74,7 @@ None.
 | 260703-a73 | Refresh README.md and TECHNICAL.md to v5.0 (DB schema hardening, signal_role metadata, Layers 1-5 validation, dsp_sim, Phase 31 builders) | 2026-07-03 | 2f28eb2 | | [260703-a73-refresh-readme-md-and-technical-md-to-re](./quick/260703-a73-refresh-readme-md-and-technical-md-to-re/) |
 | 260703-h75 | Extract 18 add_* builders into BuildersMixin, add -> None to 3 __init__s, drop _AUTO_HIGHLIGHT re-export; exact test parity (2030 passed, 4 xfailed) | 2026-07-03 | a16557f | Verified | [260703-h75-extract-the-18-add-builder-methods-from-](./quick/260703-h75-extract-the-18-add-builder-methods-from-/) |
 | 260703-hrl | Direct tests for graph.py and maxclass_map.py + smoke tests for 6 untested modules (68 new tests; 2098 passed, 4 xfailed, zero regressions) | 2026-07-03 | 819ccc8 | | [260703-hrl-add-direct-test-files-for-graph-py-and-m](./quick/260703-hrl-add-direct-test-files-for-graph-py-and-m/) |
+| 260703-i0t | De-duplicate CLAUDE.md against 30 feedback memory entries: CLAUDE.md canonical, 15 nuances promoted, 30 memories archived + deleted, MEMORY.md pruned to pointer | 2026-07-03 | c888f14 | | [260703-i0t-de-duplicate-claude-md-against-the-30-fe](./quick/260703-i0t-de-duplicate-claude-md-against-the-30-fe/) |
 
 ## Deferred Items
 
