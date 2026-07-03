@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-07-02 - Completed quick task 260702-k9w: reconciled 24 test failures to green (validator fixes, community-test reconciliation, review-blocker allowlist) with zero .maxpat edits
+Last activity: 2026-07-03 - Completed quick task 260703-a73: refreshed README.md and TECHNICAL.md to reflect the shipped v5.0 milestone
 
 ## Performance Metrics
 
@@ -71,6 +71,7 @@ None.
 | 260701-r9s | Backfill signal_role metadata (WR-01): fix cmd_apply_run synthesis path, backfill empty type/digest in overrides.json | 2026-07-01 | f9b4f05 | Verified | [260701-r9s-backfill-signal-role-metadata](./quick/260701-r9s-backfill-signal-role-metadata/) |
 | 260702-gk6 | Extend audit_empty_io() with by_source coverage across all domain files (43 → 164 entries; 121 shadowed package entries surfaced) | 2026-07-02 | 676b638 | | [260702-gk6-extend-objectdatabase-audit-empty-io-to-](./quick/260702-gk6-extend-objectdatabase-audit-empty-io-to-/) |
 | 260702-k9w | Reconcile 24 remaining test failures (GenExpr Check 6/9 false positives, 6 community-package tests, per-patch review-blocker allowlist); suite green with zero .maxpat edits | 2026-07-02 | 85b8f92 | Verified | [260702-k9w-reconcile-the-20-remaining-test-failures](./quick/260702-k9w-reconcile-the-20-remaining-test-failures/) |
+| 260703-a73 | Refresh README.md and TECHNICAL.md to v5.0 (DB schema hardening, signal_role metadata, Layers 1-5 validation, dsp_sim, Phase 31 builders) | 2026-07-03 | 2f28eb2 | | [260703-a73-refresh-readme-md-and-technical-md-to-re](./quick/260703-a73-refresh-readme-md-and-technical-md-to-re/) |
 
 ## Deferred Items
 
