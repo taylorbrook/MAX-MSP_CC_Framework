@@ -60,6 +60,7 @@ Claude can generate valid, well-structured MAX/MSP patches and code that an expe
 - [ ] Deep Jitter support (specialized agents, validation, templates for video/GL)
 - [ ] Intelligent object selection — context-aware recommendations based on task
 - [ ] Patch-from-description natural language interface
+- [ ] Broaden the `src/maxpat/dsp_sim/` pre-flight simulator beyond the bassoon waveguide with general topologies (simple gain chain, feedback delay, filter cascade) — v6.0
 
 ### Out of Scope
 
