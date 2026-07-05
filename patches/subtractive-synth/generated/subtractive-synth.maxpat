@@ -16,7 +16,7 @@
             700.0
         ],
         "bglocked": 0,
-        "openinpresentation": 0,
+        "openinpresentation": 1,
         "default_fontsize": 12.0,
         "default_fontface": 0,
         "default_fontname": "Arial",
@@ -46,6 +46,318 @@
         "subpatcher_template": "",
         "assistshowspatchername": 0,
         "boxes": [
+            {
+                "box": {
+                    "maxclass": "panel",
+                    "id": "obj-163",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1500.0,
+                        940.0,
+                        270,
+                        150
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        555.0,
+                        205.0,
+                        270.0,
+                        150.0
+                    ],
+                    "background": 1,
+                    "ignoreclick": 1,
+                    "border": 0,
+                    "rounded": 7,
+                    "mode": 0,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "color2": [
+                            0.88,
+                            0.89,
+                            0.92,
+                            1.0
+                        ],
+                        "color": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "panel",
+                    "id": "obj-161",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1500.0,
+                        760.0,
+                        260,
+                        150
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        285.0,
+                        205.0,
+                        260.0,
+                        150.0
+                    ],
+                    "background": 1,
+                    "ignoreclick": 1,
+                    "border": 0,
+                    "rounded": 7,
+                    "mode": 0,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "color2": [
+                            0.88,
+                            0.89,
+                            0.92,
+                            1.0
+                        ],
+                        "color": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "panel",
+                    "id": "obj-159",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1500.0,
+                        580.0,
+                        260,
+                        150
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        15.0,
+                        205.0,
+                        260.0,
+                        150.0
+                    ],
+                    "background": 1,
+                    "ignoreclick": 1,
+                    "border": 0,
+                    "rounded": 7,
+                    "mode": 0,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "color2": [
+                            0.88,
+                            0.89,
+                            0.92,
+                            1.0
+                        ],
+                        "color": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "panel",
+                    "id": "obj-157",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1500.0,
+                        400.0,
+                        210,
+                        150
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        615.0,
+                        40.0,
+                        210.0,
+                        150.0
+                    ],
+                    "background": 1,
+                    "ignoreclick": 1,
+                    "border": 0,
+                    "rounded": 7,
+                    "mode": 0,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "color2": [
+                            0.88,
+                            0.89,
+                            0.92,
+                            1.0
+                        ],
+                        "color": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "panel",
+                    "id": "obj-155",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1500.0,
+                        220.0,
+                        200,
+                        150
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        405.0,
+                        40.0,
+                        200.0,
+                        150.0
+                    ],
+                    "background": 1,
+                    "ignoreclick": 1,
+                    "border": 0,
+                    "rounded": 7,
+                    "mode": 0,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "color2": [
+                            0.88,
+                            0.89,
+                            0.92,
+                            1.0
+                        ],
+                        "color": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "panel",
+                    "id": "obj-153",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1500.0,
+                        40.0,
+                        380,
+                        150
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        15.0,
+                        40.0,
+                        380.0,
+                        150.0
+                    ],
+                    "background": 1,
+                    "ignoreclick": 1,
+                    "border": 0,
+                    "rounded": 7,
+                    "mode": 0,
+                    "bgfillcolor": {
+                        "type": "gradient",
+                        "color1": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "color2": [
+                            0.88,
+                            0.89,
+                            0.92,
+                            1.0
+                        ],
+                        "color": [
+                            0.94,
+                            0.94,
+                            0.96,
+                            1.0
+                        ],
+                        "angle": 270.0,
+                        "proportion": 0.39,
+                        "autogradient": 0
+                    }
+                }
+            },
             {
                 "box": {
                     "maxclass": "comment",
@@ -93,7 +405,14 @@
                         336.0,
                         53.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        15.0,
+                        370.0,
+                        810.0,
+                        100.0
+                    ]
                 }
             },
             {
@@ -272,6 +591,13 @@
                         "Triangle",
                         ",",
                         "Sine"
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        25.0,
+                        88.0,
+                        80.0,
+                        22.0
                     ]
                 }
             },
@@ -288,14 +614,21 @@
                         86.0,
                         20.0
                     ],
-                    "text": "Osc 1 Wave",
+                    "text": "Osc 1",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        25.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -363,6 +696,13 @@
                         "Triangle",
                         ",",
                         "Sine"
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        115.0,
+                        88.0,
+                        80.0,
+                        22.0
                     ]
                 }
             },
@@ -379,14 +719,21 @@
                         86.0,
                         20.0
                     ],
-                    "text": "Osc 2 Wave",
+                    "text": "Osc 2",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        115.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -443,7 +790,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        215.0,
+                        84.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -459,14 +813,21 @@
                         100.0,
                         20.0
                     ],
-                    "text": "Osc 2 Detune",
+                    "text": "Detune",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        205.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -506,7 +867,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        210.0,
+                        128.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -542,7 +911,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        335.0,
+                        84.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -558,14 +934,21 @@
                         93.0,
                         20.0
                     ],
-                    "text": "Noise Level",
+                    "text": "Noise",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        325.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -605,7 +988,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        330.0,
+                        128.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -641,7 +1032,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        275.0,
+                        84.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -657,14 +1055,21 @@
                         93.0,
                         20.0
                     ],
-                    "text": "Osc Balance",
+                    "text": "Balance",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        265.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -704,7 +1109,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        270.0,
+                        128.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -799,7 +1212,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        575.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -815,14 +1235,21 @@
                         86.0,
                         20.0
                     ],
-                    "text": "Glide (ms)",
+                    "text": "Glide",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        565.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -862,7 +1289,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        570.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -929,7 +1364,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        425.0,
+                        84.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -945,14 +1387,21 @@
                         93.0,
                         20.0
                     ],
-                    "text": "Cutoff (Hz)",
+                    "text": "Cutoff",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        415.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -992,7 +1441,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        420.0,
+                        128.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1028,7 +1485,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        488.0,
+                        84.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1046,12 +1510,19 @@
                     ],
                     "text": "Resonance",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        478.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1091,7 +1562,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        483.0,
+                        128.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1127,7 +1606,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        551.0,
+                        84.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1143,14 +1629,21 @@
                         121.0,
                         20.0
                     ],
-                    "text": "Env Amount (Hz)",
+                    "text": "Env Amt",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        541.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1190,7 +1683,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        546.0,
+                        128.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1257,7 +1758,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        35.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1273,14 +1781,21 @@
                         93.0,
                         20.0
                     ],
-                    "text": "Attack (ms)",
+                    "text": "Attack",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        25.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1320,7 +1835,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        30.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1356,7 +1879,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        97.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1372,14 +1902,21 @@
                         86.0,
                         20.0
                     ],
-                    "text": "Decay (ms)",
+                    "text": "Decay",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        87.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1419,7 +1956,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        92.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1455,7 +2000,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        159.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1473,12 +2025,19 @@
                     ],
                     "text": "Sustain",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        149.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1518,7 +2077,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        154.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1554,7 +2121,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        221.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1570,14 +2144,21 @@
                         100.0,
                         20.0
                     ],
-                    "text": "Release (ms)",
+                    "text": "Release",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        211.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1617,7 +2198,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        216.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1684,7 +2273,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        305.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1700,14 +2296,21 @@
                         93.0,
                         20.0
                     ],
-                    "text": "Attack (ms)",
+                    "text": "Attack",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        295.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1747,7 +2350,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        300.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1783,7 +2394,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        367.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1799,14 +2417,21 @@
                         86.0,
                         20.0
                     ],
-                    "text": "Decay (ms)",
+                    "text": "Decay",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        357.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1846,7 +2471,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        362.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1882,7 +2515,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        429.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1900,12 +2540,19 @@
                     ],
                     "text": "Sustain",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        419.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -1945,7 +2592,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        424.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -1981,7 +2636,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        491.0,
+                        249.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -1997,14 +2659,21 @@
                         100.0,
                         20.0
                     ],
-                    "text": "Release (ms)",
+                    "text": "Release",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        481.0,
+                        229.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -2044,7 +2713,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        486.0,
+                        293.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -2111,7 +2788,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        635.0,
+                        84.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -2127,14 +2811,21 @@
                         107.0,
                         20.0
                     ],
-                    "text": "LFO Rate (Hz)",
+                    "text": "Rate",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        625.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -2174,7 +2865,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        630.0,
+                        128.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -2210,7 +2909,14 @@
                         40.0,
                         40.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        697.0,
+                        84.0,
+                        40.0,
+                        40.0
+                    ]
                 }
             },
             {
@@ -2226,14 +2932,21 @@
                         79.0,
                         20.0
                     ],
-                    "text": "LFO Depth",
+                    "text": "Depth",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        687.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -2273,7 +2986,15 @@
                         50.0,
                         22.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        692.0,
+                        128.0,
+                        50.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
                 }
             },
             {
@@ -2339,6 +3060,13 @@
                         "Pitch",
                         ",",
                         "Cutoff"
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        749.0,
+                        88.0,
+                        68.0,
+                        22.0
                     ]
                 }
             },
@@ -2355,14 +3083,21 @@
                         86.0,
                         20.0
                     ],
-                    "text": "LFO Target",
+                    "text": "Target",
                     "fontname": "Arial",
-                    "fontsize": 12.0,
+                    "fontsize": 10.0,
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        749.0,
+                        64.0,
+                        60.0,
+                        17.0
                     ]
                 }
             },
@@ -5418,7 +6153,14 @@
                         22.0,
                         140.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        640.0,
+                        229.0,
+                        30.0,
+                        110.0
+                    ]
                 }
             },
             {
@@ -5436,7 +6178,14 @@
                         15.0,
                         100.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        676.0,
+                        229.0,
+                        16.0,
+                        110.0
+                    ]
                 }
             },
             {
@@ -5458,6 +6207,13 @@
                         0.85,
                         0.85,
                         1.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        706.0,
+                        229.0,
+                        45.0,
+                        45.0
                     ]
                 }
             },
@@ -5998,6 +6754,181 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-154",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1900.0,
+                        40.0,
+                        93.0,
+                        20.0
+                    ],
+                    "text": "OSCILLATORS",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        22.0,
+                        44.0,
+                        366.0,
+                        16.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-156",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1720.0,
+                        220.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "FILTER",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        412.0,
+                        44.0,
+                        186.0,
+                        16.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-158",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1730.0,
+                        400.0,
+                        40.0,
+                        20.0
+                    ],
+                    "text": "LFO",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        622.0,
+                        44.0,
+                        196.0,
+                        16.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-160",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1780.0,
+                        580.0,
+                        100.0,
+                        20.0
+                    ],
+                    "text": "AMP ENVELOPE",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        22.0,
+                        209.0,
+                        246.0,
+                        16.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-162",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1780.0,
+                        760.0,
+                        121.0,
+                        20.0
+                    ],
+                    "text": "FILTER ENVELOPE",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        292.0,
+                        209.0,
+                        246.0,
+                        16.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-164",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1790.0,
+                        940.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "OUTPUT",
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        562.0,
+                        209.0,
+                        256.0,
+                        16.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-165",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1500.0,
+                        1120.0,
+                        135.0,
+                        20.0
+                    ],
+                    "text": "SUBTRACTIVE SYNTH",
+                    "fontname": "Arial",
+                    "fontsize": 16.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        15.0,
+                        8.0,
+                        420.0,
+                        24.0
+                    ]
+                }
             }
         ],
         "lines": [
@@ -6191,6 +7122,18 @@
                         1178.0,
                         288.0,
                         1178.0,
+                        212.0,
+                        1492.0,
+                        212.0,
+                        1492.0,
+                        378.0,
+                        1492.0,
+                        212.0,
+                        1712.0,
+                        212.0,
+                        1712.0,
+                        248.0,
+                        1712.0,
                         292.0,
                         1462.0,
                         292.0,
@@ -6317,12 +7260,6 @@
                         1372.0,
                         328.0,
                         1372.0,
-                        307.0,
-                        888.0,
-                        307.0,
-                        888.0,
-                        345.0,
-                        888.0,
                         307.0,
                         979.0,
                         307.0,
@@ -6429,6 +7366,18 @@
                         1178.0,
                         288.0,
                         1178.0,
+                        212.0,
+                        1492.0,
+                        212.0,
+                        1492.0,
+                        378.0,
+                        1492.0,
+                        212.0,
+                        1712.0,
+                        212.0,
+                        1712.0,
+                        248.0,
+                        1712.0,
                         292.0,
                         1462.0,
                         292.0,
@@ -6555,12 +7504,6 @@
                         1372.0,
                         328.0,
                         1372.0,
-                        307.0,
-                        888.0,
-                        307.0,
-                        888.0,
-                        345.0,
-                        888.0,
                         307.0,
                         979.0,
                         307.0,
@@ -6691,13 +7634,13 @@
                         67.0,
                         375.0,
                         67.0,
-                        412.0,
-                        88.0,
-                        412.0,
-                        88.0,
-                        450.0,
+                        371.0,
+                        22.0,
+                        371.0,
+                        22.0,
+                        409.0,
                         78.75,
-                        450.0
+                        409.0
                     ]
                 }
             },
@@ -6722,6 +7665,16 @@
                     "destination": [
                         "obj-17",
                         0
+                    ],
+                    "midpoints": [
+                        798.5,
+                        371.0,
+                        772.0,
+                        371.0,
+                        772.0,
+                        409.0,
+                        798.75,
+                        409.0
                     ]
                 }
             },
@@ -6749,6 +7702,12 @@
                     ],
                     "midpoints": [
                         1548.0,
+                        212.0,
+                        1492.0,
+                        212.0,
+                        1492.0,
+                        378.0,
+                        1492.0,
                         337.0,
                         975.0,
                         337.0,
@@ -6773,6 +7732,12 @@
                         1312.0,
                         375.0,
                         1312.0,
+                        392.0,
+                        1492.0,
+                        392.0,
+                        1492.0,
+                        558.0,
+                        1492.0,
                         412.0,
                         1372.0,
                         412.0,
@@ -6849,6 +7814,12 @@
                     ],
                     "midpoints": [
                         2512.5,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
                         337.0,
                         2227.0,
                         337.0,
@@ -6897,6 +7868,18 @@
                         2302.0,
                         375.0,
                         2302.0,
+                        392.0,
+                        1718.0,
+                        392.0,
+                        1718.0,
+                        558.0,
+                        1718.0,
+                        392.0,
+                        1778.0,
+                        392.0,
+                        1778.0,
+                        428.0,
+                        1778.0,
                         412.0,
                         2212.0,
                         412.0,
@@ -7045,6 +8028,12 @@
                         2439.0,
                         375.0,
                         2439.0,
+                        392.0,
+                        1778.0,
+                        392.0,
+                        1778.0,
+                        428.0,
+                        1778.0,
                         412.0,
                         2325.5,
                         412.0,
@@ -7282,16 +8271,6 @@
                     "destination": [
                         "obj-44",
                         0
-                    ],
-                    "midpoints": [
-                        95.0,
-                        307.0,
-                        138.0,
-                        307.0,
-                        138.0,
-                        345.0,
-                        82.0,
-                        345.0
                     ]
                 }
             },
@@ -7313,6 +8292,12 @@
                         75.0,
                         375.0,
                         75.0,
+                        371.0,
+                        138.0,
+                        371.0,
+                        138.0,
+                        409.0,
+                        138.0,
                         412.0,
                         135.5,
                         412.0,
@@ -7341,13 +8326,9 @@
                     ],
                     "midpoints": [
                         37.0,
-                        412.0,
-                        22.0,
-                        412.0,
-                        22.0,
-                        450.0,
+                        482.0,
                         78.75,
-                        450.0
+                        482.0
                     ]
                 }
             },
@@ -7360,16 +8341,6 @@
                     "destination": [
                         "obj-49",
                         0
-                    ],
-                    "midpoints": [
-                        845.0,
-                        307.0,
-                        888.0,
-                        307.0,
-                        888.0,
-                        345.0,
-                        832.0,
-                        345.0
                     ]
                 }
             },
@@ -7403,6 +8374,12 @@
                         764.0,
                         375.0,
                         764.0,
+                        371.0,
+                        772.0,
+                        371.0,
+                        772.0,
+                        409.0,
+                        772.0,
                         412.0,
                         742.0,
                         412.0,
@@ -7413,18 +8390,6 @@
                         658.0,
                         412.0,
                         658.0,
-                        450.0,
-                        658.0,
-                        412.0,
-                        712.0,
-                        412.0,
-                        712.0,
-                        450.0,
-                        712.0,
-                        412.0,
-                        817.0,
-                        412.0,
-                        817.0,
                         450.0,
                         520.0,
                         450.0
@@ -7458,6 +8423,16 @@
                     "destination": [
                         "obj-54",
                         0
+                    ],
+                    "midpoints": [
+                        1670.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1657.0,
+                        378.0
                     ]
                 }
             },
@@ -7473,6 +8448,12 @@
                     ],
                     "midpoints": [
                         1728.0,
+                        212.0,
+                        1492.0,
+                        212.0,
+                        1492.0,
+                        378.0,
+                        1492.0,
                         337.0,
                         1462.0,
                         337.0,
@@ -7497,6 +8478,18 @@
                         1463.0,
                         375.0,
                         1463.0,
+                        392.0,
+                        1492.0,
+                        392.0,
+                        1492.0,
+                        558.0,
+                        1492.0,
+                        392.0,
+                        1722.0,
+                        392.0,
+                        1722.0,
+                        428.0,
+                        1722.0,
                         412.0,
                         1372.0,
                         412.0,
@@ -7649,6 +8642,12 @@
                         764.0,
                         375.0,
                         764.0,
+                        371.0,
+                        888.0,
+                        371.0,
+                        888.0,
+                        409.0,
+                        888.0,
                         412.0,
                         855.5,
                         412.0,
@@ -7665,18 +8664,6 @@
                         1042.0,
                         412.0,
                         1042.0,
-                        450.0,
-                        1042.0,
-                        412.0,
-                        778.0,
-                        412.0,
-                        778.0,
-                        450.0,
-                        778.0,
-                        412.0,
-                        817.0,
-                        412.0,
-                        817.0,
                         450.0,
                         625.0,
                         450.0
@@ -7725,6 +8712,12 @@
                     ],
                     "midpoints": [
                         1882.5,
+                        212.0,
+                        1492.0,
+                        212.0,
+                        1492.0,
+                        378.0,
+                        1492.0,
                         337.0,
                         1462.0,
                         337.0,
@@ -7749,6 +8742,18 @@
                         1463.0,
                         375.0,
                         1463.0,
+                        392.0,
+                        1492.0,
+                        392.0,
+                        1492.0,
+                        558.0,
+                        1492.0,
+                        392.0,
+                        1722.0,
+                        392.0,
+                        1722.0,
+                        428.0,
+                        1722.0,
                         412.0,
                         1438.0,
                         412.0,
@@ -7831,6 +8836,12 @@
                     ],
                     "midpoints": [
                         2673.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
                         337.0,
                         2227.0,
                         337.0,
@@ -7879,6 +8890,18 @@
                         2302.0,
                         375.0,
                         2302.0,
+                        392.0,
+                        1718.0,
+                        392.0,
+                        1718.0,
+                        558.0,
+                        1718.0,
+                        392.0,
+                        1778.0,
+                        392.0,
+                        1778.0,
+                        428.0,
+                        1778.0,
                         412.0,
                         2212.0,
                         412.0,
@@ -7937,9 +8960,13 @@
                     ],
                     "midpoints": [
                         1522.0,
-                        453.5,
+                        392.0,
+                        1492.0,
+                        392.0,
+                        1492.0,
+                        558.0,
                         1563.75,
-                        453.5
+                        558.0
                     ]
                 }
             },
@@ -8055,6 +9082,12 @@
                         764.0,
                         375.0,
                         764.0,
+                        371.0,
+                        888.0,
+                        371.0,
+                        888.0,
+                        409.0,
+                        888.0,
                         412.0,
                         855.5,
                         412.0,
@@ -8079,13 +9112,13 @@
                         1162.0,
                         450.0,
                         1162.0,
-                        412.0,
+                        446.0,
                         883.0,
-                        412.0,
+                        446.0,
                         883.0,
-                        450.0,
+                        484.0,
                         745.0,
-                        450.0
+                        484.0
                     ]
                 }
             },
@@ -8101,13 +9134,9 @@
                     ],
                     "midpoints": [
                         727.0,
-                        412.0,
-                        742.0,
-                        412.0,
-                        742.0,
-                        450.0,
+                        482.0,
                         768.75,
-                        450.0
+                        482.0
                     ]
                 }
             },
@@ -8135,6 +9164,12 @@
                     ],
                     "midpoints": [
                         2032.5,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
                         337.0,
                         1634.0,
                         337.0,
@@ -8165,6 +9200,18 @@
                         1463.0,
                         375.0,
                         1463.0,
+                        392.0,
+                        1718.0,
+                        392.0,
+                        1718.0,
+                        558.0,
+                        1718.0,
+                        392.0,
+                        1722.0,
+                        392.0,
+                        1722.0,
+                        428.0,
+                        1722.0,
                         412.0,
                         1438.0,
                         412.0,
@@ -8241,6 +9288,12 @@
                     ],
                     "midpoints": [
                         2853.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
                         337.0,
                         2227.0,
                         337.0,
@@ -8289,6 +9342,18 @@
                         2302.0,
                         375.0,
                         2302.0,
+                        392.0,
+                        1718.0,
+                        392.0,
+                        1718.0,
+                        558.0,
+                        1718.0,
+                        392.0,
+                        1778.0,
+                        392.0,
+                        1778.0,
+                        428.0,
+                        1778.0,
                         412.0,
                         2212.0,
                         412.0,
@@ -8341,9 +9406,13 @@
                     ],
                     "midpoints": [
                         1627.0,
-                        453.5,
+                        392.0,
+                        1718.0,
+                        392.0,
+                        1718.0,
+                        558.0,
                         1668.75,
-                        453.5
+                        558.0
                     ]
                 }
             },
@@ -8459,6 +9528,12 @@
                         1147.0,
                         375.0,
                         1147.0,
+                        371.0,
+                        888.0,
+                        371.0,
+                        888.0,
+                        409.0,
+                        888.0,
                         412.0,
                         855.5,
                         412.0,
@@ -8511,13 +9586,9 @@
                     ],
                     "midpoints": [
                         832.0,
-                        412.0,
-                        855.5,
-                        412.0,
-                        855.5,
-                        450.0,
+                        482.0,
                         871.5,
-                        450.0
+                        482.0
                     ]
                 }
             },
@@ -8533,49 +9604,13 @@
                     ],
                     "midpoints": [
                         911.0,
-                        457.0,
-                        1035.5,
-                        457.0,
-                        1035.5,
-                        495.0,
-                        1035.5,
-                        457.0,
-                        1372.0,
-                        457.0,
-                        1372.0,
-                        495.0,
-                        1372.0,
-                        457.0,
-                        1158.0,
-                        457.0,
-                        1158.0,
-                        495.0,
-                        1158.0,
-                        457.0,
-                        1275.5,
-                        457.0,
-                        1275.5,
-                        495.0,
-                        1275.5,
-                        457.0,
-                        1507.0,
-                        457.0,
-                        1507.0,
-                        495.0,
-                        1507.0,
-                        457.0,
-                        1267.0,
-                        457.0,
-                        1267.0,
-                        495.0,
-                        1267.0,
-                        457.0,
-                        1612.0,
-                        457.0,
-                        1612.0,
-                        495.0,
+                        392.0,
+                        1492.0,
+                        392.0,
+                        1492.0,
+                        558.0,
                         1627.5,
-                        495.0
+                        558.0
                     ]
                 }
             },
@@ -8591,48 +9626,12 @@
                     ],
                     "midpoints": [
                         832.0,
-                        457.0,
-                        1035.5,
-                        457.0,
-                        1035.5,
-                        495.0,
-                        1035.5,
-                        457.0,
-                        1372.0,
-                        457.0,
-                        1372.0,
-                        495.0,
-                        1372.0,
-                        457.0,
-                        1158.0,
-                        457.0,
-                        1158.0,
-                        495.0,
-                        1158.0,
-                        457.0,
-                        1275.5,
-                        457.0,
-                        1275.5,
-                        495.0,
-                        1275.5,
-                        457.0,
-                        1507.0,
-                        457.0,
-                        1507.0,
-                        495.0,
-                        1507.0,
-                        457.0,
-                        1267.0,
-                        457.0,
-                        1267.0,
-                        495.0,
-                        1267.0,
-                        457.0,
-                        1612.0,
-                        457.0,
-                        1612.0,
-                        495.0,
-                        1612.0,
+                        392.0,
+                        1492.0,
+                        392.0,
+                        1492.0,
+                        558.0,
+                        1492.0,
                         487.0,
                         1597.0,
                         487.0,
@@ -8685,6 +9684,12 @@
                     ],
                     "midpoints": [
                         2433.5,
+                        392.0,
+                        1718.0,
+                        392.0,
+                        1718.0,
+                        558.0,
+                        1718.0,
                         412.0,
                         2212.0,
                         412.0,
@@ -8903,6 +9908,12 @@
                     ],
                     "midpoints": [
                         2317.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
                         337.0,
                         2227.0,
                         337.0,
@@ -8939,6 +9950,18 @@
                         1957.0,
                         375.0,
                         1957.0,
+                        392.0,
+                        1718.0,
+                        392.0,
+                        1718.0,
+                        558.0,
+                        1718.0,
+                        392.0,
+                        1778.0,
+                        392.0,
+                        1778.0,
+                        428.0,
+                        1778.0,
                         412.0,
                         2212.0,
                         412.0,
@@ -9015,9 +10038,13 @@
                     ],
                     "midpoints": [
                         1619.75,
-                        528.5,
+                        392.0,
+                        1718.0,
+                        392.0,
+                        1718.0,
+                        558.0,
                         1641.0,
-                        528.5
+                        558.0
                     ]
                 }
             },
@@ -9030,6 +10057,16 @@
                     "destination": [
                         "obj-118",
                         0
+                    ],
+                    "midpoints": [
+                        1597.0,
+                        572.0,
+                        1492.0,
+                        572.0,
+                        1492.0,
+                        738.0,
+                        1597.0,
+                        738.0
                     ]
                 }
             },
@@ -9045,6 +10082,12 @@
                     ],
                     "midpoints": [
                         1615.5,
+                        572.0,
+                        1768.0,
+                        572.0,
+                        1768.0,
+                        738.0,
+                        1768.0,
                         577.0,
                         1738.0,
                         577.0,
@@ -9067,6 +10110,12 @@
                     ],
                     "midpoints": [
                         1641.0,
+                        572.0,
+                        1768.0,
+                        572.0,
+                        1768.0,
+                        738.0,
+                        1768.0,
                         577.0,
                         1649.0,
                         577.0,
@@ -9089,6 +10138,12 @@
                     ],
                     "midpoints": [
                         1697.5,
+                        572.0,
+                        1768.0,
+                        572.0,
+                        1768.0,
+                        738.0,
+                        1768.0,
                         622.0,
                         2032.0,
                         622.0,
@@ -9193,6 +10248,12 @@
                     ],
                     "midpoints": [
                         1132.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
                         292.0,
                         1518.0,
                         292.0,
@@ -9443,6 +10504,12 @@
                     ],
                     "midpoints": [
                         1132.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
                         292.0,
                         1518.0,
                         292.0,
@@ -9830,8 +10897,26 @@
                         307.0,
                         229.0,
                         343.0,
+                        229.0,
+                        337.0,
+                        246.0,
+                        337.0,
+                        246.0,
+                        375.0,
+                        246.0,
+                        337.0,
+                        247.0,
+                        337.0,
+                        247.0,
+                        375.0,
+                        247.0,
+                        337.0,
+                        427.0,
+                        337.0,
+                        427.0,
+                        375.0,
                         80.0,
-                        343.0
+                        375.0
                     ]
                 }
             },
@@ -9928,8 +11013,32 @@
                         292.0,
                         637.0,
                         328.0,
+                        637.0,
+                        337.0,
+                        772.0,
+                        337.0,
+                        772.0,
+                        375.0,
+                        772.0,
+                        337.0,
+                        817.0,
+                        337.0,
+                        817.0,
+                        375.0,
+                        817.0,
+                        337.0,
+                        599.0,
+                        337.0,
+                        599.0,
+                        375.0,
+                        599.0,
+                        337.0,
+                        764.0,
+                        337.0,
+                        764.0,
+                        375.0,
                         830.0,
-                        328.0
+                        375.0
                     ]
                 }
             },
@@ -10203,6 +11312,12 @@
                     ],
                     "midpoints": [
                         665.0,
+                        32.0,
+                        1888.0,
+                        32.0,
+                        1888.0,
+                        198.0,
+                        1888.0,
                         142.0,
                         738.0,
                         142.0,
@@ -10317,6 +11432,18 @@
                         1178.0,
                         288.0,
                         1178.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
+                        212.0,
+                        1786.0,
+                        212.0,
+                        1786.0,
+                        248.0,
+                        1786.0,
                         292.0,
                         1518.0,
                         292.0,
@@ -10511,6 +11638,12 @@
                     ],
                     "midpoints": [
                         710.0,
+                        32.0,
+                        1492.0,
+                        32.0,
+                        1492.0,
+                        198.0,
+                        1492.0,
                         142.0,
                         798.0,
                         142.0,
@@ -10619,6 +11752,18 @@
                         1178.0,
                         288.0,
                         1178.0,
+                        212.0,
+                        1492.0,
+                        212.0,
+                        1492.0,
+                        378.0,
+                        1492.0,
+                        212.0,
+                        1712.0,
+                        212.0,
+                        1712.0,
+                        248.0,
+                        1712.0,
                         292.0,
                         1518.0,
                         292.0,
@@ -10999,6 +12144,12 @@
                     ],
                     "midpoints": [
                         890.0,
+                        32.0,
+                        1492.0,
+                        32.0,
+                        1492.0,
+                        198.0,
+                        1492.0,
                         142.0,
                         963.0,
                         142.0,
@@ -11089,6 +12240,12 @@
                         1178.0,
                         288.0,
                         1178.0,
+                        212.0,
+                        1492.0,
+                        212.0,
+                        1492.0,
+                        378.0,
+                        1492.0,
                         292.0,
                         1462.0,
                         292.0,
@@ -11217,6 +12374,12 @@
                     ],
                     "midpoints": [
                         935.0,
+                        32.0,
+                        1888.0,
+                        32.0,
+                        1888.0,
+                        198.0,
+                        1888.0,
                         142.0,
                         1023.0,
                         142.0,
@@ -11301,6 +12464,18 @@
                         1178.0,
                         288.0,
                         1178.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
+                        212.0,
+                        1786.0,
+                        212.0,
+                        1786.0,
+                        248.0,
+                        1786.0,
                         292.0,
                         1518.0,
                         292.0,
@@ -11817,6 +12992,12 @@
                     ],
                     "midpoints": [
                         1100.0,
+                        32.0,
+                        1492.0,
+                        32.0,
+                        1492.0,
+                        198.0,
+                        1492.0,
                         142.0,
                         1188.0,
                         142.0,
@@ -11883,6 +13064,18 @@
                         1178.0,
                         288.0,
                         1178.0,
+                        212.0,
+                        1492.0,
+                        212.0,
+                        1492.0,
+                        378.0,
+                        1492.0,
+                        212.0,
+                        1712.0,
+                        212.0,
+                        1712.0,
+                        248.0,
+                        1712.0,
                         292.0,
                         1462.0,
                         292.0,
@@ -12029,6 +13222,12 @@
                     ],
                     "midpoints": [
                         1160.0,
+                        32.0,
+                        1888.0,
+                        32.0,
+                        1888.0,
+                        198.0,
+                        1888.0,
                         142.0,
                         1248.0,
                         142.0,
@@ -12083,6 +13282,18 @@
                         1178.0,
                         288.0,
                         1178.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
+                        212.0,
+                        1786.0,
+                        212.0,
+                        1786.0,
+                        248.0,
+                        1786.0,
                         292.0,
                         1518.0,
                         292.0,
@@ -12635,6 +13846,12 @@
                     ],
                     "midpoints": [
                         1325.0,
+                        32.0,
+                        1492.0,
+                        32.0,
+                        1492.0,
+                        198.0,
+                        1492.0,
                         142.0,
                         1398.0,
                         142.0,
@@ -12665,6 +13882,18 @@
                         1623.0,
                         180.0,
                         1623.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
+                        212.0,
+                        1712.0,
+                        212.0,
+                        1712.0,
+                        248.0,
+                        1712.0,
                         292.0,
                         1518.0,
                         292.0,
@@ -12823,6 +14052,12 @@
                     ],
                     "midpoints": [
                         1370.0,
+                        32.0,
+                        1888.0,
+                        32.0,
+                        1888.0,
+                        198.0,
+                        1888.0,
                         142.0,
                         1458.0,
                         142.0,
@@ -12847,6 +14082,18 @@
                         1623.0,
                         180.0,
                         1623.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
+                        212.0,
+                        1786.0,
+                        212.0,
+                        1786.0,
+                        248.0,
+                        1786.0,
                         292.0,
                         1518.0,
                         292.0,
@@ -13353,6 +14600,12 @@
                     ],
                     "midpoints": [
                         738.9047619047619,
+                        32.0,
+                        1492.0,
+                        32.0,
+                        1492.0,
+                        198.0,
+                        1492.0,
                         142.0,
                         738.0,
                         142.0,
@@ -13459,12 +14712,30 @@
                     ],
                     "midpoints": [
                         1550.0,
+                        32.0,
+                        1888.0,
+                        32.0,
+                        1888.0,
+                        198.0,
+                        1888.0,
                         142.0,
                         1623.0,
                         142.0,
                         1623.0,
                         180.0,
                         1623.0,
+                        212.0,
+                        1708.0,
+                        212.0,
+                        1708.0,
+                        378.0,
+                        1708.0,
+                        212.0,
+                        1786.0,
+                        212.0,
+                        1786.0,
+                        248.0,
+                        1786.0,
                         292.0,
                         1638.0,
                         292.0,
@@ -13523,6 +14794,12 @@
                     ],
                     "midpoints": [
                         756.0,
+                        32.0,
+                        1492.0,
+                        32.0,
+                        1492.0,
+                        198.0,
+                        1492.0,
                         142.0,
                         798.0,
                         142.0,
@@ -13629,6 +14906,12 @@
                     ],
                     "midpoints": [
                         1595.0,
+                        32.0,
+                        1492.0,
+                        32.0,
+                        1492.0,
+                        198.0,
+                        1492.0,
                         142.0,
                         1188.0,
                         142.0,
