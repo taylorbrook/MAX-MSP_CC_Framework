@@ -4,6 +4,14 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-07-10T05:04:52.652432+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "preset system: 7 classic FM tones (umenu -> p presets -> ratio/index dials)",
+      "timestamp": "2026-07-10T16:21:38.285004+00:00",
+      "files_changed": [
+        "simple-fm.maxpat"
+      ]
     }
   ]
 }
