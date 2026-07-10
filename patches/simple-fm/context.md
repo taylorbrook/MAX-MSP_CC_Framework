@@ -106,6 +106,25 @@ out1 = cycle(cf + cycle(modhz) * dev);
 Carrier freq enters as a signal (in1) so both chains share one pitch source;
 ratio/index arrive as `param` messages (`ratio $1`, no `@` prefix).
 
+## Hand Edits (user, 2026-07-10 — approved baseline)
+
+User refined v1 in MAX and confirmed they are happy. Treat this as the
+baseline for all future iterations:
+
+- **kslider `mode: 2` (touchscreen)** — sends velocity 0 on mouse release, so
+  notes now sustain while held and release on mouse-up.
+- **Envelope driven directly by kslider velocity** (`kslider out1 → select 0`),
+  no longer by makenote's timed note-offs.
+- **`makenote 100 800` → `makenote 100`**, velocity outlet disconnected —
+  makenote now only passes pitch to `mtof`.
+- **`attrui` (attr `mode`) → kslider**, in presentation at bottom (15, 484) —
+  learner can switch keyboard mode from the UI.
+- kslider presentation rect enlarged to full-width 98px tall (15, 368, 672, 98).
+- Comments simplified ("MIDI keyboard in (optional)").
+- Known stale leftover: comment obj-51 still says "makenote adds timed
+  note-offs" which no longer matches behavior — candidate cleanup on next
+  iterate, do not change otherwise.
+
 ### Presentation mode
 
 Standard builder support: presentation rects on kslider, dials, flonum
