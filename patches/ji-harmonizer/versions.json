@@ -22,6 +22,22 @@
         "patches/ji-harmonizer/generated/ji-harmonizer.maxpat",
         "patches/ji-harmonizer/generated/ji-engine.js"
       ]
+    },
+    {
+      "version": "0.0.3",
+      "description": "fix: per-channel freq/gain distribution via MC applyvalues (single-tone bug)",
+      "timestamp": "2026-08-13T23:12:13.804114+00:00",
+      "files_changed": [
+        "patches/ji-harmonizer/generated/ji-harmonizer.maxpat"
+      ]
+    },
+    {
+      "version": "0.0.4",
+      "description": "add per-degree enable toggles to UI (p degrees routing + load init)",
+      "timestamp": "2026-08-13T23:36:43.064855+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }
