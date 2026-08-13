@@ -15626,6 +15626,23 @@
           "digest": "(signal) Output",
           "signal_role": "audio"
         }
+      ],
+      "_note": "MC wrapper distribution messages verified from Max 9 refpages (mcwrapper-group.maxref.xml). A bare LIST does NOT distribute values across channels -- use 'applyvalues <v1> <v2> ...' (one value per instance, extras unaffected), 'setvalue <chan1based> <msg>' (chan 0 = all), or 'replicatevalues' (wraps around). These wrapper messages work on all mc.* wrapper objects.",
+      "messages": [
+        "int",
+        "float",
+        "list",
+        "set",
+        "signal",
+        "applyvalues",
+        "replicatevalues",
+        "applynvalues",
+        "replicatenvalues",
+        "setvalue",
+        "setvaluerange",
+        "deviate",
+        "spread",
+        "spreadinclusive"
       ]
     },
     "mc.sinh~": {
@@ -16296,7 +16313,7 @@
       "_audit": {
         "source": "review-260421-b3a + quick-260421-bti",
         "confidence": "HIGH",
-        "finding": "FN-01 / DQ-02: lifted from extract_objects.py VARIABLE_IO_RULES constant with formula normalized from 'arg_count_plus_1' to 'arg_count+1'. 260421-bti aligned default_outlets (3 → 2) with the routepass per-domain DB entry; behaviorally identical because arg_count+1 formula never falls through to default_outlets. Aliases 't' and 'sel' intentionally NOT lifted because alias resolution runs before rule lookup in compute_io_counts."
+        "finding": "FN-01 / DQ-02: lifted from extract_objects.py VARIABLE_IO_RULES constant with formula normalized from 'arg_count_plus_1' to 'arg_count+1'. 260421-bti aligned default_outlets (3 \u2192 2) with the routepass per-domain DB entry; behaviorally identical because arg_count+1 formula never falls through to default_outlets. Aliases 't' and 'sel' intentionally NOT lifted because alias resolution runs before rule lookup in compute_io_counts."
       }
     },
     "mc.combine~": {
@@ -16306,7 +16323,7 @@
       "default_outlets": 1,
       "description": "mc.combine~ number-of-inlets: first arg sets inlet count. Default 2 inlets. Output is a single multichannel signal that concatenates all channels from inputs.",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — refpage verified",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 refpage verified",
         "confidence": "HIGH",
         "finding": "Unlike core 'combine' (arg_count over list args), mc.combine~ takes one optional int for inlet count. Default 2 per docs."
       }
@@ -16318,7 +16335,7 @@
       "default_outlets": 2,
       "description": "mc.deinterleave~ outputs: first arg sets outlet count. Default 2 outlets.",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — refpage verified",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 refpage verified",
         "confidence": "HIGH",
         "finding": "Single int 'outputs' arg. Default 2 inferred from DB entry (no refpage default stated)."
       }
@@ -16328,7 +16345,7 @@
       "outlet_count": "first_arg",
       "default_inlets": 1,
       "default_outlets": 4,
-      "description": "mc.fffb~ number-of-filters: first arg sets signal outlet count (one per filter). When instantiated as 'mcs.fffb~' this behavior collapses into a single MC outlet — the mcs variant is a different object. Default 4 outlets (matches DB entry).",
+      "description": "mc.fffb~ number-of-filters: first arg sets signal outlet count (one per filter). When instantiated as 'mcs.fffb~' this behavior collapses into a single MC outlet \u2014 the mcs variant is a different object. Default 4 outlets (matches DB entry).",
       "_audit": {
         "source": "quick-260421-bx3 (DQ-07)",
         "confidence": "MEDIUM",
@@ -16340,9 +16357,9 @@
       "outlet_count": "first_arg",
       "default_inlets": 2,
       "default_outlets": 1,
-      "description": "mc.gate~ number-of-outlets: first arg sets outlet count. Default 1 outlet. Mirrors core 'gate' rule (inlet_count:fixed:2 is the signal-domain pattern from gate — control route inlet + signal inlet).",
+      "description": "mc.gate~ number-of-outlets: first arg sets outlet count. Default 1 outlet. Mirrors core 'gate' rule (inlet_count:fixed:2 is the signal-domain pattern from gate \u2014 control route inlet + signal inlet).",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — mirrors core 'gate' rule",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 mirrors core 'gate' rule",
         "confidence": "HIGH",
         "finding": "Same arg semantics as MSP gate~ / core gate. Note: DB entry shows 2 inlets (signal+route), which matches fixed:2."
       }
@@ -16354,7 +16371,7 @@
       "default_outlets": 1,
       "description": "mc.interleave~ inputs: first arg sets inlet count. Default 2 inlets.",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — refpage verified",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 refpage verified",
         "confidence": "HIGH",
         "finding": "Single int 'inputs' arg; default 2 per refpage."
       }
@@ -16364,9 +16381,9 @@
       "outlet_count": "second_arg",
       "default_inlets": 2,
       "default_outlets": 2,
-      "description": "mc.matrix~ inlets outlets: first arg = signal inlets, second = signal outlets. Default 2x2. Note: rule targets signal I/O; an additional non-signal dump outlet (list) is always present — see DQ-07 corner case #3.",
+      "description": "mc.matrix~ inlets outlets: first arg = signal inlets, second = signal outlets. Default 2x2. Note: rule targets signal I/O; an additional non-signal dump outlet (list) is always present \u2014 see DQ-07 corner case #3.",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — mirrors core 'matrix~' rule",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 mirrors core 'matrix~' rule",
         "confidence": "MEDIUM",
         "finding": "Same semantics as matrix~ (rule already in overrides.json). Rule intentionally excludes the always-present 3rd dump outlet (list Inlets/Outlets/Gains). Downstream callers that need full outlet shape should read the DB outlets array directly."
       }
@@ -16378,7 +16395,7 @@
       "default_outlets": 1,
       "description": "mc.pack~ size: argument sets both inlet count and output channel count. Default 2 inlets. Output is a single multichannel signal outlet.",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — refpages verified",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 refpages verified",
         "confidence": "HIGH",
         "finding": "Argument-driven inlet count. Distinct from core 'pack' (arg_count over typespec list); mc.pack~ takes a single int 'size'."
       }
@@ -16390,7 +16407,7 @@
       "default_outlets": 1,
       "description": "mc.selector~ number-of-inputs: first arg + 1 sets inlet count (N inputs plus a selector inlet at left). Default 2 inlets.",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — mirrors core 'selector~' rule",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 mirrors core 'selector~' rule",
         "confidence": "HIGH",
         "finding": "Identical semantics to selector~ (rule already in overrides.json)."
       }
@@ -16402,7 +16419,7 @@
       "default_outlets": 2,
       "description": "mc.separate~ channels-per-outlet: each argument creates one outlet whose MC signal has the specified channel count. Default 2 outlets.",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — refpage verified",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 refpage verified",
         "confidence": "HIGH",
         "finding": "Argument list drives outlet count (mirrors core 'pack' arg_count pattern). Refpage: 'Each argument creates an outlet whose output multichannel signal will contain the number of channels specified by that argument.'"
       }
@@ -16414,7 +16431,7 @@
       "default_outlets": 2,
       "description": "mc.unpack~ size: argument sets single-channel outlet count. Default 2 outlets. Input is a single multichannel signal inlet.",
       "_audit": {
-        "source": "quick-260421-bx3 (DQ-07) — refpages verified",
+        "source": "quick-260421-bx3 (DQ-07) \u2014 refpages verified",
         "confidence": "HIGH",
         "finding": "Argument-driven outlet count. Distinct from core 'unpack' (arg_count over typespec list); mc.unpack~ takes a single int 'size'."
       }
