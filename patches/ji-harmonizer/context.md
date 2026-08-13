@@ -1,0 +1,149 @@
+# ji-harmonizer — Context
+
+## Origin
+
+Port of the user's VST **O-IntonationPad** (v2.8.4) at
+`/Users/taylorbrook/Dev/VST-development-octagon/plugins/O-IntonationPad`.
+A wavetable pad synth where one MIDI note triggers a full chord (up to 12 sub-voices),
+every pitch tuned by a microtonal engine (built-in temperaments, Scala .scl/.kbm,
+scale generators). Complex system — build a part first, then grow.
+
+## Source-plugin functional summary (from code exploration, 2026-08-13)
+
+### Tuning engine (`Source/DSP/TuningEngine.{h,cpp}`)
+- Data model: scale = vector of cents `[0, i1, …, period]` (period usually 1200;
+  non-octave scales supported: BP 1902, Carlos α/β/γ).
+- Ratios in .scl converted to cents on parse: `1200*log2(num/den)`.
+- Built-in temperaments (cents from C): 12-TET, Pythagorean, Zarlino, Meantone 1/4,
+  Werckmeister III, Kirnberger III, Vallotti, Well Tempered, Just Intonation
+  `{0, 111.73, 203.91, 315.64, 386.31, 498.04, 582.51, 701.96, 813.69, 884.36, 996.09, 1088.27}`,
+  Bohlen-Pierce.
+- 24 embedded library tunings (historical, JI incl. Partch 43, EDOs 17-53, non-octave, world).
+- Scale generators: EDO(divisions, period); harmonic series (octave-reduced);
+  rank-2 (spiral-of-fifths generator stacking).
+- Frequency computation: precomputed 128-entry table, 3 paths:
+  1. **12-note scale, no KBM (signature sound):**
+     `freq = 12TET(note, A4, stretch) * 2^(scaleIntervals[(pc - tonic) mod 12]/1200)`
+     — deliberately NOT textbook JI: absolute interval cents applied ON TOP of the
+     note's 12-TET freq (intervals nearly doubled). Documented intentional character
+     (TuningEngine.cpp:729-731). **Port verbatim.**
+  2. Non-12 scales: linear degree mapping anchored at MIDI 60 + tonic.
+  3. KBM: full Scala keyboard mapping.
+- Tonic = modal rotation of interval list + pitch-class shift.
+- Params: masterTune (A4 400-480), octaveStretch (0.95-1.25), temperament preset.
+
+### Chord generator (`Source/DSP/ChordGenerator.cpp`)
+- Played note → nearest *enabled* scale degree; per-degree enable toggles.
+- Voicing modes: Free / Close / Open / Drop-2 / Thirds / Quartal / Quintal
+  (stacked `round(scaleDegreeCount*k/12)` degrees, k=4/5/7).
+- voiceCount 2-12 (def 5); complexity 0-1 gates voices (voice i audible when
+  `complexity >= i/total*0.85`, 0.1-wide crossfade).
+- spacing (prob. copy 1-3 octaves up), inversion (down), timingRandom (0-100ms stagger),
+  detuneRandom (0-50 cents), stereoSpread (alternating L/R constant-power pan,
+  width ∝ index, root centered).
+
+### Synthesis
+- Dual morphing wavetable oscillators: 20 banks, 256 frames x 2048 samples,
+  banks defined as additive partial recipes {ratio, fadeInStart/End, maxAmp, phase};
+  frame 0 ≈ sine → frame 255 full character; 11 mipmap levels for anti-aliasing.
+  Bank 0 "JI Harmonic" uses pure JI partial ratios.
+- ADSR, StateVariableTPT LP filter (LFO + velocity mod), 2 LFOs → wavetable position
+  (per-sub-voice random phase offsets, root tracks global phase).
+- 8-voice poly (each key = one chord of up to 12 sub-voices x 2 oscs).
+- FX chain: Chorus → Delay (ping-pong, LP feedback) → 3-band EQ → Reverb (predelay).
+- No pitch bend / MPE implemented in the VST. VST3 Note Expression tuning exists
+  (irrelevant for MAX port; equivalent = per-note cents-offset inlet).
+- 12 factory presets; ~48 automatable params.
+
+### Suggested build order (from exploration)
+1. TuningEngine → 128-entry frequency table (pure control math, standalone testable)
+2. ChordGenerator (note in → list of notes/gains out) — 1+2 = the plugin's identity
+3. Wavetable oscillator bank (build-time Python → buffer data; gen~/wave~ morph)
+4. Voice/sub-voice engine (poly~/mc., ADSR, pan, filter)
+5. FX chain + presets (pattrstorage) + tuning UI (.scl import via JS)
+
+## Kickoff decisions (2026-08-13)
+
+- **First slice: tuning + chord engine.** MIDI note in → JI-tuned chord out, driving a
+  simple placeholder oscillator bank (cycle~/saw). Wavetable engine ported later.
+- **Tuning math: verbatim VST port.** Reproduce the signature non-standard 12-note path
+  (interval cents applied on top of each note's 12-TET frequency) exactly.
+- **Tuning scope: 23-limit JI via editable ratio table.** 12-degree table where each
+  degree is a typed JI ratio (up to 23-limit, e.g. 23/16, 19/16, 13/8), converted to
+  cents internally (`1200*log2(n/d)`) like the VST's .scl parser. Ships with a sensible
+  default scale. The VST's fixed temperament presets are deferred.
+- **Input/poly: mono chord, live MIDI.** notein + on-screen kslider; one held key at a
+  time triggers its chord. poly~ 8-key polyphony deferred.
+
+## Decisions (discuss, 2026-08-13)
+
+- **Engine: js object (V8).** One js file holds TuningEngine + ChordGenerator as a direct
+  port of the C++ logic — easy to verify against the VST source and to grow (.scl import
+  later). Native objects handle only MIDI I/O and audio.
+- **Chord scope: core set.** voiceCount (2–12, def 5), complexity gating (voice i audible
+  when complexity >= i/total*0.85), all 7 voicing modes (Free/Close/Open/Drop-2/Thirds/
+  Quartal/Quintal), key root/tonic. Deferred: spacing/inversion randomization,
+  timingRandom, detuneRandom, stereoSpread.
+- **Audio arch: mc.cycle~ bank.** 12-channel mc.cycle~ fed per-channel freqs + gains,
+  mixed to stereo. Sine placeholder timbre; wavetable engine later.
+- **Ratio UI: per-degree fields.** 12 individual entry boxes, one per degree, each with
+  its computed cents readout beside it. Default scale: harmonics 16–30
+  (1/1 17/16 9/8 19/16 5/4 21/16 11/8 23/16 3/2 13/8 7/4 15/8 — spans 23-limit).
+- **Rationale for verbatim tuning path:** freq = 12TET(note) * 2^(cents[(pc-tonic)%12]/1200)
+  — the VST's documented signature; do not "fix" to textbook JI.
+
+## Research (2026-08-13)
+
+All objects below verified in the DB with non-empty I/O.
+
+### Signal flow (slice 1)
+
+```
+notein ─→ stripnote ─→ kslider (display + touch input) ─┐
+                                                         ▼
+                    js ji-engine.js  (TuningEngine + ChordGenerator port)
+                    in: note/vel, ratio <i> <n/d>, voicecount, complexity,
+                        voicingmode, tonic, mastertune
+   out 0: 12-elem freq list ──→ mc.sig~ @chans 12 ──→ mc.cycle~ (left, signal)
+   out 1: 12-elem gain list ──→ mc.sig~ @chans 12 ──→ mc.rampsmooth~ (~50ms)
+                                                        └→ mc.*~ (right inlet)
+   out 2: gate (norm. velocity or 0) ──→ adsr~ ──→ *~ (post-mixdown env)
+   out 3: cents per degree ──→ route 0..11 ──→ 12 flonum readouts
+mc.cycle~ → mc.*~ → mc.mixdown~ 2 → *~ (env) → gain~ ⇄ meter~ → ezdac~
+```
+
+### Object choices & rationale
+
+- **js** (1 in, N out via `outlets=4`): whole engine in one file. Handlers: `list` for
+  note/vel, `anything` for named params (`ratio`, `voicecount`, `complexity`,
+  `voicingmode`, `tonic`, `mastertune`). Direct C++ port, testable in Max console.
+- **mc.sig~ @chans 12**: accepts a plain 12-element `list` → sets per-channel constant
+  signal values. Cleanest verified way to feed per-channel freqs/gains (avoids relying
+  on mc wrapper `setvalue`, unverified in DB).
+- **mc.cycle~** (2 in: freq signal/float, phase; 1 out): 12-ch sine bank; freq from
+  mc.sig~ signal into left inlet. Placeholder timbre until wavetable port.
+- **mc.rampsmooth~** (3 in, 1 out; args ramp-up/down samples): smooths per-channel gain
+  steps from complexity/voicecount changes — no clicks while dragging (~2205 samp = 50ms).
+- **mc.*~**: applies smoothed gain lane to oscillator lane.
+- **mc.mixdown~ 2** (2 in, 1 out): 12ch → stereo.
+- **adsr~** (5 in, 4 out; args A D S R): master mono envelope, gated by js out 2
+  (normalized velocity 0-1 → satisfies gain-safety rule; 0 = release).
+- **textedit ×12**: per-degree ratio entry; outlet 0 emits text on enter →
+  `prepend ratio <i>` → js. flonum cents readout beside each (from js out 3 via route).
+- **umenu**: voicing mode (Free/Close/Open/Drop-2/Thirds/Quartal/Quintal) — remember
+  comma-as-element items format. **tab** is an alternative if a segmented control reads
+  better; umenu is more compact.
+- **kslider**: outlet 0 = pitch, outlet 1 = velocity; also accepts int display input
+  (existing touchscreen-kslider convention from simple-fm applies).
+- **gain~ + meter~** side-by-side (companion pair), ezdac~ termination.
+
+### Notes / tradeoffs
+
+- Freq changes via mc.sig~ are unsmoothed (instant pitch step). Correct for note
+  retriggers; if later we want glide, insert mc.slide~ or drive freqs through mc.line~.
+- Silent channels: js sets gain 0 for unused sub-voices; oscillators keep running
+  (12 fixed channels — fine at sine cost; revisit with poly~/mute in the full engine).
+- adsr~ retrigger while held is legato-safe for mono chord slice; full VST ADSR params
+  (A 1ms-5s etc.) can map 1:1 onto adsr~ inlets later.
+- pattrstorage/preset available for slice-2 preset support; not in slice 1.
+- No PD-blocklist conflicts in this plan.
