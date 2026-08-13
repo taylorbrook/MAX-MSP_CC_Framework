@@ -97,6 +97,19 @@ def apply_layout(patcher: Patcher, options: LayoutOptions | None = None) -> None
     if not patcher.boxes:
         return
 
+    # MAX resolves a subpatcher's port indices from the x-order of the
+    # inlet/outlet boxes inside it (get_inlets()/get_outlets() sort by x to
+    # match). Capture the pre-layout x-rank of each port box so repositioning
+    # cannot silently remap the parent patcher's connection indices; the rank
+    # is restored after all positioning passes below.
+    port_order: dict[str, list[Box]] = {}
+    for port_class in ("inlet", "outlet"):
+        ports = [b for b in patcher.boxes if b.maxclass == port_class]
+        if len(ports) > 1:
+            port_order[port_class] = sorted(
+                ports, key=lambda b: b.patching_rect[0]
+            )
+
     # Build adjacency graph from patcher.lines
     adj, in_degree, reverse_adj = _build_graph(patcher.boxes, patcher.lines)
 
@@ -176,6 +189,17 @@ def apply_layout(patcher: Patcher, options: LayoutOptions | None = None) -> None
     # Grid snap as final pass (after all positioning, before midpoints)
     if options.grid_snap:
         _snap_to_grid(patcher.boxes, options.grid_size)
+
+    # Restore pre-layout x-rank of inlet/outlet boxes: give the k-th port
+    # (by original rank) the k-th smallest post-layout x, kept strictly
+    # increasing so MAX's x-order stays unambiguous.
+    for ports in port_order.values():
+        xs = sorted(b.patching_rect[0] for b in ports)
+        for i in range(1, len(xs)):
+            if xs[i] <= xs[i - 1]:
+                xs[i] = xs[i - 1] + options.grid_size
+        for b, x in zip(ports, xs):
+            b.patching_rect[0] = x
 
     # Generate midpoints for all cables needing segmented routing
     _generate_midpoints(patcher)
