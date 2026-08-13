@@ -235,16 +235,21 @@ function list(note, vel) {
 function ratio(idx) {
     idx = Math.round(idx);
     if (idx < 0 || idx >= SCALE_SIZE) return;
+    if (arguments.length < 2) return;
+    var raw = [];
+    for (var k = 1; k < arguments.length; k++) raw.push(String(arguments[k]));
+    var txt = raw.join(" ");
     var n, d;
-    if (arguments.length >= 3) {
-        n = parseFloat(arguments[1]);
-        d = parseFloat(arguments[2]);
-    } else if (arguments.length === 2) {
-        var parts = String(arguments[1]).split("/");
+    if (txt.indexOf("/") >= 0) {
+        var parts = txt.replace(/\s+/g, "").split("/");
         n = parseFloat(parts[0]);
-        d = (parts.length > 1) ? parseFloat(parts[1]) : 1.0;
+        d = parseFloat(parts[1]);
+    } else if (raw.length >= 2) {
+        n = parseFloat(raw[0]);
+        d = parseFloat(raw[1]);
     } else {
-        return;
+        n = parseFloat(raw[0]);
+        d = 1.0;
     }
     if (!(n > 0) || !(d > 0)) {
         post("ji-engine: bad ratio for degree " + idx + "\n");

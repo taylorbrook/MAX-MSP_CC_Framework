@@ -13,6 +13,15 @@
         "patches/ji-harmonizer/generated/ji-harmonizer.maxpat",
         "patches/ji-harmonizer/generated/ji-engine.js"
       ]
+    },
+    {
+      "version": "0.0.2",
+      "description": "fix: subpatcher port order (init/params/ratios routing), robust ratio parsing",
+      "timestamp": "2026-08-13T23:05:31.001173+00:00",
+      "files_changed": [
+        "patches/ji-harmonizer/generated/ji-harmonizer.maxpat",
+        "patches/ji-harmonizer/generated/ji-engine.js"
+      ]
     }
   ]
 }
