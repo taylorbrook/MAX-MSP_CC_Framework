@@ -5136,7 +5136,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.0.4",
+                    "text": "v0.0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -5202,7 +5202,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        66.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5220,7 +5227,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        92.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5238,7 +5252,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        118.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5256,7 +5277,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        144.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5274,7 +5302,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        170.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5292,7 +5327,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        196.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5310,7 +5352,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        222.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5328,7 +5377,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        248.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5346,7 +5402,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        274.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5364,7 +5427,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        300.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5382,7 +5452,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        326.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -5400,7 +5477,14 @@
                         18.0,
                         18.0
                     ],
-                    "parameter_enable": 0
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        203.0,
+                        352.0,
+                        18.0,
+                        18.0
+                    ]
                 }
             },
             {
@@ -7078,6 +7162,37 @@
                         "globalpatchername": "",
                         "tags": ""
                     }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-87",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        955,
+                        128,
+                        40.0,
+                        20.0
+                    ],
+                    "text": "on",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        199.0,
+                        42.0,
+                        26.0,
+                        17.0
+                    ],
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
                 }
             }
         ],
