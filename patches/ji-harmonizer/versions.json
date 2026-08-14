@@ -128,6 +128,15 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.6.2",
+      "description": "fix ratio entry: nosymquotes on textedits + quote-tolerant ratio parser in ji-engine.js",
+      "timestamp": "2026-08-14T22:59:20.654379+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }

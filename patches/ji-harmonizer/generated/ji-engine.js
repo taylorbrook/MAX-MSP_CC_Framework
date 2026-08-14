@@ -373,21 +373,23 @@ function ratio(idx) {
     if (arguments.length < 2) return;
     var raw = [];
     for (var k = 1; k < arguments.length; k++) raw.push(String(arguments[k]));
+    // textedit may deliver quoted symbols ("18/17"), stray newlines, or odd
+    // tokenization -- extract the numeric fields instead of trusting atoms.
     var txt = raw.join(" ");
+    var nums = txt.match(/\d*\.?\d+/g);
     var n, d;
-    if (txt.indexOf("/") >= 0) {
-        var parts = txt.replace(/\s+/g, "").split("/");
-        n = parseFloat(parts[0]);
-        d = parseFloat(parts[1]);
-    } else if (raw.length >= 2) {
-        n = parseFloat(raw[0]);
-        d = parseFloat(raw[1]);
-    } else {
-        n = parseFloat(raw[0]);
+    if (nums && nums.length >= 2) {
+        n = parseFloat(nums[0]);
+        d = parseFloat(nums[1]);
+    } else if (nums && nums.length === 1) {
+        n = parseFloat(nums[0]);
         d = 1.0;
+    } else {
+        n = NaN;
+        d = NaN;
     }
     if (!(n > 0) || !(d > 0)) {
-        post("ji-engine: bad ratio for degree " + idx + "\n");
+        post("ji-engine: bad ratio for degree " + idx + " (got: " + txt + ")\n");
         return;
     }
     ratios[idx] = [n, d];
