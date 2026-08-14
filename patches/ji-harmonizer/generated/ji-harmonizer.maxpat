@@ -5869,7 +5869,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.3.0",
+                    "text": "v0.3.1",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -11245,7 +11245,14 @@
                     ],
                     "text": "bank A (osc A)",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        230.0,
+                        322.0,
+                        100.0,
+                        17.0
+                    ]
                 }
             },
             {
@@ -11263,7 +11270,14 @@
                     ],
                     "text": "bank B (osc B)",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        410.0,
+                        322.0,
+                        100.0,
+                        17.0
+                    ]
                 }
             },
             {
@@ -11324,6 +11338,13 @@
                         "bank18-whisper.wav",
                         ",",
                         "bank19-deep-haze.wav"
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        230.0,
+                        344.0,
+                        170.0,
+                        22.0
                     ]
                 }
             },
@@ -11385,6 +11406,13 @@
                         "bank18-whisper.wav",
                         ",",
                         "bank19-deep-haze.wav"
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        410.0,
+                        344.0,
+                        170.0,
+                        22.0
                     ]
                 }
             },
