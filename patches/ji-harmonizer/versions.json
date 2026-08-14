@@ -46,6 +46,14 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.1.0",
+      "description": "wavetable engine: mc.gen~ dual morphing oscillator replaces mc.cycle~ (bank 0 JI Harmonic, mipmapped)",
+      "timestamp": "2026-08-14T03:49:25.389170+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }

@@ -92,6 +92,32 @@ scale generators). Complex system — build a part first, then grow.
 - **Rationale for verbatim tuning path:** freq = 12TET(note) * 2^(cents[(pc-tonic)%12]/1200)
   — the VST's documented signature; do not "fix" to textbook JI.
 
+## Decisions (discuss, slice 2 — wavetable engine, 2026-08-13)
+
+- **Dual oscillators, verbatim structure.** Osc A + osc B per sub-voice, matching the VST:
+  both share the sub-voice frequency (no inter-osc detune in the VST — detuneRandom is a
+  chord-level param, already deferred). Each osc has its own wavetable position and gain
+  (VST gainA/gainB, block-smoothed). Both implemented inside ONE gen~ codebox
+  (two phase accumulators, two bilinear reads, out = oscA*gainA + oscB*gainB).
+- **Position control: dial + one LFO.** Per-osc position dial (0-1, default 0.5) plus a
+  single global LFO (rate/depth) modulating both positions around their dials
+  (`clamp(dial + sin(lfo)*depth, 0, 1)` — VST formula). The VST's second LFO and
+  per-sub-voice LFO phase offsets are deferred to a later slice.
+- **Banks: render bank 0 only; tool supports all 20.** Both oscs play JI Harmonic this
+  slice; per-osc bank umenu arrives when more banks are rendered.
+- **Rendered WAV committed to git** (~23 MB float32). Patch works on clone with no build
+  step; the Python tool remains the source of truth for regeneration.
+- **Buffer layout: one mono buffer~ per bank**, mipmaps concatenated:
+  `index = mip*(256*2048) + frame*2048 + sample` (5,767,168 samples). Mipmap level
+  computed per channel in gen~ as `clamp(floor(log2(max(freq,1)/20)), 0, 10)` —
+  equivalent to the VST's getMipmapLevel table walk. Hard mipmap switch (no crossfade),
+  verbatim VST behavior.
+- **Verbatim render math** (WavetableData.h): partial excluded from a level when
+  `mipmapBaseFreqs[level]*2 * ratio > 0.9 * 24000`; sin^2 fade by frame position;
+  per-sample normalization `1/max(totalAmp, 1)`; phaseOffset per partial.
+- **Free-running phases** (VST resets per noteOn; mono-chord slice free-runs — inaudible
+  for pads, revisit with poly~).
+
 ## Research (2026-08-13)
 
 All objects below verified in the DB with non-empty I/O.
@@ -147,3 +173,44 @@ mc.cycle~ → mc.*~ → mc.mixdown~ 2 → *~ (env) → gain~ ⇄ meter~ → ezda
   (A 1ms-5s etc.) can map 1:1 onto adsr~ inlets later.
 - pattrstorage/preset available for slice-2 preset support; not in slice 1.
 - No PD-blocklist conflicts in this plan.
+
+## Research (slice 2 — wavetable engine, 2026-08-13)
+
+All objects verified in DB with non-empty I/O: `mc.gen~` (MC), `buffer~`, `cycle~`, `*~`,
+`+~`, `line~`, `clip~` (MSP), `dial`/`flonum`/`loadbang`/`message` (Max). Gen operators
+verified in gen domain: `peek`, `wrap`, `log2`, `floor`, `clamp`, `history`. numpy 2.4.0
+available for the render tool.
+
+### Render tool (build-time Python — sanctioned, not a Rule #5 violation)
+
+- `tools/render_wavetables.py`: ports all 20 partial-recipe tables from WavetableData.h
+  verbatim; renders selected banks (default: bank 0) to float32 mono WAV.
+- Verbatim math: sin^2 fade (`calculateFade`), partial exclusion per mipmap
+  (`baseFreq*2*ratio > 0.9*24000`, ASSUMED_SAMPLE_RATE 48000), per-sample normalization
+  `1/max(totalAmp,1)`, per-partial phaseOffset.
+- Output layout: 11 mipmaps concatenated, `idx = mip*524288 + frame*2048 + sample`
+  (5,767,168 samples ≈ 23 MB). File: `generated/bank00-ji-harmonic.wav` — next to the
+  .maxpat so Max's patch-folder search path finds it.
+- Sanity checks in tool: frame 0 of every mipmap ≈ pure sine (only ratio-1.0 partial has
+  fadeStart>=fadeEnd); top mipmaps go silent as even the fundamental exceeds 0.9*Nyquist
+  (VST does the same).
+
+### Audio architecture
+
+- ONE `mc.gen~` codebox replaces `mc.cycle~`: 3 signal inlets (freq from existing
+  mc.sig~; posA; posB — mono signals broadcast to all 12 instances), 1 outlet.
+- Single shared phase accumulator (History + wrap) — valid because VST osc A/B share
+  baseFreq and both reset phase to 0 per note (phases always identical).
+- Per sample: mipmap level `clamp(floor(log2(max(f,1)/20)), 0, 10)` (equals VST's
+  getMipmapLevel), 8 peeks (2 oscs × 2 frames × 2 samples), bilinear interp,
+  `out1 = oscA*gaina + oscB*gainb`.
+- `gaina`/`gainb` as Params (0-1) with one-pole smoothing in codebox (≈20 ms, mirrors
+  VST block-rate gain smoothing); set via `gaina $1` message boxes into mc.gen~ inlet 0
+  (bare param messages broadcast to all mc instances — uniform, which is what we want).
+- Position path: flonum (0-1) → `$1 20` → line~ → +~ (LFO) → mc.gen~ (clamped in gen).
+  LFO: `cycle~` (rate flonum) → `*~` (depth flonum) → shared by both `+~` position sums.
+- `add_gen()` builds gen~ + codebox; parent box renamed to `mc.gen~` afterwards
+  (embedded-patcher JSON identical; mc wrapper auto-adapts to 12-ch input). Risk noted:
+  first mc.gen~ use in this repo — verify at load in test protocol.
+- buffer~ created as `buffer~ jiharm0 bank00-ji-harmonic.wav` (auto-loads from patch
+  folder at open).
