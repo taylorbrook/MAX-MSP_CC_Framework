@@ -151,6 +151,10 @@ After every `replace_box` call, iterate `result.orphaned` and re-add the connect
 
 **Prefer `Patcher.replace_box_safe(old, new_name, args=..., rewire="auto")` for new code.** It delegates to `replace_box` internally, then auto-rewires every orphaned connection by index when the new box's I/O layout matches (same inlet AND outlet counts). On match, the returned `EditResult.orphaned` is empty — connections are preserved transparently. On I/O mismatch, it falls back to the existing orphan-return behavior so callers always have something to act on. Use `rewire="manual"` to opt back into the explicit-orphan workflow. The underlying `replace_box` is unchanged and still appropriate when you need to inspect or transform orphans before rewiring.
 
+### Rule #9: Presentation Mode Parity
+
+If the target patch uses presentation mode (any box has `presentation: 1`), every interactive control added or made user-facing by an edit MUST be added to the presentation layout in the same edit — along with its label comment. Use `Patcher.add_to_presentation(box, rect)` with an explicit `presentation_rect` placed in the relevant section's presentation grid (match the section's existing column/row rhythm; audit `presentation_rect`s of neighboring controls to pick coordinates). The layout critic emits "Presentation coverage" warnings for interactive widgets missing from presentation; treat these as must-fix before save. Deliberate exclusions (e.g. a slaved stereo `gain~`) must be recorded in the project's `context.md`. This rule exists because presentation parity was forgotten in repeated iterations and had to be requested manually every time.
+
 ## Domain-Specific Rules
 
 ### MSP (Audio/Signal)

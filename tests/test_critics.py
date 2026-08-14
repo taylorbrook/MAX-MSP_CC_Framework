@@ -2195,3 +2195,69 @@ class TestReviewPatchPackageIntegration:
         results = review_patch(patch)
         package_findings = [r for r in results if "beap" in r.finding.lower() or "bach" in r.finding.lower() or "package" in r.finding.lower()]
         assert len(package_findings) == 0, f"Expected no package findings for MSP patch, got: {[str(r) for r in package_findings]}"
+
+
+# ===========================================================================
+# Presentation coverage tests (layout critic check 5)
+# ===========================================================================
+
+
+class TestPresentationCoverage:
+    """Interactive controls must join presentation mode when the patch uses it."""
+
+    @staticmethod
+    def _control(box_id, maxclass, presentation=None, rect=None):
+        box = {
+            "id": box_id,
+            "maxclass": maxclass,
+            "patching_rect": rect or [50.0, 50.0, 50.0, 22.0],
+            "numinlets": 1,
+            "numoutlets": 1,
+        }
+        if presentation:
+            box["presentation"] = 1
+            box["presentation_rect"] = [10.0, 10.0, 50.0, 22.0]
+        return box
+
+    def test_missing_control_flagged(self):
+        """A umenu outside presentation is flagged when another control is in it."""
+        boxes = [
+            self._control("obj-1", "flonum", presentation=True),
+            self._control("obj-2", "umenu", rect=[50.0, 100.0, 100.0, 22.0]),
+        ]
+        results = review_layout(_make_patch(boxes, []))
+        findings = [r for r in results if "presentation coverage" in r.finding.lower()]
+        assert len(findings) == 1, f"Expected 1 coverage finding, got: {results}"
+        assert "obj-2" in findings[0].finding
+
+    def test_no_presentation_mode_no_findings(self):
+        """Patches that don't use presentation mode are exempt."""
+        boxes = [
+            self._control("obj-1", "flonum"),
+            self._control("obj-2", "umenu", rect=[50.0, 100.0, 100.0, 22.0]),
+        ]
+        results = review_layout(_make_patch(boxes, []))
+        findings = [r for r in results if "presentation coverage" in r.finding.lower()]
+        assert len(findings) == 0, f"Expected no coverage findings, got: {findings}"
+
+    def test_monitoring_objects_exempt(self):
+        """gain~/meter~ and comments never trigger coverage findings."""
+        boxes = [
+            self._control("obj-1", "flonum", presentation=True),
+            self._control("obj-2", "gain~", rect=[150.0, 50.0, 22.0, 140.0]),
+            self._control("obj-3", "meter~", rect=[200.0, 50.0, 15.0, 100.0]),
+            self._control("obj-4", "comment", rect=[50.0, 200.0, 100.0, 20.0]),
+        ]
+        results = review_layout(_make_patch(boxes, []))
+        findings = [r for r in results if "presentation coverage" in r.finding.lower()]
+        assert len(findings) == 0, f"Expected no coverage findings, got: {findings}"
+
+    def test_covered_controls_clean(self):
+        """Controls already in presentation produce no findings."""
+        boxes = [
+            self._control("obj-1", "flonum", presentation=True),
+            self._control("obj-2", "umenu", presentation=True, rect=[50.0, 100.0, 100.0, 22.0]),
+        ]
+        results = review_layout(_make_patch(boxes, []))
+        findings = [r for r in results if "presentation coverage" in r.finding.lower()]
+        assert len(findings) == 0, f"Expected no coverage findings, got: {findings}"

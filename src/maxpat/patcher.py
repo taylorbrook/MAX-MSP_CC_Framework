@@ -405,6 +405,37 @@ class Patcher(GraphMixin, AnalysisMixin, BuildersMixin):
         self._next_id += 1
         return box_id
 
+    def add_to_presentation(self, box: Box, rect: list[float] | None = None) -> Box:
+        """Put a box into presentation mode at ``rect``.
+
+        Sets ``presentation=1`` and ``presentation_rect`` on the box. Works
+        on both new and round-tripped boxes (presentation is a model field,
+        overlaid onto ``_raw`` at serialize -- unlike generic ``extra_attrs``).
+
+        When ``rect`` is omitted, the box is placed at x=15 just below the
+        current presentation extent, sized from its patching_rect. Prefer an
+        explicit rect placed within the relevant presentation section's grid;
+        the auto-placement is a fallback so a new control is at least visible
+        rather than silently absent.
+
+        Args:
+            box: Box to add to the presentation layout.
+            rect: [x, y, width, height] in presentation coordinates.
+
+        Returns:
+            The same Box, for chaining.
+        """
+        if rect is None:
+            bottoms = [
+                b.presentation_rect for b in self.boxes
+                if b.presentation and b.presentation_rect
+            ]
+            y = max((r[1] + r[3] for r in bottoms), default=0.0) + 10.0
+            rect = [15.0, y, box.patching_rect[2], box.patching_rect[3]]
+        box.presentation = True
+        box.presentation_rect = [float(v) for v in rect]
+        return box
+
     def bring_to_front(self, box: Box) -> None:
         """Move box to index 0 in boxes array (renders on top of all other objects).
 

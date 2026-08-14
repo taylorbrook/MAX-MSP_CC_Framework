@@ -60,6 +60,7 @@ def review_layout(patch_dict: dict) -> list[CriticResult]:
     results.extend(_check_missing_midpoints(box_lookup, lines))
     results.extend(_check_out_of_bounds(box_list))
     results.extend(_check_text_contrast(box_list))
+    results.extend(_check_presentation_coverage(box_list))
 
     return results
 
@@ -275,6 +276,54 @@ def _check_out_of_bounds(box_list: list[dict]) -> list[CriticResult]:
                 "Move the object to a position with x >= 0 and y >= 0",
             ))
 
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Check 5: Presentation coverage
+# ---------------------------------------------------------------------------
+
+# Interactive param-entry widgets that belong in presentation mode when the
+# patch uses it. Monitoring/level objects (gain~, meter~, scope~) and comments
+# are deliberately excluded: they are often patching-side by design (e.g. a
+# slaved stereo fader) and would produce persistent false positives.
+_INTERACTIVE_MAXCLASSES = frozenset({
+    "flonum", "number", "umenu", "toggle", "textedit", "kslider",
+    "dial", "slider", "multislider", "rslider", "incdec", "tab",
+    "pictslider", "matrixctrl", "textbutton",
+    "live.dial", "live.slider", "live.numbox", "live.menu",
+    "live.toggle", "live.tab", "live.text", "live.button",
+})
+
+
+def _check_presentation_coverage(box_list: list[dict]) -> list[CriticResult]:
+    """Flag interactive controls missing from presentation mode.
+
+    Only active when the patch uses presentation mode at all (at least one
+    box has presentation=1). Every interactive param widget added by an
+    edit must either join the presentation layout or be a deliberate,
+    documented exclusion -- silent omission is the recurring failure this
+    check exists to catch.
+    """
+    if not any(b.get("presentation") for b in box_list):
+        return []  # patch does not use presentation mode
+
+    results: list[CriticResult] = []
+    for box in box_list:
+        if box.get("maxclass") not in _INTERACTIVE_MAXCLASSES:
+            continue
+        if box.get("presentation"):
+            continue
+        box_id = box.get("id", "?")
+        label = _box_label(box)
+        results.append(CriticResult(
+            "warning",
+            f"Presentation coverage: interactive control '{label}' "
+            f"({box_id}) is not in presentation mode, but this patch "
+            "uses presentation mode",
+            "Add it via Patcher.add_to_presentation(box, rect) with its "
+            "label comment, or record a deliberate exclusion in context.md",
+        ))
     return results
 
 
