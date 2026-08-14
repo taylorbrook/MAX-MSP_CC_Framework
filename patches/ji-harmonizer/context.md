@@ -248,6 +248,33 @@ Item Text Evaluated as a Message"), `buffer~` (`replace` message verified), `pre
 - Filenames double as menu labels (self-descriptive `bankNN-name`), avoiding a
   name→file mapping object that could drift.
 
+## Decisions (slice 5 — filter + modulation, 2026-08-14)
+
+From PluginProcessor.cpp exploration (verbatim semantics):
+
+- **Master-bus filter, NOT per-voice**: one stereo StateVariableTPT lowpass applied
+  after the synth render, before the FX chain. VST fixes resonance at 0.707
+  (Butterworth) with no res param.
+- **filterCutoff** 20–20000 Hz (log skew 0.25, default 8000), 20 ms smoothing.
+- **filterLfoDepth** (0–1, def 0): `cutoff * 2^(sin(lfoPhaseA) · depth · 2)`,
+  clamped 20–20k. VST advances in 32-sample sub-blocks; the port computes
+  per-sample in gen~ (strictly better resolution, same formula).
+- **velocityToFilter** (0–1, def 0): `cutoff *= 1 − v2f·(1 − lastNoteOnVelocity)`
+  using the most recent note-on velocity (held through release).
+- **LFO split**: VST runs independent LFOs — A → pos A + filter phase source,
+  B → pos B (rate 0.01–20 Hz def 0.5, depth 0–1 def 0). The patch's shared LFO
+  becomes LFO A; LFO B added in wtctl for pos B.
+
+Port decisions (user-confirmed):
+
+- **gen~ TPT codebox** (JUCE StateVariableTPTFilter math ported verbatim), stereo,
+  3 signal ins (L, R, lfoA), 2 outs. Placed post-envelope via send~/receive~
+  pairs (jhFinL/R into the filter, jhFoutL/R back to the *~ 0.1 stages).
+- **Resonance exposed as a param** (0.5–10, default 0.707) — DELIBERATE DEVIATION
+  from the VST's fixed Butterworth, chosen for sound-design range.
+- Velocity source: js gate outlet (normalized vel or 0) through `split 0.0001 1.`
+  so note-offs don't zero the filter velocity (matches VST lastNoteVelocity hold).
+
 ## Presentation-mode exclusions (deliberate, per Rule #9)
 
 - `gain~` obj-122 (R channel): slaved to the master L fader (L outlet 1 → R inlet 0,
