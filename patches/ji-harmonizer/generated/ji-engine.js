@@ -8,7 +8,7 @@
 // and voiceCount/complexity gate their gains in real time on held notes.
 
 inlets = 1;
-outlets = 6;
+outlets = 7;
 // outlet 0: 12-element frequency list (Hz)      -> mc.sig~ (freq lane)
 // outlet 1: 12-element LEFT gain list (0..1)    -> mc.sig~ (gain lane L)
 // outlet 2: gate (velocity/127 on note-on, 0 on note-off) -> adsr~
@@ -16,6 +16,8 @@ outlets = 6;
 // outlet 4: 12-element RIGHT gain list (0..1)   -> mc.sig~ (gain lane R)
 // outlet 5: applyvalues param messages          -> mc.gen~ (per-instance
 //           spacingratio/inversionratio/spacingthresh/inversionthresh/lfoofs)
+// outlet 6: [degree, ratiotext] pairs           -> p ratioset -> textedits
+//           (refreshes the ratio table display on temperament preset load)
 
 var SCALE_SIZE = 12;
 var MAX_SUB_VOICES = 12;
@@ -26,6 +28,27 @@ var ratios = [
     [11, 8], [23, 16], [3, 2], [13, 8], [7, 4], [15, 8]
 ];
 var scaleCents = [];
+
+// Built-in temperament presets -- verbatim port of TuningEngine.cpp preset
+// tables (cents from C). Where a table is exact JI (Pythagorean, Zarlino,
+// Just Intonation) the entries are ratio strings (identical cents via
+// 1200*log2(n/d)); tempered scales use the VST's cent values with the "c"
+// suffix understood by parseRatioText. Index 0 restores the default scale.
+// Bohlen-Pierce (13-EDO over 3:1, mapped to 12 notes) flows through the same
+// signature path -- cents applied on top of 12-TET -- exactly like the VST.
+var TEMPERAMENTS = [
+    { name: "Custom (harm 16-30)", vals: ["1/1", "17/16", "9/8", "19/16", "5/4", "21/16", "11/8", "23/16", "3/2", "13/8", "7/4", "15/8"] },
+    { name: "12-TET", vals: ["0c", "100c", "200c", "300c", "400c", "500c", "600c", "700c", "800c", "900c", "1000c", "1100c"] },
+    { name: "Pythagorean", vals: ["1/1", "2187/2048", "9/8", "32/27", "81/64", "4/3", "729/512", "3/2", "6561/4096", "27/16", "16/9", "243/128"] },
+    { name: "Zarlino (Just Major)", vals: ["1/1", "16/15", "9/8", "6/5", "5/4", "4/3", "7/5", "3/2", "8/5", "5/3", "9/5", "15/8"] },
+    { name: "Meantone 1/4", vals: ["0c", "76.05c", "193.16c", "310.26c", "386.31c", "503.42c", "579.47c", "696.58c", "772.63c", "889.74c", "1006.84c", "1082.89c"] },
+    { name: "Werckmeister III", vals: ["0c", "90.225c", "192.18c", "294.135c", "390.225c", "498.045c", "588.27c", "696.09c", "792.18c", "888.27c", "996.09c", "1092.18c"] },
+    { name: "Kirnberger III", vals: ["0c", "90.18c", "193.16c", "294.13c", "386.31c", "498.04c", "590.22c", "696.58c", "792.18c", "889.74c", "996.09c", "1088.27c"] },
+    { name: "Vallotti", vals: ["0c", "94.13c", "196.09c", "298.04c", "392.18c", "501.96c", "592.18c", "698.04c", "796.09c", "894.13c", "1000c", "1090.22c"] },
+    { name: "Well Tempered", vals: ["0c", "94.135c", "196.09c", "298.045c", "392.18c", "500c", "594.135c", "698.045c", "796.09c", "894.135c", "1000c", "1092.18c"] },
+    { name: "Just Intonation", vals: ["1/1", "16/15", "9/8", "6/5", "5/4", "4/3", "7/5", "3/2", "8/5", "5/3", "16/9", "15/8"] },
+    { name: "Bohlen-Pierce", vals: ["0c", "146.3c", "292.6c", "438.9c", "585.2c", "731.5c", "877.8c", "1024.1c", "1170.4c", "1316.7c", "1463c", "1609.3c"] }
+];
 
 var enabled = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 var voiceCount = 5;      // 2..12, gates sub-voice gains (WavetableVoice.cpp:213)
@@ -367,34 +390,51 @@ function list(note, vel) {
     }
 }
 
+// Parse a ratio field into [n, d] or null. Accepts "3/2", "18 17", decimals
+// ("1.5" = ratio), and cents with a trailing "c" ("90.225c", .scl-style).
+// textedit may deliver quoted symbols ("18/17"), stray newlines, or odd
+// tokenization -- extract the numeric fields instead of trusting atoms.
+function parseRatioText(txt) {
+    txt = String(txt).replace(/["'\\]/g, "").replace(/\s+/g, "");
+    var m = txt.match(/^(-?\d*\.?\d+)c$/i);
+    if (m) return [Math.pow(2, parseFloat(m[1]) / 1200.0), 1.0];
+    var nums = txt.match(/\d*\.?\d+/g);
+    if (nums && nums.length >= 2) return [parseFloat(nums[0]), parseFloat(nums[1])];
+    if (nums && nums.length === 1) return [parseFloat(nums[0]), 1.0];
+    return null;
+}
+
 function ratio(idx) {
     idx = Math.round(idx);
     if (idx < 0 || idx >= SCALE_SIZE) return;
     if (arguments.length < 2) return;
     var raw = [];
     for (var k = 1; k < arguments.length; k++) raw.push(String(arguments[k]));
-    // textedit may deliver quoted symbols ("18/17"), stray newlines, or odd
-    // tokenization -- extract the numeric fields instead of trusting atoms.
     var txt = raw.join(" ");
-    var nums = txt.match(/\d*\.?\d+/g);
-    var n, d;
-    if (nums && nums.length >= 2) {
-        n = parseFloat(nums[0]);
-        d = parseFloat(nums[1]);
-    } else if (nums && nums.length === 1) {
-        n = parseFloat(nums[0]);
-        d = 1.0;
-    } else {
-        n = NaN;
-        d = NaN;
-    }
-    if (!(n > 0) || !(d > 0)) {
+    var nd = parseRatioText(txt);
+    if (!nd || !(nd[0] > 0) || !(nd[1] > 0)) {
         post("ji-engine: bad ratio for degree " + idx + " (got: " + txt + ")\n");
         return;
     }
-    ratios[idx] = [n, d];
+    ratios[idx] = nd;
     computeCents();
     outlet(3, [idx, scaleCents[idx]]);
+    recomputeOutputs();
+}
+
+function temperament(t) {
+    t = Math.round(t);
+    if (t < 0 || t >= TEMPERAMENTS.length) return;
+    var vals = TEMPERAMENTS[t].vals;
+    for (var i = 0; i < SCALE_SIZE; i++) {
+        var nd = parseRatioText(vals[i]);
+        if (nd) ratios[i] = nd;
+    }
+    computeCents();
+    for (var j = 0; j < SCALE_SIZE; j++) {
+        outlet(6, [j, vals[j]]);
+        outlet(3, [j, scaleCents[j]]);
+    }
     recomputeOutputs();
 }
 
