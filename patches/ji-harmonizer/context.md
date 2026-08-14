@@ -222,3 +222,38 @@ available for the render tool.
   first mc.gen~ use in this repo — verify at load in test protocol.
 - buffer~ created as `buffer~ jiharm0 bank00-ji-harmonic.wav` (auto-loads from patch
   folder at open).
+
+## Research (slice 3 — stereo spread + chord feel, 2026-08-13)
+
+Verbatim VST semantics (WavetableVoice.cpp startNote/render + PluginProcessor params):
+
+- **stereoSpread** (0-1, def 0.5): per sub-voice pan factor rolled at noteOn:
+  root (i=0) centered (0); else `direction * i/(MAX-1)` with direction = +1 odd / -1
+  even, plus random ±0.05 "ensemble" variation, clamped ±1. Live per block:
+  `targetPan = panFactor * stereoSpread`; voice 1 clamped to ±0.15; constant-power law
+  `angle=(pan+1)*0.5; panL=cos(angle*π/2); panR=sin(angle*π/2)`. Spread changes are
+  live on held notes (block-rate smoothing).
+- **detuneRandom** (0-50 cents, def 5): per sub-voice cent offset rolled ONCE at noteOn
+  (`(rand*2-1)*detuneRandom`, root included), applied `freq * 2^(cents/1200)`.
+  Param changes affect the NEXT note only (VST caches at startNote).
+- **timingRandom** (0-100 ms, def 10): per sub-voice onset delay rolled at noteOn:
+  root 0; else uniform 0..timingRandom ms. Param changes affect next note only.
+
+Port architecture (all objects already verified in patch):
+
+- Pan baked into gain lists in js: outlet 1 becomes gainL (existing lane rewires
+  unchanged = L), NEW outlet 4 = gainR. Duplicate the gain lane for R:
+  `prepend applyvalues → mc.sig~ @chans 12 → mc.rampsmooth~ 2205 2205 → mc.*~
+  (mc.gen~ out fans to both) → mc.mixdown~ 1 → *~ (adsr~ fans to both) → *~ 0.1
+  → gain~ R → ezdac~ inlet 1`. gain~ L right outlet links gain~ R (single master
+  fader); second meter~ for R. ezdac~ verified 2 inlets.
+- detuneRandom in js: stored per-note centOffsets[12]; recomputeOutputs multiplies.
+- timingRandom in js: onsetMask[12] + js Task objects re-emit gain lists as staggered
+  voices unmute; mc.rampsmooth~ 50 ms softens steps (approximates VST 250 ms gain
+  smoothing; control-rate ms resolution is adequate for pad onsets).
+- New js handlers: stereospread (live recompute), detunerandom / timingrandom
+  (stored, next-note). New UI: 3 flonums through `p params` (3 new inlets/prepends,
+  x-order preserved) + `p init` defaults (0.5 / 5. / 10., trigger extended to 10
+  outlets, new outlets appended right of x=540 to keep x-rank).
+- Tradeoff noted: VST staggers sample-accurately inside the voice; the port staggers
+  at control rate via Task — acceptable for pad material, revisit with poly~.
