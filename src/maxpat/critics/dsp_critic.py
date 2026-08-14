@@ -42,6 +42,11 @@ _MIDI_RANGE_SOURCES = frozenset({
 # Objects that normalize/scale values into safe ranges
 _NORMALIZER_NAMES = frozenset({"scale", "zmap", "clip", "clip~"})
 
+# Outlet type strings that carry audio: MAX writes "multichannelsignal" for
+# mc.* outlets (and DB-derived saves mirror that), so a bare == "signal"
+# check misclassifies every mc lane as control-rate.
+_SIGNAL_OUTLET_TYPES = frozenset({"signal", "multichannelsignal"})
+
 
 def review_dsp(
     patch_dict: dict,
@@ -199,7 +204,7 @@ def _check_gain_staging(
         src_outlettype = src_box.get("outlettype", [])
         is_signal = (
             src_outlet < len(src_outlettype)
-            and src_outlettype[src_outlet] == "signal"
+            and src_outlettype[src_outlet] in _SIGNAL_OUTLET_TYPES
         )
 
         if is_signal:
@@ -298,7 +303,7 @@ def _check_audio_rate_consistency(
 
         # Check if the source outlet is control-rate
         src_outlettype = src_box.get("outlettype", [])
-        if src_outlet < len(src_outlettype) and src_outlettype[src_outlet] == "signal":
+        if src_outlet < len(src_outlettype) and src_outlettype[src_outlet] in _SIGNAL_OUTLET_TYPES:
             continue  # Source outlet is actually signal
 
         # This is a control-rate object feeding a signal-rate object
@@ -400,7 +405,7 @@ def _check_unsafe_gain_sources(
         src_outlettype = src_box.get("outlettype", [])
         is_signal = (
             src_outlet < len(src_outlettype)
-            and src_outlettype[src_outlet] == "signal"
+            and src_outlettype[src_outlet] in _SIGNAL_OUTLET_TYPES
         )
 
         key = (dst_id, dst_inlet)
@@ -428,7 +433,7 @@ def _check_unsafe_gain_sources(
         src_outlettype = src_box.get("outlettype", [])
         is_signal = (
             src_outlet < len(src_outlettype)
-            and src_outlettype[src_outlet] == "signal"
+            and src_outlettype[src_outlet] in _SIGNAL_OUTLET_TYPES
         )
         if is_signal:
             continue
