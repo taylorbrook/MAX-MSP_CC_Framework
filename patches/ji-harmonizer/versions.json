@@ -87,6 +87,14 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.3.1",
+      "description": "presentation parity: bank selector umenus + labels added to presentation mode",
+      "timestamp": "2026-08-14T15:17:52.509419+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }

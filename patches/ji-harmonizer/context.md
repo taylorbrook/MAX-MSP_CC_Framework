@@ -248,6 +248,12 @@ Item Text Evaluated as a Message"), `buffer~` (`replace` message verified), `pre
 - Filenames double as menu labels (self-descriptive `bankNN-name`), avoiding a
   name→file mapping object that could drift.
 
+## Presentation-mode exclusions (deliberate, per Rule #9)
+
+- `gain~` obj-122 (R channel): slaved to the master L fader (L outlet 1 → R inlet 0,
+  single-master stereo pair) — patching-side only; the master gain~ + both meters are
+  in presentation.
+
 ## Research (slice 3 — stereo spread + chord feel, 2026-08-13)
 
 Verbatim VST semantics (WavetableVoice.cpp startNote/render + PluginProcessor params):
