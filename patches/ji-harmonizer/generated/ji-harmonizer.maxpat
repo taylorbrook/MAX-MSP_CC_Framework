@@ -5869,7 +5869,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.2.0",
+                    "text": "v0.3.0",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -9688,7 +9688,7 @@
                         282.0,
                         22.0
                     ],
-                    "text": "buffer~ jiharm0 bank00-ji-harmonic.wav",
+                    "text": "buffer~ jiharmA bank00-ji-harmonic.wav",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -9706,7 +9706,7 @@
                         380.0,
                         20.0
                     ],
-                    "text": "bank 0: JI Harmonic (11 mipmaps x 256 frames x 2048)",
+                    "text": "per-osc banks: 20 rendered WAVs (11 mipmaps x 256 frames x 2048)",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -10805,7 +10805,7 @@
                         261.0,
                         20.0
                     ],
-                    "text": "WAVETABLE ENGINE (dual osc, bank 0)",
+                    "text": "WAVETABLE ENGINE (dual osc, 20 banks)",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "presentation": 1,
@@ -11207,6 +11207,225 @@
                         0.82,
                         1.0
                     ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-131",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1305.0,
+                        720.0,
+                        282.0,
+                        22.0
+                    ],
+                    "text": "buffer~ jiharmB bank00-ji-harmonic.wav",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-132",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1620.0,
+                        218.0,
+                        114.0,
+                        20.0
+                    ],
+                    "text": "bank A (osc A)",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-133",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1815.0,
+                        218.0,
+                        114.0,
+                        20.0
+                    ],
+                    "text": "bank B (osc B)",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "umenu",
+                    "id": "obj-134",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "",
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1620.0,
+                        255.0,
+                        185.0,
+                        22.0
+                    ],
+                    "parameter_enable": 0,
+                    "items": [
+                        "bank00-ji-harmonic.wav",
+                        ",",
+                        "bank01-warm-analog.wav",
+                        ",",
+                        "bank02-choir.wav",
+                        ",",
+                        "bank03-strings.wav",
+                        ",",
+                        "bank04-glass.wav",
+                        ",",
+                        "bank05-evolving.wav",
+                        ",",
+                        "bank06-organ.wav",
+                        ",",
+                        "bank07-ethereal.wav",
+                        ",",
+                        "bank08-dark-matter.wav",
+                        ",",
+                        "bank09-sine.wav",
+                        ",",
+                        "bank10-square.wav",
+                        ",",
+                        "bank11-triangle.wav",
+                        ",",
+                        "bank12-spectral-cloud.wav",
+                        ",",
+                        "bank13-metallic-resonance.wav",
+                        ",",
+                        "bank14-formant-vowel.wav",
+                        ",",
+                        "bank15-warm-sub.wav",
+                        ",",
+                        "bank16-soft-flute.wav",
+                        ",",
+                        "bank17-velvet-pad.wav",
+                        ",",
+                        "bank18-whisper.wav",
+                        ",",
+                        "bank19-deep-haze.wav"
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "umenu",
+                    "id": "obj-135",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "",
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1815.0,
+                        255.0,
+                        185.0,
+                        22.0
+                    ],
+                    "parameter_enable": 0,
+                    "items": [
+                        "bank00-ji-harmonic.wav",
+                        ",",
+                        "bank01-warm-analog.wav",
+                        ",",
+                        "bank02-choir.wav",
+                        ",",
+                        "bank03-strings.wav",
+                        ",",
+                        "bank04-glass.wav",
+                        ",",
+                        "bank05-evolving.wav",
+                        ",",
+                        "bank06-organ.wav",
+                        ",",
+                        "bank07-ethereal.wav",
+                        ",",
+                        "bank08-dark-matter.wav",
+                        ",",
+                        "bank09-sine.wav",
+                        ",",
+                        "bank10-square.wav",
+                        ",",
+                        "bank11-triangle.wav",
+                        ",",
+                        "bank12-spectral-cloud.wav",
+                        ",",
+                        "bank13-metallic-resonance.wav",
+                        ",",
+                        "bank14-formant-vowel.wav",
+                        ",",
+                        "bank15-warm-sub.wav",
+                        ",",
+                        "bank16-soft-flute.wav",
+                        ",",
+                        "bank17-velvet-pad.wav",
+                        ",",
+                        "bank18-whisper.wav",
+                        ",",
+                        "bank19-deep-haze.wav"
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-136",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1620.0,
+                        450.0,
+                        121.0,
+                        22.0
+                    ],
+                    "text": "prepend replace",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-137",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1815.0,
+                        300.0,
+                        121.0,
+                        22.0
+                    ],
+                    "text": "prepend replace",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
                 }
             }
         ],
@@ -13348,9 +13567,9 @@
                         0
                     ],
                     "midpoints": [
-                        3323.0,
+                        3331.0,
                         387.0,
-                        3323.0,
+                        3331.0,
                         262.0,
                         442.5,
                         262.0
@@ -13408,9 +13627,9 @@
                         0
                     ],
                     "midpoints": [
-                        3331.0,
+                        3339.0,
                         432.0,
-                        3331.0,
+                        3339.0,
                         262.0,
                         592.5,
                         262.0
@@ -14706,9 +14925,9 @@
                         0
                     ],
                     "midpoints": [
-                        3339.0,
+                        3347.0,
                         387.0,
-                        3339.0,
+                        3347.0,
                         307.0,
                         1357.0,
                         307.0
@@ -14726,9 +14945,9 @@
                         1
                     ],
                     "midpoints": [
-                        3347.0,
+                        3355.0,
                         432.0,
-                        3347.0,
+                        3355.0,
                         307.0,
                         1381.0,
                         307.0
@@ -14774,9 +14993,9 @@
                         3
                     ],
                     "midpoints": [
-                        3355.0,
+                        3363.0,
                         522.0,
-                        3355.0,
+                        3363.0,
                         307.0,
                         1429.0,
                         307.0
@@ -14794,9 +15013,9 @@
                         0
                     ],
                     "midpoints": [
-                        3395.0,
+                        3403.0,
                         567.0,
-                        3395.0,
+                        3403.0,
                         462.0,
                         1487.0,
                         462.0
@@ -14814,9 +15033,9 @@
                         0
                     ],
                     "midpoints": [
-                        3403.0,
+                        3411.0,
                         612.0,
-                        3403.0,
+                        3411.0,
                         492.0,
                         1487.0,
                         492.0
@@ -14834,9 +15053,9 @@
                         0
                     ],
                     "midpoints": [
-                        3363.0,
+                        3371.0,
                         497.0,
-                        3363.0,
+                        3371.0,
                         307.0,
                         892.0,
                         307.0
@@ -14854,9 +15073,9 @@
                         0
                     ],
                     "midpoints": [
-                        3371.0,
+                        3379.0,
                         527.0,
-                        3371.0,
+                        3379.0,
                         307.0,
                         892.0,
                         307.0
@@ -14904,9 +15123,9 @@
                         0
                     ],
                     "midpoints": [
-                        3379.0,
+                        3387.0,
                         437.0,
-                        3379.0,
+                        3387.0,
                         352.0,
                         1420.0,
                         352.0
@@ -15002,8 +15221,14 @@
                         402.0,
                         1702.0,
                         440.0,
+                        1702.0,
+                        442.0,
+                        1612.0,
+                        442.0,
+                        1612.0,
+                        480.0,
                         1420.0,
-                        440.0
+                        480.0
                     ]
                 }
             },
@@ -15071,6 +15296,12 @@
                         1453.0,
                         480.0,
                         1453.0,
+                        442.0,
+                        1612.0,
+                        442.0,
+                        1612.0,
+                        480.0,
+                        1612.0,
                         462.0,
                         1560.0,
                         462.0,
@@ -15151,6 +15382,12 @@
                         1453.0,
                         480.0,
                         1453.0,
+                        442.0,
+                        1612.0,
+                        442.0,
+                        1612.0,
+                        480.0,
+                        1612.0,
                         462.0,
                         1560.0,
                         462.0,
@@ -15255,6 +15492,12 @@
                         1453.0,
                         480.0,
                         1453.0,
+                        442.0,
+                        1749.0,
+                        442.0,
+                        1749.0,
+                        480.0,
+                        1749.0,
                         462.0,
                         1560.0,
                         462.0,
@@ -15496,9 +15739,9 @@
                         1
                     ],
                     "midpoints": [
-                        3411.0,
+                        3419.0,
                         657.0,
-                        3411.0,
+                        3419.0,
                         577.0,
                         1289.0,
                         577.0
@@ -15538,9 +15781,9 @@
                         0
                     ],
                     "midpoints": [
-                        3387.0,
+                        3395.0,
                         702.0,
-                        3387.0,
+                        3395.0,
                         442.0,
                         1102.0,
                         442.0
@@ -16042,6 +16285,190 @@
                         195.0,
                         985.0,
                         195.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-134",
+                        1
+                    ],
+                    "destination": [
+                        "obj-136",
+                        0
+                    ],
+                    "midpoints": [
+                        1712.5,
+                        307.0,
+                        1730.0,
+                        307.0,
+                        1730.0,
+                        345.0,
+                        1730.0,
+                        352.0,
+                        1642.0,
+                        352.0,
+                        1642.0,
+                        390.0,
+                        1642.0,
+                        402.0,
+                        1698.0,
+                        402.0,
+                        1698.0,
+                        440.0,
+                        1698.0,
+                        402.0,
+                        1702.0,
+                        402.0,
+                        1702.0,
+                        440.0,
+                        1680.5,
+                        440.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-136",
+                        0
+                    ],
+                    "destination": [
+                        "obj-89",
+                        0
+                    ],
+                    "midpoints": [
+                        3323.0,
+                        477.0,
+                        3323.0,
+                        232.0,
+                        1446.0,
+                        232.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-135",
+                        1
+                    ],
+                    "destination": [
+                        "obj-137",
+                        0
+                    ],
+                    "midpoints": [
+                        1907.5,
+                        288.5,
+                        1875.5,
+                        288.5
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-137",
+                        0
+                    ],
+                    "destination": [
+                        "obj-131",
+                        0
+                    ],
+                    "midpoints": [
+                        1875.5,
+                        307.0,
+                        1642.0,
+                        307.0,
+                        1642.0,
+                        345.0,
+                        1642.0,
+                        352.0,
+                        1453.0,
+                        352.0,
+                        1453.0,
+                        390.0,
+                        1453.0,
+                        352.0,
+                        1642.0,
+                        352.0,
+                        1642.0,
+                        390.0,
+                        1642.0,
+                        397.0,
+                        1453.0,
+                        397.0,
+                        1453.0,
+                        435.0,
+                        1453.0,
+                        402.0,
+                        1642.0,
+                        402.0,
+                        1642.0,
+                        440.0,
+                        1642.0,
+                        402.0,
+                        1702.0,
+                        402.0,
+                        1702.0,
+                        440.0,
+                        1702.0,
+                        402.0,
+                        1762.0,
+                        402.0,
+                        1762.0,
+                        440.0,
+                        1762.0,
+                        402.0,
+                        1822.0,
+                        402.0,
+                        1822.0,
+                        440.0,
+                        1822.0,
+                        442.0,
+                        1453.0,
+                        442.0,
+                        1453.0,
+                        480.0,
+                        1453.0,
+                        442.0,
+                        1612.0,
+                        442.0,
+                        1612.0,
+                        480.0,
+                        1612.0,
+                        462.0,
+                        1560.0,
+                        462.0,
+                        1560.0,
+                        500.0,
+                        1560.0,
+                        487.0,
+                        1453.0,
+                        487.0,
+                        1453.0,
+                        525.0,
+                        1453.0,
+                        492.0,
+                        1560.0,
+                        492.0,
+                        1560.0,
+                        530.0,
+                        1560.0,
+                        532.0,
+                        1453.0,
+                        532.0,
+                        1453.0,
+                        570.0,
+                        1453.0,
+                        577.0,
+                        1453.0,
+                        577.0,
+                        1453.0,
+                        615.0,
+                        1446.0,
+                        615.0
                     ]
                 }
             }
