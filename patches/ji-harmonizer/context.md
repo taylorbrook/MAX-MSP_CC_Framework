@@ -223,6 +223,31 @@ available for the render tool.
 - buffer~ created as `buffer~ jiharm0 bank00-ji-harmonic.wav` (auto-loads from patch
   folder at open).
 
+## Research (slice 4 — wavetable banks + per-osc selectors, 2026-08-13)
+
+All objects verified in DB with non-empty I/O: `umenu` (1 in / 3 out; outlet 1 = "Menu
+Item Text Evaluated as a Message"), `buffer~` (`replace` message verified), `prepend`.
+
+- **Banks rendered: all 20** via `tools/render_wavetables.py --all` → `generated/
+  bankNN-name.wav`, 23.1 MB each (~461 MB total). Committed per the slice-2 decision
+  (patch works on clone, no build step). Flag: pushes to origin get heavy; each file is
+  well under GitHub's 100 MB per-file limit.
+- **Per-osc buffers, switch by `replace`** (recommended over 20 resident buffers +
+  gen~ if/else chains): rename `buffer~ jiharm0` → `buffer~ jiharmA`, add
+  `buffer~ jiharmB`, both arg-loading `bank00-ji-harmonic.wav` so the default sound
+  is unchanged. Codebox splits `Buffer wt("jiharm0")` into `wta("jiharmA")` /
+  `wtb("jiharmB")`; osc A peeks wta, osc B peeks wtb (8 peeks unchanged in count).
+  Resident memory 2 × 23 MB; mc.gen~ instances share the global buffer namespace.
+- **Selector chain per osc:** `umenu` (items = the 20 WAV filenames, comma-as-element
+  JSON format; default index 0 = bank00 matches initial buffer contents, so no
+  loadbang init needed) → outlet 1 (item text) → `prepend replace` → buffer~ inlet 0.
+  `replace` resolves the filename via the patch-folder search path, same as the
+  creation-arg load. All files are identical length → no buffer resize; peek during
+  the async load reads 0 briefly (acceptable for pad material, matches VST bank-load
+  behavior).
+- Filenames double as menu labels (self-descriptive `bankNN-name`), avoiding a
+  name→file mapping object that could drift.
+
 ## Research (slice 3 — stereo spread + chord feel, 2026-08-13)
 
 Verbatim VST semantics (WavetableVoice.cpp startNote/render + PluginProcessor params):

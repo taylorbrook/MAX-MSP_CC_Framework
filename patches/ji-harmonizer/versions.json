@@ -79,6 +79,14 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "wavetable banks: render all 20, per-osc buffers (jiharmA/jiharmB) + umenu bank selectors",
+      "timestamp": "2026-08-14T05:24:18.312713+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }
