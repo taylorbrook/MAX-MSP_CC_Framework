@@ -120,6 +120,14 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.6.1",
+      "description": "ratio textedits: keymode 1 so Return sends ratio to engine (notes + cents update)",
+      "timestamp": "2026-08-14T22:55:15.030993+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }
