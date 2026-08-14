@@ -369,3 +369,15 @@ Port architecture (all objects already verified in patch):
   outlets, new outlets appended right of x=540 to keep x-rank).
 - Tradeoff noted: VST staggers sample-accurately inside the voice; the port staggers
   at control rate via Task — acceptable for pad material, revisit with poly~.
+
+## Decisions (temperament presets, 2026-08-14)
+
+- **v0.7.0 temperament presets**: umenu (11 entries) → `prepend temperament` → js.
+  Tables verbatim from TuningEngine.cpp; JI/Zarlino/Pythagorean stored as exact
+  ratio strings, tempered scales as VST cent values with "c" suffix (Scala-style,
+  now accepted by the ratio parser everywhere — "90.225c" is valid manual entry).
+  Item 0 restores the default harm-16-30 scale. Bohlen-Pierce included: its 12
+  cent values flow through the same signature path (cents on top of 12-TET).
+- js outlet 6 (new): [degree, ratiotext] → `p ratioset` (route 0-11 → prepend set)
+  → textedit displays refresh on preset load. umenu does NOT auto-switch to
+  "Custom" when a degree is hand-edited afterward (accepted, VST-like).
