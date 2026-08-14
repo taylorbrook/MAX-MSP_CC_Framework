@@ -5116,7 +5116,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.1.1",
+                    "text": "v0.1.2",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -9531,7 +9531,14 @@
                     ],
                     "text": "wt pos A",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        230.0,
+                        130.0,
+                        72.0,
+                        17.0
+                    ]
                 }
             },
             {
@@ -9552,7 +9559,14 @@
                     ],
                     "parameter_enable": 0,
                     "minimum": 0.0,
-                    "maximum": 1.0
+                    "maximum": 1.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        230.0,
+                        152.0,
+                        64.0,
+                        22.0
+                    ]
                 }
             },
             {
@@ -9570,7 +9584,14 @@
                     ],
                     "text": "wt pos B",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        390.0,
+                        130.0,
+                        72.0,
+                        17.0
+                    ]
                 }
             },
             {
@@ -9591,7 +9612,14 @@
                     ],
                     "parameter_enable": 0,
                     "minimum": 0.0,
-                    "maximum": 1.0
+                    "maximum": 1.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        390.0,
+                        152.0,
+                        64.0,
+                        22.0
+                    ]
                 }
             },
             {
@@ -9609,7 +9637,14 @@
                     ],
                     "text": "lfo rate",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        230.0,
+                        186.0,
+                        72.0,
+                        17.0
+                    ]
                 }
             },
             {
@@ -9630,7 +9665,14 @@
                     ],
                     "parameter_enable": 0,
                     "minimum": 0.01,
-                    "maximum": 20.0
+                    "maximum": 20.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        230.0,
+                        208.0,
+                        64.0,
+                        22.0
+                    ]
                 }
             },
             {
@@ -9648,7 +9690,14 @@
                     ],
                     "text": "lfo depth",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        310.0,
+                        186.0,
+                        72.0,
+                        17.0
+                    ]
                 }
             },
             {
@@ -9669,7 +9718,14 @@
                     ],
                     "parameter_enable": 0,
                     "minimum": 0.0,
-                    "maximum": 1.0
+                    "maximum": 1.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        310.0,
+                        208.0,
+                        64.0,
+                        22.0
+                    ]
                 }
             },
             {
@@ -9687,7 +9743,14 @@
                     ],
                     "text": "osc gain A",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        310.0,
+                        130.0,
+                        72.0,
+                        17.0
+                    ]
                 }
             },
             {
@@ -9708,7 +9771,14 @@
                     ],
                     "parameter_enable": 0,
                     "minimum": 0.0,
-                    "maximum": 1.0
+                    "maximum": 1.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        310.0,
+                        152.0,
+                        64.0,
+                        22.0
+                    ]
                 }
             },
             {
@@ -9726,7 +9796,14 @@
                     ],
                     "text": "osc gain B",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        470.0,
+                        130.0,
+                        72.0,
+                        17.0
+                    ]
                 }
             },
             {
@@ -9747,7 +9824,14 @@
                     ],
                     "parameter_enable": 0,
                     "minimum": 0.0,
-                    "maximum": 1.0
+                    "maximum": 1.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        470.0,
+                        152.0,
+                        64.0,
+                        22.0
+                    ]
                 }
             },
             {
@@ -9970,7 +10054,14 @@
                     ],
                     "text": "WAVETABLE ENGINE (dual osc, bank 0)",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        230.0,
+                        106.0,
+                        260.0,
+                        17.0
+                    ]
                 }
             }
         ],
