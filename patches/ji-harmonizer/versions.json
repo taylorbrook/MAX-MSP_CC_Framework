@@ -54,6 +54,14 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.1.1",
+      "description": "layout: clear trigger/message overlap in wavetable init cluster",
+      "timestamp": "2026-08-14T03:50:03.643620+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }
