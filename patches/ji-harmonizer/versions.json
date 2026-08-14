@@ -62,6 +62,14 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.1.2",
+      "description": "add wavetable controls (pos A/B, gain A/B, LFO rate/depth) to presentation mode",
+      "timestamp": "2026-08-14T04:11:57.968932+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }
