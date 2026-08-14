@@ -70,6 +70,15 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "stereo output path + stereoSpread/detuneRandom/timingRandom (ChordGenerator port)",
+      "timestamp": "2026-08-14T04:58:40.487679+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }

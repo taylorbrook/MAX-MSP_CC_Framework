@@ -8,11 +8,12 @@
 // and voiceCount/complexity gate their gains in real time on held notes.
 
 inlets = 1;
-outlets = 4;
+outlets = 5;
 // outlet 0: 12-element frequency list (Hz)      -> mc.sig~ (freq lane)
-// outlet 1: 12-element gain list (0..1)         -> mc.sig~ (gain lane)
+// outlet 1: 12-element LEFT gain list (0..1)    -> mc.sig~ (gain lane L)
 // outlet 2: gate (velocity/127 on note-on, 0 on note-off) -> adsr~
 // outlet 3: [degree, cents] pairs               -> route -> readouts
+// outlet 4: 12-element RIGHT gain list (0..1)   -> mc.sig~ (gain lane R)
 
 var SCALE_SIZE = 12;
 var MAX_SUB_VOICES = 12;
@@ -34,6 +35,20 @@ var octaveStretch = 1.0; // 0.95..1.25
 
 var heldNote = -1;
 var heldVel = 0;
+
+// Chord-feel params (ChordGenerator/WavetableVoice port, v1.13.0 semantics)
+var stereoSpreadAmt = 0.5;  // 0..1; live on held notes (VST caches per block)
+var detuneRandomAmt = 5.0;  // 0..50 cents; rolled once per noteOn (startNote)
+var timingRandomAmt = 10.0; // 0..100 ms onset stagger; rolled once per noteOn
+
+// Per-noteOn random state (WavetableVoice::startNote). Rerolled on every
+// note-on, held constant while the note sustains -- param changes to detune/
+// timing affect the NEXT note only, matching the VST's cached-at-startNote
+// behavior. stereoSpread scales the stored panFactors live.
+var centOffsets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var panFactors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var onsetMask = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+var staggerTasks = [];
 
 var VOICING_NAMES = {
     "free": 0, "close": 1, "open": 2, "drop2": 3, "drop-2": 3,
@@ -185,18 +200,73 @@ function generateChord(rootMidiNote) {
     return voices;
 }
 
+// --- Note-on randomization (WavetableVoice::startNote port) ---------------
+
+function clampVal(v, lo, hi) {
+    return v < lo ? lo : (v > hi ? hi : v);
+}
+
+function cancelStagger() {
+    for (var k = 0; k < staggerTasks.length; k++) {
+        staggerTasks[k].cancel();
+    }
+    staggerTasks = [];
+}
+
+function unmuteVoice(i) {
+    onsetMask[i] = 1;
+    recomputeOutputs();
+}
+
+function rollNoteRandoms() {
+    cancelStagger();
+    for (var i = 0; i < MAX_SUB_VOICES; i++) {
+        // Detune: (rand*2-1)*detuneRandom cents, root included
+        centOffsets[i] = (detuneRandomAmt > 0.0)
+            ? (Math.random() * 2.0 - 1.0) * detuneRandomAmt
+            : 0.0;
+
+        // Pan factor: root centered; else alternating L/R, width ~ index,
+        // plus random +/-0.05 ensemble variation (clamped +/-1)
+        if (i === 0) {
+            panFactors[i] = 0.0;
+        } else {
+            var width = i / (MAX_SUB_VOICES - 1);
+            var direction = (i % 2 === 0) ? -1.0 : 1.0;
+            panFactors[i] = clampVal(
+                direction * width + (Math.random() * 2.0 - 1.0) * 0.05,
+                -1.0, 1.0);
+        }
+
+        // Onset stagger: root immediate; else uniform 0..timingRandom ms
+        var delayMs = (i === 0 || timingRandomAmt <= 0.0)
+            ? 0.0
+            : Math.random() * timingRandomAmt;
+        if (delayMs < 1.0) {
+            onsetMask[i] = 1;
+        } else {
+            onsetMask[i] = 0;
+            var t = new Task(unmuteVoice, this, i);
+            t.schedule(delayMs);
+            staggerTasks.push(t);
+        }
+    }
+}
+
 // --- Output --------------------------------------------------------------
 
 function recomputeOutputs() {
     if (heldNote < 0) return;
     var voices = generateChord(heldNote);
     var freqs = [];
-    var gains = [];
+    var gainsL = [];
+    var gainsR = [];
+    var HALF_PI = Math.PI * 0.5;
     for (var i = 0; i < MAX_SUB_VOICES; i++) {
         var note = voices[i].midiNote;
         if (note < 0) note = 0;     // WR-05 clamp
         if (note > 127) note = 127;
-        freqs.push(noteFrequency(note));
+        freqs.push(noteFrequency(note) * Math.pow(2.0, centOffsets[i] / 1200.0));
 
         // WavetableVoice.cpp:203-213 complexity crossfade + voice-count gate
         var t = voices[i].threshold;
@@ -206,9 +276,19 @@ function recomputeOutputs() {
         else if (complexityAmt <= t - 0.1) g = 0.0;
         else g = (complexityAmt - (t - 0.1)) / 0.1;
         if (i >= voiceCount) g = 0.0;
-        gains.push(g);
+        g *= onsetMask[i];
+
+        // Constant-power pan (WavetableVoice.cpp:347-356): voice 1 clamped
+        // near center, pan = panFactor * stereoSpread
+        var pan = panFactors[i] * stereoSpreadAmt;
+        if (i === 1) pan = clampVal(pan, -0.15, 0.15);
+        pan = clampVal(pan, -1.0, 1.0);
+        var panAngle = (pan + 1.0) * 0.5;
+        gainsL.push(g * Math.cos(panAngle * HALF_PI));
+        gainsR.push(g * Math.sin(panAngle * HALF_PI));
     }
-    outlet(1, gains);
+    outlet(4, gainsR);
+    outlet(1, gainsL);
     outlet(0, freqs);
 }
 
@@ -221,6 +301,7 @@ function list(note, vel) {
     if (vel > 0) {
         heldNote = note;
         heldVel = vel;
+        rollNoteRandoms();
         recomputeOutputs();
         var gate = vel / 127.0;
         if (gate > 1.0) gate = 1.0;
@@ -317,6 +398,28 @@ function stretch(s) {
     if (s > 1.25) s = 1.25;
     octaveStretch = s;
     recomputeOutputs();
+}
+
+function stereospread(s) {
+    s = parseFloat(s);
+    if (!(s >= 0.0)) s = 0.0;
+    if (s > 1.0) s = 1.0;
+    stereoSpreadAmt = s;
+    recomputeOutputs(); // live on held notes, like the VST's block-rate cache
+}
+
+function detunerandom(c) {
+    c = parseFloat(c);
+    if (!(c >= 0.0)) c = 0.0;
+    if (c > 50.0) c = 50.0;
+    detuneRandomAmt = c; // takes effect at next noteOn (VST startNote cache)
+}
+
+function timingrandom(ms) {
+    ms = parseFloat(ms);
+    if (!(ms >= 0.0)) ms = 0.0;
+    if (ms > 100.0) ms = 100.0;
+    timingRandomAmt = ms; // takes effect at next noteOn (VST startNote cache)
 }
 
 function degree(idx, on) {
