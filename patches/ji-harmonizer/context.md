@@ -281,6 +281,60 @@ Port decisions (user-confirmed):
   single-master stereo pair) — patching-side only; the master gain~ + both meters are
   in presentation.
 
+## Research (chord feel completion — spacing/inversion + LFO phase offsets, 2026-08-14)
+
+Verbatim VST semantics (WavetableVoice.cpp startNote/render/setWavetablePositionWithLFO):
+
+- **spacing** (0-1, def 0.0) / **inversion** (0-1, def 0.3): per sub-voice at noteOn,
+  roll `getRandomOctaveShift()` — 60% → 1 oct, 30% → 2, 10% → 3 — independently for
+  spacing (UP: note+12·oct, clamp 127) and inversion (DOWN: note−12·oct, clamp 0).
+  Both reuse the sub-voice's detune centOffset (cancels in any freq ratio). Each
+  sub-voice runs THREE osc groups (base/spacing/inversion, each dual-osc A+B).
+  Per-voice random thresholds ∈[0,1) rolled at noteOn; live per block:
+  `spacingMix → (spacing >= thresh ? 1 : 0)` smoothed with the 250 ms one-pole
+  (`1−exp(−1/(0.25·sr))`); `baseMix = (1−spacingMix)(1−inversionMix)`; groups share
+  the sub-voice's amplitude gain, pan, and positions. Root (i=0) rolls thresholds
+  too (only the no-chord fallback path pins them). Live knob changes crossfade
+  groups on held notes.
+- **v1.14 LFO phase offsets**: `subVoiceLFOPhaseOffsets[i] = i==0 ? 0 : rand·2π`,
+  rolled at noteOn; SAME offset array used by LFO A (pos A) and LFO B (pos B):
+  `pos = clamp(basePos + sin(lfoPhase + ofs[i])·depth, 0, 1)` per sub-voice.
+  Filter LFO keeps the un-offset global phase A.
+
+Port architecture (keeps 12 channels — no lane restructuring):
+
+- **All three osc groups inside the wavetable mc.gen~ codebox** (3 phase Histories,
+  3 mipmap levels, 24 peeks/instance worst case, CPU ≈ ×3 — VST runs the same 6
+  oscs/sub-voice). Spacing/inversion inherit the channel's gain lane + pan exactly
+  like the VST (mix happens pre-`mc.*~`).
+- **Per-instance values via `applyvalues` wrapper messages** into mc.gen~ inlet 0
+  (first use on mc.gen~ — verified pattern on mc.sig~ since v0.2.0; fallback if the
+  load test fails: js emits 12 × `setvalue <i> <param> <v>` instead). js gains
+  outlet 5 wired straight to mc.gen~ in0, emitting
+  `applyvalues spacingthresh/inversionthresh/lfoofs …` at noteOn (rollNoteRandoms)
+  and `applyvalues spacingratio/inversionratio …` live in recomputeOutputs — ratios
+  are `noteFrequency(shiftedNote)/noteFrequency(baseNote)` so octaveStretch,
+  MIDI clamping, and live tuning edits all track; detune cancels by construction.
+  Octave rolls (1-3) stored per voice at noteOn; shifted notes re-derived from the
+  live chord in recomputeOutputs (voicing/tonic changes track, rolls stay fixed).
+- **LFO A/B move into the codebox** (rate/depth as Params `lforatea/lfodeptha/
+  lforateb/lfodepthb`, per-instance `lfoofs`): phase accumulated per instance —
+  all instances stay in lockstep (same rate history), offsets applied on top.
+  `p wtctl` slims to: dials → line~ → outlets (base positions only; +~ sums, LFO-B
+  cycle~/*~ removed); rate/depth inlets → `lforatea $1`-style messages → NEW 4th
+  outlet → mc.gen~ in0. cycle~ A stays solely as the filter's phase source
+  (starts at 0 like the codebox accumulators, same rate → phase-locked in practice;
+  sample-exact lock deferred until it audibly matters).
+- **New UI**: spacing + inversion flonums (0-1) → `spacing $1`/`inversion $1`
+  messages → mc.gen~ in0 (broadcast, live on held notes, like gaina/gainb);
+  `p init` trigger extended to 12, defaults 0. / 0.3 (VST defaults), new outlets
+  appended rightmost (x-rank preserved). Both flonums + labels added to
+  presentation next to the chord-feel controls (Rule #9).
+- Codebox gate smoothing: per-sample one-pole, `coeff = 1−exp(−1/(0.25·samplerate))`
+  (the VST's ~250 ms crossfade intent; VST applies the same coeff at block rate).
+- Ops verified in DB: exp/wrap/clamp/floor/peek/log2 (gen); sin/tan/pow already in
+  use in existing codeboxes.
+
 ## Research (slice 3 — stereo spread + chord feel, 2026-08-13)
 
 Verbatim VST semantics (WavetableVoice.cpp startNote/render + PluginProcessor params):

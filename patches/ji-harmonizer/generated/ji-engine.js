@@ -8,12 +8,14 @@
 // and voiceCount/complexity gate their gains in real time on held notes.
 
 inlets = 1;
-outlets = 5;
+outlets = 6;
 // outlet 0: 12-element frequency list (Hz)      -> mc.sig~ (freq lane)
 // outlet 1: 12-element LEFT gain list (0..1)    -> mc.sig~ (gain lane L)
 // outlet 2: gate (velocity/127 on note-on, 0 on note-off) -> adsr~
 // outlet 3: [degree, cents] pairs               -> route -> readouts
 // outlet 4: 12-element RIGHT gain list (0..1)   -> mc.sig~ (gain lane R)
+// outlet 5: applyvalues param messages          -> mc.gen~ (per-instance
+//           spacingratio/inversionratio/spacingthresh/inversionthresh/lfoofs)
 
 var SCALE_SIZE = 12;
 var MAX_SUB_VOICES = 12;
@@ -49,6 +51,19 @@ var centOffsets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var panFactors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var onsetMask = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 var staggerTasks = [];
+
+// Spacing/inversion octave randomization (WavetableVoice.cpp:172-198):
+// per sub-voice, rolled at noteOn -- octave shift counts (1-3, weighted
+// 60/30/10) and activation thresholds [0,1). Live knob position vs threshold
+// gates the octave copies in the gen~ codebox (250 ms crossfade there).
+var spacingOcts = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+var inversionOcts = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+var spacingThresh = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+var inversionThresh = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
+// v1.14 ensemble movement: per-sub-voice LFO phase offsets (root tracks the
+// global LFO phase exactly; others get a random 0..2pi offset at noteOn)
+var lfoOffsets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 var VOICING_NAMES = {
     "free": 0, "close": 1, "open": 2, "drop2": 3, "drop-2": 3,
@@ -218,6 +233,14 @@ function unmuteVoice(i) {
     recomputeOutputs();
 }
 
+function randomOctaveShift() {
+    // WavetableVoice::getRandomOctaveShift: 60% 1 oct, 30% 2 oct, 10% 3 oct
+    var r = Math.random();
+    if (r < 0.6) return 1;
+    if (r < 0.9) return 2;
+    return 3;
+}
+
 function rollNoteRandoms() {
     cancelStagger();
     for (var i = 0; i < MAX_SUB_VOICES; i++) {
@@ -250,7 +273,22 @@ function rollNoteRandoms() {
             t.schedule(delayMs);
             staggerTasks.push(t);
         }
+
+        // Spacing/inversion: independent octave rolls + activation thresholds
+        // (rolled for the root too -- only the VST's no-chord fallback pins them)
+        spacingOcts[i] = randomOctaveShift();
+        inversionOcts[i] = randomOctaveShift();
+        spacingThresh[i] = Math.random();
+        inversionThresh[i] = Math.random();
+
+        // v1.14: per-sub-voice LFO phase offset (root = 0)
+        lfoOffsets[i] = (i === 0) ? 0.0 : Math.random() * 2.0 * Math.PI;
     }
+
+    // Distribute per-instance noteOn state to the mc.gen~ wrapper
+    outlet(5, ["applyvalues", "spacingthresh"].concat(spacingThresh));
+    outlet(5, ["applyvalues", "inversionthresh"].concat(inversionThresh));
+    outlet(5, ["applyvalues", "lfoofs"].concat(lfoOffsets));
 }
 
 // --- Output --------------------------------------------------------------
@@ -261,12 +299,26 @@ function recomputeOutputs() {
     var freqs = [];
     var gainsL = [];
     var gainsR = [];
+    var spacingRatios = [];
+    var inversionRatios = [];
     var HALF_PI = Math.PI * 0.5;
     for (var i = 0; i < MAX_SUB_VOICES; i++) {
         var note = voices[i].midiNote;
         if (note < 0) note = 0;     // WR-05 clamp
         if (note > 127) note = 127;
-        freqs.push(noteFrequency(note) * Math.pow(2.0, centOffsets[i] / 1200.0));
+        var bf = noteFrequency(note);
+        freqs.push(bf * Math.pow(2.0, centOffsets[i] / 1200.0));
+
+        // Spacing (up) / inversion (down) octave-copy freq ratios vs base.
+        // Ratio form: detune cancels (VST applies the same centOffset to all
+        // three); octaveStretch, MIDI 0/127 clamping, and live tuning edits
+        // all track. Octave counts stay fixed while the note is held.
+        var sn = note + 12 * spacingOcts[i];
+        if (sn > 127) sn = 127;
+        var iv = note - 12 * inversionOcts[i];
+        if (iv < 0) iv = 0;
+        spacingRatios.push(noteFrequency(sn) / bf);
+        inversionRatios.push(noteFrequency(iv) / bf);
 
         // WavetableVoice.cpp:203-213 complexity crossfade + voice-count gate
         var t = voices[i].threshold;
@@ -287,6 +339,8 @@ function recomputeOutputs() {
         gainsL.push(g * Math.cos(panAngle * HALF_PI));
         gainsR.push(g * Math.sin(panAngle * HALF_PI));
     }
+    outlet(5, ["applyvalues", "spacingratio"].concat(spacingRatios));
+    outlet(5, ["applyvalues", "inversionratio"].concat(inversionRatios));
     outlet(4, gainsR);
     outlet(1, gainsL);
     outlet(0, freqs);

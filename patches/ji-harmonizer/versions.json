@@ -111,6 +111,15 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.6.0",
+      "description": "spacing/inversion octave randomization + per-sub-voice LFO phase offsets (chord feel completion)",
+      "timestamp": "2026-08-14T16:54:47.652711+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }
