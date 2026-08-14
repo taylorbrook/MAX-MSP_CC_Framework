@@ -118,6 +118,14 @@ scale generators). Complex system — build a part first, then grow.
 - **Free-running phases** (VST resets per noteOn; mono-chord slice free-runs — inaudible
   for pads, revisit with poly~).
 
+## Next slice (chosen 2026-08-13, after v0.1.2)
+
+**Stereo spread + chord feel** — port stereoSpread (alternating constant-power L/R pan,
+width ∝ voice index, root centered), detuneRandom (0-50 cents), timingRandom (0-100ms
+stagger) from ChordGenerator. Requires going stereo: current chain is mono
+(mc.mixdown~ 1). Pending: load test of v0.1.2 in MAX (first mc.gen~ + 23MB buffer~ use).
+After this: more banks + selectors, filter + modulation, then poly~.
+
 ## Research (2026-08-13)
 
 All objects below verified in the DB with non-empty I/O.
