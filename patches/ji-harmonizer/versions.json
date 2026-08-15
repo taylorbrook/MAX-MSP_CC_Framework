@@ -162,6 +162,14 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.7.3",
+      "description": "compact sectional redesign: 3-column repack, rigid section groups, init/park regrid",
+      "timestamp": "2026-08-15T04:04:56.679788+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }
