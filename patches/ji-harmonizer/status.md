@@ -1,8 +1,8 @@
 stage: iterate
-progress: slice 3 confirmed working in MAX (v0.2.0)
+progress: v0.9.0 tuning math corrected
 created: 2026-08-13T16:23:07.863907+00:00
-last_action: v0.8.0: added 12-row SOUNDING PITCHES table in presentation (x700-968, y106-390). ji-engine.js drives 36 named comment cells (pd_f/pd_i/pd_n <row>) via JSOBJ.patcher.getnamed + message('set',...) -- no outlet, no patch cords.
-notes: Display math unit-tested in Node (note names, cents fallback for tempered presets, voiceCount gating, note-off clear, a4 reference, octaveStretch). VERIFY AT LOAD: getnamed-driven comment cells populate on note-on. Fallback if not: route/prepend-set chain from a new js outlet.
-current_stage: v0.8.0 — sounding-pitch display (freq / table+actual interval / nearest 12-TET note)
-status: v0.8.0 built — SOUNDING PITCHES readout added, awaiting load test in MAX
-version: 0.8.0
+last_action: v0.9.0: noteFrequency() now anchors scale cents on the tonic of the note's octave (calc12TET(note - relativePitch)) instead of on the note's own 12-TET freq. Reverses the VST 'signature' doubled-interval path per user request. Also synced the 12 ratio textedits to the harm 16-30 engine default (they shipped with a stale Zarlino/JI table).
+notes: VERIFY AT LOAD: play C4, SOUNDING PITCHES should read 1/1 C4+0c, 17/16 C#4+5c, 9/8 D4+4c, 19/16 D#4-2c, 5/4 E4-14c (+/- the random detune). Table ratio and (actual) decimal should now agree. Ratio column must read 1/1 17/16 9/8 19/16 5/4 21/16 11/8 23/16 3/2 13/8 7/4 15/8, matching the cents column.
+current_stage: v0.9.0 - tuning math correction
+status: v0.9.0 built - awaiting load test in MAX
+version: 0.9.0
