@@ -1,8 +1,8 @@
 stage: iterate
 progress: slice 3 confirmed working in MAX (v0.2.0)
 created: 2026-08-13T16:23:07.863907+00:00
-last_action: v0.6.0: 3 osc groups in wavetable mc.gen~ codebox; per-instance params via applyvalues (FIRST applyvalues use on mc.gen~ — verify at load; fallback: setvalue per instance). LFO A/B moved into codebox; cycle~ A remains filter phase source.
-notes: v0.6.0 built, awaiting load test. Codebox now 24 peeks/instance worst case (CPU ~x3). New UI: spacing (def 0.) / inversion (def 0.3) flonums, in presentation row with chord-feel controls. Save normalized outlettype/numinlets metadata patch-wide to MAX-native values (DB-backed roundtrip overlay) — one-time diff churn, loads identically.
-current_stage: v0.6.0 built — chord feel completion (spacing/inversion octave randomization, per-sub-voice LFO phase offsets), awaiting load test
-status: v0.7.3 layout repack confirmed good in MAX
-version: 0.7.3
+last_action: v0.8.0: added 12-row SOUNDING PITCHES table in presentation (x700-968, y106-390). ji-engine.js drives 36 named comment cells (pd_f/pd_i/pd_n <row>) via JSOBJ.patcher.getnamed + message('set',...) -- no outlet, no patch cords.
+notes: Display math unit-tested in Node (note names, cents fallback for tempered presets, voiceCount gating, note-off clear, a4 reference, octaveStretch). VERIFY AT LOAD: getnamed-driven comment cells populate on note-on. Fallback if not: route/prepend-set chain from a new js outlet.
+current_stage: v0.8.0 — sounding-pitch display (freq / table+actual interval / nearest 12-TET note)
+status: v0.8.0 built — SOUNDING PITCHES readout added, awaiting load test in MAX
+version: 0.8.0
