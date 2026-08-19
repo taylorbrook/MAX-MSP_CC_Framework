@@ -381,3 +381,33 @@ Port architecture (all objects already verified in patch):
 - js outlet 6 (new): [degree, ratiotext] → `p ratioset` (route 0-11 → prepend set)
   → textedit displays refresh on preset load. umenu does NOT auto-switch to
   "Custom" when a degree is hand-edited afterward (accepted, VST-like).
+
+## Decisions (iterate — sounding-pitch display, 2026-08-19)
+
+- **New SOUNDING PITCHES readout** (v0.8.0): a 12-row read-only table showing, per
+  sub-voice, the sounding frequency, the just interval, and the nearest 12-TET note
+  with cents. Placed in presentation at x=700..968, y=106..390 (right of the existing
+  block, which ends at x=687), top-aligned with the WAVETABLE ENGINE section.
+- **Interval column shows BOTH ratios: `3/2 (1.501)`.** The scale-table ratio for that
+  degree, then the true sounding ratio against sub-voice 1 in parentheses. These differ
+  by design — the engine applies scale cents ON TOP of 12-TET (TuningEngine.cpp:729),
+  so a degree marked 3/2 sounds near 1402c and a chord can invert. Showing both keeps
+  the signature behaviour visible instead of hiding it behind a nominal ratio.
+  When the scale holds cent values rather than rationals (the tempered presets store
+  `2^(c/1200)` as a float), the table ratio is omitted and only the decimal shows.
+- **Octave naming: scientific, MIDI 60 = C4** (so A440 reads A4), not the Max/Ableton
+  C3 convention.
+- **Nearest-12-TET reference = the masterTune `a4` param**, not fixed 440. Retuning A4
+  to 415 then shifts every frequency but leaves the note/cents readings unchanged,
+  isolating the JI character. `octaveStretch` deliberately still surfaces in the cents.
+- **Driven by name, not by patch cords.** ji-engine.js resolves 36 comment boxes
+  (`pd_f<row>` / `pd_i<row>` / `pd_n<row>`, rows 0-11) via `JSOBJ.patcher.getnamed()`
+  and sets them with `Maxobj.message("set", ...)`. `JSOBJ` is `this` captured at load,
+  since `this.patcher` is unreliable inside Task callbacks (`unmuteVoice`). This avoids
+  a 36-outlet routing subpatcher and 36 cords crossing the patch. Cells are cached on
+  first resolve. Rejected `jit.cellblock`: its `set` argument signature is not in the
+  object DB and it is unused elsewhere in this repo (Rule #1).
+- **Rows are sub-voice index order, not sorted by pitch** — row N maps to sub-voice N,
+  so the `voiceCount`/`complexity` gating stays legible.
+- **Silent rows read `-`** (gain 0 from voiceCount, complexity, or onset stagger).
+  The table clears on note-off; it does not track the ADSR release tail.

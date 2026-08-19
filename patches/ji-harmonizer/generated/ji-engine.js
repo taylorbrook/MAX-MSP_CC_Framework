@@ -18,9 +18,18 @@ outlets = 7;
 //           spacingratio/inversionratio/spacingthresh/inversionthresh/lfoofs)
 // outlet 6: [degree, ratiotext] pairs           -> p ratioset -> textedits
 //           (refreshes the ratio table display on temperament preset load)
+// The SOUNDING PITCHES table is driven directly through named comment boxes
+// in the parent patcher (pd_f<row>/pd_i<row>/pd_n<row>) -- no outlet, no cords.
 
 var SCALE_SIZE = 12;
 var MAX_SUB_VOICES = 12;
+
+// jsthis, captured at load -- used to reach the display comment boxes by
+// varname. Captured here rather than read as this.patcher at call time so
+// the lookup also works from Task callbacks (unmuteVoice).
+var JSOBJ = this;
+var NOTE_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+var dispCells = null;   // lazily resolved [[freqCell, intervalCell, noteCell], ...]
 
 // Default scale: harmonics 16-30, octave-reduced (spans 23-limit)
 var ratios = [
@@ -314,6 +323,141 @@ function rollNoteRandoms() {
     outlet(5, ["applyvalues", "lfoofs"].concat(lfoOffsets));
 }
 
+// --- Sounding-pitch display ---------------------------------------------
+// Drives the read-only SOUNDING PITCHES table in the parent patcher. Each
+// row is three named comment boxes set via Maxobj.message("set", ...), so
+// the table needs no patch cords and no extra outlet.
+//
+// Columns, per decisions (2026-08-19):
+//   freq     -- the actual sounding frequency, detune included
+//   interval -- the ratio typed in the scale table for that degree, then the
+//               true sounding ratio against sub-voice 1 in parentheses. These
+//               differ by design: this engine applies the scale cents ON TOP
+//               of 12-TET (TuningEngine.cpp:729), so a 3/2 degree sounds near
+//               1402c. Showing both keeps the signature behaviour visible.
+//   note     -- nearest true 12-TET note (scientific octaves, MIDI 60 = C4)
+//               referenced to the masterTune a4, so retuning a4 does not
+//               offset every reading. octaveStretch shows up in the cents.
+
+function dispResolve() {
+    if (dispCells) return dispCells;
+    if (!JSOBJ || !JSOBJ.patcher) return null;
+    var cells = [];
+    for (var r = 0; r < MAX_SUB_VOICES; r++) {
+        cells.push([
+            JSOBJ.patcher.getnamed("pd_f" + r),
+            JSOBJ.patcher.getnamed("pd_i" + r),
+            JSOBJ.patcher.getnamed("pd_n" + r)
+        ]);
+    }
+    dispCells = cells;
+    return cells;
+}
+
+function gcdInt(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+    while (b > 0.5) {
+        var t = a % b;
+        a = b;
+        b = t;
+    }
+    return a;
+}
+
+function isWholeNumber(v) {
+    return isFinite(v) && Math.abs(v - Math.round(v)) < 1e-9;
+}
+
+// Exact scale-table factor for a MIDI note: the degree's [num, den] plus the
+// octave index above the tonic. Mirrors noteFrequency's degree lookup so the
+// displayed ratio always names the degree the engine actually used.
+function degreeFactor(n) {
+    var rel = (((n - tonicIdx) % SCALE_SIZE) + SCALE_SIZE) % SCALE_SIZE;
+    var oct = Math.floor((n - tonicIdx) / SCALE_SIZE);
+    return [ratios[rel][0], ratios[rel][1], oct];
+}
+
+// Scale-table ratio of note n against note n0, reduced. Returns "" when the
+// scale holds cent values rather than rationals (temperament presets store
+// 2^(c/1200) as a float numerator) or when the fraction blows up -- the
+// actual-ratio decimal beside it still carries the information.
+function tableRatioText(n, n0) {
+    var a = degreeFactor(n);
+    var b = degreeFactor(n0);
+    var num = a[0] * b[1];
+    var den = a[1] * b[0];
+    var d = a[2] - b[2];
+    if (d > 0) num *= Math.pow(2, d);
+    else if (d < 0) den *= Math.pow(2, -d);
+    if (!isWholeNumber(num) || !isWholeNumber(den)) return "";
+    num = Math.round(num);
+    den = Math.round(den);
+    if (num <= 0 || den <= 0 || num > 999999 || den > 999999) return "";
+    var g = gcdInt(num, den);
+    if (g > 1) {
+        num /= g;
+        den /= g;
+    }
+    return num + "/" + den;
+}
+
+// Nearest true 12-TET note name + cents deviation, e.g. ["A6", "-31c"].
+function noteNameText(f) {
+    if (!(f > 0)) return ["", ""];
+    var m = 69.0 + 12.0 * Math.log(f / a4) / Math.LN2;
+    var n = Math.round(m);
+    var cents = Math.round((m - n) * 100.0);
+    if (n < 0) n = 0;
+    if (n > 127) n = 127;
+    var oct = Math.floor(n / 12) - 1;   // scientific pitch: MIDI 60 = C4
+    var name = NOTE_NAMES[((n % 12) + 12) % 12] + oct;
+    return [name, (cents < 0 ? "-" : "+") + Math.abs(cents) + "c"];
+}
+
+function dispSetCell(cell, a, b) {
+    if (!cell) return;
+    if (b === undefined) cell.message("set", a);
+    else cell.message("set", a, b);
+}
+
+// Blank every row to the silent marker (no note held / all voices gated).
+function dispClear() {
+    var cells = dispResolve();
+    if (!cells) return;
+    for (var r = 0; r < MAX_SUB_VOICES; r++) {
+        dispSetCell(cells[r][0], "-");
+        dispSetCell(cells[r][1], "-");
+        dispSetCell(cells[r][2], "-");
+    }
+}
+
+// gates[] is the pre-pan voice gain: 0 means voiceCount/complexity/onset
+// stagger has silenced that sub-voice, so its row reads as silent.
+function updateDisplay(notes, freqs, gates) {
+    var cells = dispResolve();
+    if (!cells) return;
+    var refNote = notes[0];
+    var refFreq = freqs[0];
+    for (var r = 0; r < MAX_SUB_VOICES; r++) {
+        if (!(gates[r] > 0.0)) {
+            dispSetCell(cells[r][0], "-");
+            dispSetCell(cells[r][1], "-");
+            dispSetCell(cells[r][2], "-");
+            continue;
+        }
+        var f = freqs[r];
+        dispSetCell(cells[r][0], f >= 1000.0 ? f.toFixed(1) : f.toFixed(2));
+
+        var tab = tableRatioText(notes[r], refNote);
+        var act = (refFreq > 0) ? (f / refFreq).toFixed(3) : "?";
+        dispSetCell(cells[r][1], tab === "" ? act : tab, tab === "" ? undefined : "(" + act + ")");
+
+        var nn = noteNameText(f);
+        dispSetCell(cells[r][2], nn[0], nn[1]);
+    }
+}
+
 // --- Output --------------------------------------------------------------
 
 function recomputeOutputs() {
@@ -322,6 +466,8 @@ function recomputeOutputs() {
     var freqs = [];
     var gainsL = [];
     var gainsR = [];
+    var dispNotes = [];
+    var dispGates = [];
     var spacingRatios = [];
     var inversionRatios = [];
     var HALF_PI = Math.PI * 0.5;
@@ -331,6 +477,7 @@ function recomputeOutputs() {
         if (note > 127) note = 127;
         var bf = noteFrequency(note);
         freqs.push(bf * Math.pow(2.0, centOffsets[i] / 1200.0));
+        dispNotes.push(note);
 
         // Spacing (up) / inversion (down) octave-copy freq ratios vs base.
         // Ratio form: detune cancels (VST applies the same centOffset to all
@@ -352,6 +499,7 @@ function recomputeOutputs() {
         else g = (complexityAmt - (t - 0.1)) / 0.1;
         if (i >= voiceCount) g = 0.0;
         g *= onsetMask[i];
+        dispGates.push(g);
 
         // Constant-power pan (WavetableVoice.cpp:347-356): voice 1 clamped
         // near center, pan = panFactor * stereoSpread
@@ -367,6 +515,7 @@ function recomputeOutputs() {
     outlet(4, gainsR);
     outlet(1, gainsL);
     outlet(0, freqs);
+    updateDisplay(dispNotes, freqs, dispGates);
 }
 
 // --- Message handlers ----------------------------------------------------
@@ -387,6 +536,7 @@ function list(note, vel) {
         heldNote = -1;
         heldVel = 0;
         outlet(2, 0);
+        dispClear();
     }
 }
 

@@ -170,6 +170,15 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.8.0",
+      "description": "sounding-pitch readout: freq / table+actual interval / nearest 12-TET note",
+      "timestamp": "2026-08-19T16:27:16.419380+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }
