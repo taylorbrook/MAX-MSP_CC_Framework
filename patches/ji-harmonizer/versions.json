@@ -179,6 +179,15 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.9.0",
+      "description": "tuning fix: scale cents anchored on tonic (9/8 = D+4, not E+9); ratio textedits synced to harm 16-30",
+      "timestamp": "2026-08-19T17:24:33.786960+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }

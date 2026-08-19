@@ -1,8 +1,14 @@
 // ji-engine.js -- TuningEngine + ChordGenerator port from O-IntonationPad v2.8.4
-// Verbatim port of the 12-note/no-KBM tuning path (TuningEngine.cpp:729-740):
-//   freq = 12TET(note, A4, stretch) * 2^(scaleCents[(pc - tonic) % 12] / 1200)
-// Interval cents are applied ON TOP of each note's 12-TET frequency -- the
-// plugin's documented signature sound. Do not "fix" to textbook JI.
+// 12-note/no-KBM tuning path, corrected to true scale tuning (2026-08-19):
+//   freq = 12TET(tonic in note's octave, A4, stretch)
+//          * 2^(scaleCents[(pc - tonic) % 12] / 1200)
+// Interval cents are anchored on the TONIC's 12-TET frequency, so a degree
+// marked 9/8 sounds a true 9/8 (203.91c) above the tonic. The VST's original
+// path (TuningEngine.cpp:729-740) anchored on each note's OWN 12-TET frequency,
+// which stacked the 12-TET semitone distance on top of the scale cents and
+// nearly doubled every interval (9/8 landed on E, not D). That "signature"
+// behaviour was ported verbatim through v0.8.0 and deliberately reversed here
+// at the user's request -- do not restore it.
 // Chord voicing is a verbatim port of ChordGenerator.cpp (all 7 voicing modes);
 // like the VST, all 12 sub-voices are always generated (thresholds i/12*0.85)
 // and voiceCount/complexity gate their gains in real time on held notes.
@@ -118,12 +124,17 @@ function calc12TET(note) {
 }
 
 function noteFrequency(note) {
-    // TuningEngine::calculateCustomFrequencyUnlocked, 12-note/no-KBM path
+    // TuningEngine::calculateCustomFrequencyUnlocked, 12-note/no-KBM path,
+    // corrected: the scale cents ride on the tonic of the note's octave, not
+    // on the note itself. `note - relativePitch` is the MIDI note of the tonic
+    // at or below `note`, so degree 0 sits exactly on 12-TET and every other
+    // degree is scaleCents[] above it. octaveStretch still applies, via the
+    // tonic's 12-TET frequency.
     if (note < 0) note = 0;
     if (note > 127) note = 127;
-    var baseFreq = calc12TET(note);
     var pitchClass = note % 12;
     var relativePitch = (pitchClass - tonicIdx + 12) % 12;
+    var baseFreq = calc12TET(note - relativePitch);
     return baseFreq * Math.pow(2.0, scaleCents[relativePitch] / 1200.0);
 }
 
@@ -331,10 +342,10 @@ function rollNoteRandoms() {
 // Columns, per decisions (2026-08-19):
 //   freq     -- the actual sounding frequency, detune included
 //   interval -- the ratio typed in the scale table for that degree, then the
-//               true sounding ratio against sub-voice 1 in parentheses. These
-//               differ by design: this engine applies the scale cents ON TOP
-//               of 12-TET (TuningEngine.cpp:729), so a 3/2 degree sounds near
-//               1402c. Showing both keeps the signature behaviour visible.
+//               true sounding ratio against sub-voice 1 in parentheses. Since
+//               the tuning fix (2026-08-19) these agree to within the per-voice
+//               random detune; a residual gap means the two voices sit in
+//               different octaves or the detune knob is wide open.
 //   note     -- nearest true 12-TET note (scientific octaves, MIDI 60 = C4)
 //               referenced to the masterTune a4, so retuning a4 does not
 //               offset every reading. octaveStretch shows up in the cents.

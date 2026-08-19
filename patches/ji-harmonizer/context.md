@@ -26,7 +26,8 @@ scale generators). Complex system — build a part first, then grow.
      `freq = 12TET(note, A4, stretch) * 2^(scaleIntervals[(pc - tonic) mod 12]/1200)`
      — deliberately NOT textbook JI: absolute interval cents applied ON TOP of the
      note's 12-TET freq (intervals nearly doubled). Documented intentional character
-     (TuningEngine.cpp:729-731). **Port verbatim.**
+     (TuningEngine.cpp:729-731). **Ported verbatim through v0.8.0; REVERSED in
+     v0.9.0** — see "Decisions (iterate, 2026-08-19)" at the end of this file.
   2. Non-12 scales: linear degree mapping anchored at MIDI 60 + tonic.
   3. KBM: full Scala keyboard mapping.
 - Tonic = modal rotation of interval list + pitch-class shift.
@@ -68,6 +69,7 @@ scale generators). Complex system — build a part first, then grow.
   simple placeholder oscillator bank (cycle~/saw). Wavetable engine ported later.
 - **Tuning math: verbatim VST port.** Reproduce the signature non-standard 12-note path
   (interval cents applied on top of each note's 12-TET frequency) exactly.
+  *(SUPERSEDED v0.9.0 — cents are now anchored on the tonic. See end of file.)*
 - **Tuning scope: 23-limit JI via editable ratio table.** 12-degree table where each
   degree is a typed JI ratio (up to 23-limit, e.g. 23/16, 19/16, 13/8), converted to
   cents internally (`1200*log2(n/d)`) like the VST's .scl parser. Ships with a sensible
@@ -91,6 +93,7 @@ scale generators). Complex system — build a part first, then grow.
   (1/1 17/16 9/8 19/16 5/4 21/16 11/8 23/16 3/2 13/8 7/4 15/8 — spans 23-limit).
 - **Rationale for verbatim tuning path:** freq = 12TET(note) * 2^(cents[(pc-tonic)%12]/1200)
   — the VST's documented signature; do not "fix" to textbook JI.
+  *(SUPERSEDED v0.9.0.)*
 
 ## Decisions (discuss, slice 2 — wavetable engine, 2026-08-13)
 
@@ -393,6 +396,8 @@ Port architecture (all objects already verified in patch):
   by design — the engine applies scale cents ON TOP of 12-TET (TuningEngine.cpp:729),
   so a degree marked 3/2 sounds near 1402c and a chord can invert. Showing both keeps
   the signature behaviour visible instead of hiding it behind a nominal ratio.
+  *(v0.9.0: with the tuning fix the two columns now agree to within the random detune;
+  the pair is kept as a live check that table and sounding pitch stay in sync.)*
   When the scale holds cent values rather than rationals (the tempered presets store
   `2^(c/1200)` as a float), the table ratio is omitted and only the decimal shows.
 - **Octave naming: scientific, MIDI 60 = C4** (so A440 reads A4), not the Max/Ableton
@@ -411,3 +416,32 @@ Port architecture (all objects already verified in patch):
   so the `voiceCount`/`complexity` gating stays legible.
 - **Silent rows read `-`** (gain 0 from voiceCount, complexity, or onset stagger).
   The table clears on note-off; it does not track the ADSR release tail.
+
+
+## Decisions (iterate, 2026-08-19 — tuning math correction, v0.9.0)
+
+- **The VST "signature" doubled-interval path is REVERSED.** It was reported as a bug
+  from the SOUNDING PITCHES readout: with the default harm 16-30 scale, degree 2 (9/8)
+  sounded at 403.91c — `E4 +4c` — instead of the true 203.91c `D4 +4c`. Every degree
+  was off by its own 12-TET semitone distance, because `noteFrequency()` anchored the
+  scale cents on the note's OWN 12-TET frequency.
+- **Correction:** `noteFrequency()` now anchors on the tonic of the note's octave:
+
+  ```js
+  var relativePitch = (note % 12 - tonicIdx + 12) % 12;
+  var baseFreq = calc12TET(note - relativePitch);   // was calc12TET(note)
+  return baseFreq * Math.pow(2.0, scaleCents[relativePitch] / 1200.0);
+  ```
+
+  Degree 0 sits exactly on 12-TET; every other degree is `scaleCents[]` above the tonic
+  of that octave. `octaveStretch` still applies, through the tonic's 12-TET frequency.
+  Verified on the default harm 16-30 scale, tonic C, a4 440:
+  `1/1 → C4 +0c`, `17/16 → C#4 +5c`, `9/8 → D4 +4c`, `19/16 → D#4 -2c`, `5/4 → E4 -14c`.
+- **Considered and rejected:** a `tuning mode` umenu keeping both paths, and a
+  display-only fix leaving the sound untouched. The user chose the outright correction;
+  the signature path is gone, not hidden. **Do not restore it.**
+- **Ratio textedit boxes were stale.** The 12 boxes shipped hardcoded to a Zarlino/JI
+  table (`1/1 16/15 9/8 6/5 5/4 4/3 7/5 3/2 8/5 5/3 7/4 15/8`) that never matched
+  `ji-engine.js`'s harm 16-30 default, so on load the ratio column contradicted the
+  cents column beside it. Saved text now matches the engine default. Any future change
+  to the JS default scale must change these boxes in the same edit.
