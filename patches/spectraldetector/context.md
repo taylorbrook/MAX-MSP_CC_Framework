@@ -83,3 +83,7 @@ v0.1.1 still failed ("failed to compile genpatcher", no codebox-specific error).
 Rewrite uses ONLY repo-proven constructs: spaces-only indentation; single non-nested `for` with constant bound 600 + `if (i < win)` guard; **amortized sweep — one lag per sample** (full sweep ≈ 12 ms, same avg CPU as hop version, no per-hop spike); no `else` anywhere (sequential guarded ifs); 3-arg peek / 4-arg poke. DSP semantics unchanged vs numpy-validated metric (windows slide ≤1 sweep-length between lags — immaterial for classification).
 
 If this compiles: promote to CLAUDE.md — tabs suspected fatal, spaces mandatory; constant-bound single loops; no else-if; peek/poke channel arg. If it STILL fails: next bisect step is loop removal (unrolled or Delay-based) — but suspect list is now empty of knowns.
+
+## Status: v0.2.0 confirmed working in MAX (2026-08-19)
+
+gen~ compiles and the detector runs. Codebox safe-construct rules promoted to CLAUDE.md Gen~ section.
