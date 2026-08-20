@@ -75,3 +75,11 @@ playlist~ ─┘   │              └ out2 → snapshot~ 50 → change → sel
 ## v0.1.1 (2026-08-19) — gen~ compile fix
 
 MAX reported "gen~: failed to compile patcher" on v0.1.0. Repo-wide survey of every codebox: all confirmed-working ones (gong-model, bassoon, stutter, granular, timestretch) use **3-arg `peek(buf, idx, 0)` and 4-arg `poke(buf, val, idx, 0)`** (explicit channel), and **none use `else if`**. v0.1.0 was the sole codebox with 2-arg peek / 3-arg poke / `else if` chains. Fixed: added channel args everywhere; rewrote state machine as nested plain if/else. Pending confirmation in MAX → then promote peek/poke arity + no-else-if rule to CLAUDE.md Gen~ section.
+
+## v0.2.0 (2026-08-19) — defensive codebox rewrite
+
+v0.1.1 still failed ("failed to compile genpatcher", no codebox-specific error). gen~ box structure verified byte-identical in shape to confirmed-working ji-harmonizer, so the fault is in the code string. Key finding: **the v0.1.x codebox was the only codebox in the whole repo containing TAB characters** (77); every other codebox — working or not — is pure spaces. Also, no confirmed-working codebox uses variable loop bounds or nested for loops (only unconfirmed timestretch and failed scala-synth do).
+
+Rewrite uses ONLY repo-proven constructs: spaces-only indentation; single non-nested `for` with constant bound 600 + `if (i < win)` guard; **amortized sweep — one lag per sample** (full sweep ≈ 12 ms, same avg CPU as hop version, no per-hop spike); no `else` anywhere (sequential guarded ifs); 3-arg peek / 4-arg poke. DSP semantics unchanged vs numpy-validated metric (windows slide ≤1 sweep-length between lags — immaterial for classification).
+
+If this compiles: promote to CLAUDE.md — tabs suspected fatal, spaces mandatory; constant-bound single loops; no else-if; peek/poke channel arg. If it STILL fails: next bisect step is loop removal (unrolled or Delay-based) — but suspect list is now empty of knowns.
