@@ -63,3 +63,11 @@ playlist~ ─┘   │              └ out2 → snapshot~ 50 → change → sel
 ## Notes
 
 - No audio output path required beyond monitoring (detector, not effect)
+
+## Build v0.1.0 (2026-08-19)
+
+- numpy pre-flight (scratchpad sim): NSDF metric validated. Pure tones (sine/saw/square, 82.4 Hz–1975 Hz) score ≥0.97; white noise 0.12; 50/50 sine+noise mix 0.71. Finding: low-weighted noise fakes periodicity (pink 0.70, brown 0.97 raw) → added **3-stage 70 Hz one-pole high-pass pre-filter** inside the codebox (pink → 0.17, brown → 0.67, tones ≥0.97). Defaults confirmed: thresh 0.7, hyst 0.15.
+- Codebox: incremental lagged-window energy update per lag (halves sweep cost); hop = 512 samples; ring = Data(2048); lag clamped so window+lag fits ring at up to 96k.
+- Patch: selector~ source switch (msg 1 = live on load), monitor gain~→dac~ defaults silent, `send detector-state` broadcasts 0/1/2, snapshot~ 50 display rate.
+- Critic loop: round 1 had 3 blockers (dial fan-out without trigger) — fixed with t f f / t i i; round 3 clean (0 errors / 0 blockers; 5 documented-legitimate control→signal-inlet warnings).
+- Deliberate presentation exclusions: none — all interactive widgets included.
