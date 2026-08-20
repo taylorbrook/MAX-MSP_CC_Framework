@@ -188,6 +188,15 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.10.0",
+      "description": "Random voicing mode: per-note-on shuffled interval pool (js engine mode 7 + umenu entry)",
+      "timestamp": "2026-08-20T22:44:58.511294+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }

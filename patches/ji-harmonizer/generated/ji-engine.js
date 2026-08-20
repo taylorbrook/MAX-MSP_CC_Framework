@@ -9,9 +9,13 @@
 // nearly doubled every interval (9/8 landed on E, not D). That "signature"
 // behaviour was ported verbatim through v0.8.0 and deliberately reversed here
 // at the user's request -- do not restore it.
-// Chord voicing is a verbatim port of ChordGenerator.cpp (all 7 voicing modes);
-// like the VST, all 12 sub-voices are always generated (thresholds i/12*0.85)
-// and voiceCount/complexity gate their gains in real time on held notes.
+// Chord voicing is a verbatim port of ChordGenerator.cpp (all 7 voicing modes),
+// plus a MAX-only mode 7 "Random" (2026-08-20): intervals drawn from the
+// enabled-degree pool in a random order rolled once per note-on, so when more
+// ratios are enabled than voiceCount the sounding subset is a fresh random
+// pick on every note. Like the VST, all 12 sub-voices are always generated
+// (thresholds i/12*0.85) and voiceCount/complexity gate their gains in real
+// time on held notes.
 
 inlets = 1;
 outlets = 7;
@@ -68,7 +72,7 @@ var TEMPERAMENTS = [
 var enabled = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 var voiceCount = 5;      // 2..12, gates sub-voice gains (WavetableVoice.cpp:213)
 var complexityAmt = 0.5; // 0..1, crossfades sub-voices in (WavetableVoice.cpp:203-210)
-var voicingModeIdx = 0;  // 0 Free, 1 Close, 2 Open, 3 Drop2, 4 Thirds, 5 Quartal, 6 Quintal
+var voicingModeIdx = 0;  // 0 Free, 1 Close, 2 Open, 3 Drop2, 4 Thirds, 5 Quartal, 6 Quintal, 7 Random
 var tonicIdx = 0;        // drives tuning tonic AND chord keyRoot
 var a4 = 440.0;          // masterTune, 400..480
 var octaveStretch = 1.0; // 0.95..1.25
@@ -103,9 +107,16 @@ var inversionThresh = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 // global LFO phase exactly; others get a random 0..2pi offset at noteOn)
 var lfoOffsets = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
+// Mode 7 "Random" shuffle keys: one float per interval-pool slot, rolled at
+// noteOn (rollNoteRandoms). generateChord sorts pool indices by these keys,
+// so the random interval order is stable while a note is held (param tweaks
+// don't reshuffle) and rerolls on every new note-on. Initial ascending values
+// make the pre-first-note order the identity (same as Close).
+var randKeys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
 var VOICING_NAMES = {
     "free": 0, "close": 1, "open": 2, "drop2": 3, "drop-2": 3,
-    "thirds": 4, "quartal": 5, "quintal": 6
+    "thirds": 4, "quartal": 5, "quintal": 6, "random": 7
 };
 
 function computeCents() {
@@ -237,6 +248,25 @@ function generateChord(rootMidiNote) {
             }
             break;
 
+        case 7: // Random: root anchored on voice 0; remaining intervals drawn
+            // from the enabled pool in the per-noteOn shuffled order, cycling
+            // with an octave bump once the pool is exhausted. With more
+            // enabled ratios than voiceCount, the gated-in voices 0..count-1
+            // are therefore a random subset of the pool, rerolled per note.
+            var order = [];
+            for (i = 1; i < available; i++) order.push(i);
+            order.sort(function (a, b) { return randKeys[a] - randKeys[b]; });
+            order.unshift(0); // intervals[] is sorted ascending -> [0] is root
+            for (i = 0; i < numVoices; i++) {
+                intervalIndex = order[i % available];
+                octaveShift = Math.floor(i / available);
+                voices.push({
+                    midiNote: rootMidiNote + intervals[intervalIndex] + (octaveShift * SCALE_SIZE),
+                    threshold: getThreshold(i, numVoices)
+                });
+            }
+            break;
+
         case 0: // Free: spread across octaves
         default:
             for (i = 0; i < numVoices; i++) {
@@ -323,6 +353,9 @@ function rollNoteRandoms() {
         inversionOcts[i] = randomOctaveShift();
         spacingThresh[i] = Math.random();
         inversionThresh[i] = Math.random();
+
+        // Mode 7 "Random" voicing: fresh shuffle keys each note-on
+        randKeys[i] = Math.random();
 
         // v1.14: per-sub-voice LFO phase offset (root = 0)
         lfoOffsets[i] = (i === 0) ? 0.0 : Math.random() * 2.0 * Math.PI;
@@ -627,7 +660,7 @@ function voicingmode(m) {
     } else {
         m = Math.round(m);
         if (m < 0) m = 0;
-        if (m > 6) m = 6;
+        if (m > 7) m = 7;
         voicingModeIdx = m;
     }
     recomputeOutputs();
