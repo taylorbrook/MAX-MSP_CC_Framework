@@ -71,3 +71,7 @@ playlist~ ─┘   │              └ out2 → snapshot~ 50 → change → sel
 - Patch: selector~ source switch (msg 1 = live on load), monitor gain~→dac~ defaults silent, `send detector-state` broadcasts 0/1/2, snapshot~ 50 display rate.
 - Critic loop: round 1 had 3 blockers (dial fan-out without trigger) — fixed with t f f / t i i; round 3 clean (0 errors / 0 blockers; 5 documented-legitimate control→signal-inlet warnings).
 - Deliberate presentation exclusions: none — all interactive widgets included.
+
+## v0.1.1 (2026-08-19) — gen~ compile fix
+
+MAX reported "gen~: failed to compile patcher" on v0.1.0. Repo-wide survey of every codebox: all confirmed-working ones (gong-model, bassoon, stutter, granular, timestretch) use **3-arg `peek(buf, idx, 0)` and 4-arg `poke(buf, val, idx, 0)`** (explicit channel), and **none use `else if`**. v0.1.0 was the sole codebox with 2-arg peek / 3-arg poke / `else if` chains. Fixed: added channel args everywhere; rewrote state machine as nested plain if/else. Pending confirmation in MAX → then promote peek/poke arity + no-else-if rule to CLAUDE.md Gen~ section.
