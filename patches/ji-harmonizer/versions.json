@@ -214,6 +214,15 @@
       "files_changed": [
         "ji-harmonizer.maxpat"
       ]
+    },
+    {
+      "version": "0.11.1",
+      "description": "js note input is now 'freq <rootHz> <gate>' (kslider converted via mtof)",
+      "timestamp": "2026-08-21T03:12:09.167803+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }
