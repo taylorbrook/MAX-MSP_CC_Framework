@@ -54,3 +54,11 @@ row of three labeled flonums (smooth ms / floor dB / curve); input meter~ below;
 number~ RMS readout + label at bottom. All interactive widgets covered — no
 deliberate exclusions. Presentation attrs written to box._raw (round-trip
 overlay drops plain attr mutations) and verified on disk after save.
+
+## v0.3.1 — S-curve (2026-08-21)
+
+Replaced `pow(lin, curve)` with Schlick gain: `lin^k / (lin^k + (1-lin)^k)` on the
+same `curve` param (0.1–4). k=1 identity, k>1 = S (mid expansion, floor squash),
+k<1 = inverse-S. Denominator can't hit zero for lin in [0,1]. Label updated to
+"curve (S)". Chosen over pow: symmetric mid-range contrast + soft-gates the noise
+floor, pairs better with the dB map.
