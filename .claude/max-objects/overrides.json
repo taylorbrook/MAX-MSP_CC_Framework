@@ -1483,13 +1483,20 @@
       }
     },
     "receive": {
-      "inlets": [],
+      "inlets": [
+        {
+          "id": 0,
+          "type": "control",
+          "signal": false,
+          "digest": "set: change receive source"
+        }
+      ],
       "outlets": [
         {
           "id": 0,
-          "type": "",
+          "type": "control",
           "signal": false,
-          "digest": "Control output"
+          "digest": "Message received from send"
         }
       ],
       "_audit": {
@@ -1497,7 +1504,8 @@
         "instances": 9,
         "agreement": 0.7777777777777778,
         "source": "io_count_finding",
-        "_needs_verification": true
+        "_needs_verification": true,
+        "io_source": "maxref receive.maxref.xml, 2026-08-20"
       }
     },
     "router": {
@@ -16120,6 +16128,21 @@
           "signal_role": "trigger"
         }
       ]
+    },
+    "send": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "control",
+          "signal": false,
+          "digest": "Message to send to receive objects"
+        }
+      ],
+      "outlets": [],
+      "_audit": {
+        "confidence": "HIGH",
+        "source": "maxref send.maxref.xml, 2026-08-20"
+      }
     }
   },
   "version_map": {
