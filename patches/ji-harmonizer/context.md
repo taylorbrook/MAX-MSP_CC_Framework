@@ -445,3 +445,34 @@ Port architecture (all objects already verified in patch):
   `ji-engine.js`'s harm 16-30 default, so on load the ratio column contradicted the
   cents column beside it. Saved text now matches the engine default. Any future change
   to the JS default scale must change these boxes in the same edit.
+
+## Decisions (iterate — preset save/recall, 2026-08-20, v0.11.0)
+
+- **pattr system, not the classic standalone preset store**: `pattrstorage jhpresets
+  @savemode 2` + `autopattr` + `preset` UI bound via `@pattrstorage jhpresets`.
+  Chosen because textedit (the 12 ratio boxes) is pattr-compatible but NOT stored by
+  a bare preset object. savemode 2 autosaves `jhpresets.xml` next to the patch on
+  every patch save; autorestore (default on) reloads slot data at patch open —
+  slots persist across sessions with no file dialogs.
+- **53 named clients** (varnames = pattr names): ratio0-11, deg0-11, voicecount,
+  complexity, tonic, mastertune, voicingmode, stereospread, detunerandom,
+  timingrandom, spacing, inversion, cutoff, res, lfodepth, veltofilt,
+  attack/decay/sustain/release, morpha/morphb, lforatea/lfodeptha/lforateb/lfodepthb,
+  gaina/gainb, banka/bankb, mastergain.
+- **Deliberate exclusions**: kslider (performance input), temperament umenu (a macro
+  that would clobber recalled custom ratios — the textedits are the canonical scale),
+  the 12 sounding-pitch readout flonums (display-only), slave `gain~` at (1155,780)
+  (follows master via the L.1→R.0 link).
+- **Ratio resync chain**: preset outlet 1 (recalled slot number) → `send jhPresetRecall`
+  → `receive` near the ratio row → `deferlow` → `trigger b×12` → bang each ratio
+  textedit. bang makes textedit re-output its (just-recalled) contents → `p ratios` →
+  js engine. This guards against pattr recall setting textedit text without firing its
+  outlet; if textedit does fire on recall, js just receives the same ratio twice
+  (idempotent). All other clients re-fire into js/gen~/buffers on recall by normal
+  pattr client output (bank umenus re-trigger `replace`, morph flonums re-ramp line~).
+- **UI**: preset object (20 slots visible, bubblesize 12) in presentation at
+  (500,626,240,22) with label at (500,604) — right of the lfo B block, aligned with
+  the ADSR row rhythm. `write`/`read` message boxes on pattrstorage for manual
+  preset-file export/import.
+- **DB fix**: `send` and `receive` had empty I/O in the DB; populated from maxref in
+  overrides.json (send 1-in/0-out, receive 1-in/1-out).
