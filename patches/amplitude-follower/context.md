@@ -46,3 +46,11 @@ User found raw RMS mostly sat in 0–0.2. Added two-stage output shaping in the 
 Param renamed `floordb` (not `floor` — GenExpr builtin collision). Two new flonum chains
 (`floordb $1`, `curve $1`); loadbang fan-out now goes through `t b b b`. User's own MAX
 edits (added meter~, repositioned boxes) preserved via surgical edit.
+
+## v0.3.0 — Presentation mode (2026-08-21)
+
+272x152 panel, opens in presentation (`openinpresentation: 1`). Layout: title;
+row of three labeled flonums (smooth ms / floor dB / curve); input meter~ below;
+number~ RMS readout + label at bottom. All interactive widgets covered — no
+deliberate exclusions. Presentation attrs written to box._raw (round-trip
+overlay drops plain attr mutations) and verified on disk after save.
