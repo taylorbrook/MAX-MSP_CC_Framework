@@ -197,6 +197,15 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.10.1",
+      "description": "Random mode pool fix: snap root to nearest enabled degree so all voices stay on enabled ratios",
+      "timestamp": "2026-08-21T00:11:43.306476+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }

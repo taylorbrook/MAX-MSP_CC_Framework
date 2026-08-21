@@ -253,6 +253,15 @@ function generateChord(rootMidiNote) {
             // with an octave bump once the pool is exhausted. With more
             // enabled ratios than voiceCount, the gated-in voices 0..count-1
             // are therefore a random subset of the pool, rerolled per note.
+            //
+            // Unlike the VST-verbatim modes (which apply the pool offsets to
+            // the raw played note, so a key on a DISABLED degree transposes
+            // the whole chord off-pool), Random snaps the root to the nearest
+            // enabled degree first: every voice's pitch class is always one
+            // of the enabled ratios.
+            var playedDeg = (((rootMidiNote - 60 - tonicIdx) % SCALE_SIZE) + SCALE_SIZE) % SCALE_SIZE;
+            var snapDelta = ((rootDegree - playedDeg + SCALE_SIZE + (SCALE_SIZE >> 1)) % SCALE_SIZE) - (SCALE_SIZE >> 1);
+            var snappedRoot = rootMidiNote + snapDelta;
             var order = [];
             for (i = 1; i < available; i++) order.push(i);
             order.sort(function (a, b) { return randKeys[a] - randKeys[b]; });
@@ -261,7 +270,7 @@ function generateChord(rootMidiNote) {
                 intervalIndex = order[i % available];
                 octaveShift = Math.floor(i / available);
                 voices.push({
-                    midiNote: rootMidiNote + intervals[intervalIndex] + (octaveShift * SCALE_SIZE),
+                    midiNote: snappedRoot + intervals[intervalIndex] + (octaveShift * SCALE_SIZE),
                     threshold: getThreshold(i, numVoices)
                 });
             }
