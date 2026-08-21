@@ -10,26 +10,46 @@
         },
         "classnamespace": "box",
         "rect": [
-            268.0,
-            355.0,
-            1140.0,
+            347.0,
+            288.0,
+            813.0,
             361.0
         ],
+        "openinpresentation": 1,
         "boxes": [
             {
                 "box": {
-                    "maxclass": "panel",
+                    "angle": 270.0,
+                    "background": 1,
+                    "bordercolor": [
+                        0.5725490196078431,
+                        0.7176470588235294,
+                        0.9058823529411765,
+                        1.0
+                    ],
+                    "grad1": [
+                        0.5372549019607843,
+                        0.5372549019607843,
+                        0.7764705882352941,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.27058823529411763,
+                        0.30980392156862746,
+                        0.42745098039215684,
+                        1.0
+                    ],
                     "id": "obj-21",
+                    "maxclass": "panel",
+                    "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
-                        850,
-                        18,
-                        272,
-                        152
+                        850.0,
+                        18.0,
+                        272.0,
+                        152.0
                     ],
-                    "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
                         8.0,
@@ -37,35 +57,8 @@
                         272.0,
                         152.0
                     ],
-                    "background": 1,
-                    "ignoreclick": 1,
-                    "border": 0,
-                    "rounded": 7,
-                    "mode": 0,
-                    "bgfillcolor": {
-                        "type": "gradient",
-                        "color1": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "color2": [
-                            0.88,
-                            0.89,
-                            0.92,
-                            1.0
-                        ],
-                        "color": [
-                            0.94,
-                            0.94,
-                            0.96,
-                            1.0
-                        ],
-                        "angle": 270.0,
-                        "proportion": 0.39,
-                        "autogradient": 0
-                    }
+                    "proportion": 0.39,
+                    "rounded": 7
                 }
             },
             {
@@ -245,19 +238,19 @@
                         114.0,
                         20.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        18.0,
+                        42.0,
+                        91.0,
+                        20.0
+                    ],
                     "text": "smoothing (ms)",
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
-                    ],
-                    "presentation": 1,
-                    "presentation_rect": [
-                        18.0,
-                        42.0,
-                        85.0,
-                        18.0
                     ]
                 }
             },
@@ -311,7 +304,7 @@
                             },
                             {
                                 "box": {
-                                    "code": "Param smooth(100, min=1, max=5000);\nParam floordb(-60, min=-96, max=-6);\nParam curve(1, min=0.1, max=4);\nHistory ms1(0);\na = exp(-1 / (smooth * 0.001 * samplerate));\nsq = in1 * in1;\nms = sq + a * (ms1 - sq);\nms1 = ms;\nrms = sqrt(ms);\ndb = 20 * log10(max(rms, 0.00001));\nlin = clamp((db - floordb) / (0 - floordb), 0, 1);\nout1 = pow(lin, curve);\n",
+                                    "code": "Param smooth(100, min=1, max=5000);\nParam floordb(-60, min=-96, max=-6);\nParam curve(1, min=0.1, max=4);\nHistory ms1(0);\na = exp(-1 / (smooth * 0.001 * samplerate));\nsq = in1 * in1;\nms = sq + a * (ms1 - sq);\nms1 = ms;\nrms = sqrt(ms);\ndb = 20 * log10(max(rms, 0.00001));\nlin = clamp((db - floordb) / (0 - floordb), 0, 1);\nlk = pow(lin, curve);\nok = pow(1 - lin, curve);\nout1 = lk / (lk + ok);\n",
                                     "fontface": 0,
                                     "fontname": "<Monospaced>",
                                     "fontsize": 12.0,
@@ -374,15 +367,15 @@
                                         "obj-3",
                                         0
                                     ],
-                                    "source": [
-                                        "obj-2",
-                                        0
-                                    ],
                                     "midpoints": [
                                         243.5,
                                         335.5,
                                         45.0,
                                         335.5
+                                    ],
+                                    "source": [
+                                        "obj-2",
+                                        0
                                     ]
                                 }
                             }
@@ -423,14 +416,14 @@
                         56.0,
                         22.0
                     ],
-                    "sig": 0.0,
                     "presentation": 1,
                     "presentation_rect": [
                         18.0,
                         124.0,
                         70.0,
                         22.0
-                    ]
+                    ],
+                    "sig": 0.0
                 }
             },
             {
@@ -447,19 +440,19 @@
                         135.0,
                         20.0
                     ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        95.0,
+                        126.0,
+                        140.0,
+                        20.0
+                    ],
                     "text": "RMS amplitude 0-1",
                     "textcolor": [
                         0.8,
                         0.8,
                         0.82,
                         1.0
-                    ],
-                    "presentation": 1,
-                    "presentation_rect": [
-                        95.0,
-                        126.0,
-                        140.0,
-                        18.0
                     ]
                 }
             },
@@ -568,14 +561,14 @@
                         86.0,
                         20.0
                     ],
-                    "text": "floor (dB)",
                     "presentation": 1,
                     "presentation_rect": [
                         108.0,
                         42.0,
                         70.0,
-                        18.0
-                    ]
+                        20.0
+                    ],
+                    "text": "floor (dB)"
                 }
             },
             {
@@ -661,64 +654,62 @@
                         93.0,
                         20.0
                     ],
-                    "text": "curve (exp)",
                     "presentation": 1,
                     "presentation_rect": [
                         198.0,
                         42.0,
                         72.0,
-                        18.0
-                    ]
+                        20.0
+                    ],
+                    "text": "curve (S)"
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
-                    "id": "obj-22",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [
-                        850,
-                        180,
-                        142.0,
-                        20.0
-                    ],
-                    "text": "amplitude follower",
                     "fontname": "Arial",
                     "fontsize": 13.0,
+                    "id": "obj-22",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        850.0,
+                        180.0,
+                        142.0,
+                        21.0
+                    ],
                     "presentation": 1,
                     "presentation_rect": [
                         18.0,
                         14.0,
                         160.0,
-                        22.0
-                    ]
+                        21.0
+                    ],
+                    "text": "amplitude follower"
                 }
             },
             {
                 "box": {
-                    "maxclass": "comment",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
                     "id": "obj-23",
+                    "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "outlettype": [],
                     "patching_rect": [
-                        850,
-                        210,
+                        850.0,
+                        210.0,
                         51.0,
                         20.0
                     ],
-                    "text": "input",
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
                     "presentation": 1,
                     "presentation_rect": [
                         205.0,
                         97.0,
                         50.0,
-                        18.0
-                    ]
+                        20.0
+                    ],
+                    "text": "input"
                 }
             }
         ],
@@ -1044,7 +1035,6 @@
             0.333,
             0.333,
             1.0
-        ],
-        "openinpresentation": 1
+        ]
     }
 }
