@@ -35,3 +35,14 @@ over snappiness — latency is not a concern.
   History), spaces only, no else-if chains, plain if/else fine.
 - Mono follower on adc~ left channel (outlet 0). Stereo could sum/average later
   if requested — out of scope for v1.
+
+## v0.2.0 — Range expansion (2026-08-21)
+
+User found raw RMS mostly sat in 0–0.2. Added two-stage output shaping in the codebox:
+1. **dB mapping:** `db = 20*log10(max(rms, 1e-5))`, then `lin = clamp((db - floordb) / -floordb, 0, 1)`.
+   `Param floordb(-60, min=-96, max=-6)` — the level that maps to 0.
+2. **Exponent curve:** `out1 = pow(lin, curve)`, `Param curve(1, min=0.1, max=4)` for extra shaping.
+
+Param renamed `floordb` (not `floor` — GenExpr builtin collision). Two new flonum chains
+(`floordb $1`, `curve $1`); loadbang fan-out now goes through `t b b b`. User's own MAX
+edits (added meter~, repositioned boxes) preserved via surgical edit.
