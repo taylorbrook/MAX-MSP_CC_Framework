@@ -6,3 +6,4 @@ notes: Confirmed in MAX 2026-08-19: 9/8 sounds D4+4c, table ratio and (actual) d
 current_stage: v0.9.0 - tuning math correction
 status: v0.9.0 confirmed working in MAX
 version: 0.9.0
+note: v0.11.1: ji-engine.js note interface changed to freq <rootHz> <gate> messages
