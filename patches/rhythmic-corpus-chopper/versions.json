@@ -94,6 +94,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.0.12",
+      "description": "fix ears.split~ 'Error while splitting' on load: buffer name to zl.reg cold inlet (no premature split before onset points exist)",
+      "timestamp": "2026-08-21T16:38:23.413232+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
