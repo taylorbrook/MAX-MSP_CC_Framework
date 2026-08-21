@@ -206,6 +206,14 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.11.0",
+      "description": "Preset save/recall: pattrstorage + autopattr + preset UI, 53 named clients, ratio resync chain",
+      "timestamp": "2026-08-21T02:58:11.945942+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat"
+      ]
     }
   ]
 }
