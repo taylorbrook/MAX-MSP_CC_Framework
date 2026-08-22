@@ -120,3 +120,14 @@ Generated `sample-layers-slot.maxpat` (slot abstraction) and `sample-layers.maxp
   gain~ L (linked-stereo pattern) and intentionally NOT in presentation.
 - **DB fix:** added `buffer~` outlets override (both control, right = bang
   after read/replace/write) — DB mis-marked them as signal.
+
+## Iterate v0.2.0 (2026-08-22)
+
+Slot UI rework per user request: filepath message bar removed; `waveform~`
+(bound via loadbang -> `set #1`, auto-updates on buffer replace) is now the
+display, with the dropfile zone overlaid on it (dropfile brought to front —
+it catches file drags, passes clicks through to waveform~). Per-slot mono
+meter~ fed by (L+R) summed into `*~ 0.5`. "drop audio file" hint moved to the
+header row so it never overlaps the waveform. Slot presentation grew to
+210x170; main grid rows now y=40/220/400 and bpatcher patching heights match
+(toggle row shifted down 40px to clear).
