@@ -4,6 +4,20 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-08-22T16:32:55.226518+00:00"
+    },
+    {
+      "version": "0.3.1",
+      "description": "backfill from git history (v0.3.1 confirmed working)",
+      "timestamp": "2026-08-22T16:32:55+00:00"
+    },
+    {
+      "version": "0.4.0",
+      "description": "slot on/off + gain inlets; master toggle stops per-slot playback",
+      "timestamp": "2026-08-22T23:00:36.475868+00:00",
+      "files_changed": [
+        "sample-layers.maxpat",
+        "sample-layers-slot.maxpat"
+      ]
     }
   ]
 }

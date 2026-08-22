@@ -153,3 +153,23 @@ but `e` is the GenExpr built-in Euler constant — assignments silently no-op,
 so `env = e` pinned the envelope at 2.718 and `sh = e*e` was a constant ~7.4x
 (~+17 dB) gain. Renamed to `ev`. Rule promoted to CLAUDE.md (never shadow
 GenExpr constant names). Voice codebox audited — no collisions.
+
+## Iteration v0.4.0 (2026-08-22)
+
+- **Master toggle now stops slot playback.** Main toggle -> `t i i` -> `on $1`
+  (master env, unchanged) + `s layers-on`; each slot: `r layers-on` -> `on $1`
+  -> voice gen~. New `Param on(0)` (master gate) and `Param active(1)` (slot
+  gate) in the voice codebox; a new grain is scheduled only when
+  `on * active > 0.5`. Idle voice outputs 0 and skips peek/env (CPU drops).
+- **Gate-off fade:** on gate low mid-grain, `pos` jumps to the envelope-matched
+  point of the closing Tukey taper (attack pos p -> len - p; plateau -> len - T),
+  so slots fade out click-free over the taper time instead of ringing for the
+  full grain length.
+- **Slot bpatcher inlets (x-order):** inlet 0 = slot on/off (0/1) -> visible
+  toggle (presentation [70,138], init 1 via loadbang trigger outlet 7) ->
+  `active $1`; inlet 1 = gain 0.-1. -> `scale 0. 1. 0. 127.` -> dial (dial
+  position reflects incoming gain; existing dial -> scale -> `gain $1` chain
+  drives the Param). Main-patch bpatchers updated to numinlets=2 (unwired --
+  inlets are for external control).
+- Critic warnings: control->signal on gen~ param messages (known false-positive
+  class), cosmetic missing-midpoints on new cables. No blockers.
