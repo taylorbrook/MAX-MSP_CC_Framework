@@ -145,3 +145,11 @@ Also fixed: finalize's assistance pass had rewritten the slot label comment's
 stored text to "#1" (comments don't substitute #N); restored placeholder
 "slot" — loadbang's `set #1` sets the real label at load. Watch for this
 after future finalize passes.
+
+## Fix v0.3.1 (2026-08-22)
+
+Master on/off was always-on: the env codebox used `e` as the ramp variable,
+but `e` is the GenExpr built-in Euler constant — assignments silently no-op,
+so `env = e` pinned the envelope at 2.718 and `sh = e*e` was a constant ~7.4x
+(~+17 dB) gain. Renamed to `ev`. Rule promoted to CLAUDE.md (never shadow
+GenExpr constant names). Voice codebox audited — no collisions.
