@@ -22,7 +22,7 @@
                     "mode": 1,
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 262.0, 498.0, 198.0, 40.0 ],
+                    "patching_rect": [ 488.0, 109.0, 198.0, 40.0 ],
                     "presentation": 1,
                     "presentation_rect": [ 8.0, 8.0, 468.0, 318.0 ],
                     "proportion": 0.39,
@@ -707,7 +707,7 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 195.0, 150.0, 40.0, 22.0 ],
+                    "patching_rect": [ 189.0, 150.0, 40.0, 22.0 ],
                     "text": "-50"
                 }
             },
@@ -771,7 +771,7 @@
                     "maxclass": "comment",
                     "numinlets": 1,
                     "numoutlets": 0,
-                    "patching_rect": [ 266.0, 505.5, 185.0, 24.0 ],
+                    "patching_rect": [ 492.0, 116.0, 185.0, 24.0 ],
                     "presentation": 1,
                     "presentation_rect": [ 20.0, 16.0, 220.0, 24.0 ],
                     "text": "SPECTRAL DETECTOR",
@@ -1104,7 +1104,7 @@
             {
                 "patchline": {
                     "destination": [ "obj-41", 0 ],
-                    "midpoints": [ 141.5, 147.0, 204.5, 147.0 ],
+                    "midpoints": [ 141.5, 147.0, 198.5, 147.0 ],
                     "source": [ "obj-37", 3 ]
                 }
             },
@@ -1139,7 +1139,7 @@
             {
                 "patchline": {
                     "destination": [ "obj-27", 0 ],
-                    "midpoints": [ 204.5, 174.0, 552.0, 174.0, 552.0, 246.0, 557.5, 246.0 ],
+                    "midpoints": [ 198.5, 174.0, 552.0, 174.0, 552.0, 246.0, 557.5, 246.0 ],
                     "source": [ "obj-41", 0 ]
                 }
             },
