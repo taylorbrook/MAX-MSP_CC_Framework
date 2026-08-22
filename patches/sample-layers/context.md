@@ -131,3 +131,17 @@ meter~ fed by (L+R) summed into `*~ 0.5`. "drop audio file" hint moved to the
 header row so it never overlaps the waveform. Slot presentation grew to
 210x170; main grid rows now y=40/220/400 and bpatcher patching heights match
 (toggle row shifted down 40px to clear).
+
+## Iterate v0.3.0 (2026-08-22)
+
+Slot waveform~ now highlights the playing grain: voice gen~ rebuilt with 4
+outputs — out3/out4 emit the current grain's start/end position in buffer ms
+(`start / filesr * 1000` and `(start + len * rate) / filesr * 1000`; buffer
+timebase uses the FILE sample rate, not DSP SR). Each is polled by
+`snapshot~ 100` into waveform~ inlet 2 (Selection Start ms) / inlet 3
+(Selection End ms), so the selection jumps to each new grain within 100 ms.
+End is wired before start (cold-first). Empty buffer -> 0/0 -> no highlight.
+Also fixed: finalize's assistance pass had rewritten the slot label comment's
+stored text to "#1" (comments don't substitute #N); restored placeholder
+"slot" — loadbang's `set #1` sets the real label at load. Watch for this
+after future finalize passes.
