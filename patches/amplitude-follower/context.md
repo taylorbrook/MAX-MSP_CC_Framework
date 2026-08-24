@@ -74,3 +74,7 @@ smoothed (keeps attack smooth) and combined via `env = max(rms, pks)`. Pitched
 behavior unchanged (sine: peak*0.7071 == RMS); noise lifted by its crest factor.
 Readout label updated to "amplitude 0-1 (RMS/peak)". Note: versions.json had
 lost 0.2.0–0.3.1 history; corrected this bump from auto-computed 0.1.0 to 0.4.0.
+
+## v0.4.1 (2026-08-23) — HF loudness weighting (port of spectraldetector v0.2.4)
+
+Sustained fricative-type noise ("sh", hiss) reads far below its perceived loudness on a flat detector — its energy sits above 1 kHz where the ear is most sensitive. Added an HF-weighted branch: onepole HP at ~1.2 kHz (coeff exp(-2pi*1200/sr)) on the input, peak-followed and one-pole smoothed exactly like the existing main peak branch (both paced by the `smooth` param), weighted x4 (+12 dB); `env = max(env, pfs)`. New Histories: hbx, hby, pkf1, pfs1. Low/mid pitched material unaffected; hiss/room tone reads ~+9-12 dB hotter, so `floordb` settings may need to come up. Also applied to both gen~ copies in the user's 0_Burnt.maxpat (p ampfollow).

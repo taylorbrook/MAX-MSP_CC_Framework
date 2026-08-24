@@ -13,6 +13,14 @@
         "amplitude-follower.maxpat"
       ],
       "note": "version corrected: versions.json had lost 0.2.0-0.3.1 history (see context.md)"
+    },
+    {
+      "version": "0.4.1",
+      "description": "+12 dB HF loudness weighting branch (>1.2 kHz onepole HP, peak env, smoothed) so sustained fricative-type noise registers (ports spectraldetector v0.2.4)",
+      "timestamp": "2026-08-24T02:57:34.591955+00:00",
+      "files_changed": [
+        "amplitude-follower.maxpat"
+      ]
     }
   ]
 }
