@@ -17,6 +17,14 @@
       "files_changed": [
         "spectraldetector.maxpat"
       ]
+    },
+    {
+      "version": "0.2.2",
+      "description": "silence gate sensitivity to noisy input: gate = max(RMS, 0.7071*peak-envelope) (amplitude-follower v0.4.0 pattern)",
+      "timestamp": "2026-08-24T02:49:32.171194+00:00",
+      "files_changed": [
+        "spectraldetector.maxpat"
+      ]
     }
   ]
 }

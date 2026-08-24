@@ -93,3 +93,7 @@ gen~ compiles and the detector runs. Codebox safe-construct rules promoted to CL
 User report: "never detects silent unless extremely quiet." Root cause was calibration, not logic: the gate compares 50 ms RMS of the high-passed input against `floorlin`, but the default was -50 dBFS RMS (below most live-input noise floors) and the floor dial capped at -30 dB (range -70..-30), so the threshold could never be raised above a real-world noise floor. The codebox Param also clamped at 0.1 (≈ -20 dB).
 
 Fix: dial range widened to -80..-10 dB (min=-80, size=71), loadbang default -50 → -40 dB, `Param floorlin` default 0.003 → 0.01 with max 0.1 → 0.35 (dbtoa(-10) = 0.316 now fits). Gate logic unchanged. Note for calibration: the gate reads RMS (≈3 dB below sine peak, ~10 dB below noise peaks) of the 70 Hz-highpassed signal, so it reads lower than meter~ peak levels.
+
+## v0.2.2 (2026-08-23) — silence gate: peak-envelope branch for noisy input
+
+User feedback (via 0_Burnt integration): the RMS gate under-reads noisy sounds — noise has a high crest factor, so its RMS sits ~10 dB below its perceived/peak level and noisy material dropped toward SILENT too easily. Applied the amplitude-follower v0.4.0 pattern: decaying peak envelope (`pkh = max(abs(x), pkh*rc)`, 50 ms rc shared with RMS), smoothed and scaled by 0.7071, and `gate = max(sqrt(rmsq), pksm)`. For a sine the scaled peak equals RMS (tonal behavior unchanged); for noise the gate reads ~6 dB hotter. New Histories: pkh, pksm. Also applied directly to both embedded detector copies in 0_Burnt.maxpat.
