@@ -450,7 +450,7 @@
                             },
                             {
                                 "box": {
-                                    "code": "Param smooth(100, min=1, max=5000);\nParam floordb(-60, min=-96, max=-6);\nParam curve(1, min=0.1, max=4);\nHistory ms1(0);\nHistory pk1(0);\nHistory pks1(0);\na = exp(-1 / (smooth * 0.001 * samplerate));\nsq = in1 * in1;\nms = sq + a * (ms1 - sq);\nms1 = ms;\nrms = sqrt(ms);\nax = abs(in1);\npk = max(ax, pk1 * a);\npk1 = pk;\npkc = pk * 0.7071;\npks = pkc + a * (pks1 - pkc);\npks1 = pks;\nenv = max(rms, pks);\ndb = 20 * log10(max(env, 0.00001));\nlin = clamp((db - floordb) / (0 - floordb), 0, 1);\nlk = pow(lin, curve);\nok = pow(1 - lin, curve);\nout1 = lk / (lk + ok);",
+                                    "code": "Param smooth(100, min=1, max=5000);\nParam floordb(-60, min=-96, max=-6);\nParam curve(1, min=0.1, max=4);\nHistory ms1(0);\nHistory pk1(0);\nHistory pks1(0);\nHistory hbx(0);\nHistory hby(0);\nHistory pkf1(0);\nHistory pfs1(0);\na = exp(-1 / (smooth * 0.001 * samplerate));\nsq = in1 * in1;\nms = sq + a * (ms1 - sq);\nms1 = ms;\nrms = sqrt(ms);\nax = abs(in1);\npk = max(ax, pk1 * a);\npk1 = pk;\npkc = pk * 0.7071;\npks = pkc + a * (pks1 - pkc);\npks1 = pks;\n// HF-weighted branch: sustained fricative-type noise (\"sh\", hiss) is\n// perceptually loud but low in raw level because its energy sits above\n// 1 kHz where the ear is most sensitive. Take the band above ~1.2 kHz\n// (onepole HP), peak-follow and smooth it like the main peak branch,\n// weight it +12 dB (x4), and let the envelope take the louder branch.\nhba = exp(-7539.82 / samplerate);\nyh = in1 - hbx + hba * hby;\nhbx = in1;\nhby = yh;\nah = abs(yh);\npkf = max(ah, pkf1 * a);\npkf1 = pkf;\npfc = pkf * 4.0;\npfs = pfc + a * (pfs1 - pfc);\npfs1 = pfs;\nenv = max(rms, pks);\nenv = max(env, pfs);\ndb = 20 * log10(max(env, 0.00001));\nlin = clamp((db - floordb) / (0 - floordb), 0, 1);\nlk = pow(lin, curve);\nok = pow(1 - lin, curve);\nout1 = lk / (lk + ok);",
                                     "fontface": 0,
                                     "fontname": "<Monospaced>",
                                     "fontsize": 12.0,
@@ -849,7 +849,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.4.0",
+                    "text": "v0.4.1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
