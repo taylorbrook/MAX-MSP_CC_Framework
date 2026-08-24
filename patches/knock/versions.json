@@ -4,6 +4,14 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-08-24T04:56:09.404232+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "bassier range (40-22Hz), extreme randomization incl per-hit pitch, woody tap attack",
+      "timestamp": "2026-08-24T06:14:21.592578+00:00",
+      "files_changed": [
+        "knock.maxpat"
+      ]
     }
   ]
 }
