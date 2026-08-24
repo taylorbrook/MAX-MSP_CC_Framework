@@ -20,6 +20,14 @@
       "files_changed": [
         "knock.maxpat"
       ]
+    },
+    {
+      "version": "0.1.2",
+      "description": "remove noise click attack entirely; tap mode + thump only",
+      "timestamp": "2026-08-24T20:21:05.322777+00:00",
+      "files_changed": [
+        "knock.maxpat"
+      ]
     }
   ]
 }
