@@ -28,6 +28,14 @@
       "files_changed": [
         "knock.maxpat"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "4-voice round-robin polyphony in codebox; previous knocks ring out on retrigger",
+      "timestamp": "2026-08-24T20:25:36.864822+00:00",
+      "files_changed": [
+        "knock.maxpat"
+      ]
     }
   ]
 }
