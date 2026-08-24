@@ -33,6 +33,14 @@
       "files_changed": [
         "spectraldetector.maxpat"
       ]
+    },
+    {
+      "version": "0.2.4",
+      "description": "gate loudness weighting: +12 dB HF branch (>1.2 kHz onepole HP, peak env) so sustained fricative-type noise registers",
+      "timestamp": "2026-08-24T02:55:18.290790+00:00",
+      "files_changed": [
+        "spectraldetector.maxpat"
+      ]
     }
   ]
 }
