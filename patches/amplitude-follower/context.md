@@ -62,3 +62,15 @@ same `curve` param (0.1–4). k=1 identity, k>1 = S (mid expansion, floor squash
 k<1 = inverse-S. Denominator can't hit zero for lin in [0,1]. Label updated to
 "curve (S)". Chosen over pow: symmetric mid-range contrast + soft-gates the noise
 floor, pairs better with the dB map.
+
+## v0.4.0 — Noise response fix (2026-08-23)
+
+User: works well for pitched sound, noise reads very low. Cause: crest factor —
+noise RMS sits 9–12 dB below its peaks vs 3 dB for a sine, so RMS understates
+noisy input. Fix: added a peak-envelope branch in the codebox —
+`pk = max(abs(in1), pk1 * a)` (instant attack, release = smooth coeff), scaled
+by 0.7071 so a sine reads identically through either branch, then one-pole
+smoothed (keeps attack smooth) and combined via `env = max(rms, pks)`. Pitched
+behavior unchanged (sine: peak*0.7071 == RMS); noise lifted by its crest factor.
+Readout label updated to "amplitude 0-1 (RMS/peak)". Note: versions.json had
+lost 0.2.0–0.3.1 history; corrected this bump from auto-computed 0.1.0 to 0.4.0.
