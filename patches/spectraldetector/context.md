@@ -97,3 +97,7 @@ Fix: dial range widened to -80..-10 dB (min=-80, size=71), loadbang default -50 
 ## v0.2.2 (2026-08-23) — silence gate: peak-envelope branch for noisy input
 
 User feedback (via 0_Burnt integration): the RMS gate under-reads noisy sounds — noise has a high crest factor, so its RMS sits ~10 dB below its perceived/peak level and noisy material dropped toward SILENT too easily. Applied the amplitude-follower v0.4.0 pattern: decaying peak envelope (`pkh = max(abs(x), pkh*rc)`, 50 ms rc shared with RMS), smoothed and scaled by 0.7071, and `gate = max(sqrt(rmsq), pksm)`. For a sine the scaled peak equals RMS (tonal behavior unchanged); for noise the gate reads ~6 dB hotter. New Histories: pkh, pksm. Also applied directly to both embedded detector copies in 0_Burnt.maxpat.
+
+## v0.2.3 (2026-08-23) — gate peak detector: instant attack / slow release
+
+v0.2.2 still under-read non-pitched material: the peak branch passed through a 50 ms one-pole before the gate (a 10 ms burst reaches only ~18% through it) and decayed at the 50 ms rc between sparse events, and the 0.7071 scaling was conservative. Replaced with a noise-gate-style detector: `pkh = max(abs(x), pkh * prc)` with prc = 300 ms release, no smoothing, no scaling; `gate = max(sqrt(rmsq), pkh)`. A steady sine now reads +3 dB vs RMS (floor settings may need ~+3 dB); noise reads ~+10 dB vs RMS and sparse texture holds the gate up between events. History pksm removed. Also applied to both embedded copies in 0_Burnt.maxpat.

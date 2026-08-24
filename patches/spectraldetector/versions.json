@@ -25,6 +25,14 @@
       "files_changed": [
         "spectraldetector.maxpat"
       ]
+    },
+    {
+      "version": "0.2.3",
+      "description": "gate peak detector: instant attack / 300 ms release / full peak (drop 50 ms smoother and 0.7071 scaling) for non-pitched sensitivity",
+      "timestamp": "2026-08-24T02:52:19.565542+00:00",
+      "files_changed": [
+        "spectraldetector.maxpat"
+      ]
     }
   ]
 }
