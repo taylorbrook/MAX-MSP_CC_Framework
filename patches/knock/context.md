@@ -45,3 +45,16 @@ All objects verified in the database.
 - Codebox safe-construct rules apply: spaces only, no `else if`, declarations first, no variable-bound loops (none needed here — no loops at all).
 
 **Version notes:** all objects are core MAX 8-era, no MAX 9-only objects needed.
+
+## Build log
+
+### v0.1.0 (2026-08-23)
+
+First build. Single gen~ codebox synth (1 in / 1 out):
+- Params: `bassiness` (0.5), `randomness` (0.3), `vel` (0.79 ≈ velocity 100). Set via `prepend <name>` → gen~ inlet 0.
+- Trigger: `number` (0–127) → `scale 0 127 0. 1.` → `t b f` — f sets `vel` cold, b fires `click~` hot; codebox detects the impulse (`in1 > 0.5` rising). `button` re-hits at last velocity.
+- DSP: swept-sine kick core (base 90→40 Hz by bassiness, sweep multiplier ~3× → base over 45 ms), damped body sine at 2.7× base, noise knuckle-click through manual onepole (`clkcoef`), squared-exp decays via per-sample History multiplies, `tanh` drive scaled by bassiness, output ×vel².
+- Per-hit randomization (latched from `noise()` at trigger, scaled by randomness): decay times (±55%), sweep depth (±60%), click level/brightness.
+- Output: gen~ → gain~ (loadmess 120) + meter~ companion → ezdac~.
+- Presentation UI: panel, KNOCK title, hit button, velocity number, randomness/bassiness dials (floatoutput 1, size 1.0) with labels, gain~ + meter~ + ezdac~. Labels re-colored light (0.92) after auto-styling forces dark house textcolor — apply textcolor AFTER `finalize_patch` or it gets overwritten.
+- Critic: clean except by-design warnings (message-into-signal-inlet idiom; gain~/meter~ companion 5px gap).
