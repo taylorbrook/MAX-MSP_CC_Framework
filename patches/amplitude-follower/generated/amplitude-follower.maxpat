@@ -849,7 +849,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.1.0",
+                    "text": "v0.4.0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
