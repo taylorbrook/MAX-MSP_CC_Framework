@@ -12,6 +12,14 @@
       "files_changed": [
         "knock.maxpat"
       ]
+    },
+    {
+      "version": "0.1.1",
+      "description": "duller attack: darker click, lower tap mode (750Hz), 2.2kHz output lowpass",
+      "timestamp": "2026-08-24T20:14:17.420363+00:00",
+      "files_changed": [
+        "knock.maxpat"
+      ]
     }
   ]
 }
