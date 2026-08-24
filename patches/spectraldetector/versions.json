@@ -4,6 +4,19 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-08-20T03:21:40.846945+00:00"
+    },
+    {
+      "version": "0.2.0",
+      "description": "backfill: version record sync (v0.1.0 build, v0.1.1/v0.2.0 codebox compile fixes -- see context.md)",
+      "timestamp": "2026-08-20T03:21:40.846945+00:00"
+    },
+    {
+      "version": "0.2.1",
+      "description": "floorlin silence gate usable range: dial -80..-10 dB (was -70..-30), default -40 dB (was -50), Param max 0.35",
+      "timestamp": "2026-08-24T02:21:59.041757+00:00",
+      "files_changed": [
+        "spectraldetector.maxpat"
+      ]
     }
   ]
 }

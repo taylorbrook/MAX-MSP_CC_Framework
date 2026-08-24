@@ -87,3 +87,9 @@ If this compiles: promote to CLAUDE.md — tabs suspected fatal, spaces mandator
 ## Status: v0.2.0 confirmed working in MAX (2026-08-19)
 
 gen~ compiles and the detector runs. Codebox safe-construct rules promoted to CLAUDE.md Gen~ section.
+
+## v0.2.1 (2026-08-23) — floorlin silence gate usable range
+
+User report: "never detects silent unless extremely quiet." Root cause was calibration, not logic: the gate compares 50 ms RMS of the high-passed input against `floorlin`, but the default was -50 dBFS RMS (below most live-input noise floors) and the floor dial capped at -30 dB (range -70..-30), so the threshold could never be raised above a real-world noise floor. The codebox Param also clamped at 0.1 (≈ -20 dB).
+
+Fix: dial range widened to -80..-10 dB (min=-80, size=71), loadbang default -50 → -40 dB, `Param floorlin` default 0.003 → 0.01 with max 0.1 → 0.35 (dbtoa(-10) = 0.316 now fits). Gate logic unchanged. Note for calibration: the gate reads RMS (≈3 dB below sine peak, ~10 dB below noise peaks) of the 70 Hz-highpassed signal, so it reads lower than meter~ peak levels.
