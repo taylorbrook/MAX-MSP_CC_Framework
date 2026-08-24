@@ -6,12 +6,13 @@
       "timestamp": "2026-08-21T16:41:41.095198+00:00"
     },
     {
-      "version": "0.1.0",
+      "version": "0.4.0",
       "description": "peak-envelope branch (max with 0.7071*peak) fixes low readings on noisy input",
       "timestamp": "2026-08-24T02:10:42.798177+00:00",
       "files_changed": [
         "amplitude-follower.maxpat"
-      ]
+      ],
+      "note": "version corrected: versions.json had lost 0.2.0-0.3.1 history (see context.md)"
     }
   ]
 }
