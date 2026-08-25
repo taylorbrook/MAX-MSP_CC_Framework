@@ -16137,6 +16137,9 @@
     "confidence": "HIGH",
     "source": "maxref send.maxref.xml, 2026-08-20"
    }
+  },
+  "pak": {
+   "variable_io": true
   }
  },
  "version_map": {
@@ -16452,6 +16455,12 @@
     "confidence": "HIGH",
     "finding": "Argument-driven outlet count. Distinct from core 'unpack' (arg_count over typespec list); mc.unpack~ takes a single int 'size'."
    }
+  },
+  "pak": {
+   "inlet_count": "arg_count",
+   "outlet_count": "fixed:1",
+   "default_inlets": 2,
+   "description": "Like pack: number of arguments determines number of inlets (all hot). Default: 2 inlets."
   }
  },
  "_uncovered_empty_io": {
