@@ -8,6 +8,10 @@
     {
       "version": "0.1.0",
       "notes": "initial build: gen~ one-knob disintegrate, dial\u2192amount, presentation"
+    },
+    {
+      "version": "0.2.0",
+      "notes": "drive 0-0.8 + harder (g to 81, sine fold); HP 0.3-0.95, LP split to 0.85-1.0; fade 0.95-1.0"
     }
   ]
 }
