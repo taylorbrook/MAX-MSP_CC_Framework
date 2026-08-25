@@ -1789,7 +1789,7 @@
                         180,
                         22.0
                     ],
-                    "text": "expr 50 + 3950 * pow($f1 / 127.\\, 3.892)",
+                    "text": "expr 50. + 3950. * pow($f1 / 127.\\, 3.892)",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1913,7 +1913,7 @@
                         180,
                         22.0
                     ],
-                    "text": "expr 50 + 3950 * pow($f1 / 127.\\, 3.892)",
+                    "text": "expr 50. + 3950. * pow($f1 / 127.\\, 3.892)",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2037,7 +2037,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2161,7 +2161,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2285,7 +2285,7 @@
                         180,
                         22.0
                     ],
-                    "text": "expr 20 + 1980 * pow($f1 / 127.\\, 3.459)",
+                    "text": "expr 20. + 1980. * pow($f1 / 127.\\, 3.459)",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2409,7 +2409,7 @@
                         180,
                         22.0
                     ],
-                    "text": "expr 500 + 19500 * pow($f1 / 127.\\, 2.873)",
+                    "text": "expr 500. + 19500. * pow($f1 / 127.\\, 2.873)",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2533,7 +2533,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2657,7 +2657,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2781,7 +2781,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2905,7 +2905,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 500",
+                    "text": "scale 0 127 0. 500.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -3029,7 +3029,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -3153,7 +3153,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -3277,7 +3277,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -3401,7 +3401,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0.01 1",
+                    "text": "scale 0 127 0.01 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -3649,7 +3649,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -3773,7 +3773,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 6",
+                    "text": "scale 0 127 0. 6.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -3897,7 +3897,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -4145,7 +4145,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -4269,7 +4269,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -4393,7 +4393,7 @@
                         180,
                         22.0
                     ],
-                    "text": "scale 0 127 0 1",
+                    "text": "scale 0 127 0. 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
