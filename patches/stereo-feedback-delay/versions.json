@@ -20,6 +20,14 @@
       "files_changed": [
         "generated/stereo-feedback-delay.maxpat"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "preset bar with 6 factory presets scoped to the 8 param dials",
+      "timestamp": "2026-08-25T03:19:16.886168+00:00",
+      "files_changed": [
+        "generated/stereo-feedback-delay.maxpat"
+      ]
     }
   ]
 }

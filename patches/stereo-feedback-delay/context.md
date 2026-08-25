@@ -38,6 +38,12 @@ Proven idioms borrowed from `patches/tape-wobble` (confirmed-working codebox in 
 - **Params (8):** `time_ms` (1–2000), `feedback` (0–0.95), `damp` (cutoff Hz ~500–15000), `mod_rate` (0.1–8 Hz), `mod_depth` (0–1 → scaled to a few ms), `drive` (0–1), `width` (0–30 ms), `mix` (0–1).
 - Codebox safe-construct rules apply: spaces only (no tabs), no `else if`, all declarations before expressions, no loops needed for this design.
 
+## Presets (v0.2.0)
+
+- `preset` bar (top-right, in presentation) scoped to the 8 param dials via cords from preset outlet 0 — the standard Max scoping idiom. The critic's "fan-out without trigger" blocker on these cords is a **known false positive**: they are storage-scope markers, not execution-ordered control flow, and a trigger would break scoping. Override documented here; do not "fix".
+- **Deliberate exclusions from preset scope:** input/output `gain~` sliders (performance state, not patch state).
+- Factory presets 1–6: Slapback, Dub Echo, Tape Wobble, Wide Ambience, Long Trails, Clean Digital. Stored as dial values (`preset_data`, format `[5, "obj-id", "dial", "float", v]`), so recall drives dial → scale → flonum → param message and the whole UI stays consistent. Shift-click a bubble to overwrite.
+
 ### Alternatives considered
 - `tapin~`/`tapout~` + top-level feedback: rejected — MSP feedback loops are quantized to the signal vector; gen~ gives single-sample feedback and clean in-loop processing.
 - Crossfading dual read heads for clickless time jumps: rejected in discuss (tape glide chosen).
