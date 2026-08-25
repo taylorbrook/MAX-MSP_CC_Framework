@@ -4,6 +4,14 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-08-25T04:34:37.223050+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "v0.1.0 \u2014 gen~ granular reverse delay engine, transport sync, Core/Advanced presentation, 6 factory presets",
+      "timestamp": "2026-08-25T04:54:10.758310+00:00",
+      "files_changed": [
+        "generated/reverse-delay.maxpat"
+      ]
     }
   ]
 }

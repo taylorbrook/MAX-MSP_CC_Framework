@@ -98,3 +98,14 @@ All objects verified via `ObjectDatabase` (domain/IO checked).
 ### Risks
 - CPU: 32 slot iterations/sample with 5-way window branch ≈ heavy but gen~ handles it; if it stutters, reduce pool to 16 via the `Data` size constant.
 - `Data` ring of 1.34M×2 doubles ≈ 21 MB — acceptable; alternatively 14 s @ 48k (672001) if memory matters.
+
+## Build notes (2026-08-24, /max-build v0.1.0)
+
+- Engine: single gen~ codebox (`varname rdgen`), 24 linear Params; `Data ring(1344000, 2)` + 17 `Data(32)` slot arrays; spawn folded into the single 32-slot render loop (first free slot, refuse when full). Window duty constants hardcoded from a 2048-pt table integration (Hann/Gauss/Tri/Expo; Tukey closed-form `1-0.625a` / `1-0.5a`). HP/LP = RBJ Butterworth biquads (TDF2) with per-sample coefficients; 4+4 Schroeder allpasses as `Delay` lines; `tanh(d*x)/d`.
+- Loop-gain pre-flight (numpy overlap-add, width 0, all shapes, overlap 2–16): mean loop amplitude gain <= 1.004 x feedback, so feedback < 1 always decays; feedback = 1 is near-unity by design (VST law).
+- MAX side: dial -> `expr lo + range * pow($f1/127.\, k)` for JUCE-skewed params (k = 1/skew from centre: time/grain 3.892, lowCut 3.46, highCut 2.873, driftRate 4.152); `scale 0 127 lo hi` for linear. flonum readouts sit under dials (stereo-feedback-delay convention) and are editable.
+- `p sync`: metro 100 polls `transport`; `zl lookup` (0-based) maps division index -> beats; `pak` -> `expr` clamps 50–4000; selector `expr ($i3*$i4>0)*$f2 + ...` falls back to the free dial when sync is off or transport stopped; `change` dedupes. Run toggle + BPM flonum drive the global transport. **Verify in MAX:** `zl lookup` 0-based indexing (1/4 must yield 1 beat).
+- Init: loadbang -> `t b b` -> `128` (`t i i` -> both gain~ pairs) then `1` -> preset (recall Reverse Bloom). Preset scope: 22 dials + shape/source/division umenus + sync toggle; gain~ excluded.
+- Presets (dial ints quantise skewed values by ~±2%): 1 Reverse Bloom, 2 Guitar Swell, 3 Slow Wash, 4 Tight Smear, 5 Dark Cavern, 6 Rhythmic Reverse (sync on, 1/8D).
+- Critic residue accepted: preset fan-out (known false positive), `p sync` hot/cold (inner `pak` is all-hot), message->gen~ control-to-signal warnings (param pattern).
+- DB fix: `pak` gained `variable_io` + `arg_count` rule in overrides.json (was fixed at 2 inlets).
