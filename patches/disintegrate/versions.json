@@ -4,6 +4,10 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-08-25T21:41:14.465751+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "notes": "initial build: gen~ one-knob disintegrate, dial\u2192amount, presentation"
     }
   ]
 }
