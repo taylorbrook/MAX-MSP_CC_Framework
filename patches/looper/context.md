@@ -49,3 +49,11 @@ Declaring `Buffer loopbuf;` in the codebox binds to a parent-patch `buffer~ loop
 **Signal flow:** `adc~ 1` → gen~ (in1) → `*~` output stage → `dac~ 1 2` (mono to both). meter~ taps at input and output.
 
 **MAX 9 compatibility:** all chosen objects are core MSP/Max, no version concerns.
+
+## Bpatcher conversion (2026-08-24, /max-iterate)
+
+`looper.maxpat` is now a reusable bpatcher module (`openinpresentation: 1`):
+- **Arg `#1` = buffer name** (symbol, e.g. `looper-1`). Standalone-token substitution: `buffer~ #1 30000 1`; loadbang → `t b b` → `loopbuf #1` (gen~ Buffer rebind) + `set #1` (waveform~, since stored attrs don't substitute — `buffername` attr removed); redraw msg is `bufname #1`.
+- **I/O:** mono signal `inlet` ("Audio In (mono)") → engine → mono `outlet` ("Loop Out (mono)"). adc~/dac~ removed — parent patch owns hardware I/O.
+- **Demo:** `looper-demo.maxpat` — adc~ 1 → two bpatcher instances (args `looper-1`/`looper-2`) → summed via `*~ 0.7` → dac~ 1 2.
+- Each instance needs a unique `#1` arg or instances will share one buffer.
