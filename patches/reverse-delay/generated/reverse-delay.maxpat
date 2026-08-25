@@ -12,7 +12,7 @@
         "rect": [
             34.0,
             95.0,
-            1459.0,
+            1258.0,
             932.0
         ],
         "boxes": [
@@ -1108,7 +1108,7 @@
                             },
                             {
                                 "box": {
-                                    "code": "\n// reverse-delay v0.1.0 -- granular reverse delay engine (port of O-ReverseDelay v1.8.1)\n// Params are linear; dial skew is applied on the MAX side.\nParam delay_ms(500, min=50, max=4000);\nParam grain_ms(200, min=50, max=4000);\nParam density(0.6, min=0, max=1);\nParam feedback(0.4, min=0, max=1);\nParam lowcut(100, min=20, max=2000);\nParam highcut(8000, min=500, max=20000);\nParam width(0.6, min=0, max=1);\nParam jitter(0, min=0, max=1);\nParam scatter_ms(0, min=0, max=500);\nParam size_rand(0, min=0, max=1);\nParam gain_rand(0, min=0, max=1);\nParam tilt(0.5, min=0, max=1);\nParam shape(0, min=0, max=4);\nParam grain_count(8, min=2, max=16);\nParam taper(0.5, min=0.01, max=1);\nParam direction(0, min=0, max=1);\nParam makeup_db(0, min=0, max=6);\nParam source_mode(0, min=0, max=1);\nParam duck(0, min=0, max=1);\nParam drift_rate(0.3, min=0.02, max=5);\nParam drift_depth(0, min=0, max=1);\nParam diffusion(0, min=0, max=1);\nParam drive(0, min=0, max=1);\n\nDelay apl1(2200);\nDelay apl2(2200);\nDelay apl3(2200);\nDelay apl4(2200);\nDelay apr1(2200);\nDelay apr2(2200);\nDelay apr3(2200);\nDelay apr4(2200);\n\nHistory wpos(0);\nHistory cnt(0);\nHistory pansign(1);\nHistory fb_s(0);\nHistory lc_s(100);\nHistory hc_s(8000);\nHistory hl1(0);\nHistory hl2(0);\nHistory hr1(0);\nHistory hr2(0);\nHistory ll1(0);\nHistory ll2(0);\nHistory lr1(0);\nHistory lr2(0);\nHistory duck_env(0);\n\nData ring(1344000, 2);\nData ga(32);\nData grd(32);\nData gn(32);\nData glen(32);\nData ginv(32);\nData ggain(32);\nData ggl(32);\nData ggr(32);\nData gglo(32);\nData ggro(32);\nData gstep(32);\nData gsrc(32);\nData gshape(32);\nData gtt(32);\nData gta(32);\nData gtb(32);\nData gtaper(32);\n\n// ---------------- per-sample setup ----------------\ninl = in1;\ninr = in2;\nwp = wpos;\n\n// 20 ms smoothers (feedback, mix, lowcut, highcut)\nsc = exp(-1 / (0.02 * samplerate));\nfbv = feedback + sc * (fb_s - feedback);\nfb_s = fbv;\nlcv = lowcut + sc * (lc_s - lowcut);\nlc_s = lcv;\nhcv = highcut + sc * (hc_s - highcut);\nhc_s = hcv;\n\n// sample-domain sizes\nD = max(1, floor(delay_ms * 0.001 * samplerate));\nG = max(2, floor(grain_ms * 0.001 * samplerate));\ngmin = max(2, floor(0.05 * samplerate));\ngmax = max(gmin, floor(4 * samplerate));\nmaxlat = max(1, 1344000 - 2 * gmax - 1);\nmindel = max(1, floor(0.05 * samplerate));\ndfloor = min(D, mindel);\noverlap = 2 + clamp(density, 0, 1) * (clamp(grain_count, 2, 16) - 2);\ninterval = max(1, floor(G / overlap));\n\n// window duty statistics for the current shape (half-window mean / mean-square)\nsh = floor(shape + 0.5);\nal = 0.5;\nqlo = 0.374817;\nqhi = 0.374817;\nmlo = 0.499756;\nmhi = 0.499756;\ntinv = 0;\nif (sh > 0.5 && sh < 1.5) {\n    al = clamp(taper, 0.01, 1);\n    qlo = 1 - 0.625 * al;\n    qhi = qlo;\n    mlo = 1 - 0.5 * al;\n    mhi = mlo;\n    tinv = 2 / al;\n}\nif (sh > 1.5 && sh < 2.5) {\n    qlo = 0.313463;\n    qhi = 0.313463;\n    mlo = 0.436622;\n    mhi = 0.436622;\n}\nif (sh > 2.5 && sh < 3.5) {\n    qlo = 0.333170;\n    qhi = 0.333170;\n    mlo = 0.499756;\n    mhi = 0.499756;\n}\nif (sh > 3.5 && sh < 4.5) {\n    qlo = 0.207237;\n    qhi = 0.001092;\n    mlo = 0.373873;\n    mhi = 0.024636;\n}\nqall = 0.5 * (qlo + qhi);\ntpk = clamp(0.5 + (tilt - 0.5) * 0.9, 0.05, 0.95);\nqeff = tpk * qlo + (1 - tpk) * qhi;\nmeff = tpk * mlo + (1 - tpk) * mhi;\nshapenorm = sqrt(0.374817 / max(qall, 0.000001));\ntiltnorm = sqrt(qall / max(qeff, 0.000001));\nwnorm = shapenorm * tiltnorm;\nggain_v = wnorm / sqrt(overlap);\nloopcnt = 1;\nif (overlap > 8) {\n    loopcnt = pow(overlap / 8, -0.5);\n}\nlooptrim = (0.499756 / max(wnorm * meff, 0.000001)) * loopcnt;\nfwdtrim = sqrt(qeff / overlap) / max(meff, 0.000001);\nta = 0.5 / tpk;\ntb = 0.5 / (1 - tpk);\n\n// ---------------- scheduler countdown ----------------\nspawn = 0;\nc = cnt - 1;\nnxt = interval;\nif (c <= 0) {\n    if (jitter > 0) {\n        nxt = max(1, floor(interval * (1 + 0.9 * min(1, jitter) * noise())));\n    }\n    c = nxt;\n    spawn = 1;\n}\ncnt = c;\n\n// ---------------- latch new grain (draws happen here, before pool request) ----------------\nps = pansign;\nn_gd = D;\nn_gg = G;\nn_gl = 0;\nn_gr = 0;\nn_glo = 0;\nn_gro = 0;\nn_step = -1;\nn_src = -1;\ndm = 1;\ngd = D;\nscat = 0;\ngg = G;\ngrnd = 1;\ngdev = 0;\nspread = 0;\npan = 0.5;\nph = 0;\nfwd = 0;\npl = 0;\npr = 0;\notrim = 1;\nif (spawn > 0) {\n    if (drift_depth > 0) {\n        dm = 1 + min(1, drift_depth) * 0.25 * sin(twopi * wp * drift_rate / samplerate);\n    }\n    gd = floor(D * dm);\n    scat = floor(scatter_ms * 0.001 * samplerate);\n    if (scat > 0) {\n        gd = gd + floor(scat * noise());\n    }\n    gd = clamp(gd, dfloor, max(dfloor, maxlat));\n    if (size_rand > 0) {\n        gg = clamp(floor(G * (1 + min(1, size_rand) * noise())), gmin, gmax);\n    }\n    gdev = min(1, gain_rand) * 0.75;\n    if (gdev > 0) {\n        grnd = max(0, 1 + gdev * noise()) / sqrt(1 + gdev * gdev / 3);\n    }\n    ps = -ps;\n    spread = ps * (0.5 + 0.5 * (0.5 * (noise() + 1)));\n    pan = 0.5 + clamp(width, 0, 1) * 0.5 * spread;\n    ph = pan * halfpi;\n    if (direction > 0) {\n        if (0.5 * (noise() + 1) < direction) {\n            fwd = 1;\n        }\n    }\n    pl = cos(ph);\n    pr = sin(ph);\n    n_gd = gd;\n    n_gg = gg;\n    n_gl = pl * looptrim;\n    n_gr = pr * looptrim;\n    if (fwd > 0) {\n        otrim = grnd * fwdtrim;\n        n_step = 1;\n    } else {\n        otrim = grnd;\n        n_step = -1;\n    }\n    n_glo = pl * otrim;\n    n_gro = pr * otrim;\n    if (source_mode > 0.5) {\n        if (ps > 0) {\n            n_src = 1;\n        } else {\n            n_src = 0;\n        }\n    }\n}\npansign = ps;\n\n// ---------------- grain pool: spawn into first free slot + render all active ----------------\nwetl = 0;\nwetr = 0;\nloopl = 0;\nloopr = 0;\npending = spawn;\nact = 0;\nra = 0;\nnn = 0;\ngl_ = 0;\np = 0;\ntt = 0;\nq = 0;\ngsh = 0;\nw = 0;\nu = 0;\nr = 0;\ndd = 0;\nue = 0;\nidx = 0;\nsrc = 0;\ns0 = 0;\ns1 = 0;\ns = 0;\nv = 0;\nfor (i = 0; i < 32; i += 1) {\n    act = peek(ga, i, 0);\n    if (act < 0.5) {\n        if (pending > 0) {\n            pending = 0;\n            act = 1;\n            poke(ga, 1, i, 0);\n            poke(grd, wp - n_gd, i, 0);\n            poke(gn, 0, i, 0);\n            poke(glen, n_gg, i, 0);\n            poke(ginv, 1 / n_gg, i, 0);\n            poke(ggain, ggain_v, i, 0);\n            poke(ggl, n_gl, i, 0);\n            poke(ggr, n_gr, i, 0);\n            poke(gglo, n_glo, i, 0);\n            poke(ggro, n_gro, i, 0);\n            poke(gstep, n_step, i, 0);\n            poke(gsrc, n_src, i, 0);\n            poke(gshape, sh, i, 0);\n            poke(gtt, tpk, i, 0);\n            poke(gta, ta, i, 0);\n            poke(gtb, tb, i, 0);\n            poke(gtaper, tinv, i, 0);\n        }\n    }\n    if (act > 0.5) {\n        ra = peek(grd, i, 0);\n        nn = peek(gn, i, 0);\n        gl_ = peek(glen, i, 0);\n        p = nn * peek(ginv, i, 0);\n        tt = peek(gtt, i, 0);\n        q = min(p, tt) * peek(gta, i, 0) + max(p - tt, 0) * peek(gtb, i, 0);\n        q = clamp(q, 0, 1);\n        gsh = peek(gshape, i, 0);\n        w = 0;\n        if (gsh < 0.5) {\n            w = 0.5 * (1 - cos(twopi * q));\n        }\n        if (gsh > 0.5 && gsh < 1.5) {\n            u = min(q, 1 - q);\n            r = min(u * peek(gtaper, i, 0), 1) * 0.5;\n            w = 0.5 * (1 - cos(twopi * r));\n        }\n        if (gsh > 1.5 && gsh < 2.5) {\n            dd = (q - 0.5) / 0.18;\n            w = max(0, (exp(-0.5 * dd * dd) - 0.0211097) * 1.0215649);\n        }\n        if (gsh > 2.5 && gsh < 3.5) {\n            w = 1 - abs(2 * q - 1);\n        }\n        if (gsh > 3.5) {\n            if (q < 0.02) {\n                w = 0.5 * (1 - cos(pi * q / 0.02));\n            } else {\n                ue = (q - 0.02) / 0.98;\n                w = max(0, (exp(-5 * ue) - 0.0067379) * 1.0067837);\n            }\n        }\n        idx = wrap(ra, 0, 1344000);\n        src = peek(gsrc, i, 0);\n        s0 = peek(ring, idx, 0);\n        s1 = peek(ring, idx, 1);\n        s = 0.5 * (s0 + s1);\n        if (src > -0.5) {\n            s = s0 + src * (s1 - s0);\n        }\n        v = s * w * peek(ggain, i, 0);\n        wetl = wetl + v * peek(gglo, i, 0);\n        wetr = wetr + v * peek(ggro, i, 0);\n        loopl = loopl + v * peek(ggl, i, 0);\n        loopr = loopr + v * peek(ggr, i, 0);\n        nn = nn + 1;\n        poke(gn, nn, i, 0);\n        poke(grd, ra + peek(gstep, i, 0), i, 0);\n        if (nn >= gl_) {\n            poke(ga, 0, i, 0);\n        }\n    }\n}\n\n// ---------------- feedback return: gain -> HP -> LP -> allpass diffusion (mix) -> tanh(dx)/d ----------------\ng = fbv * pow(10, makeup_db / 20);\nxl = loopl * g;\nxr = loopr * g;\n\n// 2nd-order Butterworth HP (RBJ, Q = 1/sqrt2), coefficients from smoothed cutoff\nlc = clamp(lcv, 20, 0.49 * samplerate);\nw0 = twopi * lc / samplerate;\ncw = cos(w0);\nsw = sin(w0);\nalph = sw / 1.41421356;\na0 = 1 + alph;\nhb0 = ((1 + cw) * 0.5) / a0;\nhb1 = (-(1 + cw)) / a0;\nhb2 = hb0;\nha1 = (-2 * cw) / a0;\nha2 = (1 - alph) / a0;\nyl = hb0 * xl + hl1;\nhl1 = hb1 * xl - ha1 * yl + hl2;\nhl2 = hb2 * xl - ha2 * yl;\nyr = hb0 * xr + hr1;\nhr1 = hb1 * xr - ha1 * yr + hr2;\nhr2 = hb2 * xr - ha2 * yr;\n\n// 2nd-order Butterworth LP\nhc = clamp(hcv, 500, 0.49 * samplerate);\nw1 = twopi * hc / samplerate;\ncw1 = cos(w1);\nsw1 = sin(w1);\nalph1 = sw1 / 1.41421356;\nb0d = 1 + alph1;\nlb0 = ((1 - cw1) * 0.5) / b0d;\nlb1 = (1 - cw1) / b0d;\nlb2 = lb0;\nla1 = (-2 * cw1) / b0d;\nla2 = (1 - alph1) / b0d;\nzl = lb0 * yl + ll1;\nll1 = lb1 * yl - la1 * zl + ll2;\nll2 = lb2 * yl - la2 * zl;\nzr = lb0 * yr + lr1;\nlr1 = lb1 * yr - la1 * zr + lr2;\nlr2 = lb2 * yr - la2 * zr;\n\n// 4 Schroeder allpasses per channel (g = 0.7, 4.7/8.3/13.9/21.7 ms), wet/dry mixed by diffusion\nn1 = max(1, floor(0.0047 * samplerate));\nn2 = max(1, floor(0.0083 * samplerate));\nn3 = max(1, floor(0.0139 * samplerate));\nn4 = max(1, floor(0.0217 * samplerate));\ndl = zl;\nd1 = apl1.read(n1);\nwv1 = dl + 0.7 * d1;\ndl = d1 - 0.7 * wv1;\napl1.write(wv1);\nd2 = apl2.read(n2);\nwv2 = dl + 0.7 * d2;\ndl = d2 - 0.7 * wv2;\napl2.write(wv2);\nd3 = apl3.read(n3);\nwv3 = dl + 0.7 * d3;\ndl = d3 - 0.7 * wv3;\napl3.write(wv3);\nd4 = apl4.read(n4);\nwv4 = dl + 0.7 * d4;\ndl = d4 - 0.7 * wv4;\napl4.write(wv4);\ndr = zr;\ne1 = apr1.read(n1);\nwr1 = dr + 0.7 * e1;\ndr = e1 - 0.7 * wr1;\napr1.write(wr1);\ne2 = apr2.read(n2);\nwr2 = dr + 0.7 * e2;\ndr = e2 - 0.7 * wr2;\napr2.write(wr2);\ne3 = apr3.read(n3);\nwr3 = dr + 0.7 * e3;\ndr = e3 - 0.7 * wr3;\napr3.write(wr3);\ne4 = apr4.read(n4);\nwr4 = dr + 0.7 * e4;\ndr = e4 - 0.7 * wr4;\napr4.write(wr4);\ndif = clamp(diffusion, 0, 1);\nfl = zl + dif * (dl - zl);\nfr = zr + dif * (dr - zr);\n\n// loop saturator: tanh(d*x)/d, d = 8^drive (small-signal loop gain stays exactly feedback)\ndrv = pow(8, clamp(drive, 0, 1));\nsatl = tanh(drv * fl) / drv;\nsatr = tanh(drv * fr) / drv;\n\n// ---------------- write input + feedback into the capture ring ----------------\nwidx = wrap(wp, 0, 1344000);\npoke(ring, inl + satl, widx, 0);\npoke(ring, inr + satr, widx, 1);\nwpos = wp + 1;\n\n// ---------------- duck (output only); output is 100% wet ----------------\nrect = 0.5 * (abs(inl) + abs(inr));\nda = exp(-1 / (0.005 * samplerate));\ndrl = exp(-1 / (0.25 * samplerate));\nde = duck_env;\ncc = drl;\nif (rect > de) {\n    cc = da;\n}\nde = rect + cc * (de - rect);\nduck_env = de;\ndg = 1 - clamp(duck, 0, 1) * (de / (de + 0.1));\n\nout1 = dg * wetl;\nout2 = dg * wetr;\n",
+                                    "code": "\n// reverse-delay v0.1.0 -- granular reverse delay engine (port of O-ReverseDelay v1.8.1)\n// Params are linear; dial skew is applied on the MAX side.\nParam delay_ms(500, min=50, max=4000);\nParam grain_ms(200, min=50, max=4000);\nParam density(0.6, min=0, max=1);\nParam feedback(0.4, min=0, max=1);\nParam lowcut(100, min=20, max=2000);\nParam highcut(8000, min=500, max=20000);\nParam width(0.6, min=0, max=1);\nParam jitter(0, min=0, max=1);\nParam scatter_ms(0, min=0, max=500);\nParam size_rand(0, min=0, max=1);\nParam gain_rand(0, min=0, max=1);\nParam tilt(0.5, min=0, max=1);\nParam shape(0, min=0, max=4);\nParam grain_count(8, min=2, max=16);\nParam taper(0.5, min=0.01, max=1);\nParam direction(0, min=0, max=1);\nParam makeup_db(0, min=0, max=6);\nParam source_mode(0, min=0, max=1);\nParam duck(0, min=0, max=1);\nParam drift_rate(0.3, min=0.02, max=5);\nParam drift_depth(0, min=0, max=1);\nParam diffusion(0, min=0, max=1);\nParam drive(0, min=0, max=1);\n\nDelay apl1(2200);\nDelay apl2(2200);\nDelay apl3(2200);\nDelay apl4(2200);\nDelay apr1(2200);\nDelay apr2(2200);\nDelay apr3(2200);\nDelay apr4(2200);\n\nHistory wpos(0);\nHistory cnt(0);\nHistory pansign(1);\nHistory fb_s(0);\nHistory lc_s(100);\nHistory hc_s(8000);\nHistory hl1(0);\nHistory hl2(0);\nHistory hr1(0);\nHistory hr2(0);\nHistory ll1(0);\nHistory ll2(0);\nHistory lr1(0);\nHistory lr2(0);\nHistory duck_env(0);\n\nData ring(1344000, 2);\nData ga(32);\nData grd(32);\nData gn(32);\nData glen(32);\nData ginv(32);\nData ggain(32);\nData ggl(32);\nData ggr(32);\nData gglo(32);\nData ggro(32);\nData gstep(32);\nData gsrc(32);\nData gshape(32);\nData gtt(32);\nData gta(32);\nData gtb(32);\nData gtaper(32);\n\n// ---------------- per-sample setup ----------------\ninl = in1;\ninr = in2;\nwp = wpos;\n\n// 20 ms smoothers (feedback, mix, lowcut, highcut)\nsc = exp(-1 / (0.02 * samplerate));\nfbv = feedback + sc * (fb_s - feedback);\nfb_s = fbv;\nlcv = lowcut + sc * (lc_s - lowcut);\nlc_s = lcv;\nhcv = highcut + sc * (hc_s - highcut);\nhc_s = hcv;\n\n// sample-domain sizes\nD = max(1, floor(delay_ms * 0.001 * samplerate));\nG = max(2, floor(grain_ms * 0.001 * samplerate));\ngmin = max(2, floor(0.05 * samplerate));\ngmax = max(gmin, floor(4 * samplerate));\nmaxlat = max(1, 1344000 - 2 * gmax - 1);\nmindel = max(1, floor(0.05 * samplerate));\ndfloor = min(D, mindel);\noverlap = 2 + clamp(density, 0, 1) * (clamp(grain_count, 2, 16) - 2);\ninterval = max(1, floor(G / overlap));\n\n// window duty statistics for the current shape (half-window mean / mean-square)\nsh = floor(shape + 0.5);\nal = 0.5;\nqlo = 0.374817;\nqhi = 0.374817;\nmlo = 0.499756;\nmhi = 0.499756;\ntinv = 0;\nif (sh > 0.5 && sh < 1.5) {\n    al = clamp(taper, 0.01, 1);\n    qlo = 1 - 0.625 * al;\n    qhi = qlo;\n    mlo = 1 - 0.5 * al;\n    mhi = mlo;\n    tinv = 2 / al;\n}\nif (sh > 1.5 && sh < 2.5) {\n    qlo = 0.313463;\n    qhi = 0.313463;\n    mlo = 0.436622;\n    mhi = 0.436622;\n}\nif (sh > 2.5 && sh < 3.5) {\n    qlo = 0.333170;\n    qhi = 0.333170;\n    mlo = 0.499756;\n    mhi = 0.499756;\n}\nif (sh > 3.5 && sh < 4.5) {\n    qlo = 0.207237;\n    qhi = 0.001092;\n    mlo = 0.373873;\n    mhi = 0.024636;\n}\nqall = 0.5 * (qlo + qhi);\ntpk = clamp(0.5 + (tilt - 0.5) * 0.9, 0.05, 0.95);\nqeff = tpk * qlo + (1 - tpk) * qhi;\nmeff = tpk * mlo + (1 - tpk) * mhi;\nshapenorm = sqrt(0.374817 / max(qall, 0.000001));\ntiltnorm = sqrt(qall / max(qeff, 0.000001));\nwnorm = shapenorm * tiltnorm;\nggain_v = wnorm / sqrt(overlap);\nloopcnt = 1;\nif (overlap > 8) {\n    loopcnt = pow(overlap / 8, -0.5);\n}\nlooptrim = (0.499756 / max(wnorm * meff, 0.000001)) * loopcnt;\nfwdtrim = sqrt(qeff / overlap) / max(meff, 0.000001);\nta = 0.5 / tpk;\ntb = 0.5 / (1 - tpk);\n\n// ---------------- scheduler countdown ----------------\nspawn = 0;\nc = cnt - 1;\nnxt = interval;\nif (c <= 0) {\n    if (jitter > 0) {\n        nxt = max(1, floor(interval * (1 + 0.9 * min(1, jitter) * noise())));\n    }\n    c = nxt;\n    spawn = 1;\n}\ncnt = c;\n\n// ---------------- latch new grain (draws happen here, before pool request) ----------------\nps = pansign;\nn_gd = D;\nn_gg = G;\nn_gl = 0;\nn_gr = 0;\nn_glo = 0;\nn_gro = 0;\nn_step = -1;\nn_src = -1;\ndm = 1;\ngd = D;\nscat = 0;\ngg = G;\ngrnd = 1;\ngdev = 0;\nspread = 0;\npan = 0.5;\nph = 0;\nfwd = 0;\npl = 0;\npr = 0;\notrim = 1;\nif (spawn > 0) {\n    if (drift_depth > 0) {\n        dm = 1 + min(1, drift_depth) * 0.25 * sin(twopi * wp * drift_rate / samplerate);\n    }\n    gd = floor(D * dm);\n    scat = floor(scatter_ms * 0.001 * samplerate);\n    if (scat > 0) {\n        gd = gd + floor(scat * noise());\n    }\n    gd = clamp(gd, dfloor, max(dfloor, maxlat));\n    if (size_rand > 0) {\n        gg = clamp(floor(G * (1 + min(1, size_rand) * noise())), gmin, gmax);\n    }\n    gdev = min(1, gain_rand) * 0.75;\n    if (gdev > 0) {\n        grnd = max(0, 1 + gdev * noise()) / sqrt(1 + gdev * gdev / 3);\n    }\n    ps = -ps;\n    spread = ps * (0.5 + 0.5 * (0.5 * (noise() + 1)));\n    pan = 0.5 + clamp(width, 0, 1) * 0.5 * spread;\n    ph = pan * halfpi;\n    if (direction > 0) {\n        if (0.5 * (noise() + 1) < direction) {\n            fwd = 1;\n        }\n    }\n    pl = cos(ph);\n    pr = sin(ph);\n    n_gd = gd;\n    n_gg = gg;\n    n_gl = pl * looptrim;\n    n_gr = pr * looptrim;\n    if (fwd > 0) {\n        otrim = grnd * fwdtrim;\n        n_step = 1;\n    } else {\n        otrim = grnd;\n        n_step = -1;\n    }\n    n_glo = pl * otrim;\n    n_gro = pr * otrim;\n    if (source_mode > 0.5) {\n        if (ps > 0) {\n            n_src = 1;\n        } else {\n            n_src = 0;\n        }\n    }\n}\npansign = ps;\n\n// ---------------- grain pool: spawn into first free slot + render all active ----------------\nwetl = 0;\nwetr = 0;\nloopl = 0;\nloopr = 0;\npending = spawn;\nact = 0;\nra = 0;\nnn = 0;\ngl_ = 0;\np = 0;\ntt = 0;\nq = 0;\ngsh = 0;\nw = 0;\nu = 0;\nr = 0;\ndd = 0;\nue = 0;\nidx = 0;\nsrc = 0;\ns0 = 0;\ns1 = 0;\ns = 0;\nv = 0;\nfor (i = 0; i < 32; i += 1) {\n    act = peek(ga, i, 0);\n    if (act < 0.5) {\n        if (pending > 0) {\n            pending = 0;\n            act = 1;\n            poke(ga, 1, i, 0);\n            poke(grd, wrap(wp - n_gd, 0, 1344000), i, 0);\n            poke(gn, 0, i, 0);\n            poke(glen, n_gg, i, 0);\n            poke(ginv, 1 / n_gg, i, 0);\n            poke(ggain, ggain_v, i, 0);\n            poke(ggl, n_gl, i, 0);\n            poke(ggr, n_gr, i, 0);\n            poke(gglo, n_glo, i, 0);\n            poke(ggro, n_gro, i, 0);\n            poke(gstep, n_step, i, 0);\n            poke(gsrc, n_src, i, 0);\n            poke(gshape, sh, i, 0);\n            poke(gtt, tpk, i, 0);\n            poke(gta, ta, i, 0);\n            poke(gtb, tb, i, 0);\n            poke(gtaper, tinv, i, 0);\n        }\n    }\n    if (act > 0.5) {\n        ra = peek(grd, i, 0);\n        nn = peek(gn, i, 0);\n        gl_ = peek(glen, i, 0);\n        p = nn * peek(ginv, i, 0);\n        tt = peek(gtt, i, 0);\n        q = min(p, tt) * peek(gta, i, 0) + max(p - tt, 0) * peek(gtb, i, 0);\n        q = clamp(q, 0, 1);\n        gsh = peek(gshape, i, 0);\n        w = 0;\n        if (gsh < 0.5) {\n            w = 0.5 * (1 - cos(twopi * q));\n        }\n        if (gsh > 0.5 && gsh < 1.5) {\n            u = min(q, 1 - q);\n            r = min(u * peek(gtaper, i, 0), 1) * 0.5;\n            w = 0.5 * (1 - cos(twopi * r));\n        }\n        if (gsh > 1.5 && gsh < 2.5) {\n            dd = (q - 0.5) / 0.18;\n            w = max(0, (exp(-0.5 * dd * dd) - 0.0211097) * 1.0215649);\n        }\n        if (gsh > 2.5 && gsh < 3.5) {\n            w = 1 - abs(2 * q - 1);\n        }\n        if (gsh > 3.5) {\n            if (q < 0.02) {\n                w = 0.5 * (1 - cos(pi * q / 0.02));\n            } else {\n                ue = (q - 0.02) / 0.98;\n                w = max(0, (exp(-5 * ue) - 0.0067379) * 1.0067837);\n            }\n        }\n        idx = wrap(ra, 0, 1344000);\n        src = peek(gsrc, i, 0);\n        s0 = peek(ring, idx, 0);\n        s1 = peek(ring, idx, 1);\n        s = 0.5 * (s0 + s1);\n        if (src > -0.5) {\n            s = s0 + src * (s1 - s0);\n        }\n        v = s * w * peek(ggain, i, 0);\n        wetl = wetl + v * peek(gglo, i, 0);\n        wetr = wetr + v * peek(ggro, i, 0);\n        loopl = loopl + v * peek(ggl, i, 0);\n        loopr = loopr + v * peek(ggr, i, 0);\n        nn = nn + 1;\n        poke(gn, nn, i, 0);\n        poke(grd, wrap(ra + peek(gstep, i, 0), 0, 1344000), i, 0);\n        if (nn >= gl_) {\n            poke(ga, 0, i, 0);\n        }\n    }\n}\n\n// ---------------- feedback return: gain -> HP -> LP -> allpass diffusion (mix) -> tanh(dx)/d ----------------\ng = fbv * pow(10, makeup_db / 20);\nxl = loopl * g;\nxr = loopr * g;\n\n// 2nd-order Butterworth HP (RBJ, Q = 1/sqrt2), coefficients from smoothed cutoff\nlc = clamp(lcv, 20, 0.49 * samplerate);\nw0 = twopi * lc / samplerate;\ncw = cos(w0);\nsw = sin(w0);\nalph = sw / 1.41421356;\na0 = 1 + alph;\nhb0 = ((1 + cw) * 0.5) / a0;\nhb1 = (-(1 + cw)) / a0;\nhb2 = hb0;\nha1 = (-2 * cw) / a0;\nha2 = (1 - alph) / a0;\nyl = hb0 * xl + hl1;\nhl1 = hb1 * xl - ha1 * yl + hl2;\nhl2 = hb2 * xl - ha2 * yl;\nyr = hb0 * xr + hr1;\nhr1 = hb1 * xr - ha1 * yr + hr2;\nhr2 = hb2 * xr - ha2 * yr;\n\n// 2nd-order Butterworth LP\nhc = clamp(hcv, 500, 0.49 * samplerate);\nw1 = twopi * hc / samplerate;\ncw1 = cos(w1);\nsw1 = sin(w1);\nalph1 = sw1 / 1.41421356;\nb0d = 1 + alph1;\nlb0 = ((1 - cw1) * 0.5) / b0d;\nlb1 = (1 - cw1) / b0d;\nlb2 = lb0;\nla1 = (-2 * cw1) / b0d;\nla2 = (1 - alph1) / b0d;\nzl = lb0 * yl + ll1;\nll1 = lb1 * yl - la1 * zl + ll2;\nll2 = lb2 * yl - la2 * zl;\nzr = lb0 * yr + lr1;\nlr1 = lb1 * yr - la1 * zr + lr2;\nlr2 = lb2 * yr - la2 * zr;\n\n// 4 Schroeder allpasses per channel (g = 0.7, 4.7/8.3/13.9/21.7 ms), wet/dry mixed by diffusion\nn1 = max(1, floor(0.0047 * samplerate));\nn2 = max(1, floor(0.0083 * samplerate));\nn3 = max(1, floor(0.0139 * samplerate));\nn4 = max(1, floor(0.0217 * samplerate));\ndl = zl;\nd1 = apl1.read(n1);\nwv1 = dl + 0.7 * d1;\ndl = d1 - 0.7 * wv1;\napl1.write(wv1);\nd2 = apl2.read(n2);\nwv2 = dl + 0.7 * d2;\ndl = d2 - 0.7 * wv2;\napl2.write(wv2);\nd3 = apl3.read(n3);\nwv3 = dl + 0.7 * d3;\ndl = d3 - 0.7 * wv3;\napl3.write(wv3);\nd4 = apl4.read(n4);\nwv4 = dl + 0.7 * d4;\ndl = d4 - 0.7 * wv4;\napl4.write(wv4);\ndr = zr;\ne1 = apr1.read(n1);\nwr1 = dr + 0.7 * e1;\ndr = e1 - 0.7 * wr1;\napr1.write(wr1);\ne2 = apr2.read(n2);\nwr2 = dr + 0.7 * e2;\ndr = e2 - 0.7 * wr2;\napr2.write(wr2);\ne3 = apr3.read(n3);\nwr3 = dr + 0.7 * e3;\ndr = e3 - 0.7 * wr3;\napr3.write(wr3);\ne4 = apr4.read(n4);\nwr4 = dr + 0.7 * e4;\ndr = e4 - 0.7 * wr4;\napr4.write(wr4);\ndif = clamp(diffusion, 0, 1);\nfl = zl + dif * (dl - zl);\nfr = zr + dif * (dr - zr);\n\n// loop saturator: tanh(d*x)/d, d = 8^drive (small-signal loop gain stays exactly feedback)\ndrv = pow(8, clamp(drive, 0, 1));\nsatl = tanh(drv * fl) / drv;\nsatr = tanh(drv * fr) / drv;\n\n// ---------------- write input + feedback into the capture ring ----------------\nwidx = wrap(wp, 0, 1344000);\npoke(ring, inl + satl, widx, 0);\npoke(ring, inr + satr, widx, 1);\nwpos = wp + 1;\n\n// ---------------- duck (output only); output is 100% wet ----------------\nrect = 0.5 * (abs(inl) + abs(inr));\nda = exp(-1 / (0.005 * samplerate));\ndrl = exp(-1 / (0.25 * samplerate));\nde = duck_env;\ncc = drl;\nif (rect > de) {\n    cc = da;\n}\nde = rect + cc * (de - rect);\nduck_env = de;\ndg = 1 - clamp(duck, 0, 1) * (de / (de + 0.1));\n\nout1 = dg * wetl;\nout2 = dg * wetr;\n",
                                     "fontface": 0,
                                     "fontname": "<Monospaced>",
                                     "fontsize": 12.0,
@@ -6306,7 +6306,7 @@
                         394.5,
                         450.0
                     ],
-                    "order": 20,
+                    "order": 19,
                     "source": [
                         "obj-2",
                         0
@@ -6325,7 +6325,7 @@
                         584.5,
                         245.5
                     ],
-                    "order": 17,
+                    "order": 16,
                     "source": [
                         "obj-2",
                         0
@@ -6344,7 +6344,7 @@
                         774.5,
                         245.5
                     ],
-                    "order": 14,
+                    "order": 13,
                     "source": [
                         "obj-2",
                         0
@@ -6363,7 +6363,7 @@
                         964.5,
                         245.5
                     ],
-                    "order": 11,
+                    "order": 10,
                     "source": [
                         "obj-2",
                         0
@@ -6410,7 +6410,7 @@
                         1154.5,
                         447.0
                     ],
-                    "order": 8,
+                    "order": 7,
                     "source": [
                         "obj-2",
                         0
@@ -6549,7 +6549,7 @@
                         204.5,
                         87.0
                     ],
-                    "order": 25,
+                    "order": 24,
                     "source": [
                         "obj-2",
                         0
@@ -6572,7 +6572,7 @@
                         394.5,
                         87.0
                     ],
-                    "order": 22,
+                    "order": 21,
                     "source": [
                         "obj-2",
                         0
@@ -6599,7 +6599,7 @@
                         584.5,
                         87.0
                     ],
-                    "order": 19,
+                    "order": 18,
                     "source": [
                         "obj-2",
                         0
@@ -6634,7 +6634,7 @@
                         774.5,
                         87.0
                     ],
-                    "order": 16,
+                    "order": 15,
                     "source": [
                         "obj-2",
                         0
@@ -6681,7 +6681,7 @@
                         964.5,
                         87.0
                     ],
-                    "order": 13,
+                    "order": 12,
                     "source": [
                         "obj-2",
                         0
@@ -6708,7 +6708,7 @@
                         1154.5,
                         87.0
                     ],
-                    "order": 10,
+                    "order": 9,
                     "source": [
                         "obj-2",
                         0
@@ -6735,7 +6735,7 @@
                         1344.5,
                         87.0
                     ],
-                    "order": 7,
+                    "order": 6,
                     "source": [
                         "obj-2",
                         0
@@ -6762,7 +6762,7 @@
                         204.5,
                         267.0
                     ],
-                    "order": 24,
+                    "order": 23,
                     "source": [
                         "obj-2",
                         0
@@ -6793,7 +6793,7 @@
                         394.5,
                         267.0
                     ],
-                    "order": 21,
+                    "order": 20,
                     "source": [
                         "obj-2",
                         0
@@ -6824,7 +6824,7 @@
                         584.5,
                         267.0
                     ],
-                    "order": 18,
+                    "order": 17,
                     "source": [
                         "obj-2",
                         0
@@ -6855,7 +6855,7 @@
                         774.5,
                         267.0
                     ],
-                    "order": 15,
+                    "order": 14,
                     "source": [
                         "obj-2",
                         0
@@ -6886,7 +6886,7 @@
                         964.5,
                         267.0
                     ],
-                    "order": 12,
+                    "order": 11,
                     "source": [
                         "obj-2",
                         0
@@ -6925,7 +6925,7 @@
                         1154.5,
                         267.0
                     ],
-                    "order": 9,
+                    "order": 8,
                     "source": [
                         "obj-2",
                         0
@@ -6964,7 +6964,7 @@
                         1344.5,
                         267.0
                     ],
-                    "order": 6,
+                    "order": 5,
                     "source": [
                         "obj-2",
                         0
@@ -7030,7 +7030,7 @@
                         204.5,
                         450.0
                     ],
-                    "order": 23,
+                    "order": 22,
                     "source": [
                         "obj-2",
                         0
