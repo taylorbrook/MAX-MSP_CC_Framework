@@ -4,6 +4,14 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-08-25T02:53:05.360704+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "gen~ Data-free single-line stereo feedback delay engine, full presentation UI",
+      "timestamp": "2026-08-25T03:06:37.010291+00:00",
+      "files_changed": [
+        "generated/stereo-feedback-delay.maxpat"
+      ]
     }
   ]
 }
