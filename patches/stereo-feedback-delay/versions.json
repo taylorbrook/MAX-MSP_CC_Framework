@@ -12,6 +12,14 @@
       "files_changed": [
         "generated/stereo-feedback-delay.maxpat"
       ]
+    },
+    {
+      "version": "0.1.1",
+      "description": "fix over-unity feedback loop gain: normalize saturation by dgain, not tanh(dgain)",
+      "timestamp": "2026-08-25T03:12:07.160950+00:00",
+      "files_changed": [
+        "generated/stereo-feedback-delay.maxpat"
+      ]
     }
   ]
 }
