@@ -28,6 +28,14 @@
       "files_changed": [
         "generated/reverse-delay.maxpat"
       ]
+    },
+    {
+      "version": "0.2.1",
+      "description": "fix gen~ compile: no sr/RING aliases in Param-only expressions",
+      "timestamp": "2026-08-25T18:54:09.384883+00:00",
+      "files_changed": [
+        "generated/reverse-delay.maxpat"
+      ]
     }
   ]
 }
