@@ -110,3 +110,4 @@ All objects verified via `ObjectDatabase` (domain/IO checked).
 - Critic residue accepted: preset fan-out (known false positive), `p sync` hot/cold (inner `pak` is all-hot), message->gen~ control-to-signal warnings (param pattern).
 - DB fix: `pak` gained `variable_io` + `arg_count` rule in overrides.json (was fixed at 2 inlets).
 - v0.1.1 (2026-08-24): linear `scale` boxes had int bounds (`scale 0 127 0 1`) → int output, dials snapped 0/1. All bounds now floats (`0. 1.`). Rule: always write `scale`/`expr` bounds with a trailing dot unless integer output is intended (Grain Count).
+- v0.2.0 (2026-08-25): Mix parameter removed — output is 100% wet (`out = duckGain * wet`); `mixamt` Param + smoother deleted from the codebox, Mix dial chain and preset entries removed. Core row is now 7 dials (the 8th column is empty).

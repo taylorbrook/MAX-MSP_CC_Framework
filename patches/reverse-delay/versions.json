@@ -20,6 +20,14 @@
       "files_changed": [
         "generated/reverse-delay.maxpat"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "remove Mix \u2014 100% wet output",
+      "timestamp": "2026-08-25T16:59:37.660947+00:00",
+      "files_changed": [
+        "generated/reverse-delay.maxpat"
+      ]
     }
   ]
 }
