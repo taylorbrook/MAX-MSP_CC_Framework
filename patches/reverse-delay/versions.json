@@ -12,6 +12,14 @@
       "files_changed": [
         "generated/reverse-delay.maxpat"
       ]
+    },
+    {
+      "version": "0.1.1",
+      "description": "float scale bounds \u2014 dials no longer snap 0/1",
+      "timestamp": "2026-08-25T05:46:13.599613+00:00",
+      "files_changed": [
+        "generated/reverse-delay.maxpat"
+      ]
     }
   ]
 }

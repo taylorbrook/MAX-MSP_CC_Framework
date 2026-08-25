@@ -109,3 +109,4 @@ All objects verified via `ObjectDatabase` (domain/IO checked).
 - Presets (dial ints quantise skewed values by ~±2%): 1 Reverse Bloom, 2 Guitar Swell, 3 Slow Wash, 4 Tight Smear, 5 Dark Cavern, 6 Rhythmic Reverse (sync on, 1/8D).
 - Critic residue accepted: preset fan-out (known false positive), `p sync` hot/cold (inner `pak` is all-hot), message->gen~ control-to-signal warnings (param pattern).
 - DB fix: `pak` gained `variable_io` + `arg_count` rule in overrides.json (was fixed at 2 inlets).
+- v0.1.1 (2026-08-24): linear `scale` boxes had int bounds (`scale 0 127 0 1`) → int output, dials snapped 0/1. All bounds now floats (`0. 1.`). Rule: always write `scale`/`expr` bounds with a trailing dot unless integer output is intended (Grain Count).
