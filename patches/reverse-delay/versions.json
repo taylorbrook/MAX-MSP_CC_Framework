@@ -36,6 +36,14 @@
       "files_changed": [
         "generated/reverse-delay.maxpat"
       ]
+    },
+    {
+      "version": "0.2.2",
+      "description": "store grain read positions ring-wrapped (float32 Data precision)",
+      "timestamp": "2026-08-25T18:58:27.417001+00:00",
+      "files_changed": [
+        "generated/reverse-delay.maxpat"
+      ]
     }
   ]
 }
