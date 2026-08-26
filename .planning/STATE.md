@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-07-03 - Completed quick task 260703-lwq: pruned 2 orphaned quick-task dirs (audit found 2, not ~80; 89 keepers have SUMMARY.md); confirmed .claude/worktrees/ gitignored
+Last activity: 2026-08-26 - Completed quick task 260826-kvk: presentation-mode text contrast fix (contrast resolved in presentation coords, all 3 panel color encodings, WCAG 4.5:1 critic guard, CLAUDE.md rule); 83 sub-threshold text boxes across 16 patches measured but NOT auto-repaired (opt-in via repair_text_contrast)
 
 ## Performance Metrics
 
@@ -77,6 +77,7 @@ None.
 | 260703-i0t | De-duplicate CLAUDE.md against 30 feedback memory entries: CLAUDE.md canonical, 15 nuances promoted, 30 memories archived + deleted, MEMORY.md pruned to pointer | 2026-07-03 | c888f14 | | [260703-i0t-de-duplicate-claude-md-against-the-30-fe](./quick/260703-i0t-de-duplicate-claude-md-against-the-30-fe/) |
 | 260703-knu | Document dsp_sim as bassoon-specific (module docstring + README covering 3 topologies); deferred general-topology broadening recorded as v6.0 in PROJECT.md Future | 2026-07-03 | d2d008f | | [260703-knu-document-src-maxpat-dsp-sim-as-bassoon-p](./quick/260703-knu-document-src-maxpat-dsp-sim-as-bassoon-p/) |
 | 260703-lwq | Prune orphaned quick-task dirs (2 removed, 89 keepers with SUMMARY.md); confirmed .claude/worktrees/ gitignored | 2026-07-03 | (docs commit) | | [260703-lwq-prune-orphaned-empty-quick-task-slugs-un](./quick/260703-lwq-prune-orphaned-empty-quick-task-slugs-un/) |
+| 260826-kvk | Fix presentation-mode text contrast: resolve background in presentation coords, all panel color encodings, box-own bgcolor; WCAG critic guard + CLAUDE.md rule | 2026-08-26 | 7193b4a | | [260826-kvk-fix-presentation-mode-panel-text-color-c](./quick/260826-kvk-fix-presentation-mode-panel-text-color-c/) |
 
 ## Deferred Items
 
