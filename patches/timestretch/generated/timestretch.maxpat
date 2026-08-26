@@ -4,7 +4,7 @@
         "appversion": {
             "major": 9,
             "minor": 1,
-            "revision": 2,
+            "revision": 5,
             "architecture": "x64",
             "modernui": 1
         },
@@ -26,7 +26,7 @@
                         "appversion": {
                             "major": 9,
                             "minor": 1,
-                            "revision": 2,
+                            "revision": 5,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -57,7 +57,7 @@
                                     "numinlets": 1,
                                     "numoutlets": 3,
                                     "outlettype": [ "", "", "" ],
-                                    "patching_rect": [ 30.0, 75.0, 400.0, 200.0 ]
+                                    "patching_rect": [ 30.0, 75.0, 497.0, 306.0 ]
                                 }
                             },
                             {
@@ -69,7 +69,7 @@
                                     "maxclass": "newobj",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 30.0, 285.0, 30.0, 35.0 ],
+                                    "patching_rect": [ 34.0, 389.0, 30.0, 35.0 ],
                                     "text": "out 1"
                                 }
                             },
@@ -82,7 +82,7 @@
                                     "maxclass": "newobj",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 210.0, 285.0, 30.0, 35.0 ],
+                                    "patching_rect": [ 214.0, 389.0, 30.0, 35.0 ],
                                     "text": "out 2"
                                 }
                             },
@@ -95,7 +95,7 @@
                                     "maxclass": "newobj",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 405.0, 285.0, 30.0, 35.0 ],
+                                    "patching_rect": [ 409.0, 389.0, 30.0, 35.0 ],
                                     "text": "out 3"
                                 }
                             }
@@ -1444,6 +1444,14 @@
             "obj-31": [ "Gain [ts-7]", "Gain", 0 ],
             "obj-38": [ "Adaptive [ts-8]", "Adaptive", 0 ],
             "obj-40": [ "Extreme [ts-9]", "Extreme", 0 ],
+            "parameterbanks": {
+                "0": {
+                    "index": 0,
+                    "name": "",
+                    "parameters": [ "-", "-", "-", "-", "-", "-", "-", "-" ],
+                    "buttons": [ "-", "-", "-", "-", "-", "-", "-", "-" ]
+                }
+            },
             "inherited_shortname": 1
         },
         "autosave": 0,
