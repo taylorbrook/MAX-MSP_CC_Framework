@@ -11,3 +11,6 @@ __pycache__/
 
 # Claude Code agent worktrees
 .claude/worktrees/
+
+# GSD runtime sentinels (per-run dispatch state, not project content)
+.gsd/
