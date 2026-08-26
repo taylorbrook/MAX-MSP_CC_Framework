@@ -305,13 +305,20 @@ class BuildersMixin:
         marker._bpatcher_attrs = None
         marker._raw = None
 
+        # Text color is DERIVED from the chip color, not hardcoded. The old
+        # hardcoded white scored only 2.23:1 on the amber chip -- well under
+        # WCAG AA. The step_marker_text palette entry is retained for
+        # back-compat but is no longer what gets written.
+        from src.maxpat.aesthetics import best_text_color
+        chip = list(AESTHETIC_PALETTE["step_marker_bg"])
+
         marker.extra_attrs = {
             "background": 1,
             "ignoreclick": 1,
             "rounded": 60.0,
             "text": str(number),
-            "textcolor": list(AESTHETIC_PALETTE["step_marker_text"]),
-            "bgcolor": list(AESTHETIC_PALETTE["step_marker_bg"]),
+            "textcolor": best_text_color([chip]),
+            "bgcolor": chip,
             "fontface": FONTFACE_BOLD,
             "parameter_enable": 0,
         }

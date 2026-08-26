@@ -24,6 +24,7 @@ from src.maxpat.aesthetics import (
     is_complex_patch,
     apply_auto_styling,
     ensure_text_contrast,
+    repair_text_contrast,
 )
 from src.maxpat.defaults import LayoutOptions
 from src.maxpat.sizing import text_width
@@ -138,4 +139,5 @@ __all__ = [
     "auto_size_panel",
     "is_complex_patch",
     "ensure_text_contrast",
+    "repair_text_contrast",
 ]

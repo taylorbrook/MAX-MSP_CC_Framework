@@ -476,11 +476,21 @@ class TestStepMarkers:
         assert m.extra_attrs["rounded"] == 60.0
 
     def test_marker_colors(self):
-        """Marker has amber bg and white text colors."""
+        """Marker has an amber bg and text derived from it by WCAG contrast.
+
+        CORRECTED: this test previously asserted the hardcoded white
+        `step_marker_text`, which scores only 2.23:1 on the amber chip -- half
+        the WCAG AA minimum. add_step_marker now derives the text color from
+        the chip via best_text_color(); the palette entry is retained for
+        back-compat but is no longer what gets written.
+        """
+        from src.maxpat.aesthetics import contrast_ratio
+        from src.maxpat.defaults import MIN_CONTRAST_RATIO
         p = Patcher()
         m = p.add_step_marker(1, 0, 0)
-        assert m.extra_attrs["bgcolor"] == list(AESTHETIC_PALETTE["step_marker_bg"])
-        assert m.extra_attrs["textcolor"] == list(AESTHETIC_PALETTE["step_marker_text"])
+        chip = list(AESTHETIC_PALETTE["step_marker_bg"])
+        assert m.extra_attrs["bgcolor"] == chip
+        assert contrast_ratio(m.extra_attrs["textcolor"], chip) >= MIN_CONTRAST_RATIO
 
     def test_marker_text(self):
         """add_step_marker(3, ...) has text='3'."""
@@ -756,13 +766,24 @@ class TestEnsureTextContrast:
         assert c.extra_attrs["textcolor"] == [0.80, 0.80, 0.82, 1.0]
 
     def test_section_header_on_dark_canvas(self):
-        """Section header on dark canvas gets light text."""
-        from src.maxpat.aesthetics import ensure_text_contrast
+        """Section header text reads against its OWN light bgcolor (D-2).
+
+        CORRECTED (finding F-5): this test previously asserted LIGHT text on a
+        header whose own `header_bgcolor` is light [0.88, 0.90, 0.95] -- i.e.
+        it locked in the exact light-on-light pairing the user reported as
+        unreadable. A box that paints its own background IS its own
+        background, so the header gets dark text regardless of the canvas.
+        """
+        from src.maxpat.aesthetics import contrast_ratio, ensure_text_contrast
+        from src.maxpat.defaults import MIN_CONTRAST_RATIO
         p = Patcher()
         set_canvas_background(p)
         h = p.add_section_header("Header")
         ensure_text_contrast(p)
-        assert h.extra_attrs["textcolor"] == [0.80, 0.80, 0.82, 1.0]
+        assert h.extra_attrs["textcolor"] == [0.20, 0.20, 0.25, 1.0]
+        assert contrast_ratio(
+            h.extra_attrs["textcolor"], h.extra_attrs["bgcolor"]
+        ) >= MIN_CONTRAST_RATIO
 
     def test_section_header_on_light_panel(self):
         """Section header on light panel gets dark text."""
@@ -1026,3 +1047,150 @@ class TestContrastPrimitives:
         from src.maxpat.aesthetics import contrast_text_color
 
         assert contrast_text_color(None) == list(AESTHETIC_PALETTE["annotation_color"])
+
+
+class TestPanelEncodings:
+    """All three panel color encodings resolve, plus the uncolored fallback."""
+
+    def test_flat_grad1_panel_resolves(self):
+        """The 35-panel majority encoding in this repo carries flat grad1/grad2
+        keys and no bgcolor/bgfillcolor (finding F-2)."""
+        from src.maxpat.aesthetics import ensure_text_contrast, resolve_panel_background
+
+        p = Patcher()
+        set_canvas_background(p)
+        panel = p.add_panel(0.0, 0.0, 300.0, 300.0)
+        del panel.extra_attrs["bgfillcolor"]
+        panel.extra_attrs["grad1"] = [0.94, 0.94, 0.96, 1.0]
+        panel.extra_attrs["grad2"] = [0.88, 0.89, 0.92, 1.0]
+
+        resolved = resolve_panel_background(panel.extra_attrs)
+        assert resolved.assumed is False
+        assert resolved.color == [0.94, 0.94, 0.96, 1.0]
+
+        c = p.add_comment("over grad panel", 50.0, 50.0)
+        ensure_text_contrast(p)
+        assert c.extra_attrs["textcolor"] == DARK_TEXT
+
+    def test_uncolored_panel_falls_back_to_documented_default(self):
+        """A panel with no color key at all resolves to a documented default
+        (flagged assumed), never None."""
+        from src.maxpat.aesthetics import (
+            contrast_ratio,
+            ensure_text_contrast,
+            resolve_panel_background,
+        )
+        from src.maxpat.defaults import MAX_DEFAULT_PANEL_BG, MIN_CONTRAST_RATIO
+
+        p = Patcher()
+        set_canvas_background(p)
+        panel = p.add_panel(0.0, 0.0, 300.0, 300.0)
+        for key in ("bgfillcolor", "bgcolor", "grad1", "grad2"):
+            panel.extra_attrs.pop(key, None)
+
+        resolved = resolve_panel_background(panel.extra_attrs)
+        assert resolved.color is not None
+        assert resolved.assumed is True
+        assert resolved.color == list(MAX_DEFAULT_PANEL_BG)
+
+        c = p.add_comment("over uncolored panel", 50.0, 50.0)
+        ensure_text_contrast(p)
+        chosen = c.extra_attrs["textcolor"]
+        # The assumed panel fill is the surface MAX most likely paints, so the
+        # chosen color must at minimum be readable against it.
+        assert contrast_ratio(chosen, list(MAX_DEFAULT_PANEL_BG)) >= MIN_CONTRAST_RATIO
+        # And it must be the maximize-the-minimum choice across BOTH plausible
+        # surfaces (assumed panel fill and the canvas showing through).
+        canvas = list(AESTHETIC_PALETTE["canvas_bg"])
+        surfaces = [list(MAX_DEFAULT_PANEL_BG), canvas]
+        chosen_min = min(contrast_ratio(chosen, s) for s in surfaces)
+        for cand in (DARK_TEXT, LIGHT_TEXT):
+            assert chosen_min >= min(contrast_ratio(cand, s) for s in surfaces)
+
+    def test_bgfillcolor_color_key_without_color1(self):
+        """bgfillcolor dicts that carry `color` but no `color1` still resolve."""
+        from src.maxpat.aesthetics import resolve_panel_background
+
+        attrs = {"bgfillcolor": {"type": "color", "color": [0.1, 0.1, 0.1, 1.0]}}
+        resolved = resolve_panel_background(attrs)
+        assert resolved.assumed is False
+        assert resolved.color == [0.1, 0.1, 0.1, 1.0]
+
+
+class TestBoxOwnBackground:
+    """D-2: a box that paints its own background IS its own background."""
+
+    def test_section_header_text_reads_against_its_own_bgcolor(self):
+        """add_section_header pairs a LIGHT header_bgcolor with its text; the
+        contrast must be measured against that, not the dark canvas."""
+        from src.maxpat.aesthetics import contrast_ratio, ensure_text_contrast
+        from src.maxpat.defaults import MIN_CONTRAST_RATIO
+
+        p = Patcher()
+        set_canvas_background(p)
+        h = p.add_section_header("Header")
+        ensure_text_contrast(p)
+        own_bg = h.extra_attrs["bgcolor"]
+        assert contrast_ratio(h.extra_attrs["textcolor"], own_bg) >= MIN_CONTRAST_RATIO
+
+    def test_step_marker_text_reads_against_amber_chip(self):
+        """add_step_marker's white text fails WCAG on the amber chip (2.23:1)."""
+        from src.maxpat.aesthetics import contrast_ratio, ensure_text_contrast
+        from src.maxpat.defaults import MIN_CONTRAST_RATIO
+
+        p = Patcher()
+        set_canvas_background(p)
+        m = p.add_step_marker(1, 10.0, 10.0)
+        ensure_text_contrast(p)
+        chip = AESTHETIC_PALETTE["step_marker_bg"]
+        assert contrast_ratio(m.extra_attrs["textcolor"], chip) >= MIN_CONTRAST_RATIO
+
+    def test_box_own_bgcolor_beats_panel_underneath(self):
+        """A light-backed box sitting on a dark panel still gets dark text."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+
+        p = Patcher()
+        set_canvas_background(p)
+        panel = p.add_panel(0.0, 0.0, 300.0, 300.0, gradient=False)
+        panel.extra_attrs["bgcolor"] = [0.05, 0.05, 0.05, 1.0]
+        c = p.add_comment("chip", 50.0, 50.0)
+        c.extra_attrs["bgcolor"] = [0.95, 0.95, 0.95, 1.0]
+        ensure_text_contrast(p)
+        assert c.extra_attrs["textcolor"] == DARK_TEXT
+
+
+class TestRepairTextContrast:
+    """Opt-in repair helper for already-generated patches (D-4)."""
+
+    def test_repair_returns_change_count_and_persists(self):
+        from src.maxpat.aesthetics import ensure_text_contrast, repair_text_contrast
+
+        p, c = _presentation_contrast_patcher()
+        # Bake the WRONG (light) color in, as today's generated patches carry.
+        c.extra_attrs["textcolor"] = list(LIGHT_TEXT)
+        p2 = Patcher.from_dict(p.to_dict())
+
+        changed = repair_text_contrast(p2)
+        assert changed >= 1
+
+        out = p2.to_dict()
+        comments = [
+            e["box"] for e in out["patcher"]["boxes"]
+            if e["box"].get("maxclass") == "comment"
+        ]
+        assert comments[0]["textcolor"] == DARK_TEXT
+
+        # Idempotent: a second pass changes nothing.
+        assert repair_text_contrast(p2) == 0
+
+    def test_repair_is_importable_from_package(self):
+        from src.maxpat import repair_text_contrast  # noqa: F401
+
+    def test_repair_is_not_wired_into_edit_path(self):
+        """D-4: finalize_patch must not auto-repair existing patches."""
+        import inspect
+
+        from src.maxpat import hooks
+
+        src = inspect.getsource(hooks.finalize_patch)
+        assert "repair_text_contrast" not in src

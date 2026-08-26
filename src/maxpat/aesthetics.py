@@ -7,7 +7,7 @@ All colors come from AESTHETIC_PALETTE in defaults.py.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 from src.maxpat.defaults import (
     AESTHETIC_PALETTE,
@@ -225,25 +225,67 @@ def _point_in_rect(px: float, py: float, rect: list[float]) -> bool:
     return x <= px <= x + w and y <= py <= y + h
 
 
-def _get_panel_bgcolor(panel: Box) -> list[float] | None:
-    """Extract effective background color from a panel box.
+class ResolvedBackground(NamedTuple):
+    """A background color plus whether it was FOUND or ASSUMED.
 
-    For gradient panels, uses color1 (the primary fill).
-    For solid panels, uses bgcolor.
-    Returns None if no color can be determined.
+    ``assumed=True`` means no color encoding was present and
+    MAX_DEFAULT_PANEL_BG stood in for it. Callers must treat that case as
+    indeterminate: feed the assumed color together with the surrounding
+    surface into ``best_text_color()``, and downgrade critic findings to a
+    ``note``.
     """
-    ea = panel.extra_attrs
-    # Gradient panel: bgfillcolor.color1
-    bgfill = ea.get("bgfillcolor")
-    if bgfill and isinstance(bgfill, dict):
-        color1 = bgfill.get("color1")
-        if color1:
-            return list(color1)
-    # Solid panel: bgcolor
-    bgcolor = ea.get("bgcolor")
-    if bgcolor:
+
+    color: list[float]
+    assumed: bool
+
+
+def resolve_fill_color(attrs: dict) -> list[float] | None:
+    """Read a fill color out of a plain MAX attribute dict, or None.
+
+    Takes a PLAIN dict so both entry points share one implementation:
+    ``Box.extra_attrs`` on the object side, and the raw box dict on the
+    critic side.
+
+    Encodings, in priority order (counts from finding F-2 across this repo's
+    58 generated panels):
+      1. ``bgfillcolor`` dict -- ``color1``, else ``color``   (2 panels)
+      2. flat top-level ``grad1``                             (37 panels)
+      3. ``bgcolor``                                          (19 panels)
+    """
+    bgfill = attrs.get("bgfillcolor")
+    if isinstance(bgfill, dict):
+        for key in ("color1", "color"):
+            value = bgfill.get(key)
+            if isinstance(value, list) and value:
+                return list(value)
+
+    grad1 = attrs.get("grad1")
+    if isinstance(grad1, list) and grad1:
+        return list(grad1)
+
+    bgcolor = attrs.get("bgcolor")
+    if isinstance(bgcolor, list) and bgcolor:
         return list(bgcolor)
+
     return None
+
+
+def resolve_panel_background(attrs: dict) -> ResolvedBackground:
+    """Effective background of a panel, never None.
+
+    Falls back to MAX_DEFAULT_PANEL_BG (flagged ``assumed=True``) when the
+    panel carries no color encoding at all -- 84 of MAX's own shipped panels
+    are in that state and MAX ships no discoverable default for it (F-3).
+    """
+    color = resolve_fill_color(attrs)
+    if color is not None:
+        return ResolvedBackground(color, False)
+    return ResolvedBackground(list(MAX_DEFAULT_PANEL_BG), True)
+
+
+def _get_panel_bgcolor(panel: Box) -> ResolvedBackground:
+    """Box-object wrapper over resolve_panel_background()."""
+    return resolve_panel_background(panel.extra_attrs)
 
 
 def _resolve_patcher_bg(patcher: Patcher) -> list[float]:
@@ -262,26 +304,100 @@ def _resolve_patcher_bg(patcher: Patcher) -> list[float]:
 
 def _bg_under_rect(
     rect: list[float] | None,
-    panel_layers: list[tuple[list[float] | None, list[float] | None]],
+    panel_layers: list[tuple[list[float] | None, ResolvedBackground]],
     fallback: list[float],
-) -> list[float] | None:
+) -> ResolvedBackground | None:
     """Background visible beneath the center of ``rect`` in one coordinate space.
 
-    ``panel_layers`` is a list of (panel_rect, panel_color) in patcher box
-    order; the LAST containing panel wins, matching the existing behavior.
-    Returns None when ``rect`` is None (box absent from that space).
+    ``panel_layers`` is a list of (panel_rect, ResolvedBackground) in patcher
+    box order; the LAST containing panel wins. Returns None when ``rect`` is
+    None (the box is absent from that space).
     """
     if rect is None:
         return None
     cx = rect[0] + rect[2] * 0.5
     cy = rect[1] + rect[3] * 0.5
-    bg = list(fallback)
-    for panel_rect, panel_color in panel_layers:
-        if panel_rect is None or panel_color is None:
+    result = ResolvedBackground(list(fallback), False)
+    for panel_rect, panel_bg in panel_layers:
+        if panel_rect is None:
             continue
         if _point_in_rect(cx, cy, panel_rect):
-            bg = list(panel_color)
-    return bg
+            result = ResolvedBackground(list(panel_bg.color), panel_bg.assumed)
+    return result
+
+
+class BackgroundResolution(NamedTuple):
+    """Everything a caller needs to choose and justify a text color."""
+
+    color: list[float]          # the effective background
+    assumed: bool               # True when the color is a documented guess
+    space: str                  # "own" | "presentation" | "patching"
+    candidates: list[list[float]]   # backgrounds to feed best_text_color()
+    patching_color: list[float] | None  # patching-space bg, for D-1 notes
+
+
+# A box is a contrast target if it is a comment, or if it already carries a
+# generator-set textcolor (this is what pulls in add_step_marker's textbutton
+# while leaving plain objects like `toggle` alone).
+_TEXT_BEARING_MAXCLASSES = frozenset({"comment"})
+
+
+def is_text_contrast_target(maxclass: str | None, attrs: dict) -> bool:
+    """Whether a box's text color is the generator's to control."""
+    if maxclass in _TEXT_BEARING_MAXCLASSES:
+        return True
+    return "textcolor" in attrs
+
+
+def resolve_effective_background(
+    attrs: dict,
+    patching_rect: list[float] | None,
+    presentation: bool,
+    presentation_rect: list[float] | None,
+    patching_layers: list[tuple[list[float] | None, ResolvedBackground]],
+    presentation_layers: list[tuple[list[float] | None, ResolvedBackground]],
+    patcher_bg: list[float],
+) -> BackgroundResolution:
+    """Resolve the background a box's text actually renders over.
+
+    Precedence:
+      1. D-2 -- the box's OWN background, if it paints one. A box that paints
+         its own background IS its own background, in both coordinate spaces.
+      2. Presentation space, when the box is in presentation (D-1: presentation
+         is the user-facing surface, so it decides on conflict).
+      3. Patching space.
+
+    When the winning background was assumed rather than found, the canvas is
+    added as a second candidate so ``best_text_color`` can maximize the worst
+    case across both plausible surfaces.
+    """
+    own = resolve_fill_color(attrs)
+    if own is not None:
+        return BackgroundResolution(own, False, "own", [own], own)
+
+    patching_bg = _bg_under_rect(patching_rect, patching_layers, patcher_bg)
+
+    if presentation and presentation_rect:
+        primary = _bg_under_rect(presentation_rect, presentation_layers, patcher_bg)
+        space = "presentation"
+    else:
+        primary = patching_bg
+        space = "patching"
+
+    if primary is None:
+        primary = ResolvedBackground(list(patcher_bg), False)
+
+    candidates = [list(primary.color)]
+    if primary.assumed and list(patcher_bg) != list(primary.color):
+        candidates.append(list(patcher_bg))
+
+    return BackgroundResolution(
+        list(primary.color),
+        primary.assumed,
+        space,
+        candidates,
+        list(patching_bg.color) if patching_bg is not None else None,
+    )
 
 
 def _set_textcolor(box: Box, color: list[float]) -> None:
@@ -298,17 +414,61 @@ def _set_textcolor(box: Box, color: list[float]) -> None:
         box._raw["textcolor"] = list(color)
 
 
+def _apply_text_contrast(patcher: Patcher) -> int:
+    """Shared engine behind ensure_text_contrast() and repair_text_contrast().
+
+    Returns the number of boxes whose textcolor changed.
+    """
+    panels = [b for b in patcher.boxes if b.maxclass == "panel"]
+    patcher_bg = _resolve_patcher_bg(patcher)
+
+    patching_layers = [(p.patching_rect, _get_panel_bgcolor(p)) for p in panels]
+    presentation_layers = [
+        (p.presentation_rect, _get_panel_bgcolor(p))
+        for p in panels
+        if p.presentation and p.presentation_rect
+    ]
+
+    changed = 0
+    for box in patcher.boxes:
+        if box.maxclass == "panel":
+            continue
+        if not is_text_contrast_target(box.maxclass, box.extra_attrs):
+            continue
+
+        resolution = resolve_effective_background(
+            box.extra_attrs,
+            box.patching_rect,
+            box.presentation,
+            box.presentation_rect,
+            patching_layers,
+            presentation_layers,
+            patcher_bg,
+        )
+        color = best_text_color(resolution.candidates)
+        if box.extra_attrs.get("textcolor") != color:
+            changed += 1
+        _set_textcolor(box, color)
+
+    return changed
+
+
 def ensure_text_contrast(patcher: Patcher) -> None:
     """Set textcolor on text boxes for readability against their real background.
 
-    The effective background is resolved PER COORDINATE SPACE, not once in
-    patching coordinates:
+    The effective background is resolved per box, in this precedence order:
 
-    - Patching space: the box's ``patching_rect`` center against each panel's
-      ``patching_rect``, falling back to the patcher background.
+    - The box's OWN background, if it paints one (D-2). ``add_section_header``
+      pairs a light ``header_bgcolor`` with its text; that pairing, not the
+      dark canvas behind it, is what the reader sees.
     - Presentation space: the box's ``presentation_rect`` center against the
-      ``presentation_rect`` of panels that are themselves in presentation,
-      again falling back to the patcher background.
+      ``presentation_rect`` of panels that are themselves in presentation.
+    - Patching space: the box's ``patching_rect`` center against each panel's
+      ``patching_rect``.
+
+    Backgrounds fall back to the patcher background (``bgcolor``, then the two
+    editing-specific keys, then the palette canvas) when no panel contains the
+    box.
 
     When a box exists in both spaces and the two demand opposite text colors,
     the PRESENTATION result wins (locked decision D-1): presentation is the
@@ -323,35 +483,26 @@ def ensure_text_contrast(patcher: Patcher) -> None:
     Args:
         patcher: The Patcher instance to process.
     """
-    panels = [b for b in patcher.boxes if b.maxclass == "panel"]
-    patcher_bg = _resolve_patcher_bg(patcher)
+    _apply_text_contrast(patcher)
 
-    patching_layers: list[tuple[list[float] | None, list[float] | None]] = [
-        (p.patching_rect, _get_panel_bgcolor(p)) for p in panels
-    ]
-    presentation_layers: list[tuple[list[float] | None, list[float] | None]] = [
-        (p.presentation_rect, _get_panel_bgcolor(p))
-        for p in panels
-        if p.presentation and p.presentation_rect
-    ]
 
-    for box in patcher.boxes:
-        if box.maxclass != "comment":
-            continue
+def repair_text_contrast(patcher: Patcher) -> int:
+    """Recompute text contrast on an ALREADY-LOADED patcher. Opt-in only.
 
-        if box.presentation and box.presentation_rect:
-            # D-1: presentation is the displayed surface, so it decides.
-            background = _bg_under_rect(
-                box.presentation_rect, presentation_layers, patcher_bg
-            )
-        else:
-            background = _bg_under_rect(
-                box.patching_rect, patching_layers, patcher_bg
-            )
+    This is deliberately NOT wired into any automatic path (locked decision
+    D-4). ``hooks.finalize_patch()`` runs ``apply_auto_styling`` -- and hence
+    ``ensure_text_contrast`` -- only when ``is_new=True``, so editing an
+    existing patch never silently restyles it. Call this explicitly, per
+    patch, when you want an existing patch repaired.
 
-        if background is None:
-            continue
-        _set_textcolor(box, best_text_color([background]))
+    Args:
+        patcher: A Patcher, typically from ``Patcher.from_dict(read_patch(...))``.
+
+    Returns:
+        Number of boxes whose textcolor changed. Idempotent: a second call on
+        an unchanged patcher returns 0.
+    """
+    return _apply_text_contrast(patcher)
 
 
 def is_complex_patch(patcher: Patcher) -> bool:
