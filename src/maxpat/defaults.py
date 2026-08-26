@@ -137,3 +137,33 @@ AESTHETIC_PALETTE = {
     "emphasis_dac": [0.92, 0.85, 0.85, 1.0],          # pale red
     "emphasis_processor": [0.85, 0.87, 0.95, 1.0],    # pale blue
 }
+
+# ---------------------------------------------------------------------------
+# Text contrast constants
+# ---------------------------------------------------------------------------
+# Deliberately NOT members of AESTHETIC_PALETTE: the palette is the project's
+# visual identity and is held fixed; these two are measurement thresholds.
+
+# WCAG 2.1 AA minimum contrast ratio for normal-size body text
+# (W3C WCAG 2.1, Success Criterion 1.4.3 "Contrast (Minimum)").
+MIN_CONTRAST_RATIO = 4.5
+
+# Assumed fill for a `panel` box that carries NO color encoding at all --
+# no `bgcolor`, no `bgfillcolor`, no flat `grad1`.
+#
+# PROVENANCE / ASSUMPTION (finding F-3): MAX ships no discoverable default for
+# this case. `/Applications/Max.app/Contents/Resources/C74/interfaces/
+# maxcolors.json` has no `panel` entry, and `docs/refpages/max-ref/
+# panel.maxref.xml` documents `bgcolor`/`bgfillcolor` without default values.
+# Measuring MAX's own 2973 shipped panel boxes does not settle it either: the
+# 2889 that DO carry a color skew dark (1177 pure black, 607 near-black), while
+# 84 carry no color key at all, so no majority-usage inference is available for
+# the uncolored case.
+#
+# The value below is therefore an explicit assumption, not a measured fact. It
+# is made NON-LOAD-BEARING by design: `_get_panel_bgcolor()` reports the color
+# as *assumed* rather than *found*, and callers then run the assumed background
+# together with the canvas background through `best_text_color()`, which picks
+# the candidate maximizing the MINIMUM contrast ratio across both. The layout
+# critic likewise downgrades such findings from `warning` to `note`.
+MAX_DEFAULT_PANEL_BG = [0.85, 0.85, 0.85, 1.0]

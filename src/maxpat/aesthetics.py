@@ -9,16 +9,99 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from src.maxpat.defaults import AESTHETIC_PALETTE
+from src.maxpat.defaults import (
+    AESTHETIC_PALETTE,
+    MAX_DEFAULT_PANEL_BG,
+    MIN_CONTRAST_RATIO,
+)
 
 if TYPE_CHECKING:
     from src.maxpat.patcher import Box, Patcher
 
 
+# Candidate text colors the generator is allowed to assign, dark first.
+# Tie-breaking iterates this order and only accepts a strict improvement, so
+# an exact tie resolves to the dark candidate.
+TEXT_COLOR_CANDIDATES: tuple[list[float], ...] = (
+    [0.20, 0.20, 0.25, 1.0],   # dark
+    [0.80, 0.80, 0.82, 1.0],   # light
+)
+
+
+def relative_luminance(rgba: list[float]) -> float:
+    """WCAG 2.1 relative luminance of an sRGB color.
+
+    Each channel is linearized (divided by 12.92 below the 0.03928 knee,
+    otherwise ``((c + 0.055) / 1.055) ** 2.4``) and then weighted
+    0.2126 / 0.7152 / 0.0722. Alpha is ignored.
+
+    Args:
+        rgba: RGBA (or RGB) color with channels in [0.0, 1.0].
+
+    Returns:
+        Relative luminance in [0.0, 1.0].
+    """
+    lin = []
+    for c in rgba[:3]:
+        c = min(max(float(c), 0.0), 1.0)
+        lin.append(c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4)
+    return 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2]
+
+
+def contrast_ratio(fg: list[float], bg: list[float]) -> float:
+    """WCAG 2.1 contrast ratio between two colors.
+
+    ``(lighter + 0.05) / (darker + 0.05)`` over the two relative luminances.
+    Symmetric in its arguments; ranges from 1.0 (identical) to 21.0
+    (black on white).
+    """
+    l1 = relative_luminance(fg)
+    l2 = relative_luminance(bg)
+    lighter, darker = (l1, l2) if l1 >= l2 else (l2, l1)
+    return (lighter + 0.05) / (darker + 0.05)
+
+
+def best_text_color(
+    backgrounds: list[list[float]],
+    candidates: tuple[list[float], ...] | list[list[float]] | None = None,
+) -> list[float]:
+    """Pick the text color that reads best across a set of candidate backgrounds.
+
+    Pass a single-element list when the background is known. Pass several when
+    the background is indeterminate (e.g. an uncolored panel, where MAX's real
+    fill is not discoverable -- see MAX_DEFAULT_PANEL_BG). The chosen candidate
+    maximizes the MINIMUM contrast ratio across ``backgrounds``, so an
+    indeterminate surface still gets the least-bad color rather than one that
+    happens to be right for a guess.
+
+    Ties break toward the dark candidate.
+
+    Args:
+        backgrounds: One or more RGBA backgrounds to read against.
+        candidates: Text colors to choose from. Defaults to
+            TEXT_COLOR_CANDIDATES.
+
+    Returns:
+        A new RGBA list (never a shared reference to a module constant).
+    """
+    cands = TEXT_COLOR_CANDIDATES if candidates is None else candidates
+    if not backgrounds:
+        return list(cands[0])
+
+    best = None
+    best_score = float("-inf")
+    for cand in cands:
+        score = min(contrast_ratio(cand, bg) for bg in backgrounds)
+        if score > best_score:
+            best_score = score
+            best = cand
+    return list(best)
+
+
 def contrast_text_color(bg_color: list[float] | None) -> list[float]:
     """Return a text color with good contrast against the given background.
 
-    Uses perceived brightness (luminance) to choose dark or light text.
+    Thin back-compat wrapper over ``best_text_color([bg_color])``.
 
     Args:
         bg_color: RGBA background color, or None for default canvas.
@@ -28,16 +111,7 @@ def contrast_text_color(bg_color: list[float] | None) -> list[float]:
     """
     if bg_color is None:
         return list(AESTHETIC_PALETTE["annotation_color"])
-
-    # Perceived brightness: L = 0.299*R + 0.587*G + 0.114*B
-    luminance = 0.299 * bg_color[0] + 0.587 * bg_color[1] + 0.114 * bg_color[2]
-
-    if luminance > 0.5:
-        # Light background -> dark text
-        return [0.20, 0.20, 0.25, 1.0]
-    else:
-        # Dark background -> light text
-        return [0.80, 0.80, 0.82, 1.0]
+    return best_text_color([bg_color])
 
 
 def set_canvas_background(
@@ -46,14 +120,20 @@ def set_canvas_background(
 ) -> None:
     """Set patcher canvas background color.
 
-    Sets both editing_bgcolor (unlocked mode) and locked_bgcolor (locked mode)
-    to the same color for visual consistency.
+    Sets bgcolor, editing_bgcolor (unlocked mode) and locked_bgcolor (locked
+    mode) to the same color for visual consistency.
+
+    ``bgcolor`` is the patcher-level key MAX honors for locked and presentation
+    mode (finding F-1: 11 of MAX's own shipped patchers set it, vs 2 setting
+    editing_bgcolor). Leaving it unset makes MAX fall back to its light default
+    while generator-side contrast logic assumes the dark canvas.
 
     Args:
         patcher: The Patcher instance to style.
         color: Custom RGBA color list. Defaults to AESTHETIC_PALETTE["canvas_bg"].
     """
     bg = color if color is not None else AESTHETIC_PALETTE["canvas_bg"]
+    patcher.props["bgcolor"] = list(bg)
     patcher.props["editing_bgcolor"] = list(bg)
     patcher.props["locked_bgcolor"] = list(bg)
 
@@ -166,48 +246,112 @@ def _get_panel_bgcolor(panel: Box) -> list[float] | None:
     return None
 
 
+def _resolve_patcher_bg(patcher: Patcher) -> list[float]:
+    """Effective patcher background, preferring the key MAX actually honors.
+
+    ``bgcolor`` is what MAX uses for locked/presentation mode; the two
+    editing-specific keys are fallbacks for patches written before
+    set_canvas_background() started emitting bgcolor.
+    """
+    for key in ("bgcolor", "editing_bgcolor", "locked_bgcolor"):
+        value = patcher.props.get(key)
+        if value:
+            return list(value)
+    return list(AESTHETIC_PALETTE["canvas_bg"])
+
+
+def _bg_under_rect(
+    rect: list[float] | None,
+    panel_layers: list[tuple[list[float] | None, list[float] | None]],
+    fallback: list[float],
+) -> list[float] | None:
+    """Background visible beneath the center of ``rect`` in one coordinate space.
+
+    ``panel_layers`` is a list of (panel_rect, panel_color) in patcher box
+    order; the LAST containing panel wins, matching the existing behavior.
+    Returns None when ``rect`` is None (box absent from that space).
+    """
+    if rect is None:
+        return None
+    cx = rect[0] + rect[2] * 0.5
+    cy = rect[1] + rect[3] * 0.5
+    bg = list(fallback)
+    for panel_rect, panel_color in panel_layers:
+        if panel_rect is None or panel_color is None:
+            continue
+        if _point_in_rect(cx, cy, panel_rect):
+            bg = list(panel_color)
+    return bg
+
+
+def _set_textcolor(box: Box, color: list[float]) -> None:
+    """Write a resolved textcolor to BOTH destinations a Box can serialize from.
+
+    ``extra_attrs`` alone is not enough. For a round-tripped box (``_raw`` is
+    populated) ``Patcher.to_dict()`` starts from ``_raw`` and overlays only
+    text / rects / IO / inner-patcher -- generic ``extra_attrs`` entries are
+    silently dropped (CLAUDE.md Rule #5). Writing only ``extra_attrs`` would
+    make every in-memory assertion pass while nothing lands on disk.
+    """
+    box.extra_attrs["textcolor"] = list(color)
+    if box._raw is not None:
+        box._raw["textcolor"] = list(color)
+
+
 def ensure_text_contrast(patcher: Patcher) -> None:
-    """Set textcolor on all comment boxes for readability against their background.
+    """Set textcolor on text boxes for readability against their real background.
 
-    For each comment box, determines the effective background color:
-    - If the comment center falls inside a panel, uses the panel's color
-    - Otherwise uses the canvas background color
+    The effective background is resolved PER COORDINATE SPACE, not once in
+    patching coordinates:
 
-    Then sets textcolor via contrast_text_color() for maximum readability.
-    Overrides semantic tier colors (header, subsection, annotation) because
-    readability trumps cosmetic coloring on dark canvases.
+    - Patching space: the box's ``patching_rect`` center against each panel's
+      ``patching_rect``, falling back to the patcher background.
+    - Presentation space: the box's ``presentation_rect`` center against the
+      ``presentation_rect`` of panels that are themselves in presentation,
+      again falling back to the patcher background.
+
+    When a box exists in both spaces and the two demand opposite text colors,
+    the PRESENTATION result wins (locked decision D-1): presentation is the
+    user-facing surface, so a patching-mode compromise is the acceptable half
+    of the trade. The layout critic surfaces that compromise as a ``note`` so
+    it is visible rather than silent.
+
+    Colors are chosen by WCAG contrast ratio via ``best_text_color()``, not by
+    a luminance>0.5 flip. Overrides semantic tier colors (header, subsection,
+    annotation) because readability trumps cosmetic coloring.
 
     Args:
         patcher: The Patcher instance to process.
     """
-    # Collect panels (maxclass == "panel")
     panels = [b for b in patcher.boxes if b.maxclass == "panel"]
+    patcher_bg = _resolve_patcher_bg(patcher)
 
-    # Get canvas background color
-    canvas_bg = (
-        patcher.props.get("editing_bgcolor")
-        or patcher.props.get("locked_bgcolor")
-        or AESTHETIC_PALETTE["canvas_bg"]
-    )
+    patching_layers: list[tuple[list[float] | None, list[float] | None]] = [
+        (p.patching_rect, _get_panel_bgcolor(p)) for p in panels
+    ]
+    presentation_layers: list[tuple[list[float] | None, list[float] | None]] = [
+        (p.presentation_rect, _get_panel_bgcolor(p))
+        for p in panels
+        if p.presentation and p.presentation_rect
+    ]
 
     for box in patcher.boxes:
         if box.maxclass != "comment":
             continue
 
-        # Compute center point of comment box
-        rect = box.patching_rect
-        cx = rect[0] + rect[2] * 0.5
-        cy = rect[1] + rect[3] * 0.5
+        if box.presentation and box.presentation_rect:
+            # D-1: presentation is the displayed surface, so it decides.
+            background = _bg_under_rect(
+                box.presentation_rect, presentation_layers, patcher_bg
+            )
+        else:
+            background = _bg_under_rect(
+                box.patching_rect, patching_layers, patcher_bg
+            )
 
-        # Find the effective background: last panel whose rect contains the center
-        effective_bg = list(canvas_bg)
-        for panel in panels:
-            if _point_in_rect(cx, cy, panel.patching_rect):
-                panel_color = _get_panel_bgcolor(panel)
-                if panel_color is not None:
-                    effective_bg = panel_color
-
-        box.extra_attrs["textcolor"] = contrast_text_color(effective_bg)
+        if background is None:
+            continue
+        _set_textcolor(box, best_text_color([background]))
 
 
 def is_complex_patch(patcher: Patcher) -> bool:

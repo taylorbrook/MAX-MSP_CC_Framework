@@ -683,12 +683,19 @@ class TestContrastText:
             assert len(result) == 4
 
     def test_midpoint_luminance(self):
-        """Background at exactly 0.5 luminance returns light text (<=0.5 branch)."""
-        from src.maxpat.aesthetics import contrast_text_color
-        # L = 0.299*R + 0.587*G + 0.114*B = 0.5
-        # Use R=G=B=0.5 => L = 0.5
-        result = contrast_text_color([0.5, 0.5, 0.5, 1.0])
-        assert result == [0.80, 0.80, 0.82, 1.0]
+        """Mid-gray background returns whichever candidate wins on WCAG ratio.
+
+        CORRECTED: this test previously asserted light text, encoding the
+        removed `luminance <= 0.5` binary flip. Under WCAG relative luminance
+        a 0.5 sRGB gray sits at L=0.214, where the dark candidate scores 3.13
+        and the light candidate only 2.49 -- so light text was the LESS
+        readable of the two. The assertion now tracks the measured ratio.
+        """
+        from src.maxpat.aesthetics import contrast_ratio, contrast_text_color
+        bg = [0.5, 0.5, 0.5, 1.0]
+        result = contrast_text_color(bg)
+        assert result == [0.20, 0.20, 0.25, 1.0]
+        assert contrast_ratio(result, bg) > contrast_ratio([0.80, 0.80, 0.82, 1.0], bg)
 
 
 class TestComplexity:
@@ -885,3 +892,137 @@ class TestContrastCritic:
             r for r in results if "Low contrast" in r.finding
         ]
         assert len(contrast_warnings) == 0
+
+
+DARK_TEXT = [0.20, 0.20, 0.25, 1.0]
+LIGHT_TEXT = [0.80, 0.80, 0.82, 1.0]
+
+
+def _presentation_contrast_patcher():
+    """Reproduce the gong-model finding: light panel + comment overlap ONLY in
+    presentation coordinates; in patching coordinates both sit apart on the
+    dark canvas."""
+    from src.maxpat.aesthetics import set_canvas_background
+
+    p = Patcher()
+    set_canvas_background(p)
+    panel = p.add_panel(0.0, 0.0, 300.0, 200.0)
+    p.add_to_presentation(panel, [0.0, 0.0, 300.0, 200.0])
+    # Comment lives far from the panel in patching space ...
+    c = p.add_comment("presentation label", 900.0, 900.0)
+    # ... but sits squarely inside it in presentation space.
+    p.add_to_presentation(c, [40.0, 40.0, 120.0, 20.0])
+    return p, c
+
+
+class TestPresentationSpaceContrast:
+    """Regression tests for presentation-coordinate contrast resolution."""
+
+    def test_comment_in_presentation_panel_gets_dark_text(self):
+        """Headline regression: contrast must be measured in the coordinate
+        space where the text is actually displayed (presentation)."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+
+        p, c = _presentation_contrast_patcher()
+        ensure_text_contrast(p)
+        assert c.extra_attrs["textcolor"] == DARK_TEXT
+
+    def test_presentation_contrast_survives_round_trip(self):
+        """A textcolor assigned to a round-tripped (_raw-carrying) box must
+        survive Patcher.to_dict() -- extra_attrs alone is silently dropped."""
+        from src.maxpat.aesthetics import ensure_text_contrast
+
+        p, c = _presentation_contrast_patcher()
+        p2 = Patcher.from_dict(p.to_dict())
+        for box in p2.boxes:
+            assert box._raw is not None, "round-trip should populate _raw"
+        ensure_text_contrast(p2)
+        out = p2.to_dict()
+        comments = [
+            e["box"] for e in out["patcher"]["boxes"]
+            if e["box"].get("maxclass") == "comment"
+        ]
+        assert len(comments) == 1
+        assert comments[0].get("textcolor") == DARK_TEXT
+
+    def test_set_canvas_background_writes_bgcolor(self):
+        """MAX honors the patcher-level `bgcolor` key for locked/presentation
+        mode; without it MAX falls back to its light default."""
+        from src.maxpat.aesthetics import set_canvas_background
+
+        p = Patcher()
+        set_canvas_background(p)
+        assert p.props["bgcolor"] == list(AESTHETIC_PALETTE["canvas_bg"])
+        assert p.props["editing_bgcolor"] == list(AESTHETIC_PALETTE["canvas_bg"])
+        assert p.props["locked_bgcolor"] == list(AESTHETIC_PALETTE["canvas_bg"])
+
+    def test_presentation_contrast_lands_on_disk(self, tmp_path):
+        """End-to-end: the dark textcolor is present in the saved .maxpat JSON.
+
+        tmp_path is outside any patches/ tree, so no auto-commit is triggered.
+        """
+        import json
+
+        from src.maxpat.aesthetics import ensure_text_contrast
+        from src.maxpat.hooks import save_patch_roundtrip
+
+        p, c = _presentation_contrast_patcher()
+        p2 = Patcher.from_dict(p.to_dict())
+        ensure_text_contrast(p2)
+        dest = tmp_path / "t.maxpat"
+        save_patch_roundtrip(p2.to_dict(), dest)
+        data = json.loads(dest.read_text())
+        comments = [
+            e["box"] for e in data["patcher"]["boxes"]
+            if e["box"].get("maxclass") == "comment"
+        ]
+        assert len(comments) == 1
+        assert comments[0].get("textcolor") == DARK_TEXT
+
+
+class TestContrastPrimitives:
+    """WCAG relative luminance / contrast ratio primitives."""
+
+    def test_relative_luminance_black_and_white(self):
+        from src.maxpat.aesthetics import relative_luminance
+
+        assert relative_luminance([0.0, 0.0, 0.0, 1.0]) == pytest.approx(0.0)
+        assert relative_luminance([1.0, 1.0, 1.0, 1.0]) == pytest.approx(1.0)
+
+    def test_contrast_ratio_black_on_white_is_21(self):
+        from src.maxpat.aesthetics import contrast_ratio
+
+        ratio = contrast_ratio([0.0, 0.0, 0.0, 1.0], [1.0, 1.0, 1.0, 1.0])
+        assert ratio == pytest.approx(21.0, abs=0.01)
+
+    def test_contrast_ratio_is_symmetric(self):
+        from src.maxpat.aesthetics import contrast_ratio
+
+        a, b = [0.1, 0.2, 0.3, 1.0], [0.9, 0.8, 0.7, 1.0]
+        assert contrast_ratio(a, b) == pytest.approx(contrast_ratio(b, a))
+
+    def test_best_text_color_single_light_background(self):
+        from src.maxpat.aesthetics import best_text_color
+
+        assert best_text_color([[0.94, 0.94, 0.96, 1.0]]) == DARK_TEXT
+
+    def test_best_text_color_single_dark_background(self):
+        from src.maxpat.aesthetics import best_text_color
+
+        assert best_text_color([[0.10, 0.10, 0.10, 1.0]]) == LIGHT_TEXT
+
+    def test_best_text_color_maximizes_minimum_ratio(self):
+        """With an indeterminate background, pick the candidate whose WORST
+        contrast across the candidate backgrounds is highest."""
+        from src.maxpat.aesthetics import best_text_color, contrast_ratio
+
+        backgrounds = [[0.94, 0.94, 0.96, 1.0], [0.333, 0.333, 0.333, 1.0]]
+        chosen = best_text_color(backgrounds)
+        chosen_min = min(contrast_ratio(chosen, bg) for bg in backgrounds)
+        for cand in (DARK_TEXT, LIGHT_TEXT):
+            assert chosen_min >= min(contrast_ratio(cand, bg) for bg in backgrounds)
+
+    def test_contrast_text_color_none_returns_annotation(self):
+        from src.maxpat.aesthetics import contrast_text_color
+
+        assert contrast_text_color(None) == list(AESTHETIC_PALETTE["annotation_color"])
