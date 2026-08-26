@@ -59,7 +59,7 @@ def review_layout(patch_dict: dict) -> list[CriticResult]:
     results.extend(_check_overlapping_boxes(box_list))
     results.extend(_check_missing_midpoints(box_lookup, lines))
     results.extend(_check_out_of_bounds(box_list))
-    results.extend(_check_text_contrast(box_list))
+    results.extend(_check_text_contrast(box_list, patcher))
     results.extend(_check_presentation_coverage(box_list))
 
     return results
@@ -331,37 +331,119 @@ def _check_presentation_coverage(box_list: list[dict]) -> list[CriticResult]:
 # Check 4: Low-contrast text
 # ---------------------------------------------------------------------------
 
-# Minimum luminance difference for readable text
-_MIN_CONTRAST = 0.3
+
+def _resolve_patcher_bg(patcher_props: dict) -> list[float]:
+    """Patcher background, preferring the key MAX honors in locked mode."""
+    for key in ("bgcolor", "editing_bgcolor", "locked_bgcolor"):
+        value = patcher_props.get(key)
+        if isinstance(value, list) and value:
+            return list(value)
+    return list(AESTHETIC_PALETTE["canvas_bg"])
 
 
-def _check_text_contrast(box_list: list[dict]) -> list[CriticResult]:
-    """Detect comment boxes with poor text contrast against the default canvas.
+def _check_text_contrast(box_list: list[dict], patcher_props: dict) -> list[CriticResult]:
+    """Detect text boxes that fail WCAG contrast against their REAL background.
 
-    Checks textcolor luminance vs canvas_bg luminance. Flags comments
-    where the absolute difference is below _MIN_CONTRAST.
+    Evaluates the EFFECTIVE background -- the box's own bgcolor, else the panel
+    beneath it in whichever coordinate space the text is displayed in, else the
+    patcher background -- rather than comparing against the palette canvas
+    constant. The resolution logic is imported from src.maxpat.aesthetics so
+    the critic and the generator cannot drift apart.
+
+    Severity:
+      - ``warning`` when the background is KNOWN and the ratio falls short.
+      - ``note`` when the background had to be ASSUMED (panel with no color
+        encoding), since the shortfall may not be real.
+      - ``note`` for the D-1 case where presentation was chosen and patching
+        mode is the compromised space.
     """
-    results: list[CriticResult] = []
+    from src.maxpat.aesthetics import (
+        contrast_ratio,
+        is_text_contrast_target,
+        resolve_effective_background,
+        resolve_panel_background,
+    )
+    from src.maxpat.defaults import MIN_CONTRAST_RATIO
 
-    canvas_bg = AESTHETIC_PALETTE["canvas_bg"]
-    canvas_lum = 0.299 * canvas_bg[0] + 0.587 * canvas_bg[1] + 0.114 * canvas_bg[2]
+    results: list[CriticResult] = []
+    patcher_bg = _resolve_patcher_bg(patcher_props)
+
+    panels = [b for b in box_list if b.get("maxclass") == "panel"]
+    patching_layers = [
+        (b.get("patching_rect"), resolve_panel_background(b)) for b in panels
+    ]
+    presentation_layers = [
+        (b.get("presentation_rect"), resolve_panel_background(b))
+        for b in panels
+        if b.get("presentation") and b.get("presentation_rect")
+    ]
 
     for box in box_list:
-        if box.get("maxclass") != "comment":
+        if box.get("maxclass") == "panel":
+            continue
+        if not is_text_contrast_target(box.get("maxclass"), box):
             continue
 
-        textcolor = box.get("textcolor", [0.0, 0.0, 0.0, 1.0])
-        text_lum = 0.299 * textcolor[0] + 0.587 * textcolor[1] + 0.114 * textcolor[2]
+        textcolor = box.get("textcolor")
+        if not isinstance(textcolor, list) or len(textcolor) < 3:
+            textcolor = [0.0, 0.0, 0.0, 1.0]
 
-        if abs(text_lum - canvas_lum) < _MIN_CONTRAST:
-            text = box.get("text", "")
-            label = text[:40] if text else "(empty)"
-            results.append(CriticResult(
-                "warning",
-                f"Low contrast text: comment '{label}' has textcolor "
-                f"luminance {text_lum:.2f} on canvas luminance {canvas_lum:.2f}",
-                "Set textcolor for better readability, or use "
-                "ensure_text_contrast() in the styling pipeline",
-            ))
+        resolution = resolve_effective_background(
+            box,
+            box.get("patching_rect"),
+            bool(box.get("presentation")),
+            box.get("presentation_rect"),
+            patching_layers,
+            presentation_layers,
+            patcher_bg,
+        )
+
+        text = box.get("text") or ""
+        label = text[:40] if text else "(empty)"
+        ratio = contrast_ratio(textcolor, resolution.color)
+        space = {
+            "own": "own background",
+            "presentation": "presentation-mode background",
+            "patching": "patching-mode background",
+        }[resolution.space]
+
+        if ratio < MIN_CONTRAST_RATIO:
+            if resolution.assumed:
+                results.append(CriticResult(
+                    "note",
+                    f"Low contrast text: '{label}' scores {ratio:.2f}:1 against "
+                    f"its {space}, below the WCAG AA minimum of "
+                    f"{MIN_CONTRAST_RATIO}:1 -- but that background was ASSUMED "
+                    "(the panel beneath it carries no color encoding), so the "
+                    "shortfall may not be real",
+                    "Give the panel an explicit bgcolor/bgfillcolor, then run "
+                    "ensure_text_contrast() (new patches) or "
+                    "repair_text_contrast(patcher) (existing patches)",
+                ))
+            else:
+                results.append(CriticResult(
+                    "warning",
+                    f"Low contrast text: '{label}' scores {ratio:.2f}:1 against "
+                    f"its {space}, below the WCAG AA minimum of "
+                    f"{MIN_CONTRAST_RATIO}:1",
+                    "Set textcolor via ensure_text_contrast() in the styling "
+                    "pipeline, or repair_text_contrast(patcher) on an existing "
+                    "patch",
+                ))
+            continue
+
+        # D-1: presentation won, so patching mode may be the compromised space.
+        if resolution.space == "presentation" and resolution.patching_color is not None:
+            patch_ratio = contrast_ratio(textcolor, resolution.patching_color)
+            if patch_ratio < MIN_CONTRAST_RATIO:
+                results.append(CriticResult(
+                    "note",
+                    f"Presentation/patching contrast trade-off: '{label}' reads "
+                    f"at {ratio:.2f}:1 in presentation but only "
+                    f"{patch_ratio:.2f}:1 in patching mode. Presentation was "
+                    "chosen because it is the user-facing surface (D-1)",
+                    "No action needed unless this label is primarily read while "
+                    "editing; if so, move it onto a panel in patching space too",
+                ))
 
     return results

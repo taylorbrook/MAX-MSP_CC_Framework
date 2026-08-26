@@ -2261,3 +2261,89 @@ class TestPresentationCoverage:
         results = review_layout(_make_patch(boxes, []))
         findings = [r for r in results if "presentation coverage" in r.finding.lower()]
         assert len(findings) == 0, f"Expected no coverage findings, got: {findings}"
+
+
+class TestEffectiveBackgroundContrast:
+    """_check_text_contrast evaluates the EFFECTIVE background, not the
+    palette canvas constant (finding F-4)."""
+
+    @staticmethod
+    def _patch(textcolor, panel_attrs=None):
+        """Light panel + comment, overlapping ONLY in presentation space."""
+        panel = {
+            "id": "obj-1",
+            "maxclass": "panel",
+            "patching_rect": [0.0, 0.0, 300.0, 200.0],
+            "presentation": 1,
+            "presentation_rect": [0.0, 0.0, 300.0, 200.0],
+            "numinlets": 1,
+            "numoutlets": 0,
+        }
+        panel.update(
+            {"bgcolor": [0.94, 0.94, 0.96, 1.0]}
+            if panel_attrs is None
+            else panel_attrs
+        )
+        comment = {
+            "id": "obj-2",
+            "maxclass": "comment",
+            "text": "presentation label",
+            "textcolor": textcolor,
+            "patching_rect": [900.0, 900.0, 120.0, 20.0],
+            "presentation": 1,
+            "presentation_rect": [40.0, 40.0, 120.0, 20.0],
+            "numinlets": 1,
+            "numoutlets": 0,
+        }
+        patch = _make_patch([panel, comment], [])
+        patch["patcher"]["bgcolor"] = [0.333, 0.333, 0.333, 1.0]
+        return patch
+
+    def test_light_text_over_light_presentation_panel_warns(self):
+        """The headline bug: light text sitting on a light panel in
+        presentation coordinates must be flagged."""
+        results = review_layout(self._patch([0.80, 0.80, 0.82, 1.0]))
+        warnings = [
+            r for r in results
+            if "Low contrast" in r.finding and r.severity == "warning"
+        ]
+        assert len(warnings) == 1
+        assert "presentation label" in warnings[0].finding
+        assert "presentation-mode background" in warnings[0].finding
+
+    def test_dark_text_over_light_presentation_panel_is_clean(self):
+        results = review_layout(self._patch([0.20, 0.20, 0.25, 1.0]))
+        assert [r for r in results if "Low contrast" in r.finding] == []
+
+    def test_uncolored_panel_downgrades_warning_to_note(self):
+        """An assumed background yields a note, not a warning -- the shortfall
+        may not be real (finding F-3)."""
+        patch = self._patch(
+            [0.80, 0.80, 0.82, 1.0],
+            panel_attrs={"mode": 0},  # no bgcolor / bgfillcolor / grad1
+        )
+        results = review_layout(patch)
+        findings = [r for r in results if "Low contrast" in r.finding]
+        assert len(findings) == 1
+        assert findings[0].severity == "note"
+        assert "ASSUMED" in findings[0].finding
+
+    def test_box_own_bgcolor_beats_panel(self):
+        """A light-backed comment on a dark panel is judged against its own
+        background, so dark text is clean (D-2)."""
+        patch = self._patch([0.20, 0.20, 0.25, 1.0])
+        patch["patcher"]["boxes"][0]["box"]["bgcolor"] = [0.05, 0.05, 0.05, 1.0]
+        patch["patcher"]["boxes"][1]["box"]["bgcolor"] = [0.95, 0.95, 0.95, 1.0]
+        results = review_layout(patch)
+        assert [r for r in results if "Low contrast" in r.finding] == []
+
+    def test_presentation_patching_tradeoff_emits_note(self):
+        """D-1: when presentation wins and patching mode is compromised, the
+        trade-off is surfaced as a note rather than left silent."""
+        results = review_layout(self._patch([0.20, 0.20, 0.25, 1.0]))
+        notes = [
+            r for r in results
+            if "contrast trade-off" in r.finding and r.severity == "note"
+        ]
+        assert len(notes) == 1
+        assert "presentation label" in notes[0].finding

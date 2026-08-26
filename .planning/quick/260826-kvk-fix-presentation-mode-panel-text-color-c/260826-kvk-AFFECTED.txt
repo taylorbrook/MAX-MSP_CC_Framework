@@ -1,0 +1,24 @@
+WCAG AA threshold: 4.5:1
+Files scanned: 49   Files with failing text: 16
+Total text boxes: 483
+Total failing (known bg): 83
+Total flagged (assumed bg): 0
+
+| file                                                           | text | fail | assumed |
+|----------------------------------------------------------------|------|------|---------|
+| patches/amplitude-follower/generated/amplitude-follower.maxpat |    2 |    2 |       0 |
+| patches/gen-eq/generated/gen-eq-test.maxpat                    |    1 |    1 |       0 |
+| patches/gen-eq/generated/gen-eq.maxpat                         |   20 |    6 |       0 |
+| patches/intelligent-corpus-remixer/generated/intelligent-corpus-remixer.maxpat |    8 |    1 |       0 |
+| patches/kicksynth/generated/kicksynth.maxpat                   |   37 |    1 |       0 |
+| patches/mixer/generated/mixer-strip.maxpat                     |   22 |    8 |       0 |
+| patches/mixer/generated/mixer.maxpat                           |    2 |    1 |       0 |
+| patches/physics-composition/generated/physics-composition.maxpat |    8 |    1 |       0 |
+| patches/psycography/generated/main.maxpat                      |   10 |    1 |       0 |
+| patches/reverse-delay/generated/reverse-delay.maxpat           |   33 |   16 |       0 |
+| patches/scala-synth/generated/scala-synth.maxpat               |   41 |    9 |       0 |
+| patches/stereo-feedback-delay/generated/stereo-feedback-delay.maxpat |   12 |    5 |       0 |
+| patches/subtractive-synth/generated/subtractive-synth.maxpat   |   20 |    4 |       0 |
+| patches/tape-wobble/generated/tape-wobble.maxpat               |   11 |    9 |       0 |
+| patches/wormhole/generated/wormhole-test.maxpat                |    1 |    1 |       0 |
+| patches/wormhole/generated/wormhole.maxpat                     |   24 |   17 |       0 |

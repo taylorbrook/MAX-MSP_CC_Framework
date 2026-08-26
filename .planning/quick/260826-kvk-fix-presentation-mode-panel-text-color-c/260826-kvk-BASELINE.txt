@@ -1,0 +1,5 @@
+FAILED tests/test_integration_patches.py::test_review_patch_no_blockers[patches/simple-fm/generated/simple-fm.maxpat]
+FAILED tests/test_integration_patches.py::test_review_patch_no_blockers[patches/stereo-feedback-delay/generated/stereo-feedback-delay.maxpat]
+FAILED tests/test_round_trip.py::TestSubpatcherByteIdentity::test_byte_identical_round_trip[performancepatchtest/generated/performance-patch-template.maxpat]
+FAILED tests/test_signal_role_migration.py::TestBackCompatConsumerAnchors::test_dsp_critic_outlet_signal_read_pattern_unchanged
+6 failed, 2123 passed, 4 xfailed, 475 warnings in 33.10s

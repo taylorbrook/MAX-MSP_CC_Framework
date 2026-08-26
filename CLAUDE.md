@@ -91,6 +91,21 @@ Getting this wrong causes silent bugs where objects compute with stale values. A
 - Companion pairs (e.g. `meter~` beside `gain~`) sit side-by-side at ~5px horizontal gap, not stacked below (companion detection lives in defaults.py)
 - MAX renders message boxes wider than their stored `patching_rect` width. For overlap-free layout, estimate rendered width as `len(text) * 8 + 25` px of chrome and keep at least 8px between boxes — never rely on `patching_rect[2]` for spacing
 
+#### Text Contrast: Resolve Against the Displayed Surface
+
+Text color is NEVER chosen against the editing background alone. Resolve it against the **effective background in whichever coordinate space the text is displayed in**, and judge it by WCAG contrast ratio (minimum 4.5:1, `MIN_CONTRAST_RATIO` in `defaults.py`), not by a `luminance > 0.5` flip.
+
+Precedence when resolving the effective background:
+
+1. **A box's own `bgcolor` wins over any panel beneath it.** A box that paints its own background IS its own background. `add_section_header` pairs a light `header_bgcolor` with its text; the reader sees that pairing, not the dark canvas behind it.
+2. **Presentation coordinates, when the box is in presentation** — the box's `presentation_rect` center against the `presentation_rect` of panels that are themselves in presentation. Presentation is the user-facing surface, so it decides on conflict; the layout critic emits a `note` naming the box when patching mode is the compromised space.
+3. **Patching coordinates** — `patching_rect` center against panels' `patching_rect`s.
+4. **Patcher background** as fallback.
+
+Panels encode their fill three different ways and all three must be read: `bgfillcolor` dict (`color1`, else `color`), a flat top-level `grad1`, or `bgcolor`. A panel with none of them is genuinely indeterminate — MAX ships no discoverable default — so treat it as *assumed* and pick the text color that maximizes the MINIMUM contrast across the plausible surfaces rather than betting on a guess.
+
+Use `ensure_text_contrast(patcher)` on new patches (it runs automatically via `apply_auto_styling`) and the explicitly-called `repair_text_contrast(patcher)` on existing ones. Contrast is NOT recomputed on the edit path — `apply_auto_styling` runs only when `finalize_patch(is_new=True)` — so an edited patch keeps whatever text colors it already had unless you call the repair helper.
+
 #### Multislider as Labeled Parameter Bank
 
 > Codified: `Patcher.add_labeled_param_bank(params, x, y)` (Phase 31). The recipe below is the prose version; prefer the builder.
@@ -154,6 +169,10 @@ After every `replace_box` call, iterate `result.orphaned` and re-add the connect
 ### Rule #9: Presentation Mode Parity
 
 If the target patch uses presentation mode (any box has `presentation: 1`), every interactive control added or made user-facing by an edit MUST be added to the presentation layout in the same edit — along with its label comment. Use `Patcher.add_to_presentation(box, rect)` with an explicit `presentation_rect` placed in the relevant section's presentation grid (match the section's existing column/row rhythm; audit `presentation_rect`s of neighboring controls to pick coordinates). The layout critic emits "Presentation coverage" warnings for interactive widgets missing from presentation; treat these as must-fix before save. Deliberate exclusions (e.g. a slaved stereo `gain~`) must be recorded in the project's `context.md`. This rule exists because presentation parity was forgotten in repeated iterations and had to be requested manually every time.
+
+**Presentation parity includes contrast parity.** A control or label promoted into presentation must be *readable against its presentation-mode background*, which is frequently not the background it sits on in patching mode. Verify with `ensure_text_contrast()` after any presentation-layout edit, and treat the layout critic's "Low contrast text" warnings as must-fix before save.
+
+Set the patcher-level **`bgcolor`** key, not just `editing_bgcolor`/`locked_bgcolor`. `bgcolor` is what MAX honors for locked and presentation mode; leaving it unset makes MAX fall back to its light default while generator-side contrast logic assumes the dark canvas — light text on a light surface. `set_canvas_background()` writes all three.
 
 ## Domain-Specific Rules
 
