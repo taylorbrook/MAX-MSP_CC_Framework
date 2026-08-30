@@ -52,6 +52,15 @@
       "files_changed": [
         "reverse-delay-mono.maxpat"
       ]
+    },
+    {
+      "version": "0.3.1",
+      "description": "all UI text white",
+      "timestamp": "2026-08-30T03:21:16.221865+00:00",
+      "files_changed": [
+        "reverse-delay.maxpat",
+        "reverse-delay-mono.maxpat"
+      ]
     }
   ]
 }
