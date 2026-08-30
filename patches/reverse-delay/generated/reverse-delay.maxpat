@@ -15,8 +15,8 @@
                 "box": {
                     "angle": 270.0,
                     "background": 1,
-                    "grad1": [ 0.94, 0.94, 0.96, 1.0 ],
-                    "grad2": [ 0.88, 0.89, 0.92, 1.0 ],
+                    "grad1": [ 0.21176470588235294, 0.21176470588235294, 0.4745098039215686, 1.0 ],
+                    "grad2": [ 0.4235294117647059, 0.5098039215686274, 0.7411764705882353, 1.0 ],
                     "id": "obj-150",
                     "maxclass": "panel",
                     "mode": 1,
@@ -33,8 +33,8 @@
                 "box": {
                     "angle": 270.0,
                     "background": 1,
-                    "grad1": [ 0.94, 0.94, 0.96, 1.0 ],
-                    "grad2": [ 0.88, 0.89, 0.92, 1.0 ],
+                    "grad1": [ 0.2549019607843137, 0.2549019607843137, 0.4745098039215686, 1.0 ],
+                    "grad2": [ 0.5058823529411764, 0.592156862745098, 0.8156862745098039, 1.0 ],
                     "id": "obj-149",
                     "maxclass": "panel",
                     "mode": 1,
@@ -42,7 +42,7 @@
                     "numoutlets": 0,
                     "patching_rect": [ 5.0, 170.0, 1010.0, 190.0 ],
                     "presentation": 1,
-                    "presentation_rect": [ 8.0, 172.0, 1000.0, 176.0 ],
+                    "presentation_rect": [ 8.0, 172.0, 1000.0, 188.0 ],
                     "proportion": 0.39,
                     "rounded": 7
                 }
@@ -51,8 +51,8 @@
                 "box": {
                     "angle": 270.0,
                     "background": 1,
-                    "grad1": [ 0.94, 0.94, 0.96, 1.0 ],
-                    "grad2": [ 0.88, 0.89, 0.92, 1.0 ],
+                    "grad1": [ 0.11372549019607843, 0.11372549019607843, 0.3333333333333333, 1.0 ],
+                    "grad2": [ 0.3607843137254902, 0.4588235294117647, 0.7215686274509804, 1.0 ],
                     "id": "obj-148",
                     "maxclass": "panel",
                     "mode": 1,
@@ -145,21 +145,6 @@
                 "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
-                    "id": "obj-3",
-                    "maxclass": "comment",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "patching_rect": [ 400.0, 44.0, 700.0, 20.0 ],
-                    "presentation": 1,
-                    "presentation_rect": [ 16.0, 452.0, 720.0, 20.0 ],
-                    "text": "Presets: 1 Reverse Bloom | 2 Guitar Swell | 3 Slow Wash | 4 Tight Smear | 5 Dark Cavern | 6 Rhythmic Reverse (sync)",
-                    "textcolor": [ 0.2, 0.2, 0.25, 1.0 ]
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
                     "id": "obj-4",
                     "maxclass": "newobj",
                     "numinlets": 2,
@@ -226,7 +211,7 @@
                                     "maxclass": "newobj",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 50.0, 320.0, 30.0, 22.0 ],
+                                    "patching_rect": [ 50.0, 320.0, 30.0, 35.0 ],
                                     "text": "out 1"
                                 }
                             },
@@ -239,7 +224,7 @@
                                     "maxclass": "newobj",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "patching_rect": [ 130.0, 320.0, 30.0, 22.0 ],
+                                    "patching_rect": [ 130.0, 320.0, 30.0, 35.0 ],
                                     "text": "out 2"
                                 }
                             }
