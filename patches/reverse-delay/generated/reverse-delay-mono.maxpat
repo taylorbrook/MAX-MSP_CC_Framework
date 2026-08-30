@@ -5317,7 +5317,13 @@
                     ],
                     "text": "v0.3.1",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ]
                 }
             }
         ],
