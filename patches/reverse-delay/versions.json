@@ -44,6 +44,14 @@
       "files_changed": [
         "generated/reverse-delay.maxpat"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "add mono-in / stereo-out variant (reverse-delay-mono.maxpat)",
+      "timestamp": "2026-08-30T02:34:44.908485+00:00",
+      "files_changed": [
+        "reverse-delay-mono.maxpat"
+      ]
     }
   ]
 }
