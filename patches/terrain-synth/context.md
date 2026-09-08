@@ -285,3 +285,14 @@ Per-instance I/O still has to be set on the box (`numinlets`, `numoutlets`, `out
 
 Next: run the CPU protocol in MAX and fill the results table, then decide single vs split poly~
 (decision rule in the test file); then slice 3 (main patch composing wt-osc + terrain-osc, view).
+
+### v0.2.1 harness fix (2026-09-08): silent + 0 % CPU on first open
+
+Three harness defects, none in the oscillator: `gain~` loads at 0 (silence at the dac even with a
+live poly~), the CPU readout was an int `number` (sub-1 % truncates to 0), and the load-time
+`voices 1` / `up 2` messages reload the poly~ instances, wiping whatever freq/params had already
+arrived (loadmess order is not guaranteed). Fixes: `loadmess 100` -> `gain~`; CPU readout is a
+`flonum`; voices/up inits are `loadmess set 1` (UI only, no reload); `receive tosc-test-params` ->
+`t l b` -> `target 0` then the param list, so broadcast is guaranteed regardless of load order.
+Rule of thumb for future harnesses: never send poly~ `voices`/`up` at load when the args already
+say so, and always init `gain~`.
