@@ -4,6 +4,11 @@ Patch: `generated/terrain-osc-test.maxpat` (loads `poly~ terrain-osc-core N up M
 gain~ loads at 100 (drag it if quiet); CPU readout is a flonum (values under 1 % are real).
 Purpose: retire risk #1 -- CPU of `jit.peek~` inside an upsampled `poly~` per voice -- before the voice architecture is locked.
 
+## Sanity first
+
+- jit.3m min/mean/max must differ (uniform terrain = silence). If they don't, click the exprfill message: analytic terrain, still silent => not the terrain.
+- The orbit-x flonum must jitter with audio on. Frozen => freq never reached the poly~ instance (re-enter freq; check target 0).
+
 ## Protocol
 
 1. Open the test patch with no other DSP running. Note the idle CPU % (adstatus cpu, 250 ms poll) with audio ON and voices = 1, 2x.

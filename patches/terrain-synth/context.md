@@ -309,3 +309,13 @@ coordinates are cell indices x scale; the maxref lists the scale default as 0, s
 an integer scale lands gradient noise on its zero lattice). Display: `jit.expr @expr in[0]*0.5+0.5`
 before the pwindow, terrain itself stays signed. Rule: DB attribute lists for jit.* generators do
 not include enum values -- verify basis/mode names against the maxref before use.
+
+### v0.2.3 (2026-09-08): white pwindow + one impulse then silence -> diagnostics added
+
+Symptom set after the basis fix: pwindow white, scope shows a single impulse at DSP start, then
+flat. Either the terrain is uniform (constant jit.peek~ read -> dcblock step) or the orbit is frozen
+(freq never reached the instance). Harness now separates the two: `jit.matrix -> t l l ->` jit.3m
+(min / mean / max flonums of the raw terrain) and jit.expr display; a click-message
+`exprfill 0 sin(snorm[0]*PI*3.)*cos(snorm[1]*PI*3.), bang` fills the same matrix analytically
+(bypasses jit.bfg); terrain-osc-core got `out~ 2` = orbit x, read in the harness by
+`snapshot~ 50` -> flonum (must jitter). Params grid / CPU column moved +350 px right for room.
