@@ -26,6 +26,18 @@
         "generated/terrain-osc-test.maxpat",
         "test-results/terrain-osc-cpu-test.md"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "v0.3.0: terrain-osc rebuilt as single gen~ + buffer~ terrainbuf (feedback, mod inlets), matrix2buffer bridge, plan re-weighted after sonic review",
+      "timestamp": "2026-09-08T15:07:24.349889+00:00",
+      "files_changed": [
+        "generated/terrain-osc.maxpat",
+        "generated/terrain-osc-core.maxpat",
+        "generated/terrain-osc-test.maxpat",
+        "context.md",
+        "test-results/terrain-osc-cpu-test.md"
+      ]
     }
   ]
 }

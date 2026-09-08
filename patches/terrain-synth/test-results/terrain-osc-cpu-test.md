@@ -1,8 +1,8 @@
-# terrain-osc CPU test (slice 2, v0.2.0)
+# terrain-osc CPU test (slice 2, v0.3.0: single gen~ reading buffer~ terrainbuf)
 
 Patch: `generated/terrain-osc-test.maxpat` (loads `poly~ terrain-osc-core N up M`, which wraps `terrain-osc.maxpat`).
 gain~ loads at 100 (drag it if quiet); CPU readout is a flonum (values under 1 % are real).
-Purpose: retire risk #1 -- CPU of `jit.peek~` inside an upsampled `poly~` per voice -- before the voice architecture is locked.
+Purpose: CPU of the single-codebox terrain oscillator (4 bilinear peeks + orbit math) per voice under poly~ @up, plus a first listen to trajectory feedback (`fb`) and the orbit-radius sweep.
 
 ## Sanity first
 
@@ -34,4 +34,4 @@ Machine / sample rate / vector size:
 
 - 8 voices x 2x under ~15 % CPU: keep the single-poly~ voice (wt-osc + terrain-osc + filter all at 2x) as planned.
 - 8 voices x 2x over ~15 % but 8 x 1x fine: split into two poly~ objects (wt at 1x, terrain at 2x/4x).
-- 1 voice x 4x already heavy: jit.peek~ is the bottleneck; try a gen~ `Data`/`peek` copy of the terrain instead (jit.matrix -> buffer~ bridge) before changing the orbit design.
+- 1 voice x 4x already heavy: drop to 2x and reduce the bilinear read to nearest (`peek` x1) for the CPU-saver mode.

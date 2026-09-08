@@ -122,7 +122,7 @@ plus bank umenu, plus tools/bake_geometry.py emitting one torus-SDF bank`
   256 frames: frame 0 tight (near-sine), frame 255 wide (hard SDF-surface crossings). Matches the
   ji-harmonizer convention (frame 0 ~ sine -> frame 255 full character). Knot-phase and
   noise-amount axes are later banks.
-- **Voice slots: A = wt-osc, B = terrain-osc, mix dial.** Fixed roles, one instance of each engine
+- **Voice slots: A = terrain-osc, B = wt-osc, mix dial** (swapped 2026-09-08 after the sonic review: the live oscillator is the identity; baked tables are the secondary source). Fixed roles, one instance of each engine
   per poly~ voice, crossfade dial (0 = A only, 1 = B only). No per-slot engine switching, no
   duplicate engine instances. Supersedes the handoff's "per-osc-slot engine choice" wording.
 - **Terrain matrix: 256x256, 1-plane float32, single named jit.matrix.** Pitch-scaled zoom is done
@@ -319,3 +319,32 @@ flat. Either the terrain is uniform (constant jit.peek~ read -> dcblock step) or
 `exprfill 0 sin(snorm[0]*PI*3.)*cos(snorm[1]*PI*3.), bang` fills the same matrix analytically
 (bypasses jit.bfg); terrain-osc-core got `out~ 2` = orbit x, read in the harness by
 `snapshot~ 50` -> flonum (must jitter). Params grid / CPU column moved +350 px right for room.
+
+## Sonic review + plan re-weighting (2026-09-08, v0.3.0)
+
+External review verdict: the baked path is "a wavetable with an unusual author"; the live terrain
+oscillator with audio-rate terrain modulation and trajectory feedback is the sonic identity; mesh
+slices are weak sources (near-sine, -12 dB/oct), noise volumes and orbit-radius sweeps are the
+musical baked sources; centred symmetric orbits lose the fundamental (already fixed in slice 1:
+`fold = q`, `zoff`); frame-to-frame travel is modest (drive/scale knobs). Decisions taken:
+
+- **terrain-osc architecture switched to buffer~ + one gen~ codebox.** `jit.matrix terrain` stays
+  the display/view matrix; `p matrix2buffer` copies it row by row into `buffer~ terrainbuf`
+  (`uzi 256 0` -> `t b i i` -> `inputfirst y*256` / `offset 0 y` -> `jit_matrix terrain` ->
+  `jit.submatrix @dim 256 1` -> `jit.buffer~ terrainbuf`; `sizeinsamps 65536` first). The codebox
+  does phase, shape, rotation, zoom*(1+in4), feedback, 4-peek bilinear read, dcblock, tanh.
+  Gains: single-sample trajectory feedback (`fb`), audio-rate x/y/radius modulation inlets
+  (in2-in4), mc.gen~ per voice possible, no jit.peek~ inside poly~ (that risk is retired by
+  construction). Cost: 256 message-rate row copies per terrain update (fine at frame rate).
+- **Slot A = terrain-osc, slot B = wt-osc** (see Decisions).
+- **Mesh slicing demoted** to one bake source among several; noise volumes and SDF orbit-radius
+  sweeps lead. bake_geometry.py unchanged.
+- **Chebyshev bandlimited terrain = v1.1.** Feasible under the codebox rules with two flat
+  constant-bound loops (recurrence T_{n+1} = 2xT_n - T_{n-1} into a Data, then a flattened
+  N*N sum) -- the earlier "needs nested loops" note was wrong.
+- jit.peek~ CPU test superseded by: 1 voice 4x / 8 voices 2x / 8 voices 4x of the gen~ version
+  (same protocol file). Slice-1 bank audition still pending.
+
+terrain-osc v0.3 I/O: in1 Hz, in2 x mod, in3 y mod, in4 radius mod (signals; 0 = none), in5
+param messages (shape rx ry rot cx cy lobes lobeamt zoomk zoomlo fb drive); out1 audio, out2/3
+orbit x/y. terrain-osc-core: in 1 -> in1, in 2 -> in5, out~ 1 audio, out~ 2 orbit x.
