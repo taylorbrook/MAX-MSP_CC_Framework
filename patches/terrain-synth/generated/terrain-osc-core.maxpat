@@ -113,7 +113,7 @@
                         560,
                         34
                     ],
-                    "text": "in 1: frequency Hz (float, use target 0 to broadcast) | in 2: param messages | out~ 1: audio. Load with: poly~ terrain-osc-core <voices> up <2|4>",
+                    "text": "in 1: frequency Hz (float, use target 0 to broadcast) | in 2: param messages | out~ 1: audio | out~ 2: orbit x (diagnostic). Load with: poly~ terrain-osc-core <voices> up <2|4>",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -227,6 +227,24 @@
                         1.0
                     ]
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-9",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        200,
+                        210,
+                        58.0,
+                        22.0
+                    ],
+                    "text": "out~ 2",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
@@ -279,6 +297,34 @@
                         191.0,
                         44.0,
                         191.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-6",
+                        1
+                    ],
+                    "destination": [
+                        "obj-9",
+                        0
+                    ],
+                    "midpoints": [
+                        61.5,
+                        142.0,
+                        142.0,
+                        142.0,
+                        142.0,
+                        178.0,
+                        142.0,
+                        202.0,
+                        81.0,
+                        202.0,
+                        81.0,
+                        240.0,
+                        229.0,
+                        240.0
                     ]
                 }
             }
