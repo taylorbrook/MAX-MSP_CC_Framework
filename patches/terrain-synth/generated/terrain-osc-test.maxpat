@@ -134,10 +134,10 @@
                     "patching_rect": [
                         15,
                         108,
-                        400,
+                        720.0,
                         20.0
                     ],
-                    "text": "1. terrain source -> jit.matrix terrain 1 float32 256 256",
+                    "text": "1. terrain source -> jit.matrix terrain 1 float32 256 256  (basis: noise.gradient = Perlin; scale ~0.005-0.1 = feature size)",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -160,10 +160,10 @@
                     "patching_rect": [
                         15,
                         132,
-                        93.0,
+                        100.0,
                         22.0
                     ],
-                    "text": "loadmess 4.",
+                    "text": "loadmess 0.02",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -411,10 +411,10 @@
                     "patching_rect": [
                         15,
                         280,
-                        296.0,
+                        300.0,
                         22.0
                     ],
-                    "text": "jit.bfg @dim 256 256 @basis noise.perlin",
+                    "text": "jit.bfg 1 float32 256 256 @basis noise.gradient",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2130,6 +2130,27 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-101",
+                    "numinlets": 2,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        330,
+                        345,
+                        212.0,
+                        22.0
+                    ],
+                    "text": "jit.expr @expr in[0]*0.5+0.5",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
@@ -2144,7 +2165,7 @@
                         0
                     ],
                     "midpoints": [
-                        61.5,
+                        65.0,
                         150.0,
                         7.0,
                         150.0,
@@ -2260,7 +2281,7 @@
                         236.0,
                         132.0,
                         274.0,
-                        163.0,
+                        165.0,
                         274.0
                     ]
                 }
@@ -2300,7 +2321,7 @@
                         236.0,
                         132.0,
                         274.0,
-                        163.0,
+                        165.0,
                         274.0
                     ]
                 }
@@ -2322,7 +2343,7 @@
                         236.0,
                         132.0,
                         274.0,
-                        163.0,
+                        165.0,
                         274.0
                     ]
                 }
@@ -2368,7 +2389,7 @@
                         236.0,
                         213.0,
                         274.0,
-                        163.0,
+                        165.0,
                         274.0
                     ]
                 }
@@ -2388,26 +2409,6 @@
                         308.0,
                         149.0,
                         308.0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-18",
-                        0
-                    ],
-                    "destination": [
-                        "obj-19",
-                        0
-                    ],
-                    "midpoints": [
-                        1070.0,
-                        341.0,
-                        1070.0,
-                        204.0,
-                        390.0,
-                        204.0
                     ]
                 }
             },
@@ -3093,6 +3094,12 @@
                         585.0,
                         352.0,
                         585.0,
+                        337.0,
+                        550.0,
+                        337.0,
+                        550.0,
+                        375.0,
+                        550.0,
                         344.0,
                         608.0,
                         344.0,
@@ -3715,6 +3722,12 @@
                     ],
                     "midpoints": [
                         528.5,
+                        337.0,
+                        550.0,
+                        337.0,
+                        550.0,
+                        375.0,
+                        550.0,
                         344.0,
                         608.0,
                         344.0,
@@ -4360,6 +4373,48 @@
                         560.0,
                         227.0,
                         560.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-18",
+                        0
+                    ],
+                    "destination": [
+                        "obj-101",
+                        0
+                    ],
+                    "midpoints": [
+                        22.0,
+                        204.0,
+                        322.0,
+                        204.0,
+                        322.0,
+                        340.0,
+                        337.0,
+                        340.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-101",
+                        0
+                    ],
+                    "destination": [
+                        "obj-19",
+                        0
+                    ],
+                    "midpoints": [
+                        1070.0,
+                        372.0,
+                        1070.0,
+                        204.0,
+                        390.0,
+                        204.0
                     ]
                 }
             }
