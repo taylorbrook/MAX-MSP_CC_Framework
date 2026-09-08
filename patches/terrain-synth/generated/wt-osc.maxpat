@@ -12,8 +12,8 @@
         "rect": [
             85.0,
             104.0,
-            1875.0,
-            300.0
+            640.0,
+            480.0
         ],
         "bglocked": 0,
         "openinpresentation": 0,
@@ -54,8 +54,8 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        615.0,
-                        30.0,
+                        15,
+                        15,
                         685.0,
                         24.0
                     ],
@@ -85,12 +85,12 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        615.0,
-                        90.0,
-                        1220.0,
-                        20.0
+                        15.0,
+                        48.0,
+                        640.0,
+                        34.0
                     ],
-                    "text": "in1 Hz | in2 position 0-1 | in3 bank index -> umenu -> replace. Buffer layout: mip*524288 + frame*2048 + sample (11 mips, 256 frames). Banks baked by tools/bake_geometry.py",
+                    "text": "in1 Hz | in2 position 0-1 | in3 bank index. Buffer layout: mip*524288 + frame*2048 + sample (11 mips, 256 frames). Banks baked by tools/bake_geometry.py",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -111,8 +111,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        30.0,
-                        30.0,
+                        15.0,
+                        105.0,
                         30.0,
                         30.0
                     ],
@@ -130,8 +130,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        75.0,
-                        30.0,
+                        120.0,
+                        105.0,
                         30.0,
                         30.0
                     ],
@@ -149,8 +149,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        195.0,
-                        30.0,
+                        330.0,
+                        105.0,
                         30.0,
                         30.0
                     ],
@@ -168,8 +168,8 @@
                         "signal"
                     ],
                     "patching_rect": [
-                        30.0,
-                        75.0,
+                        15,
+                        160,
                         121.0,
                         22.0
                     ],
@@ -233,8 +233,8 @@
                                         ""
                                     ],
                                     "patching_rect": [
-                                        30.0,
-                                        30.0,
+                                        50.0,
+                                        20.0,
                                         30.0,
                                         22.0
                                     ],
@@ -253,8 +253,8 @@
                                         ""
                                     ],
                                     "patching_rect": [
-                                        75.0,
-                                        30.0,
+                                        130.0,
+                                        20.0,
                                         30.0,
                                         22.0
                                     ],
@@ -273,8 +273,8 @@
                                         ""
                                     ],
                                     "patching_rect": [
-                                        30.0,
-                                        75.0,
+                                        50.0,
+                                        80.0,
                                         400.0,
                                         200.0
                                     ],
@@ -292,8 +292,8 @@
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
-                                        210.0,
-                                        300.0,
+                                        50.0,
+                                        320.0,
                                         30.0,
                                         22.0
                                     ],
@@ -327,10 +327,10 @@
                                         1
                                     ],
                                     "midpoints": [
-                                        90.0,
-                                        63.5,
-                                        423.0,
-                                        63.5
+                                        145.0,
+                                        61.0,
+                                        443.0,
+                                        61.0
                                     ]
                                 }
                             },
@@ -343,6 +343,12 @@
                                     "destination": [
                                         "obj-4",
                                         0
+                                    ],
+                                    "midpoints": [
+                                        250.0,
+                                        300.0,
+                                        65.0,
+                                        300.0
                                     ]
                                 }
                             }
@@ -366,8 +372,8 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        90.0,
-                        120.0,
+                        15.0,
+                        225.0,
                         30.0,
                         30.0
                     ],
@@ -388,7 +394,7 @@
                     ],
                     "patching_rect": [
                         330.0,
-                        140.0,
+                        160.0,
                         180.0,
                         22.0
                     ],
@@ -408,8 +414,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        360.0,
-                        75.0,
+                        330.0,
+                        195.0,
                         121.0,
                         22.0
                     ],
@@ -429,8 +435,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        270.0,
-                        120.0,
+                        330,
+                        240,
                         296.0,
                         22.0
                     ],
@@ -447,12 +453,36 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        615.0,
-                        135.0,
-                        723.0,
+                        330.0,
+                        280.0,
+                        420.0,
                         20.0
                     ],
-                    "text": "bank select: umenu symbol -> replace <file> -> buffer~ (one shared buffer~ terrainbank per bank name)",
+                    "text": "bank select: umenu symbol -> replace <file> -> buffer~ terrainbank",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-12",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        150.0,
+                        160.0,
+                        170.0,
+                        48.0
+                    ],
+                    "text": "gen~ codebox: phase acc -> mip = clamp(floor(log2(f/20)),0,10) -> bilinear frame morph",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -486,12 +516,6 @@
                     "destination": [
                         "obj-6",
                         1
-                    ],
-                    "midpoints": [
-                        90.0,
-                        67.5,
-                        144.0,
-                        67.5
                     ]
                 }
             },
@@ -504,6 +528,12 @@
                     "destination": [
                         "obj-7",
                         0
+                    ],
+                    "midpoints": [
+                        75.5,
+                        203.5,
+                        22.0,
+                        203.5
                     ]
                 }
             },
@@ -518,10 +548,10 @@
                         0
                     ],
                     "midpoints": [
-                        210.0,
-                        52.5,
-                        450.0,
-                        52.5
+                        345.0,
+                        147.5,
+                        420.0,
+                        147.5
                     ]
                 }
             },
@@ -536,10 +566,10 @@
                         0
                     ],
                     "midpoints": [
-                        450.0,
-                        71.0,
-                        420.5,
-                        71.0
+                        420.0,
+                        188.5,
+                        390.5,
+                        188.5
                     ]
                 }
             },
@@ -552,6 +582,12 @@
                     "destination": [
                         "obj-10",
                         0
+                    ],
+                    "midpoints": [
+                        390.5,
+                        228.5,
+                        478.0,
+                        228.5
                     ]
                 }
             }
