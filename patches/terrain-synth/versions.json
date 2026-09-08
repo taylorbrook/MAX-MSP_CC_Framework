@@ -4,6 +4,17 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-09-08T02:17:03.861504+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "v0.1.0: wt-osc abstraction + test harness + bake_geometry.py torus-SDF bank00",
+      "timestamp": "2026-09-08T03:00:18.745115+00:00",
+      "files_changed": [
+        "generated/wt-osc.maxpat",
+        "generated/wt-osc-test.maxpat",
+        "generated/bank00-torus-sdf.wav",
+        "tools/bake_geometry.py"
+      ]
     }
   ]
 }

@@ -217,3 +217,38 @@ First bank parameters: torus `R=1.0, r=0.4`, knot `p=2, q=3, r=0.5`, orbit scale
 1. **jit.peek~ CPU inside upsampled poly~** -- unverified; slice 2 load test (1 voice at 4x, then 8 voices at 2x) before committing to the voice architecture.
 2. **Bake tool frame coherence** -- xcorr alignment must be chained frame-to-frame; check `rms_xcorr` < `rms_raw` in the sanity report.
 3. **Level-10 silence** above ~20 kHz fundamentals is verbatim ji-harmonizer behaviour; acceptable.
+
+## Build slice 1 (2026-09-07, v0.1.0)
+
+Files: `generated/wt-osc.maxpat` (abstraction), `generated/wt-osc-test.maxpat` (bpatcher harness:
+flonum freq / flonum position / number bank -> wt-osc -> gain~ + meter~ + scope~ -> ezdac~),
+`tools/bake_geometry.py`, `generated/bank00-torus-sdf.wav` (23.1 MB, committed),
+`test-results/bake-bank00-torus-sdf.txt` (sanity report, ALL PASS).
+
+wt-osc I/O: in1 Hz (signal/float), in2 position 0-1 (signal/float), in3 bank index -> umenu ->
+`prepend replace` -> `buffer~ terrainbank bank00-torus-sdf.wav`; out1 signal. gen~ codebox is the
+ji-harmonizer base group verbatim (phase acc, mip = clamp(floor(log2(f/20)),0,10), bilinear frame
+morph via explicit lerps). Inlet x-rank verified (15 < 120 < 330). Patch built with explicit
+coordinates -- `apply_layout` pushed comments to x=615+ and stacked both flonums at the same rect.
+
+### Geometry finding: centred (p,q) knot on a torus SDF is degenerate
+
+A torus is symmetric about its axis, so along a centred (2,3) knot the SDF only sees the meridian
+motion (rho = R + r cos 3t, z = r sin 3t): the sampled field has exact period 2pi/3 and a full-cycle
+bake gives a pure harmonic-3 series (frame 0 = "sine" at 3x pitch; harmonics 1, 2 absent). Tilting
+the torus / offsetting the orbit centre in xy breaks the symmetry but harmonic 2 or 3 still
+dominates (the knot's own x/y coordinates carry cos 2t; harmonic 1 only appears via r/2 cross
+terms) -- no near-sine frame 0 is possible that way. Second degeneracy: at orbit scale 1.0 the
+meridian circle is concentric with the tube, SDF is constant, frame is silent after DC removal.
+
+Bake decisions (defaults in `bake_geometry.py`): `fold = q` (sample one field period, 2pi/3, per
+cycle so harmonic 1 is the fundamental; auto when tilt == 0) and `zoff = 0.25` (orbit shifted along
+the torus axis; removes the scale-1.0 dead zone, min frame RMS 0.10 vs median 0.36). `--tilt`
++ `--fold 1` remain available for rougher later banks. Result: frame 0 h2 -13 dB, 4 harmonics
+> -60 dB; frame 255 h2 -3.8 dB, 9 harmonics > -60 dB (the spec's scale 0.3-1.6 / tanh(3f) gives
+moderate rather than extreme top frames -- `--drive` and `--scale HI` are the knobs). xcorr
+alignment halves adjacent-frame RMS diff (0.0064 -> 0.0031), no polarity flips. Global peak 1.0
+at mip 0 frame 255; every mip's highest bin == h_max(k); level 10 silent.
+
+Next: audition `wt-osc-test.maxpat` in MAX (bank load, pitch across mips, position sweep), then
+slice 2 (terrain-osc + poly~ @up CPU test).
