@@ -252,3 +252,36 @@ at mip 0 frame 255; every mip's highest bin == h_max(k); level 10 silent.
 
 Next: audition `wt-osc-test.maxpat` in MAX (bank load, pitch across mips, position sweep), then
 slice 2 (terrain-osc + poly~ @up CPU test).
+
+## Build slice 2 (2026-09-08, v0.2.0)
+
+Files: `generated/terrain-osc.maxpat` (abstraction), `generated/terrain-osc-core.maxpat` (poly~ voice
+wrapper: `in 1` Hz -> terrain-osc -> `out~ 1`, `in 2` param messages), `generated/terrain-osc-test.maxpat`
+(CPU-test harness), `test-results/terrain-osc-cpu-test.md` (protocol + results table, to be filled in MAX).
+
+terrain-osc I/O: in1 Hz (signal/float) -> orbit gen~; in2 param messages (`<name> <value>`) ->
+`route drive` -> `prepend drive` -> shaper gen~ / everything else -> orbit gen~. out1 audio,
+out2/out3 orbit x/y (0-1 signals, for the slice-3 view). Chain: orbit gen~ (Hz in, internal phase acc,
+`shape` 0 ellipse / 1 epitrochoid / 2 squarcle via range tests, `rx ry rot cx cy lobes lobeamt`,
+pitch zoom `radius *= clamp(zoomk / f, zoomlo, 1)`, outputs clamped 0.02-0.98) ->
+`jit.peek~ terrain 2 0 @interp 1 @normalize 1` -> shaper gen~ `tanh(dcblock(in1) * drive)`.
+No `phasor~` / `tanh~` objects: phase and dcblock/tanh live in the two codeboxes. All Params carry
+min/max. Matrix name `terrain` is fixed (single shared matrix per the discuss decision).
+
+Harness: `loadbang`-free init via `loadmess` per control; freq goes through `t f b` so `target 0`
+always precedes the float (broadcast to all instances). Params fan into `send tosc-test-params` ->
+`receive` -> poly~ in 2. `voices $1` / `up 1|2|4` (umenu -> `select 0 1 2`) messages into poly~
+inlet 0; `adstatus cpu` polled by `metro 250`. Terrain: `jit.bfg @dim 256 256 @basis noise.perlin`
+(+ `scale $1 $1 1.`, `seed $1`, regen button) -> `jit.matrix terrain 1 float32 256 256` -> `jit.pwindow`.
+`jit.pwindow` is stored as `maxclass newobj` + text (validator rejects the UI maxclass; MAX
+instantiates the UI class from the text). Explicit coordinates throughout with the add_box
+auto-nudge disabled (it pushed rows into each other); `finalize_patch(is_new=False)` only for midpoints.
+
+Framework fix: `poly~` outlet 0 was extracted as a control "status" outlet, so `validate_patch`
+silently auto-removed every `poly~ -> gain~/scope~` line (also true for the committed scala-synth
+main patch). Added an `overrides.json` entry marking outlet 0 `signal` / `signal_role: audio`.
+Per-instance I/O still has to be set on the box (`numinlets`, `numoutlets`, `outlettype`).
+`jit.bfg` `scale` arity (3 floats) is from the reference, not the DB -- verify the message in MAX.
+
+Next: run the CPU protocol in MAX and fill the results table, then decide single vs split poly~
+(decision rule in the test file); then slice 3 (main patch composing wt-osc + terrain-osc, view).

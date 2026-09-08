@@ -15,6 +15,17 @@
         "generated/bank00-torus-sdf.wav",
         "tools/bake_geometry.py"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "v0.2.0: terrain-osc abstraction + poly~ core + CPU test harness + test protocol",
+      "timestamp": "2026-09-08T04:56:52.418648+00:00",
+      "files_changed": [
+        "generated/terrain-osc.maxpat",
+        "generated/terrain-osc-core.maxpat",
+        "generated/terrain-osc-test.maxpat",
+        "test-results/terrain-osc-cpu-test.md"
+      ]
     }
   ]
 }
