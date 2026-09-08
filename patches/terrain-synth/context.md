@@ -296,3 +296,16 @@ arrived (loadmess order is not guaranteed). Fixes: `loadmess 100` -> `gain~`; CP
 `t l b` -> `target 0` then the param list, so broadcast is guaranteed regardless of load order.
 Rule of thumb for future harnesses: never send poly~ `voices`/`up` at load when the args already
 say so, and always init `gain~`.
+
+### v0.2.2 (2026-09-08): black terrain / silence root cause = invalid jit.bfg basis
+
+`noise.perlin` is not a jit.bfg basis name (valid: noise.gradient, noise.simplex, noise.cell,
+noise.checker, noise.distorted, noise.sparse.convolution, noise.value.*, noise.voronoi, fractal.*,
+filter.*, transfer.*; from jit.bfg.maxref.xml). jit.bfg accepted it silently and output all zeros ->
+black pwindow -> constant jit.peek~ read -> dcblock -> exact silence with DSP running (the symptom
+set: loadmess fired, CPU > 0, scope flat). Fixed: `jit.bfg 1 float32 256 256 @basis noise.gradient`
+(positional planecount/type/dim as in the shipped help patch), scale default 0.02 (jit.bfg grid
+coordinates are cell indices x scale; the maxref lists the scale default as 0, so it must be set;
+an integer scale lands gradient noise on its zero lattice). Display: `jit.expr @expr in[0]*0.5+0.5`
+before the pwindow, terrain itself stays signed. Rule: DB attribute lists for jit.* generators do
+not include enum values -- verify basis/mode names against the maxref before use.
