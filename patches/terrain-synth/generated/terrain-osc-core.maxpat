@@ -113,7 +113,7 @@
                         560,
                         34
                     ],
-                    "text": "in 1: frequency Hz (float, use target 0 to broadcast) | in 2: param messages | out~ 1: audio | out~ 2: orbit x (diagnostic). Load with: poly~ terrain-osc-core <voices> up <2|4>",
+                    "text": "in 1: frequency Hz (float, use target 0 to broadcast) -> terrain-osc in1 | in 2: param messages -> terrain-osc in5 | out~ 1: audio | out~ 2: orbit x. Load with: poly~ terrain-osc-core <voices> up <2|4>",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -168,7 +168,7 @@
                 "box": {
                     "maxclass": "newobj",
                     "id": "obj-6",
-                    "numinlets": 2,
+                    "numinlets": 5,
                     "numoutlets": 3,
                     "outlettype": [
                         "signal",
@@ -263,28 +263,6 @@
             {
                 "patchline": {
                     "source": [
-                        "obj-5",
-                        0
-                    ],
-                    "destination": [
-                        "obj-6",
-                        1
-                    ],
-                    "midpoints": [
-                        217.0,
-                        142.0,
-                        142.0,
-                        142.0,
-                        142.0,
-                        178.0,
-                        101.0,
-                        178.0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
                         "obj-6",
                         0
                     ],
@@ -325,6 +303,28 @@
                         240.0,
                         229.0,
                         240.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-5",
+                        0
+                    ],
+                    "destination": [
+                        "obj-6",
+                        4
+                    ],
+                    "midpoints": [
+                        217.0,
+                        142.0,
+                        142.0,
+                        142.0,
+                        142.0,
+                        178.0,
+                        101.0,
+                        178.0
                     ]
                 }
             }
