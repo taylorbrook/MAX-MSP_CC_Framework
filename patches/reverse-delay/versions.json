@@ -61,6 +61,15 @@
         "reverse-delay.maxpat",
         "reverse-delay-mono.maxpat"
       ]
+    },
+    {
+      "version": "0.3.2",
+      "description": "Param-only max() calls rewritten as abs identity (gen~ maxb_NN undeclared on some Max 9 builds)",
+      "timestamp": "2026-09-16T00:00:00+00:00",
+      "files_changed": [
+        "reverse-delay.maxpat",
+        "reverse-delay-mono.maxpat"
+      ]
     }
   ]
 }
