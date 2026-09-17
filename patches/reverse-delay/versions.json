@@ -70,6 +70,15 @@
         "reverse-delay.maxpat",
         "reverse-delay-mono.maxpat"
       ]
+    },
+    {
+      "version": "0.3.3",
+      "description": "per-sample hoist guard (History one) -- gen~ hoisted temps emitted out of order on some Max 9 builds",
+      "timestamp": "2026-09-16T00:00:00+00:00",
+      "files_changed": [
+        "reverse-delay.maxpat",
+        "reverse-delay-mono.maxpat"
+      ]
     }
   ]
 }
