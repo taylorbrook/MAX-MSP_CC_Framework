@@ -277,3 +277,37 @@ gen~ decorrelator) per the roadmap.
 | D16 | ONE abstraction for mono and stereo. `bpatcher @args <name> <chans>` with `#2` = 1 or 2 (JSON number) seeding a mono/stereo `umenu` in the SOURCE panel via `loadmess #2`; the menu can still be flipped live. Two signal inlets (L, R); `sfplay~ 2` and `adc~ 1 2` always; a `selector~` picks the right feed = R input (stereo) or a copy of L (mono) before the decorrelator. | Two files would double every future fix; the variant is one selector and one flag. A stereo-only file would silently put a mono stem on the left sub-point. |
 | D17 | Width visualisation: the plan draws the spread axis as a short bar through the puck with a tick at each sub-point labelled L and R; ticks collapse onto the puck as the centroid fade takes effective width to zero. | Shows the geometry and the fade, not just the parameter. |
 | D18 | v0.3 ports the plugin's width + decorrelator verbatim: two DBAP solves (left/right sub-points, `SourceShaper.cpp` steps 1-6, kFadeFraction 0.05, centroid bearing, per-sub-point ear height), per-speaker output `vL*sL + vR*sR` with each feed at 0.5; decorrelator = 4 Schroeder all-passes per feed, g 0.7, bases L {113,199,317,449} / R {139,233,359,521} samples at 48 kHz scaled by samplerate, depth scales delay length (integer reads, clamp >= 1), applied depth = decorr * min(wEff / 2 m, 1), bypassed at wEff 0. Width 0..12 m default 0; decorr 0..1 default 0. Both scene-stored. | Same numbers as the verified plugin (D10 principle). |
+
+## v0.3 build brief (for /max-build in a fresh context)
+
+Start from the v0.2.0 files in `generated/` (all confirmed working in MAX). Edit the abstraction and
+host via the Patcher API (`read_patch` -> edit -> `finalize_patch(is_new=False)` -> `ensure_text_contrast`
+-> `save_patch_roundtrip`); do NOT re-run `apply_layout` (see "Build v0.1.0" notes). Keep every
+existing varname and the instance presentation size (660x500) so scenes and the host layout survive.
+
+Reference source (read before writing the js/gen code, port the numbers verbatim, D18):
+- `/Users/taylorbrook/Dev/VST-development/plugins/O-Octagon/Source/DSP/SourceShaper.cpp` (sub-points)
+- `/Users/taylorbrook/Dev/VST-development/plugins/O-Octagon/Source/DSP/Decorrelator.h` (all-pass chains)
+- `/Users/taylorbrook/Dev/VST-development/plugins/O-Octagon/Source/DSP/GainStage.cpp` lines ~570-630
+  (wEff gate, depth ramp) and ~820-870 (per-sample `vL*sL + vR*sR`, feeds at 0.5)
+
+Deliverables:
+1. `dbap.js`: `width f` and `decorr f` handlers; `shape()` port (bearing from centroid, rFade =
+   0.05*rigScale, wEff, nHat, per-sub-point ear height); two solves per update -> outlet 0 emits
+   `applyvalues` for the L lane and a NEW outlet for the R lane (or `gainsL`/`gainsR` prefixes into
+   `route`); readouts add `weff`; plan draws the axis bar + L/R ticks (D17). Trims apply to both lanes.
+2. `dbap-source.maxpat`: second `inlet` (R) placed to the RIGHT of the existing inlet box (port
+   x-order rule); `sfplay~ 2`, `adc~ 1 2`; `selector~` for the right feed (stereo = R, mono = copy of
+   L) driven by a mono/stereo `umenu` seeded by `loadmess #2` (D16); a `gen~` codebox decorrelator
+   (2 in, 2 out, `Param depth`, 8 `Delay`s, integer `read` with `interp="none"`, delays =
+   `round(base * depth * samplerate/48000)` clamped >= 1, g 0.7, CLAUDE.md codebox rules: declarations
+   first, spaces only, no else-if, no `delay()`); second `mc.sig~ @chans 8` + `mc.rampsmooth~` +
+   `mc.*~` lane for the R feed, `mc.+~` before the master; `live.dial` width (0..12 m, unitstyle 9
+   custom "m" or 1) and decorr (0..1) in the POSITION panel; both scene-stored (varnames).
+   Depth sent to gen~ = `decorr * min(wEff/2, 1)` computed in js and emitted as `depth $1`.
+3. `barnett-dbap.maxpat` host: bpatcher args become `["A", 1]` and `["B", 2]` (ints as JSON
+   numbers), `numinlets 2`.
+4. Numpy pre-flight BEFORE committing the codebox: simulate the 4-section chain at depths
+   {0, 0.1, 0.25, 0.5, 0.75, 1.0}; assert chain gain within 0.05 dB of unity and L/R cross-correlation
+   < 0.15 at depth 1; assert the two chains are identical at depth 0.
+5. Bump to 0.3.0, build notes in this file, commit, verify list for MAX.
