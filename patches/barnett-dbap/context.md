@@ -385,3 +385,17 @@ messages from js reach the Param, `loadmess #2` seeds the chans menu per instanc
 width/decorr dials, plan axis bar + L/R ticks, R gain lane + `mc.+~` sum, host bpatchers with 2 inlets
 and JSON-int args. Every "verify in MAX" item under v0.3.0 is closed. Next: v0.4 (air filter, hull
 projection and trim) per the roadmap.
+
+## Decisions (2026-09-19, v0.4 scoping)
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D19 | v0.4 adds TWO scene-stored `live.dial`s in the POSITION panel and NO on/off toggles: `air` 0..1 (plugin default 0.35) and `hull` 0..3 dB/m (plugin default 1.0). Zero on either dial is the plugin's exact no-op branch (air: filter skipped, bit-transparent; hull: `pow(10, -0) = 1`), so a toggle would only duplicate the dial's endpoint. The z-cue (level scale of the srcZ solve against the ear-height solve) stays implicit, no control, as in the plugin. Hull trim is expected to be near-inert on the Barnett rig (only the two rear-corner triangles lie outside the octagon) and is included for plugin parity and venue portability. | User call over "air only" and "toggles": parity with the verified plugin at the cost of one extra dial; a scene can carry "off" without a second control. |
+
+v0.4 port targets (read before building): `HullProcessor.h` (`hullTrimGain`: -hullAtten * dHull dB floored at
+-24 dB; `airCutoffHz`: 20 kHz ceiling, 500 Hz floor, dRef = 0.2 rigScale, near field 0.1 rigScale,
+Nyquist margin 0.45 fs, driven by the sub-point's planar distance from the centroid), `ConvexHull2D`
+(hull of the 8 speakers, distance outside), `GainStage.cpp` step 6 (per sub-point: trim, z-cue, air
+cutoff; one-pole TPT lowpass per feed, skipped inside the near field, reset only on the air -> 0
+transition, seeded s = x on the engage edge). Filter goes in the existing gen~ (two more Params:
+air cutoff L / R in Hz from js), trim and z-cue multiply into the js gain vectors.
