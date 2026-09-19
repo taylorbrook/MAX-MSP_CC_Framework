@@ -399,3 +399,28 @@ Nyquist margin 0.45 fs, driven by the sub-point's planar distance from the centr
 cutoff; one-pole TPT lowpass per feed, skipped inside the near field, reset only on the air -> 0
 transition, seeded s = x on the engage edge). Filter goes in the existing gen~ (two more Params:
 air cutoff L / R in Hz from js), trim and z-cue multiply into the js gain vectors.
+
+| D20 | v0.4 layout: instance stays 660x500. POSITION grows to two dial rows; WEIGHTS and TRIMS merge into ONE panel with 42 px bars and a single shared "1".."8" label row between the two banks. | User call over growing the instance to 660x576 (recommended) and over 44 px dials: the host layout and instance footprint stay fixed; coarser trim bars (about 1.2 px/dB) accepted. |
+
+D20 presentation coordinates (right column only; the left column and SOURCE panel do not move):
+
+| Box | v0.3 presentation_rect | v0.4 presentation_rect |
+|---|---|---|
+| POSITION panel `obj-4` | 280 170 360 100 | 280 170 360 170 |
+| row 1 (rolloff, blur, src Z, width, decorr) | y 192 | unchanged |
+| NEW `air` live.dial (0..1, initial 0.35, varname `air`) | - | 290 266 60 70 |
+| NEW `hull` live.dial (0..3, initial 1.0, varname `hull`) | - | 360 266 60 70 |
+| bank panel `obj-5` (now WEIGHTS + TRIMS) | 280 280 360 108 | 280 348 360 148 |
+| TRIMS panel `obj-6` | 280 396 360 100 | removed from presentation (keep in patching) |
+| WEIGHTS header `obj-37` | 290 286 75 20 | 290 352 75 20 |
+| weights multislider `obj-38` | 290 306 340 60 | 290 370 340 42 |
+| shared labels `obj-39`..`obj-46` | y 368 | y 413 (x unchanged, 14 x 16) |
+| trims labels `obj-50`..`obj-57` | y 474 | removed from presentation (columns align with the shared row) |
+| TRIMS header `obj-48` | 290 402 93 20 | 290 429 93 18 |
+| trims multislider `obj-49` | 290 422 340 50 | 290 448 340 42 |
+
+Build notes for D20: these are round-tripped boxes, so set `box.presentation_rect` (model field, overlaid
+at serialize) and use `box.presentation = False` for the removed ones; do not touch patching rects.
+Both new dials get loadbang inits (`0.35`, `1.`), `prepend air` / `prepend hull` into js, and the init
+trigger grows from 11 to 13 outlets. Keep the orange section-header textcolor; do not run
+`repair_text_contrast` blindly (it greyed the headers in v0.3.0 and had to be reverted).
