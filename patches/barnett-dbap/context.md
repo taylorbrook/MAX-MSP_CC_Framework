@@ -222,3 +222,41 @@ Verify in MAX (not yet load-tested): `Dict` API reads of the embedded dict, `app
 | D13 | Packaging: one abstraction file `dbap-source.maxpat` loaded N times as `bpatcher` with `@args <name>`; `#1` names the instance's `pattrstorage`. The abstraction is saved with `openinpresentation 1` so each bpatcher shows its plan/controls in the host. | Fix once, every instance updates; per-instance UI stays visible. |
 | D14 | Source input per instance: signal `inlet` from the host PLUS the built-in sfplay~/adc~ selector (`selector~ 3`: File / Live / Inlet). | Host can feed any signal; desk testing stays self-contained. |
 | D15 | v0.2 host: `barnett-dbap.maxpat` becomes the host with the shared `dict venue @embed 1`, two side-by-side instances, verify ping (host-level, hall property), and `mc.dac~ 1 2 3 4 5 6 7 8` summing the instances. | Proves the multi-instance path immediately. |
+
+## Build v0.2.0 (2026-09-19)
+
+Files: `generated/dbap-source.maxpat` (the instance, 115 boxes, presentation 660x500),
+`generated/barnett-dbap.maxpat` (now the HOST: shared venue dict, instances A and B, verify ping,
+`mc.dac~ 1 2 3 4 5 6 7 8`), `generated/dbap.js` (adds `trims`, `nxy`, scene-safe `srcxy`).
+The v0.1 single-patch layout is superseded; its content lives on in the abstraction.
+
+How the pieces fit:
+- Host loads the instance twice: `bpatcher @name dbap-source.maxpat @args A` / `@args B`. Each
+  instance's `pattrstorage #1 @savemode 0` becomes `pattrstorage A` / `B`; a loadbang `set #1` message
+  writes the instance name into the title comment (comments do not substitute `#N` themselves).
+- Instance I/O: inlet 0 = mono signal from the host (selector option "Inlet"); outlet 0 = the
+  8-channel mc signal after the instance master. The host connects both outlets and the ping chain to
+  the single `mc.dac~` inlet, which sums them.
+- Trims (D11): 8-bar signed multislider, -24..+12 dB, `prepend trims` -> js, applied AFTER DBAP
+  normalisation as 10^(dB/20) per speaker. Init message `0 0 0 0 0 0 0 0`.
+- Scenes: `autopattr` + `pattr srcpos` under `pattrstorage #1`. Stored: srcz, rolloff, blur, master,
+  weights, trims, srcpos. NOT stored (no varname on purpose): source menu, play/loop, adc channel, trim
+  gain~, readouts, scene number. UI: number = slot, buttons store/recall (`pack store 1` /
+  `pack recall 1`, slot on the cold inlet, bang on the hot inlet), `read`/`write` messages for files.
+  autorestore is left at default 1, so `A.json`/`B.json` next to the host reload at open.
+- Puck position round trip: mouse -> js emits `nxy nx ny` (outlet 2) -> `route pos nxy` -> `pattr srcpos`
+  -> `prepend srcxy` -> js. js `srcxy` never emits `nxy` and is a no-op when unchanged, so there is no
+  feedback loop; a recall drives the same path.
+- Verify ping (host): button -> `t b b b`: `applyvalues 0 0 0 0 0 0 0 0` into an `mc.sig~ @chans 8`
+  mask, then `setvalue N 1` from `pack setvalue 1 1` (N from the number box), then `1 0 0 80` into
+  `line~` gating `noise~` -> `*~ 0.25` -> `mc.*~` (mask on the right inlet) -> `mc.dac~`.
+- Plan is 240x300 at 15 px/m (MARGIN 30) so two instances fit side by side (host presentation
+  1380x630). Meters are 10x36 at speaker px + (11, -18) in both patching and presentation.
+- Weights and trims banks are vertical bars (`orientation 1`) with "1".."8" labels under each bar.
+
+Verify in MAX (neither version has been loaded yet): everything listed under v0.1.0 plus: bpatcher
+shows the instance's presentation view (relies on the abstraction's `openinpresentation 1`); `#1`
+substitution in `pattrstorage #1` and the `set #1` message; `pattr srcpos` echo path; multislider
+`signed 1` bipolar display; `selector~ 3` inlet order (0 = int, 1 File, 2 Live, 3 Inlet); the ping
+mask via `applyvalues` + `setvalue` on `mc.sig~`. Critic warnings left as-is: the two scene `pack`
+objects get hot/cold "no trigger" warnings by design (slot is set cold, button fires hot).

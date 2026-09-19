@@ -14,6 +14,16 @@
         "generated/dbap.js",
         "config.json"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "v0.2: dbap-source.maxpat abstraction (bpatcher, #1 instance name), 2-instance host, verify ping, per-speaker trims, scenes via pattrstorage",
+      "timestamp": "2026-09-19T14:48:30.434850+00:00",
+      "files_changed": [
+        "generated/dbap-source.maxpat",
+        "generated/barnett-dbap.maxpat",
+        "generated/dbap.js"
+      ]
     }
   ]
 }
