@@ -1,4 +1,4 @@
-// dbap.js -- mono DBAP solver + lcd room-plan renderer (barnett-dbap v0.1)
+// dbap.js -- mono DBAP solver + lcd room-plan renderer (barnett-dbap v0.2, per-instance)
 // Port of DbapSolver.cpp from O-Octagon v1.13.0 (Lossius / Baltazar / de la Hogue,
 // ICMC 2009, 2011-04-14 revised equations). All constants verbatim (context.md D10).
 //
@@ -9,12 +9,13 @@
 //   rolloff f        dB per doubling of distance (3..12, default 4)
 //   blur f           spatial blur 0..1 (default 0.03)
 //   weights l1..l8   per-speaker weights 0..1 (multislider list)
+//   trims t1..t8     per-speaker trims in dB, applied after DBAP normalisation (scene-stored)
 //   venue            re-read the embedded "venue" dict
 //   bang             solve + redraw
 //
 // outlet 0: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   (gain lane, sum g^2 = 1)
 // outlet 1: lcd drawing messages     -> lcd
-// outlet 2: readouts: "pos x_m y_m z_abs", "gains g1 .. g8"
+// outlet 2: readouts: "pos x_m y_m z_abs", "nxy nx ny" (mouse only -> pattr srcpos), "gains g1 .. g8"
 
 inlets = 1;
 outlets = 3;
@@ -44,8 +45,8 @@ var rigScale = 1;
 var venueLoaded = false;
 
 // ---- lcd geometry ------------------------------------------------------------
-var LCD_W = 300;
-var LCD_H = 360;
+var LCD_W = 240;
+var LCD_H = 300;
 var MARGIN = 30;
 var pxPerM = 20;       // recomputed from the bounding box so any venue fits
 
@@ -56,6 +57,7 @@ var srcZ = 0.0;
 var rolloffDb = 4.0;
 var blurAmt = 0.03;
 var wts = [1, 1, 1, 1, 1, 1, 1, 1];
+var trimsDb = [0, 0, 0, 0, 0, 0, 0, 0];
 var gains = [0, 0, 0, 0, 0, 0, 0, 0];
 
 // ---- colours (lcd rgb 0..255) --------------------------------------------------
@@ -182,6 +184,8 @@ function solve() {
         var kk = 1.0 / Math.sqrt(denom);
         for (var m = 0; m < NSPK; m++) gains[m] = kk * wts[m] * t[m];
     }
+    // per-speaker trims (dB) sit outside the normalisation on purpose: they correct the room
+    for (var n = 0; n < NSPK; n++) gains[n] = gains[n] * Math.pow(10, trimsDb[n] / 20);
     outlet(0, ["applyvalues"].concat(gains));
     outlet(2, "pos", xs, ys, zs);
     outlet(2, ["gains"].concat(gains));
@@ -203,13 +207,13 @@ function draw() {
     outlet(1, "framerect", Math.round(tl[0]), Math.round(tl[1]), Math.round(br[0]), Math.round(br[1]));
 
     // stage marker
-    outlet(1, "font", "Arial", 10);
+    outlet(1, "font", "Arial", 9);
     rgb("frgb", COL_TEXT);
-    outlet(1, "moveto", Math.round((tl[0] + br[0]) / 2) - 18, 12);
+    outlet(1, "moveto", Math.round((tl[0] + br[0]) / 2) - 16, 12);
     outlet(1, "write", "STAGE");
 
     // speakers: fill brightness follows the solved gain
-    var R = 9;
+    var R = 8;
     for (var i = 0; i < NSPK; i++) {
         var p = mToPx(spk[i][0], spk[i][1]);
         var g = Math.sqrt(gains[i]);   // perceptual-ish lift so quiet speakers stay visible
@@ -227,7 +231,7 @@ function draw() {
     var xs = bbMinX + srcNX * (bbMaxX - bbMinX);
     var ys = bbMinY + srcNY * (bbMaxY - bbMinY);
     var q = mToPx(xs, ys);
-    var PR = 7;
+    var PR = 6;
     var ql = Math.round(q[0] - PR), qt = Math.round(q[1] - PR);
     outlet(1, "paintoval", ql, qt, ql + 2 * PR, qt + 2 * PR, COL_PUCK[0], COL_PUCK[1], COL_PUCK[2]);
     rgb("frgb", COL_PUCK_RING);
@@ -246,11 +250,28 @@ function mouse(x, y) {
     srcNX = clamp01((x - MARGIN) / w);
     srcNY = clamp01((y - MARGIN) / h);
     solveAndDraw();
+    // publish for the scene store (pattr srcpos); it echoes back as srcxy, which is a no-op below
+    outlet(2, "nxy", srcNX, srcNY);
 }
 
+// Scene recall / pattr echo. Never emits nxy, so mouse -> pattr -> srcxy cannot loop.
 function srcxy(nx, ny) {
-    srcNX = clamp01(nx);
-    srcNY = clamp01(ny);
+    nx = clamp01(nx);
+    ny = clamp01(ny);
+    if (Math.abs(nx - srcNX) < 1e-9 && Math.abs(ny - srcNY) < 1e-9) return;
+    srcNX = nx;
+    srcNY = ny;
+    solveAndDraw();
+}
+
+function trims() {
+    var a = arrayfromargs(arguments);
+    for (var i = 0; i < NSPK; i++) {
+        var v = (i < a.length) ? a[i] : 0;
+        if (v < -60) v = -60;
+        if (v > 24) v = 24;
+        trimsDb[i] = v;
+    }
     solveAndDraw();
 }
 
