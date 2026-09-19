@@ -502,3 +502,21 @@ v0.4.0 is not MAX-verified, so v0.5 was NOT built in the v0.4 session. What need
 4. `.venue` importer: `node.script` is not in the object DB (CLAUDE.md), so the sanctioned route is a
    build-time Python tool that converts a `.venue` file into a `dict`-loadable JSON; the alternative is
    adding `node.script` to the DB with verified I/O first.
+
+## User edit in MAX 9.1.5 (2026-09-19, after the v0.4.0 build)
+
+`generated/dbap-source.maxpat` re-saved from MAX with six encapsulations (142 top-level boxes). Checked
+against the v0.4.0 commit: wiring-equivalent, gen~ codebox byte-identical, all varnames kept.
+- `p speedlim` (`speedlim 15` -> `prepend mouse`): lcd outlet 0 -> js.
+- `p mc` / `p mcramp` (`mc.sig~ @chans 8` -> `mc.rampsmooth~ 1024 1024`): L lane (js outlet 0) and R lane
+  (js outlet 3) into the right inlets of the two `mc.*~`.
+- `p gaininterp` (`dbtoa` -> `$1 20` -> `line~`): master dial -> master `mc.*~` right inlet.
+- `p scenespack` (4 in: recall bang, recall slot, store bang, store slot; x-order verified) -> pattrstorage.
+- `p pattr` (`pattr srcpos` -> `prepend srcxy`): MAX gave this subpatcher box the varname `patcher`, so
+  the pattrstorage client path for the puck is now `patcher::srcpos`, not `srcpos`. Scene files written
+  by v0.2-v0.4 builds before this edit would not recall the puck position; none exist in the project dir.
+- The gain lane moved up in patching (`mc.*~` 597, `mc.+~` 638, master `mc.*~` 698); SCENES block shifted
+  24 px right. Presentation rects unchanged apart from MAX's own normalisation (live.dial 60x48,
+  meter~ 12x58, comment heights 19-20).
+Future edits: these objects now live INSIDE subpatchers (`box._inner_patcher`), not at top level; ids
+obj-60/61/70/71/73/74/81/82/83/99/100/131/132 are no longer top-level boxes.
