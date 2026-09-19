@@ -486,3 +486,19 @@ load at 0.35 / 1.0 and recall with scenes; rear-corner puck drops level by about
 at hull 0; src Z now changes level (louder toward +3 m, quieter below 0 and far above); hull outline and
 the `air` / `hull` status text draw on the plan; D20 layout: two dial rows in POSITION, merged
 WEIGHTS + TRIMS panel with one shared 1..8 label row, nothing clipped at 660x500 in the host.
+
+## v0.5 open questions (2026-09-19, not yet decided; run /max-discuss)
+
+The roadmap line for v0.5 (motion engine, alignment delays, `.venue` importer) has no decisions yet, and
+v0.4.0 is not MAX-verified, so v0.5 was NOT built in the v0.4 session. What needs a call first:
+1. Motion UI: the plugin's engine (`MotionPath.h`, `MotionClock.h`, `PerlinNoise.h`) has six paths
+   (orbit, figure-8, sweep, drift, pendulum, spiral) and about eight controls (on, path, size m, ratio,
+   rate, phase, angle, height). The instance is full at 660x500 (D20). Options: a pop-out motion panel
+   per instance (recommended), grow the instance, or a reduced control set (path, size, rate).
+2. Motion clock: js `Task` / `metro`-driven at about 60 Hz into the existing event-driven solve
+   (recommended, matches D3 and the 21 ms gain ramp), or signal-rate motion in gen~.
+3. Alignment delays: host-level (hall property, one 8-channel delay stage before `mc.dac~`, values in
+   the venue dict; recommended, matches D12's "the hall is shared") or per instance.
+4. `.venue` importer: `node.script` is not in the object DB (CLAUDE.md), so the sanctioned route is a
+   build-time Python tool that converts a `.venue` file into a `dict`-loadable JSON; the alternative is
+   adding `node.script` to the DB with verified I/O first.
