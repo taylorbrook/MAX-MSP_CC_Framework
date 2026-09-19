@@ -183,3 +183,32 @@ uses `mc.*` or `lcd`, so the forms below are doc-verified rather than repo-prove
 ### Version notes
 
 All objects are Max 8.1+ (`mc.*`) or core; nothing Max 9-only is used. Target remains MAX 9.
+
+## Build v0.1.0 (2026-09-19)
+
+Files: `generated/barnett-dbap.maxpat` (89 boxes, 65 lines, opens in presentation),
+`generated/dbap.js` (solver + lcd renderer), `config.json` (core-only, `{"packages": []}` --
+written during the build because the project had none; every object used is core or `mc.*`).
+
+Deviations from research/decisions, all deliberate:
+- `mc.meter~` is not in the DB, so the 8 meters are `meter~` fed from `mc.unpack~ 8` (D2 stands).
+- Gain smoothing is `mc.rampsmooth~ 1024 1024` per R1 (not the `mc.line~` named in D3).
+- Master fader: `live.dial` (-70..0 dB) -> `dbtoa` -> `$1 20` -> `line~` -> `mc.*~` right inlet, so the
+  master itself is zipper-free; the dial is a Live parameter (unitstyle dB) in a plain Max patch.
+- Weights bank uses `add_labeled_param_bank`; the multislider's LEFT outlet (list on change) feeds
+  `prepend weights` -> js. No `fetch` needed because js wants the whole list.
+- Venue dict keys are `speakers::s1..s8::{x,y,z}` and `rake::{front,rear}` (symbol keys, not
+  numeric, so the js `Dict` path lookups are unambiguous). js falls back to a built-in copy of the
+  same table and posts a console line either way.
+- lcd is 300x360 with a 30 px margin at 20 px/m; meters sit 12 px right of each speaker circle in
+  BOTH patching and presentation (same constants live in dbap.js `MARGIN`/`LCD_W`/`LCD_H`).
+- Patching layout is hand-placed by section (source / plan+position / weights / gain lane / init).
+  `apply_layout` put the whole signal chain in one row and pushed presentation-only boxes 3000 px
+  right, so it was not used. Every interactive control is in presentation (no exclusions).
+- Init: `loadbang` -> `t b b b b b b b` fires right to left: weights list, trim `127` (unity),
+  rolloff `4.`, blur `0.03`, master `0.`, source menu `0` (File), then `bang` -> js (venue read,
+  solve, draw). js also implements `loadbang()`.
+
+Verify in MAX (not yet load-tested): `Dict` API reads of the embedded dict, `applyvalues` into
+`mc.sig~ @chans 8`, the lcd draw message forms (`paintoval l t r b r g b`, `write`, `font Arial 10`),
+`set 1 $1` retargeting `adc~ 1`, and that the meters render over the lcd in presentation.

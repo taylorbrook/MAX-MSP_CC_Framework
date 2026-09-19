@@ -4,6 +4,16 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-09-19T05:20:06.230692+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "v0.1: mono DBAP spatializer -- js dbap.js solver, lcd room plan + 8 meters, mc gain lane to mc.dac~ 1-8, presentation layout",
+      "timestamp": "2026-09-19T11:40:13.154976+00:00",
+      "files_changed": [
+        "generated/barnett-dbap.maxpat",
+        "generated/dbap.js",
+        "config.json"
+      ]
     }
   ]
 }
