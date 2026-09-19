@@ -1,3 +1,3 @@
-stage: discuss
-progress: v0.3.0 verified; v0.4 D19 (air + hull dials, no toggles) and D20 (660x500, two-row POSITION, merged 42 px banks) locked; build v0.4 next
+stage: build
+progress: v0.4.0 built (air filter, hull trim, z-cue, D20 layout); verify in MAX next, then scope v0.5
 created: 2026-09-19T05:20:06.206937+00:00

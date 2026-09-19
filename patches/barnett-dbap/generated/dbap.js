@@ -1,4 +1,4 @@
-// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.3, per-instance)
+// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.4, per-instance)
 // Port of DbapSolver.cpp + SourceShaper.cpp from O-Octagon v1.13.0 (Lossius / Baltazar /
 // de la Hogue, ICMC 2009, 2011-04-14 revised equations). All constants verbatim
 // (context.md D10, D18).
@@ -9,6 +9,16 @@
 // its own ear height. Each sub-point gets its own DBAP solve; the patch renders
 // y_i = vL_i * sL + vR_i * sR with sL / sR the two feeds at 0.5 (GainStage.cpp).
 //
+// v0.4: hull + air (D19). The 8 speakers' floor projection is hulled (ConvexHull2D.cpp: Andrew's
+// monotone chain, collinear points popped). A sub-point OUTSIDE the hull is solved at its nearest
+// boundary point and trimmed by -hull * dHull dB (floor -24 dB) (HullProcessor.h hullTrimGain).
+// The z-cue (GainStage.cpp v1.3.0) trims each sub-point by (invK_z / invK_0)^2.5 clamped to +-6 dB,
+// invK_0 being the same solve with srcZ stripped, so it is exactly 1 at srcZ = 0. The air filter's
+// cutoff is driven by the UNPROJECTED sub-point's planar distance from the rig centroid less a
+// near field of 0.1 rigScale: fc = 20 kHz * 2^(-air * dAir / (0.2 rigScale)), floor 500 Hz. The
+// filter itself (one-pole TPT lowpass per feed) lives in the gen~; fc 0 means "skip" (air = 0 or
+// inside the near field), which is the plugin's bit-transparent branch.
+//
 // inlet 0 messages:
 //   mouse x y        lcd outlet 0 (pixels, local to lcd) -> puck position
 //   srcxy nx ny      normalised 0..1 position over the speaker bounding box
@@ -17,6 +27,8 @@
 //   blur f           spatial blur 0..1 (default 0.03)
 //   width f          stereo spread in metres between the sub-points (0..12, default 0)
 //   decorr f         decorrelator amount 0..1 (default 0)
+//   air f            air absorption amount 0..1 (default 0.35; 0 = filter skipped)
+//   hull f           outside-hull attenuation, dB per metre 0..3 (default 1; 0 = no trim)
 //   weights l1..l8   per-speaker weights 0..1 (multislider list)
 //   trims t1..t8     per-speaker trims in dB, applied after DBAP normalisation (scene-stored)
 //   venue            re-read the embedded "venue" dict
@@ -25,9 +37,11 @@
 // outlet 0: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   LEFT sub-point lane (sum g^2 = 1)
 // outlet 1: lcd drawing messages     -> lcd
 // outlet 2: readouts: "pos x_m y_m z_abs", "nxy nx ny" (mouse only -> pattr srcpos),
-//           "weff w_m", "gains g1 .. g8" (L), "gainsr g1 .. g8" (R)
+//           "weff w_m", "gains g1 .. g8" (L), "gainsr g1 .. g8" (R),
+//           "airhz fcL fcR" (0 = skipped), "dhull dL dR" (metres outside the hull), "zcue cL cR"
 // outlet 3: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   RIGHT sub-point lane
-// outlet 4: "depth d"                -> gen~ decorrelator Param (decorr * min(wEff / 2 m, 1))
+// outlet 4: -> gen~ Params: "depth d" (decorr * min(wEff / 2 m, 1)), "fcl hz", "fcr hz"
+//           (air cutoff per feed, 0 = skip; the gen~ applies the 0.45 fs Nyquist ceiling)
 
 inlets = 1;
 outlets = 5;
@@ -38,6 +52,19 @@ var NSPK = 8;
 var K_FADE_FRACTION = 0.05;        // rFade = 0.05 * rigScale
 var K_BEARING_EPSILON = 1.0e-6;
 var K_FULL_DEPTH_WIDTH_M = 2.0;    // depth reaches the dialled decorr at wEff = 2 m
+
+// ---- HullProcessor.h / ConvexHull2D.h / GainStage.cpp constants (verbatim) -----
+var K_TRIM_FLOOR_DB = -24.0;
+var K_AIR_REF_FRACTION = 0.2;      // dRef = 0.2 * rigScale: one octave per dRef at air = 1
+var K_AIR_NEAR_FRACTION = 0.1;     // near field = 0.1 * rigScale: filter skipped inside it
+var K_AIR_CEILING_HZ = 20000.0;
+var K_AIR_FLOOR_HZ = 500.0;
+var K_ZCUE_EXPONENT = 2.5;
+var K_ZCUE_MIN_GAIN = 0.5011872;   // -6 dB
+var K_ZCUE_MAX_GAIN = 1.9952623;   // +6 dB
+var EPS_DEDUP = 1.0e-4;
+var EPS_ONEDGE = 1.0e-3;
+var EPS_LEN2 = 1.0e-12;
 
 // ---- venue (O-Octagon defaults, section OQ4 traced layout) -----------------
 // metres; origin front-left, x left->right (audience view), y stage->rear
@@ -61,6 +88,8 @@ var bbMinX = 0, bbMaxX = 1, bbMinY = 0, bbMaxY = 1;
 var centX = 0, centY = 0;   // rig centroid (x, y) -- the bearing origin (SourceShaper step 2)
 var rigScale = 1;
 var venueLoaded = false;
+var hullPts = [];           // CCW hull of the speakers' floor projection: [[x, y], ...]
+var hullEpsCross = 0;       // 1e-6 * spanX * spanY (an AREA tolerance, scaled to the room)
 
 // ---- lcd geometry ------------------------------------------------------------
 var LCD_W = 240;
@@ -76,6 +105,11 @@ var rolloffDb = 4.0;
 var blurAmt = 0.03;
 var widthM = 0.0;
 var decorrAmt = 0.0;
+var airAmt = 0.35;
+var hullAtten = 1.0;
+var fcL = 0, fcR = 0;          // last air cutoffs in Hz (0 = skipped)
+var dHullL = 0, dHullR = 0;    // metres outside the hull per sub-point
+var trimDbMin = 0;             // the larger of the two hull attenuations, in dB (for the plan)
 var wts = [1, 1, 1, 1, 1, 1, 1, 1];
 var trimsDb = [0, 0, 0, 0, 0, 0, 0, 0];
 var gainsL = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -91,6 +125,8 @@ var COL_SPK_HOT = [90, 200, 255];
 var COL_PUCK = [255, 185, 60];
 var COL_PUCK_RING = [255, 235, 190];
 var COL_AXIS = [255, 210, 120];
+var COL_HULL = [96, 104, 128];
+var COL_INFO = [150, 170, 190];
 
 function setDefaultVenue() {
     spk = [];
@@ -128,6 +164,155 @@ function deriveVenue() {
     var sx = (LCD_W - 2 * MARGIN) / (bbMaxX - bbMinX);
     var sy = (LCD_H - 2 * MARGIN) / (bbMaxY - bbMinY);
     pxPerM = Math.min(sx, sy);
+    buildHull();
+}
+
+// ---- ConvexHull2D.cpp port ---------------------------------------------------------------
+function cross2(ax, ay, bx, by) {
+    return ax * by - ay * bx;
+}
+
+// Andrew's monotone chain over the speakers' (x, y). The pop test is `<= epsCross`, so COLLINEAR
+// points are popped (speakers 3 and 8 of the traced layout are on-edge, not vertices).
+function buildHull() {
+    hullPts = [];
+    var minX = spk[0][0], maxX = spk[0][0], minY = spk[0][1], maxY = spk[0][1];
+    for (var i = 0; i < NSPK; i++) {
+        if (spk[i][0] < minX) minX = spk[i][0];
+        if (spk[i][0] > maxX) maxX = spk[i][0];
+        if (spk[i][1] < minY) minY = spk[i][1];
+        if (spk[i][1] > maxY) maxY = spk[i][1];
+    }
+    hullEpsCross = 1.0e-6 * (maxX - minX) * (maxY - minY);
+
+    // step 0: deduplicate (lowest speaker index kept)
+    var pts = [];
+    for (var a = 0; a < NSPK; a++) {
+        var dup = false;
+        for (var b = 0; b < pts.length; b++) {
+            var ex = spk[a][0] - pts[b][0], ey = spk[a][1] - pts[b][1];
+            if (ex * ex + ey * ey < EPS_DEDUP * EPS_DEDUP) dup = true;
+        }
+        if (!dup) pts.push([spk[a][0], spk[a][1]]);
+    }
+    if (pts.length === 1) {
+        hullPts = [pts[0]];
+        return;
+    }
+
+    // step 1: sort by (x, then y)
+    pts.sort(function (p, q) {
+        if (p[0] < q[0]) return -1;
+        if (q[0] < p[0]) return 1;
+        if (p[1] < q[1]) return -1;
+        if (q[1] < p[1]) return 1;
+        return 0;
+    });
+
+    // step 2: monotone chain
+    var chain = [];
+    function pops(c) {
+        var k = chain.length;
+        return cross2(chain[k - 1][0] - chain[k - 2][0], chain[k - 1][1] - chain[k - 2][1],
+                      c[0] - chain[k - 2][0], c[1] - chain[k - 2][1]) <= hullEpsCross;
+    }
+    var n = pts.length;
+    for (var lo = 0; lo < n; lo++) {
+        while (chain.length >= 2 && pops(pts[lo])) chain.pop();
+        chain.push(pts[lo]);
+    }
+    var lowerEnd = chain.length + 1;
+    for (var up = n - 2; up >= 0; up--) {
+        while (chain.length >= lowerEnd && pops(pts[up])) chain.pop();
+        chain.push(pts[up]);
+    }
+    chain.pop();   // the chain closes on its own first point
+    if (chain.length > NSPK) chain.length = NSPK;
+    hullPts = chain;
+
+    // winding: the inside test needs CCW; measure the signed area and reverse once if needed
+    if (hullPts.length >= 3) {
+        var area2 = 0;
+        for (var h = 0; h < hullPts.length; h++) {
+            var nx = hullPts[(h + 1) % hullPts.length];
+            area2 += cross2(hullPts[h][0], hullPts[h][1], nx[0], nx[1]);
+        }
+        if (area2 < 0) hullPts.reverse();
+    }
+}
+
+function nearestOnSegment(a, b, px, py) {
+    var abx = b[0] - a[0], aby = b[1] - a[1];
+    var ab2 = abx * abx + aby * aby;
+    var tRaw = ((px - a[0]) * abx + (py - a[1]) * aby) / Math.max(ab2, EPS_LEN2);
+    var t = Math.min(1.0, Math.max(0.0, tRaw));
+    return [a[0] + t * abx, a[1] + t * aby];
+}
+
+function hullInside(px, py) {
+    var count = hullPts.length;
+    if (count <= 0) return false;
+    if (count === 1) {
+        return Math.sqrt((px - hullPts[0][0]) * (px - hullPts[0][0]) + (py - hullPts[0][1]) * (py - hullPts[0][1])) < EPS_ONEDGE;
+    }
+    if (count === 2) {
+        var q = nearestOnSegment(hullPts[0], hullPts[1], px, py);
+        return Math.sqrt((px - q[0]) * (px - q[0]) + (py - q[1]) * (py - q[1])) < EPS_ONEDGE;
+    }
+    for (var i = 0; i < count; i++) {
+        var a = hullPts[i], b = hullPts[(i + 1) % count];
+        if (cross2(b[0] - a[0], b[1] - a[1], px - a[0], py - a[1]) < -hullEpsCross) return false;
+    }
+    return true;
+}
+
+// Nearest point on the hull boundary and its distance: {x, y, d}
+function hullProject(px, py) {
+    var count = hullPts.length;
+    if (count <= 0) return { x: px, y: py, d: 0 };
+    var best = hullPts[0], bestD = Number.MAX_VALUE;
+    var edges = (count === 2) ? 1 : count;
+    if (count === 1) edges = 0;
+    for (var i = 0; i < edges; i++) {
+        var q = nearestOnSegment(hullPts[i], hullPts[(i + 1) % count], px, py);
+        var d = Math.sqrt((px - q[0]) * (px - q[0]) + (py - q[1]) * (py - q[1]));
+        if (d < bestD) { bestD = d; best = q; }
+    }
+    if (count === 1) bestD = Math.sqrt((px - best[0]) * (px - best[0]) + (py - best[1]) * (py - best[1]));
+    return { x: best[0], y: best[1], d: bestD };
+}
+
+// ---- HullProcessor.h port ------------------------------------------------------------------
+function hullTrimGain(atten, dHull) {
+    var attenDb = -(atten * dHull);
+    if (attenDb < K_TRIM_FLOOR_DB) attenDb = K_TRIM_FLOOR_DB;
+    return Math.pow(10, attenDb / 20);   // exactly 1 at atten * dHull = 0
+}
+
+function airDistanceMetres(px, py) {
+    var dx = px - centX, dy = py - centY;
+    var d = Math.sqrt(dx * dx + dy * dy) - K_AIR_NEAR_FRACTION * rigScale;
+    return d > 0 ? d : 0;
+}
+
+// Cutoff in Hz, or 0 when the filter is skipped (air = 0, or inside the near field). The 0.45 fs
+// Nyquist ceiling is applied in the gen~, which knows the sample rate.
+function airCutoffHz(amount, dAir) {
+    if (!(amount > 0) || !(dAir > 0)) return 0;
+    var dRef = K_AIR_REF_FRACTION * rigScale;
+    if (!(dRef > 0)) return K_AIR_CEILING_HZ;
+    var fc = K_AIR_CEILING_HZ * Math.pow(2, -(amount * dAir) / dRef);
+    if (fc < K_AIR_FLOOR_HZ) fc = K_AIR_FLOOR_HZ;
+    if (fc > K_AIR_CEILING_HZ) fc = K_AIR_CEILING_HZ;
+    return fc;
+}
+
+function zCueGain(invK, invKRef) {
+    if (!(invK > 0) || !(invKRef > 0)) return 1.0;
+    var cue = Math.pow(invK / invKRef, K_ZCUE_EXPONENT);
+    if (cue < K_ZCUE_MIN_GAIN) return K_ZCUE_MIN_GAIN;
+    if (cue > K_ZCUE_MAX_GAIN) return K_ZCUE_MAX_GAIN;
+    return cue;
 }
 
 // Read the embedded "venue" dict. Falls back to the defaults on any problem.
@@ -212,7 +397,8 @@ function shape(px, py) {
     };
 }
 
-// ---- DBAP solve (DbapSolver.cpp port) for one point -> out[] ---------------------------
+// ---- DBAP solve (DbapSolver.cpp port) for one point -> out[]; returns invK = sqrt(denom),
+// the field BEFORE normalisation (0 on the all-zero-weights path) ------------------------
 function solveAt(xs, ys, zs, out) {
     var rs = blurAmt * blurAmt * 6.0 * rigScale;
     if (rs > 200.0) rs = 200.0;
@@ -232,12 +418,33 @@ function solveAt(xs, ys, zs, out) {
     }
     if (denom < 1e-20) {
         for (var k = 0; k < NSPK; k++) out[k] = 0;   // silence, never NaN
-    } else {
-        var kk = 1.0 / Math.sqrt(denom);
-        for (var m = 0; m < NSPK; m++) out[m] = kk * wts[m] * t[m];
+        return 0;
     }
+    var sqrtDenom = Math.sqrt(denom);
+    var kk = 1.0 / sqrtDenom;
+    for (var m = 0; m < NSPK; m++) out[m] = kk * wts[m] * t[m];
+    return sqrtDenom;
+}
+
+// GainStage.cpp solveSubPoint + step 6 for one sub-point: classify against the hull, project if
+// outside, solve, z-cue reference solve (same x/y, srcZ stripped), then fold hull trim * z-cue
+// and the per-speaker trims into out[]. Returns {dHull, zCue}.
+var refScratch = [0, 0, 0, 0, 0, 0, 0, 0];
+function solveSubPoint(px, py, pz, out) {
+    var sx = px, sy = py, dHull = 0;
+    if (!hullInside(px, py)) {
+        var pr = hullProject(px, py);
+        sx = pr.x;
+        sy = pr.y;
+        dHull = pr.d;
+    }
+    var invK = solveAt(sx, sy, pz, out);
+    var invKRef = solveAt(sx, sy, pz - srcZ, refScratch);
+    var cue = zCueGain(invK, invKRef);
+    var trim = hullTrimGain(hullAtten, dHull) * cue;
     // per-speaker trims (dB) sit outside the normalisation on purpose: they correct the room
-    for (var n = 0; n < NSPK; n++) out[n] = out[n] * Math.pow(10, trimsDb[n] / 20);
+    for (var n = 0; n < NSPK; n++) out[n] = out[n] * trim * Math.pow(10, trimsDb[n] / 20);
+    return { dHull: dHull, zCue: cue };
 }
 
 function solve() {
@@ -246,8 +453,17 @@ function solve() {
     var zs = earHeight(ys) + srcZ;
 
     sub = shape(xs, ys);
-    solveAt(sub.lx, sub.ly, sub.lz, gainsL);
-    solveAt(sub.rx, sub.ry, sub.rz, gainsR);
+    var resL = solveSubPoint(sub.lx, sub.ly, sub.lz, gainsL);
+    var resR = solveSubPoint(sub.rx, sub.ry, sub.rz, gainsR);
+    dHullL = resL.dHull;
+    dHullR = resR.dHull;
+    var worst = dHullL > dHullR ? dHullL : dHullR;
+    trimDbMin = -(hullAtten * worst);
+    if (trimDbMin < K_TRIM_FLOOR_DB) trimDbMin = K_TRIM_FLOOR_DB;
+
+    // air cutoff per feed from the UNPROJECTED sub-point's distance from the listener (centroid)
+    fcL = airCutoffHz(airAmt, airDistanceMetres(sub.lx, sub.ly));
+    fcR = airCutoffHz(airAmt, airDistanceMetres(sub.rx, sub.ry));
 
     // GainStage.cpp: depth = decorr * clamp(wEff / 2 m, 0, 1), only while wanted
     // (decorr > 0 AND wEff > 0); otherwise 0, which the gen~ chain treats as bypass.
@@ -256,6 +472,8 @@ function solve() {
     var depth = wanted ? decorrAmt * widthRamp : 0;
 
     // R lane first, then L, then depth: the L applyvalues is the "hot" one for listeners
+    outlet(4, "fcr", fcR);
+    outlet(4, "fcl", fcL);
     outlet(4, "depth", depth);
     outlet(3, ["applyvalues"].concat(gainsR));
     outlet(0, ["applyvalues"].concat(gainsL));
@@ -263,6 +481,9 @@ function solve() {
     outlet(2, "weff", sub.weff);
     outlet(2, ["gains"].concat(gainsL));
     outlet(2, ["gainsr"].concat(gainsR));
+    outlet(2, "airhz", fcL, fcR);
+    outlet(2, "dhull", dHullL, dHullR);
+    outlet(2, "zcue", resL.zCue, resR.zCue);
 }
 
 // ---- lcd drawing --------------------------------------------------------------------
@@ -279,6 +500,16 @@ function draw() {
     var br = mToPx(bbMaxX, bbMaxY);
     rgb("frgb", COL_BOX);
     outlet(1, "framerect", Math.round(tl[0]), Math.round(tl[1]), Math.round(br[0]), Math.round(br[1]));
+
+    // convex hull of the array: outside it the hull trim applies
+    if (hullPts.length >= 3) {
+        rgb("frgb", COL_HULL);
+        for (var hi = 0; hi < hullPts.length; hi++) {
+            var ha = mToPx(hullPts[hi][0], hullPts[hi][1]);
+            var hb = mToPx(hullPts[(hi + 1) % hullPts.length][0], hullPts[(hi + 1) % hullPts.length][1]);
+            outlet(1, "linesegment", Math.round(ha[0]), Math.round(ha[1]), Math.round(hb[0]), Math.round(hb[1]));
+        }
+    }
 
     // stage marker
     outlet(1, "font", "Arial", 9);
@@ -338,10 +569,30 @@ function draw() {
         }
     }
 
+    // v0.4 status line under the plan: air cutoff(s) while the filter runs, hull trim when outside
+    outlet(1, "font", "Arial", 9);
+    rgb("frgb", COL_INFO);
+    if (fcL > 0 || fcR > 0) {
+        var airTxt = "air " + fmtHz(fcL);
+        if (Math.abs(fcL - fcR) > 1) airTxt = "air L " + fmtHz(fcL) + "  R " + fmtHz(fcR);
+        outlet(1, "moveto", 6, LCD_H - 6);
+        outlet(1, "write", airTxt);
+    }
+    if (trimDbMin < -0.05) {
+        outlet(1, "moveto", LCD_W - 78, LCD_H - 6);
+        outlet(1, "write", "hull " + trimDbMin.toFixed(1) + " dB");
+    }
+
     var ql = Math.round(q[0] - PR), qt = Math.round(q[1] - PR);
     outlet(1, "paintoval", ql, qt, ql + 2 * PR, qt + 2 * PR, COL_PUCK[0], COL_PUCK[1], COL_PUCK[2]);
     rgb("frgb", COL_PUCK_RING);
     outlet(1, "frameoval", ql - 3, qt - 3, ql + 2 * PR + 3, qt + 2 * PR + 3);
+}
+
+function fmtHz(f) {
+    if (!(f > 0)) return "off";
+    if (f >= 1000) return (f / 1000).toFixed(1) + "k";
+    return Math.round(f) + "";
 }
 
 function solveAndDraw() {
@@ -407,6 +658,18 @@ function width(v) {
 
 function decorr(v) {
     decorrAmt = clamp01(v);
+    solveAndDraw();
+}
+
+function air(v) {
+    airAmt = clamp01(v);
+    solveAndDraw();
+}
+
+function hull(v) {
+    if (v < 0) v = 0;
+    if (v > 3) v = 3;
+    hullAtten = v;
     solveAndDraw();
 }
 

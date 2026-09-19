@@ -34,6 +34,16 @@
         "generated/barnett-dbap.maxpat",
         "generated/dbap.js"
       ]
+    },
+    {
+      "version": "0.4.0",
+      "description": "v0.4: air filter (TPT one-pole per feed in gen~, cutoff from js), convex hull projection + hull trim, z-cue, air/hull live.dials, D20 merged weights/trims layout",
+      "timestamp": "2026-09-19T20:40:09.801886+00:00",
+      "files_changed": [
+        "generated/dbap-source.maxpat",
+        "generated/barnett-dbap.maxpat",
+        "generated/dbap.js"
+      ]
     }
   ]
 }

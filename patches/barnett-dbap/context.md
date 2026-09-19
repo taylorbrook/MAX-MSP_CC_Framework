@@ -424,3 +424,65 @@ at serialize) and use `box.presentation = False` for the removed ones; do not to
 Both new dials get loadbang inits (`0.35`, `1.`), `prepend air` / `prepend hull` into js, and the init
 trigger grows from 11 to 13 outlets. Keep the orange section-header textcolor; do not run
 `repair_text_contrast` blindly (it greyed the headers in v0.3.0 and had to be reverted).
+
+## Build v0.4.0 (2026-09-19)
+
+Files: `generated/dbap-source.maxpat` (149 boxes; presentation still 660x500, every earlier varname
+kept), `generated/dbap.js` (hull, hull trim, z-cue, air cutoff), `generated/barnett-dbap.maxpat` (title
+v0.4 only; semantic diff against the MAX-saved host is that one string), `test-results/preflight_air.py`.
+Edited in place via `read_patch` -> `finalize_patch(is_new=False)` -> `save_patch_roundtrip`; no
+`apply_layout`, no `repair_text_contrast` (orange headers untouched).
+
+Port (D19, numbers verbatim from O-Octagon v1.13.0):
+- `dbap.js` `buildHull()` = `ConvexHull2D::build`: dedup 1e-4, sort (x, y), Andrew's monotone chain with
+  the `<= epsCross` pop (epsCross = 1e-6 * spanX * spanY), CCW winding check. On the Barnett rig the hull
+  is the 6-vertex polygon 1-2-4-5-6-7 (speakers 3 and 8 are on-edge and popped, as in the plugin).
+  `hullInside` / `hullProject` = `hull::isInside` / `hull::project` including the 1- and 2-point cases.
+- `solveSubPoint()` = GainStage `solveSubPoint` + step 6: a sub-point outside the hull is solved at its
+  nearest boundary point; trim = 10^(max(-hull * dHull, -24)/20); z-cue = clamp((invK_z / invK_0)^2.5,
+  -6 dB, +6 dB) with invK = sqrt(denom) and invK_0 the same solve with srcZ stripped (exactly 1 at
+  srcZ 0, and 1 on the all-zero-weights path). trim * z-cue folds into the lane gains BEFORE the
+  per-speaker trims. `solveAt` now returns invK and no longer applies the speaker trims itself.
+- Air: dAir = max(|subpoint - centroid|_xy - 0.1 rigScale, 0) from the UNPROJECTED sub-point;
+  fc = clamp(20000 * 2^(-air * dAir / (0.2 rigScale)), 500, 20000); js sends `fcl` / `fcr` in Hz on
+  outlet 4 (same cord as `depth`), and sends 0 for "skip" (air 0 or dAir 0 = the plugin's bit-transparent
+  branch). The 0.45 fs Nyquist ceiling is applied in the gen~, which knows the sample rate.
+- gen~: `Param fcl`, `Param fcr`; one-pole TPT lowpass per feed (g = tan(pi fc / fs), G = g/(1+g),
+  v = G(x - s), y = v + s, s = y + v = juce FirstOrderTPTFilter) placed BEFORE the decorrelator, as in
+  GainStage. Engage edge seeds s = x (y = x exactly on the edge sample). Filter math is branch-free;
+  the `if`s only select (no nested ifs, no else-if, History-one hoist guard on both new Params).
+  `fixnan` on the state replaces the plugin's per-block NaN guard.
+- Deviations, both deliberate: (1) the cutoff has a 10 ms one-pole slew (snapped on the engage edge)
+  because js updates arrive at mouse rate, not on the plugin's 64-sample control grid; (2) the plugin's
+  "reset state on air -> 0" is omitted because every re-engage seeds s = x, which makes the reset
+  unobservable.
+- UI (D19/D20): `live.dial` `air` (0..1, initial 0.35) at presentation 290 266 and `hull` (0..3, initial
+  1.0) at 360 266, both with varnames (scene-stored via autopattr), `prepend air` / `prepend hull` -> js,
+  loadbang inits `0.35` / `1.` on trigger outlets 11 / 12 (init trigger now 13 outlets). D20 rects applied
+  exactly as tabled; `obj-6` and the trims label row `obj-50`..`obj-57` left presentation (patching kept).
+- Plan: the hull polygon is drawn inside the bounding box (grey-blue), and a status line under the plan
+  shows `air 6.7k` while the filter runs and `hull -1.5 dB` while a sub-point is outside the hull.
+  Readouts outlet adds `airhz fL fR`, `dhull dL dR`, `zcue cL cR`.
+
+Pre-flight (`test-results/preflight_air.py`, numpy, mirrors the codebox equations): -3.01 dB at fc within
+0.02 dB for fc {500, 2k, 6.7k, 15k} at 44.1 / 48 / 96 kHz; fc 0 is sample-identical to the input; the
+engage-edge sample equals the input exactly and adds no slew (ratio 1.000 on a 1 kHz sine); a 20 kHz ->
+500 Hz cutoff step mid-signal stays at slew ratio 1.11 (no click); stable at 22.05 kHz (ceiling 9.9 kHz);
+the state recovers after an inf sample. Node smoke test of `dbap.js`: max dHull on the reachable plane
+2.138 m (plugin doc: 2.14 m), rear-corner trim -2.14 dB at hull 1, sum v^2 = 1 inside the hull and with
+hull 0, 6.7 kHz at the rig radius at air 0.35 (plugin doc figure), 500 Hz floor at the rear corners at
+air 1, z-cue exactly 1 at srcZ 0 and +5.2 / -3.0 / -2.1 dB at srcZ +3 / -2 / +8 m near front-left.
+
+Validator / critic: unchanged from v0.3.0 (the `sfplay~ 2` outlet-role false positive and the two scene
+`pack` hot/cold warnings); nothing new. Known framework issue, NOT introduced here: `finalize_patch`
+regenerates patch-cord midpoints with long zigzag paths in patching mode (already true of the v0.2 /
+v0.3 files); presentation is unaffected.
+
+Verify in MAX (v0.4.0 not yet load-tested): gen~ compiles with the air block (`tan`, `exp`, `fixnan`,
+`&&` in `if`, 8 Histories); `fcl $1` / `fcr $1` from js reach the Params; with air 0 OR the puck within
+about 0.8 m of the rig centroid the output is identical to v0.3; dragging the puck to a rear corner at
+air 1 darkens the source to about 500 Hz with no clicks or zipper while dragging; the `air` / `hull` dials
+load at 0.35 / 1.0 and recall with scenes; rear-corner puck drops level by about 2 dB at hull 1 and not
+at hull 0; src Z now changes level (louder toward +3 m, quieter below 0 and far above); hull outline and
+the `air` / `hull` status text draw on the plan; D20 layout: two dial rows in POSITION, merged
+WEIGHTS + TRIMS panel with one shared 1..8 label row, nothing clipped at 660x500 in the host.
