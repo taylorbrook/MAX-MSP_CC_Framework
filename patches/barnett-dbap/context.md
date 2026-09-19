@@ -89,3 +89,18 @@ scenes, verify ping, per-speaker trim, alignment delays, `.venue` import. See ro
 | v0.3 | stereo width with sub-points, decorrelator in gen~ (integer delay reads only) |
 | v0.4 | air filter, hull projection and trim |
 | v0.5 | motion engine, alignment delays, .venue importer |
+
+## Decisions (discuss, 2026-09-19)
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D1 | Room plan is an `lcd`; `js` draws the 8 speakers (numbered circles), the bounding box, and the puck. lcd mouse output drives the puck. | Real geometry visible on the surface; no image assets needed (pictslider would need background/knob pictures). |
+| D2 | 8 `meter~` objects sit at the speaker positions on top of the lcd in presentation, fed by `mc.unpack~ 8`. Meters must be brought to front (z-order) and are ignoreclick. | Level reads where the sound is. |
+| D3 | Solve is event-driven: any control change into `js` recomputes and emits the 8-gain list. No metro polling. Gains ramp via `mc.line~` over 20 ms. | Matches the plugin's recompute-on-change control grid; 20 ms covers mouse-event spacing (~16 ms) without audible zipper. |
+| D4 | Position puck stored normalised 0-1 in js; lcd pixels <-> normalised via the bounding box, readouts shown in metres. | Plugin parity, venue-portable positions. |
+| D5 | Master gain: `live.dial` in dB (-70..0, default 0) -> `dbtoa` -> `mc.*~` right inlet. Input trim is a mono `gain~` before the spatializer. | Keeps every gain multiplier in 0..1 (CLAUDE.md gain safety); dB fader feel like the plugin's outputGain, boost handled by input trim. |
+| D6 | Source select: `umenu` (File / Live) -> `selector~ 2`. File via `sfplay~` + `opendialog`/`dropfile`; live via `adc~` with a channel number box. Both summed to mono before the trim. | Desk testing and live use in one patch. |
+| D7 | Weights: one 8-bar `multislider` (0..1, default all 1.0) via `add_labeled_param_bank`, labels "1..8". | Single list into js, one object to automate later. |
+| D8 | Venue lives in an embedded `dict venue @embed 1` (speakers x/y/z, rakeFront, rakeRear). js reads it on loadbang and on a `venue` bang. Later versions swap dicts for other halls. | Separate venue store, as in the plugin; editable without touching js. |
+| D9 | Everything downstream of the gain list is mc: `mc.*~` (8 ch gains) -> `mc.*~` (master) -> `mc.dac~ 1 2 3 4 5 6 7 8`, with `mc.unpack~ 8` tapped for meters. | Two objects between source and hardware; speaker map is the dac channel list. |
+| D10 | All DBAP constants (0.05 m floor, blur square law x6 rigScale, 200 m cap, 1e-20 denom epsilon, all-zero-weight silence) ported verbatim from DbapSolver.cpp. | Same numbers as the verified plugin so results are comparable in the hall. |
