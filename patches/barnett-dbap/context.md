@@ -520,3 +520,14 @@ against the v0.4.0 commit: wiring-equivalent, gen~ codebox byte-identical, all v
   meter~ 12x58, comment heights 19-20).
 Future edits: these objects now live INSIDE subpatchers (`box._inner_patcher`), not at top level; ids
 obj-60/61/70/71/73/74/81/82/83/99/100/131/132 are no longer top-level boxes.
+
+## Verified (2026-09-19, v0.4.0)
+
+v0.4.0 confirmed working in MAX 9.1.5 by the user, on the file as re-saved with the six encapsulations:
+gen~ codebox compiles with the air block (`tan`, `exp`, `fixnan`, `&&` inside `if`, branch-free TPT
+one-pole, 8 Histories, History-one hoist guard on three Params); `fcl $1` / `fcr $1` / `depth $1` from js
+reach the Params on one cord; air filter darkens toward the rear corners without clicks or zipper; hull
+trim and z-cue audible; `air` / `hull` dials load at 0.35 / 1.0 and recall with scenes; hull outline and
+status text draw on the plan; D20 two-row POSITION and merged WEIGHTS + TRIMS panel fit at 660x500.
+Every "verify in MAX" item under v0.4.0 is closed. Next: v0.5 scoping via /max-discuss (see "v0.5 open
+questions").
