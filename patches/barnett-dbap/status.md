@@ -1,3 +1,3 @@
-stage: discuss
-progress: v0.2.0 verified; v0.3 decisions D16-D18 locked (single bpatcher + #2 chans, sub-point ticks, width/decorr port); research next
+stage: build
+progress: v0.3.0 built (width + sub-points + gen~ decorrelator, D16-D18); numpy pre-flight passed; verify in MAX next
 created: 2026-09-19T05:20:06.206937+00:00

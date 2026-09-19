@@ -1,6 +1,13 @@
-// dbap.js -- mono DBAP solver + lcd room-plan renderer (barnett-dbap v0.2, per-instance)
-// Port of DbapSolver.cpp from O-Octagon v1.13.0 (Lossius / Baltazar / de la Hogue,
-// ICMC 2009, 2011-04-14 revised equations). All constants verbatim (context.md D10).
+// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.3, per-instance)
+// Port of DbapSolver.cpp + SourceShaper.cpp from O-Octagon v1.13.0 (Lossius / Baltazar /
+// de la Hogue, ICMC 2009, 2011-04-14 revised equations). All constants verbatim
+// (context.md D10, D18).
+//
+// v0.3: stereo width. The puck is shaped into TWO sub-points (left / right) by
+// SourceShaper::shapeAt (steps 2-6): bearing from the rig centroid, spread faded to zero
+// within rFade = 0.05 * rigScale of the centroid, left-hand perpendicular n^, each sub-point at
+// its own ear height. Each sub-point gets its own DBAP solve; the patch renders
+// y_i = vL_i * sL + vR_i * sR with sL / sR the two feeds at 0.5 (GainStage.cpp).
 //
 // inlet 0 messages:
 //   mouse x y        lcd outlet 0 (pixels, local to lcd) -> puck position
@@ -8,19 +15,29 @@
 //   srcz f           metres above the sloped audience ear plane
 //   rolloff f        dB per doubling of distance (3..12, default 4)
 //   blur f           spatial blur 0..1 (default 0.03)
+//   width f          stereo spread in metres between the sub-points (0..12, default 0)
+//   decorr f         decorrelator amount 0..1 (default 0)
 //   weights l1..l8   per-speaker weights 0..1 (multislider list)
 //   trims t1..t8     per-speaker trims in dB, applied after DBAP normalisation (scene-stored)
 //   venue            re-read the embedded "venue" dict
 //   bang             solve + redraw
 //
-// outlet 0: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   (gain lane, sum g^2 = 1)
+// outlet 0: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   LEFT sub-point lane (sum g^2 = 1)
 // outlet 1: lcd drawing messages     -> lcd
-// outlet 2: readouts: "pos x_m y_m z_abs", "nxy nx ny" (mouse only -> pattr srcpos), "gains g1 .. g8"
+// outlet 2: readouts: "pos x_m y_m z_abs", "nxy nx ny" (mouse only -> pattr srcpos),
+//           "weff w_m", "gains g1 .. g8" (L), "gainsr g1 .. g8" (R)
+// outlet 3: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   RIGHT sub-point lane
+// outlet 4: "depth d"                -> gen~ decorrelator Param (decorr * min(wEff / 2 m, 1))
 
 inlets = 1;
-outlets = 3;
+outlets = 5;
 
 var NSPK = 8;
+
+// ---- SourceShaper.h / Decorrelator.h constants (verbatim) ----------------------
+var K_FADE_FRACTION = 0.05;        // rFade = 0.05 * rigScale
+var K_BEARING_EPSILON = 1.0e-6;
+var K_FULL_DEPTH_WIDTH_M = 2.0;    // depth reaches the dialled decorr at wEff = 2 m
 
 // ---- venue (O-Octagon defaults, section OQ4 traced layout) -----------------
 // metres; origin front-left, x left->right (audience view), y stage->rear
@@ -41,6 +58,7 @@ var spk = [];          // [[x,y,z], ...]
 var rakeFront = DEFAULT_RAKE_FRONT;
 var rakeRear = DEFAULT_RAKE_REAR;
 var bbMinX = 0, bbMaxX = 1, bbMinY = 0, bbMaxY = 1;
+var centX = 0, centY = 0;   // rig centroid (x, y) -- the bearing origin (SourceShaper step 2)
 var rigScale = 1;
 var venueLoaded = false;
 
@@ -56,9 +74,13 @@ var srcNY = 0.5;
 var srcZ = 0.0;
 var rolloffDb = 4.0;
 var blurAmt = 0.03;
+var widthM = 0.0;
+var decorrAmt = 0.0;
 var wts = [1, 1, 1, 1, 1, 1, 1, 1];
 var trimsDb = [0, 0, 0, 0, 0, 0, 0, 0];
-var gains = [0, 0, 0, 0, 0, 0, 0, 0];
+var gainsL = [0, 0, 0, 0, 0, 0, 0, 0];
+var gainsR = [0, 0, 0, 0, 0, 0, 0, 0];
+var sub = null;        // last shape() result: {lx, ly, lz, rx, ry, rz, weff, nx, ny}
 
 // ---- colours (lcd rgb 0..255) --------------------------------------------------
 var COL_BG = [22, 22, 26];
@@ -68,6 +90,7 @@ var COL_SPK_DIM = [55, 60, 75];
 var COL_SPK_HOT = [90, 200, 255];
 var COL_PUCK = [255, 185, 60];
 var COL_PUCK_RING = [255, 235, 190];
+var COL_AXIS = [255, 210, 120];
 
 function setDefaultVenue() {
     spk = [];
@@ -92,6 +115,8 @@ function deriveVenue() {
         cx += s[0]; cy += s[1]; cz += s[2];
     }
     cx /= NSPK; cy /= NSPK; cz /= NSPK;
+    centX = cx;
+    centY = cy;
     var acc = 0;
     for (var j = 0; j < NSPK; j++) {
         var dx = spk[j][0] - cx, dy = spk[j][1] - cy, dz = spk[j][2] - cz;
@@ -156,12 +181,39 @@ function clamp01(v) {
     return v;
 }
 
-// ---- DBAP solve (DbapSolver.cpp port) ----------------------------------------------
-function solve() {
-    var xs = bbMinX + srcNX * (bbMaxX - bbMinX);
-    var ys = bbMinY + srcNY * (bbMaxY - bbMinY);
-    var zs = earHeight(ys) + srcZ;
+// ---- SourceShaper::shapeAt port (steps 2-6) -------------------------------------
+// px, py: puck in metres. Returns the two sub-points (metres, absolute z) and wEff.
+function shape(px, py) {
+    // step 2: bearing from the rig centroid
+    var bx = px - centX, by = py - centY;
+    var bLen = Math.sqrt(bx * bx + by * by);
 
+    // step 3: fade the spread to zero near the centroid (avoids the 180 deg flip jump)
+    var rFade = K_FADE_FRACTION * rigScale;
+    var fadeRatio = bLen / rFade;
+    var fade = rFade > K_BEARING_EPSILON ? (fadeRatio < 1.0 ? fadeRatio : 1.0) : 0.0;
+    var wEff = widthM * fade;
+
+    // step 4: unit bearing (fallback (0,-1) = toward the stage) and its left-hand perpendicular
+    var bhx, bhy;
+    if (bLen < K_BEARING_EPSILON) { bhx = 0.0; bhy = -1.0; } else { bhx = bx / bLen; bhy = by / bLen; }
+    var nhx = -bhy, nhy = bhx;    // n^ = (-b^.y, b^.x): puck downstage -> n^ = (1,0) = audience right
+
+    // step 5: the two sub-points
+    var half = 0.5 * wEff;
+    var lx = px - half * nhx, ly = py - half * nhy;
+    var rx = px + half * nhx, ry = py + half * nhy;
+
+    // step 6: each sub-point resolves its own height at its own y
+    return {
+        lx: lx, ly: ly, lz: earHeight(ly) + srcZ,
+        rx: rx, ry: ry, rz: earHeight(ry) + srcZ,
+        weff: wEff, nx: nhx, ny: nhy
+    };
+}
+
+// ---- DBAP solve (DbapSolver.cpp port) for one point -> out[] ---------------------------
+function solveAt(xs, ys, zs, out) {
     var rs = blurAmt * blurAmt * 6.0 * rigScale;
     if (rs > 200.0) rs = 200.0;
     var rs2 = rs * rs;
@@ -179,16 +231,38 @@ function solve() {
         denom += wts[i] * wts[i] * ti * ti;
     }
     if (denom < 1e-20) {
-        for (var k = 0; k < NSPK; k++) gains[k] = 0;   // silence, never NaN
+        for (var k = 0; k < NSPK; k++) out[k] = 0;   // silence, never NaN
     } else {
         var kk = 1.0 / Math.sqrt(denom);
-        for (var m = 0; m < NSPK; m++) gains[m] = kk * wts[m] * t[m];
+        for (var m = 0; m < NSPK; m++) out[m] = kk * wts[m] * t[m];
     }
     // per-speaker trims (dB) sit outside the normalisation on purpose: they correct the room
-    for (var n = 0; n < NSPK; n++) gains[n] = gains[n] * Math.pow(10, trimsDb[n] / 20);
-    outlet(0, ["applyvalues"].concat(gains));
+    for (var n = 0; n < NSPK; n++) out[n] = out[n] * Math.pow(10, trimsDb[n] / 20);
+}
+
+function solve() {
+    var xs = bbMinX + srcNX * (bbMaxX - bbMinX);
+    var ys = bbMinY + srcNY * (bbMaxY - bbMinY);
+    var zs = earHeight(ys) + srcZ;
+
+    sub = shape(xs, ys);
+    solveAt(sub.lx, sub.ly, sub.lz, gainsL);
+    solveAt(sub.rx, sub.ry, sub.rz, gainsR);
+
+    // GainStage.cpp: depth = decorr * clamp(wEff / 2 m, 0, 1), only while wanted
+    // (decorr > 0 AND wEff > 0); otherwise 0, which the gen~ chain treats as bypass.
+    var widthRamp = clamp01(sub.weff / K_FULL_DEPTH_WIDTH_M);
+    var wanted = decorrAmt > 0 && sub.weff > 0;
+    var depth = wanted ? decorrAmt * widthRamp : 0;
+
+    // R lane first, then L, then depth: the L applyvalues is the "hot" one for listeners
+    outlet(4, "depth", depth);
+    outlet(3, ["applyvalues"].concat(gainsR));
+    outlet(0, ["applyvalues"].concat(gainsL));
     outlet(2, "pos", xs, ys, zs);
-    outlet(2, ["gains"].concat(gains));
+    outlet(2, "weff", sub.weff);
+    outlet(2, ["gains"].concat(gainsL));
+    outlet(2, ["gainsr"].concat(gainsR));
 }
 
 // ---- lcd drawing --------------------------------------------------------------------
@@ -212,11 +286,13 @@ function draw() {
     outlet(1, "moveto", Math.round((tl[0] + br[0]) / 2) - 16, 12);
     outlet(1, "write", "STAGE");
 
-    // speakers: fill brightness follows the solved gain
+    // speakers: fill brightness follows the louder of the two sub-point gains
     var R = 8;
     for (var i = 0; i < NSPK; i++) {
         var p = mToPx(spk[i][0], spk[i][1]);
-        var g = Math.sqrt(gains[i]);   // perceptual-ish lift so quiet speakers stay visible
+        var gm = gainsL[i] > gainsR[i] ? gainsL[i] : gainsR[i];
+        var g = Math.sqrt(gm);   // perceptual-ish lift so quiet speakers stay visible
+        if (g > 1) g = 1;
         var cr = Math.round(COL_SPK_DIM[0] + (COL_SPK_HOT[0] - COL_SPK_DIM[0]) * g);
         var cg = Math.round(COL_SPK_DIM[1] + (COL_SPK_HOT[1] - COL_SPK_DIM[1]) * g);
         var cb = Math.round(COL_SPK_DIM[2] + (COL_SPK_HOT[2] - COL_SPK_DIM[2]) * g);
@@ -232,6 +308,36 @@ function draw() {
     var ys = bbMinY + srcNY * (bbMaxY - bbMinY);
     var q = mToPx(xs, ys);
     var PR = 6;
+
+    // D17: spread axis through the puck with a tick at each sub-point, drawn UNDER the puck
+    // so the ticks visibly collapse onto it as the centroid fade takes wEff to zero.
+    if (sub !== null) {
+        var pl = mToPx(sub.lx, sub.ly);
+        var pr = mToPx(sub.rx, sub.ry);
+        var halfPx = 0.5 * sub.weff * pxPerM;
+        rgb("frgb", COL_AXIS);
+        outlet(1, "pensize", 2, 2);
+        outlet(1, "linesegment", Math.round(pl[0]), Math.round(pl[1]), Math.round(pr[0]), Math.round(pr[1]));
+        // ticks: 4 px each side along the bearing (perpendicular to the spread axis)
+        var tx = -sub.ny * 4, ty = sub.nx * 4;
+        outlet(1, "linesegment", Math.round(pl[0] - tx), Math.round(pl[1] - ty), Math.round(pl[0] + tx), Math.round(pl[1] + ty));
+        outlet(1, "linesegment", Math.round(pr[0] - tx), Math.round(pr[1] - ty), Math.round(pr[0] + tx), Math.round(pr[1] + ty));
+        outlet(1, "pensize", 1, 1);
+        if (halfPx > PR + 6) {
+            // labels just outside each tick, and the effective width beside the R tick
+            outlet(1, "font", "Arial", 9);
+            outlet(1, "moveto", Math.round(pl[0] - sub.nx * 10) - 3, Math.round(pl[1] - sub.ny * 10) + 4);
+            outlet(1, "write", "L");
+            outlet(1, "moveto", Math.round(pr[0] + sub.nx * 10) - 3, Math.round(pr[1] + sub.ny * 10) + 4);
+            outlet(1, "write", "R");
+        }
+        if (sub.weff > 0.005) {
+            outlet(1, "font", "Arial", 9);
+            outlet(1, "moveto", Math.round(q[0]) + 10, Math.round(q[1]) - 8);
+            outlet(1, "write", "w " + sub.weff.toFixed(1) + " m");
+        }
+    }
+
     var ql = Math.round(q[0] - PR), qt = Math.round(q[1] - PR);
     outlet(1, "paintoval", ql, qt, ql + 2 * PR, qt + 2 * PR, COL_PUCK[0], COL_PUCK[1], COL_PUCK[2]);
     rgb("frgb", COL_PUCK_RING);
@@ -289,6 +395,18 @@ function rolloff(v) {
 
 function blur(v) {
     blurAmt = clamp01(v);
+    solveAndDraw();
+}
+
+function width(v) {
+    if (v < 0) v = 0;
+    if (v > 12) v = 12;
+    widthM = v;
+    solveAndDraw();
+}
+
+function decorr(v) {
+    decorrAmt = clamp01(v);
     solveAndDraw();
 }
 

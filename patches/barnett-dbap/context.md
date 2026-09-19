@@ -311,3 +311,67 @@ Deliverables:
    {0, 0.1, 0.25, 0.5, 0.75, 1.0}; assert chain gain within 0.05 dB of unity and L/R cross-correlation
    < 0.15 at depth 1; assert the two chains are identical at depth 0.
 5. Bump to 0.3.0, build notes in this file, commit, verify list for MAX.
+
+## Build v0.3.0 (2026-09-19)
+
+Files: `generated/dbap-source.maxpat` (142 boxes; presentation still 660x500, every v0.2 varname kept),
+`generated/barnett-dbap.maxpat` (host: bpatcher args `["A", 1]` / `["B", 2]`, `numinlets 2`, title v0.3),
+`generated/dbap.js` (sub-point shaper, two solves, 5 outlets). Edited in place via `read_patch` ->
+`finalize_patch(is_new=False)` -> `save_patch_roundtrip`; no `apply_layout`.
+
+Port (D18, numbers verbatim from O-Octagon v1.13.0):
+- `dbap.js` `shape()` = `SourceShaper::shapeAt` steps 2-6: bearing from the rig centroid, rFade =
+  0.05 * rigScale (kFadeFraction), fallback bearing (0, -1) at |b| < 1e-6, n^ = (-b^.y, b^.x), wEff =
+  width * fade, each sub-point at its own ear height. `solveAt()` runs the unchanged DBAP solve twice
+  (L, R); trims apply to both lanes. Outlets: 0 = `applyvalues` L lane, 3 = `applyvalues` R lane,
+  4 = `depth d` with d = decorr * clamp(wEff / 2 m, 0, 1) while decorr > 0 AND wEff > 0, else 0
+  (GainStage.cpp gate + kFullDepthWidthMetres). Readouts add `weff w` and `gainsr g1..g8`.
+- gen~ decorrelator (2 in / 2 out codebox): 4 Schroeder all-passes per feed, g 0.7, bases L
+  {113,199,317,449} / R {139,233,359,521} samples at 48 kHz scaled by `samplerate / 48000`,
+  delay = clamp(floor(base * scale * depth + 0.5), 1, 4095), read-before-write, `Delay(4096)` x 8.
+  `depth` has a 5 ms linear slew and a 5 ms 0/1 lerp crossfade (the plugin's decorrMix gate) so the
+  dry path is bit-exact once depth is 0. Feeds leave the gen~ at 0.5 (`sL`/`sR` level convention).
+  `History one(1)` hoist guard per CLAUDE.md. Plain `read(n)` on an integer n (bit-exact; the
+  `interp="none"` form is not repo-proven so it was not used). Chains run continuously instead of
+  being reset on the engage edge (all-pass, always fed: no stale-state click possible).
+- Signal path: `selector~ 3` (L) and a second `selector~ 3` (R) share the source menu via `t i i` ->
+  two `+ 1`; `sfplay~ 2`, `adc~ 1 2`, inlets L and R (R inlet box placed right of L, port x-order).
+  L -> `gain~` (trim, presentation); R -> a second `gain~` slaved from the L fader's right outlet
+  (patching only: deliberate presentation exclusion, single master trim). `selector~ 2` picks the R
+  feed: 1 = copy of L (mono), 2 = R (stereo), driven by the chans `umenu` (mono / stereo) seeded by
+  `loadmess #2` -> `- 1` -> umenu -> `+ 1`. gen~ out1 -> L `mc.*~` lane, out2 -> new R lane
+  (`mc.sig~ @chans 8` -> `mc.rampsmooth~ 1024 1024` -> `mc.*~`), lanes summed by `mc.+~` before the
+  master `mc.*~`. Speaker output = vL_i * sL + vR_i * sR.
+- UI: `live.dial` width (0..12, unitstyle 1 float, "m" not shown: unitstyle 9 custom units is not
+  repo-proven) and decorr (0..1) in the POSITION panel at presentation x 500 / 565; src Z label +
+  flonum narrowed to 62 px (x 430) to make room. Both dials have varnames (scene-stored via
+  autopattr) and loadbang init `0.` (init trigger grown to 11 outlets). chans umenu at SOURCE row 3
+  (290, 124) with a "chans" label. Plan (D17): a 2 px axis bar through the puck between the two
+  sub-points with a perpendicular tick at each end, drawn UNDER the puck so the ticks collapse onto
+  it as the centroid fade takes wEff to 0; L / R labels appear once the half-spread clears the puck,
+  and "w N.N m" (wEff) is written beside the puck. No wEff flonum: the readout row under the plan is
+  full, so wEff lives in the plan text and on the readouts outlet.
+
+Pre-flight (`scratchpad/preflight_decorr.py`, numpy, 131072 samples of noise, 48 kHz), mirroring the
+codebox difference equations exactly, depths {0, 0.1, 0.25, 0.5, 0.75, 1.0}:
+chain gain within 0.003 dB of unity at every depth (spec 0.05 dB); L/R correlation at lag 0 = 0.062 at
+depth 1 (spec < 0.15; max over |lag| <= 2000 samples 0.071); the two chains are sample-identical at
+depth 0; coherent sum of the two feeds at 0.5 sits at -2.75 dB (incoherent addition, no comb). Longest
+delay at 192 kHz = 2084 < 4096. Node smoke test of `dbap.js`: sum v^2 = 1 per lane, depth 0.5 at
+width 1 m, lanes identical at width 0, wEff 0 at the exact centroid, downstage puck puts R at +x.
+
+Validator / critic notes: one non-blocking `trigger outlet -> signal inlet` error on `sfplay~ 2`
+outlet 1 -> `selector~ 3` (R): the DB curates sfplay~ outlet 1 as the bang outlet of the 1-channel
+form, but `sfplay~ 2` has outlets (sig, sig, bang). The connection is correct in MAX and is kept;
+a `variable_io_rules` entry for `sfplay~` (outlets = first_arg + 1) was added to `overrides.json`
+so I/O counts compute correctly, but per-outlet roles are not arg-aware so the false positive stays.
+Two pre-existing `pack` hot/cold warnings (scenes) remain by design. Section headers keep the orange
+accent (`repair_text_contrast` had recoloured them grey; restored).
+
+Verify in MAX (v0.3.0 not yet load-tested): gen~ codebox compiles (8 `Delay(4096)`, `clamp`,
+`floor`, History-one guard); `depth $1` messages from js reach the Param; `loadmess #2` seeds the
+chans menu per instance (A mono, B stereo) and `- 1` / `+ 1` land on `selector~ 2` inputs 1 / 2;
+`sfplay~ 2` outlet 1 and `adc~ 1 2` outlet 1 feed the R selector; the slaved R `gain~` follows the L
+fader; width/decorr dials recall with scenes; plan axis bar, ticks, L/R labels and "w" text render;
+with width 0 the output is identical to v0.2 (lanes equal, depth 0, dry bit-exact); with width > 0
+and decorr 1 the spread widens without comb colouration; host bpatchers show 2 inlets.

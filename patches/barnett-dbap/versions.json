@@ -24,6 +24,16 @@
         "generated/barnett-dbap.maxpat",
         "generated/dbap.js"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "v0.3: stereo width with two DBAP sub-points (SourceShaper port), gen~ Schroeder all-pass decorrelator, mono/stereo bpatcher arg #2, R gain lane + mc.+~ sum",
+      "timestamp": "2026-09-19T19:07:26.098022+00:00",
+      "files_changed": [
+        "generated/dbap-source.maxpat",
+        "generated/barnett-dbap.maxpat",
+        "generated/dbap.js"
+      ]
     }
   ]
 }
