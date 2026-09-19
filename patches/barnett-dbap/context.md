@@ -260,3 +260,12 @@ substitution in `pattrstorage #1` and the `set #1` message; `pattr srcpos` echo 
 `signed 1` bipolar display; `selector~ 3` inlet order (0 = int, 1 File, 2 Live, 3 Inlet); the ping
 mask via `applyvalues` + `setvalue` on `mc.sig~`. Critic warnings left as-is: the two scene `pack`
 objects get hot/cold "no trigger" warnings by design (slot is set cold, button fires hot).
+
+## Verified (2026-09-19)
+
+v0.2.0 confirmed working in MAX by the user: two bpatcher instances render their presentation in the
+host, `#1` naming, `Dict` reads of the embedded venue, `applyvalues` into `mc.sig~ @chans 8`, lcd draw
+messages, meters over the lcd, `set 1 $1` on `adc~`, `selector~ 3`, the `pattr srcpos` echo path,
+scenes via `pattrstorage #1`, signed trim bars, and the `applyvalues` + `setvalue` ping mask. All the
+"verify in MAX" items under v0.1.0 and v0.2.0 are closed. Next: v0.3 (stereo width + sub-points,
+gen~ decorrelator) per the roadmap.
