@@ -375,3 +375,13 @@ chans menu per instance (A mono, B stereo) and `- 1` / `+ 1` land on `selector~ 
 fader; width/decorr dials recall with scenes; plan axis bar, ticks, L/R labels and "w" text render;
 with width 0 the output is identical to v0.2 (lanes equal, depth 0, dry bit-exact); with width > 0
 and decorr 1 the spread widens without comb colouration; host bpatchers show 2 inlets.
+
+## Verified (2026-09-19, v0.3.0)
+
+v0.3.0 confirmed working in MAX by the user with no errors: gen~ codebox decorrelator compiles and
+runs (8 x `Delay(4096)`, `clamp`/`floor`, History-one hoist guard, plain integer `read(n)`), `depth $1`
+messages from js reach the Param, `loadmess #2` seeds the chans menu per instance (A mono, B stereo),
+`sfplay~ 2` / `adc~ 1 2` second outlets feed the R selector, the slaved R `gain~` follows the L fader,
+width/decorr dials, plan axis bar + L/R ticks, R gain lane + `mc.+~` sum, host bpatchers with 2 inlets
+and JSON-int args. Every "verify in MAX" item under v0.3.0 is closed. Next: v0.4 (air filter, hull
+projection and trim) per the roadmap.
