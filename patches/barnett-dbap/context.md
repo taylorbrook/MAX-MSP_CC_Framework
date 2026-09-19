@@ -212,3 +212,10 @@ Deviations from research/decisions, all deliberate:
 Verify in MAX (not yet load-tested): `Dict` API reads of the embedded dict, `applyvalues` into
 `mc.sig~ @chans 8`, the lcd draw message forms (`paintoval l t r b r g b`, `write`, `font Arial 10`),
 `set 1 $1` retargeting `adc~ 1`, and that the meters render over the lcd in presentation.
+
+## Decisions (2026-09-19, post-build)
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D11 | Per-speaker trims (v0.2) live in the scene store (pattrstorage), not the venue dict. | User call: trims are recalled per scene. |
+| D12 | The spatializer MUST work as multiple instances inside one host patch, one instance per sound source, each spatialized independently. This is a v0.2 requirement and reshapes v0.1: the instance becomes an abstraction (`dbap-source.maxpat`) loaded as a `bpatcher` with `#1` = instance name; `mc.dac~`, the shared `dict venue`, the verify ping and any host master move to a host patch; each instance outputs its 8-ch mc signal through an `outlet` and the host sums instances into `mc.dac~ 1 2 3 4 5 6 7 8` (multiple mc connections to one signal inlet sum). Per-instance state (puck, Z, rolloff, blur, weights, trims, source, master) is scene-stored under `pattrstorage #1`. | Multiple sources in one piece; the hall is shared, the source is per-instance. |
