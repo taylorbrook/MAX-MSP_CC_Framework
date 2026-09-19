@@ -269,3 +269,11 @@ messages, meters over the lcd, `set 1 $1` on `adc~`, `selector~ 3`, the `pattr s
 scenes via `pattrstorage #1`, signed trim bars, and the `applyvalues` + `setvalue` ping mask. All the
 "verify in MAX" items under v0.1.0 and v0.2.0 are closed. Next: v0.3 (stereo width + sub-points,
 gen~ decorrelator) per the roadmap.
+
+## Decisions (2026-09-19, v0.3 scoping)
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D16 | ONE abstraction for mono and stereo. `bpatcher @args <name> <chans>` with `#2` = 1 or 2 (JSON number) seeding a mono/stereo `umenu` in the SOURCE panel via `loadmess #2`; the menu can still be flipped live. Two signal inlets (L, R); `sfplay~ 2` and `adc~ 1 2` always; a `selector~` picks the right feed = R input (stereo) or a copy of L (mono) before the decorrelator. | Two files would double every future fix; the variant is one selector and one flag. A stereo-only file would silently put a mono stem on the left sub-point. |
+| D17 | Width visualisation: the plan draws the spread axis as a short bar through the puck with a tick at each sub-point labelled L and R; ticks collapse onto the puck as the centroid fade takes effective width to zero. | Shows the geometry and the fade, not just the parameter. |
+| D18 | v0.3 ports the plugin's width + decorrelator verbatim: two DBAP solves (left/right sub-points, `SourceShaper.cpp` steps 1-6, kFadeFraction 0.05, centroid bearing, per-sub-point ear height), per-speaker output `vL*sL + vR*sR` with each feed at 0.5; decorrelator = 4 Schroeder all-passes per feed, g 0.7, bases L {113,199,317,449} / R {139,233,359,521} samples at 48 kHz scaled by samplerate, depth scales delay length (integer reads, clamp >= 1), applied depth = decorr * min(wEff / 2 m, 1), bypassed at wEff 0. Width 0..12 m default 0; decorr 0..1 default 0. Both scene-stored. | Same numbers as the verified plugin (D10 principle). |
