@@ -728,3 +728,117 @@ default 0.1 Hz; about 11 m/s at the rim of a 6 m spiral), so it wants a lower ra
 Verify in MAX: spiral draws three visible turns each way on the plan with a smooth trace, the puck never
 reverses direction, and switching between spiral and another path swaps the trace without console errors
 (the 241-atom `trace` message passes through the bpatcher cord into `dbap.js`).
+
+## User feedback (2026-09-20, v0.5.1 in MAX)
+
+User: "it works well" after the v0.5.1 spiral fix, having run the motion module in the host (the spiral
+report itself came from watching the plan in MAX). Taken as confirmed: host loads, motion module patched
+to source A runs, paths and trace draw, `venue-align.js` reads the shared dict at load (the MAX-saved host
+carries the venue name in the align status comment). NOT individually confirmed, still open from the
+v0.5.0 list: item 3 (a non-zero `delayMs` audibly delays one speaker via `setvalue` in the `mc.delay~`
+right inlet), item 4 (`read` of a converted venue json redraws both plans), item 10 (scene cord recall
+restores motion), item 12 (no Task left running after close). Ask before writing these into the
+proven-forms memory.
+
+## Decisions (2026-09-20, v0.6 scoping: gesture recorder)
+
+New feature with no plugin counterpart (nothing to port; D10 does not apply).
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D26 | The recorder lives IN the `dbap-motion` bpatcher as a seventh path, `recorded` (path index 6). `rec` toggle, stored gesture and playback clock are all in the motion module; an unpatched source gains nothing and costs nothing. Rate, size, ratio, angle, phase and height apply to the recorded path like any other. | User confirmed ("it would be part of the motion bpatcher, yes?"). Keeps D21's split: the source stays 660x500. |
+| D27 | No new inlets, outlets or host cords. Position OUT of the source rides the existing scene outlet (source outlet 2 -> motion inlet) as `anchorm x_m y_m`, emitted by `dbap.js` from the mouse handler only. Anchor INTO the source rides the existing motion cord as `setanchor x_m y_m`. A `recstate 0/1` message on the same cord lets the plan show "REC". | The mouse lives on the source's lcd and the motion module cannot see it. Both cords already exist in the host. |
+| D28 | Gesture format: resampled on stop to 120 points, uniform in time, stored as offsets from the gesture's own centroid and NORMALISED so the largest radius is 1. On stop the module sets its own dials for 1:1 playback (size = 2 x largest radius, rate = 0.9 / duration, ratio 1, angle 0, phase 0), sets path = recorded, sends `setanchor` with the centroid, and switches motion on. Height is untouched (the mouse is 2D; z stays `height sin t`). | 120 points x 2 floats + selector = 241 atoms, the same sub-256-atom size already proven for the spiral trace, so the gesture IS the trace. Centroid-relative means rotate / scale act about the gesture's centre and dragging the anchor moves the whole gesture. |
+| D29 | End of gesture: GLIDE BACK. The first 90% of each cycle plays the gesture at recorded speed; the last 10% eases (raised cosine) from the last point to the first. One loop mode, no menu, face stays 360x150. ASSUMED from the recommendation: the user was offered glide / palindrome / one-shot / menu twice and asked for the plan without choosing. Confirm at build time; palindrome is a two-line change in `evaluate()`. | Never jumps, always moves forward, needs no extra control. |
+| D30 | Scene storage: a `pattr gesture` in the motion module holds the 240-float list, same echo pattern as `pattr srcpos` (js emits only on record stop; the `gesture` handler never re-emits). Each scene slot carries its own gesture. `rec` has no varname (not scene-stored). | Proven pattern (memory: mc-lcd-bpatcher-proven-forms). |
+
+Recording rules: `rec 1` arms; if motion is on it is switched off first (so the hand is what is heard)
+and `recstate 1` is sent. The clock starts at the FIRST `anchorm` and the gesture ends at the LAST
+`anchorm` before `rec 0` (pauses mid-gesture are kept; the tail while the user reaches for the toggle
+is not). Auto-stop at 100 s (rate floor 0.01 Hz x 0.9). Fewer than 2 points, duration under 0.1 s, or a
+largest radius under 0.05 m: discard, post one console line, restore the previous on / path state.
+
+## v0.6 build brief (for /max-build in a fresh context)
+
+Start from the v0.5.1 files in `generated/`. `dbap-motion.maxpat` and `dbap-source.maxpat` have NOT been
+re-saved from MAX since the v0.5.0 build; the host HAS (commit 59e5998). The host needs NO change in
+v0.6 (D27). Edit via `read_patch` -> edit -> `populate_assistance_comments()` -> `save_patch_roundtrip`.
+Do NOT call `finalize_patch` or `_generate_midpoints` on the source (see "Build v0.5.0" deviations and
+memory `no-global-autolayout-on-large-patches`); new cords straight or hand-routed. Keep every varname,
+the 660x500 source and the 360x150 motion face. Read `generated/motion.js`, `generated/dbap.js` and
+`test-results/preflight_motion.js` first; the node harness (vm context with stub `outlet` / `Task` /
+`Dict`, overridable `nowMs`) is reused.
+
+Deliverables:
+1. `generated/motion.js`:
+   - `outlets = 2`. Outlet 0 unchanged (to the source) plus `setanchor x y` and `recstate 0/1`. NEW
+     outlet 1 = UI feedback: `on i`, `path i`, `rate f`, `size f`, `ratio f`, `angle f`, `phase f`,
+     `gesture f x 240`. The js never changes its own parameter state on record stop: it drives the UI
+     and the UI drives the js through the existing `prepend` boxes (one source of truth, scenes stay
+     consistent).
+   - `K_NUM_PATHS = 7`, `PATH_RECORDED = 6`, `isCyclic(6)` true. State: `recArmed`, `recPts` (t, x, y),
+     `recT0`, `gesture` (240 floats or empty), `prevOn`, `prevPath`.
+   - Handlers: `rec v`, `anchorm x y` (ignored unless armed; first call starts the clock; 100 s
+     auto-stop calls the same stop routine and emits nothing further until `rec 0`), `gesture ...`
+     (pattr echo / scene recall: validate 240 finite numbers else clear; never re-emits; if on and
+     path is recorded, `emitTrace()`).
+   - Stop routine: resample `recPts` to 120 points uniform in time by linear interpolation, centroid,
+     subtract, largest radius `rmax`, normalise. Emit on outlet 1 in this order: `gesture`, `ratio 1.`,
+     `angle 0.`, `phase 0.`, `size 2 * rmax`, `rate 0.9 / duration`, `path 6`; then outlet 0
+     `recstate 0`, `setanchor cx cy`; then outlet 1 `on 1`. Discard path per "Recording rules".
+   - `evaluate()` path 6 (D29): `uu = frac(u + phase / 360)`; `uu < 0.9`: position = gesture at
+     `uu / 0.9 * 119` with linear interpolation; else `k = (uu - 0.9) / 0.1`,
+     `w = 0.5 - 0.5 cos(pi k)`, position = last + w (first - last). `x = R gx`, `y = R ratio gy`,
+     `z = height sin t`, then the common rotation. Empty gesture: 0 0 0 and a bare `trace`.
+   - Trace for path 6: 120 points of `evaluate(k / 120)` (includes the glide segment).
+2. `generated/dbap-motion.maxpat` (ids from the v0.5.0 build: js `obj-25`, inlet `obj-30`, pattrstorage
+   `obj-41`, path umenu `obj-7`, init trigger `obj-45`):
+   - `obj-25` numoutlets 1 -> 2 (new box in a saved file: it is round-tripped now, so set the model
+     field `numoutlets` and `outlettype`, which ARE overlaid; verify on disk).
+   - umenu `obj-7`: append `",", "recorded"` to `box._raw["items"]` (round-tripped box: `extra_attrs`
+     is dropped at serialize, CLAUDE.md Rule #5 note).
+   - Inlet split: remove `obj-30 -> obj-41`; add `route anchorm` (2 outlets): outlet 0 ->
+     `prepend anchorm` -> js, outlet 1 (unmatched: `store N` / `recall N`) -> `obj-41`.
+   - js outlet 1 -> `route on path rate size ratio angle phase gesture` (9 outlets) -> the `on` toggle
+     `obj-4`, umenu `obj-7`, dials `obj-9 / 11 / 13 / 15 / 19`, and `pattr gesture`. `pattr gesture`
+     (varname `gesture`) outlet 0 -> `prepend gesture` -> js. Check in the pattr maxref that a
+     240-float list is stored and recalled whole; if not, fall back to two pattrs of 120.
+   - `rec` toggle (no varname) -> `prepend rec` -> js. Presentation: toggle `[196, 92, 20, 20]`, label
+     "rec" `[218, 93, 30, 19]` (row 2, above the "drift only" label at y 114; nothing else moves).
+     `checkedcolor` red `[0.9, 0.2, 0.2, 1]` (toggle attribute, in the DB). Loadbang init `0` to it:
+     grow the init trigger `obj-45` by one outlet with `modify_box(args=['b'] * 12)` (keeps existing
+     connections, proven in v0.4.0) and add the message box in the same row.
+   - Rule #9: `rec` and its label are in presentation. Contrast: grey label on the 0.19 panel as the
+     rest; do not run `repair_text_contrast` blindly (it greys the orange headers).
+3. `generated/dbap.js`:
+   - `mouse()`: after the existing `nxy` emit, `outlet(2, "anchorm", xm, ym)` (anchor metres, no
+     motion offset).
+   - `setanchor xm ym`: metres -> norm against the bounding box, `clamp01`, set `srcNX / srcNY`,
+     `solveAndDraw()`, then emit `nxy` so `pattr srcpos` stores it (the echo returns as `srcxy`, a
+     no-op when unchanged: no loop).
+   - `recstate v`: flag; `draw()` writes "REC" in red at the plan's top-right while set.
+4. `generated/dbap-source.maxpat`: `route pos nxy` (`obj-68`, outlets 0 and 1 used, outlet 2 unused)
+   -> `modify_box(args=["pos", "nxy", "anchorm"])`; new outlet 2 -> `prepend anchorm` -> the scene
+   outlet box `obj-189` (it already receives `p scenespack` outlet 1; two cords into one outlet are
+   fine). Place `prepend anchorm` near `obj-68` (860, 540) and hand-route or leave straight. Cleanup
+   while there: the v0.5.0 `inlet` `obj-186` and `outlet` `obj-189` were written with DB I/O counts
+   (1/1 and 2/0); set them to MAX's 0/1 and 1/0.
+5. Pre-flight, extend `test-results/preflight_motion.js`: a synthetic gesture (e.g. an L-shape with a
+   mid pause, 3 s) through `rec 1` / `anchorm` / `rec 0` with the fake clock gives 240 floats, centroid
+   at 0 within 1e-9, largest radius exactly 1; emitted order and values (`size` = 2 rmax, `rate` =
+   0.9 / duration, `setanchor` = centroid, `on 1` last); playback at the emitted rate and size
+   reproduces the recorded positions within 1 cm at the recorded times over the first 90%; the glide
+   is continuous at both joins (step under one tick of travel) and closes the loop; `gesture` echo
+   does not re-emit; a scene-style `gesture` + `path 6` + `on 1` plays without a recording; discard
+   cases restore the previous state; `anchorm` while unarmed does nothing; 100 s auto-stop. `dbap.js`:
+   `setanchor` round-trips metres -> norm -> metres within 1e-9, emits exactly one `nxy`, and the
+   echoed `srcxy` does not emit again; `mouse` emits `anchorm`; all v0.5 checks still pass
+   (42 today).
+6. Bump to 0.6.0, build notes in this file, commit (js + patches + tests + context + status +
+   versions), verify list for MAX: arm, draw, stop -> playback sits where drawn at the drawn speed;
+   glide back is smooth; rate / size / angle / phase transform the gesture; dragging the anchor moves
+   it; REC shows on the plan; store / recall per slot restores different gestures; a recall on source A
+   restores gesture + anchor through the scene cord; recording with motion already on; discard cases;
+   no console errors from `anchorm` reaching the motion inlet when no recording is armed.
+
+Open point to confirm before building: D29 (glide back assumed).
