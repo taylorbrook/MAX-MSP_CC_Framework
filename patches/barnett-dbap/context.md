@@ -531,3 +531,9 @@ trim and z-cue audible; `air` / `hull` dials load at 0.35 / 1.0 and recall with 
 status text draw on the plan; D20 two-row POSITION and merged WEIGHTS + TRIMS panel fit at 660x500.
 Every "verify in MAX" item under v0.4.0 is closed. Next: v0.5 scoping via /max-discuss (see "v0.5 open
 questions").
+
+## Decisions (2026-09-19, v0.5 scoping)
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D21 | Motion is a SEPARATE abstraction, `dbap-motion.maxpat`, loaded as its own bpatcher and patched into a source only when wanted. Two cords: (1) motion outlet -> a NEW third inlet on `dbap-source` (placed right of the L / R audio inlets, port x-order) carrying `motion dx dy dz`, an anchor-relative offset in METRES that `dbap.js` adds to the puck position before shaping / hull / air (the plugin's insertion point); (2) a NEW control outlet on `dbap-source` (right of the mc outlet) emitting its `store N` / `recall N` messages -> the motion module's inlet, so one scene recall restores position AND motion. The motion module keeps its own `pattrstorage #1` and its own store / recall buttons, so it also works with the scene cord unpatched. `dbap-source` stays 660x500 (D20 untouched); with no motion cord there is no clock and no cost. | User proposal, chosen over a pop-out panel, a reduced in-panel set and growing the instance. The plugin's path generator already outputs anchor-relative metres, so the module needs no venue knowledge. Scene sync chosen because scenes are used as cues: an unsynced recall would move the anchor while the old motion keeps running. |
