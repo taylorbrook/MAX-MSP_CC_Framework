@@ -1027,3 +1027,11 @@ Verify in MAX (v0.7.1 not yet load-tested):
    changes the sound; storing a scene afterwards stores the new value.
 3. `rate 0.5`, `size 4.`, `loop 2`, `wander 1.5`, `on 1` into the motion module's inlet move its controls.
 4. An unknown word into either inlet does nothing and posts no error.
+
+## User edit in MAX (2026-09-20, after the v0.7.0 build)
+
+The host was re-saved from MAX at 10:06 with v0.7.0 loaded (its `parameters` block now lists the motion
+module's `wander` dial, so the 460-wide module instantiated). User layout changes, keep them: source A
+bpatcher presentation 609 wide (patching 599), source B at presentation x 635, 612 wide (patching 605x506),
+bottom panel 1206 wide, one cord midpoint moved. Same 49 boxes and 31 lines. The source abstraction's own
+face is still 660x500; the host simply crops it.
