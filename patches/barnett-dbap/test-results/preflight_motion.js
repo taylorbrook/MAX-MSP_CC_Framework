@@ -1,4 +1,5 @@
-// preflight_motion.js -- node pre-flight for barnett-dbap v0.5 (motion.js + dbap.js motion path).
+// preflight_motion.js -- node pre-flight for barnett-dbap v0.5 / v0.6 (motion.js incl. the gesture recorder,
+// dbap.js motion path + anchorm / setanchor / recstate, venue-align.js).
 // Run: node patches/barnett-dbap/test-results/preflight_motion.js
 // motion_ref.txt is the output of motion_ref.cpp, which compiles the PLUGIN'S OWN MotionPath.h /
 // PerlinNoise.h (c++ -std=c++17 -I<O-Octagon>/Source -I<O-Octagon>/Source/DSP motion_ref.cpp).
@@ -144,6 +145,141 @@ function driftRun(seed) {
 check("drift: same seed -> identical run", driftRun(7) === driftRun(7));
 check("drift: different seed -> different run", driftRun(7) !== driftRun(8));
 
+// ---------------------------------------------------------------- v0.6 gesture recorder (D26-D30)
+// The patch loops js outlet 1 back through the UI: toggle / umenu / dials -> prepend -> js, and
+// "gesture" through pattr gesture -> prepend gesture -> js. wire() is that loop, synchronous as in MAX.
+function wire(ctx) {
+    var raw = ctx.outlet;
+    ctx.ui = [];
+    ctx.outlet = function () {
+        var a = Array.prototype.slice.call(arguments);
+        raw.apply(null, a);
+        if (a[0] !== 1) return;
+        var mm = Array.isArray(a[1]) ? a[1] : a.slice(1);
+        ctx.ui.push(mm[0]);
+        ctx[mm[0]].apply(ctx, mm.slice(1));
+    };
+    return ctx;
+}
+// An L with a pause at the corner: 2 s east at 1.5 m/s, 1 s still (NO reports, as the lcd), 1.5 s north.
+function drawL(ctx, clk, reports) {
+    var t;
+    for (t = 0; t <= 2000; t += 16) { clk.t = clk.base + t; reports.push([t / 1000, 2 + 1.5 * t / 1000, 3]); ctx.anchorm(2 + 1.5 * t / 1000, 3); }
+    for (t = 3000; t <= 4500; t += 16) { clk.t = clk.base + t; reports.push([t / 1000, 5, 3 + 1.2 * (t - 3000) / 1000]); ctx.anchorm(5, 3 + 1.2 * (t - 3000) / 1000); }
+}
+var r = wire(load("motion.js")), clk = { base: 5000000, t: 5000000 }, reps = [];
+r.nowMs = function () { return clk.t; };
+r.path(0); r.size(6); r.rate(0.1);
+r.anchorm(1, 1);
+check("rec: anchorm while unarmed does nothing", r.out.length === 0 && r.recPts.length === 0);
+r.on(1);
+var nOut = r.out.length;
+r.rec(1);
+check("rec 1 with motion on: switches motion off through the UI, then recstate 1",
+      r.isOn === 0 && r.ui.join() === "on" && lastMsg(r, 0, "recstate")[0] === 1 && lastMsg(r, 0, "motion").join() === "0,0,0");
+clk.base += 700; drawL(r, clk, reps);
+clk.t += 900;                       // reaching for the toggle: no reports, not part of the gesture
+r.ui = []; nOut = r.out.length;
+r.rec(0);
+var emitted = r.out.slice(nOut).map(flat);
+var gMsg = lastMsg(r, 1, "gesture"), dur = reps[reps.length - 1][0];
+check("rec 0: gesture is 240 finite floats", gMsg.length === 240 && gMsg.every(function (v) { return typeof v === "number" && isFinite(v); }));
+var gcx = 0, gcy = 0, grm = 0;
+for (var k = 0; k < 120; k++) { gcx += gMsg[2 * k]; gcy += gMsg[2 * k + 1]; grm = Math.max(grm, Math.sqrt(gMsg[2 * k] * gMsg[2 * k] + gMsg[2 * k + 1] * gMsg[2 * k + 1])); }
+check("gesture: centroid at 0, largest radius exactly 1", Math.abs(gcx / 120) < 1e-9 && Math.abs(gcy / 120) < 1e-9 && Math.abs(grm - 1) < 1e-12,
+      "centroid " + (gcx / 120).toExponential(1) + " " + (gcy / 120).toExponential(1) + ", rmax " + grm);
+check("rec 0: UI order is gesture, ratio, angle, phase, size, rate, path, on", r.ui.join() === "gesture,ratio,angle,phase,size,rate,path,on", r.ui.join());
+var order = emitted.filter(function (o) { return o[0] === 1 || o[1] === "recstate" || o[1] === "setanchor"; }).map(function (o) { return o[1]; }).join();
+check("rec 0: recstate 0 and setanchor come after path 6 and before on 1", order === "gesture,ratio,angle,phase,size,rate,path,recstate,setanchor,on", order);
+var sa = lastMsg(r, 0, "setanchor"), szE = lastMsg(r, 1, "size")[0], rtE = lastMsg(r, 1, "rate")[0];
+check("rec 0: rate = 0.9 / duration (the tail after the last report is dropped), path 6, ratio 1, angle 0, phase 0",
+      Math.abs(rtE - 0.9 / 4.488) < 1e-12 && Math.abs(dur - 4.488) < 1e-9 && lastMsg(r, 1, "path")[0] === 6 && lastMsg(r, 1, "ratio")[0] === 1 && lastMsg(r, 1, "angle")[0] === 0 && lastMsg(r, 1, "phase")[0] === 0, "rate " + rtE);
+check("after stop: motion is on, path recorded, state came back through the UI loop", r.isOn === 1 && r.pathIdx === 6 && r.sizeM === szE && r.rateHz === rtE && r.gestPts.length === 240);
+check("after stop: a 120-point trace (241 atoms) was sent", lastMsg(r, 0, "trace").length === 240);
+// size = 2 rmax and setanchor = centroid: rebuild the absolute path and compare with the reports
+// 120 points over 4.488 s is one point every 37.7 ms. Linear interpolation is exact on the straight, constant-
+// speed runs; across a velocity KINK (the stops and starts at 0 / 2 / 3 / 4.488 s) it cuts the corner in TIME by
+// at most v dt / 4 = 1.5 * 0.0377 / 4 = 14 mm, along the path (about 9 ms early / late), never off the line.
+var worstPos = 0, worstAway = 0, worstOff = 0, tStart = clk.t, dtRes = dur / 119, kinks = [0, 2, 3, dur];
+reps.forEach(function (rp) {
+    clk.t = tStart + rp[0] * 1000; r.tick();
+    var mo = lastMsg(r, 0, "motion"), ax = sa[0] + mo[0], ay = sa[1] + mo[1];
+    var e = Math.sqrt(Math.pow(ax - rp[1], 2) + Math.pow(ay - rp[2], 2));
+    var nearKink = kinks.some(function (kt) { return Math.abs(rp[0] - kt) < dtRes; });
+    worstPos = Math.max(worstPos, e);
+    if (!nearKink) worstAway = Math.max(worstAway, e);
+    worstOff = Math.max(worstOff, Math.min(Math.abs(ay - 3), Math.abs(ax - 5)));   // distance off the drawn L
+});
+check("playback at the emitted rate / size / anchor reproduces the drawn positions at the drawn times (< 1 cm away from stops / starts)", worstAway < 0.01, "max error " + (worstAway * 1000).toFixed(3) + " mm over " + reps.length + " reports");
+check("playback: at a stop / start the error stays under v dt / 4 (14 mm, a 9 ms timing slip) and never leaves the drawn line",
+      worstPos <= 1.5 * dtRes / 4 + 1e-9 && worstOff < 1e-9, "max " + (worstPos * 1000).toFixed(2) + " mm, off-line " + worstOff.toExponential(1) + " m");
+clk.t = tStart + 2500; r.tick(); var hold = lastMsg(r, 0, "motion");
+check("the pause at the corner is a hold, not a drift", Math.abs(sa[0] + hold[0] - 5) < 0.01 && Math.abs(sa[1] + hold[1] - 3) < 0.01, "at 2.5 s: " + (sa[0] + hold[0]).toFixed(3) + ", " + (sa[1] + hold[1]).toFixed(3));
+// glide: continuous at both joins, closes the loop
+var cyc = 1 / rtE, maxStep = 0, prevP = null, tickTravel = 0;
+for (var tt = 0; tt <= 2 * cyc * 1000; tt += 16) {
+    clk.t = tStart + tt; r.tick(); var pp = lastMsg(r, 0, "motion");
+    if (prevP) maxStep = Math.max(maxStep, Math.sqrt(Math.pow(pp[0] - prevP[0], 2) + Math.pow(pp[1] - prevP[1], 2)));
+    prevP = pp;
+}
+// fastest legitimate travel per tick: the drawn 1.5 m/s, or the glide's peak (pi / 2 x its mean speed)
+var e0 = r.evaluate(0), e9 = r.evaluate(0.8999999), eEnd = r.evaluate(0.9999999), e1 = r.evaluate(1);
+var glideLen = Math.sqrt(Math.pow(e9[0] - e0[0], 2) + Math.pow(e9[1] - e0[1], 2));
+tickTravel = Math.max(1.5, Math.PI / 2 * glideLen / (0.1 * cyc)) * 0.016;
+check("glide: no step larger than one tick of travel over two cycles", maxStep <= tickTravel * 1.05, "max step " + (maxStep * 1000).toFixed(1) + " mm, one tick " + (tickTravel * 1000).toFixed(1) + " mm");
+var j1 = r.evaluate(0.9), j0 = r.evaluate(0.9 - 1e-9);
+check("glide: continuous at the 0.9 join and closes the loop at 1.0",
+      Math.abs(j1[0] - j0[0]) < 1e-6 && Math.abs(j1[1] - j0[1]) < 1e-6 && Math.abs(eEnd[0] - e0[0]) < 1e-5 && Math.abs(eEnd[1] - e0[1]) < 1e-5 && e1[0] === e0[0] && e1[1] === e0[1]);
+var gl = r.evaluate(0.95);
+check("glide: the midpoint is halfway between the last and the first point (raised cosine)", Math.abs(gl[0] - 0.5 * (e0[0] + j1[0])) < 1e-9 && Math.abs(gl[1] - 0.5 * (e0[1] + j1[1])) < 1e-9);
+// transforms act about the centroid
+r.size(szE * 2); var big = r.evaluate(0.3); r.size(szE); var nat = r.evaluate(0.3);
+r.angle(90); var rot = r.evaluate(0.3); r.angle(0);
+r.phase(90); var ph = r.evaluate(0.05), ph0; r.phase(0); ph0 = r.evaluate(0.3);
+check("size scales, angle rotates and phase shifts the recorded path about its centroid",
+      Math.abs(big[0] - 2 * nat[0]) < 1e-12 && Math.abs(rot[0] + nat[1]) < 1e-12 && Math.abs(rot[1] - nat[0]) < 1e-12 && Math.abs(ph[0] - ph0[0]) < 1e-12 && Math.abs(ph[1] - ph0[1]) < 1e-12);
+// echo / scene recall
+r.ui = []; nOut = r.out.length;
+r.gesture.apply(r, gMsg);
+var echoOut = r.out.slice(nOut).map(flat);
+check("gesture echo never re-emits on outlet 1 (only a fresh trace while playing)", r.ui.length === 0 && echoOut.length === 1 && echoOut[0][1] === "trace" && echoOut[0].length === 242);
+var sc = wire(load("motion.js")), sclk = 100; sc.nowMs = function () { return sclk; };
+sc.path(6); sc.on(1);
+check("scene recall order path, on, gesture: empty until the gesture lands (bare trace, motion 0)", lastMsg(sc, 0, "trace").length === 0 && sc.evaluate(0.4).join() === "0,0,0");
+sc.size(szE); sc.rate(rtE); sc.gesture.apply(sc, gMsg);
+sclk += 1000; sc.tick();
+var scm = lastMsg(sc, 0, "motion");
+check("a scene-style gesture + path 6 + on 1 plays without a recording", lastMsg(sc, 0, "trace").length === 240 && Math.abs(sa[0] + scm[0] - (2 + 1.5)) < 0.01 && Math.abs(sa[1] + scm[1] - 3) < 0.01 && sc.ui.length === 0);
+sc.gesture(0);
+check("an invalid gesture (pattr with no value: 0) clears it", sc.gestPts.length === 0 && lastMsg(sc, 0, "trace").length === 0);
+sc.gesture.apply(sc, gMsg.slice(0, 239).concat([NaN]));
+check("a gesture with a non-finite value is rejected", sc.gestPts.length === 0);
+// discard cases restore the previous state
+function discardRun(draw, wasOn) {
+    var c = wire(load("motion.js")), ck = { t: 9000 }; c.nowMs = function () { return ck.t; };
+    c.path(4); if (wasOn) c.on(1);
+    c.rec(1); draw(c, ck); c.ui = []; c.rec(0);
+    return c;
+}
+var d1 = discardRun(function (c) { c.anchorm(3, 3); }, 1);
+check("discard: one point -> console line, recstate 0, previous path / on restored, no gesture",
+      d1.posts.length === 1 && lastMsg(d1, 0, "recstate")[0] === 0 && d1.ui.join() === "path,on" && d1.pathIdx === 4 && d1.isOn === 1 && lastMsg(d1, 1, "gesture") === null && lastMsg(d1, 0, "setanchor") === null);
+var d2 = discardRun(function (c, ck) { c.anchorm(3, 3); ck.t += 50; c.anchorm(4, 3); }, 0);
+check("discard: shorter than 0.1 s, motion stays off", d2.posts.length === 1 && d2.isOn === 0 && d2.pathIdx === 4 && lastMsg(d2, 1, "gesture") === null);
+var d3 = discardRun(function (c, ck) { for (var i = 0; i < 60; i++) { ck.t += 16; c.anchorm(3 + 0.0005 * i, 3); } }, 0);
+check("discard: largest radius under 0.05 m", d3.posts.length === 1 && lastMsg(d3, 1, "gesture") === null);
+var d0 = discardRun(function () {}, 0);
+check("discard: rec 1 then rec 0 with no mouse at all", d0.posts.length === 1 && lastMsg(d0, 1, "gesture") === null);
+// auto-stop
+var au = wire(load("motion.js")), ack = { t: 1000 }; au.nowMs = function () { return ack.t; };
+au.rec(1);
+for (var i = 0; i <= 5700; i++) { au.anchorm(2 + 8 * i / 5700, 4 + Math.sin(i / 300)); ack.t += 16; if (au.ui.length) break; }
+var auRate = lastMsg(au, 1, "rate");
+check("auto-stop at 90 s (0.9 / the 0.01 Hz rate floor): the same stop routine, rate stays on the dial",
+      auRate !== null && auRate[0] >= 0.01 && Math.abs(0.9 / auRate[0] - 90) < 0.02 && au.recArmed === 0 && au.isOn === 1, auRate ? "duration " + (0.9 / auRate[0]).toFixed(3) + " s" : "never stopped");
+nOut = au.out.length; au.anchorm(5, 5); au.rec(0);
+check("auto-stop: nothing further until rec 0, and that rec 0 is silent", au.out.length === nOut);
+
 // ---------------------------------------------------------------- dbap.js
 function dbapState(setup) {
     var d = load("dbap.js");
@@ -177,6 +313,33 @@ var t2 = dbapState(function (d) { d.trace(1, 0, 0, 1, -1, 0, 0, -1); });
 check("dbap.js: trace stores the polyline, bare trace clears it", t2.tracePts.length === 8 && (t2.trace(), t2.tracePts.length === 0));
 var bad = dbapState(function (d) { d.motion(NaN, 1, 0); });
 check("dbap.js: NaN offset is ignored", snap(bad) === snap(base));
+
+// ---------------------------------------------------------------- dbap.js v0.6 (D27)
+var mo = dbapState(); var n0 = mo.out.length;
+mo.mouse(30 + 0.25 * 180, 30 + 0.5 * 240);
+var moOut = mo.out.slice(n0).filter(function (o) { return o[0] === 2 && (o[1] === "nxy" || o[1] === "anchorm"); });
+var am = lastMsg(mo, 2, "anchorm"), posM = lastMsg(mo, 2, "pos");
+check("dbap.js: mouse emits nxy then anchorm (anchor metres = pos with no motion)", moOut.length === 2 && moOut[0][1] === "nxy" && moOut[1][1] === "anchorm" && Math.abs(am[0] - posM[0]) < 1e-12 && Math.abs(am[1] - posM[1]) < 1e-12, "anchorm " + am.join(" "));
+var mm2 = dbapState(function (d) { d.motion(1.5, -2, 0); }); mm2.mouse(30 + 0.25 * 180, 30 + 0.5 * 240);
+check("dbap.js: anchorm carries the ANCHOR, never the motion offset", lastMsg(mm2, 2, "anchorm").join() === am.join());
+var st = dbapState(); n0 = st.out.length;
+st.setanchor(am[0] + 1.234567, am[1] - 2.345678);
+var nxys = st.out.slice(n0).filter(function (o) { return o[0] === 2 && o[1] === "nxy"; });
+var backM = st.anchorM();
+check("dbap.js: setanchor round-trips metres -> norm -> metres (1e-9) and emits exactly one nxy", nxys.length === 1 && Math.abs(backM[0] - am[0] - 1.234567) < 1e-9 && Math.abs(backM[1] - am[1] + 2.345678) < 1e-9);
+var moved2 = dbapState(function (d) { d.srcxy(nxys[0][2], nxys[0][3]); });
+check("dbap.js: setanchor solves exactly like srcxy at the same position", snap(st) === snap(moved2));
+n0 = st.out.length; st.srcxy(nxys[0][2], nxys[0][3]);
+check("dbap.js: the echoed srcxy emits nothing (no loop)", st.out.length === n0);
+st.setanchor(-50, 99);
+check("dbap.js: setanchor clamps to the bounding box; NaN is ignored", st.srcNX === 0 && st.srcNY === 1 && (st.setanchor(NaN, 1), st.srcNX === 0));
+n0 = st.out.length; st.recstate(1);
+var recDraw = st.out.slice(n0).filter(function (o) { return o[0] === 1 && o[1] === "write" && o[2] === "REC"; }).length;
+n0 = st.out.length; st.recstate(1); var again = st.out.length - n0;
+st.recstate(0);
+var offDraw = st.out.slice(n0).filter(function (o) { return o[0] === 1 && o[1] === "write" && o[2] === "REC"; }).length;
+check("dbap.js: recstate 1 draws REC on the plan, a repeat is a no-op, recstate 0 removes it", recDraw === 1 && again === 0 && offDraw === 0);
+check("dbap.js: recstate / setanchor do not touch the gains of an untouched source", snap(dbapState(function (d) { d.recstate(1); d.recstate(0); })) === snap(base));
 
 // ---------------------------------------------------------------- venue-align.js (host, D23)
 function alignRun(venueData) {

@@ -66,6 +66,18 @@
       "files_changed": [
         "generated/motion.js"
       ]
+    },
+    {
+      "version": "0.6.0",
+      "description": "v0.6: gesture recorder in dbap-motion (seventh path 'recorded': rec toggle, 120-point centroid-relative gesture in pattr gesture, glide-back loop, UI feedback outlet on motion.js); anchorm / setanchor / recstate in dbap.js; anchorm on the source's scene outlet; host unchanged",
+      "timestamp": "2026-09-20T14:35:36.421949+00:00",
+      "files_changed": [
+        "generated/motion.js",
+        "generated/dbap-motion.maxpat",
+        "generated/dbap.js",
+        "generated/dbap-source.maxpat",
+        "test-results/preflight_motion.js"
+      ]
     }
   ]
 }

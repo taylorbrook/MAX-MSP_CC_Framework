@@ -842,3 +842,93 @@ Deliverables:
    no console errors from `anchorm` reaching the motion inlet when no recording is armed.
 
 Open point to confirm before building: D29 (glide back assumed).
+
+## Build v0.6.0 (2026-09-20)
+
+Files: `generated/motion.js`, `generated/dbap-motion.maxpat` (56 -> 67 boxes, 50 -> 68 lines, face still
+360x150), `generated/dbap.js`, `generated/dbap-source.maxpat` (147 -> 148 boxes, 117 -> 119 lines, still
+660x500, all 14 varnames kept, 67 presentation boxes unchanged), `test-results/preflight_motion.js`. The host
+is untouched (D27). D29 was built as assumed (glide back); nobody confirmed it, see "Open" below.
+
+`motion.js`:
+- `outlets = 2`, `K_NUM_PATHS = 7`, `PATH_RECORDED = 6`. Handlers `rec`, `anchorm`, `gesture`. The state
+  array is `gestPts`, NOT `gesture` as the brief said: a global named `gesture` would shadow the `gesture`
+  message handler.
+- Stop routine and emit order exactly as the brief: outlet 1 `gesture` (240 floats), `ratio 1`, `angle 0`,
+  `phase 0`, `size 2 rmax`, `rate 0.9 / duration`, `path 6`; outlet 0 `recstate 0`, `setanchor cx cy`;
+  outlet 1 `on 1`. The js sets NOTHING itself: the gesture comes back through `pattr gesture`, the rest
+  through the toggle / umenu / dials and their `prepend` boxes.
+- `evaluate()` path 6 and the 120-point trace per the brief. No gesture: `0 0 0` and a bare `trace`. A
+  `gesture` that arrives while on + path 6 re-sends the trace, so the recall order does not matter.
+- Discard (under 2 points, under 0.1 s, largest radius under 0.05 m): one console line, `recstate 0`, then
+  `path prevPath` and `on prevOn` on outlet 1.
+
+Deviations from the brief, all deliberate:
+- AUTO-STOP AT 90 s, NOT 100 s. The brief's "100 s (rate floor 0.01 Hz x 0.9)" is inverted: the longest gesture
+  the 0.01 Hz floor plays 1:1 is 0.9 / 0.01 = 90 s. At 100 s the rate would clamp and play 11 % fast.
+- HOLDS. The lcd only reports while the mouse moves, so plain linear interpolation would turn a pause into
+  a slow drift towards the next point. A gap over 0.1 s between reports inserts a hold point (previous
+  position, 16 ms before the next report). This is what makes "pauses mid-gesture are kept" true.
+- The 1 cm criterion holds AWAY from stops / starts (measured 0.000 mm on the straight runs). At a velocity
+  kink, 120 points cut the corner in TIME by at most v dt / 4 (test gesture: 11 mm at 1.5 m/s, a 9 ms
+  slip), always along the drawn line, never off it. Inherent to D28's 120 points; not audible.
+- Patching layout of the motion module: the feedback `route on path rate size ratio angle phase gesture`
+  sits in the free row ABOVE the controls (y 150, 9 outlets 125 px apart) so its cords run down into them;
+  one cord climbs from js outlet 1 along x 20. The `MOTION` / `#1` header comments moved up to y 22 in
+  PATCHING view to clear that row (presentation rects untouched). `rec` lives in its own REC column at
+  x 1540 (toggle, label, `prepend rec`, init `0`); the init trigger grew to 12 outlets and 1483 px so the 11
+  old outlets stay where their cords start. `route anchorm` sits at x 1176 (not under the inlet) to clear
+  `pack recall`. `pattr gesture` (varname `gesture`) at (996, 242), `prepend gesture` / `prepend anchorm`
+  in a new row at y 300; the three new cords into the js run as buses at y 318 / 323 / 326.
+- Source: `route pos nxy anchorm` widened to 151 px so `pos` / `nxy` keep their outlet positions.
+  `prepend anchorm` at (1040, 570), NOT the brief's (860, 540), which is where `obj-68` itself sits. Its
+  cord to the scene outlet is hand-routed: along y 598, up x 1832 (between `autopattr` and the outlet;
+  checked clear of every non-panel box). `obj-186` / `obj-189` I/O counts fixed to 0/1 and 1/0 and their
+  assistance text updated. `populate_assistance_comments()` was not run on the source (nothing new to label).
+- `dbap.js` REC mark: a red dot + "REC" (Arial 10, 230 51 51) at the plan's top right, y 3..11, above the
+  speaker-2 meter which starts at y 12.
+
+Research: the `prepend` maxref caps a constructed message at 256 items; `gesture` + 240 floats is 241, the
+same size as the proven spiral trace. The `pattr` maxref documents no list limit (its 256 is the `initial`
+attribute, unused). Two pattrs of 120 remain the fallback if MAX truncates.
+
+Pre-flight (`node patches/barnett-dbap/test-results/preflight_motion.js`): 77 checks, all pass (42 before).
+New: unarmed `anchorm` ignored; `rec 1` with motion on switches off through the UI; 240 finite floats,
+centroid 0 (1e-9), largest radius exactly 1; emit order; `rate = 0.9 / duration` with the tail after the last
+report dropped; state returns through the UI loop; 120-point trace; playback accuracy (above); the corner
+pause is a hold; glide continuous at both joins, closes, raised-cosine midpoint; size / angle / phase act
+about the centroid; `gesture` echo emits nothing on outlet 1; scene-style `path 6` + `on 1` + `gesture` in
+any order; invalid / NaN gesture clears; four discard cases; 90 s auto-stop and a silent `rec 0` after it.
+`dbap.js`: `mouse` emits `nxy` then `anchorm` (anchor, never the motion offset); `setanchor` round-trips to
+1e-9, emits one `nxy`, solves exactly like `srcxy`, the echo emits nothing, clamps, ignores NaN; `recstate`
+draws / removes REC and leaves the gains bit-identical.
+
+Validator / critic: no errors, no new warnings of substance. Motion: the two pre-existing scene `pack`
+hot/cold warnings plus cosmetic "Missing midpoints" on short new cords. Source: one cosmetic midpoint
+warning on the existing `p scenespack` -> outlet cord.
+
+Open:
+- D29 (glide back) is still the ASSUMED loop mode. Note the glide takes 10 % of the cycle whatever the
+  distance: an open gesture whose ends are far apart snaps back fast (the 4.5 s test L: 3.5 m in 0.5 s, peak
+  11 m/s). Ending a gesture near its start makes the glide negligible. Palindrome is a two-line change.
+- After an auto-stop the `rec` toggle stays red until clicked off (that click is silent). A `rec` entry on
+  the feedback route would clear it; not in the brief, not built.
+
+Verify in MAX (v0.6.0 not yet load-tested):
+1. Host opens with no console errors; the motion module shows `rec` (red when on) at row 2, `recorded` is the
+   seventh path menu entry; everything else looks and behaves as v0.5.1.
+2. Arm `rec`, drag the puck on source A's plan, un-arm: REC shows top right on the plan while armed; on stop
+   the dials jump (size, rate, ratio 1, angle 0, phase 0), path reads `recorded`, `on` lights, the anchor ring
+   moves to the gesture's centre and the puck retraces the drawing where and as fast as it was drawn.
+3. A pause while drawing plays back as a pause.
+4. The glide back to the start is smooth, with no jump at either join (D29: say if palindrome is preferred).
+5. Rate / size / ratio / angle / phase transform the gesture about its centre; dragging the anchor moves it.
+6. Scenes: record gesture 1, store slot 1; record gesture 2, store slot 2; recall 1 / 2 on the motion module
+   restores each gesture (the 240-float `pattr gesture` stores and recalls whole). Recall on source A
+   restores gesture + anchor through the scene cord.
+7. Arming while motion is already on: motion stops first, the hand is heard, playback starts on stop.
+8. Discards: a click without a drag, or `rec` on / off with no mouse, posts one console line and restores the
+   previous path / on state.
+9. Dragging the puck with `rec` off causes no console errors (the `anchorm` reaching the motion inlet is
+   ignored); source B (no motion module) is unaffected.
+10. The three still-open v0.5.0 items: 3 (`delayMs`), 4 (venue `read`), 12 (no Task left after close).

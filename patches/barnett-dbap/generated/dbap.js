@@ -1,4 +1,4 @@
-// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.5, per-instance)
+// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.6, per-instance)
 // Port of DbapSolver.cpp + SourceShaper.cpp from O-Octagon v1.13.0 (Lossius / Baltazar /
 // de la Hogue, ICMC 2009, 2011-04-14 revised equations). All constants verbatim
 // (context.md D10, D18).
@@ -27,6 +27,12 @@
 // no motion. The plan shows the anchor as a hollow ring, the moving puck solid, and the path
 // ("trace", one cycle in metres) around the anchor; Drift has no trace and gets a short tail.
 //
+// v0.6: gesture recorder (D27). The recorder lives in dbap-motion, but the mouse lives here, so
+// the mouse handler also publishes the anchor in METRES ("anchorm", outlet 2 -> the scene outlet
+// -> the motion module). On record stop the module answers "setanchor x_m y_m" over the motion
+// cord (the gesture's centroid becomes the anchor, published as nxy so pattr srcpos stores it) and
+// "recstate 0/1" puts a red REC on the plan while it is armed.
+//
 // inlet 0 messages:
 //   mouse x y        lcd outlet 0 (pixels, local to lcd) -> puck position
 //   srcxy nx ny      normalised 0..1 position over the speaker bounding box
@@ -41,12 +47,15 @@
 //   trims t1..t8     per-speaker trims in dB, applied after DBAP normalisation (scene-stored)
 //   motion dx dy dz  anchor-relative offset in metres from dbap-motion (third inlet)
 //   trace x1 y1 ..   one cycle of the motion path, metres, anchor-relative; bare "trace" clears
+//   setanchor x y    anchor in metres from dbap-motion (record stop); clamped to the bounding box
+//   recstate 0/1     dbap-motion's recorder is armed: the plan shows REC
 //   venue            re-read the embedded "venue" dict (also broadcast by the host after a read)
 //   bang             solve + redraw
 //
 // outlet 0: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   LEFT sub-point lane (sum g^2 = 1)
 // outlet 1: lcd drawing messages     -> lcd
-// outlet 2: readouts: "pos x_m y_m z_abs", "nxy nx ny" (mouse only -> pattr srcpos),
+// outlet 2: readouts: "pos x_m y_m z_abs", "nxy nx ny" (mouse / setanchor -> pattr srcpos),
+//           "anchorm x_m y_m" (mouse only -> scene outlet -> dbap-motion recorder),
 //           "weff w_m", "gains g1 .. g8" (L), "gainsr g1 .. g8" (R),
 //           "airhz fcL fcR" (0 = skipped), "dhull dL dR" (metres outside the hull), "zcue cL cR"
 // outlet 3: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   RIGHT sub-point lane
@@ -134,6 +143,7 @@ var tailPts = [];                         // recent absolute positions (Drift: n
 var TAIL_MAX = 48;                        // about 0.8 s of 60 Hz ticks
 var DRAW_MIN_MS = 30;                     // motion ticks redraw the plan at most ~33 fps
 var lastDrawMs = 0;
+var recState = 0;                         // v0.6: dbap-motion's recorder is armed
 
 // ---- colours (lcd rgb 0..255) --------------------------------------------------
 var COL_BG = [22, 22, 26];
@@ -148,6 +158,7 @@ var COL_HULL = [96, 104, 128];
 var COL_INFO = [150, 170, 190];
 var COL_TRACE = [150, 112, 48];
 var COL_ANCHOR = [200, 150, 60];
+var COL_REC = [230, 51, 51];
 
 function setDefaultVenue() {
     spk = [];
@@ -639,6 +650,16 @@ function draw() {
         outlet(1, "write", "hull " + trimDbMin.toFixed(1) + " dB");
     }
 
+    // v0.6: the motion module's gesture recorder is armed
+    if (recState) {
+        outlet(1, "font", "Arial", 10);
+        rgb("frgb", COL_REC);
+        // top right, above the speaker-2 meter (which starts at y 12)
+        outlet(1, "paintoval", LCD_W - 42, 3, LCD_W - 35, 10, COL_REC[0], COL_REC[1], COL_REC[2]);
+        outlet(1, "moveto", LCD_W - 31, 11);
+        outlet(1, "write", "REC");
+    }
+
     // v0.5: with motion patched in, the ANCHOR is a hollow ring (it is what the mouse drags and
     // what scenes store) and the moving puck is solid
     if (moving) {
@@ -674,6 +695,27 @@ function mouse(x, y) {
     solveAndDraw();
     // publish for the scene store (pattr srcpos); it echoes back as srcxy, which is a no-op below
     outlet(2, "nxy", srcNX, srcNY);
+    // v0.6 (D27): the anchor in metres for dbap-motion's gesture recorder (no motion offset)
+    var an = anchorM();
+    outlet(2, "anchorm", an[0], an[1]);
+}
+
+// v0.6 (D27): dbap-motion moves the anchor to a recorded gesture's centroid. Published as nxy so
+// pattr srcpos stores it; the echo comes back as srcxy, a no-op when unchanged, so there is no loop.
+function setanchor(xm, ym) {
+    if (typeof xm !== "number" || typeof ym !== "number" || !isFinite(xm) || !isFinite(ym)) return;
+    srcNX = clamp01((xm - bbMinX) / (bbMaxX - bbMinX));
+    srcNY = clamp01((ym - bbMinY) / (bbMaxY - bbMinY));
+    solveAndDraw();
+    outlet(2, "nxy", srcNX, srcNY);
+}
+
+function recstate(v) {
+    var want = v ? 1 : 0;
+    if (want === recState) return;
+    recState = want;
+    draw();
+    lastDrawMs = new Date().getTime();
 }
 
 // v0.5 (D21): anchor-relative offset in metres from the dbap-motion module. Every tick solves
