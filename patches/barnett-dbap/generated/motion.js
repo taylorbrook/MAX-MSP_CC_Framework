@@ -1,4 +1,4 @@
-// motion.js -- motion engine for dbap-motion.maxpat (barnett-dbap v0.6, D21 / D22 / D26-D30)
+// motion.js -- motion engine for dbap-motion.maxpat (barnett-dbap v0.7, D21 / D22 / D26-D34)
 // Port of MotionPath.h + MotionClock.h (free-run branch) + PerlinNoise.h from O-Octagon v1.13.0.
 // Equations and constants verbatim (context.md D10 principle).
 //
@@ -47,6 +47,24 @@
 // in "pattr gesture" (D30): it is emitted once on record stop and comes back as "gesture ...",
 // which never re-emits.
 //
+// v0.7 LOOP MODES, CUE, WANDER (D31-D34, no plugin counterpart).
+//   loop 0 "loop"        every path cycles as before (recorded: gesture + glide back, D29)
+//   loop 1 "palindrome"  forward, then backward: the path clock is folded, pc' = tri(pc). The
+//                        recorded path folds at the END OF THE GESTURE (0.9 cycle) and never glides
+//   loop 2 "one-shot"    "on 1" (or selecting one-shot, or a new path / gesture) ARMS: the puck waits
+//                        at the path's start. "cue" plays it once and it holds at the end (recorded:
+//                        the gesture's last point; the closed paths: back at their start)
+// The gesture always takes 0.9 cycle in every mode, so the rate set on record stop plays it 1:1
+// whatever the menu says. z follows the folded / held clock too. "cue" in the looping modes restarts
+// the path from its start; "cue" while off switches the module on first (through the UI). Drift has
+// no start and ignores loop and cue. The path clock is pc = cycles - cueC0, so rate changes stay
+// jump-free (cycles is continuous under MotionClock's re-base).
+//   wander f    metres of EXTENT (like size): seeded fbm added to ANY path after rotation,
+//               dx += wander / 2 * fbm(cycles + 3000), dy += wander / 2 * fbm(cycles + 4000).
+// Same seed and clock as Drift (so the rate dial sets its speed too), offsets clear of Drift's own
+// n / n + 1000 / n + 2000. It runs on the UNFOLDED clock: it keeps moving while a one-shot waits or
+// holds, and a loop never repeats exactly. The trace shows the clean path.
+//
 // inlet 0 messages:
 //   on 0/1      start / stop the clock. Off emits "motion 0 0 0" and an empty "trace" once.
 //               "on 1" while already running is ignored (a scene recall must not restart the phase).
@@ -57,7 +75,11 @@
 //   angle f     degrees, 0..360 (default 0)
 //   height f    metres, 0..8 (default 0)
 //   phase f     degrees, 0..360 (default 0)
-//   seed i      1..64 (default 1), Drift only
+//   seed i      1..64 (default 1), Drift and wander
+//   wander f    metres of extent, 0..12 (default 0): noise added on top of any path. fbm rarely
+//               passes +-0.4, so the puck strays about 0.2 x wander from the clean path
+//   loop i      0 loop, 1 palindrome, 2 one-shot (default 0)
+//   cue         one-shot: play once; other modes: restart from the path's start
 //   rec 0/1     arm / stop the gesture recorder
 //   anchorm x y the source's anchor in metres while the mouse drags it (ignored unless armed)
 //   gesture ... 240 floats (pattr echo / scene recall); anything else clears the gesture
@@ -68,6 +90,8 @@
 //                                        message stays under 256 atoms); bare "trace" = clear (off,
 //                                        or Drift, or "recorded" with no gesture). "recorded"
 //                                        sends 120 points, glide segment included
+//           "traceopen x1 y1 .. xN yN"   the same for an OPEN path the plan must not close:
+//                                        "recorded" in palindrome / one-shot (gesture only, no glide)
 //           "setanchor x_m y_m"          on record stop: the gesture's centroid becomes the anchor
 //           "recstate 0/1"               the source's plan shows REC while 1
 // outlet 1: UI feedback, routed to the module's own controls: "on i", "path i", "rate f",
@@ -106,6 +130,10 @@ var angleDeg = 0.0;
 var heightM = 0.0;
 var phaseDeg = 0.0;
 var seedVal = 1;
+var wanderM = 0.0;        // v0.7: extent in metres of the noise added on top of any path
+var loopMode = 0;         // v0.7: 0 loop, 1 palindrome, 2 one-shot
+var LOOP_LOOP = 0, LOOP_PALINDROME = 1, LOOP_ONESHOT = 2;
+var K_WANDER_OFFSET_X = 3000.0, K_WANDER_OFFSET_Y = 4000.0;
 
 // ---- clock state (MotionClock.h MotionClockState; phaseBase is a constant of integration) ----
 var t0Ms = 0;
@@ -113,6 +141,8 @@ var phaseBase = 0.0;
 var lastRate = -1.0;      // < 0: no rate observed yet, so the first call does not re-base
 var seededWith = -1;
 var tsk = null;
+var cueC0 = 0.0;          // v0.7: cycles at the last cue; the path clock is cycles - cueC0
+var shotArmed = 0;        // v0.7: one-shot waiting at the start for a cue
 
 // ---- recorder state -------------------------------------------------------------------------------
 var recArmed = 0;
@@ -202,7 +232,9 @@ function gestureAt(uu, out) {
 var gScratch = [0, 0];
 
 // Pure function of (parameters, cycles). Returns [x, y, z] in metres, anchor-relative.
-function evaluate(cycles) {
+// uuRec (optional, v0.7): the recorded path's gesture position 0..1 given directly instead of
+// frac(u + phase / 360); position() uses it for the folded / held clock.
+function evaluate(cycles, uuRec) {
     var R = 0.5 * sizeM;
     var u = cycles - Math.floor(cycles);
     var t = K_TWO_PI * u + phaseDeg * K_DEG_TO_RAD;
@@ -243,7 +275,8 @@ function evaluate(cycles) {
     } else if (pathIdx === PATH_RECORDED) {
         if (!hasGesture()) return [0.0, 0.0, 0.0];
         uu = u + phaseDeg / 360.0;
-        gestureAt(uu - Math.floor(uu), gScratch);
+        uu = (typeof uuRec === "number") ? uuRec : uu - Math.floor(uu);
+        gestureAt(uu, gScratch);
         x = R * gScratch[0];
         y = R * ratioAmt * gScratch[1];
         z = heightM * Math.sin(t);
@@ -281,11 +314,50 @@ function ensureSeeded() {
     }
 }
 
+// ---- v0.7 loop modes (D31, D32) ------------------------------------------------------------------
+// Fold (palindrome) or hold (one-shot) a clock value s over a span of L cycles.
+function warp(s, L) {
+    if (loopMode === LOOP_PALINDROME) {
+        var v = s - 2.0 * L * Math.floor(s / (2.0 * L));
+        return v < L ? v : 2.0 * L - v;
+    }
+    if (s < 0.0) return 0.0;
+    return s > L ? L : s;
+}
+
+// Position for a path clock pc (cycles since on / the last cue). Loop mode 0 and Drift are evaluate().
+function position(pc) {
+    if (loopMode === LOOP_LOOP || !isCyclic(pathIdx)) return evaluate(pc);
+    if (pathIdx === PATH_RECORDED) {
+        // phase is a start offset INSIDE the gesture; the fold / hold is at the gesture's end, so
+        // these modes never enter the glide. Passing s - ph keeps z = height sin(2 pi s) in step.
+        var ph = phaseDeg / 360.0;
+        var s = warp(pc + ph, K_GESTURE_PLAY);
+        return evaluate(s - ph, s);
+    }
+    return evaluate(warp(pc, 1.0));
+}
+
+function pathClock(cycles) {
+    if (!isCyclic(pathIdx)) return cycles;
+    if (loopMode === LOOP_ONESHOT && shotArmed) return 0.0;
+    return cycles - cueC0;
+}
+
+function arm() {
+    shotArmed = (loopMode === LOOP_ONESHOT) ? 1 : 0;
+}
+
 function tick() {
     if (!isOn) return;
     ensureSeeded();
     var tSec = (nowMs() - t0Ms) / 1000.0;
-    var p = evaluate(cyclesAt(tSec));
+    var cycles = cyclesAt(tSec);
+    var p = position(pathClock(cycles));
+    if (wanderM > 0.0) {
+        p[0] += 0.5 * wanderM * perlinFbm(cycles + K_WANDER_OFFSET_X);
+        p[1] += 0.5 * wanderM * perlinFbm(cycles + K_WANDER_OFFSET_Y);
+    }
     outlet(0, "motion", p[0], p[1], p[2]);
 }
 
@@ -299,8 +371,11 @@ function emitTrace() {
     var msg = ["trace"];
     var nPts = (pathIdx === PATH_SPIRAL) ? TRACE_POINTS_SPIRAL : TRACE_POINTS;
     if (pathIdx === PATH_RECORDED) nPts = K_GESTURE_POINTS;
+    // recorded + palindrome / one-shot: the gesture alone, an OPEN line (no glide to close it)
+    var open = (pathIdx === PATH_RECORDED && loopMode !== LOOP_LOOP);
+    if (open) msg[0] = "traceopen";
     for (var k = 0; k < nPts; k++) {
-        var p = evaluate(k / nPts);
+        var p = open ? evaluate(0.0, K_GESTURE_PLAY * k / (nPts - 1)) : evaluate(k / nPts);
         msg.push(p[0]);
         msg.push(p[1]);
     }
@@ -323,6 +398,8 @@ function on(v) {
         t0Ms = nowMs();
         phaseBase = 0.0;
         lastRate = -1.0;
+        cueC0 = 0.0;
+        arm();                // one-shot: wait at the start for a cue
         ensureSeeded();
         emitTrace();
         if (tsk === null) tsk = new Task(tick, this);
@@ -336,8 +413,31 @@ function on(v) {
 }
 
 function path(v) {
-    pathIdx = Math.floor(clampTo(v, 0, K_NUM_PATHS - 1));
+    var next = Math.floor(clampTo(v, 0, K_NUM_PATHS - 1));
+    if (next !== pathIdx) arm();   // one-shot: a new path waits at its start (a re-sent value does not re-arm)
+    pathIdx = next;
     if (isOn) emitTrace();
+}
+
+function wander(v) {
+    wanderM = clampTo(v, 0.0, 12.0);
+}
+
+function loop(v) {
+    var next = Math.floor(clampTo(v, 0, 2));
+    if (next === loopMode) return;   // a scene recall re-sending the value must not re-arm a running shot
+    loopMode = next;
+    arm();
+    if (isOn) emitTrace();
+}
+
+// One-shot: play once. Looping modes: restart the path from its start. Off: switch on first, through
+// the UI (the toggle drives "on"), then fire. Drift has no start: ignored.
+function cue() {
+    if (!isOn) outlet(1, "on", 1);
+    if (!isOn || !isCyclic(pathIdx)) return;
+    cueC0 = cyclesAt((nowMs() - t0Ms) / 1000.0);
+    shotArmed = 0;
 }
 
 function rate(v) {
@@ -498,7 +598,13 @@ function gesture() {
     for (var i = 0; ok && i < a.length; i++) {
         if (typeof a[i] !== "number" || !isFinite(a[i])) ok = false;
     }
-    gestPts = ok ? a : [];
+    var next = ok ? a : [];
+    var same = (next.length === gestPts.length);
+    for (var j = 0; same && j < next.length; j++) {
+        if (next[j] !== gestPts[j]) same = false;
+    }
+    gestPts = next;
+    if (!same && pathIdx === PATH_RECORDED) arm();   // one-shot: a NEW gesture waits at its start
     if (isOn && pathIdx === PATH_RECORDED) emitTrace();
 }
 

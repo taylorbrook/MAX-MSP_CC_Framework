@@ -941,3 +941,59 @@ on stop, the 241-atom `gesture` message passes `route` -> `pattr gesture` -> `pr
 individually confirmed: per-slot gesture store / recall (item 6), discard cases (item 8), D29 glide-back as
 the preferred loop mode (no objection raised), and the three v0.5.0 leftovers (item 10). Ask before writing
 these into the proven-forms memory.
+
+## Decisions (2026-09-20, v0.7: wander, loop modes, cue)
+
+User request after v0.6.0: "add drift on top of a whole gesture as well as the loop and cues one-shots".
+Built without a discuss round; D31-D34 are the builder's choices, review them in MAX.
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D31 | A `loop` menu (`loop`, `palindrome`, `one-shot`; varname `loop`, scene-stored) applies to EVERY cyclic path; Drift ignores it. `loop` is v0.6 behaviour (recorded: gesture + glide back, D29 stays the default). Palindrome folds the path clock; the recorded path folds at the END OF THE GESTURE (0.9 cycle) and never glides. | Palindrome / one-shot were the D29 alternatives the user now asked for. The gesture takes 0.9 cycle in every mode, so the rate set on record stop plays 1:1 whatever the menu says and changing the menu never changes the speed. |
+| D32 | One-shot ARMS: `on 1`, selecting one-shot, a new path or a NEW gesture park the puck at the path's start; `cue` plays once; it then holds at the end (recorded: the last drawn point; closed paths: back at their start). A re-sent identical `loop` / `path` / `gesture` (scene recall) does not re-arm a running shot. After a recording in one-shot mode the module is on and armed. | Cue-driven pieces: recall a scene, the source waits where the gesture begins, fire it on the cue. |
+| D33 | `cue` = a button on the face, or a `cue` message into the module's existing inlet (`route anchorm` -> `route cue`; store / recall still pass). In the looping modes `cue` restarts the path from its start. `cue` while off switches the module on (through the UI) and fires. No host wiring was added: patch any bang -> `cue` message into the motion bpatcher's inlet. | No new inlet (D27 principle). |
+| D34 | `wander` dial, metres of EXTENT 0..12 (varname `wander`, scene-stored, default 0): `dx += wander / 2 * fbm(cycles + 3000)`, `dy += wander / 2 * fbm(cycles + 4000)`, added in `tick()` after rotation, z untouched. Same seed and clock as Drift, so the rate dial sets its speed; the seed label now reads "drift + wander". It runs on the UNFOLDED clock: it keeps moving while a one-shot waits or holds. The trace shows the clean path. fbm rarely passes +-0.4, so the puck strays about 0.2 x wander. | "Drift on top of a gesture". Keeping it out of `evaluate()` leaves the plugin cross-check untouched; wander 0 is bit-identical to v0.6. |
+
+## Build v0.7.0 (2026-09-20)
+
+Files: `generated/motion.js`, `generated/dbap.js` (`traceopen` only), `generated/dbap-motion.maxpat` (67 -> 81
+boxes, 68 -> 80 lines), `generated/barnett-dbap.maxpat` (host), `test-results/preflight_motion.js`. The source
+patch is unchanged.
+
+- THE MOTION FACE IS NOW 460x150 (was 360x150): a new right-hand column at x 366 holds the `loop` menu
+  (row 0, beside the path menu), the `wander` dial (row 1) and the `cue` button + label (row 2). Nothing else
+  moved. The host bpatcher is 460 wide and its two captions moved 100 px right, in both views. The host's
+  only semantic changes are those six rect values (checked against the MAX-saved commit 59e5998); the large
+  text diff is the round-trip writer's whitespace.
+- `motion.js`: `warp()` / `position()` / `pathClock()`; the path clock is `cycles - cueC0`, so rate changes
+  stay jump-free in every mode. `evaluate(cycles, uuRec)` gained an optional second argument and is
+  otherwise untouched. In palindrome / one-shot the recorded path's `phase` is a start offset INSIDE the
+  gesture, and z follows the folded / held clock. Recorded + palindrome / one-shot sends `traceopen`
+  (gesture only, 120 points); `dbap.js` draws it without the closing segment.
+- Patching view: WANDER / LOOP / CUE columns at x 1630 / 1763 / 1890 (right of REC); the init trigger grew to
+  14 outlets (1749 px, old outlets unmoved); `route cue` at (1190, 300) between `route anchorm` and the
+  pattrstorage; buses into the js at y 306 / 310 / 314. `route anchorm` widened 86 -> 93 px (v0.6 wrote it too
+  narrow for its text).
+
+Pre-flight: 101 checks, all pass (77 before). New: loop 0 + wander 0 bit-identical to v0.6; one-shot arms,
+plays at the drawn speed on cue (12 mm, the same stop / start slip as v0.6), holds at the last point, re-cues,
+is not re-armed by a re-sent scene value, IS re-armed by a new gesture, no jump on a rate change mid-shot;
+cue while off; palindrome forward / backward symmetry, period 2 x duration, max step one tick (no glide),
+z folds, phase offset; one-shot and palindrome orbit; Drift ignores loop and cue; wander bounded,
+deterministic per seed, non-repeating, 0 = bit-identical, alive while armed, trace clean; `traceopen`.
+
+Validator / critic: no errors, no new warnings beyond cosmetic "Missing midpoints".
+
+Verify in MAX (v0.7.0 not yet load-tested):
+1. Host opens with no console errors; the motion module is 460 wide with loop menu / wander dial / cue button
+   in a new right-hand column; captions sit clear of it; everything else as v0.6.
+2. `wander` up on an orbit and on a recorded gesture: the puck strays smoothly around the trace, the trace
+   itself stays clean; rate changes the wander speed, seed changes its shape; 0 = exactly the old path.
+3. `palindrome` on a recorded gesture: forward then backward at the drawn speed, no glide, open trace.
+4. `one-shot`: the puck parks at the gesture's start; `cue` plays it once and it stays at the end; `cue`
+   again replays. With wander up it keeps breathing while parked.
+5. `cue` in `loop` / `palindrome` restarts from the start; `cue` with the module off switches it on.
+6. A `cue` message patched into the motion bpatcher's inlet fires it; scene store / recall and `anchorm`
+   still work through the same inlet.
+7. Scenes store and recall `loop` and `wander`; slots stored before v0.7 leave them as they are.
+8. Record a gesture while the menu is on one-shot: after stop the module is on and parked, waiting for a cue.

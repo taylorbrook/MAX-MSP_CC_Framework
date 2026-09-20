@@ -1,4 +1,4 @@
-// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.6, per-instance)
+// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.7, per-instance)
 // Port of DbapSolver.cpp + SourceShaper.cpp from O-Octagon v1.13.0 (Lossius / Baltazar /
 // de la Hogue, ICMC 2009, 2011-04-14 revised equations). All constants verbatim
 // (context.md D10, D18).
@@ -47,6 +47,8 @@
 //   trims t1..t8     per-speaker trims in dB, applied after DBAP normalisation (scene-stored)
 //   motion dx dy dz  anchor-relative offset in metres from dbap-motion (third inlet)
 //   trace x1 y1 ..   one cycle of the motion path, metres, anchor-relative; bare "trace" clears
+//   traceopen x1 ..  the same, but an OPEN line the plan does not close (v0.7: a recorded gesture
+//                    in palindrome / one-shot)
 //   setanchor x y    anchor in metres from dbap-motion (record stop); clamped to the bounding box
 //   recstate 0/1     dbap-motion's recorder is armed: the plan shows REC
 //   venue            re-read the embedded "venue" dict (also broadcast by the host after a read)
@@ -139,6 +141,7 @@ var sub = null;        // last shape() result: {lx, ly, lz, rx, ry, rz, weff, nx
 var motX = 0.0, motY = 0.0, motZ = 0.0;   // anchor-relative offset, metres
 var zEff = 0.0;                           // srcZ + motZ: the ONE effective Z both consumers read
 var tracePts = [];                        // [x1, y1, x2, y2, ...] metres, anchor-relative
+var traceClosed = true;                   // v0.7: "traceopen" draws the polyline without the closing segment
 var tailPts = [];                         // recent absolute positions (Drift: no closed trace)
 var TAIL_MAX = 48;                        // about 0.8 s of 60 Hz ticks
 var DRAW_MIN_MS = 30;                     // motion ticks redraw the plan at most ~33 fps
@@ -592,7 +595,8 @@ function draw() {
     if (tracePts.length >= 4) {
         rgb("frgb", COL_TRACE);
         var nTr = tracePts.length / 2;
-        for (var ti = 0; ti < nTr; ti++) {
+        var nSeg = traceClosed ? nTr : nTr - 1;
+        for (var ti = 0; ti < nSeg; ti++) {
             var tj = (ti + 1) % nTr;
             var ta = mToPx(an[0] + tracePts[2 * ti], an[1] + tracePts[2 * ti + 1]);
             var tb = mToPx(an[0] + tracePts[2 * tj], an[1] + tracePts[2 * tj + 1]);
@@ -748,7 +752,17 @@ function motion(dx, dy, dz) {
 
 // One cycle of the motion path (metres, anchor-relative). A bare "trace" clears it.
 function trace() {
-    var a = arrayfromargs(arguments);
+    traceClosed = true;
+    setTrace(arrayfromargs(arguments));
+}
+
+// v0.7: an open path (a recorded gesture played palindrome / one-shot): no closing segment.
+function traceopen() {
+    traceClosed = false;
+    setTrace(arrayfromargs(arguments));
+}
+
+function setTrace(a) {
     var next = [];
     for (var i = 0; i + 1 < a.length; i += 2) {
         if (typeof a[i] !== "number" || typeof a[i + 1] !== "number") break;

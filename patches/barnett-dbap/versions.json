@@ -78,6 +78,18 @@
         "generated/dbap-source.maxpat",
         "test-results/preflight_motion.js"
       ]
+    },
+    {
+      "version": "0.7.0",
+      "description": "v0.7: wander (seeded noise on top of any path), loop menu (loop / palindrome / one-shot), cue button + cue message on the module inlet, open trace; motion face 360 -> 460 wide, host bpatcher widened",
+      "timestamp": "2026-09-20T14:51:26.953063+00:00",
+      "files_changed": [
+        "generated/motion.js",
+        "generated/dbap.js",
+        "generated/dbap-motion.maxpat",
+        "generated/barnett-dbap.maxpat",
+        "test-results/preflight_motion.js"
+      ]
     }
   ]
 }

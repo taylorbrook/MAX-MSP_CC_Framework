@@ -280,6 +280,80 @@ check("auto-stop at 90 s (0.9 / the 0.01 Hz rate floor): the same stop routine, 
 nOut = au.out.length; au.anchorm(5, 5); au.rec(0);
 check("auto-stop: nothing further until rec 0, and that rec 0 is silent", au.out.length === nOut);
 
+// ---------------------------------------------------------------- v0.7 loop modes, cue, wander (D31-D34)
+function player(mode, pathI) {
+    var c = wire(load("motion.js")), ck = { t: 7000000 }; c.ck = ck; c.nowMs = function () { return ck.t; };
+    c.size(szE); c.rate(rtE); c.gesture.apply(c, gMsg); c.path(pathI === undefined ? 6 : pathI); c.loop(mode);
+    c.at = function (sec) { ck.t = c.t0 + sec * 1000; c.tick(); return lastMsg(c, 0, "motion"); };
+    c.start = function () { c.on(1); c.t0 = ck.t; };
+    return c;
+}
+function absPos(mo) { return [sa[0] + mo[0], sa[1] + mo[1]]; }
+function near(a, b, tol) { return Math.abs(a[0] - b[0]) < tol && Math.abs(a[1] - b[1]) < tol; }
+var drawnAt = function (tSec) { var best = reps[0]; reps.forEach(function (rp) { if (Math.abs(rp[0] - tSec) < Math.abs(best[0] - tSec)) best = rp; }); return [best[1], best[2]]; };
+// loop 0 is v0.6
+var l0 = player(0); l0.start();
+var same06 = true; [0.3, 1.7, 2.5, 4.1, 4.7, 6.2].forEach(function (t) { clk.t = tStart + t * 1000; r.tick(); var a = lastMsg(r, 0, "motion"), b = l0.at(t); if (a[0] !== b[0] || a[1] !== b[1] || a[2] !== b[2]) same06 = false; });
+check("loop 0 with wander 0 is bit-identical to v0.6 (gesture + glide back)", same06 && lastMsg(l0, 0, "traceopen") === null && lastMsg(l0, 0, "trace").length === 240);
+// one-shot
+var os = player(2); os.start();
+check("one-shot: on 1 ARMS, the puck waits at the gesture's first point", os.shotArmed === 1 && near(absPos(os.at(0)), [2, 3], 1e-9) && near(absPos(os.at(3.3)), [2, 3], 1e-9));
+var otr = lastMsg(os, 0, "traceopen");
+check("one-shot: the trace is OPEN (traceopen, 120 points, first / last = the gesture's ends, no glide)", otr !== null && otr.length === 240 && near([sa[0] + otr[0], sa[1] + otr[1]], [2, 3], 1e-9) && near([sa[0] + otr[238], sa[1] + otr[239]], [5, 4.7856], 1e-9));
+os.ck.t = os.t0 + 5000; os.cue(); os.t0 = os.ck.t;
+var osWorst = 0; [0.5, 1.0, 1.6, 2.5, 3.5, 4.2].forEach(function (t) { var q = absPos(os.at(t)), w = drawnAt(t); osWorst = Math.max(osWorst, Math.abs(q[0] - w[0]), Math.abs(q[1] - w[1])); });
+check("one-shot: cue plays the gesture once at the drawn speed (same rate as loop mode)", osWorst < 0.02, "max error " + (osWorst * 1000).toFixed(1) + " mm");
+var endP = [5, 3 + 1.2 * 1.488];
+check("one-shot: holds at the gesture's LAST point afterwards (no glide, no restart)", near(absPos(os.at(dur + 0.001)), endP, 1e-3) && near(absPos(os.at(dur + 3)), endP, 1e-9) && near(absPos(os.at(40)), endP, 1e-9));
+os.cue(); os.t0 = os.ck.t;
+check("one-shot: a second cue plays it again from the start", near(absPos(os.at(0)), [2, 3], 1e-9) && near(absPos(os.at(1.0)), [3.5, 3], 0.02));
+os.loop(2); os.gesture.apply(os, gMsg); os.path(6);
+check("one-shot: a scene recall re-sending loop / gesture / path does NOT re-arm a running shot", os.shotArmed === 0 && near(absPos(os.at(1.5)), [4.25, 3], 0.02));
+os.gesture.apply(os, gMsg.map(function (v, i) { return i === 7 ? v + 0.01 : v; }));
+check("one-shot: a NEW gesture re-arms (waits at its start)", os.shotArmed === 1);
+os.rate(rtE * 3); os.cue(); os.t0 = os.ck.t; var q1 = absPos(os.at(0.4)); os.rate(rtE); var q2 = absPos(os.at(0.4));
+check("one-shot: rate change mid-shot does not jump (the path clock rides MotionClock's re-base)", near(q1, q2, 1e-9));
+var offc = player(2); offc.ui = []; offc.cue();
+check("cue while off switches on through the UI and fires at once", offc.ui.join() === "on" && offc.isOn === 1 && offc.shotArmed === 0);
+// palindrome
+var pal = player(1); pal.start();
+var palWorst = 0; [0.4, 1.2, 2.6, 3.9].forEach(function (t) { var f = absPos(pal.at(t)), bck = absPos(pal.at(2 * dur - t)), w = drawnAt(t);
+    palWorst = Math.max(palWorst, Math.abs(f[0] - w[0]), Math.abs(f[1] - w[1]), Math.abs(f[0] - bck[0]), Math.abs(f[1] - bck[1])); });
+check("palindrome: forward at the drawn speed, then the same points backward; period = 2 x duration", palWorst < 0.02 && near(absPos(pal.at(dur)), endP, 1e-3) && near(absPos(pal.at(2 * dur)), [2, 3], 1e-3) && near(absPos(pal.at(2 * dur + 1)), [3.5, 3], 0.02), "max error " + (palWorst * 1000).toFixed(1) + " mm");
+var palStep = 0, pp0 = null; for (var ms = 0; ms < 2 * dur * 1000 * 2; ms += 16) { var pq = pal.at(ms / 1000); if (pp0) palStep = Math.max(palStep, Math.sqrt(Math.pow(pq[0] - pp0[0], 2) + Math.pow(pq[1] - pp0[1], 2))); pp0 = pq; }
+check("palindrome: never glides or jumps (max step = one tick at the drawn 1.5 m/s)", palStep <= 1.5 * 0.016 * 1.05, "max step " + (palStep * 1000).toFixed(1) + " mm");
+pal.cue(); pal.t0 = pal.ck.t;
+check("cue in a looping mode restarts from the path's start", near(absPos(pal.at(0)), [2, 3], 1e-9));
+pal.height(2); pal.cue(); pal.t0 = pal.ck.t;
+var zf = pal.at(1.0)[2], zb = pal.at(2 * dur - 1.0)[2];
+check("palindrome: z folds with the path", Math.abs(zf - zb) < 1e-9 && Math.abs(zf) > 0.1);
+pal.height(0); pal.phase(90); pal.cue(); pal.t0 = pal.ck.t;
+var phStart = absPos(pal.at(0)), phBack = absPos(pal.at(2 * (0.9 - 0.25) / rtE));
+check("palindrome + phase: phase is a start offset inside the gesture, the fold stays at the gesture's end", near(phStart, drawnAt(0.25 / 0.9 * dur), 0.03) && near(phBack, phStart, 1e-6));
+// the computed paths
+var orb = player(2, 0); orb.size(6); orb.rate(0.5); orb.start();
+var o0 = orb.at(1.3); orb.cue(); orb.t0 = orb.ck.t; var oq = orb.at(0.5), oe = orb.at(9);
+check("one-shot orbit: waits at its start, one revolution on cue, holds back at the start", near(o0, [3, 0], 1e-9) && near(oq, [3 * Math.cos(Math.PI / 2), 3 * Math.sin(Math.PI / 2)], 1e-9) && near(oe, [3, 0], 1e-9));
+var orbp = player(1, 0); orbp.size(6); orbp.rate(0.5); orbp.start();
+check("palindrome orbit: reverses after one revolution", near(orbp.at(2.5), orbp.at(1.5), 1e-9) && lastMsg(orbp, 0, "trace").length === 64 && lastMsg(orbp, 0, "traceopen") === null);
+var dr = player(2, 3); dr.start(); var dA = dr.at(2.0); dr.cue(); var dB = dr.at(2.0); var drl = player(0, 3); drl.start();
+check("drift ignores loop mode and cue", dr.shotArmed === 1 && near(dA, dB, 1e-12) && near(dA, drl.at(2.0), 1e-12) && (dA[0] !== 0 || dA[1] !== 0));
+// wander
+var wa = player(0, 0); wa.size(6); wa.rate(0.5); wa.start();
+var clean = wa.at(1.1).slice(); wa.wander(2); var noisy = wa.at(1.1), wmax = 0, wMoved = 0, prevW = null;
+for (var ws = 0; ws < 4000; ws++) { var cw = wa.at(ws * 0.05), ang = 2 * Math.PI * 0.5 * ws * 0.05, ex = cw[0] - 3 * Math.cos(ang), ey = cw[1] - 3 * Math.sin(ang);
+    wmax = Math.max(wmax, Math.abs(ex), Math.abs(ey)); if (prevW) wMoved = Math.max(wMoved, Math.abs(ex - prevW)); prevW = ex; }
+check("wander: adds bounded noise (|offset| <= wander / 2) on top of the path, z untouched", (noisy[0] !== clean[0] || noisy[1] !== clean[1]) && noisy[2] === clean[2] && wmax <= 1 + 1e-9 && wmax > 0.2, "max offset " + wmax.toFixed(3) + " m of 1.000");
+var w2 = player(0, 0); w2.size(6); w2.rate(0.5); w2.wander(2); w2.start();
+var w3 = player(0, 0); w3.size(6); w3.rate(0.5); w3.wander(2); w3.seed(9); w3.start();
+check("wander: deterministic per seed, different across seeds, never repeats cycle to cycle", near(w2.at(1.1), noisy, 1e-12) && !near(w3.at(1.1), noisy, 1e-6) && !near(w2.at(1.1), w2.at(3.1), 1e-6));
+wa.wander(0);
+check("wander 0 is bit-identical to no wander", wa.at(1.1)[0] === clean[0] && wa.at(1.1)[1] === clean[1]);
+var ww = player(2); ww.wander(1.5); ww.start();
+var wA = ww.at(1.0), wB = ww.at(2.0);
+check("wander keeps moving while a one-shot waits for its cue", !near(wA, wB, 1e-6) && Math.abs(sa[0] + wA[0] - 2) <= 0.75 && Math.abs(sa[1] + wA[1] - 3) <= 0.75);
+check("wander: the trace stays the clean path", JSON.stringify(lastMsg(w2, 0, "trace")) === JSON.stringify((function () { var c = player(0, 0); c.size(6); c.rate(0.5); c.start(); return lastMsg(c, 0, "trace"); })()));
+
 // ---------------------------------------------------------------- dbap.js
 function dbapState(setup) {
     var d = load("dbap.js");
@@ -340,6 +414,12 @@ st.recstate(0);
 var offDraw = st.out.slice(n0).filter(function (o) { return o[0] === 1 && o[1] === "write" && o[2] === "REC"; }).length;
 check("dbap.js: recstate 1 draws REC on the plan, a repeat is a no-op, recstate 0 removes it", recDraw === 1 && again === 0 && offDraw === 0);
 check("dbap.js: recstate / setanchor do not touch the gains of an untouched source", snap(dbapState(function (d) { d.recstate(1); d.recstate(0); })) === snap(base));
+
+var to = dbapState(function (d) { d.traceopen(1, 0, 0, 1, -1, 0, 0, -1); }), tc = dbapState(function (d) { d.trace(1, 0, 0, 1, -1, 0, 0, -1); });
+function traceSegs(d) { var n0 = d.out.length; d.bang(); var o = d.out.slice(n0), i0 = -1, n = 0;
+    o.forEach(function (m, i) { if (m[0] === 1 && m[1] === "frgb" && m[2] === 150 && m[3] === 112 && m[4] === 48) i0 = i; });
+    for (var i = i0 + 1; i < o.length && o[i][1] === "linesegment"; i++) n++; return n; }
+check("dbap.js v0.7: trace closes the polyline (4 segments), traceopen leaves it open (3); a bare one clears", traceSegs(tc) === 4 && traceSegs(to) === 3 && (to.traceopen(), to.tracePts.length === 0));
 
 // ---------------------------------------------------------------- venue-align.js (host, D23)
 function alignRun(venueData) {
