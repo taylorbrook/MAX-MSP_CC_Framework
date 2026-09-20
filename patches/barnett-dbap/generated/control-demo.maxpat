@@ -896,7 +896,7 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        1010.0,
+                        1020.0,
                         78.0,
                         200.0,
                         19.0
@@ -922,7 +922,7 @@
                         ""
                     ],
                     "patching_rect": [
-                        1010.0,
+                        1020.0,
                         98.0,
                         150.0,
                         20.0
@@ -942,7 +942,7 @@
                         ""
                     ],
                     "patching_rect": [
-                        1010.0,
+                        1020.0,
                         126.0,
                         80.0,
                         22.0
@@ -963,7 +963,7 @@
                         ""
                     ],
                     "patching_rect": [
-                        1010.0,
+                        1020.0,
                         166.0,
                         56.0,
                         22.0
@@ -983,7 +983,7 @@
                         ""
                     ],
                     "patching_rect": [
-                        1010.0,
+                        1020.0,
                         196.0,
                         93.0,
                         22.0
@@ -1001,7 +1001,7 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        1098.0,
+                        1108.0,
                         128.0,
                         100.0,
                         19.0
@@ -1025,7 +1025,7 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        1110.0,
+                        1120.0,
                         198.0,
                         100.0,
                         19.0
@@ -1053,7 +1053,7 @@
                         ""
                     ],
                     "patching_rect": [
-                        1010.0,
+                        1020.0,
                         236.0,
                         51.0,
                         22.0
@@ -1073,7 +1073,7 @@
                         ""
                     ],
                     "patching_rect": [
-                        1010.0,
+                        1020.0,
                         264.0,
                         121.0,
                         22.0
@@ -1093,7 +1093,7 @@
                         ""
                     ],
                     "patching_rect": [
-                        1010.0,
+                        1020.0,
                         292.0,
                         100.0,
                         22.0
@@ -1111,9 +1111,9 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        1068.0,
+                        1078.0,
                         238.0,
-                        140.0,
+                        128.0,
                         19.0
                     ],
                     "text": "MIDI CC 1 -> decorr",
@@ -1506,7 +1506,7 @@
                         724.0,
                         776.0,
                         484.0,
-                        72.0
+                        80.0
                     ],
                     "text": "motion outlet -> source third inlet : the moving offset, the trace, and the anchor after a recording.\nsource right outlet -> motion inlet (the cord up the left edge) : scene store / recall and the mouse position for the gesture recorder. Your own messages simply join these cords.",
                     "fontname": "Arial",
@@ -1528,7 +1528,7 @@
                     "outlettype": [],
                     "patching_rect": [
                         724.0,
-                        852.0,
+                        858.0,
                         484.0,
                         33.0
                     ],
@@ -2108,11 +2108,11 @@
                         0
                     ],
                     "midpoints": [
-                        1019.5,
+                        1029.5,
                         152.0,
-                        1002,
+                        1012.0,
                         152.0,
-                        1002,
+                        1012.0,
                         342,
                         680.5,
                         342
@@ -2142,11 +2142,11 @@
                         0
                     ],
                     "midpoints": [
-                        1019.5,
+                        1029.5,
                         222.0,
-                        1002,
+                        1012.0,
                         222.0,
-                        1002,
+                        1012.0,
                         342,
                         680.5,
                         342
@@ -2188,11 +2188,11 @@
                         0
                     ],
                     "midpoints": [
-                        1019.5,
+                        1029.5,
                         318.0,
-                        1002,
+                        1012.0,
                         318.0,
-                        1002,
+                        1012.0,
                         342,
                         680.5,
                         342
