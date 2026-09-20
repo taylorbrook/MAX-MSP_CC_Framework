@@ -1035,3 +1035,33 @@ module's `wander` dial, so the 460-wide module instantiated). User layout change
 bpatcher presentation 609 wide (patching 599), source B at presentation x 635, 612 wide (patching 605x506),
 bottom panel 1206 wide, one cord midpoint moved. Same 49 boxes and 31 lines. The source abstraction's own
 face is still 660x500; the host simply crops it.
+
+## Build v0.7.2 (2026-09-20): `control-demo.maxpat`
+
+User: "make a new patch that is designed to show how this works" (the D35 control messages). NEW
+`generated/control-demo.maxpat` (64 boxes, 37 lines), built with the Patcher API, hand-placed (no
+`apply_layout`: the geometry IS the explanation). It opens in PATCHING view, locked, because the cords are
+the point; it has no presentation layout (Rule #9 not applicable). Nothing else changed.
+
+- One `dbap-motion` (`@args Dm`) above one `dbap-source` (`@args D 1`), wired as in the host: motion outlet
+  -> source third inlet; source right outlet -> motion inlet (looped up the left edge at x 12). Instance names
+  `D` / `Dm` keep its scene storages apart from the host's `A` / `B` / `Am` if both are open.
+- Block 1, motion: 12 message boxes (`on`, `cue`, `path`, `rate`, `size`, `wander`, `loop`) -> `t l` -> the
+  motion inlet. Block 2, source: `width`, `air`, `rolloff`, `master`, `srcz`, `weights` / `trims` lists,
+  `setanchor`; plus live values: `slider` (float 0..1) -> `prepend air`, `flonum` 0..12 -> `prepend width`,
+  `ctlin 1` -> `scale 0 127 0. 1.` -> `prepend decorr`; all -> `t l` -> the source's third inlet. Each column's
+  cords share one gutter (hand midpoints), so the fan-in reads as a bus.
+- A HOW IT WORKS panel beside the source lists every name with its range, the two inter-module cords, and the
+  pattrstorage-word caveat. Output: source -> `mc.dac~ 1..8` with a DSP toggle; no alignment delay stage. A
+  copy of the host's embedded `dict venue` keeps the console clean when the demo is opened alone.
+- Validator: clean. Critic: the known toggle -> `mc.dac~` warning (the host's proven form) and cosmetic
+  midpoint notes. No overlaps with message boxes measured at their rendered width (len x 8 + 25).
+
+Verify in MAX (not yet load-tested; this is also the first MAX test of D35):
+1. Opens with both modules showing and no console errors (`dbap.js: venue loaded from dict`).
+2. Source block: each message moves the matching dial / multislider / puck; the slider, number box and a
+   MIDI CC 1 move air / width / decorr continuously.
+3. Motion block: `on 1` starts motion, `path` / `rate` / `size` / `wander` / `loop` move their controls, `cue`
+   fires (`t l` must pass the bare word `cue`; if it does not, swap that `t l` for direct cords).
+4. With `on 1`, the source still follows the motion module (the `routepass` in `p ctlsplit` is transparent),
+   and a scene recall on the source still restores the motion module through the left-edge cord.

@@ -99,6 +99,14 @@
         "generated/dbap-source.maxpat",
         "generated/dbap-motion.maxpat"
       ]
+    },
+    {
+      "version": "0.7.2",
+      "description": "v0.7.2: control-demo.maxpat, a teaching patch for the D35 control messages (one source + one motion module, message boxes, live slider / number / MIDI examples, how-it-works panel)",
+      "timestamp": "2026-09-20T21:12:32.161067+00:00",
+      "files_changed": [
+        "generated/control-demo.maxpat"
+      ]
     }
   ]
 }
