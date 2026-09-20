@@ -1065,3 +1065,14 @@ Verify in MAX (not yet load-tested; this is also the first MAX test of D35):
    fires (`t l` must pass the bare word `cue`; if it does not, swap that `t l` for direct cords).
 4. With `on 1`, the source still follows the motion module (the `routepass` in `p ctlsplit` is transparent),
    and a scene recall on the source still restores the motion module through the left-edge cord.
+
+## User feedback (2026-09-20, v0.7.2 in MAX)
+
+User: "great it works well" after opening `control-demo.maxpat`. Taken as confirmed: the demo loads with both
+modules, `<control name> <value>` messages into the source's third inlet and the motion module's inlet set
+the controls (D35: pattrstorage direct access, `routepass` in `p ctlsplit` transparent to motion), `t l` as
+the fan-in collector, the 460-wide motion face with loop menu / wander dial / cue button (v0.7.0 loaded).
+NOT individually confirmed: the bare word `cue` through `t l`, MIDI CC 1 -> decorr, palindrome / one-shot
+behaviour in detail, wander feel at the user's usual rates, per-slot gesture recall, and the v0.5.0 leftovers
+(`delayMs` alignment, venue `read`, no Task left after close). Ask before writing these into the
+proven-forms memory.
