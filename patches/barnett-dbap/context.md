@@ -997,3 +997,33 @@ Verify in MAX (v0.7.0 not yet load-tested):
    still work through the same inlet.
 7. Scenes store and recall `loop` and `wander`; slots stored before v0.7 leave them as they are.
 8. Record a gesture while the menu is on one-shot: after stop the module is on and parked, waiting for a cue.
+
+## Decision + build v0.7.1 (2026-09-20): parameter values into both bpatchers
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D35 | Both modules take `<control name> <value>` on an EXISTING inlet, delivered to the module's `pattrstorage` (maxref "Direct pattr access": a message whose first word is a client name sets that client; anything else is ignored). The control itself moves and drives the js through its `prepend`, so the UI stays the one source of truth and scenes store what was sent. No new inlets, no host change. | User asked for a way to receive parameter values inside the two bpatchers; chose the recommended route over host-side `pattrforward`. |
+
+- Motion module: nothing to build, the inlet already ends at the pattrstorage (after `route anchorm` /
+  `route cue`). Names: `on path rate size ratio angle height phase seed wander loop` (+ `cue`, `store N`,
+  `recall N`). Only the inlet's assistance text changed.
+- Source: NEW `p ctlsplit` at (850, 475) between the third inlet and `js dbap.js`. Inside:
+  `routepass motion trace traceopen setanchor recstate` (DB: Max, min_version 8; it keeps the selector, so
+  the js sees the messages exactly as before) -> outlet 0 -> js; unmatched -> outlet 1 -> `pattrstorage #1`
+  (`obj-103`), cord hand-routed along y 504 and up x 1518 (checked clear of every non-panel box). Names:
+  `rolloff blur srcz width decorr air hull master weights trims` (lists for the last two). Position:
+  `setanchor x_m y_m` (metres, already there) or `patcher::srcpos nx ny` (normalised, the pattr's path).
+  149 boxes, 121 lines, 14 varnames kept, face unchanged. Label reads "motion + control in".
+- Caveats: the words pattrstorage itself understands (`store`, `recall`, `clear`, `read`, `write`,
+  `delete`, ...) act on the scenes, so keep external senders to the control names. Messages that used to
+  reach the js through the third inlet but are not in the routepass list (none are sent by anything today;
+  `venue` arrives by `r dbap-venue`) now go to the pattrstorage instead.
+- Pre-flight unchanged (101 checks pass; no js changed). Validator / critic: no errors, no new warnings.
+
+Verify in MAX (v0.7.1 not yet load-tested):
+1. Motion still drives source A exactly as before (puck, closed and open traces, REC mark, setanchor on
+   record stop): the routepass is transparent, including the 241-atom `trace`.
+2. A message box `width 3.` (or `air 0.8`, `master -12`) into source A's THIRD inlet moves that dial and
+   changes the sound; storing a scene afterwards stores the new value.
+3. `rate 0.5`, `size 4.`, `loop 2`, `wander 1.5`, `on 1` into the motion module's inlet move its controls.
+4. An unknown word into either inlet does nothing and posts no error.

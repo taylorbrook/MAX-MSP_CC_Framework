@@ -90,6 +90,15 @@
         "generated/barnett-dbap.maxpat",
         "test-results/preflight_motion.js"
       ]
+    },
+    {
+      "version": "0.7.1",
+      "description": "v0.7.1: '<control> <value>' messages into both bpatchers (source: p ctlsplit with routepass on the third inlet -> pattrstorage; motion: already routed, assistance text only)",
+      "timestamp": "2026-09-20T21:05:33.549771+00:00",
+      "files_changed": [
+        "generated/dbap-source.maxpat",
+        "generated/dbap-motion.maxpat"
+      ]
     }
   ]
 }
