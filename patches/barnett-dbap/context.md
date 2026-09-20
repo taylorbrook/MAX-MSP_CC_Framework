@@ -932,3 +932,12 @@ Verify in MAX (v0.6.0 not yet load-tested):
 9. Dragging the puck with `rec` off causes no console errors (the `anchorm` reaching the motion inlet is
    ignored); source B (no motion module) is unaffected.
 10. The three still-open v0.5.0 items: 3 (`delayMs`), 4 (venue `read`), 12 (no Task left after close).
+
+## User feedback (2026-09-20, v0.6.0 in MAX)
+
+User: "it works well" after running the v0.6.0 gesture recorder in the host. Taken as confirmed: host and
+motion module load, `rec` arms, a drawn gesture plays back as the `recorded` path, the dials / anchor are set
+on stop, the 241-atom `gesture` message passes `route` -> `pattr gesture` -> `prepend gesture` -> js. NOT
+individually confirmed: per-slot gesture store / recall (item 6), discard cases (item 8), D29 glide-back as
+the preferred loop mode (no objection raised), and the three v0.5.0 leftovers (item 10). Ask before writing
+these into the proven-forms memory.
