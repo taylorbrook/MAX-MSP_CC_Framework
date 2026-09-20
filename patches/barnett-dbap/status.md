@@ -1,3 +1,3 @@
-stage: discuss
-progress: v0.4.0 verified; v0.5 D21-D24 locked (separate dbap-motion bpatcher with two cords and synced scenes, js Task clock, host alignment delays from venue dict, Python .venue converter); build v0.5 next
+stage: build
+progress: v0.5.0 built (motion module, alignment delays, venue read + converter); pre-flight 38/38; awaiting MAX verification (12-item list in context.md)
 created: 2026-09-19T05:20:06.206937+00:00

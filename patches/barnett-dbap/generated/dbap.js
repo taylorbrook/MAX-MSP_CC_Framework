@@ -1,4 +1,4 @@
-// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.4, per-instance)
+// dbap.js -- DBAP solver + lcd room-plan renderer (barnett-dbap v0.5, per-instance)
 // Port of DbapSolver.cpp + SourceShaper.cpp from O-Octagon v1.13.0 (Lossius / Baltazar /
 // de la Hogue, ICMC 2009, 2011-04-14 revised equations). All constants verbatim
 // (context.md D10, D18).
@@ -19,6 +19,14 @@
 // filter itself (one-pole TPT lowpass per feed) lives in the gen~; fc 0 means "skip" (air = 0 or
 // inside the near field), which is the plugin's bit-transparent branch.
 //
+// v0.5: motion (D21). A separate dbap-motion module sends an ANCHOR-RELATIVE offset in metres
+// ("motion dx dy dz"). It is added to the puck's metres AFTER normalised -> metres and BEFORE
+// shaping / hull / air (GainStage.cpp updateControl, the plugin's insertion point); dz adds to
+// srcZ ONCE and that effective Z reaches both consumers, the sub-point heights and the z-cue
+// reference solve. The stored anchor (srcpos) never changes. "motion 0 0 0" is bit-identical to
+// no motion. The plan shows the anchor as a hollow ring, the moving puck solid, and the path
+// ("trace", one cycle in metres) around the anchor; Drift has no trace and gets a short tail.
+//
 // inlet 0 messages:
 //   mouse x y        lcd outlet 0 (pixels, local to lcd) -> puck position
 //   srcxy nx ny      normalised 0..1 position over the speaker bounding box
@@ -31,7 +39,9 @@
 //   hull f           outside-hull attenuation, dB per metre 0..3 (default 1; 0 = no trim)
 //   weights l1..l8   per-speaker weights 0..1 (multislider list)
 //   trims t1..t8     per-speaker trims in dB, applied after DBAP normalisation (scene-stored)
-//   venue            re-read the embedded "venue" dict
+//   motion dx dy dz  anchor-relative offset in metres from dbap-motion (third inlet)
+//   trace x1 y1 ..   one cycle of the motion path, metres, anchor-relative; bare "trace" clears
+//   venue            re-read the embedded "venue" dict (also broadcast by the host after a read)
 //   bang             solve + redraw
 //
 // outlet 0: "applyvalues g1 .. g8"  -> mc.sig~ @chans 8   LEFT sub-point lane (sum g^2 = 1)
@@ -116,6 +126,15 @@ var gainsL = [0, 0, 0, 0, 0, 0, 0, 0];
 var gainsR = [0, 0, 0, 0, 0, 0, 0, 0];
 var sub = null;        // last shape() result: {lx, ly, lz, rx, ry, rz, weff, nx, ny}
 
+// ---- motion (v0.5, D21) --------------------------------------------------------------
+var motX = 0.0, motY = 0.0, motZ = 0.0;   // anchor-relative offset, metres
+var zEff = 0.0;                           // srcZ + motZ: the ONE effective Z both consumers read
+var tracePts = [];                        // [x1, y1, x2, y2, ...] metres, anchor-relative
+var tailPts = [];                         // recent absolute positions (Drift: no closed trace)
+var TAIL_MAX = 48;                        // about 0.8 s of 60 Hz ticks
+var DRAW_MIN_MS = 30;                     // motion ticks redraw the plan at most ~33 fps
+var lastDrawMs = 0;
+
 // ---- colours (lcd rgb 0..255) --------------------------------------------------
 var COL_BG = [22, 22, 26];
 var COL_BOX = [70, 70, 80];
@@ -127,6 +146,8 @@ var COL_PUCK_RING = [255, 235, 190];
 var COL_AXIS = [255, 210, 120];
 var COL_HULL = [96, 104, 128];
 var COL_INFO = [150, 170, 190];
+var COL_TRACE = [150, 112, 48];
+var COL_ANCHOR = [200, 150, 60];
 
 function setDefaultVenue() {
     spk = [];
@@ -391,8 +412,8 @@ function shape(px, py) {
 
     // step 6: each sub-point resolves its own height at its own y
     return {
-        lx: lx, ly: ly, lz: earHeight(ly) + srcZ,
-        rx: rx, ry: ry, rz: earHeight(ry) + srcZ,
+        lx: lx, ly: ly, lz: earHeight(ly) + zEff,
+        rx: rx, ry: ry, rz: earHeight(ry) + zEff,
         weff: wEff, nx: nhx, ny: nhy
     };
 }
@@ -427,7 +448,7 @@ function solveAt(xs, ys, zs, out) {
 }
 
 // GainStage.cpp solveSubPoint + step 6 for one sub-point: classify against the hull, project if
-// outside, solve, z-cue reference solve (same x/y, srcZ stripped), then fold hull trim * z-cue
+// outside, solve, z-cue reference solve (same x/y, effective Z stripped), then fold hull trim * z-cue
 // and the per-speaker trims into out[]. Returns {dHull, zCue}.
 var refScratch = [0, 0, 0, 0, 0, 0, 0, 0];
 function solveSubPoint(px, py, pz, out) {
@@ -439,7 +460,7 @@ function solveSubPoint(px, py, pz, out) {
         dHull = pr.d;
     }
     var invK = solveAt(sx, sy, pz, out);
-    var invKRef = solveAt(sx, sy, pz - srcZ, refScratch);
+    var invKRef = solveAt(sx, sy, pz - zEff, refScratch);
     var cue = zCueGain(invK, invKRef);
     var trim = hullTrimGain(hullAtten, dHull) * cue;
     // per-speaker trims (dB) sit outside the normalisation on purpose: they correct the room
@@ -447,10 +468,23 @@ function solveSubPoint(px, py, pz, out) {
     return { dHull: dHull, zCue: cue };
 }
 
+// The puck anchor in metres (the stored, scene-recalled position).
+function anchorM() {
+    return [bbMinX + srcNX * (bbMaxX - bbMinX), bbMinY + srcNY * (bbMaxY - bbMinY)];
+}
+
+function motionActive() {
+    return motX !== 0 || motY !== 0 || motZ !== 0;
+}
+
 function solve() {
-    var xs = bbMinX + srcNX * (bbMaxX - bbMinX);
-    var ys = bbMinY + srcNY * (bbMaxY - bbMinY);
-    var zs = earHeight(ys) + srcZ;
+    // GainStage.cpp: anchor -> metres, THEN the metric offset (6 m is 6 m in any hall). No clamp:
+    // a path may leave the bounding box and the hull projection deals with it, as in the plugin.
+    var an = anchorM();
+    var xs = an[0] + motX;
+    var ys = an[1] + motY;
+    zEff = srcZ + motZ;
+    var zs = earHeight(ys) + zEff;
 
     sub = shape(xs, ys);
     var resL = solveSubPoint(sub.lx, sub.ly, sub.lz, gainsL);
@@ -534,11 +568,33 @@ function draw() {
         outlet(1, "write", i + 1);
     }
 
-    // source puck
-    var xs = bbMinX + srcNX * (bbMaxX - bbMinX);
-    var ys = bbMinY + srcNY * (bbMaxY - bbMinY);
+    // source puck: the anchor plus the motion offset (equal to the anchor with no motion)
+    var an = anchorM();
+    var xs = an[0] + motX;
+    var ys = an[1] + motY;
     var q = mToPx(xs, ys);
+    var qa = mToPx(an[0], an[1]);
     var PR = 6;
+    var moving = motionActive() || tracePts.length >= 4;
+
+    // v0.5: motion path around the anchor (closed polyline), or the Drift tail, UNDER everything
+    if (tracePts.length >= 4) {
+        rgb("frgb", COL_TRACE);
+        var nTr = tracePts.length / 2;
+        for (var ti = 0; ti < nTr; ti++) {
+            var tj = (ti + 1) % nTr;
+            var ta = mToPx(an[0] + tracePts[2 * ti], an[1] + tracePts[2 * ti + 1]);
+            var tb = mToPx(an[0] + tracePts[2 * tj], an[1] + tracePts[2 * tj + 1]);
+            outlet(1, "linesegment", Math.round(ta[0]), Math.round(ta[1]), Math.round(tb[0]), Math.round(tb[1]));
+        }
+    } else if (tailPts.length >= 4) {
+        rgb("frgb", COL_TRACE);
+        for (var di = 0; di + 3 < tailPts.length; di += 2) {
+            var da = mToPx(tailPts[di], tailPts[di + 1]);
+            var dbp = mToPx(tailPts[di + 2], tailPts[di + 3]);
+            outlet(1, "linesegment", Math.round(da[0]), Math.round(da[1]), Math.round(dbp[0]), Math.round(dbp[1]));
+        }
+    }
 
     // D17: spread axis through the puck with a tick at each sub-point, drawn UNDER the puck
     // so the ticks visibly collapse onto it as the centroid fade takes wEff to zero.
@@ -583,6 +639,14 @@ function draw() {
         outlet(1, "write", "hull " + trimDbMin.toFixed(1) + " dB");
     }
 
+    // v0.5: with motion patched in, the ANCHOR is a hollow ring (it is what the mouse drags and
+    // what scenes store) and the moving puck is solid
+    if (moving) {
+        var al = Math.round(qa[0] - PR), at = Math.round(qa[1] - PR);
+        rgb("frgb", COL_ANCHOR);
+        outlet(1, "frameoval", al, at, al + 2 * PR, at + 2 * PR);
+    }
+
     var ql = Math.round(q[0] - PR), qt = Math.round(q[1] - PR);
     outlet(1, "paintoval", ql, qt, ql + 2 * PR, qt + 2 * PR, COL_PUCK[0], COL_PUCK[1], COL_PUCK[2]);
     rgb("frgb", COL_PUCK_RING);
@@ -598,6 +662,7 @@ function fmtHz(f) {
 function solveAndDraw() {
     solve();
     draw();
+    lastDrawMs = new Date().getTime();
 }
 
 // ---- message handlers ------------------------------------------------------------------
@@ -609,6 +674,49 @@ function mouse(x, y) {
     solveAndDraw();
     // publish for the scene store (pattr srcpos); it echoes back as srcxy, which is a no-op below
     outlet(2, "nxy", srcNX, srcNY);
+}
+
+// v0.5 (D21): anchor-relative offset in metres from the dbap-motion module. Every tick solves
+// (the 21 ms gain ramp smooths 60 Hz steps); the plan redraws at most every DRAW_MIN_MS. The
+// anchor (srcNX / srcNY, pattr srcpos) is untouched, and nothing is emitted on the nxy path.
+function motion(dx, dy, dz) {
+    if (typeof dx !== "number" || typeof dy !== "number") return;
+    if (typeof dz !== "number") dz = 0;
+    if (!isFinite(dx) || !isFinite(dy) || !isFinite(dz)) return;
+    if (dx === motX && dy === motY && dz === motZ) return;
+    motX = dx;
+    motY = dy;
+    motZ = dz;
+    var settle = !motionActive();   // "motion 0 0 0": the module was switched off
+    if (settle) {
+        tailPts = [];
+    } else if (tracePts.length < 4) {
+        var an = anchorM();
+        tailPts.push(an[0] + motX);
+        tailPts.push(an[1] + motY);
+        if (tailPts.length > 2 * TAIL_MAX) tailPts.splice(0, tailPts.length - 2 * TAIL_MAX);
+    }
+    solve();
+    var now = new Date().getTime();
+    if (settle || now - lastDrawMs >= DRAW_MIN_MS || now < lastDrawMs) {
+        draw();
+        lastDrawMs = now;
+    }
+}
+
+// One cycle of the motion path (metres, anchor-relative). A bare "trace" clears it.
+function trace() {
+    var a = arrayfromargs(arguments);
+    var next = [];
+    for (var i = 0; i + 1 < a.length; i += 2) {
+        if (typeof a[i] !== "number" || typeof a[i + 1] !== "number") break;
+        next.push(a[i]);
+        next.push(a[i + 1]);
+    }
+    tracePts = next;
+    if (tracePts.length >= 4) tailPts = [];
+    draw();
+    lastDrawMs = new Date().getTime();
 }
 
 // Scene recall / pattr echo. Never emits nxy, so mouse -> pattr -> srcxy cannot loop.

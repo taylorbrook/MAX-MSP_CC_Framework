@@ -590,3 +590,123 @@ Deliverables:
    |offset| = size / 2, a rate change mid-cycle produces no position jump, Drift is deterministic per
    seed); node test of `dbap.js` (`motion 0 0 0` gives bit-identical gains to no motion).
 6. Bump to 0.5.0, build notes here, commit, verify list for MAX.
+
+## Build v0.5.0 (2026-09-19)
+
+Files: NEW `generated/dbap-motion.maxpat` (56 boxes, presentation 360x150) + NEW `generated/motion.js`;
+`generated/dbap-source.maxpat` (147 boxes, still 660x500, every varname kept), `generated/dbap.js` (motion +
+trace), `generated/barnett-dbap.maxpat` (host: alignment stage, venue read, one motion instance `Am` on
+source A), NEW `generated/venue-align.js` (host), NEW `tools/venue_to_json.py` (D24),
+`test-results/preflight_motion.js` + `motion_ref.cpp` / `motion_ref.txt`.
+
+Motion module (D21, D22), numbers verbatim from O-Octagon v1.13.0:
+- `motion.js` = `MotionPath.h` `evaluate()` (six paths, `fold`, rotation skipped exactly at angle 0, z =
+  height sin t, Drift = seeded fbm at n / n + 1000 / n + 2000), `MotionClock.h` `freeRunCycles`
+  (`cycles = rate * t + phaseBase`, re-base `phaseBase += (oldRate - newRate) * t` observed at the next
+  tick), `PerlinNoise.h` (uint32 LCG shuffle; the double product stays below 2^53 so it is exact, fbm 4
+  octaves). `Task` at 16 ms; position comes from ELAPSED time (`Date`), never an accumulator, so Task jitter
+  cannot bend the path. `on 1` restarts at phase 0 (the plugin's re-prepare); `on 1` while running is
+  ignored so a scene recall does not restart the phase; `on 0` emits `motion 0 0 0` and a bare `trace` once.
+  `trace` = 32 points of one cycle, sent on start and on path / size / ratio / angle / phase changes, only
+  while on; Drift sends a bare `trace` (clear).
+- Ranges: rate 0.01..10 Hz (D22; the plugin stops at 4), `live.dial` unitstyle Hz with
+  `parameter_exponent 4` (0.63 Hz at the dial centre); size 0..24 m (6), ratio 0..1 (1), angle 0..360,
+  height 0..8 m, phase 0..360, seed 1..64 (`number`), path `umenu` (orbit, figure-8, sweep, drift, pendulum,
+  spiral, comma-as-element items). Varnames `on path rate size ratio angle height phase seed` -> `autopattr`
+  -> `pattrstorage #1 @savemode 0`; own slot / store / recall; inlet 0 feeds `store N` / `recall N` straight
+  into that pattrstorage; outlet 0 = motion messages. Loadbang init row on top (every cord runs down).
+- Face: header + title (`set #1`), on, path / rate, size, ratio, angle + slot, store, recall / height,
+  phase, seed. Same panel 0.19 / orange header / grey text as the source.
+
+Source (D21):
+- THIRD `inlet` at patching x 850 (audio inlets are x 630 / 663, port x-order) -> `js dbap.js`. It sits
+  beside the js, not at the top, so no cord crosses the lcd.
+- `dbap.js`: `motion dx dy dz` adds metres to the anchor AFTER norm -> metres and BEFORE `shape()` (no
+  clamp, the hull projection handles a path that leaves the rig, as in the plugin); `zEff = srcZ + dz` is
+  computed once and read by BOTH the sub-point heights and the z-cue reference solve (GainStage.cpp Risk 6).
+  The anchor (`srcNX/srcNY`, `pattr srcpos`) is never touched and `motion` never emits `nxy`. Each tick
+  solves; the plan redraws at most every 30 ms. Plan: trace polyline around the anchor, anchor as a hollow
+  ring, moving puck solid; with no closed trace (Drift) a 48-point tail of recent positions is drawn. With no
+  motion cord the plan is pixel-identical to v0.4. The `pos` readouts follow the moving puck.
+- Scene cord: `t l l` added INSIDE the user's `p scenespack` (left outlet -> the existing outlet ->
+  `pattrstorage #1`, right outlet -> a new second subpatcher outlet placed right of the first). `p scenespack`
+  outlet 1 -> a new top-level `outlet` at patching x 1840 (right of the mc outlet at x 700). Both fire in the
+  same scheduler tick, order is immaterial. This is the ONLY pre-existing box that changed (numoutlets 1 -> 2).
+- `r dbap-venue` -> js: the host broadcasts `venue` after a dict read.
+
+Host (D23, D24):
+- Sources get `numinlets 3`, `numoutlets 2`. `bpatcher @name dbap-motion.maxpat @args Am` under source A
+  (presentation 20 630 360 150, caption beside it); A outlet 1 -> motion inlet, motion outlet -> A inlet 2.
+  Host window height 752 -> 840 so the module is visible.
+- Alignment: sources + verify ping now sum at `mc.delay~ 9600 @chans 8` -> `mc.dac~` (the DSP toggle still
+  goes straight to `mc.dac~`). `venue-align.js` reads `speakers::sN::delayMs` (missing = 0), clamps to the
+  plugin's 0..50 ms rail, and sends `setvalue N <int samples>` (round(ms * sr / 1000)) through
+  `s dbap-align` / `r dbap-align` into the delay's RIGHT inlet. Research: the mc wrapper maxref says
+  `setvalue` works in any inlet; `applyvalues` in a right inlet is not documented, so it was not used. Int
+  delay times keep `delay~` on its non-interpolating path: delay 0 = "no delay" (maxref), so the default
+  venue is bit-transparent. A signal-driven delay time was rejected: the maxref says it interpolates and adds
+  one sample of latency. 9600 samples = 50 ms at 192 kHz. `dspstate~` outlet 1 -> `prepend sr` re-sends the
+  sample counts whenever DSP starts. A status comment in the bottom panel shows the venue name and
+  `align off` / `align on, max N ms`.
+- Embedded `dict venue` now carries `delayMs: 0.0` on all 8 speakers.
+- Venue read: `read` (presentation, VENUE section of the bottom panel) -> a second `dict venue` box (same
+  named dictionary as the embedded one, so the embedded box saves whatever was read) -> outlet 4
+  (`read <file> 0/1`) -> `route read` -> `t b` -> `venue` -> `s dbap-venue` -> every source's `dbap.js` and
+  `venue-align.js`.
+- `tools/venue_to_json.py`: `xml.etree`, speakers located by `@index`, per-attribute fallback to the OQ4
+  defaults like the plugin's loader (the `cr-b-permuted.venue` fixture carries only index + label and
+  converts to exactly the embedded dict), writes `name / units / speakers::sN::{x,y,z,delayMs} /
+  rake::{front,rear}`, prints `trimDb` (not written, D11) and notes for bad / missing / out-of-rail values.
+  Usage: `python3 patches/barnett-dbap/tools/venue_to_json.py hall.venue` -> `hall.json`.
+
+Pre-flight (`node patches/barnett-dbap/test-results/preflight_motion.js`, 38 checks, all pass):
+- `motion.js` against the plugin's OWN headers: `motion_ref.cpp` compiles `MotionPath.h` / `PerlinNoise.h`
+  and prints 324 points (6 paths x 3 seeds x 2 parameter sets x 9 cycle values). The five cyclic paths match
+  to 7.7e-7 m (float32 precision); Drift matches to 2.1e-4 m, the residue being the plugin's float32 noise
+  argument at cycles = 123 (the js is double).
+- Each cyclic path closes after one cycle (gap 0), max |x| = size / 2, |y| <= ratio * size / 2, Drift stays
+  inside size / 2; rate 0.1 -> 2 Hz mid-cycle moves the point by 1e-14 m and the next tick advances at the
+  new rate; Drift is identical per seed and differs across seeds; on / off / re-on behaviour as above.
+- `dbap.js`: `motion 0 0 0` after a real offset is BIT-IDENTICAL to never having had motion (both gain
+  lanes, fcl / fcr, depth, z-cue, pos); `motion (2.4, -1.5)` equals moving the anchor by the same metres
+  (4e-16); `dz` equals the same change on srcZ including the z-cue; no `nxy` is emitted; a 30 m offset stays
+  finite; NaN is ignored.
+- `venue-align.js`: default venue -> eight `setvalue N 0`; sample counts at 48 / 96 / 192 kHz; the 50 ms rail;
+  a venue without `delayMs` keys -> all 0.
+
+Deviations from the brief, all deliberate:
+- `finalize_patch(is_new=False)` was NOT run on the source or host. Its midpoint generator produced a
+  pathological route for a long new cord (about 150 bends) and would have re-routed every cord the user
+  arranged in MAX. Existing cords keep their midpoints; new cords are straight, plus three hand-routed ones
+  in the host. The critic's only new findings are cosmetic "Missing midpoints" warnings on those cords.
+  The new motion patch did get `finalize_patch(is_new=False)` (its layout is a simple top-down grid).
+- The scene tap is a second outlet on `p scenespack`, not a top-level `trigger`: there is no room between
+  the subpatcher and `pattrstorage` without moving the user's boxes.
+- The trace is only sent while motion is on (the brief did not say); off means no path on the plan.
+- Motion has six dials + a seed number box (the brief said "seven dials / number for seed").
+
+Validator / critic: no errors. New warnings are the two scene `pack` hot/cold warnings in the motion patch
+(same by-design pattern as the source) and the cosmetic midpoint warnings above. Pre-existing warnings
+unchanged.
+
+Verify in MAX (v0.5.0 not yet load-tested):
+1. Host opens with no console errors; source A / B look and sound exactly as v0.4 with motion off; the
+   bpatchers show 3 inlets / 2 outlets; the motion module renders under source A.
+2. `mc.delay~ 9600 @chans 8` instantiates with 8 channels and passes the sources and the ping unchanged
+   with the default venue (status reads `align off`).
+3. `setvalue N <samples>` in the RIGHT inlet of `mc.delay~` sets one channel's delay: load a venue json with
+   a `delayMs` on one speaker and check that speaker is late, the others not, status `align on`.
+4. `read` opens a dialog; after loading a json from `venue_to_json.py` both plans redraw with the new
+   geometry and the console shows `venue loaded from dict`. Cancelling the dialog changes nothing.
+5. The second `dict venue` box shares data with the embedded one (item 4 proves it).
+6. Motion: toggle on -> the puck orbits the anchor on the plan of A, the trace is drawn, levels move around
+   the rig without zipper; off -> puck returns to the anchor, trace clears, output equals v0.4.
+7. Each path looks right: orbit / figure-8 / sweep / drift (tail, no trace) / pendulum / spiral. Ratio
+   flattens, angle rotates, size scales in metres, phase shifts, height changes level via the z-cue.
+8. Sweeping the rate dial while running never makes the puck jump. The rate dial shows Hz and has useful
+   travel below 1 Hz (`parameter_exponent`).
+9. Dragging the anchor while motion runs moves the whole path; `pattr srcpos` still recalls the anchor.
+10. Scenes: store slot 1 on A with motion on, change path / size and move the anchor, recall slot 1 on A ->
+    anchor AND motion settings come back (scene cord). The motion module's own store / recall also work.
+11. CPU / UI: two sources with one motion module at 60 Hz stay smooth (plan redraw is capped at ~33 fps).
+12. Closing the patch or deleting the motion module leaves no running Task (no console errors).

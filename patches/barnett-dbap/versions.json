@@ -44,6 +44,20 @@
         "generated/barnett-dbap.maxpat",
         "generated/dbap.js"
       ]
+    },
+    {
+      "version": "0.5.0",
+      "description": "v0.5: separate dbap-motion bpatcher (motion.js Task clock, six paths, scene-synced), motion/trace in dbap.js + third inlet and scene outlet on dbap-source, host alignment delays (mc.delay~ from venue delayMs), venue read, tools/venue_to_json.py",
+      "timestamp": "2026-09-20T03:13:57.499517+00:00",
+      "files_changed": [
+        "generated/dbap-motion.maxpat",
+        "generated/motion.js",
+        "generated/dbap-source.maxpat",
+        "generated/dbap.js",
+        "generated/barnett-dbap.maxpat",
+        "generated/venue-align.js",
+        "tools/venue_to_json.py"
+      ]
     }
   ]
 }
