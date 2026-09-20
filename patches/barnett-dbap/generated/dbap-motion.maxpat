@@ -1564,7 +1564,7 @@
                         ""
                     ],
                     "patching_rect": [
-                        1190.0,
+                        1176.0,
                         270.0,
                         86.0,
                         22.0
@@ -1807,7 +1807,13 @@
                     ],
                     "text": "v0.6 gesture recorder: js outlet 1 sets this module's own controls on record stop (route above the controls); anchorm from the source arrives on the scene cord",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 11.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
                 }
             }
         ],
@@ -3117,7 +3123,7 @@
                         0
                     ],
                     "midpoints": [
-                        1199.5,
+                        1185.5,
                         296.0,
                         1069.5,
                         296.0
