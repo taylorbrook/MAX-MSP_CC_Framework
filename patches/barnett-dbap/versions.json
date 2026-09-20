@@ -58,6 +58,14 @@
         "generated/venue-align.js",
         "tools/venue_to_json.py"
       ]
+    },
+    {
+      "version": "0.5.1",
+      "description": "v0.5.1: spiral path makes 6 turns per cycle with continuous rotation (D25, deviates from the plugin's one-turn lobe); 120-point trace for spiral",
+      "timestamp": "2026-09-20T03:34:09.058067+00:00",
+      "files_changed": [
+        "generated/motion.js"
+      ]
     }
   ]
 }

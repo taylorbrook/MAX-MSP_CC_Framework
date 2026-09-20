@@ -18,8 +18,15 @@
 //   2 sweep     x = R (2 fold - 1)  y = 0
 //   3 drift     x = R fbm(n)        y = R ratio fbm(n + 1000)     n = cycles, seeded
 //   4 pendulum  x = R sin t         y = 0
-//   5 spiral    x = R s cos t       y = R ratio s sin t           s = fold(u + phase / 360)
+//   5 spiral    x = R s cos ts      y = R ratio s sin ts          s = fold(u + phase / 360),
+//                                                                  ts = 2 pi 6 frac(cycles) + phase
 //   all         z = height sin t    (drift: height fbm(n + 2000))
+//
+// SPIRAL DEVIATES FROM THE PLUGIN ON PURPOSE (context.md D25). MotionPath.h turns ONCE per cycle
+// while the radius folds out and back, which draws a single heart-shaped lobe (r = theta / pi),
+// not a spiral. Here the angle makes K_SPIRAL_TURNS = 6 turns per cycle: three turns winding out,
+// three winding back in, rotation direction never reversing. The inward arm is the mirror image of
+// the outward arm. The radius law, phase handling, rotation and z are unchanged.
 // then (x, y) rotated about the anchor by angle.
 //
 // inlet 0 messages:
@@ -35,14 +42,18 @@
 //   seed i      1..64 (default 1), Drift only
 //
 // outlet 0: "motion dx dy dz"            every tick while on (metres, anchor-relative)
-//           "trace x1 y1 .. x32 y32"     one cycle of a cyclic path, on start and whenever a shape
-//                                        parameter changes; bare "trace" = clear (off, or Drift)
+//           "trace x1 y1 .. xN yN"       one cycle of a cyclic path, on start and whenever a shape
+//                                        parameter changes; N = 32 (spiral: 120, 20 per turn; the
+//                                        message stays under 256 atoms); bare "trace" = clear (off,
+//                                        or Drift)
 
 inlets = 1;
 outlets = 1;
 
 var TICK_MS = 16;
 var TRACE_POINTS = 32;
+var TRACE_POINTS_SPIRAL = 120;   // 20 per turn; 241 atoms with the selector
+var K_SPIRAL_TURNS = 6;          // D25: turns per cycle (3 out + 3 in). An integer, so the path closes.
 var K_TWO_PI = 6.283185307179586476925286766559;
 var K_DEG_TO_RAD = 0.017453292519943295769;
 
@@ -155,10 +166,12 @@ function evaluate(cycles) {
         y = 0.0;
         z = heightM * Math.sin(t);
     } else if (pathIdx === PATH_SPIRAL) {
+        // D25: K_SPIRAL_TURNS turns per cycle instead of the plugin's one (see the header note)
+        var ts = K_TWO_PI * K_SPIRAL_TURNS * u + phaseDeg * K_DEG_TO_RAD;
         uu = u + phaseDeg / 360.0;
         s = fold(uu - Math.floor(uu));
-        x = R * s * Math.cos(t);
-        y = R * ratioAmt * s * Math.sin(t);
+        x = R * s * Math.cos(ts);
+        y = R * ratioAmt * s * Math.sin(ts);
         z = heightM * Math.sin(t);
     }
 
@@ -202,15 +215,17 @@ function tick() {
     outlet(0, "motion", p[0], p[1], p[2]);
 }
 
-// One cycle of the path at 32 points (cyclic paths only). Shape only: independent of the clock.
+// One cycle of the path (cyclic paths only), 32 points, 120 for the spiral. Shape only: independent
+// of the clock.
 function emitTrace() {
     if (!isOn || !isCyclic(pathIdx)) {
         outlet(0, "trace");
         return;
     }
     var msg = ["trace"];
-    for (var k = 0; k < TRACE_POINTS; k++) {
-        var p = evaluate(k / TRACE_POINTS);
+    var nPts = (pathIdx === PATH_SPIRAL) ? TRACE_POINTS_SPIRAL : TRACE_POINTS;
+    for (var k = 0; k < nPts; k++) {
+        var p = evaluate(k / nPts);
         msg.push(p[0]);
         msg.push(p[1]);
     }

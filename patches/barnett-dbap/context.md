@@ -710,3 +710,21 @@ Verify in MAX (v0.5.0 not yet load-tested):
     anchor AND motion settings come back (scene cord). The motion module's own store / recall also work.
 11. CPU / UI: two sources with one motion module at 60 Hz stay smooth (plan redraw is capped at ~33 fps).
 12. Closing the patch or deleting the motion module leaves no running Task (no console errors).
+
+## Decision + build v0.5.1 (2026-09-19): spiral is a real spiral
+
+| # | Decision | Rationale |
+|---|----------|-----------|
+| D25 | The `spiral` path DEVIATES from the plugin: the angle makes 6 turns per cycle (`K_SPIRAL_TURNS`, hard-coded) with continuous rotation, 3 turns winding out and 3 winding back in; the inward arm mirrors the outward arm. Radius law (`fold(u + phase / 360)`), phase, rotation, ratio and z are unchanged. Its trace is 120 points (20 per turn, 241 atoms); every other path keeps 32. | User report from MAX: the plugin's equation (ONE turn per cycle while the radius folds out and back) draws a single heart-shaped lobe, r = theta / pi, not a spiral. User chose continuous rotation over retracing one arm, which would reverse direction abruptly at full radius. No dial: the 360x150 face is full. This is the first deliberate break of the D10 verbatim principle; the other five paths still match `MotionPath.h`. |
+
+Build: `generated/motion.js` only (no patch changed). Pre-flight now 42 checks, all pass: the plugin
+cross-check covers the five verbatim paths (270 points); the spiral is checked on its own for 6.0 turns of
+winding, a strictly positive angular step (no reversal), a monotonic radius 0 -> size / 2 over the first
+half cycle, mirror symmetry of the two arms, closure, and the 120-point trace.
+
+Note for use: at a given rate the spiral turns 6x faster than the orbit (one turn every 1.67 s at the
+default 0.1 Hz; about 11 m/s at the rim of a 6 m spiral), so it wants a lower rate than the other paths.
+
+Verify in MAX: spiral draws three visible turns each way on the plan with a smooth trace, the puck never
+reverses direction, and switching between spiral and another path swaps the trace without console errors
+(the 241-atom `trace` message passes through the bpatcher cord into `dbap.js`).

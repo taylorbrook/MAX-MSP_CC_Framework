@@ -35,9 +35,11 @@ function lastMsg(ctx, outletIdx, name) {
 // ---------------------------------------------------------------- motion.js vs the plugin headers
 var m = load("motion.js");
 var ref = fs.readFileSync(path.join(__dirname, "motion_ref.txt"), "utf8").trim().split("\n");
-var worst = 0, worstRow = "";
+var worst = 0, worstRow = "", nRef = 0;
 ref.forEach(function (row) {
     var f = row.split(" ").map(Number);
+    if (f[1] === 5) return;   // spiral deviates from MotionPath.h on purpose (D25), checked below
+    nRef++;
     m.seed(f[0]); m.ensureSeeded(); m.path(f[1]);
     if (f[2] === 1) { m.size(9.5); m.ratio(0.4); m.angle(37); m.height(2.5); m.phase(110); }
     else { m.size(6); m.ratio(1); m.angle(0); m.height(0); m.phase(0); }
@@ -47,18 +49,18 @@ ref.forEach(function (row) {
 // the plugin is float32, the port is double: agreement to float precision on up to 12 m values
 // Tolerance: the worst rows are Drift at large cycle counts, where the plugin's float32 argument
 // (n * 8 in the top fbm octave) quantises at ~6e-5 and the noise slope turns that into ~2e-4 m.
-check("evaluate() matches MotionPath.h on " + ref.length + " points (6 paths, 3 seeds)", worst < 5e-4, "max |err| " + worst.toExponential(2) + " m at [" + worstRow + "]");
+check("evaluate() matches MotionPath.h on " + nRef + " points (5 paths, 3 seeds; spiral excluded, D25)", worst < 5e-4, "max |err| " + worst.toExponential(2) + " m at [" + worstRow + "]");
 var worstCyc = 0;
 ref.forEach(function (row) {
     var f = row.split(" ").map(Number);
-    if (f[1] === 3) return;
+    if (f[1] === 3 || f[1] === 5) return;
     m.seed(f[0]); m.ensureSeeded(); m.path(f[1]);
     if (f[2] === 1) { m.size(9.5); m.ratio(0.4); m.angle(37); m.height(2.5); m.phase(110); }
     else { m.size(6); m.ratio(1); m.angle(0); m.height(0); m.phase(0); }
     var p = m.evaluate(f[3]);
     for (var k = 0; k < 3; k++) worstCyc = Math.max(worstCyc, Math.abs(p[k] - f[4 + k]));
 });
-check("the five cyclic paths match to float32 precision", worstCyc < 5e-6, "max |err| " + worstCyc.toExponential(2) + " m");
+check("the four plugin-verbatim cyclic paths match to float32 precision", worstCyc < 5e-6, "max |err| " + worstCyc.toExponential(2) + " m");
 
 // ---------------------------------------------------------------- closure, extent
 m = load("motion.js");
@@ -68,10 +70,34 @@ var names = ["orbit", "figure8", "sweep", "drift", "pendulum", "spiral"];
     var a = m.evaluate(0), b = m.evaluate(1), c = m.evaluate(5);
     var d = Math.max(Math.abs(a[0] - b[0]), Math.abs(a[1] - b[1]), Math.abs(a[2] - b[2]), Math.abs(a[0] - c[0]), Math.abs(a[1] - c[1]));
     var mx = 0, my = 0, mz = 0;
-    for (var k = 0; k < 7200; k++) { var p = m.evaluate(k / 7200); mx = Math.max(mx, Math.abs(p[0])); my = Math.max(my, Math.abs(p[1])); mz = Math.max(mz, Math.abs(p[2])); }
+    for (var k = 0; k < 7200; k++) { var p = m.evaluate(k / 7200); mx = Math.max(mx, Math.abs(p[0])); my = Math.max(my, Math.abs(p[1])); mz = Math.max(mz, Math.abs(p[2]));
+        if (pi === 5) mx = Math.max(mx, Math.sqrt(p[0] * p[0] + (p[1] / 0.7) * (p[1] / 0.7))); }   // spiral: the ellipse radius reaches R
     check(names[pi] + ": closes after one cycle", d < 1e-9, "gap " + d.toExponential(1));
     check(names[pi] + ": max |x| = size / 2", Math.abs(mx - 3) < 1e-3 && my <= 3 * 0.7 + 1e-9 && mz <= 1.5 + 1e-9, "x " + mx.toFixed(4) + " y " + my.toFixed(4) + " z " + mz.toFixed(4));
 });
+// ---------------------------------------------------------------- spiral (D25)
+m.path(5); m.size(6); m.ratio(1); m.angle(0); m.height(0); m.phase(0);
+var wind = 0, minStep = 1e9, prevA = null, rOut = [], N = 14400;
+for (var k = 0; k <= N; k++) {
+    var p = m.evaluate(k / N), r = Math.sqrt(p[0] * p[0] + p[1] * p[1]);
+    if (k <= N / 2) rOut.push(r);
+    if (r < 1e-6) { continue; }
+    var a = Math.atan2(p[1], p[0]);
+    if (prevA !== null) { var da = a - prevA; while (da > Math.PI) da -= 2 * Math.PI; while (da < -Math.PI) da += 2 * Math.PI; wind += da; minStep = Math.min(minStep, da); }
+    prevA = a;
+}
+check("spiral: 6 turns per cycle (3 out + 3 in)", Math.abs(wind / (2 * Math.PI) - 6) < 0.01, "winding " + (wind / (2 * Math.PI)).toFixed(3) + " turns");
+check("spiral: rotation direction never reverses", minStep > 0, "min angular step " + minStep.toExponential(2) + " rad");
+var mono = true; for (var k = 1; k < rOut.length; k++) if (rOut[k] < rOut[k - 1] - 1e-12) mono = false;
+check("spiral: radius grows monotonically 0 -> size / 2 over the first half cycle", mono && rOut[0] < 1e-9 && Math.abs(rOut[rOut.length - 1] - 3) < 1e-9);
+var oa = m.evaluate(0.2), ob = m.evaluate(0.8);
+check("spiral: the inward arm mirrors the outward arm", Math.abs(oa[0] - ob[0]) < 1e-9 && Math.abs(oa[1] + ob[1]) < 1e-9);
+var mt = load("motion.js"); mt.path(5); mt.on(1);
+var trS = lastMsg(mt, 0, "trace");
+check("spiral: trace has 120 points and stays under 256 atoms", trS.length === 240);
+mt.path(0);
+check("other paths keep the 32-point trace", lastMsg(mt, 0, "trace").length === 64);
+
 m.path(3); m.size(6); m.ratio(1);
 var dmax = 0;
 for (var k = 0; k < 20000; k++) { var p = m.evaluate(k * 0.013); dmax = Math.max(dmax, Math.abs(p[0]), Math.abs(p[1])); }
