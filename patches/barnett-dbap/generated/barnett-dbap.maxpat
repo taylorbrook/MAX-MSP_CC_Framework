@@ -784,7 +784,7 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [
-                        "signal"
+                        "multichannelsignal"
                     ],
                     "patching_rect": [
                         130.0,
@@ -867,7 +867,7 @@
                     "outlettype": [],
                     "patching_rect": [
                         330.0,
-                        796.0,
+                        806.0,
                         360.0,
                         33.0
                     ],
@@ -890,7 +890,7 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        700.0,
+                        716.0,
                         640.0,
                         100.0,
                         20.0
@@ -922,9 +922,9 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        700.0,
+                        716.0,
                         662.0,
-                        290.0,
+                        270.0,
                         47.0
                     ],
                     "text": "patched to source A: motion out -> inlet 3, scenes outlet -> motion in. One recall on A restores position and motion.",
@@ -1081,7 +1081,7 @@
                 "box": {
                     "maxclass": "newobj",
                     "id": "obj-39",
-                    "numinlets": 1,
+                    "numinlets": 2,
                     "numoutlets": 2,
                     "outlettype": [
                         "",
@@ -1786,9 +1786,9 @@
                     ],
                     "midpoints": [
                         339.5,
-                        800.0,
+                        797.0,
                         705.0,
-                        800.0,
+                        797.0,
                         705.0,
                         108.0,
                         680.5,
