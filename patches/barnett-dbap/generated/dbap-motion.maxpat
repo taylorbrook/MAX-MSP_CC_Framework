@@ -949,7 +949,7 @@
                         30.0
                     ],
                     "parameter_enable": 0,
-                    "comment": "store N / recall N from the dbap-source scenes outlet (optional)"
+                    "comment": "scene cord from a dbap-source (store N / recall N, anchorm), 'cue', OR '<control> <value>' to set a control: on, path, rate, size, ratio, angle, height, phase, seed, wander, loop"
                 }
             },
             {
