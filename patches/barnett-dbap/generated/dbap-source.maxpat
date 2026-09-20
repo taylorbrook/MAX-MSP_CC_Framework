@@ -3292,9 +3292,10 @@
                     "fontsize": 12.0,
                     "id": "obj-68",
                     "maxclass": "newobj",
-                    "numinlets": 3,
-                    "numoutlets": 3,
+                    "numinlets": 1,
+                    "numoutlets": 4,
                     "outlettype": [
+                        "",
                         "",
                         "",
                         ""
@@ -3302,10 +3303,10 @@
                     "patching_rect": [
                         860.0,
                         540.0,
-                        107.0,
+                        151.0,
                         22.0
                     ],
-                    "text": "route pos nxy"
+                    "text": "route pos nxy anchorm"
                 }
             },
             {
@@ -5117,7 +5118,7 @@
                 "box": {
                     "maxclass": "inlet",
                     "id": "obj-186",
-                    "numinlets": 1,
+                    "numinlets": 0,
                     "numoutlets": 1,
                     "outlettype": [
                         ""
@@ -5129,7 +5130,7 @@
                         30.0
                     ],
                     "parameter_enable": 0,
-                    "comment": "motion dx dy dz + trace from a dbap-motion module (optional, D21)",
+                    "comment": "motion dx dy dz + trace + setanchor / recstate from a dbap-motion module (optional, D21 / D27)",
                     "index": 0
                 }
             },
@@ -5181,7 +5182,7 @@
                 "box": {
                     "maxclass": "outlet",
                     "id": "obj-189",
-                    "numinlets": 2,
+                    "numinlets": 1,
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
@@ -5191,7 +5192,7 @@
                         30.0
                     ],
                     "parameter_enable": 0,
-                    "comment": "store N / recall N -> dbap-motion inlet (one recall restores position AND motion)",
+                    "comment": "store N / recall N + anchorm x_m y_m (mouse) -> dbap-motion inlet",
                     "index": 0
                 }
             },
@@ -5217,6 +5218,26 @@
                         0.82,
                         1.0
                     ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-191",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1040.0,
+                        570.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "prepend anchorm",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
                 }
             }
         ],
@@ -7649,6 +7670,46 @@
                     "destination": [
                         "obj-189",
                         0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-68",
+                        2
+                    ],
+                    "destination": [
+                        "obj-191",
+                        0
+                    ],
+                    "midpoints": [
+                        957.5,
+                        566.0,
+                        1049.5,
+                        566.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-191",
+                        0
+                    ],
+                    "destination": [
+                        "obj-189",
+                        0
+                    ],
+                    "midpoints": [
+                        1049.5,
+                        598.0,
+                        1832.0,
+                        598.0,
+                        1832.0,
+                        216.0,
+                        1849.5,
+                        216.0
                     ]
                 }
             }
