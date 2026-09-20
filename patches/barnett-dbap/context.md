@@ -659,7 +659,7 @@ Host (D23, D24):
   rake::{front,rear}`, prints `trimDb` (not written, D11) and notes for bad / missing / out-of-rail values.
   Usage: `python3 patches/barnett-dbap/tools/venue_to_json.py hall.venue` -> `hall.json`.
 
-Pre-flight (`node patches/barnett-dbap/test-results/preflight_motion.js`, 38 checks, all pass):
+Pre-flight (`node patches/barnett-dbap/test-results/preflight_motion.js`, 36 checks, all pass):
 - `motion.js` against the plugin's OWN headers: `motion_ref.cpp` compiles `MotionPath.h` / `PerlinNoise.h`
   and prints 324 points (6 paths x 3 seeds x 2 parameter sets x 9 cycle values). The five cyclic paths match
   to 7.7e-7 m (float32 precision); Drift matches to 2.1e-4 m, the residue being the plugin's float32 noise
