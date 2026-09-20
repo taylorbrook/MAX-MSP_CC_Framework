@@ -487,7 +487,7 @@ at hull 0; src Z now changes level (louder toward +3 m, quieter below 0 and far 
 the `air` / `hull` status text draw on the plan; D20 layout: two dial rows in POSITION, merged
 WEIGHTS + TRIMS panel with one shared 1..8 label row, nothing clipped at 660x500 in the host.
 
-## v0.5 open questions (2026-09-19, not yet decided; run /max-discuss)
+## v0.5 open questions (2026-09-19) -- RESOLVED by D21-D24 below
 
 The roadmap line for v0.5 (motion engine, alignment delays, `.venue` importer) has no decisions yet, and
 v0.4.0 is not MAX-verified, so v0.5 was NOT built in the v0.4 session. What needs a call first:
@@ -537,3 +537,56 @@ questions").
 | # | Decision | Rationale |
 |---|----------|-----------|
 | D21 | Motion is a SEPARATE abstraction, `dbap-motion.maxpat`, loaded as its own bpatcher and patched into a source only when wanted. Two cords: (1) motion outlet -> a NEW third inlet on `dbap-source` (placed right of the L / R audio inlets, port x-order) carrying `motion dx dy dz`, an anchor-relative offset in METRES that `dbap.js` adds to the puck position before shaping / hull / air (the plugin's insertion point); (2) a NEW control outlet on `dbap-source` (right of the mc outlet) emitting its `store N` / `recall N` messages -> the motion module's inlet, so one scene recall restores position AND motion. The motion module keeps its own `pattrstorage #1` and its own store / recall buttons, so it also works with the scene cord unpatched. `dbap-source` stays 660x500 (D20 untouched); with no motion cord there is no clock and no cost. | User proposal, chosen over a pop-out panel, a reduced in-panel set and growing the instance. The plugin's path generator already outputs anchor-relative metres, so the module needs no venue knowledge. Scene sync chosen because scenes are used as cues: an unsynced recall would move the anchor while the old motion keeps running. |
+| D22 | Motion clock: the motion module's own js runs a `Task` at about 60 Hz and evaluates the plugin's path equations from elapsed time (`cycles = rate * t + phaseBase`, with the plugin's re-base `phaseBase += (oldRate - newRate) * t` on a rate change so the path never jumps). Free-running Hz only, 0.01..10 Hz, default 0.1. No transport sync, no signal-rate clock. | User call. Matches D3 (event-driven solve) and the 21 ms gain ramp already smooths 60 Hz position steps; no transport dependency in a hall patch. |
+| D23 | Alignment delays are a HOST stage fed from the shared venue dict: one 8-channel delay just before `mc.dac~`, after the sources and the verify ping are summed. Values come from a `delayMs` key per speaker (`speakers::sN::delayMs`, default 0) in `dict venue`. No visible delay bank in v0.5; edit the dict or import a venue. | User call over a visible 8-bar bank and per-source delays. The plugin stores delayMs in the venue and D12 says the hall is shared. |
+| D24 | `.venue` import is a build-time Python converter (`tools/` style command-line script, NOT a patch generator, so Rule #5 does not apply): `.venue` XML -> JSON in the exact shape of the embedded `dict venue`. The host gets a `read` control that loads that JSON into `dict venue` and re-bangs every source (`venue` message). | User call over js File API parsing and adding `node.script` to the DB. Only verified objects in the patch. |
+
+## v0.5 build brief (for /max-build in a fresh context)
+
+Start from the verified v0.4.0 files in `generated/`. NOTE the user's MAX re-save: six groups now live in
+subpatchers (`p speedlim`, `p mc`, `p mcramp`, `p gaininterp`, `p scenespack`, `p pattr`); see "User edit
+in MAX 9.1.5". Edit via `read_patch` -> `finalize_patch(is_new=False)` -> `save_patch_roundtrip`; no
+`apply_layout`, no blind `repair_text_contrast`. Keep every varname and the 660x500 instance.
+
+Reference source (port the numbers verbatim, D10 principle), all under
+`/Users/taylorbrook/Dev/VST-development/plugins/O-Octagon/Source/`: `DSP/MotionPath.h` (six paths, fold,
+rotation, z), `DSP/MotionClock.h` (free-run cycles and the rate re-base), `DSP/PerlinNoise.h` (seeded fbm
+for Drift), `PluginProcessor.cpp` ~lines 188-214 (ranges and defaults: rate skewed 0.01..10 Hz default
+0.1, size 0..24 m default 6, ratio 0..1 default 1, angle 0..360, height 0..8 m default 0, phase 0..360,
+seed 1..64 int), `Data/VenueModel.h` (VENUE @rakeFront @rakeRear, SPEAKER x8 @index @x @y @z @trimDb
+@delayMs @label), `DSP/GainStage.cpp` (where the motion offset is added, and the alignment-delay stage:
+zero delay is bypassed outright).
+
+Deliverables:
+1. NEW `generated/motion.js` + NEW `generated/dbap-motion.maxpat` (D21, D22). js: `Task` at 16 ms started
+   by `on 1`, stopped by `on 0`; handlers `path i` (0..5 orbit, figure8, sweep, drift, pendulum, spiral),
+   `rate`, `size`, `ratio`, `angle`, `height`, `phase`, `seed`; emits `motion dx dy dz` (metres) each
+   tick and `motion 0 0 0` once when switched off; emits `trace x1 y1 x2 y2 ...` (32 points, metres,
+   cyclic paths only) when a shape parameter changes, so the source's plan can draw the path. Patch:
+   `bpatcher`-ready abstraction, `openinpresentation 1`, `#1` = instance name for its own
+   `pattrstorage #1 @savemode 0` + `autopattr`; controls = on toggle, path `umenu` (comma-as-element
+   items), seven `live.dial`s / number for seed, all with varnames; its own slot number + store / recall;
+   inlet 0 accepts `store N` / `recall N` from the source and forwards them to its pattrstorage; outlet
+   0 = motion messages. Presentation about 360x150, same dark panel / orange header styling as the source.
+2. `dbap-source.maxpat`: third `inlet` placed RIGHT of the two audio inlets (port x-order) -> js;
+   `dbap.js` handlers `motion dx dy dz` (offset added to the puck metres before `shape()`; the stored
+   anchor `srcpos` is NOT changed; z offset adds to srcZ for both the solve and the z-cue) and
+   `trace ...`; the plan draws the anchor as a hollow ring, the moving puck solid, and the trace polyline.
+   New control `outlet` placed RIGHT of the mc outlet: tap the `store N` / `recall N` messages leaving
+   `p scenespack` (fan out through a `trigger`) to it. A mouse drag moves the anchor as before.
+3. Host `barnett-dbap.maxpat`: bpatchers get `numinlets 3`, `numoutlets 2`; add one `dbap-motion` instance
+   (`@args Am`) patched to source A both ways as the demo; alignment stage (D23): 8-channel delay before
+   `mc.dac~` driven from `speakers::sN::delayMs` read by a small host js or `dict` `get` chain at load and
+   on venue read. `mc.delay~` is in the DB (2 inlets, 1 outlet) but its per-channel delay-setting form is
+   NOT repo-proven: verify the maxref first (per-channel values need `applyvalues` / `setvalue`, memory
+   `feedback_mc_applyvalues`), delay in SAMPLES = ms * sr / 1000, and all-zero must be bit-transparent.
+   Add `delayMs: 0` to each speaker in the embedded dict. Venue `read` control: `dict` has `read` and
+   `import` messages in the DB; after a load, send `venue` to every source (named send / receive).
+4. NEW Python converter (D24), e.g. `patches/barnett-dbap/tools/venue_to_json.py`: parse the XML with
+   `xml.etree`, map `@index` 1..8 -> `s1`..`s8`, write `name`, `units`, `speakers::sN::{x,y,z,delayMs}`,
+   `rake::{front,rear}`; ignore `@trimDb` (D11: trims live in scenes) but print it so the user can copy
+   values; test against `tests/fixtures/cr-b-permuted.venue` in the plugin repo.
+5. Pre-flight before committing: node test of `motion.js` (each cyclic path closes after one cycle, max
+   |offset| = size / 2, a rate change mid-cycle produces no position jump, Drift is deterministic per
+   seed); node test of `dbap.js` (`motion 0 0 0` gives bit-identical gains to no motion).
+6. Bump to 0.5.0, build notes here, commit, verify list for MAX.
