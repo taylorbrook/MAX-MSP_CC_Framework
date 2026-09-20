@@ -5169,10 +5169,10 @@
                     "patching_rect": [
                         850.0,
                         405.0,
-                        142.0,
+                        93.0,
                         22.0
                     ],
-                    "text": "receive dbap-venue",
+                    "text": "r dbap-venue",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
