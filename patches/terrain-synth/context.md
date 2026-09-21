@@ -439,3 +439,18 @@ out: jit_gl_texture) -> second `jit.pwindow` (208x208) in a new VIEW presentatio
 Unverified in MAX: everything GL (first GL patch in the repo): texture-to-pwindow embedding,
 jit.pack plane order / tri_grid orientation vs the terrain picture, jit.catch~ mode 2 frame shape,
 helper osc + DSP-off behaviour.
+
+### v0.5.0 confirmed in MAX (2026-09-21) + v0.5.1 polish
+
+User ran the v0.5.0 view checklist: "all pass" (surface + orbit, XY-pad orientation, live reshape,
+terrain rebuild, rotate/tilt, ON toggle, CPU). Confirmed GL forms: invisible `jit.world <ctx>
+@output_texture 1` -> texture -> `jit.pwindow`; static x/z planes + height -> `jit.pack 3` ->
+`jit.gl.mesh @draw_mode tri_grid`; helper osc -> gen~ xyz -> `jit.catch~ 3 @mode 2 @framesize 512`
+banged by the world draw bang -> mesh; `pak rotatexyz` -> meshes.
+
+v0.5.1 (from the user's screenshot, not yet re-checked): jit.world renders 640x480 by default ->
+squeezed in a square pwindow -> `@size 512 512 @dim 512 512`; meshes `@scale 0.45` (0.62 cropped);
+orbit drawn as `@draw_mode points @point_size 4 @point_mode circle_depth` (help form) instead of a
+1 px line_strip; flonum `numdecimalplaces 0` means AUTO in MAX (showed 9.77857) and MAX drops the
+key on re-save -> all Hz/ms/deg readouts set to 1; clipped "orbit at 110 Hz" note moved under the
+view dials; bank menu nudged off the WAVETABLE B header.
