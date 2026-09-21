@@ -37,6 +37,8 @@ UI_MAXCLASSES: frozenset[str] = frozenset({
     "meter~", "levelmeter~", "spectroscope~", "scope~",
     "number~", "gain~", "ezdac~", "ezadc~",
     "filtergraph~", "waveform~",
+    # Jitter UI (MAX re-saves these with their own maxclass; terrain-synth v0.3-v0.4)
+    "jit.pwindow", "jit.cellblock",
     # Max for Live UI (visual widgets)
     "live.dial", "live.slider", "live.numbox",
     "live.toggle", "live.button", "live.text",
