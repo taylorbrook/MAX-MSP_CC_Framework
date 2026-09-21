@@ -65,6 +65,14 @@
       "files_changed": [
         "generated/terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.5.0",
+      "description": "v0.5.0: jit.world terrain/orbit view (offscreen world -> texture -> jit.pwindow; tri_grid surface from the terrain matrix, helper terrain-osc + jit.catch~ orbit polyline, rotate/tilt)",
+      "timestamp": "2026-09-21T18:47:12.516808+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat"
+      ]
     }
   ]
 }
