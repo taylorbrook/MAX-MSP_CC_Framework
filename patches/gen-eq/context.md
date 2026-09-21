@@ -119,3 +119,11 @@ output = sat - tanh(bias * drive)  // remove DC offset
 7. **State:** every dial/umenu has a varname matching its Param name, plus `autopattr @autorestore 0`. The abstraction does not persist values itself -- the parent adds a `pattrstorage` to store/recall, or sets controls by name (`<varname> <raw dial value>`).
 8. Bell uses the single Cytomic formula (`A = 10^(gain/40)`, exact reciprocal cut) -- no boost/cut branch. Cutoffs are clamped to 0.49*samplerate; smoothing coefficients scale with samplerate; `History one(1)` de-hoists the samplerate-derived setup.
 9. **Open:** poly~ wrapping still needs `in~`/`out~` (or mc.gen~ on the engine); Freq dials are 128 integer steps (~5.6%/step); Q dial is linear.
+
+## v0.3.1–v0.4.0 Decisions (2026-09-21)
+
+1. **Freq dials are float-output** (same log mapping); readout is an integer-Hz `number` box fed from a `t f f` (gen~ still gets the full-precision value). Default inits are fractional raw values chosen to land just above 30 / 200 / 1000 / 5000 / 18000 Hz because the number box truncates.
+2. **Q dials are log-mapped:** raw 0-100 -> `expr pow(10.\,min($f1\,100.)/50.-1.)`, Q = 1 at centre (user-confirmed range 0.10-10.00 in MAX).
+3. Readout boxes are positioned so their typical content is centred on the dial (number/flonum text is left-aligned, ~4 px inset). Perfect centring would need `comment` readouts driven by `set` -- not built.
+4. **Multichannel ships as a sibling file** `gen-eq-mc.maxpat` (user decision): identical face and wiring, `mc.gen~ @gen gen-eq-engine.gendsp` in place of `gen~`, mc signal in/out, controls linked across all channels. The mono `gen-eq.maxpat` is NOT converted. **UI/wiring changes must be applied to both files** (the engine is shared, so DSP changes apply to both automatically).
+5. **Presets live in the parent:** test patchers carry `pattrstorage <name> @savemode 2` with store/recall 1-3; clients appear as `<bpatcher varname>::<param>`.

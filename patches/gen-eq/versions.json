@@ -54,6 +54,16 @@
       "files_changed": [
         "gen-eq.maxpat"
       ]
+    },
+    {
+      "version": "0.4.0",
+      "description": "MC sibling gen-eq-mc.maxpat (mc.gen~ on the shared engine, linked controls) + stereo test patcher; pattrstorage preset demo in test patchers",
+      "timestamp": "2026-09-21T20:58:00.927369+00:00",
+      "files_changed": [
+        "gen-eq-mc.maxpat",
+        "gen-eq-mc-test.maxpat",
+        "gen-eq-test.maxpat"
+      ]
     }
   ]
 }
