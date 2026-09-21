@@ -167,6 +167,18 @@
         "terrain-cheby.maxpat",
         "cheby-coefs.js"
       ]
+    },
+    {
+      "version": "0.13.0",
+      "description": "5 new orbit shapes (lissajous, rose, hypotrochoid, spiral, polygon) on the existing LOBES / LOBE AMT dials; cheby order limiter knows their top partial",
+      "timestamp": "2026-09-21T22:39:06.779849+00:00",
+      "files_changed": [
+        "terrain-osc.maxpat",
+        "terrain-osc-b.maxpat",
+        "terrain-cheby.maxpat",
+        "terrain-osc-test.maxpat",
+        "terrain-synth.maxpat"
+      ]
     }
   ]
 }
