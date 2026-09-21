@@ -814,3 +814,30 @@ constant-bound for loops with loop-carried locals, poke-then-peek on Data within
 History cursor), `sig~ #1` / `receive #2` abstraction args inside `poly~ ... up 2`, per-slot line~-driven select gen~,
 js-generated long `exprfill` symbol into a named jit.matrix, js Buffer pokes into `buffer~ chebcoef 10`. Not reported:
 CPU with both slots in CHEBY, cheby vs terrain level, backup / restore edge cases, alias A/B at the top of the keyboard.
+
+## Build v0.13.0 (2026-09-21) -- more orbit shapes
+
+SHAPE menu (A + B, bench menu in terrain-osc-test) grows from 3 to 8; indices 0-2 unchanged. No new controls: every new
+shape reuses LOBES / LOBE AMT, so the presentation layout is untouched. The 3D view's helper terrain-osc draws them for free.
+
+| idx | shape | curve (unit, before rx / ry / rot / zoom) | LOBES | LOBE AMT | top partial (integer LOBES) |
+|-----|-------|-------------------------------------------|-------|----------|-----------------------------|
+| 3 | lissajous | `cos(th)`, `sin(L th + a * pi/2)` | y rate | phase 0-90 deg | L f |
+| 4 | rose | `r = (1 - a) + a cos(L th)` on the circle | petals | depth (1 = passes through the centre) | (L + 1) f |
+| 5 | hypotrochoid | `(cos th + a cos L th, sin th - a sin L th) / (1 + a)` -- counter-rotating epicycle, L + 1 cusps | epicycle rate | size | L f |
+| 6 | spiral | `r = 1 - a (0.5 - 0.5 cos th)`, angle `L th` -- winds in and back out, closed | turns per cycle | inward depth | (L + 1) f |
+| 7 | polygon | `r = 1 + a (cos(pi/n) / cos(pa - pi/n) - 1)`, `n = max(round(L), 3)` | sides (snapped) | circle -> polygon | never bandlimited |
+
+- All |ux|, |uy| <= 1 and closed at integer LOBES (numpy sweep, L = 1 ... 16, a = 0 / 0.4 / 1). Non-integer LOBES jumps at
+  the phase wrap exactly like the epitrochoid always has (sync-like buzz); polygon snaps its side count so it never jumps.
+- **Spiral at LOBE AMT 0 is a circle traversed L times -> pitch reads L * f.** Depth > 0 brings the fundamental back.
+- Codebox: `cos / sin` of `th` and `lobes * th` computed once and shared by all shapes (ellipse / epitrochoid / squarcle
+  are the same math as before). Polygon setup (`pn -> seg`) is a dependent Param-only chain, so `lobes` goes through
+  `History one(1)` (`kl = lobes * one`) -- the reverse-delay v0.3.3 de-hoist form. Sequential range-test ifs, `rr` / `pn` /
+  `seg` / `pa` initialised before the blocks, spaces only, no else-if.
+- terrain-cheby: `shape` max 7; limiter `fh` = `f * lobes` for 1 / 3 / 5, `f * (lobes + 1)` for 4 / 6, `f` otherwise
+  (lissajous bound is conservative: x runs at f). CHEBY-on still snaps to ellipse; the two patching notes were reworded.
+- Critic: no new findings (the one blocker, a jit.matrix fan-out in the terrain-osc-test bench, predates this edit).
+
+Unverified in MAX: gen~ compile of the three edited codeboxes (notably `History one(1)` + polygon chain, `pi` constant),
+CPU of 4 unconditional trig calls per voice-slot (was 2 for ellipse, 6 for epitrochoid), umenu 8 entries at 120 px.
