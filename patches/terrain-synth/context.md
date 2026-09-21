@@ -391,3 +391,13 @@ Controls follow the reverse-delay pattern: `loadmess` -> `dial` (0-127) -> `expr
 Presentation exclusions: none (every interactive control is in presentation).
 Unverified in MAX: `adsr~` mute-outlet -> busy logic, smooth-noise upscale, bfg form, image path,
 pictslider list init, `up N` + resend.
+
+### v0.4.1 (2026-09-21): silent voices -- midinote list lands on `in 1`
+
+Symptom: terrain fills, scope flat, console clean. Cause: `poly~` `midinote <pitch> <vel>` delivers
+the pair as ONE LIST to the instance's first `in` (C74's shipped `help/msp/adsr-synth.maxpat` does
+`in 1` -> `unpack 0 0` -> `swap`); it does not split across `in 1` / `in 2`. The voice waited for
+velocity on `in 2`, so `adsr~` never triggered. Fix: `in 1` -> `unpack 0 0` -> `swap` (pitch ->
+`mtof` first, then velocity -> `/ 127.` -> `adsr~`); `in 2` removed, main `poly~` box numinlets 1.
+Rule: for `note` / `midinote` voices copy the adsr-synth input form; verify poly~ voice idioms
+against the shipped msp help patches, not other repo patches.
