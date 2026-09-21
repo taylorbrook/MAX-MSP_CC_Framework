@@ -893,7 +893,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.19.0",
+                    "text": "v0.19.1",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -1373,7 +1373,7 @@
                             "parameter_mmax": 1.0,
                             "parameter_modmode": 0,
                             "parameter_shortname": "Drift",
-                            "parameter_type": 0
+                            "parameter_type": 2
                         }
                     },
                     "varname": "drift_on"
