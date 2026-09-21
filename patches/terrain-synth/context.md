@@ -659,3 +659,11 @@ Unverified in MAX: everything in this version -- 6-inlet terrain-osc / -b (param
 a `sig~` gate edge, second `adsr~` at fixed level, umenu item "S&H", depth feel / ranges, `1 1 0 5` restart
 pulse in the views, CPU (one extra cos / sin pair per oscillator per sample + LFO + matrix per voice),
 window height 1029 on the user's display.
+
+### v0.10.0 confirmed in MAX (2026-09-21)
+
+User: "all pass" on the full checklist. Confirmed: v0.9.0 behaviour unchanged at depth 0 (terrain mod, marker),
+all 16 depth dials audible incl. the new ROTATE path (terrain-osc / -b inlet 6, param inlet still index 5),
+LFO restart from the `sig~` gate edge, S&H without clicks, ENV 2 (second `adsr~`, fixed level) sweeping the
+orbit, LFO visible on orbit dots + marker (`1 1 0 5` line~ restart pulse), clean console with the 21-inlet
+gen~ matrix and signals through `p motion` inlets inside `poly~ ... up 2`, CPU acceptable, umenu item "S&H".
