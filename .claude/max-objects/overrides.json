@@ -11084,6 +11084,14 @@
         "finding": "audited and known missing from this install; canonical example for verified_installed: false (D-09, D-10)"
       }
     },
+    "bach.list2llll": {
+      "verified_installed": false,
+      "_audit": {
+        "source": "memory/feedback_bach_no_llll2list.md -- bach.llll2list/list2llll do not exist in installed bach package; CLAUDE.md 'bach (package)' rule",
+        "confidence": "HIGH",
+        "finding": "quick-260921-g5d: sibling of bach.llll2list. The same audit source names BOTH objects, but only bach.llll2list carried verified_installed: false -- bach.list2llll was left unaudited (get_install_state -> None) while still resolving via lookup() with full plausible I/O, so generators could emit it into a patch that fails at load with 'No such object'. Marked false to match the sibling and close the asymmetry. Not independently re-verified against the installed bach package: bach is a USER package under ~/Documents/Max 9/Packages, which macOS TCC blocks this process from reading."
+      }
+    },
     "snapshot~": {
       "outlets": [
         {
