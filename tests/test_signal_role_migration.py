@@ -4,8 +4,9 @@ Verifies that the bulk migration of pre-existing MSP outlet-type
 overrides from `signal: bool` to `signal_role` does not break any
 existing consumer. The Phase 28 write-through projection
 (_apply_signal_role_writethrough) re-materializes outlet['signal'] at
-load time, so direct readers (patcher.py:250, dsp_critic.py:301-derived
-outlettype) MUST see unchanged values.
+load time, so direct readers (the `outlet.get("signal")` read in
+patcher.py, and the outlettype-derived signal test in dsp_critic.py)
+MUST see unchanged values.
 
 Per CONTEXT.md D-15:
 - Snapshot tests on post-migration overrides.json shape.
@@ -23,7 +24,7 @@ The projection contract this file pins:
 
 That projection is the back-compat shim that lets us drop the legacy
 `signal: bool` from migrated outlets in overrides.json without breaking
-the patcher.py:250 and dsp_critic.py:301 readers.
+the patcher.py and dsp_critic.py readers.
 """
 
 from __future__ import annotations
@@ -42,8 +43,8 @@ from src.maxpat.db_lookup import ObjectDatabase
 # Derived from the actual outlet shapes in overrides.json at planning
 # time; every entry corresponds to a real outlet that gets a signal_role
 # in Task 2. The expected bool MUST match the pre-migration `signal:
-# bool` value -- that's what makes the migration a no-op for
-# patcher.py:250 / dsp_critic.py:301 consumers.
+# bool` value -- that's what makes the migration a no-op for the
+# patcher.py / dsp_critic.py consumers.
 _PROJECTED_SIGNAL_BOOL_EXPECTATIONS = [
     ("2d.wave~", 0, True),
     ("2d.wave~", 1, True),
@@ -102,6 +103,58 @@ _PROJECT_ROOT = Path(__file__).resolve().parents[1]
 _REAL_OVERRIDES_PATH = _PROJECT_ROOT / ".claude" / "max-objects" / "overrides.json"
 
 
+# ---------------------------------------------------------------------------
+# Back-compat consumer anchors (see TestBackCompatConsumerAnchors)
+#
+# A "read shape" is a tuple of substrings that must ALL appear on a single
+# source line for that line to count as a back-compat consumer site. Shapes
+# describe WHAT the consumer reads. They deliberately carry no line numbers:
+# an anchor that tracks a coordinate fails on pure code motion, which is
+# precisely the defect these helpers were introduced to retire.
+# ---------------------------------------------------------------------------
+
+# Projection-fed direct reads of outlet["signal"], every quoting style.
+_OUTLET_SIGNAL_READ_SHAPES = frozenset({
+    ('outlet["signal"]',),
+    ('outlet.get("signal"',),
+    ("outlet['signal']",),
+    ("outlet.get('signal'",),
+})
+
+# dsp_critic.py additionally derives signal-ness from the box's `outlettype`
+# array. The membership test against _SIGNAL_OUTLET_TYPES is the consuming
+# site; the bare `src_outlettype = src_box.get(...)` line above each test is
+# only setup, so requiring both fragments counts sites, not lines.
+_DSP_CRITIC_READ_SHAPES = _OUTLET_SIGNAL_READ_SHAPES | frozenset({
+    ("outlettype", "_SIGNAL_OUTLET_TYPES"),
+})
+
+# Site-count floors, measured when these anchors were converted from line
+# indices to properties (quick-260921-gut). dsp_critic.py carried four
+# outlettype membership tests; patcher.py carried one outlet.get("signal")
+# read. Deleting a consumer drops below its floor and trips the anchor --
+# which is the regression these tests exist to catch.
+_DSP_CRITIC_MIN_CONSUMER_SITES = 4
+_PATCHER_MIN_CONSUMER_SITES = 1
+
+
+def _find_consumer_sites(path: Path, shapes) -> list[tuple[int, str]]:
+    """Scan `path` and return every (lineno, source) matching a read shape.
+
+    lineno is 1-indexed so assertion output is directly navigable.
+    """
+    found: list[tuple[int, str]] = []
+    for lineno, line in enumerate(path.read_text().splitlines(), start=1):
+        if any(all(frag in line for frag in shape) for shape in shapes):
+            found.append((lineno, line.strip()))
+    return found
+
+
+def _format_sites(sites: list[tuple[int, str]]) -> str:
+    """Render matched sites as `lineno: source` for a self-diagnosing message."""
+    return "; ".join(f"{lineno}: {text}" for lineno, text in sites) or "(none)"
+
+
 @pytest.fixture(scope="module")
 def real_db():
     """Real ObjectDatabase loaded from .claude/max-objects/."""
@@ -130,7 +183,7 @@ class TestSignalRoleMigration:
         self, real_db, name, outlet_idx, expected_signal
     ):
         """For every migrated outlet, projected outlet['signal'] equals the
-        pre-migration bool. Captures the patcher.py:250 + dsp_critic.py:301
+        pre-migration bool. Captures the patcher.py + dsp_critic.py consumer
         contract."""
         obj = real_db.lookup(name)
         assert obj is not None, f"{name} missing from DB"
@@ -214,17 +267,22 @@ class TestSignalRoleMigration:
 
 
 class TestBackCompatConsumerAnchors:
-    """Plan 30-02 (Blocker 4 fix): line-anchored read-pattern tests for
-    patcher.py:250 and dsp_critic.py:301.
+    """Plan 30-02 (Blocker 4 fix): read-pattern anchors for the two known
+    back-compat consumers in patcher.py and dsp_critic.py.
 
     These tests are the back-compat shim's consumer-side anchor. They DO NOT
     validate behavior -- that's the projection round-trip in
-    TestSignalRoleMigration. Instead they pin the SOURCE LOCATION + READ
-    SHAPE of the two known consumers so any refactor that moves or changes
-    the read forces a deliberate update here, surfacing the coupling between
-    the migration's safety and these specific reads. Without these, a future
+    TestSignalRoleMigration. Instead they pin the READ SHAPE and the SITE
+    COUNT of the two known consumers, so any refactor that removes or
+    rewrites a read forces a deliberate update here, surfacing the coupling
+    between the migration's safety and those reads. Without these, a future
     refactor could silently change the consumer pattern and the migration's
     safety claim would no longer hold.
+
+    They deliberately anchor a PROPERTY (the accepted read shapes still occur,
+    at least N times) rather than a source COORDINATE. An earlier revision
+    asserted a fixed line index in each file; see
+    test_dsp_critic_outlet_signal_read_pattern_unchanged for what that cost.
 
     Reference: src/maxpat/db_lookup.py::_apply_signal_role_writethrough is
     the projection that makes dropping signal:bool from overrides.json safe;
@@ -233,39 +291,50 @@ class TestBackCompatConsumerAnchors:
     """
 
     def test_patcher_outlet_signal_read_pattern_unchanged(self):
-        """patcher.py:250 reads outlet.get('signal') -- anchor the read pattern
-        so refactors that change it surface here as test failures."""
-        src = (_PROJECT_ROOT / "src" / "maxpat" / "patcher.py").read_text()
-        lines = src.splitlines()
-        # Phase 30 anchor: the read at line 250 (1-indexed) must use one of
-        # the known back-compat-safe shapes. If the line moves, update this
-        # test AND verify the moved read is still projection-fed.
-        target = lines[249]  # 0-indexed
-        assert (
-            'outlet["signal"]' in target
-            or "outlet.get(\"signal\"" in target
-            or "outlet['signal']" in target
-            or "outlet.get('signal'" in target
-        ), (
-            f"patcher.py:250 read pattern changed; back-compat shim's "
-            f"consumer assumption broken: {target!r}"
+        """patcher.py reads the projection-fed outlet.get('signal') -- anchor
+        the read shape (not its line number) so a refactor that deletes the
+        read surfaces here as a test failure.
+
+        Anchored property: at least one projection-fed `outlet['signal']` /
+        `outlet.get('signal')` read exists anywhere in patcher.py. One site
+        exists today. This test previously asserted a fixed line index; that
+        form passes only by luck and is a scheduled false failure the moment
+        patcher.py grows a line above the read -- exactly the failure mode
+        that did hit the dsp_critic sibling below.
+        """
+        path = _PROJECT_ROOT / "src" / "maxpat" / "patcher.py"
+        sites = _find_consumer_sites(path, _OUTLET_SIGNAL_READ_SHAPES)
+        assert len(sites) >= _PATCHER_MIN_CONSUMER_SITES, (
+            f"patcher.py back-compat consumer reads dropped below "
+            f"{_PATCHER_MIN_CONSUMER_SITES}; the shim's consumer assumption "
+            f"is broken. Accepted read shapes: "
+            f"{sorted(_OUTLET_SIGNAL_READ_SHAPES)}. "
+            f"Found {len(sites)} site(s): {_format_sites(sites)}"
         )
 
     def test_dsp_critic_outlet_signal_read_pattern_unchanged(self):
-        """dsp_critic.py:301 reads outlet['signal'] OR outlettype-derived
-        'signal' string. Anchor the line so refactors surface here."""
-        src = (_PROJECT_ROOT / "src" / "maxpat" / "critics" / "dsp_critic.py").read_text()
-        lines = src.splitlines()
-        target = lines[300]  # line 301, 0-indexed
-        assert (
-            'outlet["signal"]' in target
-            or "outlet.get(\"signal\"" in target
-            or "outlet['signal']" in target
-            or "outlet.get('signal'" in target
-            or "outlettype" in target
-        ), (
-            f"dsp_critic.py:301 read pattern changed; back-compat shim's "
-            f"consumer assumption broken: {target!r}"
+        """dsp_critic.py reads outlet['signal'] OR the outlettype-derived
+        signal test -- anchor the read shape and the site count.
+
+        Root cause this test's own prior failure (quick-260921-gut, MF-02):
+        the anchor tracked a LINE INDEX (dsp_critic.py line 301) rather than
+        a property. dsp_critic.py grew lines -- most recently commit b1a68c9,
+        "fix(critics): recognize multichannelsignal as a signal outlet type"
+        -- so the anchored outlettype read relocated while the back-compat
+        consumer behavior stayed fully intact. The test asserted a location,
+        so it failed on a pure code-motion change that broke nothing. It now
+        asserts the property instead: the accepted read shapes still occur,
+        and at least as many consumer sites survive as existed when the
+        anchor was written.
+        """
+        path = _PROJECT_ROOT / "src" / "maxpat" / "critics" / "dsp_critic.py"
+        sites = _find_consumer_sites(path, _DSP_CRITIC_READ_SHAPES)
+        assert len(sites) >= _DSP_CRITIC_MIN_CONSUMER_SITES, (
+            f"dsp_critic.py back-compat consumer reads dropped below "
+            f"{_DSP_CRITIC_MIN_CONSUMER_SITES}; the shim's consumer "
+            f"assumption is broken. Accepted read shapes: "
+            f"{sorted(_DSP_CRITIC_READ_SHAPES)}. "
+            f"Found {len(sites)} site(s): {_format_sites(sites)}"
         )
 
     def test_projection_roundtrip_for_known_audio_outlet(self, real_db):
