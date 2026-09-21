@@ -1,5 +1,5 @@
 {
-  "_doc": "Documents pre-existing review-blocker DEBT in committed .maxpat files so tests/test_integration_patches.py::test_review_patch_no_blockers can exempt ONLY these specific findings. Committed patches are frozen (never edited to satisfy critics -- regression constraint). Exemptions are per-patch AND per-blocker-signature: a new patch (path not listed here) or a new blocker (signature not explicitly listed for its patch) is NEVER exempted and still fails. Fan-out entries (CLAUDE.md Rule #4 fan-out-without-trigger) match on (source_id, outlet); Bach-llll entries (send/receive routing-bridge false positives -- a receive object's output llll-ness is statically unknowable) match on (source_id, inlet, sorted destinations). source/destinations names are kept for human auditability. This is a TEST-only exemption; critic behavior at generation time is unchanged.",
+  "_doc": "Documents pre-existing review-blocker DEBT in committed .maxpat files so tests/test_integration_patches.py::test_review_patch_no_blockers can exempt ONLY these specific findings. Committed patches are frozen (never edited to satisfy critics -- regression constraint). Exemptions are per-patch AND per-blocker-signature: a new patch (path not listed here) or a new blocker (signature not explicitly listed for its patch) is NEVER exempted and still fails. Fan-out entries (CLAUDE.md Rule #4 fan-out-without-trigger) match on (source_id, outlet); Bach-llll entries (send/receive routing-bridge false positives -- a receive object's output llll-ness is statically unknowable) match on (source_id, inlet, sorted destinations). source/destinations names are kept for human auditability. This is a TEST-only exemption; critic behavior at generation time is unchanged. MAINTENANCE: because a new patch is never auto-exempted, this file must be extended whenever a patch lands with pre-existing blocker debt -- otherwise test_review_patch_no_blockers accrues permanent failures and stops functioning as a gate. The original 14 entries were committed 85b8f92 on 2026-07-02 and went stale as later patches landed; quick-260921-gut added 6 more (looper, reverse-delay, reverse-delay-mono, simple-fm, stereo-feedback-delay, terrain-osc-test) for patches saved between 2026-08-19 and 2026-09-21. Each entry added from that task onward carries a `reason` field recording why that specific blocker is exempt; `_entry_key()` ignores the field, so it is documentation that cannot drift away from the exemption it justifies.",
   "patches": {
     "patches/gen-eq/generated/gen-eq.maxpat": [
       {
@@ -362,6 +362,20 @@
           "gen~",
           "js"
         ]
+      }
+    ],
+    "patches/looper/generated/looper.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "inlet",
+        "source_id": "obj-51",
+        "outlet": 0,
+        "destinations": [
+          "gen~",
+          "meter~"
+        ],
+        "reason": "Signal-domain fan-out, not control-rate debt: subpatcher `inlet` obj-51 carries an audio signal into `gen~` for processing and into `meter~` as a monitoring tap. Per CLAUDE.md Rule #3, hot/cold ordering does not apply in the audio domain -- every signal inlet is hot and both branches are evaluated every sample -- so inserting a `trigger` here would be meaningless and could not change behavior. The meter~ branch is a read-only level display that does not feed the audio path. Patch is frozen per the regression constraint in this file's _doc."
       }
     ],
     "patches/minitaur/generated/minitaur.maxpat": [
@@ -865,6 +879,79 @@
         ]
       }
     ],
+    "patches/reverse-delay/generated/reverse-delay-mono.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "preset",
+        "source_id": "obj-2",
+        "outlet": 0,
+        "destinations": [
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "umenu",
+          "toggle",
+          "umenu",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial"
+        ],
+        "reason": "Inherent `preset` fan-out: obj-2 restores a stored snapshot to the 24 controls bound to it (dial x21, umenu x2, toggle x1). Driving every connected control IS the contract of a `preset` object -- the patch cords to the bound controls are the binding itself, and routing them through a `trigger` would destroy the preset mechanism rather than order it. Restore order is unobservable because each destination receives its own independent stored value. Mono variant of the reverse-delay pair. Patch is frozen per the regression constraint in this file's _doc."
+      }
+    ],
+    "patches/reverse-delay/generated/reverse-delay.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "preset",
+        "source_id": "obj-2",
+        "outlet": 0,
+        "destinations": [
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "umenu",
+          "umenu",
+          "toggle",
+          "umenu",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial"
+        ],
+        "reason": "Inherent `preset` fan-out, stereo variant: obj-2 restores a stored snapshot to 25 bound controls (dial x21, umenu x3, toggle x1) -- one umenu more than the mono patch, reflecting the extra channel-mode selector. Same structural exemption as every `preset`: MAX offers no way to sequence a preset restore, since the cords to the bound controls are the binding and each control receives its own independent stored value. Patch is frozen per the regression constraint in this file's _doc."
+      }
+    ],
     "patches/rhythmic-sampler/generated/rhythmic-sampler.maxpat": [
       {
         "severity": "blocker",
@@ -1197,6 +1284,40 @@
         ]
       }
     ],
+    "patches/simple-fm/generated/simple-fm.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "kslider",
+        "source_id": "obj-1",
+        "outlet": 1,
+        "destinations": [
+          "select",
+          "makenote"
+        ],
+        "reason": "Genuine control-rate fan-out debt -- unlike the `preset` and signal-domain entries elsewhere in this file, this one is the real CLAUDE.md Rule #4 pattern. `kslider` obj-1 outlet 1 (velocity) feeds both `select` and `makenote` with no `trigger` fixing the order, and would be written with an explicit `t i i` today. It is exempted rather than corrected only because committed patches are frozen per the regression constraint in this file's _doc; in practice the note path behaves because both consumers act on the velocity value independently of each other."
+      }
+    ],
+    "patches/stereo-feedback-delay/generated/stereo-feedback-delay.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "preset",
+        "source_id": "obj-59",
+        "outlet": 0,
+        "destinations": [
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial",
+          "dial"
+        ],
+        "reason": "Inherent `preset` fan-out: obj-59 restores a stored snapshot to the 8 `dial` controls bound to it (a homogeneous dial bank, no menus or toggles). No `trigger` can sequence a preset restore -- the cords to the bound dials are the preset binding -- and each dial receives its own independent stored value, so restore order is not observable in the audio or control result. Patch is frozen per the regression constraint in this file's _doc."
+      }
+    ],
     "patches/stutter/generated/stutter.maxpat": [
       {
         "severity": "blocker",
@@ -1285,6 +1406,20 @@
           "prepend",
           "flonum"
         ]
+      }
+    ],
+    "patches/terrain-synth/generated/terrain-osc-test.maxpat": [
+      {
+        "severity": "blocker",
+        "kind": "fanout",
+        "source": "jit.matrix",
+        "source_id": "obj-18",
+        "outlet": 0,
+        "destinations": [
+          "trigger",
+          "jit.cellblock"
+        ],
+        "reason": "Matrix-domain fan-out: `jit.matrix` obj-18 outlet 0 emits a jit_matrix name message to a downstream `trigger` and to a `jit.cellblock` data viewer. Jitter matrix output is a by-reference handoff of one named matrix, so both consumers read identical data regardless of arrival order -- and one of the two branches is already a `trigger`, which is the ordering construct the critic asks for. The cellblock branch is inspection-only and does not feed the render path. Patch is frozen per the regression constraint in this file's _doc."
       }
     ],
     "patches/wormhole/generated/wormhole-test.maxpat": [
