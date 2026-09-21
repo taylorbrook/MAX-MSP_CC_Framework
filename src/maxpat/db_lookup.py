@@ -390,18 +390,34 @@ class ObjectDatabase:
         return None
 
     def _maybe_warn_empty_io(self, canonical: str, obj: dict) -> None:
-        """Emit a one-time UserWarning if this canonical has empty I/O and no
-        variable_io_rules exemption. Dedup via _empty_io_warned.
+        """Emit a one-time UserWarning if this canonical has BOTH inlets and
+        outlets empty and no variable_io_rules exemption. Dedup via
+        _empty_io_warned.
 
         Intent is to surface silent patch-generation failures caused by DB
         entries with no inlet/outlet schema. UserWarning (not
         DeprecationWarning) is used because this is a runtime data-quality
         signal to the caller; DeprecationWarning would be filtered out by
         default in Python's end-user runtime.
+
+        Predicate (MF-03 / D-01, quick-260921-hll): fires only when BOTH
+        sides are empty -- bit-for-bit the same rule `audit_empty_io()`
+        applies at its own `continue` guard, and pinned to it by
+        tests/test_db_lookup.py::
+        test_warning_predicate_matches_audit_empty_io_exactly. It previously
+        fired when EITHER side was empty, which meant 218 names warned while
+        the audit reported 9.
+
+        A zero-outlet sink (`dac~`, `ezdac~`, `scope~`, `send~`, `print`) or a
+        zero-inlet source (`begin~`, `bp.Input`) is legitimate DB data, not a
+        defect -- that is why the warning no longer fires on it. The
+        one-side-empty set is not lost: `audit_half_empty_io()` enumerates it
+        as `sinks`/`sources`. `lookup_strict()` and `has_complete_io()` keep
+        their own stricter "both sides populated" rule (D-03).
         """
         if canonical in self._variable_io_rules:
             return
-        if obj.get("inlets") and obj.get("outlets"):
+        if obj.get("inlets") or obj.get("outlets"):
             return
         if canonical in self._empty_io_warned:
             return
@@ -881,6 +897,51 @@ class ObjectDatabase:
                 src: sorted(names)
                 for src, names in self._empty_io_by_source.items()
             },
+        }
+
+    def audit_half_empty_io(self) -> dict[str, list[str]]:
+        """Report the canonical names with exactly ONE side of their I/O empty.
+
+        Returns a dict with two sorted lists:
+
+          sinks: canonical names with a populated `inlets` array and an EMPTY
+            `outlets` array, NOT in variable_io_rules. These are terminal
+            objects -- `dac~`, `ezdac~`, `scope~`, `send~`, `print`, `panel`,
+            `outlet`, `out~`, `mc.dac~` -- and an empty outlets array is
+            correct data for them, not a defect.
+
+          sources: canonical names with a populated `outlets` array and an
+            EMPTY `inlets` array, NOT in variable_io_rules. These are origin
+            objects (`begin~`, `bp.Input`, ...), likewise correct data.
+
+        Names with BOTH sides empty belong to `audit_empty_io()` (its
+        `critical` / `covered_by_override` buckets) and are skipped here;
+        names with both sides populated are healthy and appear in neither.
+        variable_io_rules entries are excluded exactly as `audit_empty_io()`
+        excludes them, since their real I/O is computed from arguments at
+        connection time by `compute_io_counts()`.
+
+        The union of this result and `audit_empty_io()`'s both-empty buckets
+        is precisely the set the empty-I/O lookup warning covered before
+        MF-03 narrowed it (quick-260921-hll, NH-02): the information channel
+        moved to an explicit audit surface, it was not deleted. Reading at
+        time of writing (2026-09-21): 9 both-empty, 109 sinks, 100 sources.
+        """
+        sinks: list[str] = []
+        sources: list[str] = []
+        for canonical, obj in self._objects.items():
+            if canonical in self._variable_io_rules:
+                continue  # I/O computed from args -- see compute_io_counts
+            has_inlets = bool(obj.get("inlets"))
+            has_outlets = bool(obj.get("outlets"))
+            if has_inlets and not has_outlets:
+                sinks.append(canonical)
+            elif has_outlets and not has_inlets:
+                sources.append(canonical)
+            # both populated -> healthy; both empty -> audit_empty_io()
+        return {
+            "sinks": sorted(sinks),
+            "sources": sorted(sources),
         }
 
     def audit_install_coverage(self) -> dict[str, list[str]]:

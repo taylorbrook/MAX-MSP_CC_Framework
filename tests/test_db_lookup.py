@@ -8,10 +8,17 @@ empty inlets AND empty outlets (130 such entries on the live DB as of
   - lookup() emits one-time UserWarning for empty-I/O entries
   - audit_empty_io() segmentation report, with variable_io_ok mirroring
     the _variable_io_rules registry
+  - lookup()'s warning predicate fires only when BOTH sides are empty
+    (MF-03 / D-01), so legitimate zero-outlet sinks and zero-inlet
+    sources stay silent, asserted set-equal to audit_empty_io()'s
+    both-empty buckets over the whole DB
+  - audit_half_empty_io() reports the one-side-empty set as sinks /
+    sources (NH-02 / D-02), checked against a brute-force oracle
 """
 
 from __future__ import annotations
 
+import re
 import warnings
 
 import pytest
@@ -379,6 +386,208 @@ def test_audit_empty_io_covers_all_domain_files():
     assert "bach.hypercomment" not in critical
     assert "osc-route" not in critical
     assert "jit.gl.textureset" not in critical
+
+
+# ── aligned empty-I/O warning predicate (MF-03, D-01) ───────────
+
+# The empty-I/O warning message fragment. _maybe_warn_install_state emits
+# the same UserWarning category, so every sweep below filters on this text
+# rather than on the category alone.
+_EMPTY_IO_FRAGMENT = "empty inlets/outlets"
+_EMPTY_IO_NAME_RE = re.compile(r"Object '(?P<name>[^']+)' has empty inlets/outlets")
+
+
+def _sweep_empty_io_warned_names(db) -> set[str]:
+    """Look up every canonical in the DB and return the names carried by
+    empty-I/O warnings. Independent of any production audit helper."""
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        for name in list(db._objects.keys()):
+            db.lookup(name)
+    warned: set[str] = set()
+    for w in caught:
+        msg = str(w.message)
+        if _EMPTY_IO_FRAGMENT not in msg:
+            continue
+        match = _EMPTY_IO_NAME_RE.search(msg)
+        if match:
+            warned.add(match.group("name"))
+    return warned
+
+
+def test_lookup_does_not_warn_for_zero_outlet_sink():
+    """A zero-outlet sink is legitimate DB data, not a defect (D-01).
+
+    'dac~' is the canary: populated inlets, genuinely no outlets, no
+    variable_io_rules entry (2 inlets / 0 outlets measured 2026-09-21).
+    Before MF-03 this fired the "patch generation may fail silently"
+    warning on every lookup. Fallback if the DB changes, rescan with:
+      [n for n, o in db._objects.items()
+       if o.get("inlets") and not o.get("outlets")
+       and n not in db._variable_io_rules]
+    """
+    db = ObjectDatabase()
+    sink = db._objects.get("dac~")
+    assert sink is not None, "precondition: 'dac~' must exist in DB"
+    assert sink.get("inlets"), "precondition: 'dac~' must have populated inlets"
+    assert not sink.get("outlets"), "precondition: 'dac~' must have empty outlets"
+    assert "dac~" not in db._variable_io_rules, (
+        "precondition: 'dac~' must have no variable_io_rules entry"
+    )
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        result = db.lookup("dac~")
+    assert result is not None
+    user_warnings = [w for w in caught if issubclass(w.category, UserWarning)]
+    assert len(user_warnings) == 0, (
+        "zero-outlet sinks must not warn; got "
+        f"{[str(w.message) for w in user_warnings]}"
+    )
+
+
+def test_lookup_does_not_warn_for_zero_inlet_source():
+    """A zero-inlet source is legitimate DB data, not a defect (D-01).
+
+    'begin~' is the canary: 0 inlets, populated outlets, no
+    variable_io_rules entry (0 inlets / 1 outlet measured 2026-09-21).
+    Fallback if the DB changes -- same style as
+    test_lookup_does_not_warn_when_package_filtered -- rescan with:
+      [n for n, o in db._objects.items()
+       if o.get("outlets") and not o.get("inlets")
+       and n not in db._variable_io_rules]
+    """
+    db = ObjectDatabase()
+    source = db._objects.get("begin~")
+    assert source is not None, "precondition: 'begin~' must exist in DB"
+    assert source.get("outlets"), "precondition: 'begin~' must have populated outlets"
+    assert not source.get("inlets"), "precondition: 'begin~' must have empty inlets"
+    assert "begin~" not in db._variable_io_rules, (
+        "precondition: 'begin~' must have no variable_io_rules entry"
+    )
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        result = db.lookup("begin~")
+    assert result is not None
+    user_warnings = [w for w in caught if issubclass(w.category, UserWarning)]
+    assert len(user_warnings) == 0, (
+        "zero-inlet sources must not warn; got "
+        f"{[str(w.message) for w in user_warnings]}"
+    )
+
+
+def test_empty_io_warning_message_names_the_object():
+    """Both-sides-empty entries still warn, and the message names the object.
+
+    Dedup and the once-per-name contract are covered by
+    test_lookup_warns_once_per_empty_io_name; this pins the message
+    contract so the D-01 predicate change cannot silently alter it.
+    """
+    db = ObjectDatabase()
+    entry = db._objects.get("dsp")
+    assert entry is not None, "precondition: 'dsp' must exist in DB"
+    assert not entry.get("inlets") and not entry.get("outlets"), (
+        "precondition: 'dsp' must be both-sides-empty"
+    )
+
+    with warnings.catch_warnings(record=True) as caught:
+        warnings.simplefilter("always")
+        db.lookup("dsp")
+    empty_io = [
+        w for w in caught
+        if issubclass(w.category, UserWarning)
+        and _EMPTY_IO_FRAGMENT in str(w.message)
+    ]
+    assert len(empty_io) == 1, f"expected exactly 1 warning, got {len(empty_io)}"
+    assert "'dsp'" in str(empty_io[0].message)
+
+
+def test_warning_predicate_matches_audit_empty_io_exactly():
+    """THE MF-03 invariant: the warning and the audit apply the same rule.
+
+    Sweeps lookup() over the whole DB and asserts the set of warned
+    canonical names EQUALS audit_empty_io()'s both-sides-empty buckets.
+    Equality (not a count) is what stops the two predicates drifting
+    apart again -- before this task the warning fired on 218 names while
+    the audit reported 9.
+    """
+    db = ObjectDatabase()
+    warned = _sweep_empty_io_warned_names(db)
+
+    audit = db.audit_empty_io()
+    audit_both_empty = set(audit["critical"]) | set(audit["covered_by_override"])
+
+    assert sorted(warned) == sorted(audit_both_empty), (
+        "empty-I/O warning predicate and audit_empty_io() disagree.\n"
+        f"warned only: {sorted(warned - audit_both_empty)}\n"
+        f"audit only:  {sorted(audit_both_empty - warned)}"
+    )
+
+
+# ── audit_half_empty_io() (NH-02, D-02) ─────────────────────────
+
+def test_audit_half_empty_io_shape():
+    """Shape contract for the surface that carries the one-side-empty set.
+
+    The information the warning no longer reports is not deleted -- it
+    moves here, split into sinks (inlets populated, no outlets) and
+    sources (outlets populated, no inlets).
+    """
+    db = ObjectDatabase()
+    half = db.audit_half_empty_io()
+
+    assert set(half.keys()) == {"sinks", "sources"}
+    for key in ("sinks", "sources"):
+        bucket = half[key]
+        assert isinstance(bucket, list), f"{key} must be a list"
+        assert all(isinstance(x, str) for x in bucket), f"{key} must contain only str"
+        assert bucket == sorted(bucket), f"{key} must be sorted"
+
+    sinks = set(half["sinks"])
+    sources = set(half["sources"])
+    assert sinks.isdisjoint(sources), "sinks and sources must be disjoint"
+
+    assert "dac~" in sinks, "'dac~' (2 inlets, 0 outlets) must be a sink"
+    assert "begin~" in sources, "'begin~' (0 inlets, 1 outlet) must be a source"
+
+    # The half-empty set is orthogonal to every audit_empty_io() bucket.
+    audit = db.audit_empty_io()
+    for key in ("critical", "covered_by_override", "variable_io_ok"):
+        bucket = set(audit[key])
+        assert sinks.isdisjoint(bucket), f"sinks overlaps audit_empty_io()['{key}']"
+        assert sources.isdisjoint(bucket), f"sources overlaps audit_empty_io()['{key}']"
+
+
+def test_audit_half_empty_io_matches_brute_force_oracle():
+    """Independent oracle for audit_half_empty_io() (NH-02).
+
+    Recomputes both buckets directly from db._objects without calling the
+    production helper under test -- same style as
+    test_audit_empty_io_covers_all_domain_files. Both buckets must be
+    non-empty (109 sinks / 100 sources measured 2026-09-21; the floor is
+    asserted without locking in those numbers).
+    """
+    db = ObjectDatabase()
+
+    expected_sinks: list[str] = []
+    expected_sources: list[str] = []
+    for canonical, obj in db._objects.items():
+        if canonical in db._variable_io_rules:
+            continue
+        has_in = bool(obj.get("inlets"))
+        has_out = bool(obj.get("outlets"))
+        if has_in and not has_out:
+            expected_sinks.append(canonical)
+        elif has_out and not has_in:
+            expected_sources.append(canonical)
+
+    half = db.audit_half_empty_io()
+    assert half["sinks"] == sorted(expected_sinks)
+    assert half["sources"] == sorted(expected_sources)
+
+    assert len(half["sinks"]) >= 1, "expected real zero-outlet sinks in the DB"
+    assert len(half["sources"]) >= 1, "expected real zero-inlet sources in the DB"
 
 
 # ── compute_io_counts regression (REVIEW 260420-j15 FN-01) ──────
