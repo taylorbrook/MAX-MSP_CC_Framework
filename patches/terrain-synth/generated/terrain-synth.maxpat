@@ -1884,9 +1884,9 @@
                                                         0
                                                     ],
                                                     "midpoints": [
-                                                        24.5,
+                                                        30.0,
                                                         57.5,
-                                                        24.5,
+                                                        61.5,
                                                         57.5
                                                     ],
                                                     "source": [
@@ -1914,9 +1914,9 @@
                                                         0
                                                     ],
                                                     "midpoints": [
-                                                        24.5,
+                                                        22.0,
                                                         298.5,
-                                                        24.5,
+                                                        100.0,
                                                         298.5
                                                     ],
                                                     "source": [
@@ -1932,9 +1932,9 @@
                                                         0
                                                     ],
                                                     "midpoints": [
-                                                        98.5,
+                                                        101.0,
                                                         81.0,
-                                                        209.5,
+                                                        207.0,
                                                         81.0
                                                     ],
                                                     "source": [
@@ -1962,7 +1962,7 @@
                                                         0
                                                     ],
                                                     "midpoints": [
-                                                        209.5,
+                                                        280.5,
                                                         62.0,
                                                         116.0,
                                                         62.0,
@@ -2004,7 +2004,7 @@
                                                         257.0,
                                                         207.0,
                                                         295.0,
-                                                        24.5,
+                                                        100.0,
                                                         295.0
                                                     ],
                                                     "source": [
@@ -2044,7 +2044,7 @@
                                                         0
                                                     ],
                                                     "midpoints": [
-                                                        112.5,
+                                                        115.0,
                                                         142.0,
                                                         142.0,
                                                         142.0,
@@ -2056,7 +2056,7 @@
                                                         182.0,
                                                         271.0,
                                                         220.0,
-                                                        309.5,
+                                                        307.0,
                                                         220.0
                                                     ],
                                                     "source": [
@@ -2078,7 +2078,7 @@
                                                         142.0,
                                                         142.0,
                                                         178.0,
-                                                        159.5,
+                                                        157.0,
                                                         178.0
                                                     ],
                                                     "source": [
@@ -2106,7 +2106,7 @@
                                                         0
                                                     ],
                                                     "midpoints": [
-                                                        309.5,
+                                                        364.5,
                                                         217.0,
                                                         192.0,
                                                         217.0,
@@ -2118,7 +2118,7 @@
                                                         257.0,
                                                         207.0,
                                                         295.0,
-                                                        24.5,
+                                                        100.0,
                                                         295.0
                                                     ],
                                                     "source": [
@@ -2134,13 +2134,13 @@
                                                         0
                                                     ],
                                                     "midpoints": [
-                                                        159.5,
+                                                        206.5,
                                                         217.0,
                                                         192.0,
                                                         217.0,
                                                         192.0,
                                                         255.0,
-                                                        24.5,
+                                                        107.0,
                                                         255.0
                                                     ],
                                                     "source": [
@@ -2198,9 +2198,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        24.5,
+                                        339.5,
                                         324.0,
-                                        24.5,
+                                        184.0,
                                         324.0
                                     ],
                                     "source": [
@@ -2216,9 +2216,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        769.5,
+                                        808.5,
                                         141.0,
-                                        649.5,
+                                        735.5,
                                         141.0
                                     ],
                                     "source": [
@@ -2234,13 +2234,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        649.5,
+                                        647.0,
                                         198.0,
                                         672.0,
                                         198.0,
                                         672.0,
                                         236.0,
-                                        649.5,
+                                        647.0,
                                         236.0
                                     ],
                                     "source": [
@@ -2256,9 +2256,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        649.5,
+                                        647.0,
                                         386.0,
-                                        24.5,
+                                        184.0,
                                         386.0
                                     ],
                                     "source": [
@@ -2286,13 +2286,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        889.5,
+                                        887.0,
                                         142.0,
                                         962.0,
                                         142.0,
                                         962.0,
                                         180.0,
-                                        889.5,
+                                        975.5,
                                         180.0
                                     ],
                                     "source": [
@@ -2308,9 +2308,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        979.5,
+                                        1062.5,
                                         186.0,
-                                        889.5,
+                                        975.5,
                                         186.0
                                     ],
                                     "source": [
@@ -2326,9 +2326,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        1189.5,
+                                        1240.5,
                                         101.0,
-                                        1189.5,
+                                        1187.0,
                                         101.0
                                     ],
                                     "source": [
@@ -2344,7 +2344,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        1189.5,
+                                        1248.5,
                                         102.0,
                                         981.0,
                                         102.0,
@@ -2356,7 +2356,7 @@
                                         142.0,
                                         1163.0,
                                         180.0,
-                                        889.5,
+                                        975.5,
                                         180.0
                                     ],
                                     "source": [
@@ -2372,9 +2372,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        889.5,
+                                        887.0,
                                         231.0,
-                                        889.5,
+                                        933.5,
                                         231.0
                                     ],
                                     "source": [
@@ -2390,7 +2390,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        1189.5,
+                                        1195.0,
                                         62.0,
                                         1123.0,
                                         62.0,
@@ -2414,7 +2414,7 @@
                                         102.0,
                                         1172.0,
                                         140.0,
-                                        769.5,
+                                        767.0,
                                         140.0
                                     ],
                                     "order": 1,
@@ -2431,9 +2431,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        1189.5,
+                                        1195.0,
                                         57.5,
-                                        1189.5,
+                                        1240.5,
                                         57.5
                                     ],
                                     "order": 0,
@@ -2450,7 +2450,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        889.5,
+                                        887.0,
                                         322.0,
                                         632.0,
                                         322.0,
@@ -2462,7 +2462,7 @@
                                         322.0,
                                         807.0,
                                         358.0,
-                                        24.5,
+                                        184.0,
                                         358.0
                                     ],
                                     "source": [
@@ -2490,9 +2490,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        1389.5,
+                                        1387.0,
                                         181.0,
-                                        1389.5,
+                                        1430.0,
                                         181.0
                                     ],
                                     "source": [
@@ -2508,9 +2508,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        1389.5,
+                                        1387.0,
                                         221.0,
-                                        1389.5,
+                                        1486.0,
                                         221.0
                                     ],
                                     "source": [
@@ -2526,7 +2526,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        1389.5,
+                                        1387.0,
                                         232.0,
                                         995.0,
                                         232.0,
@@ -2538,7 +2538,7 @@
                                         322.0,
                                         923.0,
                                         358.0,
-                                        649.5,
+                                        647.0,
                                         358.0
                                     ],
                                     "source": [
@@ -2566,9 +2566,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        98.5,
+                                        101.0,
                                         491.0,
-                                        309.5,
+                                        360.5,
                                         491.0
                                     ],
                                     "source": [
@@ -2596,7 +2596,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        487.7857142857143,
+                                        487.42857142857144,
                                         102.0,
                                         496.0,
                                         102.0,
@@ -2614,7 +2614,7 @@
                                         166.0,
                                         7.0,
                                         204.0,
-                                        24.5,
+                                        22.0,
                                         204.0
                                     ],
                                     "source": [
@@ -2630,9 +2630,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        642.2142857142857,
+                                        642.5714285714286,
                                         121.0,
-                                        649.5,
+                                        735.5,
                                         121.0
                                     ],
                                     "source": [
@@ -2648,13 +2648,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        796.6428571428571,
+                                        797.7142857142857,
                                         102.0,
                                         865.0,
                                         102.0,
                                         865.0,
                                         140.0,
-                                        889.5,
+                                        926.5,
                                         140.0
                                     ],
                                     "source": [
@@ -2670,7 +2670,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        951.0714285714286,
+                                        952.8571428571429,
                                         62.0,
                                         1172.0,
                                         62.0,
@@ -2688,7 +2688,7 @@
                                         102.0,
                                         1172.0,
                                         140.0,
-                                        1389.5,
+                                        1387.0,
                                         140.0
                                     ],
                                     "source": [
@@ -2716,13 +2716,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        178.92857142857142,
+                                        177.14285714285714,
                                         102.0,
                                         7.0,
                                         102.0,
                                         7.0,
                                         140.0,
-                                        24.5,
+                                        22.0,
                                         140.0
                                     ],
                                     "source": [
@@ -2738,7 +2738,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        333.35714285714283,
+                                        332.2857142857143,
                                         102.0,
                                         7.0,
                                         102.0,
@@ -2750,7 +2750,7 @@
                                         134.0,
                                         7.0,
                                         172.0,
-                                        24.5,
+                                        22.0,
                                         172.0
                                     ],
                                     "source": [
@@ -2766,9 +2766,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        24.5,
+                                        22.0,
                                         451.0,
-                                        24.5,
+                                        61.5,
                                         451.0
                                     ],
                                     "source": [
@@ -2784,7 +2784,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        24.5,
+                                        251.5,
                                         134.0,
                                         7.0,
                                         134.0,
@@ -2802,7 +2802,7 @@
                                         198.0,
                                         7.0,
                                         236.0,
-                                        24.5,
+                                        184.0,
                                         236.0
                                     ],
                                     "source": [
@@ -2818,7 +2818,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        24.5,
+                                        263.5,
                                         166.0,
                                         7.0,
                                         166.0,
@@ -2830,7 +2830,7 @@
                                         198.0,
                                         7.0,
                                         236.0,
-                                        24.5,
+                                        184.0,
                                         236.0
                                     ],
                                     "source": [
@@ -2846,13 +2846,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        24.5,
+                                        287.5,
                                         198.0,
                                         7.0,
                                         198.0,
                                         7.0,
                                         236.0,
-                                        24.5,
+                                        184.0,
                                         236.0
                                     ],
                                     "source": [
@@ -7832,7 +7832,7 @@
                         54.0,
                         17.0
                     ],
-                    "text": "v0.5.1",
+                    "text": "v0.5.2",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -8277,7 +8277,13 @@
                                         620.0,
                                         20.0
                                     ],
-                                    "text": "offscreen GL context (jit.pwindow help 'texture' form): invisible jit.world -> texture out"
+                                    "text": "offscreen GL context (jit.pwindow help 'texture' form): invisible jit.world -> texture out",
+                                    "textcolor": [
+                                        0.8,
+                                        0.8,
+                                        0.82,
+                                        1.0
+                                    ]
                                 }
                             },
                             {
@@ -8336,7 +8342,13 @@
                                         760.0,
                                         20.0
                                     ],
-                                    "text": "surface: static x / z planes + terrain height*0.3 -> jit.pack 3 -> tri_grid (right-to-left, x plane last = hot)"
+                                    "text": "surface: static x / z planes + terrain height*0.3 -> jit.pack 3 -> tri_grid (right-to-left, x plane last = hot)",
+                                    "textcolor": [
+                                        0.8,
+                                        0.8,
+                                        0.82,
+                                        1.0
+                                    ]
                                 }
                             },
                             {
@@ -8565,7 +8577,7 @@
                                         793.0,
                                         22.0
                                     ],
-                                    "text": "jit.gl.mesh tsynview @draw_mode tri_grid @auto_normals 1 @lighting_enable 1 @color 0.22 0.55 0.8 1. @scale 0.45"
+                                    "text": "jit.gl.mesh tsynview @draw_mode tri_grid @auto_normals 1 @lighting_enable 1 @color 0.22 0.55 0.8 1. @scale 0.6"
                                 }
                             },
                             {
@@ -8583,7 +8595,13 @@
                                         900.0,
                                         20.0
                                     ],
-                                    "text": "orbit: helper terrain-osc at 110 Hz follows tsyn-osc params (voice terrain-mod is not shown) -> jit.catch~ 3 @mode 2 on every draw bang -> points (512 dots read as a thick line; help-patch point form)"
+                                    "text": "orbit: helper terrain-osc at 110 Hz follows tsyn-osc params (voice terrain-mod is not shown) -> jit.catch~ 3 @mode 2 on every draw bang -> points (512 dots read as a thick line; help-patch point form)",
+                                    "textcolor": [
+                                        0.8,
+                                        0.8,
+                                        0.82,
+                                        1.0
+                                    ]
                                 }
                             },
                             {
@@ -8816,9 +8834,9 @@
                                                         1
                                                     ],
                                                     "midpoints": [
-                                                        139.5,
+                                                        145.0,
                                                         61.0,
-                                                        440.5,
+                                                        443.0,
                                                         61.0
                                                     ],
                                                     "source": [
@@ -8852,7 +8870,7 @@
                                                         312.0,
                                                         202.0,
                                                         350.0,
-                                                        139.5,
+                                                        145.0,
                                                         350.0
                                                     ],
                                                     "source": [
@@ -8868,9 +8886,9 @@
                                                         0
                                                     ],
                                                     "midpoints": [
-                                                        440.5,
+                                                        443.0,
                                                         300.0,
-                                                        219.5,
+                                                        225.0,
                                                         300.0
                                                     ],
                                                     "source": [
@@ -8930,7 +8948,13 @@
                                         191.0,
                                         20.0
                                     ],
-                                    "text": "helper audio is discarded"
+                                    "text": "helper audio is discarded",
+                                    "textcolor": [
+                                        0.8,
+                                        0.8,
+                                        0.82,
+                                        1.0
+                                    ]
                                 }
                             },
                             {
@@ -8973,7 +8997,7 @@
                                         720.0,
                                         22.0
                                     ],
-                                    "text": "jit.gl.mesh tsynview @draw_mode points @point_size 4 @point_mode circle_depth @lighting_enable 0 @color 1. 0.78 0.2 1. @scale 0.45"
+                                    "text": "jit.gl.mesh tsynview @draw_mode points @point_size 4 @point_mode circle_depth @lighting_enable 0 @color 1. 0.78 0.2 1. @scale 0.6"
                                 }
                             },
                             {
@@ -8987,10 +9011,16 @@
                                     "patching_rect": [
                                         760.0,
                                         420.0,
-                                        254.0,
+                                        560.0,
                                         20.0
                                     ],
-                                    "text": "rotate / tilt both meshes together"
+                                    "text": "ROTATE turns both meshes about the vertical axis; TILT raises the camera (turntable)",
+                                    "textcolor": [
+                                        0.8,
+                                        0.8,
+                                        0.82,
+                                        1.0
+                                    ]
                                 }
                             },
                             {
@@ -9010,7 +9040,7 @@
                                         184.0,
                                         22.0
                                     ],
-                                    "text": "pak rotatexyz 35. 30. 0."
+                                    "text": "pak rotatexyz 0. 30. 0."
                                 }
                             },
                             {
@@ -9033,6 +9063,132 @@
                                     ],
                                     "text": "trigger l l"
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-33",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        980,
+                                        60,
+                                        93.0,
+                                        22.0
+                                    ],
+                                    "text": "trigger f f",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-34",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        980,
+                                        95,
+                                        233.0,
+                                        22.0
+                                    ],
+                                    "text": "expr 2.4 * sin($f1 * 0.0174533)",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-35",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        1240,
+                                        95,
+                                        233.0,
+                                        22.0
+                                    ],
+                                    "text": "expr 2.4 * cos($f1 * 0.0174533)",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-36",
+                                    "numinlets": 4,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        980,
+                                        135,
+                                        191.0,
+                                        22.0
+                                    ],
+                                    "text": "pak position 0. 1.38 1.97",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-37",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        980,
+                                        175,
+                                        604.0,
+                                        22.0
+                                    ],
+                                    "text": "jit.gl.camera tsynview @locklook 1 @tripod 1 @lookat 0. 0. 0. @position 0. 1.38 1.97",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-38",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        980,
+                                        205,
+                                        420.0,
+                                        20.0
+                                    ],
+                                    "text": "camera elevation = TILT, always looking at the terrain centre",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
+                                    "textcolor": [
+                                        0.8,
+                                        0.8,
+                                        0.82,
+                                        1.0
+                                    ]
+                                }
                             }
                         ],
                         "lines": [
@@ -9043,7 +9199,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        24.5,
+                                        30.0,
                                         42.0,
                                         52.0,
                                         42.0,
@@ -9067,7 +9223,7 @@
                                         182.0,
                                         7.0,
                                         218.0,
-                                        24.5,
+                                        68.5,
                                         218.0
                                     ],
                                     "source": [
@@ -9083,9 +9239,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        439.5,
+                                        466.0,
                                         243.5,
-                                        439.5,
+                                        437.0,
                                         243.5
                                     ],
                                     "order": 1,
@@ -9102,13 +9258,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        439.5,
+                                        466.0,
                                         242.0,
                                         615.0,
                                         242.0,
                                         615.0,
                                         280.0,
-                                        649.5,
+                                        647.0,
                                         280.0
                                     ],
                                     "order": 0,
@@ -9125,7 +9281,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        439.5,
+                                        518.5,
                                         247.0,
                                         207.0,
                                         247.0,
@@ -9137,7 +9293,7 @@
                                         292.0,
                                         207.0,
                                         330.0,
-                                        24.5,
+                                        114.0,
                                         330.0
                                     ],
                                     "source": [
@@ -9165,9 +9321,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        24.5,
+                                        22.0,
                                         268.5,
-                                        24.5,
+                                        114.0,
                                         268.5
                                     ],
                                     "source": [
@@ -9185,7 +9341,7 @@
                                     "midpoints": [
                                         68.5,
                                         246.0,
-                                        224.5,
+                                        349.0,
                                         246.0
                                     ],
                                     "source": [
@@ -9201,7 +9357,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        112.5,
+                                        115.0,
                                         207.0,
                                         422.0,
                                         207.0,
@@ -9237,7 +9393,7 @@
                                         292.0,
                                         491.0,
                                         330.0,
-                                        649.5,
+                                        739.0,
                                         330.0
                                     ],
                                     "source": [
@@ -9265,13 +9421,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        224.5,
+                                        222.0,
                                         292.0,
                                         221.0,
                                         292.0,
                                         221.0,
                                         330.0,
-                                        224.5,
+                                        349.0,
                                         330.0
                                     ],
                                     "source": [
@@ -9287,13 +9443,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        224.5,
+                                        222.0,
                                         292.0,
                                         221.0,
                                         292.0,
                                         221.0,
                                         330.0,
-                                        224.5,
+                                        222.0,
                                         330.0
                                     ],
                                     "source": [
@@ -9309,7 +9465,7 @@
                                         1
                                     ],
                                     "midpoints": [
-                                        224.5,
+                                        222.0,
                                         368.5,
                                         335.0,
                                         368.5
@@ -9351,13 +9507,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        629.5,
+                                        635.0,
                                         42.0,
                                         688.0,
                                         42.0,
                                         688.0,
                                         78.0,
-                                        629.5,
+                                        627.0,
                                         78.0
                                     ],
                                     "source": [
@@ -9373,9 +9529,9 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        24.5,
+                                        68.5,
                                         536.0,
-                                        24.5,
+                                        22.0,
                                         536.0
                                     ],
                                     "source": [
@@ -9391,9 +9547,9 @@
                                         4
                                     ],
                                     "midpoints": [
-                                        339.5,
+                                        394.0,
                                         536.0,
-                                        345.5,
+                                        348.0,
                                         536.0
                                     ],
                                     "source": [
@@ -9423,7 +9579,7 @@
                                     "midpoints": [
                                         185.0,
                                         578.5,
-                                        129.5,
+                                        127.0,
                                         578.5
                                     ],
                                     "source": [
@@ -9475,13 +9631,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        129.5,
+                                        127.0,
                                         607.0,
                                         214.0,
                                         607.0,
                                         214.0,
                                         643.0,
-                                        129.5,
+                                        127.0,
                                         643.0
                                     ],
                                     "source": [
@@ -9509,7 +9665,7 @@
                                         2
                                     ],
                                     "midpoints": [
-                                        769.5,
+                                        775.0,
                                         87.0,
                                         783.0,
                                         87.0,
@@ -9545,7 +9701,7 @@
                                         412.0,
                                         752.0,
                                         448.0,
-                                        879.5,
+                                        880.3333333333334,
                                         448.0
                                     ],
                                     "source": [
@@ -9561,13 +9717,13 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        769.5,
+                                        852.0,
                                         472.0,
                                         923.0,
                                         472.0,
                                         923.0,
                                         508.0,
-                                        769.5,
+                                        806.5,
                                         508.0
                                     ],
                                     "source": [
@@ -9583,11 +9739,11 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        1044.0,
+                                        1614.0,
                                         507.0,
-                                        1044.0,
+                                        1614.0,
                                         412.0,
-                                        24.5,
+                                        22.0,
                                         412.0
                                     ],
                                     "source": [
@@ -9603,7 +9759,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        843.5,
+                                        846.0,
                                         472.0,
                                         923.0,
                                         472.0,
@@ -9645,7 +9801,7 @@
                                         632.0,
                                         368.0,
                                         670.0,
-                                        129.5,
+                                        127.0,
                                         670.0
                                     ],
                                     "source": [
@@ -9657,47 +9813,13 @@
                             {
                                 "patchline": {
                                     "destination": [
-                                        "obj-31",
-                                        1
-                                    ],
-                                    "midpoints": [
-                                        909.5,
-                                        242.0,
-                                        825.0,
-                                        242.0,
-                                        825.0,
-                                        280.0,
-                                        825.0,
-                                        292.0,
-                                        846.0,
-                                        292.0,
-                                        846.0,
-                                        330.0,
-                                        846.0,
-                                        412.0,
-                                        752.0,
-                                        412.0,
-                                        752.0,
-                                        448.0,
-                                        824.5,
-                                        448.0
-                                    ],
-                                    "source": [
-                                        "obj-4",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
                                         "obj-8",
                                         0
                                     ],
                                     "midpoints": [
-                                        629.5,
+                                        668.5,
                                         88.5,
-                                        24.5,
+                                        395.0,
                                         88.5
                                     ],
                                     "source": [
@@ -9797,7 +9919,7 @@
                                         607.0,
                                         214.0,
                                         643.0,
-                                        129.5,
+                                        127.0,
                                         643.0
                                     ],
                                     "source": [
@@ -9815,6 +9937,116 @@
                                     "source": [
                                         "obj-8",
                                         0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-4",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-33",
+                                        0
+                                    ],
+                                    "midpoints": [
+                                        915.0,
+                                        52.5,
+                                        1026.5,
+                                        52.5
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-33",
+                                        1
+                                    ],
+                                    "destination": [
+                                        "obj-35",
+                                        0
+                                    ],
+                                    "midpoints": [
+                                        1066.0,
+                                        87.0,
+                                        1221.0,
+                                        87.0,
+                                        1221.0,
+                                        125.0,
+                                        1356.5,
+                                        125.0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-33",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-34",
+                                        0
+                                    ],
+                                    "midpoints": [
+                                        987.0,
+                                        88.5,
+                                        1096.5,
+                                        88.5
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-35",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-36",
+                                        3
+                                    ],
+                                    "midpoints": [
+                                        1356.5,
+                                        87.0,
+                                        1221.0,
+                                        87.0,
+                                        1221.0,
+                                        125.0,
+                                        1164.0,
+                                        125.0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-34",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-36",
+                                        2
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-36",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-37",
+                                        0
+                                    ],
+                                    "midpoints": [
+                                        1075.5,
+                                        166.0,
+                                        1282.0,
+                                        166.0
                                     ]
                                 }
                             }
@@ -10342,9 +10574,9 @@
                         0
                     ],
                     "midpoints": [
-                        24.5,
+                        79.0,
                         368.5,
-                        24.5,
+                        145.5,
                         368.5
                     ],
                     "source": [
@@ -10372,7 +10604,7 @@
                         0
                     ],
                     "midpoints": [
-                        3139.5,
+                        3176.5,
                         42.0,
                         3082.0,
                         42.0,
@@ -10384,7 +10616,7 @@
                         92.0,
                         3172.0,
                         125.0,
-                        3139.5,
+                        3150.0,
                         125.0
                     ],
                     "source": [
@@ -10400,7 +10632,7 @@
                         0
                     ],
                     "midpoints": [
-                        3264.5,
+                        3329.5,
                         42.0,
                         3348.0,
                         42.0,
@@ -10418,7 +10650,7 @@
                         92.0,
                         3172.0,
                         125.0,
-                        3139.5,
+                        3150.0,
                         125.0
                     ],
                     "source": [
@@ -10434,7 +10666,7 @@
                         0
                     ],
                     "midpoints": [
-                        3139.5,
+                        3150.0,
                         42.0,
                         3082.0,
                         42.0,
@@ -10452,7 +10684,7 @@
                         152.0,
                         3172.0,
                         185.0,
-                        3139.5,
+                        3257.0,
                         185.0
                     ],
                     "source": [
@@ -10468,7 +10700,7 @@
                         0
                     ],
                     "midpoints": [
-                        3139.5,
+                        3257.0,
                         42.0,
                         3082.0,
                         42.0,
@@ -10480,7 +10712,7 @@
                         172.0,
                         3172.0,
                         205.0,
-                        3139.5,
+                        3157.0,
                         205.0
                     ],
                     "source": [
@@ -10496,7 +10728,7 @@
                         0
                     ],
                     "midpoints": [
-                        3139.5,
+                        3137.0,
                         42.0,
                         3082.0,
                         42.0,
@@ -10514,7 +10746,7 @@
                         212.0,
                         3172.0,
                         245.0,
-                        3139.5,
+                        3183.5,
                         245.0
                     ],
                     "source": [
@@ -10530,13 +10762,13 @@
                         0
                     ],
                     "midpoints": [
-                        3139.5,
+                        3183.5,
                         42.0,
                         3082.0,
                         42.0,
                         3082.0,
                         918.0,
-                        3139.5,
+                        3183.5,
                         918.0
                     ],
                     "source": [
@@ -10552,9 +10784,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1146.5,
                         357.0,
-                        1109.5,
+                        1120.0,
                         357.0
                     ],
                     "source": [
@@ -10570,13 +10802,13 @@
                         0
                     ],
                     "midpoints": [
-                        1234.5,
+                        1299.5,
                         322.0,
                         1201.0,
                         322.0,
                         1201.0,
                         360.0,
-                        1109.5,
+                        1120.0,
                         360.0
                     ],
                     "source": [
@@ -10592,9 +10824,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1120.0,
                         407.0,
-                        1109.5,
+                        1178.0,
                         407.0
                     ],
                     "source": [
@@ -10610,9 +10842,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1178.0,
                         438.0,
-                        1109.5,
+                        1127.0,
                         438.0
                     ],
                     "source": [
@@ -10628,9 +10860,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1107.0,
                         468.0,
-                        1109.5,
+                        1164.0,
                         468.0
                     ],
                     "source": [
@@ -10658,9 +10890,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1433.75,
                         357.0,
-                        1399.5,
+                        1410.0,
                         357.0
                     ],
                     "source": [
@@ -10676,13 +10908,13 @@
                         0
                     ],
                     "midpoints": [
-                        1524.5,
+                        1589.5,
                         322.0,
                         1485.5,
                         322.0,
                         1485.5,
                         360.0,
-                        1399.5,
+                        1410.0,
                         360.0
                     ],
                     "source": [
@@ -10698,9 +10930,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1410.0,
                         407.0,
-                        1399.5,
+                        1506.5,
                         407.0
                     ],
                     "source": [
@@ -10716,9 +10948,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1506.5,
                         438.0,
-                        1399.5,
+                        1417.0,
                         438.0
                     ],
                     "source": [
@@ -10734,9 +10966,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1397.0,
                         468.0,
-                        1399.5,
+                        1443.5,
                         468.0
                     ],
                     "source": [
@@ -10764,9 +10996,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1723.75,
                         357.0,
-                        1689.5,
+                        1700.0,
                         357.0
                     ],
                     "source": [
@@ -10782,13 +11014,13 @@
                         0
                     ],
                     "midpoints": [
-                        1814.5,
+                        1879.5,
                         322.0,
                         1775.5,
                         322.0,
                         1775.5,
                         360.0,
-                        1689.5,
+                        1700.0,
                         360.0
                     ],
                     "source": [
@@ -10804,9 +11036,9 @@
                         0
                     ],
                     "midpoints": [
-                        309.5,
+                        357.0,
                         261.0,
-                        439.5,
+                        460.0,
                         261.0
                     ],
                     "source": [
@@ -10822,9 +11054,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1700.0,
                         407.0,
-                        1689.5,
+                        1761.5,
                         407.0
                     ],
                     "source": [
@@ -10840,9 +11072,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1761.5,
                         438.0,
-                        1689.5,
+                        1707.0,
                         438.0
                     ],
                     "source": [
@@ -10858,9 +11090,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1687.0,
                         468.0,
-                        1689.5,
+                        1730.0,
                         468.0
                     ],
                     "source": [
@@ -10888,9 +11120,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        2013.75,
                         357.0,
-                        1979.5,
+                        1990.0,
                         357.0
                     ],
                     "source": [
@@ -10906,13 +11138,13 @@
                         0
                     ],
                     "midpoints": [
-                        2104.5,
+                        2169.5,
                         322.0,
                         2065.5,
                         322.0,
                         2065.5,
                         360.0,
-                        1979.5,
+                        1990.0,
                         360.0
                     ],
                     "source": [
@@ -10928,9 +11160,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        1990.0,
                         407.0,
-                        1979.5,
+                        2051.5,
                         407.0
                     ],
                     "source": [
@@ -10946,9 +11178,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        2051.5,
                         438.0,
-                        1979.5,
+                        1997.0,
                         438.0
                     ],
                     "source": [
@@ -10976,9 +11208,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        1977.0,
                         468.0,
-                        1979.5,
+                        2020.0,
                         468.0
                     ],
                     "source": [
@@ -11006,9 +11238,9 @@
                         0
                     ],
                     "midpoints": [
-                        2269.5,
+                        2303.75,
                         357.0,
-                        2269.5,
+                        2280.0,
                         357.0
                     ],
                     "source": [
@@ -11024,13 +11256,13 @@
                         0
                     ],
                     "midpoints": [
-                        2394.5,
+                        2459.5,
                         322.0,
                         2355.5,
                         322.0,
                         2355.5,
                         360.0,
-                        2269.5,
+                        2280.0,
                         360.0
                     ],
                     "source": [
@@ -11046,9 +11278,9 @@
                         0
                     ],
                     "midpoints": [
-                        2269.5,
+                        2280.0,
                         407.0,
-                        2269.5,
+                        2320.5,
                         407.0
                     ],
                     "source": [
@@ -11064,9 +11296,9 @@
                         0
                     ],
                     "midpoints": [
-                        2269.5,
+                        2320.5,
                         438.0,
-                        2269.5,
+                        2287.0,
                         438.0
                     ],
                     "source": [
@@ -11082,9 +11314,9 @@
                         0
                     ],
                     "midpoints": [
-                        2269.5,
+                        2267.0,
                         468.0,
-                        2269.5,
+                        2310.0,
                         468.0
                     ],
                     "source": [
@@ -11124,13 +11356,13 @@
                         0
                     ],
                     "midpoints": [
-                        466.5,
+                        465.6666666666667,
                         312.0,
                         495.0,
                         312.0,
                         495.0,
                         350.0,
-                        514.5,
+                        512.0,
                         350.0
                     ],
                     "source": [
@@ -11146,7 +11378,7 @@
                         0
                     ],
                     "midpoints": [
-                        493.5,
+                        494.3333333333333,
                         312.0,
                         495.0,
                         312.0,
@@ -11158,7 +11390,7 @@
                         312.0,
                         570.0,
                         350.0,
-                        589.5,
+                        587.0,
                         350.0
                     ],
                     "source": [
@@ -11174,9 +11406,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1143.75,
                         607.0,
-                        1109.5,
+                        1120.0,
                         607.0
                     ],
                     "source": [
@@ -11192,13 +11424,13 @@
                         0
                     ],
                     "midpoints": [
-                        1234.5,
+                        1299.5,
                         572.0,
                         1195.5,
                         572.0,
                         1195.5,
                         610.0,
-                        1109.5,
+                        1120.0,
                         610.0
                     ],
                     "source": [
@@ -11214,9 +11446,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1120.0,
                         657.0,
-                        1109.5,
+                        1160.5,
                         657.0
                     ],
                     "source": [
@@ -11232,9 +11464,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1160.5,
                         688.0,
-                        1109.5,
+                        1127.0,
                         688.0
                     ],
                     "source": [
@@ -11250,9 +11482,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1107.0,
                         718.0,
-                        1109.5,
+                        1148.5,
                         718.0
                     ],
                     "source": [
@@ -11292,9 +11524,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1433.75,
                         607.0,
-                        1399.5,
+                        1410.0,
                         607.0
                     ],
                     "source": [
@@ -11310,13 +11542,13 @@
                         0
                     ],
                     "midpoints": [
-                        1524.5,
+                        1589.5,
                         572.0,
                         1485.5,
                         572.0,
                         1485.5,
                         610.0,
-                        1399.5,
+                        1410.0,
                         610.0
                     ],
                     "source": [
@@ -11332,9 +11564,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1410.0,
                         657.0,
-                        1399.5,
+                        1450.5,
                         657.0
                     ],
                     "source": [
@@ -11350,9 +11582,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1450.5,
                         688.0,
-                        1399.5,
+                        1417.0,
                         688.0
                     ],
                     "source": [
@@ -11368,9 +11600,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1397.0,
                         718.0,
-                        1399.5,
+                        1438.5,
                         718.0
                     ],
                     "source": [
@@ -11398,13 +11630,13 @@
                         0
                     ],
                     "midpoints": [
-                        514.5,
+                        533.5,
                         312.0,
                         495.0,
                         312.0,
                         495.0,
                         350.0,
-                        439.5,
+                        476.5,
                         350.0
                     ],
                     "source": [
@@ -11420,13 +11652,13 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1150.0,
                         822.0,
                         1128.0,
                         822.0,
                         1128.0,
                         858.0,
-                        1109.5,
+                        1120.0,
                         858.0
                     ],
                     "source": [
@@ -11442,7 +11674,7 @@
                         0
                     ],
                     "midpoints": [
-                        1234.5,
+                        1299.5,
                         822.0,
                         1208.0,
                         822.0,
@@ -11454,7 +11686,7 @@
                         822.0,
                         1128.0,
                         858.0,
-                        1109.5,
+                        1120.0,
                         858.0
                     ],
                     "source": [
@@ -11470,9 +11702,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1120.0,
                         907.0,
-                        1109.5,
+                        1223.5,
                         907.0
                     ],
                     "source": [
@@ -11488,9 +11720,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1223.5,
                         938.0,
-                        1109.5,
+                        1127.0,
                         938.0
                     ],
                     "source": [
@@ -11506,9 +11738,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1107.0,
                         968.0,
-                        1109.5,
+                        1157.0,
                         968.0
                     ],
                     "source": [
@@ -11536,9 +11768,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1436.5,
                         857.0,
-                        1399.5,
+                        1410.0,
                         857.0
                     ],
                     "source": [
@@ -11554,13 +11786,13 @@
                         0
                     ],
                     "midpoints": [
-                        1524.5,
+                        1589.5,
                         822.0,
                         1491.0,
                         822.0,
                         1491.0,
                         860.0,
-                        1399.5,
+                        1410.0,
                         860.0
                     ],
                     "source": [
@@ -11576,7 +11808,7 @@
                         0
                     ],
                     "midpoints": [
-                        589.5,
+                        608.5,
                         312.0,
                         495.0,
                         312.0,
@@ -11588,7 +11820,7 @@
                         312.0,
                         570.0,
                         350.0,
-                        439.5,
+                        476.5,
                         350.0
                     ],
                     "source": [
@@ -11604,9 +11836,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1410.0,
                         907.0,
-                        1399.5,
+                        1475.0,
                         907.0
                     ],
                     "source": [
@@ -11622,9 +11854,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1475.0,
                         938.0,
-                        1399.5,
+                        1417.0,
                         938.0
                     ],
                     "source": [
@@ -11640,9 +11872,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1397.0,
                         968.0,
-                        1399.5,
+                        1438.5,
                         968.0
                     ],
                     "source": [
@@ -11670,9 +11902,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1723.75,
                         857.0,
-                        1689.5,
+                        1700.0,
                         857.0
                     ],
                     "source": [
@@ -11688,13 +11920,13 @@
                         0
                     ],
                     "midpoints": [
-                        1814.5,
+                        1879.5,
                         822.0,
                         1775.5,
                         822.0,
                         1775.5,
                         860.0,
-                        1689.5,
+                        1700.0,
                         860.0
                     ],
                     "source": [
@@ -11710,9 +11942,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1700.0,
                         907.0,
-                        1689.5,
+                        1807.0,
                         907.0
                     ],
                     "source": [
@@ -11728,9 +11960,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1807.0,
                         938.0,
-                        1689.5,
+                        1707.0,
                         938.0
                     ],
                     "source": [
@@ -11746,9 +11978,9 @@
                         0
                     ],
                     "midpoints": [
-                        439.5,
+                        437.0,
                         383.5,
-                        439.5,
+                        466.0,
                         383.5
                     ],
                     "source": [
@@ -11764,7 +11996,7 @@
                         0
                     ],
                     "midpoints": [
-                        513.5,
+                        516.0,
                         382.0,
                         422.0,
                         382.0,
@@ -11782,7 +12014,7 @@
                         462.0,
                         242.0,
                         498.0,
-                        24.5,
+                        145.5,
                         498.0
                     ],
                     "source": [
@@ -11798,9 +12030,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1687.0,
                         968.0,
-                        1689.5,
+                        1730.0,
                         968.0
                     ],
                     "source": [
@@ -11828,9 +12060,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1146.5,
                         1107.0,
-                        1109.5,
+                        1120.0,
                         1107.0
                     ],
                     "source": [
@@ -11846,13 +12078,13 @@
                         0
                     ],
                     "midpoints": [
-                        1234.5,
+                        1299.5,
                         1072.0,
                         1201.0,
                         1072.0,
                         1201.0,
                         1110.0,
-                        1109.5,
+                        1120.0,
                         1110.0
                     ],
                     "source": [
@@ -11868,9 +12100,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1120.0,
                         1157.0,
-                        1109.5,
+                        1206.0,
                         1157.0
                     ],
                     "source": [
@@ -11886,9 +12118,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1206.0,
                         1188.0,
-                        1109.5,
+                        1127.0,
                         1188.0
                     ],
                     "source": [
@@ -11904,9 +12136,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1107.0,
                         1218.0,
-                        1109.5,
+                        1157.0,
                         1218.0
                     ],
                     "source": [
@@ -11922,9 +12154,9 @@
                         0
                     ],
                     "midpoints": [
-                        439.5,
+                        466.0,
                         418.5,
-                        439.5,
+                        494.0,
                         418.5
                     ],
                     "source": [
@@ -11952,9 +12184,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1436.5,
                         1107.0,
-                        1399.5,
+                        1410.0,
                         1107.0
                     ],
                     "source": [
@@ -11970,13 +12202,13 @@
                         0
                     ],
                     "midpoints": [
-                        1524.5,
+                        1589.5,
                         1072.0,
                         1491.0,
                         1072.0,
                         1491.0,
                         1110.0,
-                        1399.5,
+                        1410.0,
                         1110.0
                     ],
                     "source": [
@@ -11992,9 +12224,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1410.0,
                         1157.0,
-                        1399.5,
+                        1496.0,
                         1157.0
                     ],
                     "source": [
@@ -12010,9 +12242,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1496.0,
                         1188.0,
-                        1399.5,
+                        1417.0,
                         1188.0
                     ],
                     "source": [
@@ -12028,9 +12260,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1397.0,
                         1218.0,
-                        1399.5,
+                        1443.5,
                         1218.0
                     ],
                     "source": [
@@ -12058,9 +12290,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1726.5,
                         1107.0,
-                        1689.5,
+                        1700.0,
                         1107.0
                     ],
                     "source": [
@@ -12076,13 +12308,13 @@
                         0
                     ],
                     "midpoints": [
-                        1814.5,
+                        1879.5,
                         1072.0,
                         1781.0,
                         1072.0,
                         1781.0,
                         1110.0,
-                        1689.5,
+                        1700.0,
                         1110.0
                     ],
                     "source": [
@@ -12098,9 +12330,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1700.0,
                         1157.0,
-                        1689.5,
+                        1740.5,
                         1157.0
                     ],
                     "source": [
@@ -12116,9 +12348,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1740.5,
                         1188.0,
-                        1689.5,
+                        1707.0,
                         1188.0
                     ],
                     "source": [
@@ -12134,9 +12366,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1687.0,
                         1218.0,
-                        1689.5,
+                        1740.5,
                         1218.0
                     ],
                     "source": [
@@ -12164,9 +12396,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        2016.5,
                         1107.0,
-                        1979.5,
+                        1990.0,
                         1107.0
                     ],
                     "source": [
@@ -12182,13 +12414,13 @@
                         0
                     ],
                     "midpoints": [
-                        24.5,
+                        145.5,
                         507.0,
                         72.0,
                         507.0,
                         72.0,
                         543.0,
-                        24.5,
+                        22.0,
                         543.0
                     ],
                     "source": [
@@ -12204,13 +12436,13 @@
                         0
                     ],
                     "midpoints": [
-                        2104.5,
+                        2169.5,
                         1072.0,
                         2071.0,
                         1072.0,
                         2071.0,
                         1110.0,
-                        1979.5,
+                        1990.0,
                         1110.0
                     ],
                     "source": [
@@ -12226,9 +12458,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        1990.0,
                         1157.0,
-                        1979.5,
+                        2079.5,
                         1157.0
                     ],
                     "source": [
@@ -12244,9 +12476,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        2079.5,
                         1188.0,
-                        1979.5,
+                        1997.0,
                         1188.0
                     ],
                     "source": [
@@ -12262,9 +12494,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        1977.0,
                         1218.0,
-                        1979.5,
+                        2030.5,
                         1218.0
                     ],
                     "source": [
@@ -12304,13 +12536,13 @@
                         0
                     ],
                     "midpoints": [
-                        1234.5,
+                        1299.5,
                         1322.0,
                         1195.5,
                         1322.0,
                         1195.5,
                         1360.0,
-                        1109.5,
+                        1155.0,
                         1360.0
                     ],
                     "source": [
@@ -12326,9 +12558,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1107.0,
                         1390.5,
-                        1109.5,
+                        1153.5,
                         1390.5
                     ],
                     "source": [
@@ -12356,9 +12588,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1454.0,
                         1357.0,
-                        1399.5,
+                        1397.0,
                         1357.0
                     ],
                     "source": [
@@ -12374,13 +12606,13 @@
                         0
                     ],
                     "midpoints": [
-                        1559.5,
+                        1624.5,
                         1322.0,
                         1526.0,
                         1322.0,
                         1526.0,
                         1360.0,
-                        1399.5,
+                        1397.0,
                         1360.0
                     ],
                     "source": [
@@ -12408,9 +12640,9 @@
                         0
                     ],
                     "midpoints": [
-                        1530.5,
+                        1533.0,
                         1518.5,
-                        1559.5,
+                        1557.0,
                         1518.5
                     ],
                     "source": [
@@ -12450,9 +12682,9 @@
                         0
                     ],
                     "midpoints": [
-                        1559.5,
+                        1582.5,
                         1552.5,
-                        1559.5,
+                        1557.0,
                         1552.5
                     ],
                     "source": [
@@ -12468,13 +12700,13 @@
                         0
                     ],
                     "midpoints": [
-                        24.5,
+                        44.0,
                         577.0,
                         34.0,
                         577.0,
                         34.0,
                         733.0,
-                        24.5,
+                        26.0,
                         733.0
                     ],
                     "order": 1,
@@ -12491,7 +12723,7 @@
                         0
                     ],
                     "midpoints": [
-                        24.5,
+                        44.0,
                         507.0,
                         72.0,
                         507.0,
@@ -12509,7 +12741,7 @@
                         577.0,
                         65.0,
                         733.0,
-                        89.5,
+                        87.0,
                         733.0
                     ],
                     "order": 0,
@@ -12526,9 +12758,9 @@
                         0
                     ],
                     "midpoints": [
-                        1559.5,
+                        1575.5,
                         1585.0,
-                        1559.5,
+                        1598.5,
                         1585.0
                     ],
                     "source": [
@@ -12556,7 +12788,7 @@
                         0
                     ],
                     "midpoints": [
-                        129.5,
+                        170.0,
                         577.0,
                         65.0,
                         577.0,
@@ -12568,7 +12800,7 @@
                         577.0,
                         72.0,
                         713.0,
-                        24.5,
+                        26.0,
                         713.0
                     ],
                     "source": [
@@ -12584,9 +12816,9 @@
                         0
                     ],
                     "midpoints": [
-                        24.5,
+                        22.0,
                         1017.0,
-                        489.5,
+                        487.0,
                         1017.0
                     ],
                     "source": [
@@ -12614,13 +12846,13 @@
                         0
                     ],
                     "midpoints": [
-                        489.5,
+                        523.75,
                         884.0,
                         502.0,
                         884.0,
                         502.0,
                         920.0,
-                        489.5,
+                        492.0,
                         920.0
                     ],
                     "source": [
@@ -12640,7 +12872,7 @@
                         730.0,
                         64.0,
                         577.0,
-                        51.0,
+                        49.5,
                         577.0
                     ],
                     "order": 1,
@@ -12657,13 +12889,13 @@
                         1
                     ],
                     "midpoints": [
-                        24.5,
+                        22.0,
                         577.0,
                         34.0,
                         577.0,
                         34.0,
                         733.0,
-                        50.5,
+                        53.0,
                         733.0
                     ],
                     "order": 0,
@@ -12693,7 +12925,7 @@
                         1
                     ],
                     "midpoints": [
-                        489.5,
+                        492.0,
                         879.0,
                         612.0,
                         879.0,
@@ -12717,7 +12949,7 @@
                         957.0,
                         612.0,
                         995.0,
-                        629.8333333333334,
+                        629.0,
                         995.0
                     ],
                     "source": [
@@ -12733,9 +12965,9 @@
                         0
                     ],
                     "midpoints": [
-                        629.5,
+                        666.5,
                         882.0,
-                        629.5,
+                        640.0,
                         882.0
                     ],
                     "source": [
@@ -12751,9 +12983,9 @@
                         0
                     ],
                     "midpoints": [
-                        629.5,
+                        640.0,
                         931.0,
-                        629.5,
+                        705.0,
                         931.0
                     ],
                     "source": [
@@ -12769,9 +13001,9 @@
                         0
                     ],
                     "midpoints": [
-                        629.5,
+                        705.0,
                         961.0,
-                        629.5,
+                        647.0,
                         961.0
                     ],
                     "source": [
@@ -12787,9 +13019,9 @@
                         2
                     ],
                     "midpoints": [
-                        629.5,
+                        627.0,
                         998.5,
-                        770.1666666666667,
+                        771.0,
                         998.5
                     ],
                     "source": [
@@ -12805,9 +13037,9 @@
                         0
                     ],
                     "midpoints": [
-                        819.5,
+                        856.5,
                         882.0,
-                        819.5,
+                        830.0,
                         882.0
                     ],
                     "source": [
@@ -12823,9 +13055,9 @@
                         0
                     ],
                     "midpoints": [
-                        819.5,
+                        830.0,
                         931.0,
-                        819.5,
+                        891.5,
                         931.0
                     ],
                     "source": [
@@ -12841,9 +13073,9 @@
                         0
                     ],
                     "midpoints": [
-                        819.5,
+                        891.5,
                         961.0,
-                        819.5,
+                        837.0,
                         961.0
                     ],
                     "source": [
@@ -12859,9 +13091,9 @@
                         3
                     ],
                     "midpoints": [
-                        819.5,
+                        817.0,
                         998.5,
-                        910.5,
+                        913.0,
                         998.5
                     ],
                     "source": [
@@ -12877,9 +13109,9 @@
                         0
                     ],
                     "midpoints": [
-                        489.5,
+                        700.0,
                         1041.0,
-                        489.5,
+                        584.0,
                         1041.0
                     ],
                     "source": [
@@ -12897,7 +13129,7 @@
                     "midpoints": [
                         420.0,
                         613.5,
-                        339.5,
+                        390.5,
                         613.5
                     ],
                     "source": [
@@ -12913,9 +13145,9 @@
                         0
                     ],
                     "midpoints": [
-                        339.5,
+                        390.5,
                         648.5,
-                        339.5,
+                        478.0,
                         648.5
                     ],
                     "source": [
@@ -12943,9 +13175,9 @@
                         0
                     ],
                     "midpoints": [
-                        24.5,
+                        51.0,
                         918.5,
-                        24.5,
+                        90.0,
                         918.5
                     ],
                     "source": [
@@ -12961,13 +13193,13 @@
                         0
                     ],
                     "midpoints": [
-                        129.5,
+                        132.0,
                         882.0,
                         95.0,
                         882.0,
                         95.0,
                         920.0,
-                        24.5,
+                        90.0,
                         920.0
                     ],
                     "source": [
@@ -12995,9 +13227,9 @@
                         0
                     ],
                     "midpoints": [
-                        259.5,
+                        296.5,
                         901.0,
-                        259.5,
+                        275.0,
                         901.0
                     ],
                     "source": [
@@ -13025,9 +13257,9 @@
                         0
                     ],
                     "midpoints": [
-                        24.5,
+                        142.5,
                         997.0,
-                        24.5,
+                        61.5,
                         997.0
                     ],
                     "source": [
@@ -13043,9 +13275,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1146.5,
                         107.0,
-                        1109.5,
+                        1120.0,
                         107.0
                     ],
                     "source": [
@@ -13061,13 +13293,13 @@
                         0
                     ],
                     "midpoints": [
-                        1234.5,
+                        1299.5,
                         72.0,
                         1201.0,
                         72.0,
                         1201.0,
                         110.0,
-                        1109.5,
+                        1120.0,
                         110.0
                     ],
                     "source": [
@@ -13083,9 +13315,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1120.0,
                         157.0,
-                        1109.5,
+                        1181.5,
                         157.0
                     ],
                     "source": [
@@ -13103,7 +13335,7 @@
                     "midpoints": [
                         44.0,
                         166.0,
-                        93.5,
+                        96.0,
                         166.0
                     ],
                     "source": [
@@ -13131,9 +13363,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1181.5,
                         188.0,
-                        1109.5,
+                        1127.0,
                         188.0
                     ],
                     "source": [
@@ -13149,9 +13381,9 @@
                         0
                     ],
                     "midpoints": [
-                        1109.5,
+                        1107.0,
                         218.0,
-                        1109.5,
+                        1148.5,
                         218.0
                     ],
                     "source": [
@@ -13179,9 +13411,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1436.5,
                         107.0,
-                        1399.5,
+                        1410.0,
                         107.0
                     ],
                     "source": [
@@ -13197,13 +13429,13 @@
                         0
                     ],
                     "midpoints": [
-                        1524.5,
+                        1589.5,
                         72.0,
                         1491.0,
                         72.0,
                         1491.0,
                         110.0,
-                        1399.5,
+                        1410.0,
                         110.0
                     ],
                     "source": [
@@ -13219,9 +13451,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1410.0,
                         157.0,
-                        1399.5,
+                        1471.5,
                         157.0
                     ],
                     "source": [
@@ -13237,9 +13469,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1471.5,
                         188.0,
-                        1399.5,
+                        1417.0,
                         188.0
                     ],
                     "source": [
@@ -13255,9 +13487,9 @@
                         0
                     ],
                     "midpoints": [
-                        1399.5,
+                        1397.0,
                         218.0,
-                        1399.5,
+                        1438.5,
                         218.0
                     ],
                     "source": [
@@ -13297,9 +13529,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1723.75,
                         107.0,
-                        1689.5,
+                        1700.0,
                         107.0
                     ],
                     "source": [
@@ -13315,13 +13547,13 @@
                         0
                     ],
                     "midpoints": [
-                        1814.5,
+                        1879.5,
                         72.0,
                         1775.5,
                         72.0,
                         1775.5,
                         110.0,
-                        1689.5,
+                        1700.0,
                         110.0
                     ],
                     "source": [
@@ -13337,9 +13569,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1700.0,
                         157.0,
-                        1689.5,
+                        1740.5,
                         157.0
                     ],
                     "source": [
@@ -13355,9 +13587,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1740.5,
                         188.0,
-                        1689.5,
+                        1707.0,
                         188.0
                     ],
                     "source": [
@@ -13373,9 +13605,9 @@
                         0
                     ],
                     "midpoints": [
-                        1689.5,
+                        1687.0,
                         218.0,
-                        1689.5,
+                        1728.5,
                         218.0
                     ],
                     "source": [
@@ -13403,7 +13635,7 @@
                         1
                     ],
                     "midpoints": [
-                        514.5,
+                        517.0,
                         162.0,
                         337.0,
                         162.0,
@@ -13437,9 +13669,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        2016.5,
                         107.0,
-                        1979.5,
+                        1990.0,
                         107.0
                     ],
                     "source": [
@@ -13455,13 +13687,13 @@
                         0
                     ],
                     "midpoints": [
-                        2104.5,
+                        2169.5,
                         72.0,
                         2071.0,
                         72.0,
                         2071.0,
                         110.0,
-                        1979.5,
+                        1990.0,
                         110.0
                     ],
                     "source": [
@@ -13477,9 +13709,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        1990.0,
                         157.0,
-                        1979.5,
+                        2069.0,
                         157.0
                     ],
                     "source": [
@@ -13495,9 +13727,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        2069.0,
                         188.0,
-                        1979.5,
+                        1997.0,
                         188.0
                     ],
                     "source": [
@@ -13513,9 +13745,9 @@
                         0
                     ],
                     "midpoints": [
-                        1979.5,
+                        1977.0,
                         218.0,
-                        1979.5,
+                        2023.5,
                         218.0
                     ],
                     "source": [
@@ -13543,9 +13775,9 @@
                         0
                     ],
                     "midpoints": [
-                        2269.5,
+                        2306.5,
                         107.0,
-                        2269.5,
+                        2280.0,
                         107.0
                     ],
                     "source": [
@@ -13561,9 +13793,9 @@
                         1
                     ],
                     "midpoints": [
-                        318.5,
+                        321.0,
                         198.5,
-                        278.5,
+                        281.0,
                         198.5
                     ],
                     "source": [
@@ -13591,13 +13823,13 @@
                         0
                     ],
                     "midpoints": [
-                        2394.5,
+                        2459.5,
                         72.0,
                         2361.0,
                         72.0,
                         2361.0,
                         110.0,
-                        2269.5,
+                        2280.0,
                         110.0
                     ],
                     "source": [
@@ -13613,9 +13845,9 @@
                         0
                     ],
                     "midpoints": [
-                        2269.5,
+                        2280.0,
                         157.0,
-                        2269.5,
+                        2320.5,
                         157.0
                     ],
                     "source": [
@@ -13631,9 +13863,9 @@
                         0
                     ],
                     "midpoints": [
-                        2269.5,
+                        2320.5,
                         188.0,
-                        2269.5,
+                        2287.0,
                         188.0
                     ],
                     "source": [
@@ -13649,9 +13881,9 @@
                         0
                     ],
                     "midpoints": [
-                        2269.5,
+                        2267.0,
                         218.0,
-                        2269.5,
+                        2320.5,
                         218.0
                     ],
                     "source": [
@@ -13679,9 +13911,9 @@
                         0
                     ],
                     "midpoints": [
-                        2559.5,
+                        2596.5,
                         107.0,
-                        2559.5,
+                        2570.0,
                         107.0
                     ],
                     "source": [
@@ -13697,13 +13929,13 @@
                         0
                     ],
                     "midpoints": [
-                        2684.5,
+                        2749.5,
                         72.0,
                         2651.0,
                         72.0,
                         2651.0,
                         110.0,
-                        2559.5,
+                        2570.0,
                         110.0
                     ],
                     "source": [
@@ -13719,9 +13951,9 @@
                         0
                     ],
                     "midpoints": [
-                        2559.5,
+                        2570.0,
                         157.0,
-                        2559.5,
+                        2635.0,
                         157.0
                     ],
                     "source": [
@@ -13737,13 +13969,13 @@
                         0
                     ],
                     "midpoints": [
-                        209.5,
+                        244.0,
                         197.0,
                         111.0,
                         197.0,
                         111.0,
                         235.0,
-                        24.5,
+                        79.0,
                         235.0
                     ],
                     "source": [
@@ -13759,9 +13991,9 @@
                         0
                     ],
                     "midpoints": [
-                        2559.5,
+                        2635.0,
                         188.0,
-                        2559.5,
+                        2577.0,
                         188.0
                     ],
                     "source": [
@@ -13777,9 +14009,9 @@
                         0
                     ],
                     "midpoints": [
-                        2559.5,
+                        2557.0,
                         218.0,
-                        2559.5,
+                        2598.5,
                         218.0
                     ],
                     "source": [
@@ -13807,9 +14039,9 @@
                         0
                     ],
                     "midpoints": [
-                        2849.5,
+                        2886.5,
                         107.0,
-                        2849.5,
+                        2860.0,
                         107.0
                     ],
                     "source": [
@@ -13825,13 +14057,13 @@
                         0
                     ],
                     "midpoints": [
-                        2974.5,
+                        3039.5,
                         72.0,
                         2941.0,
                         72.0,
                         2941.0,
                         110.0,
-                        2849.5,
+                        2860.0,
                         110.0
                     ],
                     "source": [
@@ -13847,9 +14079,9 @@
                         0
                     ],
                     "midpoints": [
-                        2849.5,
+                        2860.0,
                         157.0,
-                        2849.5,
+                        2963.5,
                         157.0
                     ],
                     "source": [
@@ -13865,9 +14097,9 @@
                         0
                     ],
                     "midpoints": [
-                        2849.5,
+                        2963.5,
                         188.0,
-                        2849.5,
+                        2867.0,
                         188.0
                     ],
                     "source": [
@@ -13883,9 +14115,9 @@
                         0
                     ],
                     "midpoints": [
-                        2849.5,
+                        2847.0,
                         218.0,
-                        2849.5,
+                        2893.5,
                         218.0
                     ],
                     "source": [
