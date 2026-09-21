@@ -1,3 +1,3 @@
 stage: build
-progress: slice 3 v0.4.2 CONFIRMED working in MAX (2026-09-21): voice + main patch + presentation UI; next = jit.world terrain/orbit view; later = more baked banks, Chebyshev terrain (v1.1)
+progress: v0.5.0 jit.world terrain/orbit view built (first GL patch in repo) -- MAX test pending; v0.4.2 synth confirmed working; later = more baked banks, mass-spring terrain, Chebyshev terrain (v1.1)
 created: 2026-09-08T02:17:03.836658+00:00

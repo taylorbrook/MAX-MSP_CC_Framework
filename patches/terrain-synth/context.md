@@ -414,3 +414,28 @@ v0.4.2: MAX re-saves a `newobj`-form `jit.pwindow` as maxclass `jit.pwindow` and
 to its 80x60 default -> terrain picture restored to 150x150 (now a true UI box, so it sticks).
 `jit.pwindow` / `jit.cellblock` added to `UI_MAXCLASSES`; build future pwindows as UI boxes so the
 size survives the first re-save. MAX also re-proportioned the kslider to 864x98 (fixed key aspect).
+
+## Build slice 3b (2026-09-21, v0.5.0) -- jit.world terrain/orbit view
+
+Main patch only. `p terrain-view` (in: terrain-changed bang | view on/off | rotate deg | tilt deg;
+out: jit_gl_texture) -> second `jit.pwindow` (208x208) in a new VIEW presentation panel
+(x 900-1128; fits the user's 1138-wide window) with ON toggle + ROTATE / TILT dials.
+
+- **Context:** `jit.world tsynview @visible 0 @enable 1 @output_texture 1 @fsaa 1` -> texture ->
+  `jit.pwindow` -- the form in the shipped jit.pwindow help ("texture" tab). No floating window.
+- **Surface:** on each terrain change (`p terrain-source` outlet -> `t b l`), `t b b b` bangs, right
+  to left: static z plane (`exprfill 0 snorm[1]`), a second `jit.matrix terrain` reference ->
+  `jit.matrix 1 float32 64 64 @interp 1` -> `jit.op @op * @val 0.3`, static x plane (hot) ->
+  `jit.pack 3` -> `jit.gl.mesh tsynview @draw_mode tri_grid @auto_normals 1 @lighting_enable 1`.
+- **Orbit:** a helper `terrain-osc` instance at 110 Hz listening to `receive tsyn-osc` (so shape /
+  radius / rotation / lobes / feedback / centre match the voices; pitch zoom only differs above
+  ~zoomk Hz; per-voice audio-rate terrain mod is NOT shown) -> gen~ (x, nearest terrainbuf height
+  * 0.3 + 0.03, z) -> `jit.catch~ 3 @mode 2 @framesize 512` banged by the jit.world draw bang ->
+  `jit.gl.mesh tsynview @draw_mode line_strip @lighting_enable 0`.
+- Rotate/tilt: `pak rotatexyz 35. 30. 0.` -> both meshes (`@scale 0.62` each; no extra camera).
+- ob3d attrs (`color`, `scale`, `rotatexyz`, `lighting_enable`) are not in the DB attribute list
+  for jit.gl.mesh; forms copied from the shipped jit.gl.mesh help. `line_width` skipped (glcore).
+
+Unverified in MAX: everything GL (first GL patch in the repo): texture-to-pwindow embedding,
+jit.pack plane order / tri_grid orientation vs the terrain picture, jit.catch~ mode 2 frame shape,
+helper osc + DSP-off behaviour.
