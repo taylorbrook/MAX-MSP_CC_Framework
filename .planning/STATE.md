@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-09-21 - Completed quick task 260921-g5d: repo review vs installed Max 9.1.5
+Last activity: 2026-09-21 - Completed quick task 260921-gut: triaged the 9 MF-02 pytest failures, suite green
 
 ## Performance Metrics
 
@@ -79,6 +79,7 @@ None.
 | 260703-lwq | Prune orphaned quick-task dirs (2 removed, 89 keepers with SUMMARY.md); confirmed .claude/worktrees/ gitignored | 2026-07-03 | (docs commit) | | [260703-lwq-prune-orphaned-empty-quick-task-slugs-un](./quick/260703-lwq-prune-orphaned-empty-quick-task-slugs-un/) |
 | 260826-kvk | Fix presentation-mode text contrast: resolve background in presentation coords, all panel color encodings, box-own bgcolor; WCAG critic guard + CLAUDE.md rule | 2026-08-26 | 7193b4a | | [260826-kvk-fix-presentation-mode-panel-text-color-c](./quick/260826-kvk-fix-presentation-mode-panel-text-color-c/) |
 | 260921-g5d | Repo review vs installed Max 9.1.5: 15 findings (MF-01..03, SF-01..08, NH-01..04). DB drift near-zero (9 unresolved, 5 are doc pages; 0 I/O counts contradict an unambiguous maxref; 0 patch objects unresolved). **2 fixes applied** by the orchestrator after executor verification: `bach.list2llll` verified_installed: false (9ddd8c4), CLAUDE.md object-count table + packages/ layout (540b33a); suite unchanged at 9 pre-existing failures | 2026-09-21 | 9ddd8c4 | | [260921-g5d-review-this-repo-to-see-if-there-are-any](./quick/260921-g5d-review-this-repo-to-see-if-there-are-any/) |
+| 260921-gut | Triage the 9 pre-existing MF-02 pytest failures: 6x review-blocker allowlist entries (allowlist unmaintained since 85b8f92), 2x byte-identity via content-derived MAX-compact-array exemption + unconditional semantic round-trip assert (corrects MF-02: committed scala-synth round-trips byte-identical), 1x dsp_critic line-index anchor de-brittled. Suite green: 0 failed; no `patches/` or `src/` changes | 2026-09-21 | 784a54d | Verified | [260921-gut-triage-the-9-pre-existing-pytest-failure](./quick/260921-gut-triage-the-9-pre-existing-pytest-failure/) |
 
 ## Deferred Items
 
