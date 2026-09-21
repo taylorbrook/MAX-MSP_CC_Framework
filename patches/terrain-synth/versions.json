@@ -179,6 +179,14 @@
         "terrain-osc-test.maxpat",
         "terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.14.0",
+      "description": "9 new analytic terrains (peaks, spiral, egg crate, ridges, pyramids, drumhead, wave packet, interference, terraces) in all four source menus",
+      "timestamp": "2026-09-21T22:47:54.306230+00:00",
+      "files_changed": [
+        "terrain-synth.maxpat"
+      ]
     }
   ]
 }
