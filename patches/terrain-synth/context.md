@@ -551,3 +551,20 @@ Decisions (multiple-choice discuss): **own terrain** for B, **full duplicate** o
 Unverified in MAX: everything in this version -- B terrain fill at load, B audible at MIX 1, B orbit
 dials / XY pad / shape, ratio steps + detune beating, mod depths on B, view A/B switch (surface +
 orbit dots), `dial @size 15`, CPU with two terrain oscillators per voice (expect ~2x the 3 %).
+
+## 3D views replace the 2D terrain pictures (2026-09-21, v0.8.0)
+
+User request: no separate view on the right; the 3D render sits where each terrain's 2D picture was.
+
+- The v0.7.0 single A/B-switched `p terrain-view` is gone. Two dedicated views instead:
+  `p terrain-view-a` = the v0.5.2 **confirmed** subpatch verbatim (context `tsynview`), and
+  `p terrain-view-b` = the same with `tsynviewB` / `jit.matrix terrainB` / `terrainbufB` /
+  `terrain-osc-b` + `receive tsyn-oscB`. One invisible `jit.world` per terrain -> texture -> the
+  existing 150x150 TERRAIN A / TERRAIN B `jit.pwindow`s (the 2D `jit.expr` display output of
+  `p terrain-source` is still produced but no longer connected to anything).
+- ON / ROTATE / TILT are shared: `t i i` / `t f f` fan out to both views. In presentation they moved
+  into a "3D VIEW  A + B" panel right of OSC B PITCH ([511,410,379,108]); the right-hand VIEW panel,
+  its 208 px picture and the A/B menu are removed; window is 900 wide.
+- Unverified in MAX: two offscreen `jit.world` contexts in one patch (each feeding its own
+  `jit.pwindow` by texture), readability of the render at 150 px (mesh `@scale 0.6`), CPU/GPU of two
+  worlds + two helper oscillators.

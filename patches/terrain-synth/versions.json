@@ -120,6 +120,14 @@
         "generated/terrain-voice.maxpat",
         "generated/terrain-osc-b.maxpat"
       ]
+    },
+    {
+      "version": "0.8.0",
+      "description": "v0.8.0: 3D views replace the 2D terrain pictures -- one offscreen jit.world per terrain (p terrain-view-a / -b) rendering into the TERRAIN A / B pictures; right-hand VIEW panel removed, shared ON / ROTATE / TILT moved beside OSC B PITCH; window 900 wide",
+      "timestamp": "2026-09-21T19:43:08.230416+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat"
+      ]
     }
   ]
 }
