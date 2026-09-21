@@ -1,9 +1,9 @@
-stage: iterate
-progress: v0.9.0 confirmed working in MAX
+stage: complete
+progress: v0.11.1 confirmed fully working in MAX (user, 2026-09-20) -- incl. v0.11.0 presets and v0.11.1 freq/gate js interface
 created: 2026-08-13T16:23:07.863907+00:00
 last_action: v0.11.0: preset save/recall added (pattrstorage + preset UI)
 notes: Confirmed in MAX 2026-08-19: 9/8 sounds D4+4c, table ratio and (actual) decimal agree, ratio column matches the cents column. The VST 'signature' doubled-interval path is gone for good -- see context.md 'Decisions (iterate, 2026-08-19)'.
-current_stage: v0.9.0 - tuning math correction
-status: v0.9.0 confirmed working in MAX
-version: 0.9.0
+current_stage: v0.11.1 - complete
+status: v0.11.1 confirmed working in MAX
+version: 0.11.1
 note: v0.11.1: ji-engine.js note interface changed to freq <rootHz> <gate> messages
