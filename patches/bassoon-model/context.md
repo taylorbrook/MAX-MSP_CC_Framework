@@ -417,7 +417,7 @@ Net cost: +2 Param, +1 History, ~10 lines. No topology change.
 
 ## 2026-09-21 Review + fixes (v0.18.0 DSP/host, v0.19.0 layout)
 
-All DSP numbers below come from a Python run of the actual codebox (`tools/genrun.py`, a minimal GenExpr->Python runner; `tools/core.py` has the pitch/harmonic analyzer) -- **not yet confirmed in MAX**.
+All DSP numbers below come from a Python run of the actual codebox (`tools/genrun.py`, a minimal GenExpr->Python runner; `tools/core.py` has the pitch/harmonic analyzer) -- **user-confirmed passing in MAX on 2026-09-21** (gen~ compiles, pitch correct, breath threshold, staccato/tongue through `p articulation`).
 
 ### Findings (v0.17.0)
 - Loop delay was a full period with an inverting reflection -> period-2 orbit -> sounded **one octave below** `in1`, odd harmonics only (evens ~-36 dB).
@@ -443,3 +443,6 @@ All DSP numbers below come from a Python run of the actual codebox (`tools/genru
 - `drift_on` live.toggle keeps `parameter_type 0` (works; enum type only matters for Live automation display).
 - Presets still store `amp` (breath) by original design.
 - Critic's hot/cold warning on `p articulation` is a false positive: its two inlets are independent triggers.
+
+### Confirmation
+- 2026-09-21: user ran the v0.19.0 MAX checklist (compile, 220 Hz in = 220 Hz out, threshold ~0.35-0.4, articulation buttons) -> pass.
