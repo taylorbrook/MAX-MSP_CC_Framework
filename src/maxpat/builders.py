@@ -1094,8 +1094,12 @@ class BuildersMixin:
     ) -> tuple[Box, str | None]:
         """Add a node.script box for Node for Max.
 
-        node.script is NOT in the object database (it is a MAX infrastructure
-        object). Uses Box.__new__ to bypass DB lookup.
+        node.script is in the object database (added by quick task
+        260921-j0h, extracted from the Max 9.1.5 refpage). This builder still
+        uses Box.__new__ to bypass DB lookup so the existing ``num_outlets``
+        parameter keeps working; the real MAX object always creates 2 outlets
+        (fixed 1 in / 2 out), so any value other than the default emits a box
+        MAX will not honor.
 
         Args:
             filename: JavaScript file name (e.g., "myscript.js").
