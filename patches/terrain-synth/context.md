@@ -667,3 +667,62 @@ all 16 depth dials audible incl. the new ROTATE path (terrain-osc / -b inlet 6, 
 LFO restart from the `sig~` gate edge, S&H without clicks, ENV 2 (second `adsr~`, fixed level) sweeping the
 orbit, LFO visible on orbit dots + marker (`1 1 0 5` line~ restart pulse), clean console with the 21-inlet
 gen~ matrix and signals through `p motion` inlets inside `poly~ ... up 2`, CPU acceptable, umenu item "S&H".
+
+## Animated terrain: MORPH + RIPPLE (2026-09-21, v0.11.0)
+
+User request: animated terrain for A and B -- (a) morph between two sources, (b) jit.gen wave-equation ripple,
+one qmetro, audio follows every animated frame, 3D surfaces rebuild per frame, window <= 900 wide.
+
+Decisions (multiple-choice discuss):
+- **Bridge: `jit.scanwrap` + bench.** Animated frames go `jit.scanwrap 1 float32 65536 1` -> a second
+  `jit.buffer~ terrainbuf` (ONE write, row-major = idx y*256 + x) instead of the 256-row uzi loop. The confirmed
+  `p matrix2buffer` uzi path is untouched and still serves static changes (menu / REGEN / DETAIL / morph dial while
+  animation is off). `cpuclock` pairs measure both copies -> `send tsyn-bench` -> section 4.14 readouts
+  (static A / anim A / static B / anim B ms) + a frame-ms readout on `p animate`. A 128x128 fallback is NOT built;
+  decide from the numbers.
+- **Ripple = displacement layer.** Own 64x64 field `trip<A|B>` (+ `trip<A|B>p` = previous frame);
+  terrain = clip(xfade(source 1, source 2) + upsampled ripple, -1, 1). Leak decays the field to 0, so the terrain
+  always relaxes to its source. 64x64 (upsampled with the proven `jit.matrix ... @interp 1` form) because at one
+  step per frame a wave crosses 64 cells in ~3 s; at 256 it would take ~12 s.
+- **Source 2 = full clone** of the confirmed generator block (all 7 entries incl. image), raw-JSON copy, own store
+  `tsrc<A|B>2`; DETAIL shared; REGEN re-rolls both menus (`t b b`).
+- **Layout: one 108 px ANIMATE strip** at y 524 (ON + FPS | ANIMATE A | ANIMATE B); MOTION / FILTER / keyboard
+  rows moved down 116 px; window 900 x 1048.
+- Defaults taken without asking: excite point = that slot's orbit centre (cx / cy -> `param ex_x / ex_y`);
+  NOTE toggle = excite on every note-on; AUTO overrides the MORPH dial (dial + readout follow via `set`);
+  animation OFF clears the ripple and does one static recompose.
+
+Build:
+- **`p terrain-source` / `-b`:** `obj-6` renamed `jit.matrix tsrc<A|B>1 ...` (source 1 store). New third inlet
+  (rightmost, x 4000) -> `route tick morph amorph src2 excite rclear` (+ unmatched `param ...` -> jit.gen).
+  Compose `t b b b` (right to left): ripple reader -> upsample -> `jit.op @op +` right | source 2 reader ->
+  `jit.xfade` right | source 1 reader -> `jit.xfade` -> `+` -> `jit.clip @min -1. @max 1.` ->
+  `jit.matrix terrain 1 float32 256 256` -> existing `t l l` -> `gate 2 1` (1 = uzi, 2 = scanwrap) -> bridge.
+  Outlet 0 still fires per compose, so the 3D view rebuilds per frame through the existing terrain-changed bang.
+- **Ripple step (`jit.gen`, embedded codebox, `classnamespace: jit.gen`, built with `add_gen()` + rename):**
+  u_prev reader -> in2 (cold), u reader -> in1 (hot); `out2 = u` -> `trip p` store, `out1 = u_next` -> `trip`
+  store (outlets fire right to left, both are jit.gen's own output matrices, so no named-matrix aliasing).
+  `nxt = (u + (1-damp)(u-up) + c2 * lap) * (1-leak)`, c2 clamped <= 0.48 (2D stability limit 0.5), output
+  clamped -1..1, fixed leak 0.003. Excite = gaussian bump `ex_amp` for exactly one frame (`param ex_amp 0.7`,
+  reset to 0 after each step). Neighbours via `sample(in1, norm +/- del.xz / del.zy, boundmode="clamp")`
+  (form from the shipped unsharp.mask / sampling.modes examples). Spaces only.
+- **`p animate` (6 in / 7 out):** ON -> `qmetro` (interval = 1000 / FPS, FPS 5-30, default 25) ->
+  `t b b b b b b`: clock | auto A | tick A | auto B | tick B | clock -> frame ms. Auto-morph: phase += rate * dt,
+  morph = 0.5 - 0.5 cos(2 pi phase) -> `amorph` + `set` to the dial / readout; moving the dial re-seeds the phase.
+  User morph goes out as `morph` (static recompose) when OFF and `amorph` (value only) when ON.
+- **Main:** sections 4.13 (controls), 4.14 (bench), 4.15 (presentation panels). Everything reaches the sources by
+  `send tsyn-animA / -B` -> `receive` -> inlet 2. Note-on tap: section 6 `gate` -> `t b i` -> `send tsyn-noteon`.
+  Existing cords that gained a second destination were split through triggers (REGEN `t b b`, cx / cy `t f f`).
+  Ranges: TENSION `0.02 + 0.46 * d/127`, DAMP `0.002 * 150^(d/127)`, AUTO `0.005 * 200^((d-1)/126)` Hz (0 = off).
+- Deliberate presentation exclusions: the five bench / frame-ms flonums (patching view diagnostics).
+
+Verified against DB + maxref / shipped patches: jit.xfade (2 in, `xfade`), jit.scanwrap (args = matrix spec, mode 0
+fill), jit.buffer~ (`inputfirst` default 0 on the new instance), jit.gen (`param <name> <v>` messages, embedded
+codebox form from jit.gen.maxhelp), jit.clip min / max floats, cpuclock, qmetro. `expr` has no confirmed `fmod` ->
+phase wrap is `x - int(x)`.
+
+Unverified in MAX: everything -- jit.gen compile (sample + boundmode in a 2-inlet codebox, swizzles on `concat(1/dim, 0)`),
+right-to-left outlet order of a 2-out jit.gen, a second `jit.buffer~` instance on the same buffer~, jit.scanwrap
+256x256 -> 65536x1 ordering (audio must sound identical with animation ON and everything at rest), 65536-frame single
+write cost, per-frame 3D rebuild cost x 2, ripple feel (tension / damp ranges, bump size 0.07, amp 0.7), audible zipper
+at 25 fps (the buffer is rewritten under the playing oscillators), window height 1048 on the user's display.
