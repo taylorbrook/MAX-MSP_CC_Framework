@@ -57,6 +57,14 @@
         "generated/terrain-voice.maxpat",
         "generated/terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.4.2",
+      "description": "v0.4.2: terrain jit.pwindow back to 150x150 (MAX normalised the newobj form to 80x60 on re-save); window height fits MAX's 864x98 kslider",
+      "timestamp": "2026-09-21T18:36:10.558627+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat"
+      ]
     }
   ]
 }
