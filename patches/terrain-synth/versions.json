@@ -136,6 +136,18 @@
       "files_changed": [
         "generated/terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.10.0",
+      "description": "v0.10.0: per-voice motion -- LFO (0.05-20 Hz, sine / triangle / S&H, restarts at note-on) and ENV 2 (own ADSR, fixed level) -> orbit radius / rotate / centre x / y with own bipolar depths for slot A and slot B (p motion in terrain-voice, terrain-lfo abstraction, rotation-mod inlet 6 on terrain-osc / -b); MOTION rows in presentation (window 900 x 1029); LFO shown on orbit dots + play marker",
+      "timestamp": "2026-09-21T20:41:47.581453+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat",
+        "generated/terrain-voice.maxpat",
+        "generated/terrain-lfo.maxpat",
+        "generated/terrain-osc.maxpat",
+        "generated/terrain-osc-b.maxpat"
+      ]
     }
   ]
 }
