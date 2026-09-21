@@ -88,6 +88,9 @@ def review_packages(
     # Community extraction check (lightweight, always runs)
     results.extend(_check_community_extracted(box_lookup, db))
 
+    # Install-state check (lightweight, always runs) -- D-06
+    results.extend(_check_install_state(box_lookup, db))
+
     return results
 
 
@@ -426,5 +429,61 @@ def _check_community_extracted(
                 f"Run package extraction for '{pkg}' to enable full validation "
                 f"and object database lookups",
             ))
+
+    return results
+
+
+# ---------------------------------------------------------------------------
+# Install-state check
+# ---------------------------------------------------------------------------
+
+def _check_install_state(
+    box_lookup: dict[str, dict],
+    db: ObjectDatabase,
+) -> list[CriticResult]:
+    """Blocker on any object the database marks as missing from this install.
+
+    The rule is name-agnostic: it reads the database's tri-state
+    ``verified_installed`` flag via ``db.get_install_state()`` and never hardcodes
+    an object name. Any object marked false today or in the future is covered by
+    this one rule.
+
+    Tri-state semantics matter (D-02/D-09): only an explicit ``False`` ("audited
+    and known missing") fires. ``None`` ("unaudited") is deliberately silent --
+    roughly 2,000 database entries are unaudited, and ``db.is_verified_installed()``
+    collapses those to False, so using it here would blocker-flag nearly the whole
+    database. The predicate must stay ``get_install_state(name) is False``.
+
+    This is a critic-channel finding, distinct from the one-time ``UserWarning``
+    that ``db.lookup()`` emits for the same condition. ``validate_patch()`` is a
+    separate pipeline and is intentionally left untouched (D-12: the lookup warning
+    remains the single validator channel), so no ValidationResult is produced here.
+
+    Findings are deduped per canonical object name: the same missing object in
+    several boxes yields exactly one blocker.
+    """
+    results: list[CriticResult] = []
+    flagged: set[str] = set()
+
+    for box in box_lookup.values():
+        name = _get_object_name(box)
+        if not name or name in flagged:
+            continue
+
+        # Tri-state: explicit False only. get_install_state() resolves aliases
+        # itself and emits no warning, so no db.lookup() call is needed.
+        if db.get_install_state(name) is not False:
+            continue
+
+        flagged.add(name)
+        results.append(CriticResult(
+            "blocker",
+            f"Object not installed: '{name}' is marked verified_installed: false "
+            f"in the object database -- it is not present in this MAX install. "
+            f"The patch will fail to load with \"No such object\" for '{name}'",
+            f"Remove '{name}' or replace it with an object that exists in this "
+            f"install; if the package really is installed, re-run package "
+            f"extraction so the database records '{name}' as present",
+        ))
 
     return results

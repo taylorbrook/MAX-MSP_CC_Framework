@@ -1997,8 +1997,14 @@ class TestPackageCritic:
         bach_findings = [r for r in results if "llll" in r.finding.lower()]
         assert len(bach_findings) == 0, f"Expected no Bach findings, got: {bach_findings}"
 
-    def test_bach_list2llll_allowed(self):
-        """unpack -> bach.list2llll produces no findings (list2llll accepts lists)."""
+    def test_bach_list2llll_flagged_not_installed(self):
+        """unpack -> bach.list2llll produces an install blocker.
+
+        Inverted from the former test_bach_list2llll_allowed: the converter is
+        marked verified_installed: false in the object database and does not
+        exist in the installed bach package, so the critic must flag it rather
+        than treat it as a valid list-to-llll bridge.
+        """
         boxes = [
             {
                 "id": "obj-1",
@@ -2022,8 +2028,14 @@ class TestPackageCritic:
         ]
         patch = _make_patch(boxes, lines)
         results = review_packages(patch)
-        bach_findings = [r for r in results if "llll" in r.finding.lower()]
-        assert len(bach_findings) == 0, f"Expected no findings for list2llll, got: {bach_findings}"
+        install_blockers = [
+            r for r in results
+            if r.severity == "blocker" and "not installed" in r.finding.lower()
+        ]
+        assert len(install_blockers) == 1, (
+            f"Expected one install blocker for list2llll, got: {results}"
+        )
+        assert "bach.list2llll" in install_blockers[0].finding
 
     def test_bach_non_llll_inlet(self):
         """Non-bach to bach.write (no llll digest on inlets) produces no findings."""
@@ -2052,6 +2064,107 @@ class TestPackageCritic:
         results = review_packages(patch)
         bach_findings = [r for r in results if "llll" in r.finding.lower()]
         assert len(bach_findings) == 0, f"Expected no findings for non-llll inlet, got: {bach_findings}"
+
+    # --- Install-state tests (verified_installed: false -> blocker) ---
+
+    @staticmethod
+    def _install_blockers(results):
+        """Filter install-state blockers out of a review_packages() result list."""
+        return [
+            r for r in results
+            if r.severity == "blocker" and "not installed" in r.finding.lower()
+        ]
+
+    def test_install_state_false_produces_blocker(self):
+        """An object marked verified_installed: false produces a blocker naming it."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "bach.llll2list",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_packages(patch)
+        blockers = self._install_blockers(results)
+        assert len(blockers) == 1, f"Expected one install blocker, got: {results}"
+        assert "bach.llll2list" in blockers[0].finding
+        assert "no such object" in blockers[0].finding.lower()
+
+    def test_install_state_false_symmetric_for_sibling(self):
+        """The sibling converter is flagged by the same name-agnostic rule (D-03)."""
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "bach.list2llll",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_packages(patch)
+        blockers = self._install_blockers(results)
+        assert len(blockers) == 1, f"Expected one install blocker, got: {results}"
+        assert "bach.list2llll" in blockers[0].finding
+
+    def test_install_state_blocker_deduped_per_name(self):
+        """Three boxes of the same missing object produce exactly one blocker."""
+        boxes = [
+            {
+                "id": f"obj-{i}",
+                "maxclass": "newobj",
+                "text": "bach.llll2list",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            }
+            for i in range(1, 4)
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_packages(patch)
+        blockers = self._install_blockers(results)
+        assert len(blockers) == 1, f"Expected exactly one deduped blocker, got: {blockers}"
+
+    def test_install_state_none_is_silent(self):
+        """Unaudited objects (install state None) produce zero install blockers (D-02).
+
+        Guards against the is_verified_installed() substitution, which collapses
+        None to False and would flag every unaudited object in the database.
+        """
+        from src.maxpat.db_lookup import ObjectDatabase
+
+        db = ObjectDatabase()
+        # Fixture sanity: these must be unaudited for the test to mean anything.
+        assert db.get_install_state("bach.score") is None
+        assert db.get_install_state("bach.rev") is None
+
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "bach.score",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "bach.rev",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        patch = _make_patch(boxes, [])
+        results = review_packages(patch, db=db)
+        blockers = self._install_blockers(results)
+        assert blockers == [], f"Expected no install blockers for unaudited objects, got: {blockers}"
 
     # --- Community extraction tests ---
 
