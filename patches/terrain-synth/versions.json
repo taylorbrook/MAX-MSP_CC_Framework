@@ -110,6 +110,16 @@
         "generated/terrain-voice.maxpat",
         "generated/terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.7.0",
+      "description": "v0.7.0: slot B is a second wave-terrain oscillator (terrain-osc-b: own terrain matrix/buffer, own orbit row + XY centre, B ratio + detune) replacing the wavetable bank; terrain mod drives both; view A/B switch; presentation re-flowed with a B row",
+      "timestamp": "2026-09-21T19:38:25.704281+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat",
+        "generated/terrain-voice.maxpat",
+        "generated/terrain-osc-b.maxpat"
+      ]
     }
   ]
 }

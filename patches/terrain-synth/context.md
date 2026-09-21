@@ -512,3 +512,42 @@ signal inlets for per-voice gen~ controls.
 v0.6.1 confirmed in MAX (2026-09-21): user -- "mix works". Signal-inlet form for per-voice gen~
 controls is the rule from here on. POSITION sweep and the three new banks were not explicitly
 reported on yet.
+
+## Slot B = second wave-terrain oscillator (2026-09-21, v0.7.0)
+
+User request: replace the wavetable bank in slot B with a duplicate of the 3D terrain oscillator.
+Decisions (multiple-choice discuss): **own terrain** for B, **full duplicate** orbit controls,
+**ratio + fine detune** for B pitch, **terrain mod drives both**, **view A/B switch**. Supersedes the
+"A = terrain-osc, B = wt-osc" decision above.
+
+- **`generated/terrain-osc-b.maxpat`** -- twin of `terrain-osc.maxpat`; the only difference is
+  `Buffer terrain("terrainbufB")`. A second file rather than a gen~ buffer-rebind message because the
+  file copy is the proven form. **Keep the two codeboxes in sync by hand.**
+- **terrain-voice:** wavetable gen~ removed. `sig~` Hz -> `*~` (x `bmul`, arriving as
+  `route ... bmul` -> `$1 20` -> `line~`, `loadmess 1.` so B is never at 0 Hz) -> `terrain-osc-b`
+  (in2-in4 = the same x/y/radius mod signals as A, in5 = `receive tsyn-oscB`). New gen~ is only the
+  crossfade (`in1 + clamp(in3,0,1) * (in2 - in1)`, linear as before). The `pos` route slot became
+  `bmul` (same outlet index), so the voice param list is otherwise unchanged.
+- **Main:** `buffer~ terrainbank`, bank umenu + `replace` messages and the POSITION column are gone
+  (bank WAVs, `wt-osc.maxpat`, `wt-osc-test.maxpat` and `tools/bake_geometry.py` stay in the repo,
+  unused by the synth). Clones of the A sections with `tsyn-osc` -> `tsyn-oscB`: `p terrain-source-b`
+  (`jit.matrix terrainB`, `jit.buffer~ terrainbufB`; default source 1 = fm warp so A != B at load),
+  4.7 ORBIT B dial row, 4.8 shape + XY centre. 4.9 OSC B PITCH: B RATIO dial (`size 15` ->
+  0.5 ... 4.0 in 0.25 steps, default 1.0) and B DETUNE (+/-50 cents) -> `expr $f1 * pow(2., $f2/1200.)`
+  (cents on the cold inlet via `t b f`) -> `prepend bmul` -> `send tsyn-voice`.
+- **p terrain-view:** 5th inlet = view select (umenu terrain A | terrain B) -> `t b i i`: `sig~` ->
+  xyz gen~ in5, `+ 1` -> `gate 2 1` choosing which named matrix (`terrain` / `terrainB`) feeds the
+  surface, then a rebuild bang. Second helper `terrain-osc-b` (110 Hz, `receive tsyn-oscB`); the xyz
+  gen~ now takes both orbits + both buffers and `mix()`es by the select signal. Either terrain
+  changing bangs a rebuild of whichever surface is selected. B ratio/detune is not shown in the view.
+- **Presentation:** new B row at y 282-518 (TERRAIN B panel, ORBIT B panel, OSC B PITCH panel under
+  it); FILTER / ENVELOPE / OUTPUT / keyboard moved down 242 px; window 1138x797 (top moved to y 60).
+  Row A's old WAVETABLE B panel is now OSC MIX with A > B MIX in its first column. TERRAIN MOD is
+  titled "A + B". Presentation exclusions: none.
+- Edit mechanics: sections were cloned from the file's raw box JSON (new ids, shifted rects,
+  text substitutions) and materialised through `Patcher.from_dict`, so nested subpatchers and all
+  attributes carry over losslessly.
+
+Unverified in MAX: everything in this version -- B terrain fill at load, B audible at MIX 1, B orbit
+dials / XY pad / shape, ratio steps + detune beating, mod depths on B, view A/B switch (surface +
+orbit dots), `dial @size 15`, CPU with two terrain oscillators per voice (expect ~2x the 3 %).
