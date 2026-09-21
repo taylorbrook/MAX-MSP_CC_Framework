@@ -72,7 +72,7 @@ After the user selects packages for a project, suggest relevant workflow templat
 
 - If BEAP selected: "BEAP modular templates are available in the DSP agent -- see `max-dsp-agent/SKILL.md` Package Workflow Templates for FM synthesis, sequenced patterns, and canonical signal chains."
 - If FluCoMa selected: "FluCoMa workflow templates cover real-time analysis, offline buffer processing, and ML classification pipelines -- see `max-dsp-agent/SKILL.md` Package Workflow Templates."
-- If Bach selected: "Bach workflow templates cover llll construction, notation display, and algorithmic composition -- see `max-patch-agent/SKILL.md` Package Workflow Templates. IMPORTANT: always use bach.list2llll to convert MAX lists before feeding bach objects."
+- If Bach selected: "Bach workflow templates cover llll construction, notation display, and algorithmic composition -- see `max-patch-agent/SKILL.md` Package Workflow Templates. IMPORTANT: a flat MAX list connects directly to a bach inlet -- there is no converter object to insert; use bach.flat / bach.iter / bach.pack for structured conversion and bach.nth N for extraction."
 - If multiple DSP packages selected: mention both DSP agent template sections.
 - If no packages selected: skip template suggestions.
 

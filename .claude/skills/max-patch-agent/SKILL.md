@@ -210,7 +210,7 @@ Community packages (FluCoMa, CNMAT, Bach, Odot, ml-lib, IRCAM Spat, Cage, Dada, 
 **Package-specific notes:**
 - **FluCoMa** (`fluid.*`): Audio analysis/decomposition. Signal objects + offline buf* objects.
 - **CNMAT**: OSC, resonance, spectral. Objects have NO prefix (bare names like `resonators~`, `analyzer~`).
-- **Bach** (`bach.*`): Uses llll data type (NOT standard MAX lists). Never mix llll with regular lists. Use `bach.list2llll`/`bach.llll2list` for conversion.
+- **Bach** (`bach.*`): Uses llll data type (NOT standard MAX lists). Never mix llll with regular lists. A flat MAX list connects directly to a bach inlet; for structured conversion use `bach.flat`, `bach.iter`, or `bach.pack`, and extract elements with `bach.nth N`.
 - **Cage/Dada/EARS**: Bach ecosystem -- all require Bach installed. Operate on lllls.
 - **Odot** (`o.*`): OSC bundle-based expression language.
 - **ml-lib** (`ml.*`): Machine learning. All follow add/train/map pattern.
@@ -232,16 +232,15 @@ Structured workflow blueprints for generating working package patches. Each temp
 ### Bach: llll Construction and Manipulation
 
 **Use case:** Build nested list structures for algorithmic composition
-**Chain:** data source (message/number) -> bach.list2llll -> bach.join / bach.flat / bach.nth (llll manipulation) -> bach.score or bach.roll
+**Chain:** data source (flat MAX list) -> bach.join / bach.flat / bach.nth (llll manipulation) -> bach.score or bach.roll
 
 | # | Source | Outlet | Destination | Inlet | Type |
 |---|--------|--------|-------------|-------|------|
-| 1 | (MAX list source) | 0 | bach.list2llll | 0 (list in) | list |
-| 2 | bach.list2llll | 0 (llll out) | bach.join | 0 (llll in 1) | llll |
-| 3 | bach.list2llll | 0 (llll out) | bach.join | 1 (llll in 2) | llll |
-| 4 | bach.join | 0 (joined llll) | bach.flat | 0 (llll in) | llll |
-| 5 | bach.flat | 0 (flattened llll) | bach.nth | 0 (llll in) | llll |
-| 6 | bach.nth | 0 (extracted element) | bach.score | 0 (llll data) | llll |
+| 1 | (flat MAX list source) | 0 | bach.join | 0 (llll in 1) | list |
+| 2 | (flat MAX list source) | 0 | bach.join | 1 (llll in 2) | list |
+| 3 | bach.join | 0 (joined llll) | bach.flat | 0 (llll in) | llll |
+| 4 | bach.flat | 0 (flattened llll) | bach.nth | 0 (llll in) | llll |
+| 5 | bach.nth | 0 (extracted element) | bach.score | 0 (llll data) | llll |
 
 **Parameter ranges:**
 - bach.join: `@numins` default 2 (number of llll inlets to join)
@@ -249,8 +248,9 @@ Structured workflow blueprints for generating working package patches. Each temp
 - bach.flat: depth argument controls flattening depth (0 = fully flatten)
 
 **Gotchas:**
-- ALWAYS convert MAX lists to llll via bach.list2llll before feeding ANY bach object
-- bach.llll2list converts back to MAX lists when feeding non-bach objects
+- A flat MAX list connects directly to a bach inlet -- there is no converter object to insert (the ones named in older docs are not present in the installed bach package). For structured conversion use `bach.flat`, `bach.iter`, or `bach.pack`
+- To extract a sub-llll value use `bach.nth N` (1-based, one call per index), adding `@unwrap 1` when the extracted element is itself a sublist
+- When a bach outlet feeds a plain MAX object, set `@out t` (text format) on the bach object -- the default `@out n` (native) is rejected by objects like `f`, `select`, `unpack`, and `expr`
 - llll is 1-indexed (not 0-indexed like MAX lists)
 - bach.nth extracts by position; bach.flat removes nesting levels
 - Connecting a standard MAX list outlet directly to a bach llll inlet will silently produce garbage -- the package critic will flag this as a blocker
@@ -283,17 +283,16 @@ Structured workflow blueprints for generating working package patches. Each temp
 ### Bach: Algorithmic Composition Pipeline
 
 **Use case:** Generate musical material algorithmically and display in notation
-**Chain:** algorithm source (metro + counter / random) -> bach.list2llll -> bach.collect -> bach.quantize -> bach.score
+**Chain:** algorithm source (metro + counter / random) -> bach.collect -> bach.quantize -> bach.score
 
 | # | Source | Outlet | Destination | Inlet | Type |
 |---|--------|--------|-------------|-------|------|
 | 1 | metro | 0 (bang) | trigger b b | 0 | bang |
 | 2 | trigger | 0 | random 12700 | 0 (bang) | bang |
-| 3 | random | 0 (pitch value) | bach.list2llll | 0 | list |
-| 4 | bach.list2llll | 0 (llll) | bach.collect | 0 (llll in) | llll |
-| 5 | trigger | 1 | bach.collect | 0 (bang to flush) | bang |
-| 6 | bach.collect | 0 (collected llll) | bach.quantize | 0 (llll in) | llll |
-| 7 | bach.quantize | 0 (quantized llll) | bach.score | 0 (llll data) | llll |
+| 3 | random | 0 (pitch value) | bach.collect | 0 (llll in) | int |
+| 4 | trigger | 1 | bach.collect | 0 (bang to flush) | bang |
+| 5 | bach.collect | 0 (collected llll) | bach.quantize | 0 (llll in) | llll |
+| 6 | bach.quantize | 0 (quantized llll) | bach.score | 0 (llll data) | llll |
 
 **Parameter ranges:**
 - metro: interval in ms (e.g., 250 for sixteenth notes at 60 BPM)
