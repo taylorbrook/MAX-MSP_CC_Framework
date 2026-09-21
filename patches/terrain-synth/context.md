@@ -726,3 +726,11 @@ right-to-left outlet order of a 2-out jit.gen, a second `jit.buffer~` instance o
 256x256 -> 65536x1 ordering (audio must sound identical with animation ON and everything at rest), 65536-frame single
 write cost, per-frame 3D rebuild cost x 2, ripple feel (tension / damp ranges, bump size 0.07, amp 0.7), audible zipper
 at 25 fps (the buffer is rewritten under the playing oscillators), window height 1048 on the user's display.
+
+### v0.11.0 confirmed in MAX (2026-09-21)
+
+User: "ok it works". Confirmed: `jit.gen` ripple codebox compiles (2-inlet `sample(..., boundmode="clamp")`, swizzles on
+`concat(1. / dim, 0.)`, `param <name> <v>` messages), two-store u / u_prev feedback via right-to-left jit.gen outlets,
+`jit.xfade` morph of two named source matrices, `jit.scanwrap 1 float32 65536 1` -> second `jit.buffer~` instance as the
+per-frame bridge, per-frame 3D rebuild, EXCITE / NOTE, ANIMATE strip layout. Bench numbers not reported (no complaint
+about cost at 25 fps), so no 128x128 fallback.
