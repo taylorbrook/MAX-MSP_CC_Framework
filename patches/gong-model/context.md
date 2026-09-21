@@ -343,3 +343,13 @@ Recommended order: Implement stability protocol first (item 2), then Tier 1 (ite
 ### Utility split:
 - **Top bar**: ezdac~ + preset umenu + random button
 - **With exciter panel**: Strike button + audio input controls
+
+## Decisions — Review Fixes (v1.14.0)
+
+- **Single trigger path**: all strikes go through one `counter 1 10000` -> `strike_count`. MIDI: `notein -> stripnote -> / 127. -> t b f` (strike_force first, then counter). Test button: freq -> force -> `s gong-strike`. The patch no longer sends `velocity`; the engine's velocity-edge path is dormant. Counter starts at 1 because the Param default is 0 (a first output of 0 would not register as a change).
+- **js Buffer frames are 0-based**: `mode-gains.js` writes frame `i` (was `i + 1`, which left mode 0 permanently at gain 0).
+- **Drift centers** come from `dial.getvalueof()` (live.dial has no `distance` attribute).
+- **Audio exciter gain** is an engine Param (`audio_gain`, default 0) driven by the Audio In dial (`d_audio_in`) via the usual prepend -> `send gong-ctrl` idiom; the muted `*~ 0.` was removed. `d_audio_in` is deliberately absent from randomize/drift and from the preset slots.
+- **Pitch-glide envelope** is a peak follower (fast attack, ~0.36 s release, `raw_amp * 0.15`). The 0.15 scale keeps peak glide depth near the old lagged envelope; raise it for a deeper glide.
+- **Kirchhoff term left as is**: the state-scaling form damps slightly but an input-form rewrite went parametrically unstable in simulation at nonlinearity = 1.
+- **Known, left alone**: order-insensitive fan-outs without `trigger` (d_modes, mode-size receive, drift toggle/metro/vexpr); presets still carry a stale `d_position` key and do not store strike XY or mode spectrum; detune re-randomises per strike.

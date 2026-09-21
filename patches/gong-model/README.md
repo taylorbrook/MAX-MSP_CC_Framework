@@ -56,7 +56,7 @@ All DSP runs inside a single gen~ codebox. No poly~ -- the resonator bank is mon
 2. **Ratio table interpolation** -- when structure changes, interpolate between 5 ratio tables (32 modes x 5 channels in 2D Data)
 3. **Position gain update** -- when position or angle changes, recompute `sin(PI * pos * (m+1)) * angle_mod` per mode
 4. **Coefficient update** -- round-robin: 1 mode per sample. Computes `a1 = 2r*cos(theta)`, `a2 = -r^2` from T60 and frequency. Includes nonlinear pitch glide via smoothed amplitude envelope.
-5. **Trigger detection** -- rising-edge on velocity (MIDI) or strike_count increment (test button). On trigger: rearticulation damping, burst init, per-mode random detune, bloom envelope reset.
+5. **Trigger detection** -- strike_count increment. MIDI note-ons and the test button share one `counter 1 10000` (v1.14.0); the velocity rising-edge path remains in the engine but the patch no longer sends `velocity`. On trigger: rearticulation damping, burst init, per-mode random detune, bloom envelope reset.
 6. **Excitation** -- Hertzian mallet model with 5-material morph, body resonance, pink noise blend, velocity-dependent brightness, contact impulse, mallet bounce.
 7. **Resonator bank** -- 32 parallel 2nd-order resonators: `y = a1*y1 + a2*y2 + excitation*gain`. Aftertouch damping. Golden-ratio stereo panning.
 8. **Nonlinear coupling** -- Kirchhoff global stiffening (`force = -y * S`) + 16 sparse triplet couplings (quadratic cross-modulation). Double-buffered via `coupling_accum` Data.
@@ -146,10 +146,11 @@ Spectral bloom models the energy cascade from low to high modes that occurs in r
 | vel_curve | 0.3-3 | 1 | Velocity response curve (power exponent) |
 | detune | 0-1 | 0 | Per-mode random detuning amount |
 | pitch_track | 0-1 | 1 | Compensate sub-unity ratio[0] so MIDI pitch tracks |
-| velocity | 0-1 | 0 | Strike velocity (from MIDI or manual) |
+| velocity | 0-1 | 0 | Legacy rising-edge trigger (unused by the patch since v1.14.0) |
 | aftertouch | 0-1 | 0 | Hand-damping simulation |
-| strike_count | 0-10000 | 0 | Test button trigger counter |
-| strike_force | 0-1 | 0.8 | Force for test button strikes |
+| strike_count | 0-10000 | 0 | Shared strike trigger counter (MIDI + test button) |
+| strike_force | 0-1 | 0.8 | Strike force (MIDI velocity / test `vel:` box), sent before strike_count |
+| audio_gain | 0-1 | 0 | Audio exciter input gain (Audio In dial), smoothed in-engine |
 
 ### Data Arrays
 
@@ -175,9 +176,9 @@ Spectral bloom models the energy cascade from low to high modes that occurs in r
 
 ### Input
 
-- **MIDI**: `notein` -> pitch to `mtof` for frequency, velocity scaled 0-1 for strike force, aftertouch for hand-damping
-- **Test button**: increments strike_count via `p strikecounter` subpatcher; manual freq/velocity flonum inputs
-- **Audio input**: mixed with mallet excitation at gen~ input level
+- **MIDI**: `notein` -> `stripnote` (note-offs never retune the ringing gong) -> pitch to `mtof` for frequency, velocity scaled 0-1 -> `trigger b f` -> strike_force then shared counter; aftertouch for hand-damping
+- **Test button**: sets freq, then force, then bangs the shared counter via `s gong-strike` / `r gong-strike`; manual freq/velocity flonum inputs
+- **Audio input**: `adc~ 1` -> gen~ in 1, scaled by the `audio_gain` Param (Audio In dial, default 0) and mixed with the mallet excitation
 
 ### Visualization
 
@@ -191,8 +192,7 @@ Spectral bloom models the energy cascade from low to high modes that occurs in r
 
 | Subpatcher | Purpose |
 |------------|---------|
-| `p velocity` | MIDI velocity scaling and routing |
-| `p strikecounter` | Test button -> counter increment for trigger detection |
+| `p velocity` | Test-strike force routing (`strike_force`) |
 | `p xypad` | XY pad routing to position/angle params |
 | `p drift` | js-driven brownian motion parameter drift |
 | `p settings` | Preset routing via pattrstorage + umenu |
