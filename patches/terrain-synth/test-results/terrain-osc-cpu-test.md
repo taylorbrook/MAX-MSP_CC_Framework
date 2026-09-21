@@ -28,7 +28,21 @@ Purpose: CPU of the single-codebox terrain oscillator (4 bilinear peeks + orbit 
 | 8 | 4x |  |  |
 | 16 | 2x |  |  |
 
-Machine / sample rate / vector size:
+Machine / sample rate / vector size: 48 kHz (machine / vector size not recorded)
+
+### User report (2026-09-21, v0.3.0)
+
+Per-row numbers not recorded. Summary: "everything seems to work. cpu is staying low, around 3%
+even with 8 voices" (oversampling setting for that reading not stated). Audio confirmed after
+filling the terrain with the `exprfill` message -- matrix2buffer bridge + single-gen~ codebox
+confirmed working in MAX.
+
+**Decision:** ~3 % at 8 voices is far under the 15 % threshold -> keep the single-poly~ voice
+(`poly~ terrain-voice 8 up 2`, wt-osc + terrain-osc + filter all oversampled together). No split,
+no nearest-peek CPU-saver mode needed. 4x HQ toggle stays viable.
+
+Open: whether the load-time `jit.bfg` noise fill produces a usable terrain without the manual
+`exprfill` click was not confirmed.
 
 ## Decision rule
 
