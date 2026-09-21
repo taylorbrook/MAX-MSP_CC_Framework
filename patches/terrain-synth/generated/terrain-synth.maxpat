@@ -36562,7 +36562,7 @@
                     "presentation_rect": [
                         141.0,
                         602.0,
-                        42.0,
+                        40.0,
                         17.0
                     ],
                     "textcolor": [
@@ -37560,7 +37560,7 @@
                     "presentation_rect": [
                         536.0,
                         602.0,
-                        42.0,
+                        40.0,
                         17.0
                     ],
                     "textcolor": [
@@ -38491,7 +38491,7 @@
                     "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
-                        50.0,
+                        54.0,
                         546.0,
                         30.0,
                         17.0
