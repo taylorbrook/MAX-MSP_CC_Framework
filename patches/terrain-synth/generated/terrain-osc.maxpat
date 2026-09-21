@@ -89,7 +89,7 @@
                         760,
                         62
                     ],
-                    "text": "in1 Hz (signal/float) | in2 x mod | in3 y mod | in4 radius mod (signals, 0 = none) | in5 param messages (unchanged) | in6 rotation mod (signal, turns) | param messages: shape rx ry rot cx cy lobes lobeamt zoomk zoomlo fb drive. out1 audio | out2 orbit x | out3 orbit y (0-1). Terrain lives in buffer~ terrainbuf (idx = y*256 + x), written from jit.matrix terrain by the host's matrix2buffer bridge. fb = trajectory feedback (last output nudges the orbit centre). Not bandlimited: host inside poly~ @up 2 (4 = HQ) or mc.gen~ per voice.",
+                    "text": "in1 Hz (signal/float) | in2 x mod | in3 y mod | in4 radius mod (signals, 0 = none) | in5 param messages | in6 rotation mod (signal, turns, adds to rot) | params: shape rx ry rot cx cy lobes lobeamt zoomk zoomlo fb drive. out1 audio | out2 orbit x | out3 orbit y (0-1). Terrain lives in buffer~ terrainbuf (idx = y*256 + x), written from jit.matrix terrain by the host's matrix2buffer bridge. fb = trajectory feedback (last output nudges the orbit centre). Not bandlimited: host inside poly~ @up 2 (4 = HQ) or mc.gen~ per voice.",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -462,12 +462,6 @@
                                     "destination": [
                                         "obj-5",
                                         1
-                                    ],
-                                    "midpoints": [
-                                        145.0,
-                                        61.0,
-                                        185.66666666666666,
-                                        61.0
                                     ]
                                 }
                             },
@@ -483,13 +477,9 @@
                                     ],
                                     "midpoints": [
                                         225.0,
-                                        12.0,
-                                        282.0,
-                                        12.0,
-                                        282.0,
-                                        50.0,
-                                        314.3333333333333,
-                                        50.0
+                                        61.0,
+                                        250.0,
+                                        61.0
                                     ]
                                 }
                             },
@@ -506,7 +496,7 @@
                                     "midpoints": [
                                         305.0,
                                         61.0,
-                                        443.0,
+                                        346.5,
                                         61.0
                                     ]
                                 }
@@ -572,6 +562,12 @@
                                     "destination": [
                                         "obj-5",
                                         4
+                                    ],
+                                    "midpoints": [
+                                        385.0,
+                                        61.0,
+                                        443.0,
+                                        61.0
                                     ]
                                 }
                             }
@@ -707,9 +703,13 @@
                     ],
                     "midpoints": [
                         135.0,
-                        167.5,
-                        57.666666666666664,
-                        167.5
+                        117.0,
+                        53.0,
+                        117.0,
+                        53.0,
+                        163.0,
+                        48.75,
+                        163.0
                     ]
                 }
             },
@@ -736,7 +736,7 @@
                         172.0,
                         142.0,
                         222.0,
-                        93.33333333333333,
+                        75.5,
                         222.0
                     ]
                 }
@@ -770,7 +770,7 @@
                         172.0,
                         142.0,
                         222.0,
-                        129.0,
+                        102.25,
                         222.0
                     ]
                 }
@@ -892,6 +892,40 @@
                     "destination": [
                         "obj-8",
                         4
+                    ],
+                    "midpoints": [
+                        555.0,
+                        117.0,
+                        158.0,
+                        117.0,
+                        158.0,
+                        163.0,
+                        158.0,
+                        117.0,
+                        263.0,
+                        117.0,
+                        263.0,
+                        163.0,
+                        263.0,
+                        117.0,
+                        322.0,
+                        117.0,
+                        322.0,
+                        163.0,
+                        322.0,
+                        117.0,
+                        427.0,
+                        117.0,
+                        427.0,
+                        163.0,
+                        427.0,
+                        172.0,
+                        142.0,
+                        172.0,
+                        142.0,
+                        222.0,
+                        129.0,
+                        222.0
                     ]
                 }
             }
