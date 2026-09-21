@@ -21448,6 +21448,252 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "node.codebox": {
+    "name": "node.codebox",
+    "maxclass": "node.codebox",
+    "module": "max",
+    "domain": "Max",
+    "category": "Languages",
+    "digest": "Control a local Node.js process from Max",
+    "description": "Control a local Node.js process from Max, using a UI object for display and editing of Javascript. Messages preceded by script\n\t\t control the lifecycle of the Node script (start to start, stop to stop). Other messages will be sent\n\t\t to the process directly.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages for the Node process; messages preceded by 'script' control the script lifecycle, all others are sent to the process directly",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Anything sent using the outlet function in Node"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump out: stdout and stderr, as well as status updates"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "bang",
+      "anything",
+      "api",
+      "(mouse)",
+      "reveal",
+      "script",
+      "stdin"
+    ],
+    "attributes": {
+      "bgcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "linenumbers": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "linenumberwidth": {
+        "type": "int32",
+        "get": true,
+        "set": true
+      },
+      "margin": {
+        "type": "int32",
+        "get": true,
+        "set": true
+      },
+      "textcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "args": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "autostart": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "defer": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "log_path": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "node_bin_path": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "npm_bin_path": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "pm_path": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "restart": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "running": {
+        "type": "int",
+        "get": true,
+        "set": false
+      },
+      "watch": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "node.script",
+      "v8",
+      "v8ui",
+      "v8.codebox"
+    ],
+    "tags": [
+      "node"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "node.script": {
+    "name": "node.script",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Max",
+    "category": "Languages",
+    "digest": "Control a local Node.js process from Max",
+    "description": "Control a local Node.js process from Max. Messages preceded by script\n\t\t control the lifecycle of the Node script (start to start, stop to stop). Other messages will be sent\n\t\t to the process directly.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages for the Node process; messages preceded by 'script' control the script lifecycle, all others are sent to the process directly",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Anything sent using the outlet function in Node"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "Dump out: stdout and stderr, as well as status updates"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "script",
+        "type": "symbol",
+        "optional": false,
+        "digest": "Node script"
+      }
+    ],
+    "messages": [
+      "bang",
+      "anything",
+      "api",
+      "(mouse)",
+      "reveal",
+      "script",
+      "stdin"
+    ],
+    "attributes": {
+      "args": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "autostart": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "defer": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "log_path": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "node_bin_path": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "npm_bin_path": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "pm_path": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "restart": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "running": {
+        "type": "int",
+        "get": true,
+        "set": false
+      },
+      "watch": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "node.codebox",
+      "v8",
+      "v8ui",
+      "v8.codebox"
+    ],
+    "tags": [
+      "node"
+    ],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "nodes": {
     "name": "nodes",
     "maxclass": "nodes",
