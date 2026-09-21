@@ -50,3 +50,10 @@ Sourced from confirmed-working codeboxes in this repo (no external lookups neede
 
 ## Status
 Ready to build.
+
+## v0.3.0 — bpatcher module + helper (2026-09-21)
+
+- `disintegrate.maxpat` is now the **bpatcher module**: inlets L / R / amount (float 0–1 → dial, so the face follows), outlets L / R. `adc~`, `dac~`, output `gain~` pair and `meter~`s were removed from the module — host concerns, they live in the helper. gen~ codebox untouched.
+- Face is 140×180 in presentation: dark panel `[0.19 0.19 0.22]`, centred label, 120px dial, readout. Patcher `bgcolor` now set (was only `editing_bgcolor`).
+- `disintegrate-helper.maxpat` hosts the module: `adc~` → bpatcher → linked `gain~` pair + meters → `ezdac~`; `0., 1. 8000` → `line 0. 20` → flonum → inlet 3 demos external amount control. Patching-mode only (no presentation), so no Rule #9 exclusions to record.
+- Amount resets to 0 on load (loadbang, unchanged); hosts that need state should drive inlet 3.
