@@ -46,6 +46,14 @@
       "files_changed": [
         "gen-eq.maxpat"
       ]
+    },
+    {
+      "version": "0.3.2",
+      "description": "Readouts: integer-Hz Freq readouts (no truncated decimals), exact default freqs, readouts centred on dials",
+      "timestamp": "2026-09-21T20:52:11.069359+00:00",
+      "files_changed": [
+        "gen-eq.maxpat"
+      ]
     }
   ]
 }
