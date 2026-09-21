@@ -8,14 +8,14 @@ The object knowledge base lives at `.claude/max-objects/` with one subdirectory 
 
 ```
 .claude/max-objects/
-  max/objects.json       # Control flow, data, UI (470 objects)
-  msp/objects.json       # Audio/signal processing (248 objects)
-  jitter/objects.json    # Video, matrix, OpenGL (210 objects)
-  mc/objects.json        # Multichannel wrappers (215 objects)
+  max/objects.json       # Control flow, data, UI (471 objects)
+  msp/objects.json       # Audio/signal processing (246 objects)
+  jitter/objects.json    # Video, matrix, OpenGL (218 objects)
+  mc/objects.json        # Multichannel wrappers (222 objects)
   gen/objects.json       # Gen~ DSP and Jitter operators (189 objects)
-  m4l/objects.json       # Max for Live objects (33 objects)
+  m4l/objects.json       # Max for Live objects (35 objects)
   rnbo/objects.json      # RNBO export-compatible objects (560 objects)
-  packages/objects.json  # Package objects (87 objects)
+  packages/<Package>/objects.json  # Package objects, one dir per package (29 packages, 1489 objects)
 ```
 
 Each domain file is a JSON object keyed by object name. Every object entry contains: `name`, `maxclass`, `module`, `domain`, `inlets` (array with id/type/signal/hot), `outlets` (array with id/type/signal), `arguments`, `messages`, `min_version`, `verified`, `rnbo_compatible`, `variable_io`.
