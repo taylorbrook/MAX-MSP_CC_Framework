@@ -734,3 +734,75 @@ User: "ok it works". Confirmed: `jit.gen` ripple codebox compiles (2-inlet `samp
 `jit.xfade` morph of two named source matrices, `jit.scanwrap 1 float32 65536 1` -> second `jit.buffer~` instance as the
 per-frame bridge, per-frame 3D rebuild, EXCITE / NOTE, ANIMATE strip layout. Bench numbers not reported (no complaint
 about cost at 25 fps), so no 128x128 fallback.
+
+## Chebyshev bandlimited terrain core (2026-09-21, v0.12.0)
+
+User request: alternative oscillator core for slots A and B, `terrain = sum c[m][n] T_m(x) T_n(y)`, N = 8, per-slot
+TERRAIN / CHEBY switch (signal-rate), coefficient buffer + presets + BRIGHTNESS from the main patch, pitch-scaled order
+limiting, numpy pre-flight first, views keep working.
+
+### Research (`tools/cheby_preflight.py` -> `test-results/cheby-preflight.md`)
+
+- **Why it is bandlimited:** with x, y = first-harmonic sinusoids (ellipse; any radius, centre offset, rotation) a degree-d
+  term is a degree-d polynomial in cos / sin theta = partials <= d. At full radius, centred: `T_m(cos) T_n(sin)` = partials
+  m + n and |m - n| only, i.e. the terrain is **2D Chebyshev waveshaping and the orbit RADIUS is the index**.
+- **Measured (non-harmonic energy / total, f on an odd FFT bin, MIDI 24-120):** cheby core <= -154 dB (double-precision
+  floor) for every preset at 48 k and 96 k, centred or off-centre / rotated / unequal radii. The same polynomial read by
+  today's TERRAIN core (256 x 256 bilinear table) reaches -1 ... -15 dB at the top of the keyboard.
+- **Order limiter:** gain of a total-degree-d term = `clamp((1 - d * fh / fmax) * 10, 0, 1)`, `fmax = min(0.45 sr, 21.6 k)`
+  (fade 19.4 -> 21.6 kHz; 21.6 k = ji-harmonizer's 0.9 * 24000). Highest partial stays < 21.1 kHz over the whole sweep.
+  Removing a degree-d term also removes its lower partials (d - 2, d - 4 ...), so the timbre thins with pitch rather than
+  just losing its top -- inherent to limiting in the polynomial domain.
+- **Epitrochoid IS a finite harmonic sum when LOBES is an integer** (highest orbit partial = lobes -> limiter uses
+  `fh = f * lobes`; measured <= -154 dB at lobes = 3). But the LOBES dial is continuous (`1 + d/127 * 15`, default 3.008):
+  the phase wrap then breaks `cos(lobes * theta)` -> -44 dB at 3.008, -12 dB at 3.5. **Squarcle is never bandlimited**
+  (-10 ... -15 dB worst case, about as bad as the table). Orbit pushed into the 0-1 clamp: -14 ... -21 dB.
+- **Also outside the guarantee (not simulated, by construction):** FEEDBACK != 0 (nonlinear trajectory feedback, and it is
+  fed from the TERRAIN core's output, not the cheby core's), audio-rate TERRAIN MOD x / y / radius (finite sum, but the
+  partials sit at combinations of f and the mod frequency, which the limiter does not know about), LFO S&H steps.
+- **Decision:** document rather than hard-restrict. Turning CHEBY on snaps that slot's SHAPE menu to ellipse once; the
+  other shapes stay selectable.
+- **Cost / amortisation:** loop 1 = 16 iterations (limiter gains + recurrence), loop 2 = 64 x (3 Data peeks, 2 mul, add).
+  A History cursor updates one effective coefficient per sample (`ce[k] = smoothed c[k] * limiter gain`), so the inner sum
+  never touches buffer~ and preset / brightness moves are de-clicked (one-pole, ~11 ms at 96 k). The 64-sample refresh is
+  fade LAG, not a step: worst case in a 2-octave / 100 ms glide a stale weight still passes a partial at 21.8 kHz
+  (< Nyquist at every rate). With mode = 0 the sum is skipped by the inner `if (j < nact)` guard. CPU in MAX: unmeasured.
+- Literal per-sample transliteration of the codebox (Data arrays, cursor, smoothing) matches the vectorised model to 2e-9.
+
+### Build
+
+- **`generated/terrain-cheby.maxpat`** (new abstraction, args: coefficient offset, orbit-param send name): in1 / in2 orbit
+  x / y 0-1 (= terrain-osc outlets 2 / 3, so every orbit control, mod input, LFO / ENV 2 depth and the pitch zoom apply
+  unchanged), in3 Hz, in4 mode; `sig~ #1` -> gen~ in5 (offset); `receive #2` -> `route shape lobes` -> `prepend` -> gen~
+  Params (plain Param messages in a poly~ abstraction = the form confirmed in v0.7.0). Output = `dcblock(sum)`, **no tanh /
+  DRIVE** (a waveshaper would undo the band limit); bounded to +/-1 by construction (sum |c| = 1, |T| <= 1).
+  Codebox: two flat constant-bound loops, no nested loops, no else-if, spaces only, peek / poke with channel arg,
+  `Data tx(8) ty(8) wd(16) cs(64) ce(64)`, no Param-only dependent chains (`fr` depends on the Hz signal). If gen~
+  defers Data pokes to the end of the sample the core is simply one sample late -- still correct.
+- **terrain-voice:** `terrain-cheby 0 tsyn-osc` / `terrain-cheby 64 tsyn-oscB`; `receive tsyn-cheby` ->
+  `route modeA modeB` -> `$1 20` -> `line~`; one select gen~ per slot (`in1 + clamp(in3) * (in2 - in1)`, the confirmed
+  crossfade codebox) between each terrain-osc and the A > B crossfade, so the 20 ms ramp is the click-free switch. The
+  confirmed crossfade gen~ is untouched. Rows from y 500 moved down 90 px.
+- **`generated/cheby-coefs.js`** (one instance per slot, arg = offset 0 / 64): `preset i`, `bright f`, `mode 0/1`,
+  `srcchanged`. Writes `c * b^(degree - lowest degree)`, renormalised to sum |c| = 1, into `buffer~ chebcoef 10`
+  (idx = offset + m * 8 + n). Presets: saw, square, hollow xy, cross, glass, bell (same table in the pre-flight tool --
+  keep both in sync by hand). While mode = 1 it also emits `backup` | `exprfill 0 <polynomial>`, `bang` | `restore`.
+  The expression is generated (Horner in x*x, 240-730 chars, verified against numpy chebval2d to 2e-5); a Task debounces
+  redraws by 60 ms during a BRIGHT drag.
+- **p terrain-source / -b:** `receive tsyn-chebfill<A|B>` -> `route backup restore`: backup = source-1 store copied to
+  `tsrc<A|B>bak`; unmatched (`exprfill`, `bang`) -> source-1 store -> existing compose -> terrain matrix -> 3D view +
+  terrainbuf; restore = the saved matrix back into the store (no regenerate: noise keeps its roll, the image source opens
+  no dialog). Inlet 0 also -> `deferlow` -> `srcchanged` -> `send tsyn-chebsrc<A|B>` so a source change made in CHEBY
+  mode is re-saved and the polynomial redrawn. MORPH / RIPPLE still draw on top of the polynomial but are inaudible in
+  CHEBY mode (the core reads only chebcoef).
+- **Main 4.16 / 4.17:** toggle -> `t i i i` (right to left: `sel 1` -> `0` -> shape menu | `prepend mode` -> js | `i` ->
+  `prepend mode<A|B>` -> `send tsyn-cheby`); `receive tsyn-resend` bangs the `i` so reloaded voices get the mode. Preset
+  umenu, BRIGHT dial (`/ 127.`, default 100 = 0.79). Presentation: 3D VIEW panel narrowed to [511, 410, 214, 108] (its
+  110 Hz note wraps under ON), new CHEBY CORE panel [733, 410, 157, 108], columns A / B 76 px apart: toggle, preset menu,
+  32 px dial + readout. Window size unchanged (900 x 1048). Presentation exclusions: unchanged (bench flonums only).
+
+Unverified in MAX: everything -- gen~ compile of the codebox (for loops with loop-carried locals, poke-then-peek on Data
+in one sample, `i * fr` with the loop index), `sig~ #1` / `receive #2` abstraction args, a ~700-char `exprfill` symbol
+from js, named-matrix backup / restore, js `Task` debounce, umenu at fontsize 10 in 72 px, CPU of 2 cores x 8 voices at
+2x (expect the cheby sum to cost several times a terrain read while a slot is in CHEBY mode, ~0 when off), level of the
+cheby core against the tanh-driven terrain core.
