@@ -225,5 +225,5 @@ All objects verified for MAX 9. MC objects require MAX 8.1+. No MAX 9-only objec
 - **Panning**: voice out2 (latched pan) -> `mc.mixdown~ 8 @activechans 2 @pancontrolmode 1` right inlet. Mode 1 = linear 0..1 from first to last active speaker (stereo: 0=L, 1=R). Pan clamped to 0.9999 because mixdown wraps out-of-range values. New `pan_pos` Param = centre; `pan_spread` = random width (+-0.5 at 1).
 - **Speaker count**: `loadmess 2 -> number (2-8) -> activechans $1`; mc.dac~ always receives 8 channels, inactive ones are zero.
 - `granular-engine.gendsp` (confirmed stereo engine v2) is kept on disk, unreferenced, as a fallback.
-- **Verification**: Python port of sched+voice pair: same click-free results as engine v2. NOT yet confirmed in MAX (first use of `mc_channel`, file-based `mc.gen~ ... @chans`, and `latch` in a codebox in this repo).
+- **Verification**: Python port of sched+voice pair: same click-free results as engine v2. User-confirmed in MAX 2026-09-21 — first confirmed use in this repo of `mc_channel`, file-based `mc.gen~ <file> @chans N`, and `latch()` in a codebox.
 - **Open**: presentation UI (live.dial faces, panels, dark canvas), DSP toggle, gain~ init.
