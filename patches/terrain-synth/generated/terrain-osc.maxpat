@@ -59,7 +59,7 @@
                         760,
                         24.0
                     ],
-                    "text": "terrain-osc v0.3  --  live wave-terrain oscillator, one gen~ codebox reading buffer~ terrainbuf (256x256 row-major)",
+                    "text": "terrain-osc v0.4  --  live wave-terrain oscillator, one gen~ codebox reading buffer~ terrainbuf (256x256 row-major)",
                     "fontname": "Arial",
                     "fontsize": 13.0,
                     "textcolor": [
@@ -89,7 +89,7 @@
                         760,
                         62
                     ],
-                    "text": "in1 Hz (signal/float) | in2 x mod | in3 y mod | in4 radius mod (signals, 0 = none) | in5 param messages: shape rx ry rot cx cy lobes lobeamt zoomk zoomlo fb drive. out1 audio | out2 orbit x | out3 orbit y (0-1). Terrain lives in buffer~ terrainbuf (idx = y*256 + x), written from jit.matrix terrain by the host's matrix2buffer bridge. fb = trajectory feedback (last output nudges the orbit centre). Not bandlimited: host inside poly~ @up 2 (4 = HQ) or mc.gen~ per voice.",
+                    "text": "in1 Hz (signal/float) | in2 x mod | in3 y mod | in4 radius mod (signals, 0 = none) | in5 param messages (unchanged) | in6 rotation mod (signal, turns) | param messages: shape rx ry rot cx cy lobes lobeamt zoomk zoomlo fb drive. out1 audio | out2 orbit x | out3 orbit y (0-1). Terrain lives in buffer~ terrainbuf (idx = y*256 + x), written from jit.matrix terrain by the host's matrix2buffer bridge. fb = trajectory feedback (last output nudges the orbit centre). Not bandlimited: host inside poly~ @up 2 (4 = HQ) or mc.gen~ per voice.",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -199,7 +199,7 @@
                 "box": {
                     "maxclass": "newobj",
                     "id": "obj-8",
-                    "numinlets": 4,
+                    "numinlets": 5,
                     "numoutlets": 3,
                     "outlettype": [
                         "signal",
@@ -346,7 +346,7 @@
                                 "box": {
                                     "maxclass": "codebox",
                                     "id": "obj-5",
-                                    "numinlets": 4,
+                                    "numinlets": 5,
                                     "numoutlets": 3,
                                     "outlettype": [
                                         "",
@@ -360,7 +360,7 @@
                                         200.0
                                     ],
                                     "parameter_enable": 0,
-                                    "code": "// terrain-osc v0.3: live wave-terrain oscillator in one codebox\n// terrain = buffer~ terrainbuf, 256x256 float32 row-major (idx = y*256 + x), filled by jit.buffer~\n// in1 Hz | in2 x mod (signal, adds to cx) | in3 y mod (adds to cy) | in4 radius mod (multiplies, 0 = none)\nBuffer terrain(\"terrainbuf\");\nParam shape(0, min=0, max=2);\nParam rx(0.3, min=0, max=0.5);\nParam ry(0.3, min=0, max=0.5);\nParam rot(0, min=0, max=1);\nParam cx(0.5, min=0, max=1);\nParam cy(0.5, min=0, max=1);\nParam lobes(3, min=1, max=16);\nParam lobeamt(0.4, min=0, max=1);\nParam zoomk(4000, min=20, max=20000);\nParam zoomlo(0.05, min=0.01, max=1);\nParam fb(0, min=-1, max=1);\nParam drive(1.5, min=0.1, max=10);\nHistory phb(0);\nHistory yprev(0);\nf = max(in1, 0.);\nph = wrap(phb + f / samplerate, 0., 1.);\nphb = ph;\nth = ph * twopi;\n// pitch-scaled zoom (terrain mip substitute) times the radius-mod input\nzoom = clamp(zoomk / max(f, 1.), zoomlo, 1.) * (1. + in4);\n// shape: 0 ellipse, 1 epitrochoid, 2 squarcle (range tests, never ==)\nux = cos(th);\nuy = sin(th);\nif (shape > 0.5 && shape < 1.5) {\n    ux = (cos(th) + lobeamt * cos(lobes * th)) / (1. + lobeamt);\n    uy = (sin(th) + lobeamt * sin(lobes * th)) / (1. + lobeamt);\n}\nif (shape > 1.5) {\n    ux = sign(cos(th)) * pow(abs(cos(th)), 0.5);\n    uy = sign(sin(th)) * pow(abs(sin(th)), 0.5);\n}\nxr = ux * cos(rot * twopi) - uy * sin(rot * twopi);\nyr = ux * sin(rot * twopi) + uy * cos(rot * twopi);\n// trajectory feedback: the previous (pre-drive) output nudges the orbit centre\nfbx = fb * 0.25 * yprev;\nx = clamp(cx + in2 + fbx + rx * zoom * xr, 0., 1.);\ny = clamp(cy + in3 + fbx + ry * zoom * yr, 0., 1.);\n// bilinear read of the 256x256 terrain\npx = x * 255.;\npy = y * 255.;\nx0 = floor(px);\ny0 = floor(py);\nx1 = min(x0 + 1., 255.);\ny1 = min(y0 + 1., 255.);\nfx = px - x0;\nfy = py - y0;\na00 = peek(terrain, y0 * 256. + x0, 0);\na01 = peek(terrain, y0 * 256. + x1, 0);\na10 = peek(terrain, y1 * 256. + x0, 0);\na11 = peek(terrain, y1 * 256. + x1, 0);\nv = dcblock(mix(mix(a00, a01, fx), mix(a10, a11, fx), fy));\nyprev = clamp(v, -1., 1.);\nout1 = tanh(v * drive);\nout2 = x;\nout3 = y;\n",
+                                    "code": "// terrain-osc v0.4: live wave-terrain oscillator in one codebox\n// terrain = buffer~ terrainbuf, 256x256 float32 row-major (idx = y*256 + x), filled by jit.buffer~\n// in1 Hz | in2 x mod (signal, adds to cx) | in3 y mod (adds to cy) | in4 radius mod (multiplies, 0 = none)\n// in5 rotation mod (signal, turns, adds to rot)\nBuffer terrain(\"terrainbuf\");\nParam shape(0, min=0, max=2);\nParam rx(0.3, min=0, max=0.5);\nParam ry(0.3, min=0, max=0.5);\nParam rot(0, min=0, max=1);\nParam cx(0.5, min=0, max=1);\nParam cy(0.5, min=0, max=1);\nParam lobes(3, min=1, max=16);\nParam lobeamt(0.4, min=0, max=1);\nParam zoomk(4000, min=20, max=20000);\nParam zoomlo(0.05, min=0.01, max=1);\nParam fb(0, min=-1, max=1);\nParam drive(1.5, min=0.1, max=10);\nHistory phb(0);\nHistory yprev(0);\nf = max(in1, 0.);\nph = wrap(phb + f / samplerate, 0., 1.);\nphb = ph;\nth = ph * twopi;\n// pitch-scaled zoom (terrain mip substitute) times the radius-mod input\nzoom = clamp(zoomk / max(f, 1.), zoomlo, 1.) * (1. + in4);\n// shape: 0 ellipse, 1 epitrochoid, 2 squarcle (range tests, never ==)\nux = cos(th);\nuy = sin(th);\nif (shape > 0.5 && shape < 1.5) {\n    ux = (cos(th) + lobeamt * cos(lobes * th)) / (1. + lobeamt);\n    uy = (sin(th) + lobeamt * sin(lobes * th)) / (1. + lobeamt);\n}\nif (shape > 1.5) {\n    ux = sign(cos(th)) * pow(abs(cos(th)), 0.5);\n    uy = sign(sin(th)) * pow(abs(sin(th)), 0.5);\n}\n// rotation = rot Param + in5 (turns); one cos / sin pair per sample\nrotm = (rot + in5) * twopi;\nrc = cos(rotm);\nrs = sin(rotm);\nxr = ux * rc - uy * rs;\nyr = ux * rs + uy * rc;\n// trajectory feedback: the previous (pre-drive) output nudges the orbit centre\nfbx = fb * 0.25 * yprev;\nx = clamp(cx + in2 + fbx + rx * zoom * xr, 0., 1.);\ny = clamp(cy + in3 + fbx + ry * zoom * yr, 0., 1.);\n// bilinear read of the 256x256 terrain\npx = x * 255.;\npy = y * 255.;\nx0 = floor(px);\ny0 = floor(py);\nx1 = min(x0 + 1., 255.);\ny1 = min(y0 + 1., 255.);\nfx = px - x0;\nfy = py - y0;\na00 = peek(terrain, y0 * 256. + x0, 0);\na01 = peek(terrain, y0 * 256. + x1, 0);\na10 = peek(terrain, y1 * 256. + x0, 0);\na11 = peek(terrain, y1 * 256. + x1, 0);\nv = dcblock(mix(mix(a00, a01, fx), mix(a10, a11, fx), fy));\nyprev = clamp(v, -1., 1.);\nout1 = tanh(v * drive);\nout2 = x;\nout3 = y;\n",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -415,6 +415,26 @@
                                         22.0
                                     ],
                                     "text": "out 3",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-9",
+                                    "numinlets": 0,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        370.0,
+                                        20.0,
+                                        30.0,
+                                        22.0
+                                    ],
+                                    "text": "in 5",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -542,6 +562,18 @@
                                         300.0
                                     ]
                                 }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-9",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-5",
+                                        4
+                                    ]
+                                }
                             }
                         ],
                         "dependency_cache": [],
@@ -628,6 +660,25 @@
                         0.82,
                         1.0
                     ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "inlet",
+                    "id": "obj-13",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        540,
+                        125,
+                        30.0,
+                        30.0
+                    ],
+                    "parameter_enable": 0,
+                    "comment": "Orbit rotation modulation (signal, turns, adds to rot)"
                 }
             }
         ],
@@ -829,6 +880,18 @@
                         288.0,
                         337.0,
                         288.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-13",
+                        0
+                    ],
+                    "destination": [
+                        "obj-8",
+                        4
                     ]
                 }
             }
