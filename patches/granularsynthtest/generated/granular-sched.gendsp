@@ -1,0 +1,329 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 0,
+      "revision": 0,
+      "architecture": "x64",
+      "modernui": 1
+    },
+    "classnamespace": "box",
+    "rect": [
+      100.0,
+      100.0,
+      600.0,
+      450.0
+    ],
+    "bglocked": 0,
+    "openinpresentation": 0,
+    "default_fontsize": 12.0,
+    "default_fontface": 0,
+    "default_fontname": "Arial",
+    "gridonopen": 1,
+    "gridsize": [
+      15.0,
+      15.0
+    ],
+    "gridsnaponopen": 1,
+    "objectsnaponopen": 1,
+    "statusbarvisible": 2,
+    "toolbarvisible": 1,
+    "lefttoolbarpinned": 0,
+    "toptoolbarpinned": 0,
+    "righttoolbarpinned": 0,
+    "bottomtoolbarpinned": 0,
+    "toolbars_unpinned_last_save": 0,
+    "tallnewobj": 0,
+    "boxanimatetime": 200,
+    "enablehscroll": 1,
+    "enablevscroll": 1,
+    "devicewidth": 0.0,
+    "description": "",
+    "digest": "",
+    "tags": "",
+    "style": "",
+    "subpatcher_template": "",
+    "assistshowspatchername": 0,
+    "boxes": [
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "in 1",
+          "id": "obj-1",
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            20.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "codebox",
+          "id": "obj-2",
+          "code": "// Granular scheduler (mono gen~) - the brains of the MC engine\n// Owns every Param. On each grain trigger it resolves the per-grain values,\n// claims the first idle voice (grain is dropped when all 32 are busy) and\n// broadcasts them to mc.gen~ granular-voice, whose instances latch on their id.\n// out1 voice id to fire this sample (1..32, 0 = none)\n// out2 start (samples) | out3 pitch | out4 size (samples) | out5 pan (0-1)\n// out6 amp | out7 env shape (live)\n\nParam grain_size(100, min=10, max=500);\nParam density(10, min=1, max=100);\nParam position(0.5, min=0, max=1);\nParam pitch(1, min=0.25, max=4);\nParam pos_jitter(0.1, min=0, max=1);\nParam pitch_jitter(0, min=0, max=1);\nParam size_jitter(0, min=0, max=1);\nParam pan_pos(0.5, min=0, max=1);\nParam pan_spread(0.5, min=0, max=1);\nParam env_shape(0, min=0, max=1);\n\nHistory one(1);\nHistory sched_phase(1);\n\nBuffer buf(\"granular_buf\");\n\nData voice_busy(32);\n\n// De-hoist: route every Param through runtime state so gen~ keeps\n// these in the per-sample body (hoisted temps can be emitted out of order)\nsrs = samplerate * one;\nk_size = grain_size * one;\nk_density = density * one;\nk_pos = position * one;\nk_pitch = pitch * one;\nk_pos_jit = pos_jitter * one;\nk_pitch_jit = pitch_jitter * one;\nk_size_jit = size_jitter * one;\nk_pan_pos = pan_pos * one;\nk_pan = pan_spread * one;\nk_shape = env_shape * one;\n\nbuf_frames = dim(buf);\n\n// Master scheduler: one trigger per 1/density seconds\ntrig = 0;\nsp = sched_phase + k_density / srs;\nif (sp >= 1) {\n    sp = sp - floor(sp);\n    trig = 1;\n}\nsched_phase = sp;\n\n// Per-grain values (only consumed on a trigger sample)\nrpos = noise();\nrpitch = noise();\nrsize = noise();\nrpan = noise();\n\nn_pitch = k_pitch * (1 + rpitch * k_pitch_jit);\nn_size = max(k_size * (1 + rsize * k_size_jit) * srs * 0.001, 64);\n\n// Clamp start position so the grain never reads past buffer end\nread_len = n_size * n_pitch;\nmax_pos = clamp(buf_frames - read_len, 0, buf_frames) / max(buf_frames, 1);\nn_start = clamp(k_pos + rpos * k_pos_jit, 0, max_pos) * buf_frames;\n\n// Pan 0-1 across the speaker line (mc.mixdown~ @pancontrolmode 1);\n// stay just under 1 because mixdown wraps out-of-range values\nn_pan = clamp(k_pan_pos + rpan * k_pan * 0.5, 0, 0.9999);\n\n// Expected-overlap normalisation (incoherent sum)\nn_amp = 1 / sqrt(clamp(k_size * k_density * 0.001, 1, 32));\n\n// Voice allocation: first idle voice claims the grain\nfire_id = 0;\nfor (v = 0; v < 32; v += 1) {\n    rem = max(peek(voice_busy, v, 0) - 1, 0);\n    if (trig > 0.5 && rem < 0.5) {\n        fire_id = v + 1;\n        rem = n_size + 2;\n        trig = 0;\n    }\n    poke(voice_busy, rem, v, 0);\n}\n\nout1 = fire_id;\nout2 = n_start;\nout3 = n_pitch;\nout4 = n_size;\nout5 = n_pan;\nout6 = n_amp;\nout7 = k_shape;",
+          "numinlets": 1,
+          "numoutlets": 7,
+          "outlettype": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "patching_rect": [
+            50.0,
+            80.0,
+            400.0,
+            200.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 1",
+          "id": "obj-3",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            50.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 2",
+          "id": "obj-4",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            130.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 3",
+          "id": "obj-5",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            210.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 4",
+          "id": "obj-6",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            290.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 5",
+          "id": "obj-7",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            370.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 6",
+          "id": "obj-8",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            450.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "maxclass": "newobj",
+          "text": "out 7",
+          "id": "obj-9",
+          "numinlets": 1,
+          "numoutlets": 0,
+          "outlettype": [],
+          "patching_rect": [
+            530.0,
+            320.0,
+            30.0,
+            22.0
+          ],
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      }
+    ],
+    "lines": [
+      {
+        "patchline": {
+          "source": [
+            "obj-1",
+            0
+          ],
+          "destination": [
+            "obj-2",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            0
+          ],
+          "destination": [
+            "obj-3",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            1
+          ],
+          "destination": [
+            "obj-4",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            2
+          ],
+          "destination": [
+            "obj-5",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            3
+          ],
+          "destination": [
+            "obj-6",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            4
+          ],
+          "destination": [
+            "obj-7",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            5
+          ],
+          "destination": [
+            "obj-8",
+            0
+          ]
+        }
+      },
+      {
+        "patchline": {
+          "source": [
+            "obj-2",
+            6
+          ],
+          "destination": [
+            "obj-9",
+            0
+          ]
+        }
+      }
+    ],
+    "dependency_cache": [],
+    "autosave": 0,
+    "bgcolor": [
+      0.9,
+      0.9,
+      0.9,
+      1.0
+    ]
+  }
+}
