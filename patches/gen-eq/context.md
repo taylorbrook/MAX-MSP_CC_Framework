@@ -107,3 +107,15 @@ output = sat - tanh(bias * drive)  // remove DC offset
 - Zavalishin "The Art of VA Filter Design" (Native Instruments)
 - RBJ Audio EQ Cookbook (W3C spec)
 - Neve 1073 harmonic analysis (Gearspace, UAD)
+
+## v0.3.0 Review Decisions (2026-09-21)
+
+1. **HPF/LPF slopes are true Butterworth 6/12/18/24 dB/oct**, -3 dB at the dial frequency for every slope: one-pole, SVF Q 0.7071, one-pole + SVF Q 1.0, SVF Q 0.5412 + SVF Q 1.3066. All four alignments run in parallel from the same input and are crossfaded by the smoothed slope value (triangular weights). Replaces the v0.1 "4 identical stages, pick a tap" scheme, which measured 12/24/36/48 dB/oct with the corner drifting to 1.52x fc.
+2. **Saturation is `(tanh(x*drive + bias) - tanh(bias)) / (drive * (1 - tanh(bias)^2))`** -- unity small-signal gain at every drive/bias, so Drive is an amount control, not a gain stage (v0.2.x: drive 2 = +21 dB through the four stages). Drive range is now 0.1-5.0; 0.1 is effectively clean, 1.0 (default) matches the old default curve. Bias is applied post-drive so the normalization stays bounded.
+3. **DC blocker (~5 Hz) after the output saturation** -- the asymmetric curve rectifies the signal (v0.2.x: up to -0.6 DC at the outlet).
+4. **No global send/receive.** `prepend` boxes wire straight into gen~ on a bus at y=510; `_eq_param` cross-talked between instances.
+5. **Readout flonums sit in series** (dial -> flonum -> prepend), so there is no fan-out and no trigger needed.
+6. **Init via `loadmess`** per control (replaces one loadbang fanned out to 15 message boxes).
+7. **State:** every dial/umenu has a varname matching its Param name, plus `autopattr @autorestore 0`. The abstraction does not persist values itself -- the parent adds a `pattrstorage` to store/recall, or sets controls by name (`<varname> <raw dial value>`).
+8. Bell uses the single Cytomic formula (`A = 10^(gain/40)`, exact reciprocal cut) -- no boost/cut branch. Cutoffs are clamped to 0.49*samplerate; smoothing coefficients scale with samplerate; `History one(1)` de-hoists the samplerate-derived setup.
+9. **Open:** poly~ wrapping still needs `in~`/`out~` (or mc.gen~ on the engine); Freq dials are 128 integer steps (~5.6%/step); Q dial is linear.
