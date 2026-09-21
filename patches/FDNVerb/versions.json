@@ -1,0 +1,27 @@
+{
+  "versions": [
+    {
+      "version": "0.0.0",
+      "description": "Initial version",
+      "timestamp": "2026-09-21T19:51:27.270799+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "original build: gen~ FDN reverb + attrui test harness (2026-03)",
+      "timestamp": "2026-09-21T19:51:27.271166+00:00",
+      "files_changed": [
+        "FDNVerb.maxpat",
+        "FDNverb.gendsp"
+      ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "bpatcher module: L/R/message inlets, L/R outlets, 12-control presentation face; host I/O moved to help patch; DSP fixes (bloom no longer caps decay, lossless freeze, larger delay buffers, smoothed size/predelay)",
+      "timestamp": "2026-09-21T19:51:27.271284+00:00",
+      "files_changed": [
+        "FDNVerb.maxpat",
+        "FDNverb.gendsp"
+      ]
+    }
+  ]
+}
