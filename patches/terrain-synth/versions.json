@@ -89,6 +89,18 @@
       "files_changed": [
         "generated/terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.6.0",
+      "description": "v0.6.0: three new slot-B banks (noise soft / noise rough / torus noise) baked with new --field noise|blend options; bank menu with friendly names -> replace messages",
+      "timestamp": "2026-09-21T19:05:14.838221+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat",
+        "tools/bake_geometry.py",
+        "generated/bank01-noise-soft.wav",
+        "generated/bank02-noise-rough.wav",
+        "generated/bank03-torus-noise.wav"
+      ]
     }
   ]
 }

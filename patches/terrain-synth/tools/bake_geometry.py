@@ -541,6 +541,14 @@ def main(argv=None) -> int:
     ap.add_argument("--tilt", type=float, default=0.0, help="torus tilt about x (radians)")
     ap.add_argument("--zoff", type=float, default=0.25, help="orbit offset along the torus axis")
     ap.add_argument("--phase", type=float, default=0.0)
+    ap.add_argument("--field", choices=("torus", "noise", "blend"), default="torus",
+                    help="torus = torus SDF (bank00); noise = fBm value-noise volume; "
+                         "blend = torus SDF + noise-amt * fBm (rough torus)")
+    ap.add_argument("--noise-freq", type=float, default=1.5, help="spatial frequency of the noise volume")
+    ap.add_argument("--octaves", type=int, default=4)
+    ap.add_argument("--noise-amt", type=float, default=0.5, help="fBm amount for --field blend")
+    ap.add_argument("--noise-offset", type=float, nargs=3, default=(3.1, 7.7, 5.3), metavar=("X", "Y", "Z"),
+                    help="where in the noise volume the orbit sits (acts as the seed)")
     ap.add_argument("--self-test", action="store_true")
     a = ap.parse_args(argv)
 
@@ -551,10 +559,22 @@ def main(argv=None) -> int:
         print(f"WARNING: {a.frames} frames does not match the ji-harmonizer layout ({NUM_FRAMES}); "
               f"the oscillator assumes {NUM_FRAMES}.", file=sys.stderr)
 
-    fold = a.fold if a.fold is not None else (a.knot[1] if a.tilt == 0.0 else 1)
-    params = {"torus": tuple(a.torus), "knot": tuple(a.knot), "knot_r": a.knot_r, "fold": fold,
+    # the fold trick only holds while the field is symmetric about the torus axis
+    symmetric = a.field == "torus" and a.tilt == 0.0
+    fold = a.fold if a.fold is not None else (a.knot[1] if symmetric else 1)
+    params = {"field": a.field, "torus": tuple(a.torus), "knot": tuple(a.knot), "knot_r": a.knot_r, "fold": fold,
               "tilt": a.tilt, "zoff": a.zoff, "phase": a.phase, "scale": tuple(a.scale), "drive": a.drive}
-    field = lambda p: torus_sdf(p, a.torus[0], a.torus[1])
+    noff = np.asarray(a.noise_offset, dtype=np.float64)
+    noise = lambda p: fbm3(p * a.noise_freq + noff, a.octaves)
+    if a.field == "torus":
+        field = lambda p: torus_sdf(p, a.torus[0], a.torus[1])
+    elif a.field == "noise":
+        field = noise
+        params.update({"noise_freq": a.noise_freq, "octaves": a.octaves, "noise_offset": tuple(a.noise_offset)})
+    else:
+        field = lambda p: torus_sdf(p, a.torus[0], a.torus[1]) + a.noise_amt * noise(p)
+        params.update({"noise_freq": a.noise_freq, "octaves": a.octaves, "noise_amt": a.noise_amt,
+                       "noise_offset": tuple(a.noise_offset)})
     aligned, raw, stats = bake_volume(field, a.frames, tuple(a.scale), a.drive, tuple(a.knot), a.knot_r,
                                       fold, a.tilt, a.zoff, a.phase)
     table = build_mips(aligned)
