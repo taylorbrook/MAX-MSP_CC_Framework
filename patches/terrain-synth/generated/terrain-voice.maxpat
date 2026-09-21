@@ -947,7 +947,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.6.1",
+                    "text": "v0.7.0",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
