@@ -4647,7 +4647,8 @@
                         54.0,
                         22.0
                     ],
-                    "triangle": 0
+                    "triangle": 0,
+                    "numdecimalplaces": 1
                 }
             },
             {
@@ -6171,7 +6172,8 @@
                         54.0,
                         22.0
                     ],
-                    "triangle": 0
+                    "triangle": 0,
+                    "numdecimalplaces": 1
                 }
             },
             {
@@ -6534,7 +6536,8 @@
                         54.0,
                         22.0
                     ],
-                    "triangle": 0
+                    "triangle": 0,
+                    "numdecimalplaces": 1
                 }
             },
             {
@@ -6738,7 +6741,8 @@
                         54.0,
                         22.0
                     ],
-                    "triangle": 0
+                    "triangle": 0,
+                    "numdecimalplaces": 1
                 }
             },
             {
@@ -6919,7 +6923,8 @@
                         54.0,
                         22.0
                     ],
-                    "triangle": 0
+                    "triangle": 0,
+                    "numdecimalplaces": 1
                 }
             },
             {
@@ -7282,7 +7287,8 @@
                         54.0,
                         22.0
                     ],
-                    "triangle": 0
+                    "triangle": 0,
+                    "numdecimalplaces": 1
                 }
             },
             {
