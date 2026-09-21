@@ -401,3 +401,16 @@ velocity on `in 2`, so `adsr~` never triggered. Fix: `in 1` -> `unpack 0 0` -> `
 `mtof` first, then velocity -> `/ 127.` -> `adsr~`); `in 2` removed, main `poly~` box numinlets 1.
 Rule: for `note` / `midinote` voices copy the adsr-synth input form; verify poly~ voice idioms
 against the shipped msp help patches, not other repo patches.
+
+### v0.4.1 confirmed in MAX (2026-09-21) + v0.4.2
+
+User: "it all works" -- terrain fill at load, keyboard/voices, controls. Confirmed forms: `in 1` ->
+`unpack 0 0` -> `swap` midinote input; `adsr~` mute outlet -> `t l l` -> (`route mute` -> `== 0` ->
+busy) + mute -> `thispoly~`; abstraction + gen~ reading main-patch buffers by name inside
+`poly~ ... up 2`; receive-based global params; dial -> expr -> flonum -> prepend -> send columns.
+(Which terrain-menu entries were exercised -- bfg / image -- was not itemised.)
+
+v0.4.2: MAX re-saves a `newobj`-form `jit.pwindow` as maxclass `jit.pwindow` and resets BOTH rects
+to its 80x60 default -> terrain picture restored to 150x150 (now a true UI box, so it sticks).
+`jit.pwindow` / `jit.cellblock` added to `UI_MAXCLASSES`; build future pwindows as UI boxes so the
+size survives the first re-save. MAX also re-proportioned the kslider to 864x98 (fixed key aspect).
