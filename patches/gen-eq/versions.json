@@ -38,6 +38,14 @@
         "gen-eq.maxpat",
         "gen-eq-engine.gendsp"
       ]
+    },
+    {
+      "version": "0.3.1",
+      "description": "Dial resolution: float-output Freq dials, log-mapped Q dials (Q=1 at centre), 2-decimal Q readouts",
+      "timestamp": "2026-09-21T20:41:56.069438+00:00",
+      "files_changed": [
+        "gen-eq.maxpat"
+      ]
     }
   ]
 }
