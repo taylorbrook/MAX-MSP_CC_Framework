@@ -81,6 +81,14 @@
       "files_changed": [
         "generated/terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.5.2",
+      "description": "v0.5.2: view is a turntable -- meshes only yaw, jit.gl.camera on a 2.4 arc provides tilt (mesh rotatexyz x+y skewed the surface); mesh scale 0.6",
+      "timestamp": "2026-09-21T18:55:52.556909+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat"
+      ]
     }
   ]
 }
