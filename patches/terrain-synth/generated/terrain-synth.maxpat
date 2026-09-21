@@ -912,7 +912,7 @@
                 "box": {
                     "maxclass": "newobj",
                     "id": "obj-22",
-                    "numinlets": 2,
+                    "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [
                         "signal"
@@ -941,7 +941,7 @@
                         420,
                         20.0
                     ],
-                    "text": "in 1 pitch / in 2 velocity via midinote | out~ 1 = voice sum",
+                    "text": "midinote -> [pitch vel] list into the voice's in 1 | out~ 1 = voice sum",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -8403,7 +8403,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.4.0",
+                    "text": "v0.4.1",
                     "fontname": "Arial",
                     "fontsize": 9.0,
                     "presentation": 1,
@@ -8760,7 +8760,7 @@
                     "midpoints": [
                         79.0,
                         368.5,
-                        22.0,
+                        145.5,
                         368.5
                     ]
                 }
@@ -8794,7 +8794,7 @@
                         462.0,
                         242.0,
                         498.0,
-                        22.0,
+                        145.5,
                         498.0
                     ]
                 }
