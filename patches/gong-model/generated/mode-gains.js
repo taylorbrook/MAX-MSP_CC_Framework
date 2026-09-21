@@ -14,7 +14,7 @@ function bang() {
 	var buf = new Buffer(buf_name);
 	var vals = [];
 	for (var i = 0; i < size; i++) {
-		buf.poke(1, i + 1, 1.0);
+		buf.poke(1, i, 1.0);
 		vals.push(1.0);
 	}
 	outlet(0, vals);
@@ -26,7 +26,7 @@ function list() {
 		var buf = new Buffer(buf_name);
 		var a = arrayfromargs(arguments);
 		for (var i = 0; i < a.length; i++) {
-			buf.poke(1, i + 1, a[i]);
+			buf.poke(1, i, a[i]);
 		}
 	}
 }
@@ -35,7 +35,7 @@ function msg_float(v) {
 	if (inlet === 0) {
 		// Single float — treat as list of one
 		var buf = new Buffer(buf_name);
-		buf.poke(1, 1, v);
+		buf.poke(1, 0, v);
 	}
 }
 

@@ -112,9 +112,10 @@ function _capture(idx) {
 
 	if (dial) {
 		try {
-			var dist = dial.getattr("distance");
-			if (typeof dist === "number" && !isNaN(dist)) {
-				center[idx] = lo + dist * (hi - lo);
+			var cur = dial.getvalueof();
+			if (cur instanceof Array) cur = cur[0];
+			if (typeof cur === "number" && !isNaN(cur)) {
+				center[idx] = Math.max(lo, Math.min(hi, cur));
 			} else {
 				center[idx] = mid;
 			}
