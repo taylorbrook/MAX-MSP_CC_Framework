@@ -230,6 +230,8 @@ All objects verified for MAX 9. MC objects require MAX 8.1+. No MAX 9-only objec
 
 ## Decisions (2026-09-21 presentation UI pass)
 
+- **User-confirmed working in MAX 2026-09-21** (dials, buttons, layout).
+
 - **Opens in presentation** (600x360 content, dark canvas `[0.13,0.13,0.15]` written to `bgcolor`/`editing_bgcolor`/`locked_bgcolor`). Panels `[0.19,0.19,0.22]` rounded 6; wells (waveform~, gain~) `[0.11,0.11,0.13]`.
 - **Section colour coding** via `activedialcolor`: GRAIN cyan (Size/Density/Position/Pitch), SCATTER amber (Pos/Pitch/Size Jit), SPACE green (Pan/Spread/Spkrs), ENVELOPE violet (Shape). Grid: 64 px dial pitch, 12 px panel padding, 8 px panel gutters, dials 50x48.
 - **Control path**: `live.dial -> prepend <param> -> gen~ granular-sched` (FDNVerb-confirmed form; dials output their initial value at load, so no loadbang seeding). attruis removed. Pitch dial uses `parameter_exponent 2.32` so 1.0x sits at centre; custom unit "x".
