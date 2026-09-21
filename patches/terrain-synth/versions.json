@@ -73,6 +73,14 @@
       "files_changed": [
         "generated/terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.5.1",
+      "description": "v0.5.1: view render 512x512 (was 4:3 squeezed) + meshes scaled to fit, orbit as points, readout decimals (0 = auto in MAX -> 1), clipped view note, bank menu spacing",
+      "timestamp": "2026-09-21T18:49:52.406284+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat"
+      ]
     }
   ]
 }
