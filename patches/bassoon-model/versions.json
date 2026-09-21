@@ -307,6 +307,16 @@
         "bassoon-model.maxpat",
         "bassoon.gendsp"
       ]
+    },
+    {
+      "version": "0.18.0",
+      "description": "review fixes: half-period loop (was octave low), Bernoulli reed curve (threshold ~0.35, was ~0.67), DC-blocked radiation tap, de-hoist guard, allpass frac [0.1,1.1), SR-independent chiff, register smoothing, breath gate; host: freq (Hz) label + loadmess 110, staccato single-list line~ msg, patcher bgcolor + contrast, dial display names/units; presets gain attack/release",
+      "timestamp": "2026-09-21T19:18:19.199829+00:00",
+      "files_changed": [
+        "bassoon.gendsp",
+        "bassoon-model.maxpat",
+        "bassoon_presets.json"
+      ]
     }
   ]
 }
