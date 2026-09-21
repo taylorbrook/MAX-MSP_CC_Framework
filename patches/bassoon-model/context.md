@@ -414,3 +414,32 @@ onset_pitch_drift = -8.0 * exp(-onset_sec / drift_tau);
 
 Net cost: +2 Param, +1 History, ~10 lines. No topology change.
 
+
+## 2026-09-21 Review + fixes (v0.18.0 DSP/host, v0.19.0 layout)
+
+All DSP numbers below come from a Python run of the actual codebox (`tools/genrun.py`, a minimal GenExpr->Python runner; `tools/core.py` has the pitch/harmonic analyzer) -- **not yet confirmed in MAX**.
+
+### Findings (v0.17.0)
+- Loop delay was a full period with an inverting reflection -> period-2 orbit -> sounded **one octave below** `in1`, odd harmonics only (evens ~-36 dB).
+- Old reed curve `x*sqrt(1-(x/0.85)^2)` peaks at 0.71 of closure; self-oscillation needs the falling slope -> speaking threshold breath ~0.67. 7 of 11 presets sat below it.
+- `rad_in` tapped `bore_return` before the DC blocker -> 0.02-0.06 DC at the output.
+
+### Decisions
+- **Half-period loop** (`srs / (2*freq_mod)`), keep onepole phase-delay comp evaluated at the fundamental. Measured +1..+9 cents over 58-622 Hz at default bore_damp (worst corner bore_damp=0 @ 440-622 Hz: ~+14).
+- **Do NOT compensate the DC blocker's phase lead.** Linear analysis says it should sharpen low notes; the mode-locked square-ish oscillation does not follow it (compensating went 10-60 cents flat). Corner lowered 7 Hz -> 1.4 Hz instead.
+- **Reed curve -> Bernoulli** `1.75 * p_close * sqrt(x) * (1-x)`, `p_close = 0.65 + 0.35*reed_stiff`, breath scaled 0.9. Threshold ~0.35-0.4 at default stiffness, speaks up to breath 1.0 at every stiffness. Stronger curve gain (>=2.0) or soft reeds (stiff <= 0.25) show occasional period-doubling (subharmonic) at mid breath -- left in as reed character.
+- **Breath gate** on reed flow (`clamp(breath_state*8, 0, 1)`): sqrt() has unbounded slope at 0 and re-excites the bore after release without it.
+- **De-hoist guard** (`History one(1)`, `srs`, `k_*`) per CLAUDE.md; History updates that are read after write now go through a local + single write so the result does not depend on gen~'s read-after-write semantics (in-loop `bore_lp`/`cone_dc` would otherwise risk a 1-sample tuning error).
+- **Rejected for now: conical (all-harmonic) topology.** Prototyped the STK Saxofony two-delay structure: even harmonics appear, but H2 dominates H1, it flips up an octave above ~440 Hz at high breath, and sits 5-30 cents flat. Needs its own voicing/tuning project and would re-voice every preset. The odd-harmonic spectrum stays; the 500 Hz formant + reed BPF carry the bassoon colour.
+- Presets: attack_time/release_time added to all 12 slots; slot 10 amp 0.45 -> 0.6 (was below threshold with aper -0.15).
+- Host: freq flonum is **raw Hz** (`loadmess 110.`), staccato is one `line~` list (`0. 0 0.9 15 0.9 60 0. 80`), patcher `bgcolor` set, dial shortnames humanised (longnames/varnames unchanged so pattr + param_connect keys are intact), Hz/ms unit styles.
+
+### Presentation exclusions (Rule #9)
+- `breath` comment: removed from presentation -- `live.slider` shows its own "Breath" name.
+- No other interactive control is excluded.
+
+### Left alone deliberately
+- `loadbang -> recall 1` alongside `@autorestore 1` (redundant but harmless).
+- `drift_on` live.toggle keeps `parameter_type 0` (works; enum type only matters for Live automation display).
+- Presets still store `amp` (breath) by original design.
+- Critic's hot/cold warning on `p articulation` is a false positive: its two inlets are independent triggers.
