@@ -3718,6 +3718,205 @@
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-101",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        200.0,
+                                        238.0,
+                                        430.0,
+                                        34.0
+                                    ],
+                                    "text": "CHEBY display (js cheby-coefs via send tsyn-chebfillA): backup = copy the source-1 store aside | exprfill ..., bang = draw the polynomial into it | restore = put the saved source back",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-102",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        200.0,
+                                        280.0,
+                                        170.0,
+                                        22.0
+                                    ],
+                                    "text": "receive tsyn-chebfillA",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-103",
+                                    "numinlets": 1,
+                                    "numoutlets": 3,
+                                    "outlettype": [
+                                        "",
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        200.0,
+                                        312.0,
+                                        156.0,
+                                        22.0
+                                    ],
+                                    "text": "route backup restore",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-104",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "jit_matrix",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        200.0,
+                                        344.0,
+                                        261.0,
+                                        22.0
+                                    ],
+                                    "text": "jit.matrix tsrcA1 1 float32 256 256",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-105",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "jit_matrix",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        200.0,
+                                        376.0,
+                                        275.0,
+                                        22.0
+                                    ],
+                                    "text": "jit.matrix tsrcAbak 1 float32 256 256",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-106",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "jit_matrix",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        380.0,
+                                        312.0,
+                                        250.0,
+                                        22.0
+                                    ],
+                                    "text": "jit.matrix tsrcAbak 1 float32 256 256",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-107",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        680.0,
+                                        200.0,
+                                        72.0,
+                                        22.0
+                                    ],
+                                    "text": "deferlow",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "message",
+                                    "id": "obj-108",
+                                    "numinlets": 2,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        680.0,
+                                        232.0,
+                                        105.0,
+                                        22.0
+                                    ],
+                                    "text": "srcchanged",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-109",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        680.0,
+                                        264.0,
+                                        142.0,
+                                        22.0
+                                    ],
+                                    "text": "send tsyn-chebsrcA",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-110",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        680.0,
+                                        292.0,
+                                        195.0,
+                                        34.0
+                                    ],
+                                    "text": "source changed -> js cheby-coefs (deferlow = after the fill)",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
                             }
                         ],
                         "lines": [
@@ -5443,6 +5642,114 @@
                                     ],
                                     "destination": [
                                         "obj-56",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-102",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-103",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-103",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-104",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-104",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-105",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-103",
+                                        1
+                                    ],
+                                    "destination": [
+                                        "obj-106",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-106",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-6",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-103",
+                                        2
+                                    ],
+                                    "destination": [
+                                        "obj-6",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-1",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-107",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-107",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-108",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-108",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-109",
                                         0
                                     ]
                                 }
@@ -10236,7 +10543,7 @@
                         54.0,
                         17.0
                     ],
-                    "text": "v0.11.0",
+                    "text": "v0.12.0",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -10684,10 +10991,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        700.0,
-                        452.0,
-                        180.0,
-                        17.0
+                        643.0,
+                        474.0,
+                        80.0,
+                        28.0
                     ],
                     "text": "orbits drawn at 110 Hz (audio on)",
                     "textcolor": [
@@ -10729,7 +11036,7 @@
                     "presentation_rect": [
                         511.0,
                         410.0,
-                        379.0,
+                        214.0,
                         108.0
                     ],
                     "proportion": 0.39,
@@ -14081,6 +14388,205 @@
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-101",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        200.0,
+                                        238.0,
+                                        430.0,
+                                        34.0
+                                    ],
+                                    "text": "CHEBY display (js cheby-coefs via send tsyn-chebfillB): backup = copy the source-1 store aside | exprfill ..., bang = draw the polynomial into it | restore = put the saved source back",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-102",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        200.0,
+                                        280.0,
+                                        170.0,
+                                        22.0
+                                    ],
+                                    "text": "receive tsyn-chebfillB",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-103",
+                                    "numinlets": 1,
+                                    "numoutlets": 3,
+                                    "outlettype": [
+                                        "",
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        200.0,
+                                        312.0,
+                                        156.0,
+                                        22.0
+                                    ],
+                                    "text": "route backup restore",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-104",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "jit_matrix",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        200.0,
+                                        344.0,
+                                        261.0,
+                                        22.0
+                                    ],
+                                    "text": "jit.matrix tsrcB1 1 float32 256 256",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-105",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "jit_matrix",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        200.0,
+                                        376.0,
+                                        275.0,
+                                        22.0
+                                    ],
+                                    "text": "jit.matrix tsrcBbak 1 float32 256 256",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-106",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "jit_matrix",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        380.0,
+                                        312.0,
+                                        250.0,
+                                        22.0
+                                    ],
+                                    "text": "jit.matrix tsrcBbak 1 float32 256 256",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-107",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        680.0,
+                                        200.0,
+                                        72.0,
+                                        22.0
+                                    ],
+                                    "text": "deferlow",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "message",
+                                    "id": "obj-108",
+                                    "numinlets": 2,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        680.0,
+                                        232.0,
+                                        105.0,
+                                        22.0
+                                    ],
+                                    "text": "srcchanged",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-109",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        680.0,
+                                        264.0,
+                                        142.0,
+                                        22.0
+                                    ],
+                                    "text": "send tsyn-chebsrcB",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-110",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        680.0,
+                                        292.0,
+                                        195.0,
+                                        34.0
+                                    ],
+                                    "text": "source changed -> js cheby-coefs (deferlow = after the fill)",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
                             }
                         ],
                         "lines": [
@@ -15806,6 +16312,114 @@
                                     ],
                                     "destination": [
                                         "obj-56",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-102",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-103",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-103",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-104",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-104",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-105",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-103",
+                                        1
+                                    ],
+                                    "destination": [
+                                        "obj-106",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-106",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-6",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-103",
+                                        2
+                                    ],
+                                    "destination": [
+                                        "obj-6",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-1",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-107",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-107",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-108",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-108",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-109",
                                         0
                                     ]
                                 }
@@ -38534,6 +39148,1398 @@
                         1.0
                     ]
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-755",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1100.0,
+                        4150.0,
+                        1500.0,
+                        20.0
+                    ],
+                    "text": "4.16 CHEBY CORE  per-slot TERRAIN / CHEBY mode -> send tsyn-cheby (voices: signal-rate select) | preset + brightness -> js cheby-coefs -> buffer~ chebcoef (A = frames 0-63, B = 64-127, idx = m * 8 + n) + polynomial exprfill into the slot's terrain picture",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-756",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "float",
+                        "bang"
+                    ],
+                    "patching_rect": [
+                        2700.0,
+                        4190.0,
+                        149.0,
+                        22.0
+                    ],
+                    "text": "buffer~ chebcoef 10",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-757",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        2700.0,
+                        4220.0,
+                        330.0,
+                        48.0
+                    ],
+                    "text": "c[m][n] for T_m(x) T_n(y), 8 x 8 per slot; 10 ms >= 128 frames at any rate. Read by terrain-cheby.maxpat in every voice.",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-758",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1100.0,
+                        4190.0,
+                        700.0,
+                        20.0
+                    ],
+                    "text": "slot A: CHEBY A toggle | preset | brightness (b^(degree - lowest degree), renormalised to sum |c| = 1)",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "toggle",
+                    "id": "obj-759",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1100.0,
+                        4248.0,
+                        24.0,
+                        24.0
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        741.0,
+                        435.0,
+                        18.0,
+                        18.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-760",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "int",
+                        "int",
+                        "int"
+                    ],
+                    "patching_rect": [
+                        1100.0,
+                        4283.0,
+                        65.0,
+                        22.0
+                    ],
+                    "text": "t i i i",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-761",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        "int"
+                    ],
+                    "patching_rect": [
+                        1100.0,
+                        4353.0,
+                        40.0,
+                        22.0
+                    ],
+                    "text": "i",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-762",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1100.0,
+                        4385.0,
+                        107.0,
+                        22.0
+                    ],
+                    "text": "prepend modeA",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-763",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1100.0,
+                        4417.0,
+                        121.0,
+                        22.0
+                    ],
+                    "text": "send tsyn-cheby",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-764",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1290.0,
+                        4318.0,
+                        149.0,
+                        22.0
+                    ],
+                    "text": "receive tsyn-resend",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-765",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1480.0,
+                        4318.0,
+                        100.0,
+                        22.0
+                    ],
+                    "text": "prepend mode",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-766",
+                    "numinlets": 2,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "bang",
+                        ""
+                    ],
+                    "patching_rect": [
+                        2250.0,
+                        4318.0,
+                        51.0,
+                        22.0
+                    ],
+                    "text": "sel 1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-767",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        2250.0,
+                        4350.0,
+                        33.0,
+                        22.0
+                    ],
+                    "text": "0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-768",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        2250.0,
+                        4382.0,
+                        156.0,
+                        22.0
+                    ],
+                    "text": "send tsyn-chebshapeA",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-769",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        2420.0,
+                        4318.0,
+                        330.0,
+                        48.0
+                    ],
+                    "text": "CHEBY on snaps the orbit SHAPE to ellipse (the only alias-free shape); other shapes stay selectable afterwards",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-770",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1700.0,
+                        4248.0,
+                        86.0,
+                        22.0
+                    ],
+                    "text": "loadmess 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-771",
+                    "items": [
+                        "saw",
+                        ",",
+                        "square",
+                        ",",
+                        "hollow xy",
+                        ",",
+                        "cross",
+                        ",",
+                        "glass",
+                        ",",
+                        "bell"
+                    ],
+                    "maxclass": "umenu",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "int",
+                        "",
+                        ""
+                    ],
+                    "parameter_enable": 0,
+                    "patching_rect": [
+                        1700.0,
+                        4283.0,
+                        110.0,
+                        22.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        739.0,
+                        457.0,
+                        72.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-772",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1700.0,
+                        4318.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "prepend preset",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-773",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1950.0,
+                        4218.0,
+                        100.0,
+                        22.0
+                    ],
+                    "text": "loadmess 100",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-774",
+                    "maxclass": "dial",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        "float"
+                    ],
+                    "parameter_enable": 0,
+                    "patching_rect": [
+                        1950.0,
+                        4248.0,
+                        40.0,
+                        40.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        739.0,
+                        481.0,
+                        32.0,
+                        32.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-775",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1950.0,
+                        4298.0,
+                        121.0,
+                        22.0
+                    ],
+                    "text": "expr $f1 / 127.",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "format": 6,
+                    "id": "obj-776",
+                    "ignoreclick": 1,
+                    "maxclass": "flonum",
+                    "numdecimalplaces": 2,
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        "bang"
+                    ],
+                    "parameter_enable": 0,
+                    "patching_rect": [
+                        1950.0,
+                        4330.0,
+                        54.0,
+                        22.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        773.0,
+                        493.0,
+                        38.0,
+                        20.0
+                    ],
+                    "triangle": 0,
+                    "fontsize": 10.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-777",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1950.0,
+                        4362.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "prepend bright",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-778",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1480.0,
+                        4362.0,
+                        163.0,
+                        22.0
+                    ],
+                    "text": "receive tsyn-chebsrcA",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-779",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1700.0,
+                        4408.0,
+                        150.0,
+                        22.0
+                    ],
+                    "text": "js cheby-coefs.js 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "saved_object_attributes": {
+                        "filename": "cheby-coefs.js",
+                        "parameter_enable": 0
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-780",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1700.0,
+                        4442.0,
+                        149.0,
+                        22.0
+                    ],
+                    "text": "send tsyn-chebfillA",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-781",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1870.0,
+                        4408.0,
+                        420.0,
+                        48.0
+                    ],
+                    "text": "-> p terrain-source: backup / exprfill + bang / restore on the source-1 store (views + terrainbuf follow; the cheby core itself reads only chebcoef)",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-782",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        925.0,
+                        1362.0,
+                        165.0,
+                        22.0
+                    ],
+                    "text": "receive tsyn-chebshapeA",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-783",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1100.0,
+                        4480.0,
+                        700.0,
+                        20.0
+                    ],
+                    "text": "slot B: CHEBY B toggle | preset | brightness (b^(degree - lowest degree), renormalised to sum |c| = 1)",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "toggle",
+                    "id": "obj-784",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1100.0,
+                        4538.0,
+                        24.0,
+                        24.0
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        817.0,
+                        435.0,
+                        18.0,
+                        18.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-785",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "int",
+                        "int",
+                        "int"
+                    ],
+                    "patching_rect": [
+                        1100.0,
+                        4573.0,
+                        65.0,
+                        22.0
+                    ],
+                    "text": "t i i i",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-786",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        "int"
+                    ],
+                    "patching_rect": [
+                        1100.0,
+                        4643.0,
+                        40.0,
+                        22.0
+                    ],
+                    "text": "i",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-787",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1100.0,
+                        4675.0,
+                        107.0,
+                        22.0
+                    ],
+                    "text": "prepend modeB",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-788",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1100.0,
+                        4707.0,
+                        121.0,
+                        22.0
+                    ],
+                    "text": "send tsyn-cheby",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-789",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1290.0,
+                        4608.0,
+                        149.0,
+                        22.0
+                    ],
+                    "text": "receive tsyn-resend",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-790",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1480.0,
+                        4608.0,
+                        100.0,
+                        22.0
+                    ],
+                    "text": "prepend mode",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-791",
+                    "numinlets": 2,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "bang",
+                        ""
+                    ],
+                    "patching_rect": [
+                        2250.0,
+                        4608.0,
+                        51.0,
+                        22.0
+                    ],
+                    "text": "sel 1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-792",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        2250.0,
+                        4640.0,
+                        33.0,
+                        22.0
+                    ],
+                    "text": "0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-793",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        2250.0,
+                        4672.0,
+                        156.0,
+                        22.0
+                    ],
+                    "text": "send tsyn-chebshapeB",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-794",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        2420.0,
+                        4608.0,
+                        330.0,
+                        48.0
+                    ],
+                    "text": "CHEBY on snaps the orbit SHAPE to ellipse (the only alias-free shape); other shapes stay selectable afterwards",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-795",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1700.0,
+                        4538.0,
+                        86.0,
+                        22.0
+                    ],
+                    "text": "loadmess 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-796",
+                    "items": [
+                        "saw",
+                        ",",
+                        "square",
+                        ",",
+                        "hollow xy",
+                        ",",
+                        "cross",
+                        ",",
+                        "glass",
+                        ",",
+                        "bell"
+                    ],
+                    "maxclass": "umenu",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "int",
+                        "",
+                        ""
+                    ],
+                    "parameter_enable": 0,
+                    "patching_rect": [
+                        1700.0,
+                        4573.0,
+                        110.0,
+                        22.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        815.0,
+                        457.0,
+                        72.0,
+                        20.0
+                    ],
+                    "fontsize": 10.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-797",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1700.0,
+                        4608.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "prepend preset",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-798",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1950.0,
+                        4508.0,
+                        100.0,
+                        22.0
+                    ],
+                    "text": "loadmess 100",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "id": "obj-799",
+                    "maxclass": "dial",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        "float"
+                    ],
+                    "parameter_enable": 0,
+                    "patching_rect": [
+                        1950.0,
+                        4538.0,
+                        40.0,
+                        40.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        815.0,
+                        481.0,
+                        32.0,
+                        32.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-800",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1950.0,
+                        4588.0,
+                        121.0,
+                        22.0
+                    ],
+                    "text": "expr $f1 / 127.",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "format": 6,
+                    "id": "obj-801",
+                    "ignoreclick": 1,
+                    "maxclass": "flonum",
+                    "numdecimalplaces": 2,
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        "bang"
+                    ],
+                    "parameter_enable": 0,
+                    "patching_rect": [
+                        1950.0,
+                        4620.0,
+                        54.0,
+                        22.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        849.0,
+                        493.0,
+                        38.0,
+                        20.0
+                    ],
+                    "triangle": 0,
+                    "fontsize": 10.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-802",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1950.0,
+                        4652.0,
+                        114.0,
+                        22.0
+                    ],
+                    "text": "prepend bright",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-803",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1480.0,
+                        4652.0,
+                        163.0,
+                        22.0
+                    ],
+                    "text": "receive tsyn-chebsrcB",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-804",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1700.0,
+                        4698.0,
+                        150.0,
+                        22.0
+                    ],
+                    "text": "js cheby-coefs.js 64",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "saved_object_attributes": {
+                        "filename": "cheby-coefs.js",
+                        "parameter_enable": 0
+                    }
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-805",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1700.0,
+                        4732.0,
+                        149.0,
+                        22.0
+                    ],
+                    "text": "send tsyn-chebfillB",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-806",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1870.0,
+                        4698.0,
+                        420.0,
+                        48.0
+                    ],
+                    "text": "-> p terrain-source-b: backup / exprfill + bang / restore on the source-1 store (views + terrainbuf follow; the cheby core itself reads only chebcoef)",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-807",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        925.0,
+                        2012.0,
+                        165.0,
+                        22.0
+                    ],
+                    "text": "receive tsyn-chebshapeB",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-808",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        4700.0,
+                        4150.0,
+                        480.0,
+                        20.0
+                    ],
+                    "text": "4.17 CHEBY presentation panel / header / labels (presentation only)",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "angle": 270.0,
+                    "background": 1,
+                    "grad1": [
+                        0.94,
+                        0.94,
+                        0.96,
+                        1.0
+                    ],
+                    "grad2": [
+                        0.88,
+                        0.89,
+                        0.92,
+                        1.0
+                    ],
+                    "id": "obj-809",
+                    "maxclass": "panel",
+                    "mode": 1,
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        4700.0,
+                        4175.0,
+                        120.0,
+                        30.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        733.0,
+                        410.0,
+                        157.0,
+                        108.0
+                    ],
+                    "proportion": 0.39,
+                    "rounded": 7
+                }
+            },
+            {
+                "box": {
+                    "fontface": 1,
+                    "fontname": "Arial",
+                    "fontsize": 11.0,
+                    "id": "obj-810",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        4700.0,
+                        4215.0,
+                        150.0,
+                        19.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        743.0,
+                        415.0,
+                        140.0,
+                        19.0
+                    ],
+                    "text": "CHEBY CORE",
+                    "textcolor": [
+                        0.2,
+                        0.2,
+                        0.25,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 9.0,
+                    "id": "obj-811",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        4700.0,
+                        4240.0,
+                        64.0,
+                        17.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        761.0,
+                        436.0,
+                        50.0,
+                        17.0
+                    ],
+                    "text": "CHEBY A",
+                    "textcolor": [
+                        0.2,
+                        0.2,
+                        0.25,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 9.0,
+                    "id": "obj-812",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        4700.0,
+                        4262.0,
+                        64.0,
+                        17.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        773.0,
+                        479.0,
+                        40.0,
+                        15.0
+                    ],
+                    "text": "BRIGHT",
+                    "textcolor": [
+                        0.2,
+                        0.2,
+                        0.25,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 9.0,
+                    "id": "obj-813",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        4700.0,
+                        4284.0,
+                        64.0,
+                        17.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        837.0,
+                        436.0,
+                        50.0,
+                        17.0
+                    ],
+                    "text": "CHEBY B",
+                    "textcolor": [
+                        0.2,
+                        0.2,
+                        0.25,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "fontname": "Arial",
+                    "fontsize": 9.0,
+                    "id": "obj-814",
+                    "maxclass": "comment",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "patching_rect": [
+                        4700.0,
+                        4306.0,
+                        64.0,
+                        17.0
+                    ],
+                    "presentation": 1,
+                    "presentation_rect": [
+                        849.0,
+                        479.0,
+                        40.0,
+                        15.0
+                    ],
+                    "text": "BRIGHT",
+                    "textcolor": [
+                        0.2,
+                        0.2,
+                        0.25,
+                        1.0
+                    ]
+                }
             }
         ],
         "lines": [
@@ -47071,6 +49077,510 @@
                     ],
                     "destination": [
                         "obj-745",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-759",
+                        0
+                    ],
+                    "destination": [
+                        "obj-760",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-760",
+                        2
+                    ],
+                    "destination": [
+                        "obj-766",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-760",
+                        1
+                    ],
+                    "destination": [
+                        "obj-765",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-760",
+                        0
+                    ],
+                    "destination": [
+                        "obj-761",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-764",
+                        0
+                    ],
+                    "destination": [
+                        "obj-761",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-761",
+                        0
+                    ],
+                    "destination": [
+                        "obj-762",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-762",
+                        0
+                    ],
+                    "destination": [
+                        "obj-763",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-766",
+                        0
+                    ],
+                    "destination": [
+                        "obj-767",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-767",
+                        0
+                    ],
+                    "destination": [
+                        "obj-768",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-770",
+                        0
+                    ],
+                    "destination": [
+                        "obj-771",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-771",
+                        0
+                    ],
+                    "destination": [
+                        "obj-772",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-772",
+                        0
+                    ],
+                    "destination": [
+                        "obj-779",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-773",
+                        0
+                    ],
+                    "destination": [
+                        "obj-774",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-774",
+                        0
+                    ],
+                    "destination": [
+                        "obj-775",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-775",
+                        0
+                    ],
+                    "destination": [
+                        "obj-776",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-776",
+                        0
+                    ],
+                    "destination": [
+                        "obj-777",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-777",
+                        0
+                    ],
+                    "destination": [
+                        "obj-779",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-765",
+                        0
+                    ],
+                    "destination": [
+                        "obj-779",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-778",
+                        0
+                    ],
+                    "destination": [
+                        "obj-779",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-779",
+                        0
+                    ],
+                    "destination": [
+                        "obj-780",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-782",
+                        0
+                    ],
+                    "destination": [
+                        "obj-230",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-784",
+                        0
+                    ],
+                    "destination": [
+                        "obj-785",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-785",
+                        2
+                    ],
+                    "destination": [
+                        "obj-791",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-785",
+                        1
+                    ],
+                    "destination": [
+                        "obj-790",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-785",
+                        0
+                    ],
+                    "destination": [
+                        "obj-786",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-789",
+                        0
+                    ],
+                    "destination": [
+                        "obj-786",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-786",
+                        0
+                    ],
+                    "destination": [
+                        "obj-787",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-787",
+                        0
+                    ],
+                    "destination": [
+                        "obj-788",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-791",
+                        0
+                    ],
+                    "destination": [
+                        "obj-792",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-792",
+                        0
+                    ],
+                    "destination": [
+                        "obj-793",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-795",
+                        0
+                    ],
+                    "destination": [
+                        "obj-796",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-796",
+                        0
+                    ],
+                    "destination": [
+                        "obj-797",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-797",
+                        0
+                    ],
+                    "destination": [
+                        "obj-804",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-798",
+                        0
+                    ],
+                    "destination": [
+                        "obj-799",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-799",
+                        0
+                    ],
+                    "destination": [
+                        "obj-800",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-800",
+                        0
+                    ],
+                    "destination": [
+                        "obj-801",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-801",
+                        0
+                    ],
+                    "destination": [
+                        "obj-802",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-802",
+                        0
+                    ],
+                    "destination": [
+                        "obj-804",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-790",
+                        0
+                    ],
+                    "destination": [
+                        "obj-804",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-803",
+                        0
+                    ],
+                    "destination": [
+                        "obj-804",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-804",
+                        0
+                    ],
+                    "destination": [
+                        "obj-805",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-807",
+                        0
+                    ],
+                    "destination": [
+                        "obj-380",
                         0
                     ]
                 }
