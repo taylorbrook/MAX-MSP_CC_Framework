@@ -568,3 +568,10 @@ User request: no separate view on the right; the 3D render sits where each terra
 - Unverified in MAX: two offscreen `jit.world` contexts in one patch (each feeding its own
   `jit.pwindow` by texture), readability of the render at 150 px (mesh `@scale 0.6`), CPU/GPU of two
   worlds + two helper oscillators.
+
+### v0.7.0 + v0.8.0 confirmed in MAX (2026-09-21)
+
+User: "it works - all checks pass". Confirmed: slot B terrain oscillator (own terrain, orbit row, XY
+pad, ratio/detune, shared terrain mod), plain Param messages into `terrain-osc` / `terrain-osc-b`
+inside `poly~ ... up 2`, `dial @size 15` stepped ratio, two offscreen `jit.world` contexts each
+feeding its own `jit.pwindow`, shared ON / ROTATE / TILT, per-terrain surface rebuild.
