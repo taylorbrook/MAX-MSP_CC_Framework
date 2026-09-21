@@ -494,3 +494,17 @@ noise`, fontsize 10) -> `select 0 1 2 3` -> `replace <file>` message boxes -> `b
 (the old symbol -> `prepend replace` path is gone, since menu text no longer equals the filename).
 `wt-osc.maxpat` (standalone abstraction) still lists only bank00. Unverified in MAX: bank switching
 while notes sound, audition of the three banks.
+
+### v0.6.1 (2026-09-21): A>B MIX / POSITION (and so the banks) had no audible effect
+
+Split test: FILTER / ENVELOPE dials work (so send -> receive -> route is fine) but MIX at 1.0 sounded
+identical to 0, console clean. The only thing on that path unique to MIX/POSITION was the voice
+gen~'s Param messaging: `prepend xfade|pos` -> gen~ inlet 0 (which also carries the freq signal),
+with `k = Param * one` (`History one(1.)` de-hoist) inside `poly~ ... up 2`. Root cause NOT
+isolated (candidates: `one` reading 0 in a poly~ instance, or Param messages not applied).
+Fix sidesteps both: Params and `one` removed; mix and position enter as signals --
+`route` -> `$1 20` -> `line~` -> gen~ in3 / in4 (the same message->line~ form already confirmed for
+cutoff in this voice), clamped 0-1 in the codebox. Since v0.4.0 slot B was therefore never
+audible; the v0.6.0 banks are untested until this is confirmed.
+If this works, treat "Param messages + History-one inside poly~ voices" as suspect and prefer
+signal inlets for per-voice gen~ controls.
