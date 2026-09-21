@@ -61,7 +61,13 @@
                     ],
                     "text": "terrain-lfo v0.1  --  motion LFO for terrain-voice and the 3D view helpers: sine / triangle / S&H, restarts on a rising note gate",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
                 }
             },
             {
@@ -79,7 +85,13 @@
                     ],
                     "text": "in1 rate Hz | in2 shape 0 / 1 / 2 | in3 note gate (leave open = free-running)  ->  out1 -1..1. All three are signals (route -> $1 20 -> line~), never Param messages.",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
                 }
             },
             {
@@ -326,6 +338,16 @@
                                     "destination": [
                                         "obj-4",
                                         1
+                                    ],
+                                    "midpoints": [
+                                        145.0,
+                                        12.0,
+                                        202.0,
+                                        12.0,
+                                        202.0,
+                                        50.0,
+                                        250.0,
+                                        50.0
                                     ]
                                 }
                             },
@@ -338,6 +360,12 @@
                                     "destination": [
                                         "obj-4",
                                         2
+                                    ],
+                                    "midpoints": [
+                                        225.0,
+                                        61.0,
+                                        443.0,
+                                        61.0
                                     ]
                                 }
                             },
@@ -350,6 +378,12 @@
                                     "destination": [
                                         "obj-5",
                                         0
+                                    ],
+                                    "midpoints": [
+                                        250.0,
+                                        300.0,
+                                        65.0,
+                                        300.0
                                     ]
                                 }
                             }
@@ -429,6 +463,12 @@
                     "destination": [
                         "obj-7",
                         0
+                    ],
+                    "midpoints": [
+                        135.0,
+                        191.0,
+                        30.0,
+                        191.0
                     ]
                 }
             }
