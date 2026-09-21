@@ -128,6 +128,14 @@
       "files_changed": [
         "generated/terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.9.0",
+      "description": "v0.9.0: play marker -- a slow copy of each oscillator (revs/s = last note Hz / 220, B x bmul) rides its orbit as a big white point in both 3D views, shown only while the voice sum is sounding (peakamp~ gate)",
+      "timestamp": "2026-09-21T19:55:36.863262+00:00",
+      "files_changed": [
+        "generated/terrain-synth.maxpat"
+      ]
     }
   ]
 }

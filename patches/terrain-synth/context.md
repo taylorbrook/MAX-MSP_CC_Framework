@@ -575,3 +575,27 @@ User: "it works - all checks pass". Confirmed: slot B terrain oscillator (own te
 pad, ratio/detune, shared terrain mod), plain Param messages into `terrain-osc` / `terrain-osc-b`
 inside `poly~ ... up 2`, `dial @size 15` stepped ratio, two offscreen `jit.world` contexts each
 feeding its own `jit.pwindow`, shared ON / ROTATE / TILT, per-terrain surface rebuild.
+
+## Play marker (2026-09-21, v0.9.0)
+
+User request: a point moving across the 3D terrain as the note plays. The audio orbit runs at pitch
+rate (hundreds of laps/s), so the marker is a **slowed stand-in**, not the literal read head.
+
+- **Main, section 6:** `prepend midinote` -> `t l l` (poly~ first) -> `route midinote` -> `unpack 0 0`
+  -> velocity `> 0` opens a `gate` so only note-ons pass the pitch -> `mtof` ->
+  `expr min($f1 / 220., 6.)` (A3 = 1 lap/s, capped at 6) -> `prepend hz` -> `send tsyn-mark`.
+  Sound gate: voice sum (`*~ 0.3`, pre-volume) -> `peakamp~ 50` -> `> 0.0005` -> `change` ->
+  `prepend on` -> `send tsyn-mark` (so the marker stays through the release tail and hides in silence;
+  polyphony = speed of the most recent note).
+- **Each view:** `receive tsyn-mark` -> `route hz on`. `hz` drives a third `terrain-osc` /
+  `terrain-osc-b` instance (B: `* bmul` via `receive tsyn-voice` -> `route bmul`; `loadmess 0.5`
+  default) following the same `tsyn-osc` / `tsyn-oscB` params -> xyz gen~ (height + 0.07) ->
+  3 x `snapshot~` banged z, y, x by the jit.world draw bang (`t b b`: jit.catch~ first, then
+  `t b b b`) -> `pack f f f` -> `setcell 0 val $1 $2 $3, bang` -> `jit.matrix 3 float32 1` ->
+  `jit.gl.mesh <ctx> @draw_mode points @point_size 14 @point_mode circle_depth @color 1. 1. 1. 1.
+  @scale 0.6 @enable 0`; `on` -> `enable $1`. The rotate `t l l` became `t l l l` so the marker
+  mesh turns with the surface.
+- Known limitation: with FEEDBACK != 0 the marker drifts off the dotted path -- trajectory feedback
+  is an audio-rate effect a ~1 Hz copy cannot reproduce. B speed picks up a new `bmul` on the next note.
+- Unverified in MAX: 1-cell matrix into a points mesh, `enable` on jit.gl.mesh, float Hz < 1 into
+  terrain-osc in1, peakamp~ threshold feel.
