@@ -57,3 +57,5 @@ Ready to build.
 - Face is 140×180 in presentation: dark panel `[0.19 0.19 0.22]`, centred label, 120px dial, readout. Patcher `bgcolor` now set (was only `editing_bgcolor`).
 - `disintegrate-helper.maxpat` hosts the module: `adc~` → bpatcher → linked `gain~` pair + meters → `ezdac~`; `0., 1. 8000` → `line 0. 20` → flonum → inlet 3 demos external amount control. Patching-mode only (no presentation), so no Rule #9 exclusions to record.
 - Amount resets to 0 on load (loadbang, unchanged); hosts that need state should drive inlet 3.
+
+**v0.3.0 user-confirmed working in MAX (2026-09-21). Project complete.**
