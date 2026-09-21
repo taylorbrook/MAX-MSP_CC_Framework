@@ -48,6 +48,15 @@
         "generated/terrain-synth.maxpat",
         "context.md"
       ]
+    },
+    {
+      "version": "0.4.1",
+      "description": "v0.4.1: fix silent voices -- poly~ midinote delivers [pitch vel] as one list to in 1; voice now unpacks it (C74 adsr-synth form) instead of waiting for velocity on in 2",
+      "timestamp": "2026-09-21T18:28:59.690046+00:00",
+      "files_changed": [
+        "generated/terrain-voice.maxpat",
+        "generated/terrain-synth.maxpat"
+      ]
     }
   ]
 }
