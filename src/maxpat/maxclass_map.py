@@ -4,7 +4,11 @@ In .maxpat files, UI objects use their own name as maxclass (e.g., "toggle"),
 while non-UI objects use "newobj" with the object name in the "text" field.
 
 The UI_MAXCLASSES set is derived from 02-RESEARCH.md Pattern 7, verified against
-MAX SDK scripting docs and py2max.
+MAX SDK scripting docs and py2max. Entries are also admitted on committed-patch
+evidence: a patch that MAX itself wrote or re-saved (discriminated by a non-zero
+``patcher.appversion.revision`` -- this repo's generator hardcodes ``0``, see
+defaults.py) is authoritative for whether a box carries its own name as maxclass.
+Entries admitted that way name their confirming patch in an inline comment.
 """
 
 # All UI maxclass names that use their own name (NOT "newobj") in .maxpat files.
@@ -51,6 +55,11 @@ UI_MAXCLASSES: frozenset[str] = frozenset({
     "live.map", "live.routing", "live.push",
     "live.miditool.in", "live.miditool.out",
     "live.remote~", "live.param~", "live.modulate~",
+    # Embedded code editors (not visual widgets, but MAX writes them with
+    # their own maxclass and no `text` field -- confirmed in kicksynth.maxpat
+    # at 02c9917 and terrain-synth.maxpat at 55757e0, both appversion 9.1.5;
+    # their `in 1`/`out 1` siblings in the same gen~ patcher stay newobj). SF-03.
+    "codebox",
     # Specialty / package UI widgets
     "playlist~",      # Max-bundled clip-player UI widget
     "dict.view",      # Max-bundled dict viewer UI widget
