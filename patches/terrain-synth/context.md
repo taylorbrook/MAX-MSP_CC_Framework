@@ -605,3 +605,57 @@ rate (hundreds of laps/s), so the marker is a **slowed stand-in**, not the liter
 User: "it works". Confirmed: 1-cell `jit.matrix 3 float32 1` via `setcell` into a points mesh,
 `enable $1` on jit.gl.mesh, sub-1 Hz float into terrain-osc in1, `peakamp~` sound gate,
 `route midinote` tap after `prepend midinote`.
+
+## Per-voice motion: LFO + ENV 2 -> orbit (2026-09-21, v0.10.0)
+
+User request: one LFO and a second ADSR inside terrain-voice, bipolar depths to orbit RADIUS / ROTATE /
+CENTRE X / Y, as signals into the terrain-osc mod inlets.
+
+Decisions (multiple-choice discuss):
+- **Own depth set per slot, two rows** -- 16 depth dials (LFO > A, LFO > B, ENV 2 > A, ENV 2 > B), chosen
+  over shared depths (8 dials, one row) and over an A/B edit tab. Window grows 797 -> 1029 px.
+- **All four targets** (radius, rotate, centre x, centre y) for both sources.
+- **Display:** LFO shown on the 110 Hz orbit dots AND the play marker; ENV 2 (per note) not shown.
+- **ENV 2 level is fixed** (note-on = 1.0, not velocity-scaled) so a depth always means the same excursion.
+
+Build:
+- **`generated/terrain-lfo.maxpat`** (new abstraction, one codebox): in1 rate Hz, in2 shape (0 sine /
+  1 triangle / 2 S&H), in3 note gate -- all signals; rising gate edge resets phase to 0 (sine / tri start at
+  the zero crossing, rising) and draws a new S&H value. S&H has a 2 ms one-pole so centre / radius steps do
+  not click. Gate left open = free-running.
+- **`terrain-osc` / `terrain-osc-b` v0.4:** new **inlet 6** = rotation mod (signal, turns, adds to `rot`);
+  gen~ `in5`, `rotm = (rot + in5) * twopi` with one cos / sin pair per sample (rotation is no longer a
+  hoisted Param-only expression). Added as the RIGHTMOST inlet so the param-message inlet keeps index 5 and
+  no existing host wiring shifts. Codeboxes still differ only in header + buffer name.
+- **terrain-voice `p motion`** (5 in / 8 out): terrain-mod x / y / radius signals + velocity + the voice
+  route's unmatched outlet in; slot A x / y / radius / rotate and slot B x / y / radius / rotate out ->
+  osc inlets 2, 3, 4, 6. Inside: `route lforate lfoshape env2a env2d env2s env2r` -> unmatched ->
+  `route lfoArad lfoArot lfoAx lfoAy lfoBrad ... envBy`; every LFO / depth control is
+  `route -> "$1 20" -> line~` (v0.6.1 rule); the four ENV 2 times go to `adsr~` as floats exactly like the
+  confirmed amp envelope (adsr~ is not a gen~ Param). Gate = `expr ($f1 > 0.) * 1.` -> `t f f` -> `sig~`
+  (LFO restart) + second `adsr~`. One 21-in / 8-out matrix codebox does
+  `out = terrain mod + LFO * depth + ENV 2 * depth` (radius floored at -1). With all depths at 0 the old
+  terrain-mod signals pass through unchanged. Top level: `/ 127.` -> new `t f f` -> amp `adsr~` (left) and
+  `p motion` gate (right); everything from the oscillator row down moved 45 px.
+- **Main:** sections 4.10 (LFO rate / shape + 8 LFO depths) and 4.11 (ENV 2 ADSR + 8 ENV 2 depths), cloned
+  from the confirmed FEEDBACK / ENVELOPE / shape-menu columns (loadmess + `receive tsyn-resend` re-bang ->
+  dial -> expr -> flonum -> prepend -> `send tsyn-voice`). Depth scaling: radius and rotate +/-1
+  (`max(($f1 - 64.) / 63., -1.)`), centre x / y +/-0.5; rate `0.05 * pow(400., $f1 / 127.)` (dial 64 = 1 Hz).
+- **Presentation:** two MOTION rows at y 524 / 640 between the B block and FILTER / ENVELOPE / OUTPUT
+  (that row and the keyboard moved down 232 px): panels [10, 312] source, [330, 276] > ORBIT A,
+  [614, 276] > ORBIT B on the 64 px column rhythm.
+- **Views:** each view gets `receive tsyn-voice` -> `route lforate lfoshape lfo<A|B>rad rot x y` -> line~ ->
+  `terrain-lfo` -> 4 x `*~` -> BOTH helper oscillators (orbit dots + marker). The marker's `route hz` now
+  goes through `t f b`; the bang fires a `1 1 0 5` line~ pulse that restarts the view LFO, so the display is
+  in phase with the most recent note. Helper sections moved 250 px down to make room.
+- Tooling note: `validate_patch` reports "Signal outlet to control-only inlet" for signals into a `p`
+  subpatcher inlet (false positive; the saved file keeps the connection).
+
+Not shown: ENV 2 and the audio-rate terrain mod in the 3D views. Known limit: S&H / LFO phase in the view is
+the last note's, not each voice's.
+
+Unverified in MAX: everything in this version -- 6-inlet terrain-osc / -b (param inlet still index 5),
+21-inlet gen~ matrix, signals through `p motion` inlets inside `poly~ ... up 2`, terrain-lfo retrigger from
+a `sig~` gate edge, second `adsr~` at fixed level, umenu item "S&H", depth feel / ranges, `1 1 0 5` restart
+pulse in the views, CPU (one extra cos / sin pair per oscillator per sample + LFO + matrix per voice),
+window height 1029 on the user's display.
