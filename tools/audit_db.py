@@ -46,7 +46,10 @@ from __future__ import annotations
 import argparse
 import json
 import plistlib
+import subprocess
 import sys
+import warnings
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -57,6 +60,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from src.maxpat.db_lookup import DOMAIN_LOAD_ORDER, ObjectDatabase  # noqa: E402
+from src.maxpat.maxclass_map import UI_MAXCLASSES  # noqa: E402
 
 DEFAULT_MAX_APP = Path("/Applications/Max.app")
 
@@ -309,6 +313,420 @@ def audit_db_age(db_root: str | Path, now: datetime | None = None) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# Refpage index (shared by missing_from_db / absent_from_bundle / empty_io)
+# ---------------------------------------------------------------------------
+
+_REFPAGE_SUFFIX = ".maxref.xml"
+
+
+def build_refpage_index(install: dict) -> dict:
+    """Index every installed *.maxref.xml by its authoritative object name.
+
+    The object name is the root element's ``name`` attribute, falling back to
+    the filename stem (with ``.maxref`` stripped) only when the attribute is
+    absent or empty -- mirroring ``parse_standard_xml`` in
+    ``.claude/scripts/extract_objects.py``. Keying on the filename instead
+    manufactures ~795 phantom gaps (SF-07), so ``name_vs_filename_differs``
+    is emitted as this harness's own self-check that it is keyed correctly.
+
+    Per-file XML parse failures and per-root permission failures are tallied
+    into ``parse_errors`` / ``unreadable_roots`` rather than aborting the walk
+    (T-knq-03; TCC-blocked trees per SF-05).
+    """
+    if not install.get("available"):
+        return {
+            "available": False,
+            "reason": install.get("reason", "Max bundle unavailable"),
+            "objects": {},
+        }
+
+    objects: dict[str, dict] = {}
+    parse_errors: list[dict] = []
+    unreadable_roots: list[dict] = []
+    files_scanned = 0
+    name_differs = 0
+
+    for root in (Path(p) for p in install.get("refpage_roots", [])):
+        try:
+            files = sorted(root.rglob("*" + _REFPAGE_SUFFIX))
+        except (PermissionError, OSError) as exc:
+            unreadable_roots.append({"root": str(root), "reason": str(exc)})
+            continue
+        for path in files:
+            files_scanned += 1
+            try:
+                element = ET.parse(path).getroot()
+            except ET.ParseError as exc:
+                parse_errors.append({"file": str(path), "reason": f"parse error: {exc}"})
+                continue
+            except (PermissionError, OSError) as exc:
+                parse_errors.append({"file": str(path), "reason": str(exc)})
+                continue
+            if element.tag != "c74object":
+                continue
+            stem = path.name[: -len(_REFPAGE_SUFFIX)]
+            attr = (element.get("name") or "").strip()
+            name = attr or stem
+            if attr and attr != stem:
+                name_differs += 1
+            inletlist = element.find("inletlist")
+            outletlist = element.find("outletlist")
+            objects.setdefault(
+                name,
+                {
+                    "file": str(path),
+                    "filename_stem": stem,
+                    "inlets": len(list(inletlist)) if inletlist is not None else None,
+                    "outlets": len(list(outletlist)) if outletlist is not None else None,
+                },
+            )
+
+    return {
+        "available": True,
+        "roots": [str(p) for p in install.get("refpage_roots", [])],
+        "files_scanned": files_scanned,
+        "object_count": len(objects),
+        "name_vs_filename_differs": name_differs,
+        "parse_errors": parse_errors,
+        "unreadable_roots": unreadable_roots,
+        "objects": objects,
+    }
+
+
+def _lookup_many(db: ObjectDatabase, names) -> dict[str, dict | None]:
+    """Resolve names via ObjectDatabase.lookup(), muting the DB's advisory warnings.
+
+    The audit reports empty-I/O and install-state facts structurally in the
+    ``empty_io`` section, so the per-lookup UserWarnings would be duplicate
+    noise on stderr across thousands of names.
+    """
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        return {name: db.lookup(name) for name in names}
+
+
+# ---------------------------------------------------------------------------
+# Section: missing_from_db
+# ---------------------------------------------------------------------------
+
+
+def audit_missing_from_db(refpages: dict, db: ObjectDatabase) -> dict:
+    """Installed refpage object names that ObjectDatabase.lookup() cannot resolve.
+
+    Against a matched bundle this is single-digit. A result in the hundreds
+    means the name derivation regressed to filename keying (SF-07).
+    """
+    if not refpages.get("available"):
+        return _unavailable(refpages.get("reason", "refpage index unavailable"))
+    resolved = _lookup_many(db, refpages["objects"])
+    names = sorted(n for n, obj in resolved.items() if obj is None)
+    return {
+        "available": True,
+        "count": len(names),
+        "names": names,
+        "refpage_names_checked": len(resolved),
+        "keyed_on": "c74object@name attribute (filename stem only as fallback)",
+    }
+
+
+# ---------------------------------------------------------------------------
+# Section: absent_from_bundle
+# ---------------------------------------------------------------------------
+
+
+_ABSENT_SCOPE = (
+    "Core domain files only (" + ", ".join(CORE_DOMAIN_DIRS) + "). The "
+    "per-package dirs under packages/ are NOT walked: their upstream sources "
+    "live in user package trees that are TCC-blocked (SF-05), so an absence "
+    "there would not be evidence. This count is not full-DB coverage."
+)
+
+
+def audit_absent_from_bundle(db_root: str | Path, refpages: dict) -> dict:
+    """Core-domain DB names with no corresponding refpage in the installed bundle."""
+    if not refpages.get("available"):
+        return _unavailable(refpages.get("reason", "refpage index unavailable"))
+    root = Path(db_root)
+    db_names: set[str] = set()
+    read_errors: list[dict] = []
+    for domain in CORE_DOMAIN_DIRS:
+        path = root / domain / "objects.json"
+        try:
+            if path.exists():
+                db_names.update(json.loads(path.read_text()))
+        except (PermissionError, OSError, json.JSONDecodeError) as exc:
+            read_errors.append({"file": str(path), "reason": str(exc)})
+    absent = sorted(n for n in db_names if n not in refpages["objects"])
+    return {
+        "available": True,
+        "count": len(absent),
+        "names": absent,
+        "db_names_checked": len(db_names),
+        "scope": _ABSENT_SCOPE,
+        "read_errors": read_errors,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Section: empty_io
+# ---------------------------------------------------------------------------
+
+
+def audit_empty_io_section(db: ObjectDatabase, refpages: dict) -> dict:
+    """Empty-I/O DB health, annotated with installed-refpage availability.
+
+    Delegates wholly to ObjectDatabase.audit_empty_io() and
+    audit_half_empty_io() -- neither set is re-derived here. When the bundle
+    is unavailable ``has_refpage`` is null, not false: an unreadable bundle is
+    a measurement gap, not evidence of absence.
+    """
+    empty = db.audit_empty_io()
+    half = db.audit_half_empty_io()
+    known = bool(refpages.get("available"))
+    index = refpages.get("objects", {})
+
+    def annotate(names: list[str]) -> list[dict]:
+        return [
+            {"name": n, "has_refpage": (n in index) if known else None} for n in names
+        ]
+
+    return {
+        "available": True,
+        "critical": annotate(empty["critical"]),
+        "critical_count": len(empty["critical"]),
+        "covered_by_override": empty["covered_by_override"],
+        "covered_by_override_count": len(empty["covered_by_override"]),
+        "sinks": annotate(half["sinks"]),
+        "sinks_count": len(half["sinks"]),
+        "sources": annotate(half["sources"]),
+        "sources_count": len(half["sources"]),
+        "by_source": empty["by_source"],
+        "refpage_coverage_known": known,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Section: patch_objects + ui_maxclasses_gap (one shared .maxpat walk)
+# ---------------------------------------------------------------------------
+
+
+_PATCH_LIMITATIONS = (
+    "Message-box contents, attribute arguments, and objects created at "
+    "runtime via scripting are not covered. Only box `text` first tokens "
+    "(newobj) and `maxclass` values (every other box) are resolved."
+)
+
+
+def _git(root: Path, *args: str):
+    """Run git as an argv list. The ONLY subprocess site in this tool (T-knq-02)."""
+    return subprocess.run(["git", *args], cwd=str(root), capture_output=True, text=True, check=False)  # noqa: E501
+
+
+def _walk_boxes(patcher: dict, depth: int, names: set[str], maxclasses: set[str]) -> None:
+    """Collect object names + maxclasses, recursing into nested patchers under a depth cap."""
+    if depth > MAX_PATCHER_DEPTH or not isinstance(patcher, dict):
+        return
+    boxes = patcher.get("boxes")
+    if not isinstance(boxes, list):
+        return
+    for entry in boxes:
+        if not isinstance(entry, dict):
+            continue
+        box = entry.get("box")
+        if not isinstance(box, dict):
+            continue
+        maxclass = box.get("maxclass")
+        if isinstance(maxclass, str) and maxclass:
+            maxclasses.add(maxclass)
+            if maxclass == "newobj":
+                text = box.get("text")
+                tokens = text.split() if isinstance(text, str) else []
+                if tokens:
+                    names.add(tokens[0])
+            else:
+                names.add(maxclass)
+        _walk_boxes(box.get("patcher"), depth + 1, names, maxclasses)
+
+
+def _enumerate_patch_files(root: Path, patch_source: str) -> tuple[list[tuple[str, str, str]], str]:
+    """Yield (relative_path, content, source) per .maxpat, plus the enumeration mode."""
+    listing = _git(root, "ls-files", "--", "*.maxpat")
+    if listing.returncode != 0:
+        found = sorted(root.glob("patches/**/*.maxpat"))
+        results = []
+        for path in found:
+            try:
+                results.append((str(path.relative_to(root)), path.read_text(), "worktree"))
+            except (PermissionError, OSError, UnicodeDecodeError):
+                continue
+        return results, "filesystem"
+
+    results = []
+    for rel in sorted(filter(None, (ln.strip() for ln in listing.stdout.splitlines()))):
+        if patch_source == "head":
+            blob = _git(root, "show", f"HEAD:{rel}")
+            if blob.returncode == 0:
+                results.append((rel, blob.stdout, "head"))
+                continue
+            # Blob absent at HEAD (newly added file) -- fall back to disk.
+        try:
+            results.append((rel, (root / rel).read_text(), "worktree"))
+        except (PermissionError, OSError, UnicodeDecodeError):
+            continue
+    return results, "git"
+
+
+def collect_patch_usage(repo_root: str | Path, patch_source: str = "head") -> dict:
+    """Walk committed .maxpat files, collecting object names and maxclasses per file."""
+    root = Path(repo_root)
+    try:
+        files, enumeration = _enumerate_patch_files(root, patch_source)
+    except (FileNotFoundError, PermissionError, OSError) as exc:
+        return {"available": False, "reason": f"could not enumerate .maxpat files: {exc}"}
+
+    name_to_files: dict[str, set[str]] = {}
+    maxclass_to_files: dict[str, set[str]] = {}
+    maxclass_tally: dict[str, int] = {}
+    read_errors: list[dict] = []
+    sources_used: dict[str, int] = {}
+    files_scanned = 0
+
+    for rel, content, source in files:
+        try:
+            data = json.loads(content)
+        except (json.JSONDecodeError, TypeError) as exc:
+            read_errors.append({"file": rel, "reason": f"invalid JSON: {exc}"})
+            continue
+        if not isinstance(data, dict):
+            read_errors.append({"file": rel, "reason": "top level is not an object"})
+            continue
+        files_scanned += 1
+        sources_used[source] = sources_used.get(source, 0) + 1
+        names: set[str] = set()
+        maxclasses: set[str] = set()
+        _walk_boxes(data.get("patcher"), 0, names, maxclasses)
+        for name in names:
+            name_to_files.setdefault(name, set()).add(rel)
+        for maxclass in maxclasses:
+            maxclass_tally[maxclass] = maxclass_tally.get(maxclass, 0) + 1
+            maxclass_to_files.setdefault(maxclass, set()).add(rel)
+
+    return {
+        "available": True,
+        "files_scanned": files_scanned,
+        "enumeration": enumeration,
+        "content_sources": sources_used,
+        "read_errors": read_errors,
+        "patch_files": sorted(rel for rel, _c, _s in files),
+        "name_to_files": {n: sorted(f) for n, f in name_to_files.items()},
+        "maxclass_tally": dict(sorted(maxclass_tally.items())),
+        "maxclass_to_files": {m: sorted(f) for m, f in maxclass_to_files.items()},
+    }
+
+
+def _same_project(a: str, b: str) -> bool:
+    """True when two repo-relative .maxpat paths share a MAX abstraction search scope.
+
+    MAX resolves an abstraction by filename from the patch's own folder and
+    the enclosing project. Same directory always qualifies; so does any two
+    paths under the same ``patches/<project>/`` tree.
+    """
+    pa, pb = Path(a), Path(b)
+    if pa.parent == pb.parent:
+        return True
+    partsa, partsb = pa.parts, pb.parts
+    return (
+        len(partsa) > 1
+        and len(partsb) > 1
+        and partsa[0] == partsb[0] == "patches"
+        and partsa[1] == partsb[1]
+    )
+
+
+def _resolve_local_abstraction(name: str, referencing: list[str], patch_files: list[str]) -> list[str] | None:
+    """Return the sibling .maxpat paths that define ``name`` as an abstraction.
+
+    A newobj whose first token names a sibling ``<name>.maxpat`` is an
+    abstraction instance, not an unknown object -- the DB legitimately has no
+    entry for it. Returns None unless EVERY referencing file has an in-scope
+    definition, so a genuinely-unknown name cannot be masked by an unrelated
+    same-named patch elsewhere in the repo.
+    """
+    candidates = [p for p in patch_files if Path(p).stem == name]
+    if not candidates:
+        return None
+    resolving: set[str] = set()
+    for ref in referencing:
+        matches = [c for c in candidates if c != ref and _same_project(c, ref)]
+        if not matches:
+            return None
+        resolving.update(matches)
+    return sorted(resolving)
+
+
+def audit_patch_objects(usage: dict, db: ObjectDatabase) -> dict:
+    """Resolve every object referenced by a committed .maxpat against the DB."""
+    if not usage.get("available"):
+        return _unavailable(usage.get("reason", "patch walk unavailable"))
+    name_to_files = usage["name_to_files"]
+    patch_files = usage.get("patch_files", [])
+    resolved = _lookup_many(db, name_to_files)
+
+    unresolved = []
+    empty_io_hits = []
+    local_abstractions = []
+    for name in sorted(name_to_files):
+        obj = resolved[name]
+        files = name_to_files[name]
+        if obj is None:
+            defined_by = _resolve_local_abstraction(name, files, patch_files)
+            if defined_by is not None:
+                local_abstractions.append(
+                    {"name": name, "files": files, "defined_by": defined_by}
+                )
+            else:
+                unresolved.append({"name": name, "files": files})
+        elif not obj.get("inlets") and not obj.get("outlets"):
+            empty_io_hits.append({"name": name, "files": files})
+
+    return {
+        "available": True,
+        "files_scanned": usage["files_scanned"],
+        "enumeration": usage["enumeration"],
+        "content_sources": usage["content_sources"],
+        "objects_referenced": sorted(name_to_files),
+        "unresolved": unresolved,
+        "local_abstractions": local_abstractions,
+        "empty_io_hits": empty_io_hits,
+        "read_errors": usage["read_errors"],
+        "limitations": _PATCH_LIMITATIONS,
+    }
+
+
+def audit_ui_maxclasses_gap(usage: dict) -> dict:
+    """Observed .maxpat maxclasses that UI_MAXCLASSES does not admit.
+
+    ``newobj`` is subtracted as a structural value (it is the generic text-box
+    class, not a UI widget). On a healthy tree the residual is empty, so any
+    entry here is a real finding rather than noise.
+    """
+    if not usage.get("available"):
+        return _unavailable(usage.get("reason", "patch walk unavailable"))
+    tally = usage["maxclass_tally"]
+    per_file = usage.get("maxclass_to_files", {})
+    gap = sorted(set(tally) - set(UI_MAXCLASSES) - {"newobj"})
+    return {
+        "available": True,
+        "count": len(gap),
+        "gap": gap,
+        "gap_files": {m: per_file.get(m, []) for m in gap},
+        "observed_maxclasses": tally,
+        "ui_maxclasses_size": len(UI_MAXCLASSES),
+        "structural_exemptions": ["newobj"],
+    }
+
+
+# ---------------------------------------------------------------------------
 # Envelope + summary
 # ---------------------------------------------------------------------------
 
@@ -334,12 +752,41 @@ def run_audit(
     app = Path(max_app) if max_app is not None else DEFAULT_MAX_APP
 
     sections: dict[str, dict] = {
-        key: _unavailable("section not implemented") for key in SECTION_KEYS
+        key: _unavailable("section not computed") for key in SECTION_KEYS
     }
     sections["install"] = audit_install(app)
     sections["db_age"] = audit_db_age(db)
 
+    refpages = build_refpage_index(sections["install"])
+
+    try:
+        database: ObjectDatabase | None = ObjectDatabase(db_root=db)
+        db_reason = None
+    except Exception as exc:  # noqa: BLE001 -- any load failure degrades, never raises
+        database = None
+        db_reason = f"could not load object database at {db}: {exc}"
+
+    if database is not None:
+        sections["missing_from_db"] = audit_missing_from_db(refpages, database)
+        sections["absent_from_bundle"] = audit_absent_from_bundle(db, refpages)
+        sections["empty_io"] = audit_empty_io_section(database, refpages)
+    else:
+        for key in ("missing_from_db", "absent_from_bundle", "empty_io"):
+            sections[key] = _unavailable(db_reason)
+
+    usage = collect_patch_usage(root, patch_source)
+    sections["patch_objects"] = (
+        audit_patch_objects(usage, database) if database is not None
+        else _unavailable(db_reason)
+    )
+    sections["ui_maxclasses_gap"] = audit_ui_maxclasses_gap(usage)
+
+    # Index payload is large and redundant with the sections above; keep only
+    # its provenance + self-check counters in the emitted document.
+    refpage_meta = {k: v for k, v in refpages.items() if k != "objects"}
+
     return {
+        "refpage_index": refpage_meta,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "repo_root": str(root.resolve()),
         "max_app": str(app),
@@ -377,6 +824,13 @@ def format_summary(report: dict) -> str:
             lambda x: f"{x.get('age_days')} days (extracted {x.get('extraction_timestamp')}), "
             f"drifted domains: {', '.join(x['domains_drifted']) or 'none'}",
         ),
+        "  refpages        : "
+        + _headline(
+            report.get("refpage_index", {}),
+            lambda x: f"{x['object_count']} objects from {x['files_scanned']} files, "
+            f"{x['name_vs_filename_differs']} name!=filename, "
+            f"{len(x['parse_errors'])} parse errors",
+        ),
         "  missing from DB : "
         + _headline(s["missing_from_db"], lambda x: f"{x['count']} refpage names unresolved"),
         "  absent from Max : "
@@ -394,7 +848,8 @@ def format_summary(report: dict) -> str:
             s["patch_objects"],
             lambda x: f"{x['files_scanned']} .maxpat ({x['enumeration']}), "
             f"{len(x['objects_referenced'])} distinct objects, "
-            f"{len(x['unresolved'])} unresolved",
+            f"{len(x['unresolved'])} unresolved, "
+            f"{len(x['local_abstractions'])} local abstractions",
         ),
         "  maxclass gap    : "
         + _headline(
