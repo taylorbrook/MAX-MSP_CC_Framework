@@ -216,3 +216,14 @@ All objects verified for MAX 9. MC objects require MAX 8.1+. No MAX 9-only objec
 - **Patch**: `replace` instead of `read` (fixed-size buffer~ truncated files to 5 s); `record~ @loop 1` for continuous live input; buffer~ load bang -> `set granular_buf` -> waveform~ to refit the display.
 - **Verification**: Python port simulated old vs new (DC + sine buffers, density/size sweeps, stepped position/pitch/size): max sample delta 0.07-1.2 (old) -> <= natural signal slope (new). User-confirmed in MAX 2026-09-21: gen~ compiles, no clicks at high overlap or while dragging position/pitch, clean pitched reads, `replace` + waveform refit, looped live record all work.
 - **Open**: true MC output (per-voice audio + pan outlets -> mc.pack~ N -> mc.mixdown~ both inlets), presentation UI, DSP toggle, gain~ init.
+
+## Decisions (2026-09-21 MC output pass)
+
+- **Engine split**: `gen~ granular-sched` (mono, owns ALL Params, master scheduler, first-idle voice allocation via `Data voice_busy(32)` countdown) -> 7 mono signals broadcast into `mc.gen~ granular-voice @chans 32` (Param-less; each instance compares in1 voice id against `mc_channel`, `latch`es start/pitch/size/pan/amp at onset, plays one grain). UI/param binding only ever targets the scheduler gen~.
+- **Why not per-instance scheduling/noise**: Param messages reach mc instances at different times (scheduler drift) and per-instance `noise()` seeding is unverified; one mono brain avoids both.
+- **Signals sched -> voice**: id (1..32, 0 none) | start samples | pitch | size samples | pan 0-1 | amp | env_shape (live).
+- **Panning**: voice out2 (latched pan) -> `mc.mixdown~ 8 @activechans 2 @pancontrolmode 1` right inlet. Mode 1 = linear 0..1 from first to last active speaker (stereo: 0=L, 1=R). Pan clamped to 0.9999 because mixdown wraps out-of-range values. New `pan_pos` Param = centre; `pan_spread` = random width (+-0.5 at 1).
+- **Speaker count**: `loadmess 2 -> number (2-8) -> activechans $1`; mc.dac~ always receives 8 channels, inactive ones are zero.
+- `granular-engine.gendsp` (confirmed stereo engine v2) is kept on disk, unreferenced, as a fallback.
+- **Verification**: Python port of sched+voice pair: same click-free results as engine v2. NOT yet confirmed in MAX (first use of `mc_channel`, file-based `mc.gen~ ... @chans`, and `latch` in a codebox in this repo).
+- **Open**: presentation UI (live.dial faces, panels, dark canvas), DSP toggle, gain~ init.
