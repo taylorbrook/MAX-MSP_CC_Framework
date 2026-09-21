@@ -1,12 +1,14 @@
 // cheby-coefs.js -- coefficient + display bridge for the Chebyshev terrain core (terrain-synth)
 // js cheby-coefs.js <offset>   offset = first frame of this slot in buffer~ chebcoef (A = 0, B = 64)
 // terrain(x, y) = sum c[m][n] * T_m(x) * T_n(y), m = x order, n = y order, stored at offset + m * 8 + n
-// in: preset <i> | bright <0-1> | mode <0/1>
-// out 0: exprfill 0 <same polynomial>, bang  -> source-1 store of this slot (only while mode = 1)
-// out 1: bang when mode goes 1 -> 0 (re-select the terrain source so the picture comes back)
+// in: preset <i> | bright <0-1> | mode <0/1> | srcchanged (the slot's terrain source was regenerated)
+// out (-> send -> p terrain-source, only while mode = 1):
+//   backup                        copy the source-1 store aside (mode on, or source changed under the polynomial)
+//   exprfill 0 <polynomial>, bang  draw the same polynomial into the source-1 store so the 2D / 3D views follow
+//   restore                       mode off: put the saved source back (no regenerate: noise keeps its roll, image needs no dialog)
 
 inlets = 1;
-outlets = 2;
+outlets = 1;
 
 var N = 8;
 var buf_name = "chebcoef";
@@ -137,11 +139,21 @@ function bright(v) {
 }
 
 function mode(v) {
+	var was = mode_v;
 	mode_v = (v > 0) ? 1 : 0;
-	if (mode_v) {
+	if (mode_v && !was) {
+		outlet(0, "backup");
 		fill();
-	} else {
+	}
+	if (!mode_v && was) {
 		fill_task.cancel();
-		outlet(1, "bang");
+		outlet(0, "restore");
+	}
+}
+
+function srcchanged() {
+	if (mode_v) {
+		outlet(0, "backup");
+		fill();
 	}
 }
