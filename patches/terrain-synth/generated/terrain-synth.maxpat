@@ -1070,9 +1070,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        800.0,
+                        812.0,
                         172.0,
-                        84.0,
+                        72.0,
                         22.0
                     ]
                 }
@@ -8167,7 +8167,7 @@
                         54.0,
                         17.0
                     ],
-                    "text": "v0.5.0",
+                    "text": "v0.5.1",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -8379,7 +8379,7 @@
                         54.0,
                         22.0
                     ],
-                    "numdecimalplaces": 0,
+                    "numdecimalplaces": 1,
                     "triangle": 0,
                     "ignoreclick": 1
                 }
@@ -8473,7 +8473,7 @@
                         54.0,
                         22.0
                     ],
-                    "numdecimalplaces": 0,
+                    "numdecimalplaces": 1,
                     "triangle": 0,
                     "ignoreclick": 1
                 }
@@ -8688,10 +8688,10 @@
                                     "patching_rect": [
                                         15,
                                         95,
-                                        560.0,
+                                        760.0,
                                         22.0
                                     ],
-                                    "text": "jit.world tsynview @visible 0 @enable 1 @output_texture 1 @fsaa 1 @erase_color 0.12 0.12 0.14 1.",
+                                    "text": "jit.world tsynview @visible 0 @enable 1 @output_texture 1 @fsaa 1 @size 512 512 @dim 512 512 @erase_color 0.12 0.12 0.14 1.",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -8938,7 +8938,7 @@
                                         793.0,
                                         22.0
                                     ],
-                                    "text": "jit.gl.mesh tsynview @draw_mode tri_grid @auto_normals 1 @lighting_enable 1 @color 0.22 0.55 0.8 1. @scale 0.62",
+                                    "text": "jit.gl.mesh tsynview @draw_mode tri_grid @auto_normals 1 @lighting_enable 1 @color 0.22 0.55 0.8 1. @scale 0.45",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -8956,7 +8956,7 @@
                                         900,
                                         20.0
                                     ],
-                                    "text": "orbit: helper terrain-osc at 110 Hz follows tsyn-osc params (voice terrain-mod is not shown) -> jit.catch~ 3 @mode 2 on every draw bang -> line_strip",
+                                    "text": "orbit: helper terrain-osc at 110 Hz follows tsyn-osc params (voice terrain-mod is not shown) -> jit.catch~ 3 @mode 2 on every draw bang -> points (512 dots read as a thick line; help-patch point form)",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -9375,10 +9375,10 @@
                                     "patching_rect": [
                                         120,
                                         680,
-                                        681.0,
+                                        720.0,
                                         22.0
                                     ],
-                                    "text": "jit.gl.mesh tsynview @draw_mode line_strip @lighting_enable 0 @color 1. 0.78 0.2 1. @scale 0.62",
+                                    "text": "jit.gl.mesh tsynview @draw_mode points @point_size 4 @point_mode circle_depth @lighting_enable 0 @color 1. 0.78 0.2 1. @scale 0.45",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -9479,7 +9479,7 @@
                                     "midpoints": [
                                         668.5,
                                         88.5,
-                                        295.0,
+                                        395.0,
                                         88.5
                                     ]
                                 }
@@ -9937,7 +9937,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        295.0,
+                                        395.0,
                                         182.0,
                                         7.0,
                                         182.0,
@@ -9998,6 +9998,12 @@
                                         130.0,
                                         535.0,
                                         130.0,
+                                        497.0,
+                                        322.0,
+                                        497.0,
+                                        322.0,
+                                        535.0,
+                                        322.0,
                                         537.0,
                                         363.0,
                                         537.0,
@@ -10005,11 +10011,11 @@
                                         575.0,
                                         363.0,
                                         582.0,
-                                        112.0,
+                                        368.0,
                                         582.0,
-                                        112.0,
+                                        368.0,
                                         620.0,
-                                        112.0,
+                                        368.0,
                                         607.0,
                                         214.0,
                                         607.0,
@@ -10078,6 +10084,12 @@
                                     ],
                                     "midpoints": [
                                         775.0,
+                                        87.0,
+                                        783.0,
+                                        87.0,
+                                        783.0,
+                                        125.0,
+                                        783.0,
                                         182.0,
                                         783.0,
                                         182.0,
@@ -10388,15 +10400,15 @@
                         84,
                         30
                     ],
-                    "text": "orbit shown at 110 Hz",
+                    "text": "orbit drawn at 110 Hz (audio on)",
                     "fontname": "Arial",
                     "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
-                        1040.0,
-                        300.0,
-                        84.0,
-                        30.0
+                        910.0,
+                        368.0,
+                        208.0,
+                        17.0
                     ],
                     "textcolor": [
                         0.2,
