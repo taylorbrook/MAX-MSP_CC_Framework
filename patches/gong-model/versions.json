@@ -492,6 +492,18 @@
         "gong-model.maxpat",
         "gong-presets.json"
       ]
+    },
+    {
+      "version": "1.14.0",
+      "description": "review fixes: shared strike counter + stripnote, audio-in gain dial, mode-gains 0-based frames, drift capture via getvalueof, presets 7-10 un-nested, glide peak follower, canvas bgcolor + contrast",
+      "timestamp": "2026-09-21T22:03:41.035306+00:00",
+      "files_changed": [
+        "gong-model.maxpat",
+        "gong-engine.gendsp",
+        "mode-gains.js",
+        "drift.js",
+        "gong-presets.json"
+      ]
     }
   ]
 }
