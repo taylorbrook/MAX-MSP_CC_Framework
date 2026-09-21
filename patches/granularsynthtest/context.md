@@ -205,3 +205,14 @@ The multichannel output uses this signal path:
 ### Version Compatibility
 
 All objects verified for MAX 9. MC objects require MAX 8.1+. No MAX 9-only objects are strictly required, so the patch could work on MAX 8.1+ with minor adjustments.
+
+## Decisions (2026-09-21 review pass)
+
+- **Engine scheduler**: single master scheduler (`History sched_phase`) + 32 voices; a grain claims the first idle voice and is dropped if all are busy. Never retrigger a sounding voice (the old per-voice phasors truncated grains once `grain_size_ms * density > 8000` -> clicks).
+- **Per-grain latching**: start position, pitch, size, and pan/amp gains are resolved at onset and stored in per-voice `Data`; live Params never touch a grain in flight. `env_shape` stays live (both windows are 0 at the ends).
+- **Level**: per-grain amp = `1/sqrt(clamp(grain_size*density/1000, 1, 32))` (incoherent-sum normalisation) replaces the fixed `1/sqrt(8)`. Sparse settings are ~2.8x louder than before; fully coherent material at high overlap can still exceed 1.0 — `gain~` is the safety.
+- **Buffer read**: manual linear interpolation between two `peek`s (peek truncates).
+- **De-hoist**: all Params routed through `History one(1)` (`k_*`, `srs`) per the CLAUDE.md hoisting rule.
+- **Patch**: `replace` instead of `read` (fixed-size buffer~ truncated files to 5 s); `record~ @loop 1` for continuous live input; buffer~ load bang -> `set granular_buf` -> waveform~ to refit the display.
+- **Verification**: Python port simulated old vs new (DC + sine buffers, density/size sweeps, stepped position/pitch/size): max sample delta 0.07-1.2 (old) -> <= natural signal slope (new). NOT yet compiled/confirmed in MAX.
+- **Open**: true MC output (per-voice audio + pan outlets -> mc.pack~ N -> mc.mixdown~ both inlets), presentation UI, DSP toggle, gain~ init.
