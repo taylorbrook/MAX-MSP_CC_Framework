@@ -841,3 +841,34 @@ shape reuses LOBES / LOBE AMT, so the presentation layout is untouched. The 3D v
 
 Unverified in MAX: gen~ compile of the three edited codeboxes (notably `History one(1)` + polygon chain, `pi` constant),
 CPU of 4 unconditional trig calls per voice-slot (was 2 for ellipse, 6 for epitrochoid), umenu 8 entries at 120 px.
+
+## Build v0.14.0 (2026-09-21) -- more terrains
+
+Nine analytic terrains appended to all four source menus (A / B x source 1 / source 2) as indices 7-15; indices 0-6 and
+the load defaults (A = 0, B = 1) are unchanged. No new controls, presentation untouched. DETAIL / REGEN do nothing on them
+(same as the original four analytic terrains). All signed, numpy range-checked inside -1..1 on the 256 grid.
+
+| idx | name | formula (x = snorm[0], y = snorm[1], r = hypot) | character |
+|-----|------|--------------------------------------------------|-----------|
+| 7 | peaks | MATLAB `peaks` at 3x / 3y, * 0.122 | smooth, mellow; timbre moves a lot with orbit centre |
+| 8 | spiral | `sin(r PI 5 + 3 atan2(y, x))` | 3 arms; ROTATE = phase, RADIUS = brightness |
+| 9 | egg crate | `tanh(4 sin(4 PI x) sin(4 PI y))` | squared-off cells, bright / hollow |
+| 10 | ridges | `1 - 2 abs(sin(3 PI x + 1.5 cos(2 PI y)))` | creased, buzzy |
+| 11 | pyramids | `asin(sin(3 PI x)) asin(sin(3 PI y)) * 0.405` | triangle-wave product, odd-harmonic |
+| 12 | drumhead | `1.2 sin(8 PI r) / (1 + 4 r)` | decaying rings; centred orbit is near-DC, offset the centre |
+| 13 | wave packet | `exp(-3 r^2) sin(8 PI x + 3 PI y)` | Gabor; loud at the centre, silent at the edges |
+| 14 | interference | two ring sources at x = +/-0.5, averaged | moire |
+| 15 | terraces | `floor(4 sin(2 PI x) cos(1.5 PI y)) / 4 + 0.125` | stepped, deliberately harsh / aliasing |
+
+- **Wiring:** zero edits to existing objects. Each generator block's `select 0 1 2 3 4 5 6` had a free unmatched outlet
+  (7), which passes the int through -> new `p more-terrains` (`select 7 ... 15` -> 9 `exprfill 0 <expr>, bang` messages)
+  -> that block's source store (`tsrc<A|B><1|2>`), so compose / 3D view / buffer bridge / cheby `srcchanged` all follow.
+- **Binary functions in a message box** use the escaped-comma form found in the shipped Jitter examples
+  (`exprfill hypot(snorm[0]\,snorm[1])`, `jit.expr @expr ... atan2(snorm[1]\,snorm[0])`). On disk: `\\,` in JSON.
+- Function names `exp`, `tanh`, `abs`, `asin`, `floor` come from the jit.op operator list that the jit.expr refpage
+  points to; only `hypot`, `atan2`, `pow`, `sqrt`, `min`, `round` appear in shipped example expressions.
+- Negation written `0.-(...)` inside `exp()` to avoid relying on unary minus.
+- Critic: no new findings vs. the pre-edit patch.
+
+Unverified in MAX: every new expression (a bad function name would give a flat / black terrain, the v0.2.2 failure shape),
+escaped commas surviving the message box, the 2900 px wide `peaks` message, 16-entry umenu at 100 px (source 2).
