@@ -806,3 +806,11 @@ in one sample, `i * fr` with the loop index), `sig~ #1` / `receive #2` abstracti
 from js, named-matrix backup / restore, js `Task` debounce, umenu at fontsize 10 in 72 px, CPU of 2 cores x 8 voices at
 2x (expect the cheby sum to cost several times a terrain read while a slot is in CHEBY mode, ~0 when off), level of the
 cheby core against the tanh-driven terrain core.
+
+### v0.12.0 confirmed in MAX (2026-09-21)
+
+User: "ok it seems to work" (checklist items not itemised). Confirmed at least: terrain-cheby codebox compiles (two flat
+constant-bound for loops with loop-carried locals, poke-then-peek on Data within one sample, loop index in float math,
+History cursor), `sig~ #1` / `receive #2` abstraction args inside `poly~ ... up 2`, per-slot line~-driven select gen~,
+js-generated long `exprfill` symbol into a named jit.matrix, js Buffer pokes into `buffer~ chebcoef 10`. Not reported:
+CPU with both slots in CHEBY, cheby vs terrain level, backup / restore edge cases, alias A/B at the top of the keyboard.
