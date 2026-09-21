@@ -101,6 +101,15 @@
         "generated/bank02-noise-rough.wav",
         "generated/bank03-torus-noise.wav"
       ]
+    },
+    {
+      "version": "0.6.1",
+      "description": "v0.6.1: A>B MIX and POSITION had no effect (gen~ Param messages via the History-one de-hoist inside poly~) -> both now enter the voice gen~ as line~ signals (in3/in4)",
+      "timestamp": "2026-09-21T19:25:54.049213+00:00",
+      "files_changed": [
+        "generated/terrain-voice.maxpat",
+        "generated/terrain-synth.maxpat"
+      ]
     }
   ]
 }
