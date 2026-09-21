@@ -59,3 +59,5 @@ MAX 9
   - `size` and `predelay` one-pole smoothed (~80 ms) — no zipper/clicks on sweeps.
   - De-hoist guard (`History one(1)`, `srs = samplerate * one`) on the delay-time / decay chain per CLAUDE.md hoisting rule, since the module is meant to travel to other machines.
 - Deliberate non-changes: input is still summed to mono into the tank (mono source → feed both inlets); linear-interp delay reads mean a frozen tail slowly darkens under modulation.
+
+**v0.2.0 user-confirmed in MAX 2026-09-21** (compiles, face, help patch, bloom/freeze fixes). Project complete.
