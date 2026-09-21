@@ -317,6 +317,14 @@
         "bassoon-model.maxpat",
         "bassoon_presets.json"
       ]
+    },
+    {
+      "version": "0.19.0",
+      "description": "layout pass: patching view regrouped by function (performance/output left, params grid right, presets below; 1995px -> <1000px), staccato+tongue logic encapsulated in p articulation, tongue -> live.button; presentation rebuilt on 7-col 82px grid with section headers (performance, presets, articulation, reed, bore/bell, vibrato, air, scopes), label overlap removed",
+      "timestamp": "2026-09-21T19:20:58.820662+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }
