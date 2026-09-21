@@ -348,3 +348,46 @@ musical baked sources; centred symmetric orbits lose the fundamental (already fi
 terrain-osc v0.3 I/O: in1 Hz, in2 x mod, in3 y mod, in4 radius mod (signals; 0 = none), in5
 param messages (shape rx ry rot cx cy lobes lobeamt zoomk zoomlo fb drive); out1 audio, out2/3
 orbit x/y. terrain-osc-core: in 1 -> in1, in 2 -> in5, out~ 1 audio, out~ 2 orbit x.
+
+## Slice 2 result (2026-09-21)
+
+v0.3.0 confirmed in MAX: matrix2buffer bridge + single-gen~ terrain-osc produce audio (after the
+analytic `exprfill`); ~3 % CPU at 8 voices, 48 kHz. Decision rule -> **single poly~ voice, 2x**.
+The load-time `jit.bfg` fill did NOT give a usable terrain (needed the exprfill click); root cause
+not isolated.
+
+## Build slice 3 (2026-09-21, v0.4.0) -- voice + main patch, view deferred
+
+Files: `generated/terrain-voice.maxpat` (poly~ voice), `generated/terrain-synth.maxpat` (main,
+opens in presentation). The jit.world view is the next iteration.
+
+**terrain-voice:** `in 1` pitch -> `mtof` -> `sig~`; `in 2` velocity -> `/ 127.` -> `adsr~` trigger.
+Slot A = `terrain-osc` abstraction; slot B = the wt-osc codebox inlined in a gen~ that also does
+the A/B crossfade (`Param pos`, `Param xfade`, `History one` de-hoist). **wt-osc.maxpat is not
+instantiated per voice** because it carries its own `buffer~ terrainbank <23 MB wav>` -- 8 copies
+would load the bank 8 times; the single `buffer~ terrainbank` lives in the main patch and the
+voice gen~ reads it by name. Audio-rate terrain modulation: `f * modratio + modhz` -> quadrature
+`cycle~` pair -> `xmod`/`ymod`/`rmod` depths -> terrain-osc in2-in4. Filter `svf~` LP, cutoff =
+`line~` + env * `fenv`, `clip~ 20 18000`. `adsr~` mute outlet -> `t l l` -> busy (`route mute` ->
+`== 0`) then mute -> `thispoly~`. Global params by `receive tsyn-osc` (terrain-osc param messages)
+and `receive tsyn-voice` -> `route attack decay sustain release cutoff res fenv mix pos modratio
+modhz xmod ymod rmod` (scala-synth receive precedent; no `target 0` ordering problem).
+
+**terrain-synth main:** `notein` + `kslider`/`makenote 100 600` -> `pack i i` -> `prepend midinote`
+-> `poly~ terrain-voice 8 up 2 @steal 1` -> `*~ 0.3` -> `gain~` (loadmess 110) -> `ezdac~`.
+Oversample menu -> `up N` -> `t b l` (poly~ reload first, then `deferlow` -> `send tsyn-resend`);
+every control also listens to `receive tsyn-resend` so reloaded voices get the current values.
+Controls follow the reverse-delay pattern: `loadmess` -> `dial` (0-127) -> `expr` -> readout
+`flonum` -> `prepend <name>` -> `send`. XY `pictslider` (0-1000, y flipped) = orbit centre.
+`buffer~ terrainbank` + bank umenu here.
+
+**p terrain-source** (inlet 0 source index, inlet 1 detail; outlet = display matrix): 0-3 analytic
+`exprfill` terrains (default 0 at load via `loadmess 0` -> `deferlow`), 4 smooth noise
+(`jit.noise 1 float32 N N` -> signed -> upscaled by `jit.matrix terrain ... @interp 1`), 5
+`jit.bfg` rebuilt in the shipped help-patch form (basis by message, 3-value scale,
+`jit.normalize`) -- still experimental, 6 image (`importmovie` dialog -> `jit.rgb2luma` -> float).
+`p matrix2buffer` is a verbatim rebuild of the confirmed v0.3.0 bridge.
+
+Presentation exclusions: none (every interactive control is in presentation).
+Unverified in MAX: `adsr~` mute-outlet -> busy logic, smooth-noise upscale, bfg form, image path,
+pictslider list init, `up N` + resend.

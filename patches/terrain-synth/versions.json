@@ -38,6 +38,16 @@
         "context.md",
         "test-results/terrain-osc-cpu-test.md"
       ]
+    },
+    {
+      "version": "0.4.0",
+      "description": "v0.4.0: slice 3 -- terrain-voice (A terrain-osc / B wavetable, audio-rate terrain mod, svf~, adsr~) + terrain-synth main patch (MIDI, poly~ 8 up 2, p terrain-source, presentation UI); view deferred",
+      "timestamp": "2026-09-21T16:13:16.492499+00:00",
+      "files_changed": [
+        "generated/terrain-voice.maxpat",
+        "generated/terrain-synth.maxpat",
+        "context.md"
+      ]
     }
   ]
 }
