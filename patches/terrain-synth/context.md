@@ -599,3 +599,9 @@ rate (hundreds of laps/s), so the marker is a **slowed stand-in**, not the liter
   is an audio-rate effect a ~1 Hz copy cannot reproduce. B speed picks up a new `bmul` on the next note.
 - Unverified in MAX: 1-cell matrix into a points mesh, `enable` on jit.gl.mesh, float Hz < 1 into
   terrain-osc in1, peakamp~ threshold feel.
+
+### v0.9.0 confirmed in MAX (2026-09-21)
+
+User: "it works". Confirmed: 1-cell `jit.matrix 3 float32 1` via `setcell` into a points mesh,
+`enable $1` on jit.gl.mesh, sub-1 Hz float into terrain-osc in1, `peakamp~` sound gate,
+`route midinote` tap after `prepend midinote`.
