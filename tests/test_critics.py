@@ -1969,6 +1969,46 @@ class TestPackageCritic:
         blockers = [r for r in results if r.severity == "blocker" and "llll" in r.finding.lower()]
         assert len(blockers) >= 1, f"Expected llll mismatch blocker, got: {results}"
 
+    def test_bach_llll_mismatch_suggestion_names_existing_objects(self):
+        """The llll-mismatch suggestion recommends only objects that exist (D-04).
+
+        The old suggestion told the user to insert bach.list2llll, which is not
+        present in the installed bach package -- following it produced a patch
+        that failed to load.
+        """
+        boxes = [
+            {
+                "id": "obj-1",
+                "maxclass": "newobj",
+                "text": "pack 0 0",
+                "numinlets": 2,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+            {
+                "id": "obj-2",
+                "maxclass": "newobj",
+                "text": "bach.score",
+                "numinlets": 1,
+                "numoutlets": 1,
+                "outlettype": [""],
+            },
+        ]
+        lines = [
+            {"source": ["obj-1", 0], "destination": ["obj-2", 0]},
+        ]
+        patch = _make_patch(boxes, lines)
+        results = review_packages(patch)
+        blockers = [r for r in results if r.severity == "blocker" and "llll" in r.finding.lower()]
+        assert len(blockers) >= 1, f"Expected llll mismatch blocker, got: {results}"
+        suggestion = blockers[0].suggestion
+        assert "list2llll" not in suggestion, (
+            f"Suggestion still names the missing converter: {suggestion}"
+        )
+        assert "bach.nth" in suggestion, (
+            f"Suggestion should point at objects that exist: {suggestion}"
+        )
+
     def test_bach_to_bach_clean(self):
         """bach.rev -> bach.score produces no Bach findings."""
         boxes = [

@@ -310,9 +310,9 @@ def _check_bach_llll_types(
 ) -> list[CriticResult]:
     """Detect non-bach objects connected to bach inlets expecting llll.
 
-    For each patchline, check if the destination is a Bach object with an
-    llll inlet. If the source is not a Bach object and not bach.list2llll,
-    emit a blocker.
+    For each patchline, check whether the destination is a Bach object whose
+    inlet digest advertises llll. If the source is not a Bach object, emit a
+    blocker.
     """
     results: list[CriticResult] = []
 
@@ -339,17 +339,11 @@ def _check_bach_llll_types(
         if not dst_entry or dst_entry.get("package") != "Bach":
             continue
 
-        # Skip bach.list2llll -- it's designed to accept plain lists
-        if dst_name == "bach.list2llll":
-            continue
-
         # Check if this inlet expects llll
         if not _is_llll_inlet(dst_entry, dst_inlet):
             continue
 
-        # Source must be a bach object (outputs llll) or bach.list2llll
-        if src_name == "bach.list2llll":
-            continue  # Converter output is llll
+        # Source must be a bach object (outputs llll)
         src_entry = db.lookup(src_name)
         src_is_bach = src_entry is not None and src_entry.get("package") == "Bach"
 
@@ -360,8 +354,12 @@ def _check_bach_llll_types(
                 f"connected to '{dst_name}' ({dst_id}) inlet {dst_inlet} "
                 f"which expects llll data -- plain MAX lists will silently "
                 f"produce garbage",
-                f"Insert 'bach.list2llll' between '{src_name}' and "
-                f"'{dst_name}' to convert MAX list to llll format",
+                f"A flat MAX list can connect directly to a bach inlet -- if "
+                f"'{src_name}' already emits a flat list, the structure is what "
+                f"needs fixing, not the connection. For structured conversion "
+                f"use 'bach.flat', 'bach.iter', or 'bach.pack'; to extract an "
+                f"element use 'bach.nth N' (1-based, one call per index, with "
+                f"'@unwrap 1' when the element is itself a sublist)",
             ))
 
     return results
