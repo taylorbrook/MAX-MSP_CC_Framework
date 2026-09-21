@@ -464,3 +464,33 @@ elevation), so the square terrain skews as ROTATE changes. Fix: meshes only yaw
 (`pak rotatexyz 0. <rot> 0.`), and `jit.gl.camera tsynview @locklook 1 @tripod 1 @lookat 0 0 0`
 rides a 2.4-radius arc (`position 0 2.4*sin(tilt) 2.4*cos(tilt)`); mesh `@scale 0.6`.
 Unverified in MAX: explicit jit.gl.camera alongside the invisible jit.world.
+
+### v0.5.2 view confirmed (2026-09-21); main pushed to origin (893b5ed..1d463a8)
+
+## Slot-B banks (2026-09-21, v0.6.0)
+
+`tools/bake_geometry.py` gained `--field torus|noise|blend`, `--noise-freq`, `--octaves`,
+`--noise-amt`, `--noise-offset` (the fBm code was already in the file). Default invocation still
+re-bakes bank00 byte-identically. The fold trick is now only auto-applied for the symmetric case
+(`--field torus`, tilt 0).
+
+**Finding: the (2,3) knot is a bad orbit for non-symmetric fields.** Sampling a noise volume (or a
+tilted torus) along it puts the energy in h2/h3 -- the orbit's own 2- and 3-fold sub-loops -- and
+h1 sits 10-13 dB down at every frame ("frame 0 fundamental strongest" FAILS). A plain circle
+(`--knot 1 0`, radius 1.5 x scale) fixes it: a small circle in a smooth field is a linear-gradient
+read = near-pure h1, and harmonics grow with the radius sweep. Low end of `--scale` is chosen so
+frame 0 is not ~20 dB quieter than the rest under the global-peak normalisation (0.1, not 0.03).
+
+| bank | command (all `--knot 1 0`) | frame 0 -> 255 |
+|---|---|---|
+| bank01-noise-soft | `--field noise --noise-freq 1.0 --octaves 3 --scale 0.1 1.2 --drive 2` | 10 -> 75 harmonics > -60 dB, h1 strongest throughout |
+| bank02-noise-rough | `--field noise --noise-freq 1.2 --octaves 4 --scale 0.1 2.0 --drive 4` | 21 -> 223 harmonics, top frames led by h3/h7 (h1 -5 dB) |
+| bank03-torus-noise | `--field blend --tilt 0.5 --noise-amt 0.35 --noise-freq 1.5 --octaves 3 --scale 0.15 1.0 --drive 4` | 14 -> 73 harmonics; scale HI kept at 1.0 (1.3 saturates tanh into a dead frame) |
+
+Reports: `test-results/bake-bank0N-*.txt`, all ALL PASS. WAVs committed (23 MB each, precedent).
+
+Main patch: bank umenu now shows friendly names (`torus sdf / noise soft / noise rough / torus
+noise`, fontsize 10) -> `select 0 1 2 3` -> `replace <file>` message boxes -> `buffer~ terrainbank`
+(the old symbol -> `prepend replace` path is gone, since menu text no longer equals the filename).
+`wt-osc.maxpat` (standalone abstraction) still lists only bank00. Unverified in MAX: bank switching
+while notes sound, audition of the three banks.
