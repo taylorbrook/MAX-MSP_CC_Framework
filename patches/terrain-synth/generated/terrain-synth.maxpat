@@ -9799,7 +9799,17 @@
                         ",",
                         "epitrochoid",
                         ",",
-                        "squarcle"
+                        "squarcle",
+                        ",",
+                        "lissajous",
+                        ",",
+                        "rose",
+                        ",",
+                        "hypotrochoid",
+                        ",",
+                        "spiral",
+                        ",",
+                        "polygon"
                     ],
                     "maxclass": "umenu",
                     "numinlets": 1,
@@ -10543,7 +10553,7 @@
                         54.0,
                         17.0
                     ],
-                    "text": "v0.12.0",
+                    "text": "v0.13.0",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -18221,7 +18231,17 @@
                         ",",
                         "epitrochoid",
                         ",",
-                        "squarcle"
+                        "squarcle",
+                        ",",
+                        "lissajous",
+                        ",",
+                        "rose",
+                        ",",
+                        "hypotrochoid",
+                        ",",
+                        "spiral",
+                        ",",
+                        "polygon"
                     ],
                     "maxclass": "umenu",
                     "numinlets": 1,
@@ -39459,7 +39479,7 @@
                         330.0,
                         48.0
                     ],
-                    "text": "CHEBY on snaps the orbit SHAPE to ellipse (the only alias-free shape); other shapes stay selectable afterwards",
+                    "text": "CHEBY on snaps the orbit SHAPE to ellipse (alias-free at any LOBES). epitrochoid / lissajous / rose / hypotrochoid / spiral are alias-free at integer LOBES only; squarcle / polygon never",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
@@ -40014,7 +40034,7 @@
                         330.0,
                         48.0
                     ],
-                    "text": "CHEBY on snaps the orbit SHAPE to ellipse (the only alias-free shape); other shapes stay selectable afterwards",
+                    "text": "CHEBY on snaps the orbit SHAPE to ellipse (alias-free at any LOBES). epitrochoid / lissajous / rose / hypotrochoid / spiral are alias-free at integer LOBES only; squarcle / polygon never",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
