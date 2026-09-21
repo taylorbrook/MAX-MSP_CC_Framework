@@ -214,5 +214,5 @@ All objects verified for MAX 9. MC objects require MAX 8.1+. No MAX 9-only objec
 - **Buffer read**: manual linear interpolation between two `peek`s (peek truncates).
 - **De-hoist**: all Params routed through `History one(1)` (`k_*`, `srs`) per the CLAUDE.md hoisting rule.
 - **Patch**: `replace` instead of `read` (fixed-size buffer~ truncated files to 5 s); `record~ @loop 1` for continuous live input; buffer~ load bang -> `set granular_buf` -> waveform~ to refit the display.
-- **Verification**: Python port simulated old vs new (DC + sine buffers, density/size sweeps, stepped position/pitch/size): max sample delta 0.07-1.2 (old) -> <= natural signal slope (new). NOT yet compiled/confirmed in MAX.
+- **Verification**: Python port simulated old vs new (DC + sine buffers, density/size sweeps, stepped position/pitch/size): max sample delta 0.07-1.2 (old) -> <= natural signal slope (new). User-confirmed in MAX 2026-09-21: gen~ compiles, no clicks at high overlap or while dragging position/pitch, clean pitched reads, `replace` + waveform refit, looped live record all work.
 - **Open**: true MC output (per-voice audio + pan outlets -> mc.pack~ N -> mc.mixdown~ both inlets), presentation UI, DSP toggle, gain~ init.
