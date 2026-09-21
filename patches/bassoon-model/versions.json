@@ -325,6 +325,14 @@
       "files_changed": [
         "bassoon-model.maxpat"
       ]
+    },
+    {
+      "version": "0.19.1",
+      "description": "drift_on live.toggle parameter_type 0 -> 2 (enum off/on) so Live shows it as a switch; value sent to gen~ is unchanged (0/1)",
+      "timestamp": "2026-09-21T19:27:43.755922+00:00",
+      "files_changed": [
+        "bassoon-model.maxpat"
+      ]
     }
   ]
 }

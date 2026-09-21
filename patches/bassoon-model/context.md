@@ -446,3 +446,11 @@ All DSP numbers below come from a Python run of the actual codebox (`tools/genru
 
 ### Confirmation
 - 2026-09-21: user ran the v0.19.0 MAX checklist (compile, 220 Hz in = 220 Hz out, threshold ~0.35-0.4, articulation buttons) -> pass.
+
+### 2026-09-21 Conical bore, second prototype (rejected) -- `tools/cone_prototype.py`
+Continuous cylinder->cone junction: shunt inertance at the reed end (`w += p / D_e`, subtracted from the injected wave), `atan(k*x_e) = (1-cone)*pi/2`, loop delay `P*(1+cone)/2`. `cone=0` reproduces the confirmed v0.19 model.
+- cone 0.15: stable 58-440 Hz, but H2 only rises to about -20 dB (soft breath; still -33..-37 dB loud) and pitch goes 3-32 cents flat **depending on breath**.
+- cone >= 0.3: regime flips (locks to a high mode: +1290/+1390/+2056 cents, or an octave low) at many freq/breath points; darker bore_damp does not fix it.
+- Same root cause as the Saxofony prototype: a memoryless reed on a lossy inverting loop has nothing that favours the fundamental once the bore resonances become a full harmonic series. A cone needs a **dynamic reed** (mass-spring, resonance ~1.5-2.5 kHz, implicit or one-sample-delayed junction solve) -- a core rewrite plus preset re-voicing, not a Param.
+- Nothing shipped from this prototype.
+- `loadbang -> recall 1` kept: removing it only changes which preset slot shows active on load.
