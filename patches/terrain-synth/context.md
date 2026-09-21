@@ -454,3 +454,13 @@ orbit drawn as `@draw_mode points @point_size 4 @point_mode circle_depth` (help 
 1 px line_strip; flonum `numdecimalplaces 0` means AUTO in MAX (showed 9.77857) and MAX drops the
 key on re-save -> all Hz/ms/deg readouts set to 1; clipped "orbit at 110 Hz" note moved under the
 view dials; bank menu nudged off the WAVETABLE B header.
+
+### v0.5.2 (2026-09-21): view reads as a skewed strip -> turntable
+
+v0.5.1 screenshot: aspect fixed, orbit dots visible, readouts fixed, but the surface was too small
+(0.45) and looked like a diagonal strip. Cause: TILT and ROTATE were both applied as mesh
+`rotatexyz x y 0`; the combined Euler rotation is not a turntable (yaw about the vertical, then
+elevation), so the square terrain skews as ROTATE changes. Fix: meshes only yaw
+(`pak rotatexyz 0. <rot> 0.`), and `jit.gl.camera tsynview @locklook 1 @tripod 1 @lookat 0 0 0`
+rides a 2.4-radius arc (`position 0 2.4*sin(tilt) 2.4*cos(tilt)`); mesh `@scale 0.6`.
+Unverified in MAX: explicit jit.gl.camera alongside the invisible jit.world.
