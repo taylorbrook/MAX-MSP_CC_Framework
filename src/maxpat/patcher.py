@@ -1080,7 +1080,7 @@ class Patcher(GraphMixin, AnalysisMixin, BuildersMixin):
                     return False
         if maxclass is not None and box.maxclass != maxclass:
             return False
-        if text is not None and text not in box.text:
+        if text is not None and text not in (box.text or ""):
             return False
         return True
 

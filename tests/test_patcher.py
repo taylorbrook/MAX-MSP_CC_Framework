@@ -815,6 +815,16 @@ class TestFindBox:
         result = p.find_box(name="trigger")
         assert result is box
 
+    def test_find_by_text_skips_boxes_without_text(self):
+        """find_box(text=...) tolerates boxes whose text is None (MAX-saved UI boxes)."""
+        p = Patcher()
+        ui = p.add_box("toggle")
+        ui.text = None
+        target = p.add_comment("gen-eq test")
+        assert p.find_box(text="gen-eq") is target
+        assert p.find_box(text="missing") is None
+
+
 
 class TestFindBoxes:
     """find_boxes() returns list of all matching boxes."""
