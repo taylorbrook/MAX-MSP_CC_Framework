@@ -156,6 +156,17 @@
       "files_changed": [
         "terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.12.0",
+      "description": "Chebyshev bandlimited terrain core (per-slot TERRAIN / CHEBY mode, presets, brightness, pitch-scaled order limiting)",
+      "timestamp": "2026-09-21T22:28:18.038371+00:00",
+      "files_changed": [
+        "terrain-synth.maxpat",
+        "terrain-voice.maxpat",
+        "terrain-cheby.maxpat",
+        "cheby-coefs.js"
+      ]
     }
   ]
 }
