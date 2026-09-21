@@ -8,7 +8,7 @@ The object knowledge base lives at `.claude/max-objects/` with one subdirectory 
 
 ```
 .claude/max-objects/
-  max/objects.json       # Control flow, data, UI (471 objects)
+  max/objects.json       # Control flow, data, UI (473 objects)
   msp/objects.json       # Audio/signal processing (246 objects)
   jitter/objects.json    # Video, matrix, OpenGL (218 objects)
   mc/objects.json        # Multichannel wrappers (222 objects)
@@ -248,13 +248,13 @@ inner.add_connection(some_box, 0, inlets[2], 0)
 
 ### Node for Max (N4M / node.script)
 
-- **`node.script` is NOT in the object database** — per Rule #1 it cannot be used in generated patches until it is added (with verified I/O) to the DB. For tasks that would naturally use N4M (file I/O, binary parsing, npm libraries), prefer a build-time Python data tool that emits `coll`/`dict` data files the patch loads with verified objects — this is not a Rule #5 violation (Rule #5 only forbids regenerating `.maxpat` files).
+- **`node.script` and `node.codebox` are in the object database** with refpage-verified I/O, so both are usable in generated patches under Rule #1. For file-I/O-shaped work a build-time Python data tool that emits `coll`/`dict` data files the patch loads with verified objects remains a fine alternative — such a tool is not a Rule #5 violation (Rule #5 only forbids regenerating `.maxpat` files) — but it is an option now, not a requirement.
 - `node.script` objects run Node.js -- use `const maxAPI = require('max-api')` for MAX communication
 - `maxAPI.addHandler('message_name', callback)` to receive messages from MAX
 - `maxAPI.outlet(value)` to send data back to MAX
 - `maxAPI.post('message')` for console output visible in MAX
 - `maxAPI.getDict('dict_name')` and `maxAPI.setDict('dict_name', data)` for Dict access
-- `node.script` has a single inlet (messages) and configurable outlets
+- `node.script` has a fixed 1 inlet / 2 outlets (not argument-configurable): the left outlet carries whatever the script sends via `maxAPI.outlet()`, the right outlet is the dump out (stdout, stderr, and status updates). `node.codebox` has the same fixed shape but embeds its JavaScript in the box rather than taking a filename argument.
 - Use for: file I/O, network requests, complex data processing, anything Node.js does better than MAX
 
 ### js (V8 JavaScript / js object)
