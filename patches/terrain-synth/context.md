@@ -508,3 +508,7 @@ cutoff in this voice), clamped 0-1 in the codebox. Since v0.4.0 slot B was there
 audible; the v0.6.0 banks are untested until this is confirmed.
 If this works, treat "Param messages + History-one inside poly~ voices" as suspect and prefer
 signal inlets for per-voice gen~ controls.
+
+v0.6.1 confirmed in MAX (2026-09-21): user -- "mix works". Signal-inlet form for per-voice gen~
+controls is the rule from here on. POSITION sweep and the three new banks were not explicitly
+reported on yet.
