@@ -379,7 +379,7 @@
                     "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [
-                        "signal"
+                        "multichannelsignal"
                     ],
                     "patching_rect": [
                         350.0,
@@ -546,9 +546,9 @@
                         ""
                     ],
                     "patching_rect": [
-                        215,
-                        295,
-                        87.5,
+                        200.0,
+                        295.0,
+                        70.0,
                         22.0
                     ],
                     "text": "loadmess 2",
@@ -567,8 +567,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        215,
-                        320,
+                        200.0,
+                        320.0,
                         50.0,
                         22.0
                     ],
@@ -587,9 +587,9 @@
                         ""
                     ],
                     "patching_rect": [
-                        215,
-                        345,
-                        114.0,
+                        200.0,
+                        345.0,
+                        90.0,
                         22.0
                     ],
                     "text": "activechans $1",
@@ -605,9 +605,9 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        270,
-                        322,
-                        114.0,
+                        255.0,
+                        322.0,
+                        90.0,
                         20.0
                     ],
                     "text": "Speakers (2-8)",
