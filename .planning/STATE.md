@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-08-26 - Completed quick task 260826-kvk: presentation-mode text contrast fix (contrast resolved in presentation coords, all 3 panel color encodings, WCAG 4.5:1 critic guard, CLAUDE.md rule); 83 sub-threshold text boxes across 16 patches measured but NOT auto-repaired (opt-in via repair_text_contrast)
+Last activity: 2026-09-21 - Completed quick task 260921-g5d: repo review vs installed Max 9.1.5
 
 ## Performance Metrics
 
@@ -78,6 +78,7 @@ None.
 | 260703-knu | Document dsp_sim as bassoon-specific (module docstring + README covering 3 topologies); deferred general-topology broadening recorded as v6.0 in PROJECT.md Future | 2026-07-03 | d2d008f | | [260703-knu-document-src-maxpat-dsp-sim-as-bassoon-p](./quick/260703-knu-document-src-maxpat-dsp-sim-as-bassoon-p/) |
 | 260703-lwq | Prune orphaned quick-task dirs (2 removed, 89 keepers with SUMMARY.md); confirmed .claude/worktrees/ gitignored | 2026-07-03 | (docs commit) | | [260703-lwq-prune-orphaned-empty-quick-task-slugs-un](./quick/260703-lwq-prune-orphaned-empty-quick-task-slugs-un/) |
 | 260826-kvk | Fix presentation-mode text contrast: resolve background in presentation coords, all panel color encodings, box-own bgcolor; WCAG critic guard + CLAUDE.md rule | 2026-08-26 | 7193b4a | | [260826-kvk-fix-presentation-mode-panel-text-color-c](./quick/260826-kvk-fix-presentation-mode-panel-text-color-c/) |
+| 260921-g5d | Repo review vs installed Max 9.1.5: 15 findings (MF-01..03, SF-01..08, NH-01..04). DB drift near-zero (9 unresolved, 5 are doc pages; 0 I/O counts contradict an unambiguous maxref; 0 patch objects unresolved). **2 fixes applied** by the orchestrator after executor verification: `bach.list2llll` verified_installed: false (9ddd8c4), CLAUDE.md object-count table + packages/ layout (540b33a); suite unchanged at 9 pre-existing failures | 2026-09-21 | 9ddd8c4 | | [260921-g5d-review-this-repo-to-see-if-there-are-any](./quick/260921-g5d-review-this-repo-to-see-if-there-are-any/) |
 
 ## Deferred Items
 
