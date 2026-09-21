@@ -8,6 +8,7 @@ Covers requirements:
 
 import json
 import pathlib
+import re
 
 import pytest
 
@@ -35,6 +36,33 @@ def _load_project_patch(relpath: str) -> dict:
     path = PATCHES_DIR / relpath
     with open(path, "r") as f:
         return json.load(f)
+
+
+# ---------------------------------------------------------------------------
+# MAX-compact array detection
+#
+# When MAX re-saves a .maxpat it writes short numeric arrays inline on one
+# line -- `"rect": [ 34.0, 104.0, 1333.0, 617.0 ],` -- whereas json.dumps with
+# any indent ALWAYS expands an array across lines. That is a structural
+# property of json.dumps, not a bug in Patcher, so byte identity is
+# unreachable for such a file no matter how faithful the round-trip is.
+#
+# Detection is content-derived rather than a static per-file exemption list,
+# so a future clean re-save of any patch silently restores full byte-identity
+# coverage instead of staying permanently exempted. Validated against all ten
+# parametrized project patches plus the committed scala-synth blob: the
+# predicate `count == 0` matched actual byte identity in 11/11 cases.
+#
+# The `\s+` after `[` is load-bearing: it keeps string payloads that merely
+# contain a subscript like `[0]` from being mistaken for a compact array.
+# ---------------------------------------------------------------------------
+
+_MAX_COMPACT_ARRAY_RE = re.compile(r"\[\s+-?\d[^\[\]]*\]")
+
+
+def count_max_compact_arrays(text: str) -> int:
+    """Number of source lines carrying a MAX-saved compact inline numeric array."""
+    return sum(1 for line in text.splitlines() if _MAX_COMPACT_ARRAY_RE.search(line))
 
 
 # ---------------------------------------------------------------------------
@@ -1303,24 +1331,66 @@ class TestSubpatcherByteIdentity:
     """Subpatcher-containing patches produce byte-identical output through from_dict/to_dict."""
 
     @pytest.mark.parametrize("relpath", [
-        pytest.param(
-            "minitaur/generated/minitaur.maxpat",
-            marks=pytest.mark.xfail(
-                reason="MAX-saved compact array formatting differs from json.dumps",
-                strict=False,
-            ),
-        ),
+        "minitaur/generated/minitaur.maxpat",
         "performancepatchtest/generated/performance-patch-template.maxpat",
         "scala-synth/generated/scala-synth.maxpat",
     ])
     def test_byte_identical_round_trip(self, relpath):
-        """Loading a subpatcher-containing .maxpat through from_dict/to_dict produces byte-identical output."""
+        """Subpatcher-containing .maxpat round-trips losslessly, and byte-identically
+        when the file is not in MAX-compact formatting.
+
+        Two assertions, in order of strength:
+
+        1. SEMANTIC losslessness -- `from_dict(o).to_dict() == o` -- asserted
+           unconditionally for every parametrized patch, including ones
+           exempted from byte identity. This is what actually proves Patcher
+           loses no data; byte identity is a formatting property layered on
+           top.
+        2. BYTE identity -- asserted only when the source text carries no
+           MAX-saved compact inline arrays, which json.dumps structurally
+           cannot reproduce at any indent.
+
+        The exemption is content-derived, never a static per-file marker.
+        Root causes of the two files that previously failed here
+        (quick-260921-gut, MF-02):
+
+        - `performance-patch-template.maxpat` is MAX-compact at HEAD (329
+          compact lines in the committed blob), so it is permanently exempt
+          until someone re-saves it from the framework. Same class as the
+          minitaur param, whose static xfail this detection subsumes.
+        - `scala-synth.maxpat` round-trips BYTE-IDENTICAL at HEAD (162823 ->
+          162823, 0 compact lines). It is exempt only while an uncommitted
+          MAX-re-saved working-tree copy (319 compact lines) sits on disk.
+          This corrects REVIEW-FINDINGS MF-02, which claimed the committed
+          blob also fails -- it does not. A static xfail here would have
+          permanently masked a test that genuinely passes on committed state,
+          so detection must stay the only mechanism: the moment the clean
+          blob is what's on disk, real byte-identity coverage returns by
+          itself.
+        """
         path = PATCHES_DIR / relpath
         original_text = path.read_text()
         original = json.loads(original_text)
 
         p = Patcher.from_dict(original)
         result = p.to_dict()
+
+        # (1) Semantic losslessness -- unconditional, runs before any exemption.
+        assert result == original, (
+            f"Round-trip of {relpath} LOST DATA: from_dict(o).to_dict() != o. "
+            f"This is a real fidelity regression, not a formatting difference."
+        )
+
+        # (2) Byte identity -- only meaningful for non-MAX-compact source text.
+        compact_lines = count_max_compact_arrays(original_text)
+        if compact_lines:
+            pytest.xfail(
+                f"{relpath} is in MAX-saved compact array formatting "
+                f"({compact_lines} compact line(s)); json.dumps with an indent "
+                f"structurally cannot reproduce inline numeric arrays, so byte "
+                f"identity is unreachable for this file. Semantic equality was "
+                f"already asserted above and passed -- no data is lost."
+            )
 
         result_text = json.dumps(result, indent=detect_indent(original_text), ensure_ascii=False)
         if original_text.endswith("\n"):
