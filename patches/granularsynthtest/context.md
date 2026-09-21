@@ -227,3 +227,16 @@ All objects verified for MAX 9. MC objects require MAX 8.1+. No MAX 9-only objec
 - `granular-engine.gendsp` (confirmed stereo engine v2) is kept on disk, unreferenced, as a fallback.
 - **Verification**: Python port of sched+voice pair: same click-free results as engine v2. User-confirmed in MAX 2026-09-21 — first confirmed use in this repo of `mc_channel`, file-based `mc.gen~ <file> @chans N`, and `latch()` in a codebox.
 - **Open**: presentation UI (live.dial faces, panels, dark canvas), DSP toggle, gain~ init.
+
+## Decisions (2026-09-21 presentation UI pass)
+
+- **Opens in presentation** (600x360 content, dark canvas `[0.13,0.13,0.15]` written to `bgcolor`/`editing_bgcolor`/`locked_bgcolor`). Panels `[0.19,0.19,0.22]` rounded 6; wells (waveform~, gain~) `[0.11,0.11,0.13]`.
+- **Section colour coding** via `activedialcolor`: GRAIN cyan (Size/Density/Position/Pitch), SCATTER amber (Pos/Pitch/Size Jit), SPACE green (Pan/Spread/Spkrs), ENVELOPE violet (Shape). Grid: 64 px dial pitch, 12 px panel padding, 8 px panel gutters, dials 50x48.
+- **Control path**: `live.dial -> prepend <param> -> gen~ granular-sched` (FDNVerb-confirmed form; dials output their initial value at load, so no loadbang seeding). attruis removed. Pitch dial uses `parameter_exponent 2.32` so 1.0x sits at centre; custom unit "x".
+- **Spkrs** is an int live.dial (2-8) -> `activechans $1` (replaces loadmess/number).
+- **Buttons** (live.text): Load File (button mode, bang -> `replace`), Live Input (toggle -> record~), DSP (toggle -> mc.dac~).
+- **gain~** kept (mc variant, confirmed); loads at 0 = silent on open by design. No separate meter yet.
+- Each panel's `patching_rect` doubles as the backdrop of its section in patching mode.
+- Section labels were authored dim `[0.62,0.62,0.66]` but `repair_text_contrast` raised them to `[0.8,0.8,0.82]`; left as repaired.
+- Layout critic: clean except "56px horizontal offset" notes on dial->prepend cords, which are a critic artefact (it centres single-inlet boxes; the cords are vertical in MAX).
+- **Open ideas**: waveform~ selection -> position/scan range, level meter, pan movement (LFO on pan_pos), pattrstorage presets.
