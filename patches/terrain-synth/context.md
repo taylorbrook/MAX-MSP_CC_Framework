@@ -823,7 +823,7 @@ shape reuses LOBES / LOBE AMT, so the presentation layout is untouched. The 3D v
 | idx | shape | curve (unit, before rx / ry / rot / zoom) | LOBES | LOBE AMT | top partial (integer LOBES) |
 |-----|-------|-------------------------------------------|-------|----------|-----------------------------|
 | 3 | lissajous | `cos(th)`, `sin(L th + a * pi/2)` | y rate | phase 0-90 deg | L f |
-| 4 | rose | `r = (1 - a) + a cos(L th)` on the circle | petals | depth (1 = passes through the centre) | (L + 1) f |
+| 4 | rose | `r = (1 - a) + a cos(L th)` on the circle | bumps (at depth 1: L petals odd L, 2L even L) | depth (1 = passes through the centre) | (L + 1) f |
 | 5 | hypotrochoid | `(cos th + a cos L th, sin th - a sin L th) / (1 + a)` -- counter-rotating epicycle, L + 1 cusps | epicycle rate | size | L f |
 | 6 | spiral | `r = 1 - a (0.5 - 0.5 cos th)`, angle `L th` -- winds in and back out, closed | turns per cycle | inward depth | (L + 1) f |
 | 7 | polygon | `r = 1 + a (cos(pi/n) / cos(pa - pi/n) - 1)`, `n = max(round(L), 3)` | sides (snapped) | circle -> polygon | never bandlimited |
