@@ -83,7 +83,7 @@
                         790,
                         48
                     ],
-                    "text": "args: #1 coefficient offset in buffer~ chebcoef (A = 0, B = 64) | #2 orbit param send name (tsyn-osc / tsyn-oscB; shape + lobes steer the order limiter).  in1 orbit x | in2 orbit y | in3 Hz | in4 mode 0-1  ->  out1 audio. All signals.",
+                    "text": "args: (1) coefficient offset in buffer~ chebcoef (A = 0, B = 64) | (2) orbit param send name (tsyn-osc / tsyn-oscB; shape + lobes steer the order limiter).  in1 orbit x | in2 orbit y | in3 Hz | in4 mode 0-1  ->  out1 audio. All signals.",
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "textcolor": [
