@@ -1192,7 +1192,13 @@
                         ",",
                         "spiral",
                         ",",
-                        "polygon"
+                        "polygon",
+                        ",",
+                        "superellipse",
+                        ",",
+                        "limacon",
+                        ",",
+                        "butterfly"
                     ],
                     "maxclass": "umenu",
                     "numinlets": 1,
