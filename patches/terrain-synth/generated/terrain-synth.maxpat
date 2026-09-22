@@ -807,7 +807,13 @@
                         ",",
                         "interference",
                         ",",
-                        "terraces"
+                        "terraces",
+                        ",",
+                        "ridged cosines",
+                        ",",
+                        "mitsuhashi",
+                        ",",
+                        "cosine wells"
                     ],
                     "maxclass": "umenu",
                     "numinlets": 1,
@@ -4029,7 +4035,7 @@
                                                     "outlettype": [],
                                                     "patching_rect": [
                                                         15,
-                                                        418,
+                                                        586,
                                                         30.0,
                                                         30.0
                                                     ],
@@ -4425,6 +4431,143 @@
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "newobj",
+                                                    "id": "obj-23",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 4,
+                                                    "outlettype": [
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        430,
+                                                        300,
+                                                        22.0
+                                                    ],
+                                                    "text": "select 16 17 18",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-24",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        470,
+                                                        499.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.-abs(cos(snorm[0]*PI*3.))-abs(cos(snorm[1]*PI*3.)), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-25",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        607,
+                                                        472,
+                                                        401.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "16 ridged cosines (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-26",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        502,
+                                                        2830.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.747*(4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)*((4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)*(4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)-1.)*((4.*abs(((0.5*(snorm[1]*3.)-0.25)-floor(0.5*(snorm[1]*3.)-0.25))-0.5)-1.)*(4.*abs(((0.5*(snorm[1]*3.)-0.25)-floor(0.5*(snorm[1]*3.)-0.25))-0.5)-1.)-1.), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-27",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        3271,
+                                                        504,
+                                                        373.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "17 mitsuhashi (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-28",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        534,
+                                                        576.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.-2.*pow(0.5*(1.+cos(snorm[0]*PI*3.)*cos(snorm[1]*PI*3.))\\,4.), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-29",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        695,
+                                                        536,
+                                                        387.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "18 cosine wells (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
                                             }
                                         ],
                                         "lines": [
@@ -4648,6 +4791,90 @@
                                                 "patchline": {
                                                     "source": [
                                                         "obj-21",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-4",
+                                                        9
+                                                    ],
+                                                    "destination": [
+                                                        "obj-23",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-24",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-24",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        1
+                                                    ],
+                                                    "destination": [
+                                                        "obj-26",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-26",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        2
+                                                    ],
+                                                    "destination": [
+                                                        "obj-28",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-28",
                                                         0
                                                     ],
                                                     "destination": [
@@ -4761,7 +4988,7 @@
                                                     "outlettype": [],
                                                     "patching_rect": [
                                                         15,
-                                                        418,
+                                                        586,
                                                         30.0,
                                                         30.0
                                                     ],
@@ -5157,6 +5384,143 @@
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "newobj",
+                                                    "id": "obj-23",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 4,
+                                                    "outlettype": [
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        430,
+                                                        300,
+                                                        22.0
+                                                    ],
+                                                    "text": "select 16 17 18",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-24",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        470,
+                                                        499.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.-abs(cos(snorm[0]*PI*3.))-abs(cos(snorm[1]*PI*3.)), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-25",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        607,
+                                                        472,
+                                                        401.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "16 ridged cosines (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-26",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        502,
+                                                        2830.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.747*(4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)*((4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)*(4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)-1.)*((4.*abs(((0.5*(snorm[1]*3.)-0.25)-floor(0.5*(snorm[1]*3.)-0.25))-0.5)-1.)*(4.*abs(((0.5*(snorm[1]*3.)-0.25)-floor(0.5*(snorm[1]*3.)-0.25))-0.5)-1.)-1.), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-27",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        3271,
+                                                        504,
+                                                        373.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "17 mitsuhashi (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-28",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        534,
+                                                        576.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.-2.*pow(0.5*(1.+cos(snorm[0]*PI*3.)*cos(snorm[1]*PI*3.))\\,4.), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-29",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        695,
+                                                        536,
+                                                        387.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "18 cosine wells (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
                                             }
                                         ],
                                         "lines": [
@@ -5380,6 +5744,90 @@
                                                 "patchline": {
                                                     "source": [
                                                         "obj-21",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-4",
+                                                        9
+                                                    ],
+                                                    "destination": [
+                                                        "obj-23",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-24",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-24",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        1
+                                                    ],
+                                                    "destination": [
+                                                        "obj-26",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-26",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        2
+                                                    ],
+                                                    "destination": [
+                                                        "obj-28",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-28",
                                                         0
                                                     ],
                                                     "destination": [
@@ -11339,7 +11787,13 @@
                         ",",
                         "spiral",
                         ",",
-                        "polygon"
+                        "polygon",
+                        ",",
+                        "superellipse",
+                        ",",
+                        "limacon",
+                        ",",
+                        "butterfly"
                     ],
                     "maxclass": "umenu",
                     "numinlets": 1,
@@ -12083,7 +12537,7 @@
                         54.0,
                         17.0
                     ],
-                    "text": "v0.14.0",
+                    "text": "v0.15.0",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -13017,7 +13471,13 @@
                         ",",
                         "interference",
                         ",",
-                        "terraces"
+                        "terraces",
+                        ",",
+                        "ridged cosines",
+                        ",",
+                        "mitsuhashi",
+                        ",",
+                        "cosine wells"
                     ],
                     "maxclass": "umenu",
                     "numinlets": 1,
@@ -16239,7 +16699,7 @@
                                                     "outlettype": [],
                                                     "patching_rect": [
                                                         15,
-                                                        418,
+                                                        586,
                                                         30.0,
                                                         30.0
                                                     ],
@@ -16635,6 +17095,143 @@
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "newobj",
+                                                    "id": "obj-23",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 4,
+                                                    "outlettype": [
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        430,
+                                                        300,
+                                                        22.0
+                                                    ],
+                                                    "text": "select 16 17 18",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-24",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        470,
+                                                        499.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.-abs(cos(snorm[0]*PI*3.))-abs(cos(snorm[1]*PI*3.)), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-25",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        607,
+                                                        472,
+                                                        401.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "16 ridged cosines (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-26",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        502,
+                                                        2830.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.747*(4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)*((4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)*(4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)-1.)*((4.*abs(((0.5*(snorm[1]*3.)-0.25)-floor(0.5*(snorm[1]*3.)-0.25))-0.5)-1.)*(4.*abs(((0.5*(snorm[1]*3.)-0.25)-floor(0.5*(snorm[1]*3.)-0.25))-0.5)-1.)-1.), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-27",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        3271,
+                                                        504,
+                                                        373.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "17 mitsuhashi (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-28",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        534,
+                                                        576.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.-2.*pow(0.5*(1.+cos(snorm[0]*PI*3.)*cos(snorm[1]*PI*3.))\\,4.), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-29",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        695,
+                                                        536,
+                                                        387.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "18 cosine wells (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
                                             }
                                         ],
                                         "lines": [
@@ -16858,6 +17455,90 @@
                                                 "patchline": {
                                                     "source": [
                                                         "obj-21",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-4",
+                                                        9
+                                                    ],
+                                                    "destination": [
+                                                        "obj-23",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-24",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-24",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        1
+                                                    ],
+                                                    "destination": [
+                                                        "obj-26",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-26",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        2
+                                                    ],
+                                                    "destination": [
+                                                        "obj-28",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-28",
                                                         0
                                                     ],
                                                     "destination": [
@@ -16971,7 +17652,7 @@
                                                     "outlettype": [],
                                                     "patching_rect": [
                                                         15,
-                                                        418,
+                                                        586,
                                                         30.0,
                                                         30.0
                                                     ],
@@ -17367,6 +18048,143 @@
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "newobj",
+                                                    "id": "obj-23",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 4,
+                                                    "outlettype": [
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        430,
+                                                        300,
+                                                        22.0
+                                                    ],
+                                                    "text": "select 16 17 18",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-24",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        470,
+                                                        499.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.-abs(cos(snorm[0]*PI*3.))-abs(cos(snorm[1]*PI*3.)), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-25",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        607,
+                                                        472,
+                                                        401.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "16 ridged cosines (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-26",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        502,
+                                                        2830.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.747*(4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)*((4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)*(4.*abs(((0.5*(snorm[0]*3.)-0.25)-floor(0.5*(snorm[0]*3.)-0.25))-0.5)-1.)-1.)*((4.*abs(((0.5*(snorm[1]*3.)-0.25)-floor(0.5*(snorm[1]*3.)-0.25))-0.5)-1.)*(4.*abs(((0.5*(snorm[1]*3.)-0.25)-floor(0.5*(snorm[1]*3.)-0.25))-0.5)-1.)-1.), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-27",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        3271,
+                                                        504,
+                                                        373.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "17 mitsuhashi (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "message",
+                                                    "id": "obj-28",
+                                                    "numinlets": 2,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        534,
+                                                        576.0,
+                                                        22.0
+                                                    ],
+                                                    "text": "exprfill 0 1.-2.*pow(0.5*(1.+cos(snorm[0]*PI*3.)*cos(snorm[1]*PI*3.))\\,4.), bang",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "comment",
+                                                    "id": "obj-29",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 0,
+                                                    "outlettype": [],
+                                                    "patching_rect": [
+                                                        695,
+                                                        536,
+                                                        387.0,
+                                                        20.0
+                                                    ],
+                                                    "text": "18 cosine wells (O-Strata form, mx = my = 0.5, F = 3)",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
                                             }
                                         ],
                                         "lines": [
@@ -17590,6 +18408,90 @@
                                                 "patchline": {
                                                     "source": [
                                                         "obj-21",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-4",
+                                                        9
+                                                    ],
+                                                    "destination": [
+                                                        "obj-23",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-24",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-24",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        1
+                                                    ],
+                                                    "destination": [
+                                                        "obj-26",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-26",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-2",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-23",
+                                                        2
+                                                    ],
+                                                    "destination": [
+                                                        "obj-28",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-28",
                                                         0
                                                     ],
                                                     "destination": [
@@ -21301,7 +22203,13 @@
                         ",",
                         "spiral",
                         ",",
-                        "polygon"
+                        "polygon",
+                        ",",
+                        "superellipse",
+                        ",",
+                        "limacon",
+                        ",",
+                        "butterfly"
                     ],
                     "maxclass": "umenu",
                     "numinlets": 1,
@@ -39555,7 +40463,13 @@
                         ",",
                         "interference",
                         ",",
-                        "terraces"
+                        "terraces",
+                        ",",
+                        "ridged cosines",
+                        ",",
+                        "mitsuhashi",
+                        ",",
+                        "cosine wells"
                     ]
                 }
             },
@@ -40571,7 +41485,13 @@
                         ",",
                         "interference",
                         ",",
-                        "terraces"
+                        "terraces",
+                        ",",
+                        "ridged cosines",
+                        ",",
+                        "mitsuhashi",
+                        ",",
+                        "cosine wells"
                     ]
                 }
             },
