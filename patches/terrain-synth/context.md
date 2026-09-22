@@ -872,3 +872,27 @@ the load defaults (A = 0, B = 1) are unchanged. No new controls, presentation un
 
 Unverified in MAX: every new expression (a bad function name would give a flat / black terrain, the v0.2.2 failure shape),
 escaped commas surviving the message box, the 2900 px wide `peaks` message, 16-entry umenu at 100 px (source 2).
+
+## Build v0.15.0 (2026-09-21) -- O-Strata parity (orbits + terrains, fixed shapes)
+
+Compared against `Dev/VST-development/plugins/O-Strata/Source/dsp/Orbits.h` + `Terrains.h` (11 orbits, 6 terrains with
+mx / my shape inputs). Already covered: ellipse, epitrochoid 3/5/7 (= LOBES 4/6/8, same curve up to a 45 deg rotation),
+hypocycloid 3/5/7 (= hypotrochoid, LOBES 2/4/6, identical form), squarcle (ours is fixed pow 0.5, theirs tanh(k)/tanh k
+-- left alone), sine product, radial rings, saddle (different formula). Added, at O-Strata's default mx = my = 0.5:
+
+- **Orbits 8-10** (all three slots' menus + bench): `superellipse` (n = 0.5 + 5.5 * LOBE AMT: astroid -> circle at
+  0.27 -> rounded square; gen~ `pow` per sample instead of O-Strata's LUT; max radius 2^(1/2 - 1/n) once n > 2, divided
+  out), `limacon` (`(1 + 2a cos) / (1 + 2a)`, inner loop above a = 0.5), `butterfly` (Fay: `e^cos - 2 cos 4th +
+  2a sin^5`; max radius 4.06 -> 4.38 over a, normalised by `4.06 + 0.33 a` instead of O-Strata's per-block 64-point
+  scan; fills only ~0.77 of the box in x / y since it is radius-normalised). `ka = lobeamt * one` and `sn` go through
+  the History so the superellipse `pow(2, 0.5 - 1/n)` chain is not hoisted. cheby limiter: limacon = 2 f (exact),
+  butterfly = 4 f (O-Strata's nominal), superellipse = f (nominal, not bandlimited).
+- **Terrains 16-18** (all four source menus, via the free unmatched outlet of `select 7 ... 15` -> `select 16 17 18`
+  inside `p more-terrains`): `ridged cosines` `1 - |cos 3PI x| - |cos 3PI y|`, `mitsuhashi` (1982 via Mills & de
+  Souza: triangle-wrapped `1.747 u (u^2 - 1)(w^2 - 1)`, tri written out with `floor` / `abs`), `cosine wells`
+  `1 - 2 h^4`, `h = (1 + cos 3PI x cos 3PI y) / 2` (`pow(...\,4.)`, the shipped escaped-comma form; mean +0.67,
+  dcblock handles it). F = 3 so the cell count matches our other analytic terrains.
+- Not built (declined): the mx / my shape dials; tanh squarcle. Menus: shapes 11 entries, terrains 19.
+
+Unverified in MAX: all of it, on top of v0.13.0 / v0.14.0 (also unverified). New gen~ risks: `pow` with a negative
+exponent, `exp`, `abs` in codebox; `floor` and `pow(\,)` in exprfill.
