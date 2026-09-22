@@ -146,7 +146,7 @@
                         79.0,
                         22.0
                     ],
-                    "text": "1",
+                    "text": "mute 0, 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -229,7 +229,7 @@
                         81.5,
                         22.0
                     ],
-                    "text": "counter",
+                    "text": "counter 1 1000000",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -281,8 +281,9 @@
                     "maxclass": "newobj",
                     "id": "obj-13",
                     "numinlets": 1,
-                    "numoutlets": 2,
+                    "numoutlets": 3,
                     "outlettype": [
+                        "signal",
                         "signal",
                         "signal"
                     ],
@@ -367,8 +368,9 @@
                                     "maxclass": "codebox",
                                     "id": "obj-2",
                                     "numinlets": 1,
-                                    "numoutlets": 2,
+                                    "numoutlets": 3,
                                     "outlettype": [
+                                        "",
                                         "",
                                         ""
                                     ],
@@ -379,7 +381,7 @@
                                         200.0
                                     ],
                                     "parameter_enable": 0,
-                                    "code": "\nBuffer source;\nParam offset(0);\nParam duration(1);\nParam loopmode(0);\nParam trig(0);\nHistory phase(0);\nHistory running(0);\nHistory voiceage(0);\nHistory trig_prev(0);\n\ntrig_edge = trig - trig_prev;\ntrig_fire = trig_edge > 0.5;\nnew_phase_init = trig_fire ? 0 : phase;\nnew_voiceage_init = trig_fire ? 0 : voiceage;\nnew_running_init = trig_fire ? 1 : running;\nnext_phase = new_phase_init + 1;\nend_reached = next_phase >= duration;\nlooping = loopmode > 0.5;\nwrap_phase = end_reached ? (looping ? 0 : duration) : next_phase;\nnext_running = (end_reached && (looping == 0)) ? 0 : new_running_init;\nread_pos = offset + wrap_phase;\nsampleL = peek(source, read_pos, 0);\nsampleR = peek(source, read_pos, 1);\nfade_samples = 0.005 * samplerate;\nfade_in_val = min(1, new_voiceage_init / fade_samples);\nremaining = duration - wrap_phase;\nfade_out_val = looping ? 1 : min(1, remaining / fade_samples);\nenv = new_running_init * fade_in_val * fade_out_val;\nphase = wrap_phase;\nrunning = next_running;\nvoiceage = new_voiceage_init + new_running_init;\ntrig_prev = trig;\nout1 = sampleL * env;\nout2 = sampleR * env;\n",
+                                    "code": "\nBuffer source;\nParam offset(0);\nParam duration(1);\nParam loopmode(0);\nParam trig(0);\nParam pan(0.5);\nParam gain(0.35);\nHistory phase(0);\nHistory running(0);\nHistory voiceage(0);\nHistory trig_prev(0);\n\ntrig_fire = abs(trig - trig_prev) > 0.5;\nnew_phase_init = trig_fire ? 0 : phase;\nnew_voiceage_init = trig_fire ? 0 : voiceage;\nnew_running_init = trig_fire ? 1 : running;\nnext_phase = new_phase_init + 1;\nend_reached = next_phase >= duration;\nlooping = loopmode > 0.5;\nwrap_phase = end_reached ? (looping ? 0 : duration) : next_phase;\nnext_running = (end_reached && (looping == 0)) ? 0 : new_running_init;\nread_pos = offset + wrap_phase;\nsampleL = peek(source, read_pos, 0);\nsampleR = peek(source, read_pos, 1);\nnchans = channels(source);\nmono = nchans > 1.5 ? (sampleL + sampleR) * 0.5 : sampleL;\nfade_samples = 0.005 * samplerate;\nfade_in_val = min(1, new_voiceage_init / fade_samples);\nremaining = duration - wrap_phase;\nfade_out_val = looping ? 1 : min(1, remaining / fade_samples);\nenv = new_running_init * fade_in_val * fade_out_val * gain;\npanL = cos(pan * halfpi);\npanR = sin(pan * halfpi);\nphase = wrap_phase;\nrunning = next_running;\nvoiceage = new_voiceage_init + new_running_init;\ntrig_prev = trig;\nout1 = mono * env * panL;\nout2 = mono * env * panR;\nout3 = next_running;\n",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -416,6 +418,24 @@
                                         22.0
                                     ],
                                     "text": "out 2",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-5",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        555.0,
+                                        300.0,
+                                        51.0,
+                                        22.0
+                                    ],
+                                    "text": "out 3",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -460,6 +480,18 @@
                                     ],
                                     "destination": [
                                         "obj-4",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-2",
+                                        2
+                                    ],
+                                    "destination": [
+                                        "obj-5",
                                         0
                                     ]
                                 }
@@ -525,7 +557,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.1.0",
+                    "text": "v0.2.0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -546,6 +578,123 @@
                         22.0
                     ],
                     "text": "pan $1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-18",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        600.0,
+                        360.0,
+                        51.0,
+                        22.0
+                    ],
+                    "text": "edge~",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-19",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        600.0,
+                        395.0,
+                        79.0,
+                        22.0
+                    ],
+                    "text": "mute 1, 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-20",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        690.0,
+                        395.0,
+                        177.0,
+                        20.0
+                    ],
+                    "text": "voice done: free + mute",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-21",
+                    "numinlets": 0,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        120.0,
+                        30.0,
+                        44.0,
+                        22.0
+                    ],
+                    "text": "in 2",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-22",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        120.0,
+                        75.0,
+                        93.0,
+                        22.0
+                    ],
+                    "text": "loopmode $1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-23",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        200.0,
+                        30.0,
+                        114.0,
+                        20.0
+                    ],
+                    "text": "loop broadcast",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -846,6 +995,66 @@
                 "patchline": {
                     "source": [
                         "obj-17",
+                        0
+                    ],
+                    "destination": [
+                        "obj-13",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-13",
+                        2
+                    ],
+                    "destination": [
+                        "obj-18",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-18",
+                        1
+                    ],
+                    "destination": [
+                        "obj-19",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-19",
+                        0
+                    ],
+                    "destination": [
+                        "obj-5",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-21",
+                        0
+                    ],
+                    "destination": [
+                        "obj-22",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-22",
                         0
                     ],
                     "destination": [
