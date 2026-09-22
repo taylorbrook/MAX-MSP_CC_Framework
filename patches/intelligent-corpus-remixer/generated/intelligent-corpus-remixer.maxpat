@@ -39,9 +39,9 @@
                     ],
                     "text": "Intelligent Corpus Remixer",
                     "textcolor": [
-                        0.2,
-                        0.2,
-                        0.25,
+                        0.92,
+                        0.92,
+                        0.95,
                         1.0
                     ]
                 }
