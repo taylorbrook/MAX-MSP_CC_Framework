@@ -187,6 +187,18 @@
       "files_changed": [
         "terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.15.0",
+      "description": "O-Strata parity: superellipse / limacon / butterfly orbits, ridged cosines / mitsuhashi / cosine wells terrains",
+      "timestamp": "2026-09-22T03:43:09.133602+00:00",
+      "files_changed": [
+        "terrain-osc.maxpat",
+        "terrain-osc-b.maxpat",
+        "terrain-cheby.maxpat",
+        "terrain-osc-test.maxpat",
+        "terrain-synth.maxpat"
+      ]
     }
   ]
 }
