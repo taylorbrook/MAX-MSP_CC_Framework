@@ -1,3 +1,14 @@
+// analyze.js -- turn the onset buffer into per-slice MFCC descriptors.
+//
+// Reads buffer~ onsets (channel 1 = onset frame indices) and buffer~ source,
+// builds slice bounds (short segments are merged into their predecessor rather
+// than dropped, so the corpus covers the whole file), then drives the named
+// fluid.buf*~ objects in the parent patcher per slice and fills
+// fluid.dataset~ descriptors + coll slice_meta.
+//
+// outlet 0: bang when done
+// outlet 1: slice count
+
 inlets = 1;
 outlets = 2;
 
@@ -11,38 +22,24 @@ function anything() {
     bang();
 }
 
-function bang() {
-    var onsets = new Buffer("onsets");
-    var source = new Buffer("source");
-    var numOnsets = onsets.framecount();
-    var sourceLen = source.framecount();
-
-    post("analyze: source=" + sourceLen + " frames, onsets buffer=" + numOnsets + " frames\n");
-
-    if (numOnsets === 0 || sourceLen === 0) {
-        post("analyze: source or onsets buffer empty\n");
-        return;
-    }
-
-    post("analyze: onsets channelcount=" + onsets.channelcount() + "\n");
-    var sampleC1 = onsets.peek(1, 0, 1);
-    var sampleC0 = onsets.peek(0, 0, 1);
-    post("analyze: probe ch=1 -> " + JSON.stringify(sampleC1) + " ch=0 -> " + JSON.stringify(sampleC0) + "\n");
+function readOnsets(onsets, numOnsets) {
+    var vals = [];
     var batch = onsets.peek(1, 0, numOnsets);
-    post("analyze: batch peek ch=1 type=" + (typeof batch) + " len=" + (batch && batch.length) + " first3=" + (batch ? [batch[0], batch[1], batch[2]].join(",") : "null") + "\n");
-
-    var rawBounds = [];
+    if (typeof batch === "number") batch = [batch];
     for (var i = 0; i < numOnsets; i++) {
         var f = batch && batch[i];
         if (typeof f !== "number" || isNaN(f)) {
             f = onsets.peek(1, i, 1);
-            f = (f && f[0]) || 0;
+            if (Array.isArray(f)) f = f[0];
+            if (typeof f !== "number" || isNaN(f)) f = 0;
         }
-        rawBounds.push(Math.floor(f));
+        vals.push(Math.floor(f));
     }
-    post("analyze: raw onsets = " + rawBounds.join(",") + "\n");
+    return vals;
+}
 
-    var bounds = rawBounds.slice();
+function sliceBounds(onsetFrames, sourceLen) {
+    var bounds = onsetFrames.slice();
     if (bounds.length === 0 || bounds[0] > 0) bounds.unshift(0);
     if (bounds[bounds.length - 1] < sourceLen - 1) bounds.push(sourceLen);
     for (var i = 0; i < bounds.length; i++) {
@@ -50,47 +47,73 @@ function bang() {
         if (bounds[i] > sourceLen) bounds[i] = sourceLen;
     }
 
+    // greedy merge: absorb sub-MIN_SLICE segments into the running slice
+    var slices = [];
+    var start = bounds[0];
+    for (var j = 1; j < bounds.length; j++) {
+        var end = bounds[j];
+        if (end - start >= MIN_SLICE) {
+            slices.push([start, end - start]);
+            start = end;
+        }
+    }
+    if (start < sourceLen) {
+        if (slices.length > 0) {
+            var last = slices[slices.length - 1];
+            last[1] = sourceLen - last[0];
+        } else if (sourceLen - start >= MIN_SLICE) {
+            slices.push([start, sourceLen - start]);
+        }
+    }
+    return slices;
+}
+
+function bang() {
+    var onsets = new Buffer("onsets");
+    var source = new Buffer("source");
+    var numOnsets = onsets.framecount();
+    var sourceLen = source.framecount();
+
+    if (numOnsets === 0 || sourceLen === 0) {
+        post("analyze: source or onsets buffer empty\n");
+        return;
+    }
+
     var bufmfcc = this.patcher.getnamed("bufmfcc");
     var bufstats = this.patcher.getnamed("bufstats");
     var bufflatten = this.patcher.getnamed("bufflatten");
     var dataset = this.patcher.getnamed("descRef");
+    var slicecoll = this.patcher.getnamed("slicecoll");
 
     if (!bufmfcc || !bufstats || !bufflatten || !dataset) {
-        post("analyze: missing named objects (bufmfcc/bufstats/bufflatten/descriptors)\n");
+        post("analyze: missing named objects (bufmfcc/bufstats/bufflatten/descRef)\n");
         return;
     }
 
+    var slices = sliceBounds(readOnsets(onsets, numOnsets), sourceLen);
+
     dataset.message("clear");
-    var slicecoll = this.patcher.getnamed("slicecoll");
     if (slicecoll) slicecoll.message("clear");
 
-    var kept = 0;
-    var skipped = 0;
-    for (var i = 0; i < bounds.length - 1; i++) {
-        var start = bounds[i];
-        var len = bounds[i + 1] - bounds[i];
-        if (len < MIN_SLICE) { skipped++; continue; }
-        if (start + len > sourceLen) len = sourceLen - start;
-        if (len < MIN_SLICE) { skipped++; continue; }
+    for (var i = 0; i < slices.length; i++) {
+        var start = slices[i][0];
+        var len = slices[i][1];
 
         bufmfcc.message("startframe", start);
         bufmfcc.message("numframes", len);
         bufmfcc.message("bang");
-
         bufstats.message("bang");
         bufflatten.message("bang");
 
-        dataset.message("addpoint", kept + "", "mfcc_flat");
-        if (slicecoll) slicecoll.message(kept, start, len);
-        kept++;
+        dataset.message("addpoint", i + "", "mfcc_flat");
+        if (slicecoll) slicecoll.message(i, start, len);
     }
 
-    post("analyze: added " + kept + " points, skipped " + skipped + " short slices\n");
-    dataset.message("print");
+    post("analyze: " + slices.length + " slices from " + numOnsets + " onsets\n");
 
-    var keptFinal = kept;
+    var count = slices.length;
     var doneTask = new Task(function() {
-        outlet(1, keptFinal);
+        outlet(1, count);
         outlet(0, "bang");
     }, this);
     doneTask.schedule(100);

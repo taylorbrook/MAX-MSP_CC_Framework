@@ -86,6 +86,17 @@
       "files_changed": [
         "intelligent-corpus-remixer.maxpat"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "review fixes: gen~ pan/mono/gain params, voice release via running edge, loop inlet order + broadcast, js cluster picker + plotter labels, expr clip fix, first-note trig, presentation parity, debug cleanup",
+      "timestamp": "2026-09-22T03:45:52.206852+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat",
+        "slice-voice.maxpat",
+        "analyze.js",
+        "pick.js"
+      ]
     }
   ]
 }

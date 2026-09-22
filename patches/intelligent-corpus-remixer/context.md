@@ -311,3 +311,18 @@ The build plan is feasible with the objects present in DB. Key engineering tasks
 4. `fluid.plotter` emits `point <id>` → `coll` lookup → `note offset duration loop` to poly~.
 5. `metro` + `zl filter` for cluster-filtered random mode.
 
+
+## Review fixes (v0.2.0, 2026-09-21) — NOT yet confirmed in MAX
+
+Found by patch review; all six were functional bugs present since build:
+
+1. **gen~ codebox never had `Param pan`** — v0.1.0's pan/mono/gain change was lost to the round-trip `extra_attrs` trap. Now written via `_raw["code"]`: `Param pan(0.5)`, `Param gain(0.35)`, `channels(source)`-aware mono sum, equal-power pan, `out3 = next_running`.
+2. **Loop toggle hit the wrong `p playback` inlet** — inlet x-order was slice/retrigger/loop; swapped x so it is slice/loop/retrigger/pan. Parent wiring unchanged.
+3. **Random mode dead** — labelset dump was never consumed. Rebuilt `p random` around `pick.js` (dict → cluster→ids table; `cluster N`; `bang` → random id). Same dict forwarded out a new outlet 1 → `prepend labels` → plotter for cluster colours. **Verify in MAX:** that `fluid.plotter` accepts `labels <dict>` (FluCoMa not installed on the dev machine; taken from the plotter help patch idiom).
+4. **`expr clip(...)`** → `expr min(max($i1-1\,2)\,15)` so UMAP numneighbours actually tracks slice count.
+5. **First note per voice silent** — `counter 1 1000000` + gen~ fires on any `trig` change.
+6. **Voices never freed** — gen~ out3 (running) → `edge~` falling edge → `mute 1, 0` to `thispoly~`; note-on sends `mute 0, 1`. `p playback` sends `target 0` at loadbang and broadcasts `loopmode $1` to poly~ inlet 1 (slice-voice `in 2`), so turning loop off lets running loops finish and free.
+
+Also: analyze.js merges sub-4096-sample segments into the previous slice instead of dropping them; debug `print`/`dict.view`/probe posts removed; plotter 420×420 in presentation; pan toggle, K/re-cluster/drop labels added to presentation; second `meter~` for R; patcher `bgcolor` set; title contrast fixed.
+
+Deliberate presentation exclusions: none. Open: loudness descriptor (planned, never extracted); K > slice-count guard on kmeans.
