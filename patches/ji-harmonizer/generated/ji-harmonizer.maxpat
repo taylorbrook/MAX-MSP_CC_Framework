@@ -19,25 +19,6 @@
         "boxes": [
             {
                 "box": {
-                    "id": "obj-261",
-                    "linecount": 2,
-                    "maxclass": "message",
-                    "numinlets": 2,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        246.0,
-                        168.0,
-                        50.0,
-                        35.0
-                    ],
-                    "text": "293.664768 0"
-                }
-            },
-            {
-                "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "id": "obj-1",
@@ -6006,7 +5987,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.11.2",
+                    "text": "v0.11.3",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -9354,7 +9335,7 @@
                                             ""
                                         ],
                                         "fontface": 0,
-                                        "code": "Param gaina(1.0, min=0, max=1);\nParam gainb(0.0, min=0, max=1);\nParam spacing(0., min=0, max=1);\nParam inversion(0.3, min=0, max=1);\nParam spacingratio(2., min=0.5, max=16.);\nParam inversionratio(0.5, min=0.03125, max=2.);\nParam spacingthresh(1., min=0., max=1.);\nParam inversionthresh(1., min=0., max=1.);\nParam lfoofs(0., min=0., max=6.2832);\nParam lforatea(0.5, min=0.01, max=20.);\nParam lfodeptha(0., min=0., max=1.);\nParam lforateb(0.5, min=0.01, max=20.);\nParam lfodepthb(0., min=0., max=1.);\nHistory phb(0);\nHistory phspc(0);\nHistory phinv(0);\nHistory phlfa(0);\nHistory phlfb(0);\nHistory sga(1.0);\nHistory sgb(0.0);\nHistory smix(0);\nHistory imix(0);\nBuffer wta(\"jiharmA\");\nBuffer wtb(\"jiharmB\");\n\n// dual morphing wavetable oscillator with spacing/inversion octave copies —\n// verbatim port of WavetableOscillator.h + WavetableVoice render/startNote\n// buffer layout: idx = mip*524288 + frame*2048 + sample (11 mips, 256 frames)\nf = max(in1, 0.);\n\n// v1.14 per-sub-voice LFOs: phases accumulate in lockstep across mc instances\n// (same rate history); per-instance random offset (lfoofs, root = 0) on top:\n// pos = clamp(basePos + sin(phase + ofs) * depth, 0, 1)\ntwopi = 6.28318530717959;\npla = wrap(phlfa + lforatea / samplerate, 0., 1.);\nphlfa = pla;\nplb = wrap(phlfb + lforateb / samplerate, 0., 1.);\nphlfb = plb;\nposa = clamp(in2 + sin(pla * twopi + lfoofs) * lfodeptha, 0., 1.);\nposb = clamp(in3 + sin(plb * twopi + lfoofs) * lfodepthb, 0., 1.);\n\n// spacing/inversion gates: live knob vs per-noteOn threshold, ~250 ms\n// one-pole crossfade (VST gainSmoothCoeff); baseMix = (1-s)(1-i)\nscoeff = 1. - exp(-1. / (0.25 * samplerate));\nsm = smix + ((spacing >= spacingthresh) - smix) * scoeff;\nsmix = sm;\nim = imix + ((inversion >= inversionthresh) - imix) * scoeff;\nimix = im;\nbasemix = (1. - sm) * (1. - im);\n\n// smoothed osc A/B gains (~20 ms), shared by all three groups\nga = sga + (gaina - sga) * 0.001;\nsga = ga;\ngb = sgb + (gainb - sgb) * 0.001;\nsgb = gb;\n\n// frame indices shared by all three groups (same modulated positions)\nfpa = posa * 255.;\nfa0 = floor(fpa);\nfa1 = min(fa0 + 1., 255.);\nffa = fpa - fa0;\nfpb = posb * 255.;\nfb0 = floor(fpb);\nfb1 = min(fb0 + 1., 255.);\nffb = fpb - fb0;\n\n// --- base group ---\nph = wrap(phb + f / samplerate, 0., 1.);\nphb = ph;\nlev = clamp(floor(log2(max(f, 1.) / 20.)), 0., 10.);\nmb = lev * 524288.;\nsp = ph * 2048.;\ns0 = floor(sp);\nsf = sp - s0;\ns1 = wrap(s0 + 1., 0., 2048.);\na00 = peek(wta, mb + fa0 * 2048. + s0, 0);\na01 = peek(wta, mb + fa0 * 2048. + s1, 0);\na10 = peek(wta, mb + fa1 * 2048. + s0, 0);\na11 = peek(wta, mb + fa1 * 2048. + s1, 0);\nla0 = a00 + sf * (a01 - a00);\nla1 = a10 + sf * (a11 - a10);\noa = la0 + ffa * (la1 - la0);\nb00 = peek(wtb, mb + fb0 * 2048. + s0, 0);\nb01 = peek(wtb, mb + fb0 * 2048. + s1, 0);\nb10 = peek(wtb, mb + fb1 * 2048. + s0, 0);\nb11 = peek(wtb, mb + fb1 * 2048. + s1, 0);\nlb0 = b00 + sf * (b01 - b00);\nlb1 = b10 + sf * (b11 - b10);\nob = lb0 + ffb * (lb1 - lb0);\ngbase = oa * ga + ob * gb;\n\n// --- spacing group (octave copies up, ratio rolled at noteOn) ---\nf2 = f * spacingratio;\nph2 = wrap(phspc + f2 / samplerate, 0., 1.);\nphspc = ph2;\nlev2 = clamp(floor(log2(max(f2, 1.) / 20.)), 0., 10.);\nmb2 = lev2 * 524288.;\nsp2 = ph2 * 2048.;\nt0 = floor(sp2);\ntf = sp2 - t0;\nt1 = wrap(t0 + 1., 0., 2048.);\nc00 = peek(wta, mb2 + fa0 * 2048. + t0, 0);\nc01 = peek(wta, mb2 + fa0 * 2048. + t1, 0);\nc10 = peek(wta, mb2 + fa1 * 2048. + t0, 0);\nc11 = peek(wta, mb2 + fa1 * 2048. + t1, 0);\nlc0 = c00 + tf * (c01 - c00);\nlc1 = c10 + tf * (c11 - c10);\noc = lc0 + ffa * (lc1 - lc0);\nd00 = peek(wtb, mb2 + fb0 * 2048. + t0, 0);\nd01 = peek(wtb, mb2 + fb0 * 2048. + t1, 0);\nd10 = peek(wtb, mb2 + fb1 * 2048. + t0, 0);\nd11 = peek(wtb, mb2 + fb1 * 2048. + t1, 0);\nld0 = d00 + tf * (d01 - d00);\nld1 = d10 + tf * (d11 - d10);\nod = ld0 + ffb * (ld1 - ld0);\ngspc = oc * ga + od * gb;\n\n// --- inversion group (octave copies down, ratio rolled at noteOn) ---\nf3 = f * inversionratio;\nph3 = wrap(phinv + f3 / samplerate, 0., 1.);\nphinv = ph3;\nlev3 = clamp(floor(log2(max(f3, 1.) / 20.)), 0., 10.);\nmb3 = lev3 * 524288.;\nsp3 = ph3 * 2048.;\nu0 = floor(sp3);\nuf = sp3 - u0;\nu1 = wrap(u0 + 1., 0., 2048.);\ne00 = peek(wta, mb3 + fa0 * 2048. + u0, 0);\ne01 = peek(wta, mb3 + fa0 * 2048. + u1, 0);\ne10 = peek(wta, mb3 + fa1 * 2048. + u0, 0);\ne11 = peek(wta, mb3 + fa1 * 2048. + u1, 0);\nle0 = e00 + uf * (e01 - e00);\nle1 = e10 + uf * (e11 - e10);\noe = le0 + ffa * (le1 - le0);\nv00 = peek(wtb, mb3 + fb0 * 2048. + u0, 0);\nv01 = peek(wtb, mb3 + fb0 * 2048. + u1, 0);\nv10 = peek(wtb, mb3 + fb1 * 2048. + u0, 0);\nv11 = peek(wtb, mb3 + fb1 * 2048. + u1, 0);\nlv0 = v00 + uf * (v01 - v00);\nlv1 = v10 + uf * (v11 - v10);\nov = lv0 + ffb * (lv1 - lv0);\nginv = oe * ga + ov * gb;\n\nout1 = gbase * basemix + gspc * sm + ginv * im;\n"
+                                        "code": "Param gaina(1.0, min=0, max=1);\nParam gainb(0.0, min=0, max=1);\nParam spacing(0., min=0, max=1);\nParam inversion(0.3, min=0, max=1);\nParam spacingratio(2., min=0.5, max=16.);\nParam inversionratio(0.5, min=0.03125, max=2.);\nParam spacingthresh(1., min=0., max=1.);\nParam inversionthresh(1., min=0., max=1.);\nParam lfoofs(0., min=0., max=6.2832);\nParam lforatea(0.5, min=0.01, max=20.);\nParam lfodeptha(0., min=0., max=1.);\nParam lforateb(0.5, min=0.01, max=20.);\nParam lfodepthb(0., min=0., max=1.);\nHistory phb(0);\nHistory phspc(0);\nHistory phinv(0);\nHistory phlfa(0);\nHistory phlfb(0);\nHistory sga(1.0);\nHistory sgb(0.0);\nHistory smix(0);\nHistory imix(0);\nBuffer wta(\"jiharmA\");\nBuffer wtb(\"jiharmB\");\n\n// dual morphing wavetable oscillator with spacing/inversion octave copies —\n// verbatim port of WavetableOscillator.h + WavetableVoice render/startNote\n// buffer layout: idx = mip*524288 + frame*2048 + sample (11 mips, 256 frames)\nf = max(in1, 0.);\n\n// v1.14 per-sub-voice LFOs: phases accumulate in lockstep across mc instances\n// (same rate history); per-instance random offset (lfoofs, root = 0) on top:\n// pos = clamp(basePos + sin(phase + ofs) * depth, 0, 1)\npla = wrap(phlfa + lforatea / samplerate, 0., 1.);\nphlfa = pla;\nplb = wrap(phlfb + lforateb / samplerate, 0., 1.);\nphlfb = plb;\nposa = clamp(in2 + sin(pla * twopi + lfoofs) * lfodeptha, 0., 1.);\nposb = clamp(in3 + sin(plb * twopi + lfoofs) * lfodepthb, 0., 1.);\n\n// spacing/inversion gates: live knob vs per-noteOn threshold, ~250 ms\n// one-pole crossfade (VST gainSmoothCoeff); baseMix = (1-s)(1-i)\nscoeff = 1. - exp(-1. / (0.25 * samplerate));\nsm = smix + ((spacing >= spacingthresh) - smix) * scoeff;\nsmix = sm;\nim = imix + ((inversion >= inversionthresh) - imix) * scoeff;\nimix = im;\nbasemix = (1. - sm) * (1. - im);\n\n// smoothed osc A/B gains (~20 ms), shared by all three groups\nga = sga + (gaina - sga) * 0.001;\nsga = ga;\ngb = sgb + (gainb - sgb) * 0.001;\nsgb = gb;\n\n// frame indices shared by all three groups (same modulated positions)\nfpa = posa * 255.;\nfa0 = floor(fpa);\nfa1 = min(fa0 + 1., 255.);\nffa = fpa - fa0;\nfpb = posb * 255.;\nfb0 = floor(fpb);\nfb1 = min(fb0 + 1., 255.);\nffb = fpb - fb0;\n\n// --- base group ---\nph = wrap(phb + f / samplerate, 0., 1.);\nphb = ph;\nlev = clamp(floor(log2(max(f, 1.) / 20.)), 0., 10.);\nmb = lev * 524288.;\nsp = ph * 2048.;\ns0 = floor(sp);\nsf = sp - s0;\ns1 = wrap(s0 + 1., 0., 2048.);\na00 = peek(wta, mb + fa0 * 2048. + s0, 0);\na01 = peek(wta, mb + fa0 * 2048. + s1, 0);\na10 = peek(wta, mb + fa1 * 2048. + s0, 0);\na11 = peek(wta, mb + fa1 * 2048. + s1, 0);\nla0 = a00 + sf * (a01 - a00);\nla1 = a10 + sf * (a11 - a10);\noa = la0 + ffa * (la1 - la0);\nb00 = peek(wtb, mb + fb0 * 2048. + s0, 0);\nb01 = peek(wtb, mb + fb0 * 2048. + s1, 0);\nb10 = peek(wtb, mb + fb1 * 2048. + s0, 0);\nb11 = peek(wtb, mb + fb1 * 2048. + s1, 0);\nlb0 = b00 + sf * (b01 - b00);\nlb1 = b10 + sf * (b11 - b10);\nob = lb0 + ffb * (lb1 - lb0);\ngbase = oa * ga + ob * gb;\n\n// --- spacing group (octave copies up, ratio rolled at noteOn) ---\nf2 = f * spacingratio;\nph2 = wrap(phspc + f2 / samplerate, 0., 1.);\nphspc = ph2;\nlev2 = clamp(floor(log2(max(f2, 1.) / 20.)), 0., 10.);\nmb2 = lev2 * 524288.;\nsp2 = ph2 * 2048.;\nt0 = floor(sp2);\ntf = sp2 - t0;\nt1 = wrap(t0 + 1., 0., 2048.);\nc00 = peek(wta, mb2 + fa0 * 2048. + t0, 0);\nc01 = peek(wta, mb2 + fa0 * 2048. + t1, 0);\nc10 = peek(wta, mb2 + fa1 * 2048. + t0, 0);\nc11 = peek(wta, mb2 + fa1 * 2048. + t1, 0);\nlc0 = c00 + tf * (c01 - c00);\nlc1 = c10 + tf * (c11 - c10);\noc = lc0 + ffa * (lc1 - lc0);\nd00 = peek(wtb, mb2 + fb0 * 2048. + t0, 0);\nd01 = peek(wtb, mb2 + fb0 * 2048. + t1, 0);\nd10 = peek(wtb, mb2 + fb1 * 2048. + t0, 0);\nd11 = peek(wtb, mb2 + fb1 * 2048. + t1, 0);\nld0 = d00 + tf * (d01 - d00);\nld1 = d10 + tf * (d11 - d10);\nod = ld0 + ffb * (ld1 - ld0);\ngspc = oc * ga + od * gb;\n\n// --- inversion group (octave copies down, ratio rolled at noteOn) ---\nf3 = f * inversionratio;\nph3 = wrap(phinv + f3 / samplerate, 0., 1.);\nphinv = ph3;\nlev3 = clamp(floor(log2(max(f3, 1.) / 20.)), 0., 10.);\nmb3 = lev3 * 524288.;\nsp3 = ph3 * 2048.;\nu0 = floor(sp3);\nuf = sp3 - u0;\nu1 = wrap(u0 + 1., 0., 2048.);\ne00 = peek(wta, mb3 + fa0 * 2048. + u0, 0);\ne01 = peek(wta, mb3 + fa0 * 2048. + u1, 0);\ne10 = peek(wta, mb3 + fa1 * 2048. + u0, 0);\ne11 = peek(wta, mb3 + fa1 * 2048. + u1, 0);\nle0 = e00 + uf * (e01 - e00);\nle1 = e10 + uf * (e11 - e10);\noe = le0 + ffa * (le1 - le0);\nv00 = peek(wtb, mb3 + fb0 * 2048. + u0, 0);\nv01 = peek(wtb, mb3 + fb0 * 2048. + u1, 0);\nv10 = peek(wtb, mb3 + fb1 * 2048. + u0, 0);\nv11 = peek(wtb, mb3 + fb1 * 2048. + u1, 0);\nlv0 = v00 + uf * (v01 - v00);\nlv1 = v10 + uf * (v11 - v10);\nov = lv0 + ffb * (lv1 - lv0);\nginv = oe * ga + ov * gb;\n\nout1 = gbase * basemix + gspc * sm + ginv * im;\n"
                                     }
                                 },
                                 {
@@ -16065,27 +16046,6 @@
             },
             {
                 "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-265",
-                    "maxclass": "newobj",
-                    "numinlets": 1,
-                    "numoutlets": 2,
-                    "outlettype": [
-                        "",
-                        ""
-                    ],
-                    "patching_rect": [
-                        135.0,
-                        196.0,
-                        40.0,
-                        22.0
-                    ],
-                    "text": "t l l"
-                }
-            },
-            {
-                "box": {
                     "maxclass": "newobj",
                     "id": "obj-266",
                     "numinlets": 2,
@@ -19103,50 +19063,6 @@
             {
                 "patchline": {
                     "destination": [
-                        "obj-261",
-                        1
-                    ],
-                    "midpoints": [
-                        165.5,
-                        219.0,
-                        237.0,
-                        219.0,
-                        237.0,
-                        165.0,
-                        286.5,
-                        165.0
-                    ],
-                    "source": [
-                        "obj-265",
-                        1
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-264",
-                        0
-                    ],
-                    "midpoints": [
-                        144.5,
-                        219.0,
-                        237.0,
-                        219.0,
-                        237.0,
-                        195.0,
-                        259.5,
-                        195.0
-                    ],
-                    "source": [
-                        "obj-265",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
                         "obj-18",
                         4
                     ],
@@ -19184,24 +19100,6 @@
                     ],
                     "source": [
                         "obj-29",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-265",
-                        0
-                    ],
-                    "midpoints": [
-                        144.5,
-                        192.0,
-                        144.5,
-                        192.0
-                    ],
-                    "source": [
-                        "obj-3",
                         0
                     ]
                 }
@@ -21285,10 +21183,34 @@
                         0
                     ]
                 }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-3",
+                        0
+                    ],
+                    "destination": [
+                        "obj-264",
+                        0
+                    ]
+                }
             }
         ],
         "autosave": 0,
         "editing_bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ],
+        "bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ],
+        "locked_bgcolor": [
             0.333,
             0.333,
             0.333,
