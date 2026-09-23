@@ -60,7 +60,7 @@
                         100.0,
                         20.0
                     ],
-                    "text": "Drop audio →",
+                    "text": "drop an audio file above, or click read",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -71,7 +71,7 @@
                     "presentation_rect": [
                         20.0,
                         62.0,
-                        200.0,
+                        295.0,
                         20.0
                     ]
                 }
@@ -193,9 +193,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        317.0,
+                        330.0,
                         44.0,
-                        70.0,
+                        75.0,
                         20.0
                     ]
                 }
@@ -221,9 +221,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        317.0,
+                        330.0,
                         20.0,
-                        60.0,
+                        50.0,
                         22.0
                     ]
                 }
@@ -246,7 +246,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        380.0,
+                        420.0,
                         20.0,
                         24.0,
                         24.0
@@ -3782,9 +3782,63 @@
                     "fontsize": 12.0,
                     "presentation": 1,
                     "presentation_rect": [
-                        380.0,
+                        420.0,
                         44.0,
                         80.0,
+                        20.0
+                    ],
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "ezdac~",
+                    "id": "obj-55",
+                    "numinlets": 2,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        560,
+                        590,
+                        45.0,
+                        45.0
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        480.0,
+                        20.0,
+                        45.0,
+                        45.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-56",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        610,
+                        602,
+                        100.0,
+                        20.0
+                    ],
+                    "text": "audio on/off",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        530.0,
+                        32.0,
+                        90.0,
                         20.0
                     ],
                     "textcolor": [
@@ -4551,6 +4605,7 @@
             0.333,
             0.333,
             1.0
-        ]
+        ],
+        "openinpresentation": 1
     }
 }
