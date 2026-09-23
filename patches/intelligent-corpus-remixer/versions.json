@@ -105,6 +105,14 @@
       "files_changed": [
         "intelligent-corpus-remixer.maxpat"
       ]
+    },
+    {
+      "version": "0.2.2",
+      "description": "fix loopmode bad number: send bare int to poly~ in 2 (voice formats loopmode $1)",
+      "timestamp": "2026-09-23T04:56:52.581007+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }

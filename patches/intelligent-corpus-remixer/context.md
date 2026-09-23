@@ -336,3 +336,6 @@ Verified against the installed FluCoMa package (`~/Documents/Max 9/Packages/Flui
 3. **Stray slice per cluster run** — top `t b b` outlet 1 banged the plotter, whose `bang()` re-emits the last xy (0 0) → kdtree → a note. Cord removed.
 
 Still open (not bugs, deferred): loop-point crossfade, re-cluster reruns UMAP (no `@seed`), gen~ first-pass reads from offset+1, `analyze.js` local `Task` (GC risk), K vs slice-count guard, presentation nits (K/re-cluster label overlap, `openinpresentation`, no ezdac~).
+
+## v0.2.2 (2026-09-22)
+`loopmode: bad number` on loop toggle: the v0.2.0 broadcast wrapped the value as `loopmode $1` in `p playback`, then the voice's `in 2 → loopmode $1` wrapped it again. A message box's `$1` is the incoming selector, so gen~ got `loopmode loopmode`. Now `p playback` sends a bare int to poly~ inlet 1, and the voice adds the `loopmode` prefix.
