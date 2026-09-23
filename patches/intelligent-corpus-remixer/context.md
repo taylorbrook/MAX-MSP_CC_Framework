@@ -346,3 +346,6 @@ Still open (not bugs, deferred): loop-point crossfade, re-cluster reruns UMAP (n
 - **De-hoist:** `History one(1)` and `srs`/`k_*` copies, so nothing is Param-only (CLAUDE.md hoisting rule).
 - **K clamp (p cluster):** K goes into `i 4` (cold). The slice count goes through `t i i` into the right inlet of `expr min($i1, $i2)`. Before `fitpredict`, `t b b` bangs `i 4`, which sends `numclusters min(K, slices)`. K no longer reaches kmeans until the next fit (same effect as before).
 - **analyze.js:** `doneTask` is now global and the previous one is cancelled first.
+
+## v0.3.1 (2026-09-23) — presentation cleanup
+Top row is now: dropfile 20–220 | read 230–315 | K 325 (+ label) | re-cluster button 405 (+ label) | `ezdac~` 480 with an "audio on/off" label. The drop label now reads "drop an audio file above, or click read". `openinpresentation 1`. No presentation overlaps. Labels use the existing textcolor `[0.8, 0.8, 0.82]` on the `0.333` canvas.

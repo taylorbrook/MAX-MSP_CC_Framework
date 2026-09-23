@@ -123,6 +123,14 @@
         "intelligent-corpus-remixer.maxpat",
         "analyze.js"
       ]
+    },
+    {
+      "version": "0.3.1",
+      "description": "presentation cleanup: K/re-cluster spacing, drop label text, ezdac~ + label, openinpresentation",
+      "timestamp": "2026-09-23T14:47:13.706662+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }
