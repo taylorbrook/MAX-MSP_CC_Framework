@@ -97,6 +97,14 @@
         "analyze.js",
         "pick.js"
       ]
+    },
+    {
+      "version": "0.2.1",
+      "description": "review fixes: kmeans fitpredict writes cluster_labels, labels dict to plotter inlet 1, remove stray bang into plotter",
+      "timestamp": "2026-09-23T04:53:11.531639+00:00",
+      "files_changed": [
+        "intelligent-corpus-remixer.maxpat"
+      ]
     }
   ]
 }

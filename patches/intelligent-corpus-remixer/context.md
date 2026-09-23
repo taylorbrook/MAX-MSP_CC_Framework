@@ -318,7 +318,7 @@ Found by patch review; all six were functional bugs present since build:
 
 1. **gen~ codebox never had `Param pan`** — v0.1.0's pan/mono/gain change was lost to the round-trip `extra_attrs` trap. Now written via `_raw["code"]`: `Param pan(0.5)`, `Param gain(0.35)`, `channels(source)`-aware mono sum, equal-power pan, `out3 = next_running`.
 2. **Loop toggle hit the wrong `p playback` inlet** — inlet x-order was slice/retrigger/loop; swapped x so it is slice/loop/retrigger/pan. Parent wiring unchanged.
-3. **Random mode dead** — labelset dump was never consumed. Rebuilt `p random` around `pick.js` (dict → cluster→ids table; `cluster N`; `bang` → random id). Same dict forwarded out a new outlet 1 → `prepend labels` → plotter for cluster colours. **Verify in MAX:** that `fluid.plotter` accepts `labels <dict>` (FluCoMa not installed on the dev machine; taken from the plotter help patch idiom).
+3. **Random mode dead** — labelset dump was never consumed. Rebuilt `p random` around `pick.js` (dict → cluster→ids table; `cluster N`; `bang` → random id). Same dict forwarded out a new outlet 1 → `prepend labels` → plotter for cluster colours. ~~`labels <dict>`~~ was wrong — superseded by v0.2.1.
 4. **`expr clip(...)`** → `expr min(max($i1-1\,2)\,15)` so UMAP numneighbours actually tracks slice count.
 5. **First note per voice silent** — `counter 1 1000000` + gen~ fires on any `trig` change.
 6. **Voices never freed** — gen~ out3 (running) → `edge~` falling edge → `mute 1, 0` to `thispoly~`; note-on sends `mute 0, 1`. `p playback` sends `target 0` at loadbang and broadcasts `loopmode $1` to poly~ inlet 1 (slice-voice `in 2`), so turning loop off lets running loops finish and free.
@@ -326,3 +326,13 @@ Found by patch review; all six were functional bugs present since build:
 Also: analyze.js merges sub-4096-sample segments into the previous slice instead of dropping them; debug `print`/`dict.view`/probe posts removed; plotter 420×420 in presentation; pan toggle, K/re-cluster/drop labels added to presentation; second `meter~` for R; patcher `bgcolor` set; title contrast fixed.
 
 Deliberate presentation exclusions: none. Open: loudness descriptor (planned, never extracted); K > slice-count guard on kmeans.
+
+## Review fixes (v0.2.1, 2026-09-22) — NOT yet confirmed in MAX
+
+Verified against the installed FluCoMa package (`~/Documents/Max 9/Packages/FluidCorpusManipulation` — it IS installed; help patches + `jsui/fluid.plotter.js` are the reference):
+
+1. **kmeans never wrote labels** — `fit` takes only a dataset. Now `fitpredict descriptors_norm cluster_labels` + `route fitpredict` (p cluster). This is what makes random mode and cluster colours work.
+2. **Plotter has no `labels` method** — categories are `dictionary <name>` into plotter **inlet 1** (or `setcategories`). Removed `prepend labels`; `p random` outlet 1 → plotter inlet 1.
+3. **Stray slice per cluster run** — top `t b b` outlet 1 banged the plotter, whose `bang()` re-emits the last xy (0 0) → kdtree → a note. Cord removed.
+
+Still open (not bugs, deferred): loop-point crossfade, re-cluster reruns UMAP (no `@seed`), gen~ first-pass reads from offset+1, `analyze.js` local `Task` (GC risk), K vs slice-count guard, presentation nits (K/re-cluster label overlap, `openinpresentation`, no ezdac~).
