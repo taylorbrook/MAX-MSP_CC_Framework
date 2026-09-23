@@ -199,6 +199,15 @@
         "terrain-osc-test.maxpat",
         "terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.15.1",
+      "description": "v0.15.1: review pass v0.13-v0.15; cheby butterfly limiter 4 f -> 6 f (measured top partial)",
+      "timestamp": "2026-09-23T04:44:10.563981+00:00",
+      "files_changed": [
+        "terrain-cheby.maxpat",
+        "terrain-synth.maxpat"
+      ]
     }
   ]
 }

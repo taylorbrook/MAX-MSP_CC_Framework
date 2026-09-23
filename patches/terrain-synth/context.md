@@ -896,3 +896,23 @@ hypocycloid 3/5/7 (= hypotrochoid, LOBES 2/4/6, identical form), squarcle (ours 
 
 Unverified in MAX: all of it, on top of v0.13.0 / v0.14.0 (also unverified). New gen~ risks: `pow` with a negative
 exponent, `exp`, `abs` in codebox; `floor` and `pow(\,)` in exprfill.
+
+## Review v0.15.1 (2026-09-22) -- pre-MAX review of v0.13.0 - v0.15.0
+
+Static review before first audition. One fix, everything else checked clean.
+
+- **Fixed: terrain-cheby butterfly limiter `fh` 4 f -> 6 f.** FFT of the normalised orbit x / y: partials > 1 % at
+  1, 2, 3, 5 f (LOBE AMT 0) and 1-6 f (LOBE AMT 1). `-2 cos 4th` times `cos th` alone puts ~25 % at 5 f, so O-Strata's nominal 4 f
+  let the top Chebyshev degrees alias with CHEBY on at high pitch. It is now a bit darker at the top of the keyboard.
+- Checked, no change: all 12 new exprfill terrains evaluated in numpy from the on-disk message text (escaped commas
+  unescaped): no NaN, all inside -1..1 (peaks -0.80..0.99, mitsuhashi +/-0.67, cosine wells mean +0.67 -> dcblock).
+  Every function used (`exp tanh abs asin floor pow hypot atan2`) and `PI` are listed in the Max 9 jit.op / jit.expr maxrefs.
+- Checked, no change: orbit normalisation. Superellipse max radius = 1.000 across LOBE AMT 0-1; butterfly 0.996-1.000
+  (fills 0.74-0.77 of the box in x / y, as documented). No shape can produce NaN, even with every `if` block evaluated:
+  pow bases are >= 0 and the polygon denominator is >= cos(pi/3).
+- Checked, no change: hoisting. `sn`, `pn`, and the `pow(2, 0.5 - 1/n)` chain all go through `one`. The Param-only leaves
+  left (`1 + lobeamt`, `lobeamt * 1.5707963`) have the same shape as the MAX-confirmed epitrochoid.
+- Known, left as documented: the superellipse limiter stays at nominal f. It is wideband away from n = 2 (astroid: odd
+  partials to ~21 f at > 1 %), the same class as squarcle / polygon. LOBES is a continuous dial (expr 1 + x/127*15), so
+  non-integer LOBES wraps discontinuously for lissajous / rose / hypotrochoid / spiral, as the epitrochoid always has.
+- Critic / validate: zero new findings on terrain-osc, terrain-osc-b, terrain-synth, terrain-osc-test vs v0.12.0.
