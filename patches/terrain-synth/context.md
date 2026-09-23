@@ -916,3 +916,24 @@ Static review before first audition. One fix, everything else checked clean.
   partials to ~21 f at > 1 %), the same class as squarcle / polygon. LOBES is a continuous dial (expr 1 + x/127*15), so
   non-integer LOBES wraps discontinuously for lissajous / rose / hypotrochoid / spiral, as the epitrochoid always has.
 - Critic / validate: zero new findings on terrain-osc, terrain-osc-b, terrain-synth, terrain-osc-test vs v0.12.0.
+
+## Fix v0.15.2 (2026-09-22) -- patch stalls after animate on / off
+
+User report: after playing for a while and turning the animate functions on and off, sound stopped, and picking a
+new terrain did nothing. Both 3D views froze too (orbit and surface). The Max console was clean.
+
+- **Cause (static trace):** two message paths reached Jitter / GL objects straight from the high-priority
+  scheduler thread (MIDI, makenote note-offs, `peakamp~` clock) while the main thread renders / runs Jitter:
+  1. note-on -> `t b i` -> `send tsyn-noteon` -> NOTE gate -> `excite` -> `send tsyn-animA/B` -> `param ex_amp 0.7`
+     into the ripple `jit.gen`. It only collides while animate is ON, when the qmetro is running that jit.gen every frame.
+  2. `peakamp~ 50` -> `change` -> `prepend on` -> `send tsyn-mark` -> view `enable $1` -> `jit.gl.mesh` (play marker)
+     inside the jit.world that is currently rendering.
+  Jitter / GL objects are not thread-safe. A cross-thread hit is a random race ("eventually"), and a stalled GL context
+  or scheduler shows up as frozen views plus silence (the scheduler runs inside the audio thread when Scheduler in
+  Audio Interrupt is on) with nothing in the console.
+- **Fix:** a `deferlow` before `send tsyn-noteon` (obj-815) and before the `on` `send tsyn-mark` (obj-816). Each
+  send moved down one row. The `hz` half of tsyn-mark stays immediate: it only reaches `terrain-osc` / `line~`, which are
+  safe from any thread. Snapshot~ -> setcell is banged by jit.world (main thread) already. Deferred excite adds one
+  low-priority hop (~ms), below the 40 ms frame period.
+- Not changed: gen~ NaN guards (`fixnan` on the terrain read / `yprev` / dcblock) -- kept as a fallback if silence
+  recurs with the views still running.

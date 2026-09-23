@@ -208,6 +208,14 @@
         "terrain-cheby.maxpat",
         "terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.15.2",
+      "description": "v0.15.2: deferlow on the two MIDI-thread -> Jitter paths (note-on excite -> ripple jit.gen, peakamp~ marker enable -> jit.gl.mesh)",
+      "timestamp": "2026-09-23T05:00:13.856630+00:00",
+      "files_changed": [
+        "terrain-synth.maxpat"
+      ]
     }
   ]
 }
