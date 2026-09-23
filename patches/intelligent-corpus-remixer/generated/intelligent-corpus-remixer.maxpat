@@ -1473,7 +1473,7 @@
                                     "fontsize": 12.0,
                                     "id": "obj-21",
                                     "maxclass": "newobj",
-                                    "numinlets": 1,
+                                    "numinlets": 2,
                                     "numoutlets": 2,
                                     "outlettype": [
                                         "",
