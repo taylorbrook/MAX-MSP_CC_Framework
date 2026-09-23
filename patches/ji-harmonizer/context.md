@@ -451,7 +451,7 @@ Port architecture (all objects already verified in patch):
 - **pattr system, not the classic standalone preset store**: `pattrstorage jhpresets
   @savemode 2` + `autopattr` + `preset` UI bound via `@pattrstorage jhpresets`.
   Chosen because textedit (the 12 ratio boxes) is pattr-compatible but NOT stored by
-  a bare preset object. savemode 2 autosaves `jhpresets.xml` next to the patch on
+  a bare preset object. savemode 2 autosaves `jhpresets.json` next to the patch on
   every patch save; autorestore (default on) reloads slot data at patch open —
   slots persist across sessions with no file dialogs.
 - **53 named clients** (varnames = pattr names): ratio0-11, deg0-11, voicecount,
@@ -494,3 +494,24 @@ Port architecture (all objects already verified in patch):
   `loadbang` → the existing jhPresetRecall `deferlow` → `t b×12` chain bangs every ratio
   box into the engine after load, so the displayed and sounding scale always agree. The
   "keep textedit text in sync with the JS default" rule above no longer needs manual care.
+
+## Decisions (voicing fix + cleanup, 2026-09-23, v0.11.3)
+
+- **Free and Drop-2 are laid out over voiceCount, not all 12 voices.** Generating 12 and
+  gating by index made Free == Close whenever voiceCount <= enabled degrees, packed
+  unisons into the audible slots when fewer degrees were enabled (5 degrees, 5 voices:
+  `0 0 0 2 2`), and made Drop-2 drop voice 10 — silent below voiceCount 11 — so it
+  sounded identical to Close. User-approved deviation from the VST algorithm.
+  - **Free:** audible voices sample the enabled pool evenly (12 enabled, 5 voices →
+    `0 2 4 7 9`); when voices outnumber degrees, the pool stacks up through octaves.
+  - **Drop-2:** ascending stack (octave bump when the pool cycles), 2nd-highest sounding
+    voice dropped an octave, index order kept so the root stays voice 0. Needs
+    voiceCount >= 3; the drop is skipped if it would land on a voice already sounding.
+  - Consequence: in these two modes, changing voiceCount on a held note re-voices it
+    (pitches step) instead of only fading voices in/out.
+  - Close still repeats pitches in unison when voices outnumber enabled degrees
+    (VST-verbatim, untouched).
+- **Cleanup:** wavetable codebox no longer assigns to the built-in `twopi`; patcher
+  `bgcolor`/`locked_bgcolor` set to the editing grey (0.333); debug message box +
+  `t l l` removed from the note input (pack → prepend freq direct); unused `heldVel`
+  and stale "signature path" comment removed from ji-engine.js.

@@ -15,7 +15,9 @@
 // ratios are enabled than voiceCount the sounding subset is a fresh random
 // pick on every note. Like the VST, all 12 sub-voices are always generated
 // (thresholds i/12*0.85) and voiceCount/complexity gate their gains in real
-// time on held notes.
+// time on held notes. Exception (v0.11.3): Free and Drop2 lay their pitches
+// out over voiceCount (see generateChord), so voiceCount changes on a held
+// note re-voice those two modes rather than only gating.
 
 inlets = 1;
 outlets = 7;
@@ -53,8 +55,8 @@ var scaleCents = [];
 // Just Intonation) the entries are ratio strings (identical cents via
 // 1200*log2(n/d)); tempered scales use the VST's cent values with the "c"
 // suffix understood by parseRatioText. Index 0 restores the default scale.
-// Bohlen-Pierce (13-EDO over 3:1, mapped to 12 notes) flows through the same
-// signature path -- cents applied on top of 12-TET -- exactly like the VST.
+// Bohlen-Pierce (13-EDO over 3:1, mapped to 12 notes) is treated like any
+// other 12-entry table: cents above the tonic of the note's octave.
 var TEMPERAMENTS = [
     { name: "Custom (harm 16-30)", vals: ["1/1", "17/16", "9/8", "19/16", "5/4", "21/16", "11/8", "23/16", "3/2", "13/8", "7/4", "15/8"] },
     { name: "12-TET", vals: ["0c", "100c", "200c", "300c", "400c", "500c", "600c", "700c", "800c", "900c", "1000c", "1100c"] },
@@ -78,7 +80,6 @@ var a4 = 440.0;          // masterTune, 400..480
 var octaveStretch = 1.0; // 0.95..1.25
 
 var heldNote = -1;
-var heldVel = 0;
 
 // Chord-feel params (ChordGenerator/WavetableVoice port, v1.13.0 semantics)
 var stereoSpreadAmt = 0.5;  // 0..1; live on held notes (VST caches per block)
@@ -220,17 +221,32 @@ function generateChord(rootMidiNote) {
             }
             break;
 
-        case 3: // Drop2: close voicing, then 2nd-highest dropped one octave
+        case 3: // Drop2: ascending stack, then the 2nd-highest SOUNDING voice
+            // dropped one octave. v0.11.3: laid out over voiceCount, not all
+            // 12 -- the VST-verbatim form sorted all 12 generated voices and
+            // dropped index 10, which voiceCount < 11 always gated out (Drop2
+            // == Close), and with fewer enabled degrees than voices the sort
+            // packed unisons into the audible slots. The stack now bumps an
+            // octave when the pool cycles (no unisons), stays in index order
+            // (root remains voice 0 for pan/LFO/threshold), and needs >= 3
+            // voices so the root is never the one dropped. When the stack
+            // spans more than an octave the dropped note can land on a voice
+            // already sounding -- the drop is skipped rather than doubling it.
             for (i = 0; i < numVoices; i++) {
                 intervalIndex = i % available;
+                octaveShift = Math.floor(i / available);
                 voices.push({
-                    midiNote: rootMidiNote + intervals[intervalIndex],
+                    midiNote: rootMidiNote + intervals[intervalIndex] + (octaveShift * SCALE_SIZE),
                     threshold: getThreshold(i, numVoices)
                 });
             }
-            voices.sort(function (a, b) { return a.midiNote - b.midiNote; });
-            if (voices.length >= 2) {
-                voices[voices.length - 2].midiNote -= 12; // always 12 semitones
+            if (voiceCount >= 3) {
+                var dropped = voices[voiceCount - 2].midiNote - 12;
+                var clash = false;
+                for (i = 0; i < voiceCount; i++) {
+                    if (voices[i].midiNote === dropped) clash = true;
+                }
+                if (!clash) voices[voiceCount - 2].midiNote = dropped;
             }
             break;
 
@@ -276,15 +292,22 @@ function generateChord(rootMidiNote) {
             }
             break;
 
-        case 0: // Free: spread across octaves
+        case 0: // Free: spread across the pool / octaves
         default:
+            // v0.11.3: laid out over voiceCount, not all 12. With 12 always
+            // generated, Free took the first N pool entries (== Close) when
+            // all degrees were enabled, and its 12-voice octave formula put
+            // unisons in the audible slots when fewer were enabled. Now the
+            // audible voices sample the pool evenly (12 enabled, 5 voices ->
+            // 0 2 4 7 9), or stack through octaves when voices outnumber
+            // degrees. Voices past voiceCount are gated silent either way.
             for (i = 0; i < numVoices; i++) {
                 var octaveOffset;
-                if (numVoices <= available) {
-                    intervalIndex = i;
+                if (i < voiceCount && voiceCount <= available) {
+                    intervalIndex = Math.floor((i * available) / voiceCount);
                     octaveOffset = 0;
                 } else {
-                    intervalIndex = Math.floor((i * available) / numVoices);
+                    intervalIndex = i % available;
                     octaveOffset = Math.floor(i / available);
                 }
                 voices.push({
@@ -590,13 +613,11 @@ function freq(f, gate) {
     if (note > 127) note = 127;
     if (gate > 0) {
         heldNote = note;
-        heldVel = 127;
         rollNoteRandoms();
         recomputeOutputs();
         outlet(2, gate > 1.0 ? 1.0 : gate);
     } else if (note === heldNote) {
         heldNote = -1;
-        heldVel = 0;
         outlet(2, 0);
         dispClear();
     }
