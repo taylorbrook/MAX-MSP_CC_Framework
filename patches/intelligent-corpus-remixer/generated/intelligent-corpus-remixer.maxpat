@@ -1362,7 +1362,7 @@
                                         317.0,
                                         22.0
                                     ],
-                                    "text": "fit descriptors_norm cluster_labels"
+                                    "text": "fitpredict descriptors_norm cluster_labels"
                                 }
                             },
                             {
@@ -1473,7 +1473,7 @@
                                     "fontsize": 12.0,
                                     "id": "obj-21",
                                     "maxclass": "newobj",
-                                    "numinlets": 2,
+                                    "numinlets": 1,
                                     "numoutlets": 2,
                                     "outlettype": [
                                         "",
@@ -1482,10 +1482,10 @@
                                     "patching_rect": [
                                         825.0,
                                         220.0,
-                                        101.0,
+                                        128.0,
                                         22.0
                                     ],
-                                    "text": "route fit"
+                                    "text": "route fitpredict"
                                 }
                             },
                             {
@@ -3423,7 +3423,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.2.0",
+                    "text": "v0.2.1",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -3607,26 +3607,6 @@
                         110.0,
                         20.0
                     ]
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-52",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        555.0,
-                        435.0,
-                        114.0,
-                        22.0
-                    ],
-                    "text": "prepend labels",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
                 }
             },
             {
@@ -4170,28 +4150,6 @@
             {
                 "patchline": {
                     "destination": [
-                        "obj-10",
-                        0
-                    ],
-                    "midpoints": [
-                        371.5,
-                        339.0,
-                        231.0,
-                        339.0,
-                        231.0,
-                        345.0,
-                        129.5,
-                        345.0
-                    ],
-                    "source": [
-                        "obj-35",
-                        1
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
                         "obj-28",
                         2
                     ],
@@ -4423,36 +4381,24 @@
             {
                 "patchline": {
                     "source": [
-                        "obj-28",
-                        1
-                    ],
-                    "destination": [
-                        "obj-52",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
-                        "obj-52",
-                        0
-                    ],
-                    "destination": [
-                        "obj-10",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
                         "obj-20",
                         1
                     ],
                     "destination": [
                         "obj-53",
                         0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-28",
+                        1
+                    ],
+                    "destination": [
+                        "obj-10",
+                        1
                     ]
                 }
             }
