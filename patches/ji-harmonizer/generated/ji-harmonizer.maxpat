@@ -3154,9 +3154,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        64.0,
+                        66.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "1/1",
                     "varname": "ratio0"
@@ -3217,9 +3217,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        90.0,
+                        92.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "16/15",
                     "varname": "ratio1"
@@ -3280,9 +3280,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        116.0,
+                        118.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "9/8",
                     "varname": "ratio2"
@@ -3343,9 +3343,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        142.0,
+                        144.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "6/5",
                     "varname": "ratio3"
@@ -3406,9 +3406,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        168.0,
+                        170.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "5/4",
                     "varname": "ratio4"
@@ -3469,9 +3469,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        194.0,
+                        196.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "4/3",
                     "varname": "ratio5"
@@ -3532,9 +3532,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        220.0,
+                        222.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "7/5",
                     "varname": "ratio6"
@@ -3595,9 +3595,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        246.0,
+                        248.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "3/2",
                     "varname": "ratio7"
@@ -3658,9 +3658,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        272.0,
+                        274.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "8/5",
                     "varname": "ratio8"
@@ -3721,9 +3721,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        298.0,
+                        300.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "5/3",
                     "varname": "ratio9"
@@ -3784,9 +3784,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        324.0,
+                        326.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "16/9",
                     "varname": "ratio10"
@@ -3847,9 +3847,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         46.0,
-                        350.0,
+                        352.0,
                         76.0,
-                        22.0
+                        20.0
                     ],
                     "text": "15/8",
                     "varname": "ratio11"
