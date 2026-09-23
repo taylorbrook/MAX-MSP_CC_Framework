@@ -20,7 +20,7 @@
 // note re-voice those two modes rather than only gating.
 
 inlets = 1;
-outlets = 7;
+outlets = 8;
 // outlet 0: 12-element frequency list (Hz)      -> mc.sig~ (freq lane)
 // outlet 1: 12-element LEFT gain list (0..1)    -> mc.sig~ (gain lane L)
 // outlet 2: gate (velocity 0..1 on note-on, 0 on note-off) -> adsr~ + vel
@@ -30,6 +30,8 @@ outlets = 7;
 //           spacingratio/inversionratio/spacingthresh/inversionthresh/lfoofs)
 // outlet 6: [degree, ratiotext] pairs           -> p ratioset -> textedits
 //           (refreshes the ratio table display on temperament preset load)
+// outlet 7: set <menu index>                    -> temperament umenu
+//           (shows the preset matching the live table, else "Custom")
 // The SOUNDING PITCHES table is driven directly through named comment boxes
 // in the parent patcher (pd_f<row>/pd_i<row>/pd_n<row>) -- no outlet, no cords.
 
@@ -58,7 +60,7 @@ var scaleCents = [];
 // Bohlen-Pierce (13-EDO over 3:1, mapped to 12 notes) is treated like any
 // other 12-entry table: cents above the tonic of the note's octave.
 var TEMPERAMENTS = [
-    { name: "Custom (harm 16-30)", vals: ["1/1", "17/16", "9/8", "19/16", "5/4", "21/16", "11/8", "23/16", "3/2", "13/8", "7/4", "15/8"] },
+    { name: "Harmonics 16-30", vals: ["1/1", "17/16", "9/8", "19/16", "5/4", "21/16", "11/8", "23/16", "3/2", "13/8", "7/4", "15/8"] },
     { name: "12-TET", vals: ["0c", "100c", "200c", "300c", "400c", "500c", "600c", "700c", "800c", "900c", "1000c", "1100c"] },
     { name: "Pythagorean", vals: ["1/1", "2187/2048", "9/8", "32/27", "81/64", "4/3", "729/512", "3/2", "6561/4096", "27/16", "16/9", "243/128"] },
     { name: "Zarlino (Just Major)", vals: ["1/1", "16/15", "9/8", "6/5", "5/4", "4/3", "7/5", "3/2", "8/5", "5/3", "9/5", "15/8"] },
@@ -70,6 +72,13 @@ var TEMPERAMENTS = [
     { name: "Just Intonation", vals: ["1/1", "16/15", "9/8", "6/5", "5/4", "4/3", "7/5", "3/2", "8/5", "5/3", "16/9", "15/8"] },
     { name: "Bohlen-Pierce", vals: ["0c", "146.3c", "292.6c", "438.9c", "585.2c", "731.5c", "877.8c", "1024.1c", "1170.4c", "1316.7c", "1463c", "1609.3c"] }
 ];
+
+// Temperament menu sync (v0.11.4): the umenu holds TEMPERAMENTS in order
+// plus a trailing "Custom" item. After any scale change the menu is set
+// (without output) to the preset whose cents match the live table within
+// 0.01c, else to Custom -- so it never names a scale that isn't loaded.
+var CUSTOM_TEMPERAMENT = TEMPERAMENTS.length;
+var temperamentCents = null;   // lazily computed [preset][degree] cents
 
 var enabled = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 var voiceCount = 5;      // 2..12, gates sub-voice gains (WavetableVoice.cpp:213)
@@ -652,12 +661,39 @@ function ratio(idx) {
     ratios[idx] = nd;
     computeCents();
     outlet(3, [idx, scaleCents[idx]]);
+    syncTemperament();
     recomputeOutputs();
+}
+
+function syncTemperament() {
+    if (!temperamentCents) {
+        temperamentCents = [];
+        for (var t = 0; t < TEMPERAMENTS.length; t++) {
+            var row = [];
+            for (var d = 0; d < SCALE_SIZE; d++) {
+                var nd = parseRatioText(TEMPERAMENTS[t].vals[d]);
+                row.push(1200.0 * Math.log(nd[0] / nd[1]) / Math.LN2);
+            }
+            temperamentCents.push(row);
+        }
+    }
+    var match = CUSTOM_TEMPERAMENT;
+    for (var p = 0; p < TEMPERAMENTS.length && match === CUSTOM_TEMPERAMENT; p++) {
+        var same = true;
+        for (var k = 0; k < SCALE_SIZE; k++) {
+            if (Math.abs(temperamentCents[p][k] - scaleCents[k]) > 0.01) same = false;
+        }
+        if (same) match = p;
+    }
+    outlet(7, "set", match);
 }
 
 function temperament(t) {
     t = Math.round(t);
-    if (t < 0 || t >= TEMPERAMENTS.length) return;
+    if (t < 0 || t >= TEMPERAMENTS.length) {
+        syncTemperament(); // "Custom" picked: snap the menu back to the truth
+        return;
+    }
     var vals = TEMPERAMENTS[t].vals;
     for (var i = 0; i < SCALE_SIZE; i++) {
         var nd = parseRatioText(vals[i]);
@@ -668,6 +704,7 @@ function temperament(t) {
         outlet(6, [j, vals[j]]);
         outlet(3, [j, scaleCents[j]]);
     }
+    syncTemperament();
     recomputeOutputs();
 }
 

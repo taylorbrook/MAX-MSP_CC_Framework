@@ -515,3 +515,16 @@ Port architecture (all objects already verified in patch):
   `bgcolor`/`locked_bgcolor` set to the editing grey (0.333); debug message box +
   `t l l` removed from the note input (pack → prepend freq direct); unused `heldVel`
   and stale "signature path" comment removed from ji-engine.js.
+
+## Decisions (UI polish, 2026-09-23, v0.11.4)
+
+- **Temperament menu tracks the live table.** js outlet 7 (new; js now 8 outlets) sends
+  `set <idx>` to the temperament umenu after every ratio edit and preset load — including
+  the load-time ratio resync — naming the preset whose cents match the table within
+  0.01c (ratio or cents entry both match), else a new trailing **"Custom"** item (index
+  11). Item 0 renamed "Custom (harm 16-30)" → **"Harmonics 16-30"**. Picking "Custom"
+  loads nothing; the menu snaps back to whatever actually matches.
+- **Ratio textedits: fontsize 12 (was 11, matches the cents flonums), presentation rect
+  y+2 / height 20 (bottoms still aligned with the flonums).** textedit has no vertical
+  alignment attribute (maxref) and draws text from the top, so the box is shortened from
+  the top to centre the text against the neighbouring flonums.

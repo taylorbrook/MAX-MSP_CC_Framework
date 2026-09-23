@@ -241,6 +241,15 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.11.4",
+      "description": "temperament menu tracks the live table (match within 0.01c, else Custom); ratio fields 12pt, bottom-aligned 20px tall for text centering",
+      "timestamp": "2026-09-23T15:20:54.388057+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }
