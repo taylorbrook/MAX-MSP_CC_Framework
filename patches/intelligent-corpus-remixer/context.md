@@ -339,3 +339,10 @@ Still open (not bugs, deferred): loop-point crossfade, re-cluster reruns UMAP (n
 
 ## v0.2.2 (2026-09-22)
 `loopmode: bad number` on loop toggle: the v0.2.0 broadcast wrapped the value as `loopmode $1` in `p playback`, then the voice's `in 2 → loopmode $1` wrapped it again. A message box's `$1` is the incoming selector, so gen~ got `loopmode loopmode`. Now `p playback` sends a bare int to poly~ inlet 1, and the voice adds the `loopmode` prefix.
+
+## v0.3.0 (2026-09-22) — NOT yet confirmed in MAX
+- **Loop crossfade (slice-voice gen~):** the tail `[dur - X, dur)` crossfades (equal power) into the head `[0, X)`, then the phase wraps to `X`. `X = floor(min(5 ms, dur/2))`. A numpy sim put the largest jump at the loop point at 0.017, down from 0.217, about the size of a normal sample step. One-shot slices are unchanged: 5 ms fade in and out.
+- **Off-by-one:** reads start at `offset + 0`. The engine now reads at the current phase and advances afterwards.
+- **De-hoist:** `History one(1)` and `srs`/`k_*` copies, so nothing is Param-only (CLAUDE.md hoisting rule).
+- **K clamp (p cluster):** K goes into `i 4` (cold). The slice count goes through `t i i` into the right inlet of `expr min($i1, $i2)`. Before `fitpredict`, `t b b` bangs `i 4`, which sends `numclusters min(K, slices)`. K no longer reaches kmeans until the next fit (same effect as before).
+- **analyze.js:** `doneTask` is now global and the previous one is cancelled first.

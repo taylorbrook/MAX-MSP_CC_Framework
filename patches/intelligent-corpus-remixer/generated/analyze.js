@@ -13,6 +13,7 @@ inlets = 1;
 outlets = 2;
 
 var MIN_SLICE = 4096;
+var doneTask = null;   // global: a local Task can be garbage-collected before it fires
 
 function buffer() {
     bang();
@@ -112,7 +113,8 @@ function bang() {
     post("analyze: " + slices.length + " slices from " + numOnsets + " onsets\n");
 
     var count = slices.length;
-    var doneTask = new Task(function() {
+    if (doneTask) doneTask.cancel();
+    doneTask = new Task(function() {
         outlet(1, count);
         outlet(0, "bang");
     }, this);

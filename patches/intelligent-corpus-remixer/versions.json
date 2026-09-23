@@ -113,6 +113,16 @@
       "files_changed": [
         "intelligent-corpus-remixer.maxpat"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "loop-point equal-power crossfade, first read at offset+0, de-hoisted Params, K clamped to slice count, analyze.js global Task",
+      "timestamp": "2026-09-23T05:04:29.036917+00:00",
+      "files_changed": [
+        "slice-voice.maxpat",
+        "intelligent-corpus-remixer.maxpat",
+        "analyze.js"
+      ]
     }
   ]
 }
