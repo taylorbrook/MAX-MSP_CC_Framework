@@ -476,3 +476,21 @@ Port architecture (all objects already verified in patch):
   preset-file export/import.
 - **DB fix**: `send` and `receive` had empty I/O in the DB; populated from maxref in
   overrides.json (send 1-in/0-out, receive 1-in/1-out).
+
+## Decisions (review fixes, 2026-09-23, v0.11.2)
+
+- **Note input maps at fixed A4 = 440, no stretch.** `freq()` inverted the incoming Hz with
+  `a4`/`octaveStretch`, but the patch feeds it from `mtof` (always 440). masterTune outside
+  ~427.5–452.9 transposed the played degree (A4=415: C4 read as C#4), and moving masterTune
+  >~50c while a key was held left the gate stuck (note-off mapped to another note).
+  masterTune/stretch now apply only on the output side (noteFrequency), as before v0.11.1.
+- **Velocity restored.** v0.11.1's `> 0` sent gate 1 on every note-on, so adsr~ was always
+  full level and vel>filter was dead. Now `/ 127.` → `pack 0. 0.` (second arg float — an
+  int `0` truncated the normalized velocity to 0) → `freq <Hz> <vel 0..1>`; js passes it
+  through outlet 2 unchanged.
+- **Ratio textedits are the canonical scale at load.** MAX re-saves persist the textedit
+  text (e.g. after a temperament preset), while ji-engine.js boots on harm 16-30 — the
+  v0.9.0 mismatch had returned (committed text = Just Intonation since 4b82e72). A new
+  `loadbang` → the existing jhPresetRecall `deferlow` → `t b×12` chain bangs every ratio
+  box into the engine after load, so the displayed and sounding scale always agree. The
+  "keep textedit text in sync with the JS default" rule above no longer needs manual care.

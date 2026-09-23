@@ -21,7 +21,7 @@ inlets = 1;
 outlets = 7;
 // outlet 0: 12-element frequency list (Hz)      -> mc.sig~ (freq lane)
 // outlet 1: 12-element LEFT gain list (0..1)    -> mc.sig~ (gain lane L)
-// outlet 2: gate (1 on note-on, 0 on note-off)  -> adsr~
+// outlet 2: gate (velocity 0..1 on note-on, 0 on note-off) -> adsr~ + vel
 // outlet 3: [degree, cents] pairs               -> route -> readouts
 // outlet 4: 12-element RIGHT gain list (0..1)   -> mc.sig~ (gain lane R)
 // outlet 5: applyvalues param messages          -> mc.gen~ (per-instance
@@ -573,16 +573,19 @@ function recomputeOutputs() {
 
 // --- Message handlers ----------------------------------------------------
 
-// Note input: "freq <rootHz> <gate>" -- gate 1 = note-on, gate 0 = note-off.
-// The root frequency is mapped to the nearest engine note by inverting
-// calc12TET (honors a4 and octaveStretch), so scale-degree math, chord
-// generation, and the display all keep working in integer note space.
+// Note input: "freq <rootHz> <gate>" -- gate > 0 = note-on (normalized
+// velocity 0..1, passed through to the gate outlet), gate 0 = note-off.
+// The root frequency is mapped to the nearest engine note against a FIXED
+// A4 = 440 with no stretch: the patch feeds it from mtof, which is always
+// 440-based. Inverting with a4/octaveStretch instead transposed the input
+// whenever masterTune left 440 by more than ~50c, and left notes stuck if
+// masterTune moved while a key was held (note-off mapped to another note).
 function freq(f, gate) {
     if (arguments.length < 2) return;
     f = parseFloat(f);
     gate = parseFloat(gate);
     if (!(f > 0)) return;
-    var note = Math.round(69.0 + 12.0 * (Math.log(f / a4) / Math.LN2) / octaveStretch);
+    var note = Math.round(69.0 + 12.0 * (Math.log(f / 440.0) / Math.LN2));
     if (note < 0) note = 0;
     if (note > 127) note = 127;
     if (gate > 0) {

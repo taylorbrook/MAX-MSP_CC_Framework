@@ -223,6 +223,15 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.11.2",
+      "description": "review fixes: note input mapped at fixed A440 (masterTune no longer transposes/sticks notes); velocity restored (/ 127. + pack 0. 0.); ratio textedits resynced into engine on load",
+      "timestamp": "2026-09-23T15:06:46.725032+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }
