@@ -52,6 +52,14 @@ var ratios = [
 ];
 var scaleCents = [];
 
+// Repeat interval (v0.12.0, Scala import): the scale repeats every 12 keys
+// at this ratio instead of a fixed 2/1. Kept as [num, den] (den 1 and a
+// float num when given in cents) so the display can still name exact
+// ratios across repeats. Presets and manual edits leave it at 2/1 unless a
+// .scl file or the period field sets it.
+var periodRatio = [2, 1];
+var periodCents = 1200.0;
+
 // Built-in temperament presets -- verbatim port of TuningEngine.cpp preset
 // tables (cents from C). Where a table is exact JI (Pythagorean, Zarlino,
 // Just Intonation) the entries are ratio strings (identical cents via
@@ -145,6 +153,10 @@ function calc12TET(note) {
 }
 
 function noteFrequency(note) {
+    // v0.12.0: the repeat above the tonic of octave 4 (MIDI 60 + tonic) is
+    // periodRatio rather than 2/1. For a 2/1 period this is identical to
+    // calc12TET(note - relativePitch): octaveStretch scales the period the
+    // same way it scales 12-TET octaves.
     // TuningEngine::calculateCustomFrequencyUnlocked, 12-note/no-KBM path,
     // corrected: the scale cents ride on the tonic of the note's octave, not
     // on the note itself. `note - relativePitch` is the MIDI note of the tonic
@@ -155,7 +167,10 @@ function noteFrequency(note) {
     if (note > 127) note = 127;
     var pitchClass = note % 12;
     var relativePitch = (pitchClass - tonicIdx + 12) % 12;
-    var baseFreq = calc12TET(note - relativePitch);
+    var tonicNote = 60 + tonicIdx;
+    var rep = Math.floor((note - relativePitch - tonicNote) / 12);
+    var baseFreq = calc12TET(tonicNote)
+        * Math.pow(2.0, rep * octaveStretch * periodCents / 1200.0);
     return baseFreq * Math.pow(2.0, scaleCents[relativePitch] / 1200.0);
 }
 
@@ -473,8 +488,14 @@ function tableRatioText(n, n0) {
     var num = a[0] * b[1];
     var den = a[1] * b[0];
     var d = a[2] - b[2];
-    if (d > 0) num *= Math.pow(2, d);
-    else if (d < 0) den *= Math.pow(2, -d);
+    // repeats multiply by the period ratio (2/1 unless a .scl set another)
+    if (d > 0) {
+        num *= Math.pow(periodRatio[0], d);
+        den *= Math.pow(periodRatio[1], d);
+    } else if (d < 0) {
+        num *= Math.pow(periodRatio[1], -d);
+        den *= Math.pow(periodRatio[0], -d);
+    }
     if (!isWholeNumber(num) || !isWholeNumber(den)) return "";
     num = Math.round(num);
     den = Math.round(den);
@@ -678,7 +699,8 @@ function syncTemperament() {
         }
     }
     var match = CUSTOM_TEMPERAMENT;
-    for (var p = 0; p < TEMPERAMENTS.length && match === CUSTOM_TEMPERAMENT; p++) {
+    var octavePeriod = Math.abs(periodCents - 1200.0) <= 0.01;
+    for (var p = 0; octavePeriod && p < TEMPERAMENTS.length && match === CUSTOM_TEMPERAMENT; p++) {
         var same = true;
         for (var k = 0; k < SCALE_SIZE; k++) {
             if (Math.abs(temperamentCents[p][k] - scaleCents[k]) > 0.01) same = false;
@@ -686,6 +708,7 @@ function syncTemperament() {
         if (same) match = p;
     }
     outlet(7, "set", match);
+    if (match !== CUSTOM_TEMPERAMENT) sclNameSet(""); // table is a preset now
 }
 
 function temperament(t) {
@@ -695,6 +718,7 @@ function temperament(t) {
         return;
     }
     var vals = TEMPERAMENTS[t].vals;
+    setPeriod([2, 1], "2/1");
     for (var i = 0; i < SCALE_SIZE; i++) {
         var nd = parseRatioText(vals[i]);
         if (nd) ratios[i] = nd;
@@ -704,6 +728,141 @@ function temperament(t) {
         outlet(6, [j, vals[j]]);
         outlet(3, [j, scaleCents[j]]);
     }
+    syncTemperament();
+    recomputeOutputs();
+}
+
+// --- Scala (.scl) import + period (v0.12.0) --------------------------------
+// Only 12-note files are accepted: pitches 1-11 fill degrees 1-11 (degree 0
+// is the implicit 1/1), pitch 12 is the period. Written into the ratio
+// textedits (so presets, the menu sync and the load-time resync all see it)
+// and into the "period" textedit. The file's name goes to the drop-zone
+// label. Both boxes are reached by varname, like the sounding-pitch table.
+
+function namedBox(name) {
+    if (!JSOBJ || !JSOBJ.patcher) return null;
+    return JSOBJ.patcher.getnamed(name);
+}
+
+function sclNameSet(txt) {
+    var b = namedBox("sclname");
+    if (b) b.message("set", txt === "" ? "drop .scl here" : txt);
+}
+
+// Store the period and mirror its text into the period field (set: no output)
+function setPeriod(nd, txt) {
+    periodRatio = nd;
+    periodCents = 1200.0 * Math.log(nd[0] / nd[1]) / Math.LN2;
+    var b = namedBox("period");
+    if (b) b.message("set", txt);
+}
+
+// One .scl pitch line -> [[num, den], textedit text] or null. Per the Scala
+// spec a value containing "." is cents; anything else is a ratio, and a bare
+// integer n means n/1. Text after the first token is a comment.
+function parseSclPitch(line) {
+    var tok = line.replace(/^\s+/, "").split(/\s+/)[0];
+    if (!tok) return null;
+    var nd, txt;
+    if (tok.indexOf(".") >= 0) {
+        var c = parseFloat(tok);
+        if (!isFinite(c)) return null;
+        nd = [Math.pow(2, c / 1200.0), 1.0];
+        txt = tok + "c";
+    } else {
+        var parts = tok.split("/");
+        var n = parseInt(parts[0], 10);
+        var d = parts.length > 1 ? parseInt(parts[1], 10) : 1;
+        if (!(n > 0) || !(d > 0)) return null;
+        nd = [n, d];
+        txt = n + "/" + d;
+    }
+    if (!(nd[0] / nd[1] > 0)) return null;
+    return [nd, txt];
+}
+
+function loadscl(path) {
+    path = String(path);
+    var fname = path.replace(/^.*[\/:]/, "");
+    var f = new File(path, "read");
+    if (!f.isopen) {
+        post("ji-engine: could not open " + path + "\n");
+        return;
+    }
+    var lines = [];
+    while (f.position < f.eof) {
+        var ln = f.readline();
+        if (ln !== null) lines.push(ln);
+    }
+    f.close();
+
+    // Non-comment lines: description, note count, then the pitches
+    var body = [];
+    for (var i = 0; i < lines.length; i++) {
+        var l = String(lines[i]).replace(/\r/g, "");
+        if (l.charAt(0) === "!") continue;
+        body.push(l);
+    }
+    if (body.length < 2) {
+        post("ji-engine: " + fname + " is not a valid .scl file\n");
+        return;
+    }
+    var count = parseInt(body[1], 10);
+    if (count !== SCALE_SIZE) {
+        post("ji-engine: " + fname + " has " + count + " notes -- only "
+            + SCALE_SIZE + "-note .scl files are supported\n");
+        return;
+    }
+    var pitches = [];
+    for (var k = 2; k < body.length && pitches.length < count; k++) {
+        if (body[k].replace(/\s+/g, "") === "") continue;
+        var p = parseSclPitch(body[k]);
+        if (!p) {
+            post("ji-engine: " + fname + ": bad pitch line \"" + body[k] + "\"\n");
+            return;
+        }
+        pitches.push(p);
+    }
+    if (pitches.length !== count) {
+        post("ji-engine: " + fname + " lists " + pitches.length + " of "
+            + count + " pitches\n");
+        return;
+    }
+    var per = pitches[count - 1];
+    if (!(per[0][0] / per[0][1] > 1.0)) {
+        post("ji-engine: " + fname + ": period must be above 1/1\n");
+        return;
+    }
+
+    ratios[0] = [1, 1];
+    for (var j = 1; j < SCALE_SIZE; j++) ratios[j] = pitches[j - 1][0];
+    computeCents();
+    setPeriod(per[0], per[1]);
+    outlet(6, [0, "1/1"]);
+    outlet(3, [0, scaleCents[0]]);
+    for (var m = 1; m < SCALE_SIZE; m++) {
+        outlet(6, [m, pitches[m - 1][1]]);
+        outlet(3, [m, scaleCents[m]]);
+    }
+    syncTemperament();
+    sclNameSet(fname);
+    post("ji-engine: loaded " + fname + " (" + String(body[0]).replace(/^\s+|\s+$/g, "")
+        + ", period " + per[1] + ")\n");
+    recomputeOutputs();
+}
+
+// Period field: "2/1", "3/1", "1200c", "1.5" ... (same parser as the ratios)
+function period() {
+    var raw = [];
+    for (var k = 0; k < arguments.length; k++) raw.push(String(arguments[k]));
+    var txt = raw.join(" ");
+    var nd = parseRatioText(txt);
+    if (!nd || !(nd[0] > 0) || !(nd[1] > 0) || !(nd[0] / nd[1] > 1.0)) {
+        post("ji-engine: bad period (got: " + txt + ")\n");
+        return;
+    }
+    periodRatio = nd;
+    periodCents = 1200.0 * Math.log(nd[0] / nd[1]) / Math.LN2;
     syncTemperament();
     recomputeOutputs();
 }

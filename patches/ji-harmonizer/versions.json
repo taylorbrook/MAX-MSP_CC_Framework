@@ -250,6 +250,15 @@
         "ji-harmonizer.maxpat",
         "ji-engine.js"
       ]
+    },
+    {
+      "version": "0.12.0",
+      "description": "Scala .scl import (12-note files): load button + drop zone, period (repeat interval) honored in tuning/octave copies/display, period field stored in presets",
+      "timestamp": "2026-09-23T15:46:27.899224+00:00",
+      "files_changed": [
+        "ji-harmonizer.maxpat",
+        "ji-engine.js"
+      ]
     }
   ]
 }

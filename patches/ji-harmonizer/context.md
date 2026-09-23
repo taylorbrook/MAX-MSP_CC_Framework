@@ -528,3 +528,39 @@ Port architecture (all objects already verified in patch):
   y+2 / height 20 (bottoms still aligned with the flonums).** textedit has no vertical
   alignment attribute (maxref) and draws text from the top, so the box is shortened from
   the top to centre the text against the neighbouring flonums.
+
+## Decisions (Scala import, 2026-09-23, v0.12.0)
+
+User choices: **12-note files only**, **honor the file's period**, **button + drag-drop**.
+
+- **Parser (ji-engine.js `loadscl <path>`)**: `!` lines are comments; first remaining line =
+  description, second = note count, then pitches. Per the Scala spec a pitch containing
+  `.` is cents, anything else a ratio, and a bare integer `n` is `n/1` (the scala-synth
+  parser's "integer > 24 = cents" heuristic was not copied). Text after the first token is
+  ignored. Count != 12, missing/bad pitch lines, or a period <= 1/1 → console message,
+  nothing changes. Read with the js `File` API (proven in scala-synth).
+- **Mapping**: pitches 1-11 → degrees 1-11 (degree 0 is the implicit 1/1), pitch 12 → the
+  **period**. Ratio textedits get the file's own tokens (`701.955` → `701.955c`,
+  `2` → `2/1`), so presets, the temperament-menu sync and the load-time resync all see
+  the imported scale with no new storage.
+- **Period** (`periodRatio`/`periodCents`, default 2/1): `noteFrequency` now anchors on the
+  tonic of octave 4 (MIDI 60 + tonic) and steps `period^k` per 12-key repeat, with
+  octaveStretch scaling the period like 12-TET octaves. Verified bit-identical (≤1e-15
+  relative) to v0.11.4 for a 2/1 period across all tonics / stretches / A4 values.
+  Spacing/inversion octave copies and chord voicings' ±12-key shifts become ±1 period
+  automatically (they go through noteFrequency); the SOUNDING PITCHES table names exact
+  ratios across repeats with the period (3/1 scale: E5 vs C4 = 15/4).
+- **Temperament presets reset the period to 2/1.** The menu only matches a preset when the
+  period is 2/1; anything else reads "Custom".
+- **UI (presentation, temperament row y=376)**: `load .scl` textbutton → opendialog →
+  `prepend loadscl`; a dropfile (z-top) over the `sclname` label comment ("drop .scl
+  here", replaced by the file name, cleared back when the table matches a preset) →
+  same prepend; `period` label + read-only `period` textedit (varname `period`, a pattr
+  client → stored in new presets) → `prepend period` → js. js sets the label and the
+  period field by varname (`getnamed`), like the sounding-pitch cells.
+- **Resync chain** `t b×12` → `t b×13`; the new rightmost outlet (fires first) bangs the
+  period field so the engine gets the period before the ratios on load / preset recall.
+  Original cord midpoints restored (first point shifted to the new outlet spacing).
+- **Known limits**: presets stored before v0.12.0 have no `period` entry, so recalling
+  one keeps whatever period is current (re-store them after loading a 2/1 preset if this
+  matters). Non-12-note files are rejected (VST linear mapping not ported). No .kbm.
