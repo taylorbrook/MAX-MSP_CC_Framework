@@ -937,3 +937,12 @@ new terrain did nothing. Both 3D views froze too (orbit and surface). The Max co
   low-priority hop (~ms), below the 40 ms frame period.
 - Not changed: gen~ NaN guards (`fixnan` on the terrain read / `yprev` / dcblock) -- kept as a fallback if silence
   recurs with the views still running.
+
+## Cleanup (2026-09-23)
+
+Removed files the shipping patch no longer uses (all recoverable from git history, commit before this one):
+wavetable path (bank00-03 WAVs, wt-osc.maxpat, wt-osc-test.maxpat, tools/bake_geometry.py, bake-bank*.txt), the
+oscillator CPU bench (terrain-osc-test.maxpat, terrain-osc-core.maxpat, terrain-osc-cpu-test.md), confirmed
+v0.12 checklists (cheby-preflight.md, v0.12.0-cheby-checklist.md) and tools/cheby_preflight.py. Earlier notes
+that mention them are historical. Live set: terrain-synth, terrain-voice, terrain-osc, terrain-osc-b,
+terrain-cheby, terrain-lfo, cheby-coefs.js.
