@@ -193,9 +193,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        330.0,
+                        325.0,
                         44.0,
-                        75.0,
+                        72.0,
                         20.0
                     ]
                 }
@@ -221,9 +221,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        330.0,
+                        325.0,
                         20.0,
-                        50.0,
+                        45.0,
                         22.0
                     ]
                 }
@@ -246,7 +246,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        420.0,
+                        405.0,
                         20.0,
                         24.0,
                         24.0
@@ -3782,9 +3782,9 @@
                     "fontsize": 12.0,
                     "presentation": 1,
                     "presentation_rect": [
-                        420.0,
+                        405.0,
                         44.0,
-                        80.0,
+                        68.0,
                         20.0
                     ],
                     "textcolor": [
