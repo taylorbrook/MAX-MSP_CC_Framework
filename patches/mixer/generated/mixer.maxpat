@@ -350,8 +350,8 @@
                     "patching_rect": [
                         602.0,
                         190.0,
-                        118.0,
-                        438.0
+                        110,
+                        430
                     ],
                     "varname": "master",
                     "viewvisibility": 1,
@@ -390,8 +390,8 @@
                     "patching_rect": [
                         10.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-1",
                     "viewvisibility": 1
@@ -429,8 +429,8 @@
                     "patching_rect": [
                         102.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-2",
                     "viewvisibility": 1
@@ -468,8 +468,8 @@
                     "patching_rect": [
                         194.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-3",
                     "viewvisibility": 1
@@ -507,8 +507,8 @@
                     "patching_rect": [
                         286.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-4",
                     "viewvisibility": 1
@@ -544,8 +544,8 @@
                     "patching_rect": [
                         394.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-1",
                     "viewvisibility": 1
@@ -581,8 +581,8 @@
                     "patching_rect": [
                         486.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-2",
                     "viewvisibility": 1
@@ -976,8 +976,8 @@
                     "patching_rect": [
                         10.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-1[1]",
                     "viewvisibility": 1
@@ -1015,8 +1015,8 @@
                     "patching_rect": [
                         102.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-2[1]",
                     "viewvisibility": 1
@@ -1054,8 +1054,8 @@
                     "patching_rect": [
                         194.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-3[1]",
                     "viewvisibility": 1
@@ -1093,8 +1093,8 @@
                     "patching_rect": [
                         286.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-4[1]",
                     "viewvisibility": 1
@@ -1130,8 +1130,8 @@
                     "patching_rect": [
                         394.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-1[1]",
                     "viewvisibility": 1
@@ -1167,8 +1167,8 @@
                     "patching_rect": [
                         486.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-2[1]",
                     "viewvisibility": 1
@@ -1206,8 +1206,8 @@
                     "patching_rect": [
                         10.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-1[2]",
                     "viewvisibility": 1
@@ -1245,8 +1245,8 @@
                     "patching_rect": [
                         102.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-2[2]",
                     "viewvisibility": 1
@@ -1284,8 +1284,8 @@
                     "patching_rect": [
                         194.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-3[2]",
                     "viewvisibility": 1
@@ -1323,8 +1323,8 @@
                     "patching_rect": [
                         286.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-4[2]",
                     "viewvisibility": 1
@@ -1360,8 +1360,8 @@
                     "patching_rect": [
                         394.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-1[2]",
                     "viewvisibility": 1
@@ -1397,8 +1397,8 @@
                     "patching_rect": [
                         486.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-2[2]",
                     "viewvisibility": 1
@@ -1436,8 +1436,8 @@
                     "patching_rect": [
                         10.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-1[3]",
                     "viewvisibility": 1
@@ -1475,8 +1475,8 @@
                     "patching_rect": [
                         102.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-2[3]",
                     "viewvisibility": 1
@@ -1514,8 +1514,8 @@
                     "patching_rect": [
                         194.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-3[3]",
                     "viewvisibility": 1
@@ -1553,8 +1553,8 @@
                     "patching_rect": [
                         286.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-4[3]",
                     "viewvisibility": 1
@@ -1592,8 +1592,8 @@
                     "patching_rect": [
                         378.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-5",
                     "viewvisibility": 1
@@ -1629,8 +1629,8 @@
                     "patching_rect": [
                         486.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-1[3]",
                     "viewvisibility": 1
@@ -1666,8 +1666,8 @@
                     "patching_rect": [
                         578.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-2[3]",
                     "viewvisibility": 1
@@ -1703,8 +1703,8 @@
                     "patching_rect": [
                         486.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-1[4]",
                     "viewvisibility": 1
@@ -1740,8 +1740,8 @@
                     "patching_rect": [
                         578.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-2[4]",
                     "viewvisibility": 1
@@ -1777,8 +1777,8 @@
                     "patching_rect": [
                         670.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-3",
                     "viewvisibility": 1
@@ -1881,8 +1881,8 @@
                     "patching_rect": [
                         10.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-1[4]",
                     "viewvisibility": 1
@@ -1920,8 +1920,8 @@
                     "patching_rect": [
                         102.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-2[4]",
                     "viewvisibility": 1
@@ -1959,8 +1959,8 @@
                     "patching_rect": [
                         194.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-3[4]",
                     "viewvisibility": 1
@@ -1998,8 +1998,8 @@
                     "patching_rect": [
                         286.0,
                         190.0,
-                        88.0,
-                        702
+                        80,
+                        694
                     ],
                     "varname": "strip-4[4]",
                     "viewvisibility": 1
@@ -2035,8 +2035,8 @@
                     "patching_rect": [
                         394.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-1[5]",
                     "viewvisibility": 1
@@ -2072,8 +2072,8 @@
                     "patching_rect": [
                         486.0,
                         190.0,
-                        88.0,
-                        428.0
+                        80,
+                        420
                     ],
                     "varname": "bus-2[5]",
                     "viewvisibility": 1
@@ -2333,6 +2333,18 @@
         ],
         "autosave": 0,
         "editing_bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ],
+        "bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ],
+        "locked_bgcolor": [
             0.333,
             0.333,
             0.333,
