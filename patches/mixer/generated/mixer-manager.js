@@ -1,11 +1,13 @@
-// mixer-manager.js — Dynamic mixer strip/bus creation via thispatcher
-// Master bpatcher is static (varname "master"), repositioned via patcher API
+// mixer-manager.js — Dynamic mixer strip/bus management via thispatcher
+// Master bpatcher is static (varname "master"), repositioned via patcher API.
+//
+// Strips/busses are synced, not rebuilt: an existing "strip-N" / "bus-N"
+// bpatcher is kept (with its patch cords and settings), extras beyond the
+// requested count are removed, and only missing ones are created. Saved
+// duplicates with "[N]" suffix varnames are always removed.
 
 inlets = 1;
 outlets = 1;
-
-var currentStrips = [];
-var currentBusses = [];
 
 var STRIP_W = 88;
 var STRIP_H = 563;
@@ -20,145 +22,106 @@ var GAP = 4;
 var BUS_GAP = 16;
 var MASTER_GAP = 24;
 
-// Remove all dynamic bpatchers by walking the patcher.
-// Handles saved duplicates with [N] suffix varnames that
-// simple "script delete" by exact name would miss.
-function cleanAll() {
-	var obj = this.patcher.firstobject;
+var trackCount = 0;
+var busCount = 0;
+
+function stripX(i) {
+	return X_START + i * (STRIP_W + GAP);
+}
+
+function busX(i) {
+	return X_START + trackCount * (STRIP_W + GAP) + BUS_GAP + i * (BUS_W + GAP);
+}
+
+// p is passed in explicitly: helpers are called as plain functions.
+// Keep prefix1..prefixN bpatchers, remove everything else carrying the prefix.
+// Returns an array indexed by number (1-based) of kept objects.
+function prune(p, prefix, count) {
+	var kept = [];
+	var obj = p.firstobject;
 	while (obj) {
 		var next = obj.nextobject;
-		if (obj.maxclass === "bpatcher") {
-			var vn = obj.varname;
-			if (vn && vn !== "master") {
-				this.patcher.remove(obj);
+		var vn = obj.varname;
+		if (obj.maxclass === "bpatcher" && vn && vn.indexOf(prefix) === 0) {
+			var tail = vn.substring(prefix.length);
+			var n = /^[0-9]+$/.test(tail) ? parseInt(tail, 10) : 0;
+			if (n >= 1 && n <= count && !kept[n]) {
+				kept[n] = obj;
+			} else {
+				p.remove(obj);
 			}
 		}
 		obj = next;
 	}
-	currentStrips = [];
-	currentBusses = [];
+	return kept;
 }
 
-function moveMaster() {
-	var master = this.patcher.getnamed("master");
+function syncStrips(p, count) {
+	var kept = prune(p, "strip-", count);
+	for (var i = 0; i < count; i++) {
+		var n = i + 1;
+		var x = stripX(i);
+		if (kept[n]) {
+			kept[n].rect = [x, ROW_Y, x + STRIP_W, ROW_Y + STRIP_H];
+		} else {
+			outlet(0, "script", "newobject", "bpatcher",
+				"@args", n, "mixer-in-" + n + "-L", "mixer-in-" + n + "-R",
+				"@name", "mixer-strip.maxpat",
+				"@varname", "strip-" + n,
+				"@presentation", 0,
+				"@patching_rect", x, ROW_Y, STRIP_W, STRIP_H);
+		}
+	}
+	trackCount = count;
+}
+
+function syncBusses(p, count) {
+	var kept = prune(p, "bus-", count);
+	for (var i = 0; i < count; i++) {
+		var n = i + 1;
+		var x = busX(i);
+		if (kept[n]) {
+			kept[n].rect = [x, ROW_Y, x + BUS_W, ROW_Y + BUS_H];
+		} else {
+			outlet(0, "script", "newobject", "bpatcher",
+				"@args", n, "bus-" + n + "-L", "bus-" + n + "-R",
+				"@name", "mixer-bus.maxpat",
+				"@varname", "bus-" + n,
+				"@presentation", 0,
+				"@patching_rect", x, ROW_Y, BUS_W, BUS_H);
+		}
+	}
+	busCount = count;
+}
+
+function moveMaster(p) {
+	var master = p.getnamed("master");
 	if (master) {
-		var x = X_START
-			+ currentStrips.length * (STRIP_W + GAP)
-			+ BUS_GAP
-			+ currentBusses.length * (BUS_W + GAP)
-			+ MASTER_GAP;
+		var x = busX(busCount) + MASTER_GAP;
 		master.rect = [x, ROW_Y, x + MASTER_W, ROW_Y + MASTER_H];
 	}
 }
 
-// Atomic init — creates tracks and busses in one pass, no double-firing
-function init(trackCount, busCount) {
-	trackCount = Math.max(1, Math.min(trackCount, 32));
-	busCount = Math.max(0, Math.min(busCount, 8));
-
-	// Clean slate: delete ALL possible strips/busses (including saved ones)
-	cleanAll();
-
-	// Create strips
-	for (var i = 0; i < trackCount; i++) {
-		var varname = "strip-" + (i + 1);
-		var x = X_START + i * (STRIP_W + GAP);
-		outlet(0, "script", "newobject", "bpatcher",
-			"@args", i + 1,
-			"@name", "mixer-strip.maxpat",
-			"@varname", varname,
-			"@presentation", 0,
-			"@patching_rect", x, ROW_Y, STRIP_W, STRIP_H);
-		currentStrips.push(varname);
-	}
-
-	// Create busses
-	var x_offset = X_START + currentStrips.length * (STRIP_W + GAP) + BUS_GAP;
-	for (var i = 0; i < busCount; i++) {
-		var busNum = i + 1;
-		var varname = "bus-" + busNum;
-		var x = x_offset + i * (BUS_W + GAP);
-		var recvL = "bus-" + busNum + "-L";
-		var recvR = "bus-" + busNum + "-R";
-		outlet(0, "script", "newobject", "bpatcher",
-			"@args", busNum, recvL, recvR,
-			"@name", "mixer-bus.maxpat",
-			"@varname", varname,
-			"@presentation", 0,
-			"@patching_rect", x, ROW_Y, BUS_W, BUS_H);
-		currentBusses.push(varname);
-	}
-
+// Atomic init — syncs tracks and busses in one pass
+function init(t, b) {
+	var p = this.patcher;
+	syncStrips(p, Math.max(1, Math.min(t, 32)));
+	syncBusses(p, Math.max(0, Math.min(b, 8)));
+	moveMaster(p);
 	post("mixer: init " + trackCount + " track(s), " + busCount + " bus(ses)\n");
-	moveMaster();
 }
 
 function tracks(count) {
-	count = Math.max(1, Math.min(count, 32));
-
-	// Delete all strip bpatchers (handles saved duplicates with [N] suffixes)
-	var obj = this.patcher.firstobject;
-	while (obj) {
-		var next = obj.nextobject;
-		if (obj.maxclass === "bpatcher" && obj.varname && obj.varname.indexOf("strip-") === 0) {
-			this.patcher.remove(obj);
-		}
-		obj = next;
-	}
-	currentStrips = [];
-
-	for (var i = 0; i < count; i++) {
-		var varname = "strip-" + (i + 1);
-		var x = X_START + i * (STRIP_W + GAP);
-		outlet(0, "script", "newobject", "bpatcher",
-			"@args", i + 1,
-			"@name", "mixer-strip.maxpat",
-			"@varname", varname,
-			"@presentation", 0,
-			"@patching_rect", x, ROW_Y, STRIP_W, STRIP_H);
-		currentStrips.push(varname);
-	}
-
-	post("mixer: created " + count + " track(s)\n");
-
-	if (currentBusses.length > 0) {
-		busses(currentBusses.length);
-	} else {
-		moveMaster();
-	}
+	var p = this.patcher;
+	syncStrips(p, Math.max(1, Math.min(count, 32)));
+	syncBusses(p, busCount);	// reposition only; existing busses are kept
+	moveMaster(p);
+	post("mixer: " + trackCount + " track(s)\n");
 }
 
 function busses(count) {
-	count = Math.max(0, Math.min(count, 8));
-
-	// Delete all bus bpatchers (handles saved duplicates with [N] suffixes)
-	var obj = this.patcher.firstobject;
-	while (obj) {
-		var next = obj.nextobject;
-		if (obj.maxclass === "bpatcher" && obj.varname && obj.varname.indexOf("bus-") === 0) {
-			this.patcher.remove(obj);
-		}
-		obj = next;
-	}
-	currentBusses = [];
-
-	var x_offset = X_START + currentStrips.length * (STRIP_W + GAP) + BUS_GAP;
-
-	for (var i = 0; i < count; i++) {
-		var busNum = i + 1;
-		var varname = "bus-" + busNum;
-		var x = x_offset + i * (BUS_W + GAP);
-		var recvL = "bus-" + busNum + "-L";
-		var recvR = "bus-" + busNum + "-R";
-		outlet(0, "script", "newobject", "bpatcher",
-			"@args", busNum, recvL, recvR,
-			"@name", "mixer-bus.maxpat",
-			"@varname", varname,
-			"@presentation", 0,
-			"@patching_rect", x, ROW_Y, BUS_W, BUS_H);
-		currentBusses.push(varname);
-	}
-
-	post("mixer: created " + count + " bus(ses)\n");
-	moveMaster();
+	var p = this.patcher;
+	syncBusses(p, Math.max(0, Math.min(count, 8)));
+	moveMaster(p);
+	post("mixer: " + busCount + " bus(ses)\n");
 }
