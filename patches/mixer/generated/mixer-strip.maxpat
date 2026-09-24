@@ -5823,6 +5823,46 @@
                     ],
                     "parameter_enable": 0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-69",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        20,
+                        13,
+                        94.0,
+                        22.0
+                    ],
+                    "text": "receive~ #2",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-70",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        20,
+                        78,
+                        94.0,
+                        22.0
+                    ],
+                    "text": "receive~ #3",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
@@ -6958,6 +6998,30 @@
                     "destination": [
                         "obj-37",
                         3
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-69",
+                        0
+                    ],
+                    "destination": [
+                        "obj-11",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-70",
+                        0
+                    ],
+                    "destination": [
+                        "obj-12",
+                        0
                     ]
                 }
             }
