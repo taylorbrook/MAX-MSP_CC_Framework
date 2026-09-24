@@ -94,6 +94,11 @@
       "version": "0.6.0",
       "description": "Sends on the strip face: 8 rows (level dial + Pre/Post/Pan tap menu), driven into p sends via 'level N v' / 'tap N i' messages on one control inlet (internal dials/menus removed, sends 1-2 /127 wired). Solo-in-place: S toggle per strip, manager counts soloed strips and broadcasts mixer-solo-any; strip gate = (1-mute)*(!any || solo) into the 5ms ramp; busses solo-safe. Strip height 563->702. Gain/Pan dials moved clear of their labels",
       "timestamp": "2026-09-24T22:11:24.572348+00:00"
+    },
+    {
+      "version": "0.7.0",
+      "description": "Sound quality: equal-power pan (cos/sin, -3 dB centre, dial 0-128 so 64 = exact centre) on strips and busses; 20 ms line~ smoothing on trim, pan and all 8 send levels; trim now -20..+20 dB via scale -> dbtoa with 64 = exact unity; fader dB labels repositioned on gain~'s curve (128 = 0 dB, 10 steps = 6 dB) on strip/bus/master",
+      "timestamp": "2026-09-24T22:15:15.376505+00:00"
     }
   ]
 }
