@@ -16307,6 +16307,481 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-278",
+                    "numinlets": 0,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1615.0,
+                        30.0,
+                        86.0,
+                        22.0
+                    ],
+                    "text": "p about",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "patcher": {
+                        "fileversion": 1,
+                        "appversion": {
+                            "major": 9,
+                            "minor": 0,
+                            "revision": 0,
+                            "architecture": "x64",
+                            "modernui": 1
+                        },
+                        "classnamespace": "box",
+                        "rect": [
+                            120.0,
+                            120.0,
+                            750.0,
+                            544.0
+                        ],
+                        "bglocked": 0,
+                        "openinpresentation": 0,
+                        "default_fontsize": 12.0,
+                        "default_fontface": 0,
+                        "default_fontname": "Arial",
+                        "gridonopen": 1,
+                        "gridsize": [
+                            15.0,
+                            15.0
+                        ],
+                        "gridsnaponopen": 1,
+                        "objectsnaponopen": 1,
+                        "statusbarvisible": 2,
+                        "toolbarvisible": 1,
+                        "lefttoolbarpinned": 0,
+                        "toptoolbarpinned": 0,
+                        "righttoolbarpinned": 0,
+                        "bottomtoolbarpinned": 0,
+                        "toolbars_unpinned_last_save": 0,
+                        "tallnewobj": 0,
+                        "boxanimatetime": 200,
+                        "enablehscroll": 1,
+                        "enablevscroll": 1,
+                        "devicewidth": 0.0,
+                        "description": "",
+                        "digest": "",
+                        "tags": "",
+                        "style": "",
+                        "subpatcher_template": "",
+                        "assistshowspatchername": 0,
+                        "boxes": [
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-1",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        20,
+                                        700,
+                                        26
+                                    ],
+                                    "text": "JI HARMONIZER -- one key plays a microtonally tuned wavetable chord",
+                                    "fontname": "Arial",
+                                    "fontsize": 16.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-2",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        58,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "USING IT",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-3",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        83,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Play MIDI or click the keyboard: each key sounds a chord of up to 12 voices (one key at a time).",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-4",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        105,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Turn audio on with the speaker button in the patching view; the fader sets the level.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-5",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        127,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "ratio column: type a ratio (3/2) or cents (701.955c) per scale degree; on picks the degrees used.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-6",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        149,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "temperament: load a preset scale. It reads Custom when the table matches none.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-7",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        171,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "load .scl or drop a 12-note Scala file on the drop zone; period shows its repeat interval.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-8",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        193,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "tonic sets the scale's root key; A4 sets the reference pitch (Hz).",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-9",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        215,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "voices, complexity and voicing shape the chord; spacing and inversion add octave copies.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-10",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        237,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "CHORD FEEL: spread = stereo width, detune ct = random detune, timing ms = random stagger.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-11",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        259,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "WAVETABLE ENGINE: bank A/B pick each oscillator's table; wt pos morphs through it.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-12",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        281,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "    lfo A/B rate and depth sweep the positions; osc gain A/B mix the two oscillators.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-13",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        303,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "FILTER: cutoff, resonance, filter lfo (A) and vel > filter drive a master lowpass.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-14",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        325,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "ENVELOPE: atk / dec / sus / rel for the whole chord.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-15",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        347,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "SOUNDING PITCHES lists each voice's frequency, interval and nearest 12-TET note.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-16",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        369,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "presets: click a slot to recall, shift-click to store. Slots save with the patch.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-17",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        401,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "HOW IT WORKS",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-18",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        426,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "ji-engine.js tunes the scale from the tonic and builds the chord's frequencies and gains.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-19",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        448,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "A 12-channel mc.gen~ plays two morphing wavetable oscillators per voice from buffer~s.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-20",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        470,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "The chord is panned to stereo, shaped by adsr~, then filtered by a gen~ TPT lowpass.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-21",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        492,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "pattrstorage jhpresets stores every setting, including the ratio table and period.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            }
+                        ],
+                        "lines": [],
+                        "dependency_cache": [],
+                        "autosave": 0,
+                        "bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "editing_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "locked_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ]
+                    },
+                    "saved_object_attributes": {
+                        "description": "",
+                        "digest": "",
+                        "globalpatchername": "",
+                        "tags": ""
+                    }
+                }
             }
         ],
         "lines": [
