@@ -4,6 +4,14 @@
       "version": "0.0.0",
       "description": "Initial version",
       "timestamp": "2026-08-24T21:38:53.264141+00:00"
+    },
+    {
+      "version": "0.0.1",
+      "description": "review fixes: stop fade keeps playhead moving (no thump/overdub spike); waveform~ redraw via set #1 + snapshot~ resend; canvas bgcolor + darker panel gradients for label contrast",
+      "timestamp": "2026-09-24T03:29:00.763266+00:00",
+      "files_changed": [
+        "looper.maxpat"
+      ]
     }
   ]
 }
