@@ -129,7 +129,7 @@
                         "signal"
                     ],
                     "patching_rect": [
-                        100,
+                        130,
                         20,
                         94.0,
                         22.0
@@ -340,13 +340,13 @@
                     ],
                     "text": "+6",
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        58,
-                        20.0,
-                        12.0
+                        56,
+                        22.0,
+                        16.0
                     ],
                     "textcolor": [
                         0.0,
@@ -372,13 +372,13 @@
                     ],
                     "text": "0",
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        75,
-                        20.0,
-                        12.0
+                        73,
+                        22.0,
+                        16.0
                     ],
                     "textcolor": [
                         0.0,
@@ -404,13 +404,13 @@
                     ],
                     "text": "-6",
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        91,
-                        20.0,
-                        12.0
+                        89,
+                        22.0,
+                        16.0
                     ],
                     "textcolor": [
                         0.0,
@@ -436,13 +436,13 @@
                     ],
                     "text": "-12",
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        107,
-                        20.0,
-                        12.0
+                        105,
+                        22.0,
+                        16.0
                     ],
                     "textcolor": [
                         0.0,
@@ -468,13 +468,13 @@
                     ],
                     "text": "-24",
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        139,
-                        20.0,
-                        12.0
+                        137,
+                        22.0,
+                        16.0
                     ],
                     "textcolor": [
                         0.0,
@@ -500,13 +500,13 @@
                     ],
                     "text": "-48",
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        203,
-                        20.0,
-                        12.0
+                        201,
+                        22.0,
+                        16.0
                     ],
                     "textcolor": [
                         0.0,
@@ -660,13 +660,13 @@
                     ],
                     "text": "M",
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
                         85.0,
-                        51.0,
+                        49,
                         20.0,
-                        12.0
+                        16.0
                     ],
                     "textcolor": [
                         0.0,
@@ -1092,6 +1092,12 @@
             1.0
         ],
         "locked_bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ],
+        "bgcolor": [
             0.333,
             0.333,
             0.333,
