@@ -153,3 +153,10 @@ LFO --> VCO Pitch & VCF Cutoff
 - `p oscillators`: `receive → $1 30 → line~ → -~ 0.5` is added via `+~` to the VCO2 semitone offset (`-~ 12.`) ahead of the `pow(2, x/12)` ratio gen~. So ±0.5 st = ±50 cents, and it sums with VCO2 FREQ.
 - MIDI: CC18 (coarse) / CC50 (fine) in `p midi-input`, handled with the same `expr *128 → t i 0` / `t b i → + → scale 0 16383 0. 1.` pair as the other 14-bit CCs.
 - UI: BEAT dial/flonum at pres. x 125 in the OSC panel. The OSC panel is 55 px wider (354), and every row-1 control right of VCO2 FREQ moved +55 px (row 1 now ends at x 904). New fan-outs go through `t f f`.
+
+## Decisions (v0.1.5 legato glide + glide type menu, 2026-09-24)
+
+- **LEGATO GLIDE** toggle in PERF (pres. 866,255 under GLIDE, label at 861,240), default off. Bus `mt-cc-legato-glide` (0/1); CC83 → `>= 64` (0-63 always glide, 64-127 glide only on overlapping notes). `receive → set $1` keeps the toggle synced.
+- Voice JS has a 5th outlet: overlap flag (1 when the sounding note changed while another key was held, incl. falling back to a held note on release; 0 on fresh notes), sent before the note → `send mt-overlap`.
+- `p glide` gen~ now has 6 inputs: in5 overlap (`receive mt-overlap → sig~`), in6 legato glide (`receive mt-cc-legato-glide → sig~`). On a target change with legato on and no overlap it sets `jump`, so `cur = target` instantly; otherwise glides as before. GLIDE on/off still gates everything.
+- **GLD TYP** is now a umenu (LCR / LCT / EXP, index 0-2) in the old dial slot (pres. 956,209,50,20), `loadmess 0` default LCR. Dial, flonum and both scale objects removed. CC92 → `expr ($i1>42)+($i1>84)` (0-42/43-84/85-127).

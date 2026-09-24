@@ -71,6 +71,15 @@
       "files_changed": [
         "minitaur.maxpat"
       ]
+    },
+    {
+      "version": "0.1.5",
+      "description": "LEGATO GLIDE toggle (CC83) + overlap flag from voice js; GLD TYP umenu LCR/LCT/EXP, CC92 thresholds 0-42/43-84/85-127",
+      "timestamp": "2026-09-24T22:04:05.796194+00:00",
+      "files_changed": [
+        "minitaur.maxpat",
+        "minitaur-voice.js"
+      ]
     }
   ]
 }

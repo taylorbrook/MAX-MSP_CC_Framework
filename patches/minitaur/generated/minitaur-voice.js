@@ -2,10 +2,11 @@
 // inlet 0:  "note vel" lists (vel 0 = note off), "priority N" (0 low, 1 high, 2 last),
 //           "trigmode N" (0 Legato ON = no retrigger on overlapping notes,
 //           1 Legato OFF / 2 EG Reset = retrigger; reset shape lives in gen~), "clear"
-// outlets:  0 note (clamped 0-72), 1 velocity, 2 gate 0/1, 3 retrigger toggle (flips 0/1)
+// outlets:  0 note (clamped 0-72), 1 velocity, 2 gate 0/1, 3 retrigger toggle (flips 0/1),
+//           4 overlap flag (1 = note sounded while another key was held; drives legato glide)
 
 inlets = 1;
-outlets = 4;
+outlets = 5;
 
 var held = [];      // held notes, oldest first
 var vels = {};      // velocity per held note
@@ -24,8 +25,9 @@ function select() {
     return best;
 }
 
-function sound(n, retrig) {
+function sound(n, retrig, overlap) {
     current = n;
+    outlet(4, overlap ? 1 : 0);
     outlet(1, vels[n]);
     outlet(0, Math.max(0, Math.min(72, n)));
     outlet(2, 1);
@@ -45,15 +47,15 @@ function list(n, v) {
         held.push(n);
         vels[n] = v;
         var target = select();
-        if (!wasHeld) sound(target, true);
-        else if (target !== current) sound(target, !legatoMode);
+        if (!wasHeld) sound(target, true, false);
+        else if (target !== current) sound(target, !legatoMode, true);
     } else {
         delete vels[n];
         if (held.length === 0) {
             outlet(2, 0);
         } else {
             var back = select();
-            if (back !== current) sound(back, !legatoMode);
+            if (back !== current) sound(back, !legatoMode, true);
         }
     }
 }
