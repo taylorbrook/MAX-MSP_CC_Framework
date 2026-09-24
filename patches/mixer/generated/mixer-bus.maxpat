@@ -161,7 +161,8 @@
 						28.0,
 						36.0,
 						220.0
-					]
+					],
+					"varname": "fader"
 				}
 			},
 			{
@@ -186,7 +187,8 @@
 						254.0,
 						36.0,
 						36.0
-					]
+					],
+					"varname": "pan"
 				}
 			},
 			{
@@ -312,7 +314,8 @@
 						298.0,
 						20.0,
 						20.0
-					]
+					],
+					"varname": "mute"
 				}
 			},
 			{
@@ -968,6 +971,29 @@
 						22.0
 					],
 					"text": "loadmess 0",
+					"fontname": "Arial",
+					"fontsize": 12.0
+				}
+			},
+			{
+				"box": {
+					"maxclass": "newobj",
+					"id": "obj-41",
+					"numinlets": 1,
+					"numoutlets": 4,
+					"outlettype": [
+						"",
+						"",
+						"",
+						""
+					],
+					"patching_rect": [
+						450,
+						120,
+						184.0,
+						22.0
+					],
+					"text": "autopattr @autorestore 0",
 					"fontname": "Arial",
 					"fontsize": 12.0
 				}
