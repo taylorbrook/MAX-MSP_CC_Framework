@@ -12,8 +12,8 @@
         "rect": [
             34.0,
             208.0,
-            1151.0,
-            543.0
+            1064.0,
+            460.0
         ],
         "openinpresentation": 1,
         "boxes": [
@@ -344,7 +344,7 @@
                     "presentation_rect": [
                         10.0,
                         284.0,
-                        836.0,
+                        1044.0,
                         90.0
                     ],
                     "rounded": 6
@@ -20677,7 +20677,7 @@
                     "presentation_rect": [
                         15.0,
                         76.0,
-                        56.0,
+                        55.0,
                         17.0
                     ],
                     "text": "FINE TUNE",
@@ -20800,7 +20800,7 @@
                     "presentation_rect": [
                         70.0,
                         76.0,
-                        61.0,
+                        55.0,
                         17.0
                     ],
                     "text": "VCO2 FREQ",
@@ -20908,7 +20908,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         187.0,
-                        117.0,
+                        104.0,
                         20.0,
                         20.0
                     ],
@@ -20945,7 +20945,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "id": "obj-25",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -20959,9 +20959,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         180.0,
-                        94.0,
-                        50.0,
-                        15.0
+                        81.0,
+                        45.0,
+                        17.0
                     ],
                     "text": "VCO1 SQ",
                     "textcolor": [
@@ -20990,8 +20990,8 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        227.0,
-                        117.0,
+                        232.0,
+                        104.0,
                         20.0,
                         20.0
                     ],
@@ -21028,7 +21028,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "id": "obj-28",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -21041,10 +21041,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        222.0,
-                        94.0,
-                        50.0,
-                        15.0
+                        225.0,
+                        81.0,
+                        45.0,
+                        17.0
                     ],
                     "text": "VCO2 SQ",
                     "textcolor": [
@@ -21446,26 +21446,6 @@
             },
             {
                 "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-45",
-                    "maxclass": "newobj",
-                    "numinlets": 0,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        1590.0,
-                        30.0,
-                        113.0,
-                        22.0
-                    ],
-                    "text": "receive mt-cc-cutoff"
-                }
-            },
-            {
-                "box": {
                     "id": "obj-47",
                     "maxclass": "dial",
                     "numinlets": 1,
@@ -21518,7 +21498,7 @@
                     "presentation_rect": [
                         609.0,
                         76.0,
-                        66.0,
+                        55.0,
                         17.0
                     ],
                     "text": "RESONANCE",
@@ -22613,15 +22593,15 @@
                         20.0,
                         20.0
                     ],
-                    "varname": "Release",
+                    "varname": "Release Switch",
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
                                 0
                             ],
                             "parameter_initial_enable": 1,
-                            "parameter_longname": "Release",
-                            "parameter_shortname": "Release"
+                            "parameter_longname": "Release Switch",
+                            "parameter_shortname": "Release Switch"
                         }
                     }
                 }
@@ -22646,7 +22626,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "id": "obj-97",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -22662,7 +22642,7 @@
                         180.0,
                         196.0,
                         48.0,
-                        15.0
+                        17.0
                     ],
                     "text": "RELEASE",
                     "textcolor": [
@@ -23125,15 +23105,15 @@
                         20.0,
                         20.0
                     ],
-                    "varname": "Glide",
+                    "varname": "Glide On",
                     "saved_attribute_attributes": {
                         "valueof": {
                             "parameter_initial": [
                                 0
                             ],
                             "parameter_initial_enable": 1,
-                            "parameter_longname": "Glide",
-                            "parameter_shortname": "Glide"
+                            "parameter_longname": "Glide On",
+                            "parameter_shortname": "Glide On"
                         }
                     }
                 }
@@ -23158,7 +23138,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "id": "obj-118",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -23173,8 +23153,8 @@
                     "presentation_rect": [
                         906.0,
                         196.0,
-                        45.0,
-                        15.0
+                        38.0,
+                        17.0
                     ],
                     "text": "GLIDE",
                     "textcolor": [
@@ -23735,7 +23715,7 @@
                         55.0,
                         18.0
                     ],
-                    "text": "VOL",
+                    "text": "OUTPUT",
                     "textcolor": [
                         0.0,
                         0.0,
@@ -24319,7 +24299,7 @@
                         100.0,
                         20.0
                     ],
-                    "text": "--- INIT ---"
+                    "text": "--- UI SYNC (MIDI CC -> controls, cont.) ---"
                 }
             },
             {
@@ -25280,7 +25260,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-230",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -25294,9 +25274,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         270.0,
-                        94.0,
-                        46.0,
-                        18.0
+                        81.0,
+                        45.0,
+                        17.0
                     ],
                     "text": "H.SYNC",
                     "textcolor": [
@@ -25325,8 +25305,8 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        275.0,
-                        117.0,
+                        277.0,
+                        104.0,
                         20.0,
                         20.0
                     ],
@@ -25363,7 +25343,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-233",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -25377,9 +25357,9 @@
                     "presentation": 1,
                     "presentation_rect": [
                         315.0,
-                        94.0,
-                        46.0,
-                        18.0
+                        81.0,
+                        45.0,
+                        17.0
                     ],
                     "text": "N.SYNC",
                     "textcolor": [
@@ -25408,8 +25388,8 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        320.0,
-                        117.0,
+                        322.0,
+                        104.0,
                         20.0,
                         20.0
                     ],
@@ -25463,7 +25443,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-237",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -25479,7 +25459,7 @@
                         489.0,
                         76.0,
                         48.0,
-                        18.0
+                        17.0
                     ],
                     "text": "EXT LVL",
                     "textcolor": [
@@ -25549,7 +25529,6 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
                     "format": 6,
                     "id": "obj-240",
                     "maxclass": "flonum",
@@ -25564,15 +25543,17 @@
                         5155.0,
                         340.0,
                         45.0,
-                        20.0
+                        22.0
                     ],
                     "presentation": 1,
                     "presentation_rect": [
                         489.0,
                         136.0,
                         45.0,
-                        20.0
-                    ]
+                        22.0
+                    ],
+                    "ignoreclick": 1,
+                    "numdecimalplaces": 2
                 }
             },
             {
@@ -25612,7 +25593,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-243",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -25628,7 +25609,7 @@
                         719.0,
                         76.0,
                         50.0,
-                        18.0
+                        17.0
                     ],
                     "text": "KB TRK",
                     "textcolor": [
@@ -25698,7 +25679,6 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
                     "format": 6,
                     "id": "obj-246",
                     "maxclass": "flonum",
@@ -25713,15 +25693,17 @@
                         5255.0,
                         340.0,
                         45.0,
-                        20.0
+                        22.0
                     ],
                     "presentation": 1,
                     "presentation_rect": [
                         719.0,
                         136.0,
                         45.0,
-                        20.0
-                    ]
+                        22.0
+                    ],
+                    "ignoreclick": 1,
+                    "numdecimalplaces": 2
                 }
             },
             {
@@ -25744,7 +25726,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-248",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -25760,7 +25742,7 @@
                         774.0,
                         76.0,
                         50.0,
-                        18.0
+                        17.0
                     ],
                     "text": "FLT VEL",
                     "textcolor": [
@@ -25830,7 +25812,6 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
                     "format": 6,
                     "id": "obj-251",
                     "maxclass": "flonum",
@@ -25845,15 +25826,17 @@
                         5315.0,
                         340.0,
                         45.0,
-                        20.0
+                        22.0
                     ],
                     "presentation": 1,
                     "presentation_rect": [
                         774.0,
                         136.0,
                         45.0,
-                        20.0
-                    ]
+                        22.0
+                    ],
+                    "ignoreclick": 1,
+                    "numdecimalplaces": 2
                 }
             },
             {
@@ -25893,7 +25876,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-254",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -25908,8 +25891,8 @@
                     "presentation_rect": [
                         413.0,
                         191.0,
-                        52.0,
-                        18.0
+                        46.0,
+                        17.0
                     ],
                     "text": "AMP VEL",
                     "textcolor": [
@@ -25979,7 +25962,6 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
                     "format": 6,
                     "id": "obj-257",
                     "maxclass": "flonum",
@@ -25994,15 +25976,17 @@
                         5395.0,
                         340.0,
                         45.0,
-                        20.0
+                        22.0
                     ],
                     "presentation": 1,
                     "presentation_rect": [
                         413.0,
                         251.0,
                         45.0,
-                        20.0
-                    ]
+                        22.0
+                    ],
+                    "ignoreclick": 1,
+                    "numdecimalplaces": 2
                 }
             },
             {
@@ -26041,7 +26025,7 @@
                         459.0,
                         196.0,
                         60.0,
-                        18.0
+                        17.0
                     ],
                     "text": "TRIG MODE",
                     "textcolor": [
@@ -26089,7 +26073,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-263",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -26105,7 +26089,7 @@
                         701.0,
                         191.0,
                         50.0,
-                        18.0
+                        17.0
                     ],
                     "text": "WAVE",
                     "textcolor": [
@@ -26155,7 +26139,6 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
                     "format": 6,
                     "id": "obj-266",
                     "maxclass": "flonum",
@@ -26170,15 +26153,17 @@
                         5535.0,
                         340.0,
                         45.0,
-                        20.0
+                        22.0
                     ],
                     "presentation": 1,
                     "presentation_rect": [
                         701.0,
                         251.0,
                         45.0,
-                        20.0
-                    ]
+                        22.0
+                    ],
+                    "ignoreclick": 1,
+                    "numdecimalplaces": 0
                 }
             },
             {
@@ -26201,7 +26186,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-268",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -26216,8 +26201,8 @@
                     "presentation_rect": [
                         757.0,
                         196.0,
-                        44.0,
-                        18.0
+                        45.0,
+                        17.0
                     ],
                     "text": "KEY TR",
                     "textcolor": [
@@ -26284,7 +26269,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-271",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -26297,12 +26282,12 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        797.0,
+                        802.0,
                         196.0,
-                        46.0,
-                        18.0
+                        45.0,
+                        17.0
                     ],
-                    "text": "VCO2 O",
+                    "text": "V2 ONLY",
                     "textcolor": [
                         0.0,
                         0.0,
@@ -26329,7 +26314,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        802.0,
+                        807.0,
                         219.0,
                         20.0,
                         20.0
@@ -26384,7 +26369,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-275",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -26400,7 +26385,7 @@
                         1001.0,
                         191.0,
                         51.0,
-                        18.0
+                        17.0
                     ],
                     "text": "GLD TYP",
                     "textcolor": [
@@ -26431,7 +26416,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-280",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -26447,7 +26432,7 @@
                         15.0,
                         289.0,
                         51.0,
-                        18.0
+                        17.0
                     ],
                     "text": "MOD WH",
                     "textcolor": [
@@ -26517,7 +26502,6 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
                     "format": 6,
                     "id": "obj-283",
                     "maxclass": "flonum",
@@ -26532,15 +26516,17 @@
                         5775.0,
                         340.0,
                         45.0,
-                        20.0
+                        22.0
                     ],
                     "presentation": 1,
                     "presentation_rect": [
                         15.0,
                         349.0,
                         45.0,
-                        20.0
-                    ]
+                        22.0
+                    ],
+                    "ignoreclick": 1,
+                    "numdecimalplaces": 2
                 }
             },
             {
@@ -26574,7 +26560,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.1.9"
+                    "text": "v0.1.10"
                 }
             },
             {
@@ -27146,7 +27132,7 @@
                         324.0,
                         20.0
                     ],
-                    "text": "--- UI SYNC (MIDI CC / init -> controls) ---",
+                    "text": "--- UI SYNC (MIDI CC -> controls) ---",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -29704,8 +29690,8 @@
                     "parameter_enable": 1,
                     "presentation": 1,
                     "presentation_rect": [
-                        911.0,
-                        255.0,
+                        1016.0,
+                        251.0,
                         20.0,
                         20.0
                     ],
@@ -29795,13 +29781,13 @@
                     ],
                     "text": "LEGATO",
                     "fontname": "Arial",
-                    "fontsize": 8.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
-                        906.0,
-                        240.0,
-                        45.0,
-                        15.0
+                        1001.0,
+                        233.0,
+                        51.0,
+                        17.0
                     ],
                     "textcolor": [
                         0.0,
@@ -29829,7 +29815,7 @@
                     "parameter_enable": 1,
                     "presentation": 1,
                     "presentation_rect": [
-                        842.0,
+                        852.0,
                         219.0,
                         20.0,
                         20.0
@@ -30060,13 +30046,13 @@
                     ],
                     "text": "SYNC",
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "presentation": 1,
                     "presentation_rect": [
-                        837.0,
+                        847.0,
                         196.0,
-                        44.0,
-                        18.0
+                        45.0,
+                        17.0
                     ],
                     "textcolor": [
                         0.0,
@@ -30143,7 +30129,7 @@
                     "parameter_enable": 0,
                     "presentation": 1,
                     "presentation_rect": [
-                        1034.0,
+                        1036.0,
                         32.0,
                         18.0,
                         18.0
@@ -30227,7 +30213,7 @@
                     "fontsize": 10.0,
                     "presentation": 1,
                     "presentation_rect": [
-                        1002.0,
+                        1004.0,
                         32.0,
                         32.0,
                         18.0
