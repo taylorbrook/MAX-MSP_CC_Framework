@@ -299,30 +299,10 @@
                     "patching_rect": [
                         326.0,
                         66.0,
-                        40.0,
+                        80,
                         22.0
                     ],
-                    "text": "set 4"
-                }
-            },
-            {
-                "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-54",
-                    "maxclass": "message",
-                    "numinlets": 2,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        ""
-                    ],
-                    "patching_rect": [
-                        376.0,
-                        66.0,
-                        40.0,
-                        22.0
-                    ],
-                    "text": "set 2"
+                    "text": "name mixer"
                 }
             },
             {
@@ -362,7 +342,7 @@
                     "maxclass": "bpatcher",
                     "name": "mixer-master.maxpat",
                     "numinlets": 0,
-                    "numoutlets": 0,
+                    "numoutlets": 2,
                     "offset": [
                         0.0,
                         0.0
@@ -374,7 +354,8 @@
                         438.0
                     ],
                     "varname": "master",
-                    "viewvisibility": 1
+                    "viewvisibility": 1,
+                    "outlettype": []
                 }
             },
             {
@@ -784,7 +765,7 @@
                                         700.0,
                                         22.0
                                     ],
-                                    "text": "Master: overall fader with L/R meters; its speaker button turns audio on."
+                                    "text": "Master: fader, M (mute), L/R meters, speaker = audio on. Its outlets and send~ <name>-out-L/R carry the mix."
                                 }
                             },
                             {
@@ -819,7 +800,7 @@
                                         700.0,
                                         22.0
                                     ],
-                                    "text": "Strip inlets 1-2: audio in L/R (or send~ mixer-in-N-L/R, no cords needed). Inlets 3-4: insert return L/R."
+                                    "text": "Strip inlets 1-2: audio in L/R, or send~ <name>-in-N-L/R (\"name mixer\" sets <name>). Inlets 3-4: insert return L/R."
                                 }
                             },
                             {
@@ -905,7 +886,7 @@
                                         700.0,
                                         22.0
                                     ],
-                                    "text": "Each strip's argument is its channel number; sends reach busses over send~ bus-N-L/R."
+                                    "text": "Internal send~/receive~ names get a fresh per-instance ID at load, so several mixers can run side by side."
                                 }
                             },
                             {
@@ -2115,6 +2096,25 @@
                     ],
                     "text": "receive mixer-solo",
                     "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "varname": "solorecv"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-66",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        290,
+                        92,
+                        247.0,
+                        20.0
+                    ],
+                    "text": "<- port name prefix: edit + click",
+                    "fontname": "Arial",
                     "fontsize": 12.0
                 }
             }
@@ -2249,24 +2249,6 @@
             {
                 "patchline": {
                     "destination": [
-                        "obj-54",
-                        0
-                    ],
-                    "midpoints": [
-                        302.5,
-                        61.0,
-                        385.5,
-                        61.0
-                    ],
-                    "source": [
-                        "obj-51",
-                        2
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
                         "obj-41",
                         0
                     ],
@@ -2278,66 +2260,6 @@
                     ],
                     "source": [
                         "obj-52",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-3",
-                        0
-                    ],
-                    "midpoints": [
-                        335.5,
-                        99.0,
-                        180.0,
-                        99.0,
-                        180.0,
-                        72.0,
-                        123.0,
-                        72.0,
-                        123.0,
-                        78.0,
-                        6.0,
-                        78.0,
-                        6.0,
-                        51.0,
-                        19.5,
-                        51.0
-                    ],
-                    "source": [
-                        "obj-53",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-6",
-                        0
-                    ],
-                    "midpoints": [
-                        385.5,
-                        99.0,
-                        180.0,
-                        99.0,
-                        180.0,
-                        72.0,
-                        123.0,
-                        72.0,
-                        123.0,
-                        78.0,
-                        69.0,
-                        78.0,
-                        69.0,
-                        51.0,
-                        82.5,
-                        51.0
-                    ],
-                    "source": [
-                        "obj-54",
                         0
                     ]
                 }
@@ -2388,6 +2310,18 @@
                 "patchline": {
                     "source": [
                         "obj-65",
+                        0
+                    ],
+                    "destination": [
+                        "obj-41",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-53",
                         0
                     ],
                     "destination": [
