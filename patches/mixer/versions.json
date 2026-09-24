@@ -74,6 +74,11 @@
       "version": "0.2.1",
       "description": "fix mute click, sends routing, and layout overlap",
       "timestamp": "2026-03-21T11:51:37.496374+00:00"
+    },
+    {
+      "version": "0.3.0",
+      "description": "Review fixes: linked stereo gain~ pairs (R slaved via right-outlet echo, replaces linear /128) in strip/bus/master; bus mute defaults on with 5ms line~ ramp; bus duplicate obj-26 id resolved (label restored)",
+      "timestamp": "2026-09-24T15:50:22.465382+00:00"
     }
   ]
 }

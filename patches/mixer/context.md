@@ -41,3 +41,4 @@ inlet L/R
 - selector~ 3 per send for tap-point switching
 - gate~ for mute
 - gain~ + meter~ for metering at multiple points
+- Stereo faders (strip, bus, master): R channel is a second `gain~` slaved to the visible L `gain~` (L outlet 1 → R inlet 0). The R `gain~` is deliberately excluded from presentation (v0.3.0).
