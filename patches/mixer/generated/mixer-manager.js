@@ -10,16 +10,16 @@
 inlets = 1;
 outlets = 1;
 
-var STRIP_W = 88;
-var STRIP_H = 702;
-var BUS_W = 88;
-var BUS_H = 428;
-var MASTER_W = 118;
-var MASTER_H = 438;
+var STRIP_W = 80;
+var STRIP_H = 694;
+var BUS_W = 80;
+var BUS_H = 420;
+var MASTER_W = 110;
+var MASTER_H = 430;
 
 var ROW_Y = 190;
 var X_START = 10;
-var GAP = 4;
+var GAP = 12;		// bpatchers match their panels; same 92 px pitch as before
 var BUS_GAP = 16;
 var MASTER_GAP = 24;
 
