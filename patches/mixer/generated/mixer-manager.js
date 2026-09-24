@@ -27,6 +27,12 @@ var trackCount = 0;
 var busCount = 0;
 var soloed = {};		// strip number -> 1 while its S is on
 
+// Internal send~/receive~ names are scoped to this mixer instance: a fresh ID
+// per load, pushed into every strip/bus/master with "set" (see applyNames).
+// prefix names the user-facing ports: <prefix>-in-N-L/R, <prefix>-out-L/R.
+var ID = "mx" + Math.floor(Math.random() * 2176782336).toString(36);
+var prefix = "mixer";
+
 function stripX(i) {
 	return X_START + i * (STRIP_W + GAP);
 }
@@ -136,6 +142,7 @@ function init(t, b) {
 	syncBusses(p, Math.max(0, Math.min(b, 8)));
 	moveMaster(p);
 	setCounts(p);
+	applyNames(p);
 	broadcastSolo();
 	post("mixer: init " + trackCount + " track(s), " + busCount + " bus(ses)\n");
 }
@@ -195,6 +202,7 @@ function tracks(count) {
 	syncStrips(p, Math.max(1, Math.min(count, 32)));
 	syncBusses(p, busCount);	// reposition only; existing busses are kept
 	moveMaster(p);
+	applyNames(p);
 	broadcastSolo();
 	post("mixer: " + trackCount + " track(s)\n");
 }
@@ -203,6 +211,7 @@ function busses(count) {
 	var p = this.patcher;
 	syncBusses(p, Math.max(0, Math.min(count, 8)));
 	moveMaster(p);
+	applyNames(p);
 	post("mixer: " + busCount + " bus(ses)\n");
 }
 
@@ -218,5 +227,58 @@ function solo(n, state) {
 function broadcastSolo() {
 	var any = 0;
 	for (var k in soloed) any = 1;
-	messnamed("mixer-solo-any", any);
+	messnamed(ID + "-solo-any", any);
+}
+
+// ---- instance-scoped names
+
+function name(s) {
+	prefix = String(s);
+	applyNames(this.patcher);
+	post("mixer: ports " + prefix + "-in-N-L/R, " + prefix + "-out-L/R\n");
+}
+
+function setName(pat, vn, sel, nm) {
+	var o = pat ? pat.getnamed(vn) : null;
+	if (o) o.message(sel, nm);
+	else post("mixer: missing " + vn + "\n");
+}
+
+function applyNames(p) {
+	var i, k, obj, sp, ss;
+	for (i = 1; i <= trackCount; i++) {
+		obj = p.getnamed("strip-" + i);
+		if (!obj) continue;
+		sp = obj.subpatcher();
+		setName(sp, "inL", "set", prefix + "-in-" + i + "-L");
+		setName(sp, "inR", "set", prefix + "-in-" + i + "-R");
+		setName(sp, "tomasterL", "set", ID + "-master-L");
+		setName(sp, "tomasterR", "set", ID + "-master-R");
+		setName(sp, "solofwd", "send", ID + "-solo");
+		setName(sp, "soloany", "set", ID + "-solo-any");
+		ss = sp ? sp.getnamed("sends") : null;
+		ss = ss ? ss.subpatcher() : null;
+		for (k = 1; k <= 8; k++) {
+			setName(ss, "bus" + k + "L", "set", ID + "-bus-" + k + "-L");
+			setName(ss, "bus" + k + "R", "set", ID + "-bus-" + k + "-R");
+		}
+	}
+	for (i = 1; i <= busCount; i++) {
+		obj = p.getnamed("bus-" + i);
+		if (!obj) continue;
+		sp = obj.subpatcher();
+		setName(sp, "fromL", "set", ID + "-bus-" + i + "-L");
+		setName(sp, "fromR", "set", ID + "-bus-" + i + "-R");
+		setName(sp, "tomasterL", "set", ID + "-master-L");
+		setName(sp, "tomasterR", "set", ID + "-master-R");
+	}
+	obj = p.getnamed("master");
+	if (obj) {
+		sp = obj.subpatcher();
+		setName(sp, "fromL", "set", ID + "-master-L");
+		setName(sp, "fromR", "set", ID + "-master-R");
+		setName(sp, "outL", "set", prefix + "-out-L");
+		setName(sp, "outR", "set", prefix + "-out-R");
+	}
+	setName(p, "solorecv", "set", ID + "-solo");
 }
