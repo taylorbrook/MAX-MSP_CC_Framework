@@ -115,7 +115,8 @@
 					],
 					"text": "receive~ #2",
 					"fontname": "Arial",
-					"fontsize": 12.0
+					"fontsize": 12.0,
+					"varname": "fromL"
 				}
 			},
 			{
@@ -135,7 +136,8 @@
 					],
 					"text": "receive~ #3",
 					"fontname": "Arial",
-					"fontsize": 12.0
+					"fontsize": 12.0,
+					"varname": "fromR"
 				}
 			},
 			{
@@ -424,7 +426,8 @@
 					],
 					"text": "send~ master-L",
 					"fontname": "Arial",
-					"fontsize": 12.0
+					"fontsize": 12.0,
+					"varname": "tomasterL"
 				}
 			},
 			{
@@ -442,7 +445,8 @@
 					],
 					"text": "send~ master-R",
 					"fontname": "Arial",
-					"fontsize": 12.0
+					"fontsize": 12.0,
+					"varname": "tomasterR"
 				}
 			},
 			{
