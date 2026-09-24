@@ -80,6 +80,15 @@
         "minitaur.maxpat",
         "minitaur-voice.js"
       ]
+    },
+    {
+      "version": "0.1.6",
+      "description": "LFO MIDI clock sync: CC87 SYNC (default ON, active while clock arrives), CC86 p.24 divisions, rtin tick-period rate, phase reset on start, SYNC toggle + DIV menu",
+      "timestamp": "2026-09-24T22:12:28.405529+00:00",
+      "files_changed": [
+        "minitaur.maxpat",
+        "minitaur-clock.js"
+      ]
     }
   ]
 }

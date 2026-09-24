@@ -131,7 +131,7 @@ LFO --> VCO Pitch & VCF Cutoff
 - **Sync**: gen~ master phase drives `saw~`/`rect~` sync inlets. Hard sync resets VCO2 each VCO1 cycle; note sync resets both on retrigger.
 - **Mod wheel** (v0.1.1, per Minitaur manual): `mt-mod-wheel` is initialised to 1.0 by `loadmess 1.` → `send mt-mod-wheel`, so VCO/VCF LFO AMOUNT act directly at load and the MOD WH dial/flonum show max. Once any wheel value arrives (CC1/33 or the MOD WH dial) it scales both depths.
 - **LFO depth ranges**: VCO LFO ±1 octave (`*~ 1.` in `p oscillators`), VCF LFO ±5 octaves (`*~ 5.` in `p filter`).
-- **Not yet built**: glide-legato mode, MIDI clock sync for the LFO.
+- **Not yet built**: (glide-legato mode added v0.1.5, MIDI clock sync v0.1.6)
 
 ## Decisions (v0.1.2 trig mode + priority, 2026-09-24)
 
@@ -160,3 +160,13 @@ LFO --> VCO Pitch & VCF Cutoff
 - Voice JS has a 5th outlet: overlap flag (1 when the sounding note changed while another key was held, incl. falling back to a held note on release; 0 on fresh notes), sent before the note → `send mt-overlap`.
 - `p glide` gen~ now has 6 inputs: in5 overlap (`receive mt-overlap → sig~`), in6 legato glide (`receive mt-cc-legato-glide → sig~`). On a target change with legato on and no overlap it sets `jump`, so `cur = target` instantly; otherwise glides as before. GLIDE on/off still gates everything.
 - **GLD TYP** is now a umenu (LCR / LCT / EXP, index 0-2) in the old dial slot (pres. 956,209,50,20), `loadmess 0` default LCR. Dial, flonum and both scale objects removed. CC92 → `expr ($i1>42)+($i1>84)` (0-42/43-84/85-127).
+
+## Decisions (v0.1.6 LFO MIDI clock sync, 2026-09-24)
+
+- **Clock logic** lives in `generated/minitaur-clock.js` (inside `p lfo`). `rtin → select 248 250 252`: each 248 tick is timestamped by `cpuclock` in the scheduler before reaching js (js runs deferred), 250 → `start`, 252 → `stop` (no-op: sync follows the ticks, not the transport).
+- **Rate** = 1000 / (tick ms × ticks per cycle). Tick period is averaged over the last 24 ticks (one quarter note). "Clock arriving" = a tick within the last 300 ms (js Task watchdog), so sync drops out, and the RATE knob takes over again, 300 ms after the clock stops.
+- **Divisions** follow the manual's p.24 table, 21 steps from 4 WH (384 ticks) to 1/64 T (1 tick) at 24 ppqn. CC86 bands are 0-6/7-12/…/61-67/…/122-127, and the same band lookup maps the RATE knob (0-1 × 127) to a division. The knob changes the division only while synced; CC86 and the DIV menu set it at any time. Default division: 1/4.
+- **Buses**: `mt-cc-lfo-sync` (0/1; CC87 `>= 64`; SYNC toggle, `loadmess 1` default ON), `mt-cc-lfo-div` (raw CC86 0-127), `mt-lfo-div-sel` (menu index → js), `mt-lfo-div` (js → menu `set $1` display).
+- **LFO gen~** has 7 inputs now: in6 = synced Hz (0 = free, use in1), in7 = start toggle. A start edge resets the phase like key trigger does. It only flips while SYNC is on.
+- Drift: the rate is derived, not phase-locked. Phase realigns only on Start.
+- **UI**: the LFO panel is 45 px wider (360). SYNC label/toggle are at pres. 837/842 (the column after VCO2 O), and DIV label + 21-item umenu sit at pres. 757/785, y 251. The PERF panel and its contents moved +45 px (901…1054).
