@@ -129,7 +129,7 @@
 						"signal"
 					],
 					"patching_rect": [
-						100,
+						130,
 						20,
 						94.0,
 						22.0
@@ -619,13 +619,13 @@
 					],
 					"text": "+6",
 					"fontname": "Arial",
-					"fontsize": 8.0,
+					"fontsize": 9.0,
 					"presentation": 1,
 					"presentation_rect": [
 						0.0,
-						52,
-						20.0,
-						12.0
+						50,
+						22.0,
+						16.0
 					],
 					"textcolor": [
 						0.0,
@@ -651,13 +651,13 @@
 					],
 					"text": "0",
 					"fontname": "Arial",
-					"fontsize": 8.0,
+					"fontsize": 9.0,
 					"presentation": 1,
 					"presentation_rect": [
 						0.0,
-						65,
-						20.0,
-						12.0
+						63,
+						22.0,
+						16.0
 					],
 					"textcolor": [
 						0.0,
@@ -683,13 +683,13 @@
 					],
 					"text": "-6",
 					"fontname": "Arial",
-					"fontsize": 8.0,
+					"fontsize": 9.0,
 					"presentation": 1,
 					"presentation_rect": [
 						0.0,
-						79,
-						20.0,
-						12.0
+						77,
+						22.0,
+						16.0
 					],
 					"textcolor": [
 						0.0,
@@ -715,13 +715,13 @@
 					],
 					"text": "-12",
 					"fontname": "Arial",
-					"fontsize": 8.0,
+					"fontsize": 9.0,
 					"presentation": 1,
 					"presentation_rect": [
 						0.0,
-						92,
-						20.0,
-						12.0
+						90,
+						22.0,
+						16.0
 					],
 					"textcolor": [
 						0.0,
@@ -747,13 +747,13 @@
 					],
 					"text": "-24",
 					"fontname": "Arial",
-					"fontsize": 8.0,
+					"fontsize": 9.0,
 					"presentation": 1,
 					"presentation_rect": [
 						0.0,
-						119,
-						20.0,
-						12.0
+						117,
+						22.0,
+						16.0
 					],
 					"textcolor": [
 						0.0,
@@ -779,13 +779,13 @@
 					],
 					"text": "-48",
 					"fontname": "Arial",
-					"fontsize": 8.0,
+					"fontsize": 9.0,
 					"presentation": 1,
 					"presentation_rect": [
 						0.0,
-						173,
-						20.0,
-						12.0
+						171,
+						22.0,
+						16.0
 					],
 					"textcolor": [
 						0.0,
@@ -811,13 +811,13 @@
 					],
 					"text": "Pan",
 					"fontname": "Arial",
-					"fontsize": 8,
+					"fontsize": 9.0,
 					"presentation": 1,
 					"presentation_rect": [
-						5.0,
-						258.0,
-						18.0,
-						12.0
+						4.0,
+						256,
+						20.0,
+						16.0
 					],
 					"textcolor": [
 						0.0,
@@ -843,13 +843,13 @@
 					],
 					"text": "M",
 					"fontname": "Arial",
-					"fontsize": 8,
+					"fontsize": 9.0,
 					"presentation": 1,
 					"presentation_rect": [
-						5.0,
-						300.0,
-						14.0,
-						12.0
+						4.0,
+						298,
+						20.0,
+						16.0
 					],
 					"textcolor": [
 						0.0,
@@ -1607,6 +1607,12 @@
 			1.0
 		],
 		"locked_bgcolor": [
+			0.333,
+			0.333,
+			0.333,
+			1.0
+		],
+		"bgcolor": [
 			0.333,
 			0.333,
 			0.333,
