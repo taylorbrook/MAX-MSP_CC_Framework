@@ -21,6 +21,15 @@
       "files_changed": [
         "kicksynth.maxpat"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "persistent presets: pattrstorage @savemode 2 + kicksynth.json seeded with factory sounds in slots 1-5",
+      "timestamp": "2026-09-24T04:26:31.414256+00:00",
+      "files_changed": [
+        "kicksynth.maxpat",
+        "kicksynth.json"
+      ]
     }
   ]
 }
