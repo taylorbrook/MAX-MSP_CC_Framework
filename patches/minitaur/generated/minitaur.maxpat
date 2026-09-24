@@ -3183,27 +3183,6 @@
                                 "box": {
                                     "fontname": "Arial",
                                     "fontsize": 12.0,
-                                    "id": "obj-145",
-                                    "linecount": 2,
-                                    "maxclass": "newobj",
-                                    "numinlets": 2,
-                                    "numoutlets": 1,
-                                    "outlettype": [
-                                        "int"
-                                    ],
-                                    "patching_rect": [
-                                        670.0,
-                                        730.0,
-                                        32.5,
-                                        35.0
-                                    ],
-                                    "text": ">= 64"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0,
                                     "id": "obj-146",
                                     "linecount": 2,
                                     "maxclass": "newobj",
@@ -3215,7 +3194,7 @@
                                         97.5,
                                         35.0
                                     ],
-                                    "text": "send mt-cc-legato"
+                                    "text": "send mt-cc-trig-mode"
                                 }
                             },
                             {
@@ -3791,7 +3770,7 @@
                                         156.0,
                                         22.0
                                     ],
-                                    "text": "receive mt-cc-legato",
+                                    "text": "receive mt-cc-trig-mode",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -3811,7 +3790,7 @@
                                         114.0,
                                         22.0
                                     ],
-                                    "text": "prepend legato",
+                                    "text": "prepend trigmode",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -4712,6 +4691,86 @@
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-221",
+                                    "numinlets": 2,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        670.0,
+                                        730.0,
+                                        44.0,
+                                        22.0
+                                    ],
+                                    "text": "/ 43",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-222",
+                                    "numinlets": 1,
+                                    "numoutlets": 3,
+                                    "outlettype": [
+                                        "",
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        825.0,
+                                        780.0,
+                                        72.0,
+                                        22.0
+                                    ],
+                                    "text": "ctlin 91",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-223",
+                                    "numinlets": 2,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        825.0,
+                                        825.0,
+                                        44.0,
+                                        22.0
+                                    ],
+                                    "text": "/ 43",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-224",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        825.0,
+                                        870.0,
+                                        184.0,
+                                        22.0
+                                    ],
+                                    "text": "send mt-cc-note-priority",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
                             }
                         ],
                         "lines": [
@@ -5161,42 +5220,6 @@
                                     ],
                                     "source": [
                                         "obj-142",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-145",
-                                        0
-                                    ],
-                                    "midpoints": [
-                                        679.5,
-                                        723.0,
-                                        679.5,
-                                        723.0
-                                    ],
-                                    "source": [
-                                        "obj-144",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-146",
-                                        0
-                                    ],
-                                    "midpoints": [
-                                        679.5,
-                                        768.0,
-                                        679.5,
-                                        768.0
-                                    ],
-                                    "source": [
-                                        "obj-145",
                                         0
                                     ]
                                 }
@@ -7753,6 +7776,54 @@
                                     ],
                                     "destination": [
                                         "obj-13",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-144",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-221",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-221",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-146",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-222",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-223",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-223",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-224",
                                         0
                                     ]
                                 }
@@ -12565,7 +12636,7 @@
                                                         200.0
                                                     ],
                                                     "parameter_enable": 0,
-                                                    "code": "// ADSR with shared Decay/Release (Minitaur style)\n// in1: gate, in2: attack 0-1, in3: decay 0-1 (exp 1 ms - 10 s)\n// in4: sustain 0-1, in5: release on/off, in6: retrigger toggle\nHistory env(0);\nHistory stage(0);\nHistory prev_gate(0);\nHistory prev_trig(0);\n\ngate = in1;\natt_ms = pow(10000, clamp(in2, 0, 1));\ndec_ms = pow(10000, clamp(in3, 0, 1));\nsus_level = clamp(in4, 0, 1);\nrel_enable = in5;\ntrig = in6;\n\ntrig_on = abs(trig - prev_trig) > 0.5;\nprev_trig = trig;\ngate_off = (gate < 0.5) * (prev_gate > 0.5);\nprev_gate = gate;\n\n// stage: 0 idle, 1 attack, 2 decay/sustain, 4 release, 5 fast dump before retrigger\ndump_coeff = exp(-1 / (0.0005 * samplerate));\natt_step = 1 / (att_ms * 0.001 * samplerate);\ndec_coeff = exp(-4.6 / (dec_ms * 0.001 * samplerate));\nrel_ms = (rel_enable > 0.5) ? dec_ms : 5;\nrel_coeff = exp(-4.6 / (rel_ms * 0.001 * samplerate));\n\nst = stage;\nif (trig_on) {\n    st = (env > 0.001) ? 5 : 1;\n}\nif (gate_off) {\n    st = 4;\n}\n\ne = env;\nnst = st;\nif (st > 0.5 && st < 1.5) {\n    e = e + att_step;\n    if (e >= 1) {\n        e = 1;\n        nst = 2;\n    }\n} else {\n    if (st > 1.5 && st < 2.5) {\n        e = sus_level + (e - sus_level) * dec_coeff;\n    } else {\n        if (st > 3.5 && st < 4.5) {\n            e = e * rel_coeff;\n            if (e < 0.0001) {\n                e = 0;\n                nst = 0;\n            }\n        } else {\n            if (st > 4.5) {\n                e = e * dump_coeff;\n                if (e < 0.001) {\n                    e = 0;\n                    nst = 1;\n                }\n            }\n        }\n    }\n}\n\nstage = nst;\nenv = e;\nout1 = e;\n",
+                                                    "code": "// ADSR with shared Decay/Release (Minitaur style)\n// in1: gate, in2: attack 0-1, in3: decay 0-1 (exp 1 ms - 10 s)\n// in4: sustain 0-1, in5: release on/off, in6: retrigger toggle\nParam trig_mode(0, min=0, max=2);\nHistory env(0);\nHistory stage(0);\nHistory prev_gate(0);\nHistory prev_trig(0);\n\ngate = in1;\natt_ms = pow(10000, clamp(in2, 0, 1));\ndec_ms = pow(10000, clamp(in3, 0, 1));\nsus_level = clamp(in4, 0, 1);\nrel_enable = in5;\ntrig = in6;\n\ntrig_on = abs(trig - prev_trig) > 0.5;\nprev_trig = trig;\ngate_off = (gate < 0.5) * (prev_gate > 0.5);\nprev_gate = gate;\n\n// stage: 0 idle, 1 attack, 2 decay/sustain, 4 release, 5 fast dump before retrigger\ndump_coeff = exp(-1 / (0.0005 * samplerate));\natt_step = 1 / (att_ms * 0.001 * samplerate);\ndec_coeff = exp(-4.6 / (dec_ms * 0.001 * samplerate));\nrel_ms = (rel_enable > 0.5) ? dec_ms : 5;\nrel_coeff = exp(-4.6 / (rel_ms * 0.001 * samplerate));\n\nst = stage;\n// trig_mode: 0 Legato ON / 1 Legato OFF = attack from current level,\n// 2 EG Reset = fast dump to zero first\nif (trig_on) {\n    st = 1;\n    if (trig_mode > 1.5) {\n        if (env > 0.001) {\n            st = 5;\n        }\n    }\n}\nif (gate_off) {\n    st = 4;\n}\n\nev = env;\nnst = st;\nif (st > 0.5 && st < 1.5) {\n    ev = ev + att_step;\n    if (ev >= 1) {\n        ev = 1;\n        nst = 2;\n    }\n} else {\n    if (st > 1.5 && st < 2.5) {\n        ev = sus_level + (ev - sus_level) * dec_coeff;\n    } else {\n        if (st > 3.5 && st < 4.5) {\n            ev = ev * rel_coeff;\n            if (ev < 0.0001) {\n                ev = 0;\n                nst = 0;\n            }\n        } else {\n            if (st > 4.5) {\n                ev = ev * dump_coeff;\n                if (ev < 0.001) {\n                    ev = 0;\n                    nst = 1;\n                }\n            }\n        }\n    }\n}\n\nstage = nst;\nenv = ev;\nout1 = ev;\n",
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
@@ -12887,7 +12958,7 @@
                                                         200.0
                                                     ],
                                                     "parameter_enable": 0,
-                                                    "code": "// ADSR with shared Decay/Release (Minitaur style)\n// in1: gate, in2: attack 0-1, in3: decay 0-1 (exp 1 ms - 10 s)\n// in4: sustain 0-1, in5: release on/off, in6: retrigger toggle\nHistory env(0);\nHistory stage(0);\nHistory prev_gate(0);\nHistory prev_trig(0);\n\ngate = in1;\natt_ms = pow(10000, clamp(in2, 0, 1));\ndec_ms = pow(10000, clamp(in3, 0, 1));\nsus_level = clamp(in4, 0, 1);\nrel_enable = in5;\ntrig = in6;\n\ntrig_on = abs(trig - prev_trig) > 0.5;\nprev_trig = trig;\ngate_off = (gate < 0.5) * (prev_gate > 0.5);\nprev_gate = gate;\n\n// stage: 0 idle, 1 attack, 2 decay/sustain, 4 release, 5 fast dump before retrigger\ndump_coeff = exp(-1 / (0.0005 * samplerate));\natt_step = 1 / (att_ms * 0.001 * samplerate);\ndec_coeff = exp(-4.6 / (dec_ms * 0.001 * samplerate));\nrel_ms = (rel_enable > 0.5) ? dec_ms : 5;\nrel_coeff = exp(-4.6 / (rel_ms * 0.001 * samplerate));\n\nst = stage;\nif (trig_on) {\n    st = (env > 0.001) ? 5 : 1;\n}\nif (gate_off) {\n    st = 4;\n}\n\ne = env;\nnst = st;\nif (st > 0.5 && st < 1.5) {\n    e = e + att_step;\n    if (e >= 1) {\n        e = 1;\n        nst = 2;\n    }\n} else {\n    if (st > 1.5 && st < 2.5) {\n        e = sus_level + (e - sus_level) * dec_coeff;\n    } else {\n        if (st > 3.5 && st < 4.5) {\n            e = e * rel_coeff;\n            if (e < 0.0001) {\n                e = 0;\n                nst = 0;\n            }\n        } else {\n            if (st > 4.5) {\n                e = e * dump_coeff;\n                if (e < 0.001) {\n                    e = 0;\n                    nst = 1;\n                }\n            }\n        }\n    }\n}\n\nstage = nst;\nenv = e;\nout1 = e;\n",
+                                                    "code": "// ADSR with shared Decay/Release (Minitaur style)\n// in1: gate, in2: attack 0-1, in3: decay 0-1 (exp 1 ms - 10 s)\n// in4: sustain 0-1, in5: release on/off, in6: retrigger toggle\nParam trig_mode(0, min=0, max=2);\nHistory env(0);\nHistory stage(0);\nHistory prev_gate(0);\nHistory prev_trig(0);\n\ngate = in1;\natt_ms = pow(10000, clamp(in2, 0, 1));\ndec_ms = pow(10000, clamp(in3, 0, 1));\nsus_level = clamp(in4, 0, 1);\nrel_enable = in5;\ntrig = in6;\n\ntrig_on = abs(trig - prev_trig) > 0.5;\nprev_trig = trig;\ngate_off = (gate < 0.5) * (prev_gate > 0.5);\nprev_gate = gate;\n\n// stage: 0 idle, 1 attack, 2 decay/sustain, 4 release, 5 fast dump before retrigger\ndump_coeff = exp(-1 / (0.0005 * samplerate));\natt_step = 1 / (att_ms * 0.001 * samplerate);\ndec_coeff = exp(-4.6 / (dec_ms * 0.001 * samplerate));\nrel_ms = (rel_enable > 0.5) ? dec_ms : 5;\nrel_coeff = exp(-4.6 / (rel_ms * 0.001 * samplerate));\n\nst = stage;\n// trig_mode: 0 Legato ON / 1 Legato OFF = attack from current level,\n// 2 EG Reset = fast dump to zero first\nif (trig_on) {\n    st = 1;\n    if (trig_mode > 1.5) {\n        if (env > 0.001) {\n            st = 5;\n        }\n    }\n}\nif (gate_off) {\n    st = 4;\n}\n\nev = env;\nnst = st;\nif (st > 0.5 && st < 1.5) {\n    ev = ev + att_step;\n    if (ev >= 1) {\n        ev = 1;\n        nst = 2;\n    }\n} else {\n    if (st > 1.5 && st < 2.5) {\n        ev = sus_level + (ev - sus_level) * dec_coeff;\n    } else {\n        if (st > 3.5 && st < 4.5) {\n            ev = ev * rel_coeff;\n            if (ev < 0.0001) {\n                ev = 0;\n                nst = 0;\n            }\n        } else {\n            if (st > 4.5) {\n                ev = ev * dump_coeff;\n                if (ev < 0.001) {\n                    ev = 0;\n                    nst = 1;\n                }\n            }\n        }\n    }\n}\n\nstage = nst;\nenv = ev;\nout1 = ev;\n",
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
@@ -13206,6 +13277,67 @@
                                         22.0
                                     ],
                                     "text": "*~ 1.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-62",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        600.0,
+                                        195.0,
+                                        177.0,
+                                        22.0
+                                    ],
+                                    "text": "receive mt-cc-trig-mode",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-63",
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        600.0,
+                                        240.0,
+                                        135.0,
+                                        22.0
+                                    ],
+                                    "text": "prepend trig_mode",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-64",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        600.0,
+                                        285.0,
+                                        93.0,
+                                        22.0
+                                    ],
+                                    "text": "trigger l l",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -13748,6 +13880,54 @@
                                     ],
                                     "destination": [
                                         "obj-41",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-62",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-63",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-63",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-64",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-64",
+                                        1
+                                    ],
+                                    "destination": [
+                                        "obj-51",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-64",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-50",
                                         0
                                     ]
                                 }
@@ -22876,7 +23056,7 @@
             {
                 "box": {
                     "fontname": "Arial",
-                    "fontsize": 10.0,
+                    "fontsize": 9.0,
                     "id": "obj-259",
                     "maxclass": "comment",
                     "numinlets": 1,
@@ -22889,42 +23069,17 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        472.0,
+                        459.0,
                         196.0,
-                        48.0,
+                        60.0,
                         18.0
                     ],
-                    "text": "LEGATO",
+                    "text": "TRIG MODE",
                     "textcolor": [
                         0.0,
                         0.0,
                         0.0,
                         1.0
-                    ]
-                }
-            },
-            {
-                "box": {
-                    "id": "obj-260",
-                    "maxclass": "toggle",
-                    "numinlets": 1,
-                    "numoutlets": 1,
-                    "outlettype": [
-                        "int"
-                    ],
-                    "parameter_enable": 0,
-                    "patching_rect": [
-                        5465.0,
-                        298.0,
-                        20.0,
-                        20.0
-                    ],
-                    "presentation": 1,
-                    "presentation_rect": [
-                        483.0,
-                        219.0,
-                        20.0,
-                        20.0
                     ]
                 }
             },
@@ -22942,7 +23097,7 @@
                         122.5,
                         22.0
                     ],
-                    "text": "send mt-cc-legato"
+                    "text": "send mt-cc-trig-mode"
                 }
             },
             {
@@ -23500,7 +23655,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.1.1"
+                    "text": "v0.1.2"
                 }
             },
             {
@@ -25772,7 +25927,7 @@
                         156.0,
                         22.0
                     ],
-                    "text": "receive mt-cc-legato",
+                    "text": "receive mt-cc-trig-mode",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -26037,6 +26192,121 @@
                         22.0
                     ],
                     "text": "loadmess 1.",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "umenu",
+                    "id": "obj-416",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "",
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        5465.0,
+                        298.0,
+                        100.0,
+                        22.0
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        461.0,
+                        219.0,
+                        58.0,
+                        20.0
+                    ],
+                    "items": [
+                        "Legato ON",
+                        ",",
+                        "Legato OFF",
+                        ",",
+                        "EG Reset"
+                    ],
+                    "fontsize": 9.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-417",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        5460.0,
+                        420.0,
+                        87.5,
+                        22.0
+                    ],
+                    "text": "loadmess 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-418",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        5190.0,
+                        420.0,
+                        87.5,
+                        22.0
+                    ],
+                    "text": "loadmess 2",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-419",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        8520.0,
+                        555.0,
+                        205.0,
+                        22.0
+                    ],
+                    "text": "receive mt-cc-note-priority",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-420",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        8520.0,
+                        510.0,
+                        58.0,
+                        22.0
+                    ],
+                    "text": "set $1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -28251,18 +28521,6 @@
                     ],
                     "source": [
                         "obj-26",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-261",
-                        0
-                    ],
-                    "source": [
-                        "obj-260",
                         0
                     ]
                 }
@@ -30600,18 +30858,6 @@
             {
                 "patchline": {
                     "source": [
-                        "obj-404",
-                        0
-                    ],
-                    "destination": [
-                        "obj-260",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
                         "obj-405",
                         0
                     ],
@@ -30713,6 +30959,78 @@
                     ],
                     "destination": [
                         "obj-284",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-416",
+                        0
+                    ],
+                    "destination": [
+                        "obj-261",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-404",
+                        0
+                    ],
+                    "destination": [
+                        "obj-416",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-417",
+                        0
+                    ],
+                    "destination": [
+                        "obj-416",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-418",
+                        0
+                    ],
+                    "destination": [
+                        "obj-412",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-419",
+                        0
+                    ],
+                    "destination": [
+                        "obj-420",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-420",
+                        0
+                    ],
+                    "destination": [
+                        "obj-412",
                         0
                     ]
                 }
