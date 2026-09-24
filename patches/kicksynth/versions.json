@@ -13,6 +13,14 @@
         "kicksynth.maxpat",
         "presets.js"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "sub phase-locked to body after sweep, exact one-pole filter coeffs for noise/click tone, retrigger declick",
+      "timestamp": "2026-09-24T03:48:11.562658+00:00",
+      "files_changed": [
+        "kicksynth.maxpat"
+      ]
     }
   ]
 }
