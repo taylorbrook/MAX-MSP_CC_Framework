@@ -8813,10 +8813,10 @@
                                     "patching_rect": [
                                         280.0,
                                         205.0,
-                                        40.0,
+                                        51.0,
                                         22.0
                                     ],
-                                    "text": "*~ 2."
+                                    "text": "*~ 1."
                                 }
                             },
                             {
@@ -23500,7 +23500,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.1.0"
+                    "text": "v0.1.1"
                 }
             },
             {
@@ -26017,6 +26017,26 @@
                         22.0
                     ],
                     "text": "send mt-cc-note-priority",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-415",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        5910.0,
+                        360.0,
+                        93.0,
+                        22.0
+                    ],
+                    "text": "loadmess 1.",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -30681,6 +30701,18 @@
                     ],
                     "destination": [
                         "obj-414",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-415",
+                        0
+                    ],
+                    "destination": [
+                        "obj-284",
                         0
                     ]
                 }
