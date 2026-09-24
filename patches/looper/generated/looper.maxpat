@@ -2494,8 +2494,8 @@
                         "rect": [
                             120.0,
                             120.0,
-                            660.0,
-                            535
+                            750.0,
+                            535.0
                         ],
                         "bglocked": 0,
                         "openinpresentation": 0,
@@ -2538,7 +2538,7 @@
                                     "patching_rect": [
                                         20,
                                         20,
-                                        600,
+                                        700,
                                         26
                                     ],
                                     "text": "LOOPER -- pedal-style mono looper",
@@ -2557,7 +2557,7 @@
                                     "patching_rect": [
                                         20,
                                         58,
-                                        600,
+                                        700,
                                         23
                                     ],
                                     "text": "USING IT",
@@ -2576,7 +2576,7 @@
                                     "patching_rect": [
                                         20,
                                         83,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "Loop button cycles: EMPTY > RECORD > PLAY > OVERDUB > PLAY > OVERDUB ...",
@@ -2594,7 +2594,7 @@
                                     "patching_rect": [
                                         20,
                                         105,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "The first recording sets the loop length (max 30 s -- it switches to PLAY by itself at the limit).",
@@ -2612,7 +2612,7 @@
                                     "patching_rect": [
                                         20,
                                         127,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "Stop: halts playback and keeps the loop. Stop during the first recording closes the loop.",
@@ -2630,7 +2630,7 @@
                                     "patching_rect": [
                                         20,
                                         149,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "After Stop, the Loop button plays again from the start.",
@@ -2648,7 +2648,7 @@
                                     "patching_rect": [
                                         20,
                                         171,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "Clear: erases the loop and returns to EMPTY.",
@@ -2666,7 +2666,7 @@
                                     "patching_rect": [
                                         20,
                                         193,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "Feedback dial (0-1): how much of the existing loop survives each overdub pass.",
@@ -2684,7 +2684,7 @@
                                     "patching_rect": [
                                         20,
                                         215,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "    1 = layers build up forever; lower = older layers fade out as you overdub.",
@@ -2702,7 +2702,7 @@
                                     "patching_rect": [
                                         20,
                                         237,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "Waveform: the loop buffer, redrawn live while recording or overdubbing.",
@@ -2720,7 +2720,7 @@
                                     "patching_rect": [
                                         20,
                                         259,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "IN / OUT meters: input level and loop output level.",
@@ -2738,7 +2738,7 @@
                                     "patching_rect": [
                                         20,
                                         291,
-                                        600,
+                                        700,
                                         23
                                     ],
                                     "text": "AS A BPATCHER",
@@ -2757,7 +2757,7 @@
                                     "patching_rect": [
                                         20,
                                         316,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "Argument 1 = buffer name (e.g. looper-1). Every instance needs a unique name.",
@@ -2775,7 +2775,7 @@
                                     "patching_rect": [
                                         20,
                                         338,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "Inlet: mono audio in.  Outlet: mono loop out -- wet only, no dry signal.",
@@ -2793,7 +2793,7 @@
                                     "patching_rect": [
                                         20,
                                         360,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "Output is unity gain with a hard clip at +/-1 as a safety stage.",
@@ -2811,7 +2811,7 @@
                                     "patching_rect": [
                                         20,
                                         382,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "See looper-demo.maxpat: two instances plus an optional dry monitor.",
@@ -2829,7 +2829,7 @@
                                     "patching_rect": [
                                         20,
                                         414,
-                                        600,
+                                        700,
                                         23
                                     ],
                                     "text": "HOW IT WORKS",
@@ -2848,7 +2848,7 @@
                                     "patching_rect": [
                                         20,
                                         439,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "A gen~ codebox records and plays buffer~ #1 sample-accurately.",
@@ -2866,7 +2866,7 @@
                                     "patching_rect": [
                                         20,
                                         461,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "p transport turns button presses into a state (0 empty, 1 rec, 2 play, 3 dub, 4 stop) sent to gen~.",
@@ -2884,7 +2884,7 @@
                                     "patching_rect": [
                                         20,
                                         483,
-                                        600,
+                                        700,
                                         22
                                     ],
                                     "text": "~10 ms fades on record and output gain keep starts, stops and the loop seam click-free.",
