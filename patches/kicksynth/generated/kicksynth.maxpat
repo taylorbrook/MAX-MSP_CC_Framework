@@ -3794,7 +3794,7 @@
                             197
                         ]
                     },
-                    "text": "pattrstorage kicksynth",
+                    "text": "pattrstorage kicksynth @savemode 2",
                     "varname": "kicksynth"
                 }
             },
@@ -4323,7 +4323,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.2.0",
+                    "text": "v0.3.0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
