@@ -5324,6 +5324,537 @@
                         1.0
                     ]
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-154",
+                    "numinlets": 0,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1045.0,
+                        10.0,
+                        86.0,
+                        22.0
+                    ],
+                    "text": "p about",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "patcher": {
+                        "fileversion": 1,
+                        "appversion": {
+                            "major": 9,
+                            "minor": 0,
+                            "revision": 0,
+                            "architecture": "x64",
+                            "modernui": 1
+                        },
+                        "classnamespace": "box",
+                        "rect": [
+                            120.0,
+                            120.0,
+                            750.0,
+                            636.0
+                        ],
+                        "bglocked": 0,
+                        "openinpresentation": 0,
+                        "default_fontsize": 12.0,
+                        "default_fontface": 0,
+                        "default_fontname": "Arial",
+                        "gridonopen": 1,
+                        "gridsize": [
+                            15.0,
+                            15.0
+                        ],
+                        "gridsnaponopen": 1,
+                        "objectsnaponopen": 1,
+                        "statusbarvisible": 2,
+                        "toolbarvisible": 1,
+                        "lefttoolbarpinned": 0,
+                        "toptoolbarpinned": 0,
+                        "righttoolbarpinned": 0,
+                        "bottomtoolbarpinned": 0,
+                        "toolbars_unpinned_last_save": 0,
+                        "tallnewobj": 0,
+                        "boxanimatetime": 200,
+                        "enablehscroll": 1,
+                        "enablevscroll": 1,
+                        "devicewidth": 0.0,
+                        "description": "",
+                        "digest": "",
+                        "tags": "",
+                        "style": "",
+                        "subpatcher_template": "",
+                        "assistshowspatchername": 0,
+                        "boxes": [
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-1",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        20,
+                                        700,
+                                        26
+                                    ],
+                                    "text": "REVERSE DELAY MONO -- granular reverse delay, mono in / stereo out",
+                                    "fontname": "Arial",
+                                    "fontsize": 16.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-2",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        58,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "USING IT (CORE)",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-3",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        83,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Click the speaker (ezdac~) to start audio. The output is 100% wet -- mix dry elsewhere.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-4",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        105,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Preset: slots 1-6 are factory sounds; slot 1 Reverse Bloom loads on open. Faders are not stored.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-5",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        127,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Time: delay before each grain plays (50-4000 ms). Grain: length of each reversed grain.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-6",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        149,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "    For an obvious reversal use Grain 500-2000 ms; short grains give a backwards smear.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-7",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        171,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Density: how many grains overlap. Feedback: how much output returns into the delay.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-8",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        193,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Low Cut / High Cut: filters in the feedback path only -- each repeat gets thinner or darker.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-9",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        215,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Width: random left/right spread per grain.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-10",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        237,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Sync on: Time follows the global transport BPM and Division. Run and BPM drive that transport.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-11",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        269,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "ADVANCED",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-12",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        294,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Jitter, Scatter ms, Size Rand, Gain Rand: randomise spawn timing, delay, length and level.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-13",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        316,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Shape: grain window (Hann, Tukey, Gaussian, Triangular, Expo-Decay). Tilt, Tukey a reshape it.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-14",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        338,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Grain Count: max simultaneous grains. Direction: chance a grain plays forward instead.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-15",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        360,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Regen dB, Diffusion, Drive: gain, allpass smear and tanh grit inside the feedback loop.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-16",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        382,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Duck: pushes the wet signal down while you play. Drift Rate / Depth: slow wobble of Time.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-17",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        414,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "INPUTS & OUTPUTS",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-18",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        439,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Mono input (adc~ 1), stereo output.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-19",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        461,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "In and out gain~ faders with meters; both reset to unity on load.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-20",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        493,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "HOW IT WORKS",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-21",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        518,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "One gen~ codebox writes the input into a 14-second ring buffer.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-22",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        540,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "A scheduler spawns up to 32 windowed grains that read the ring backwards.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-23",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        562,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Feedback goes back into the same ring, so each repeat flips direction again.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-24",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        584,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "All per-grain values are fixed when the grain starts, so knob moves stay click-free.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            }
+                        ],
+                        "lines": [],
+                        "dependency_cache": [],
+                        "autosave": 0,
+                        "bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "editing_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "locked_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ]
+                    },
+                    "saved_object_attributes": {
+                        "description": "",
+                        "digest": "",
+                        "globalpatchername": "",
+                        "tags": ""
+                    }
+                }
             }
         ],
         "lines": [
