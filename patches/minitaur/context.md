@@ -201,3 +201,14 @@ LFO --> VCO Pitch & VCF Cutoff
 - **Glide**: `History armed`. The first target change after load jumps, so the first note no longer glides up from MIDI 0.
 - **Output**: a soft-knee gen~ (linear to 0.8, tanh into a 1.0 ceiling) sits before `clip~`, which stays as a backstop, so resonant peaks round off instead of hard-clipping.
 - **Clock start** keeps its tick history, so the synced rate no longer drops to the free rate for one tick after Start.
+
+## Decisions (v0.1.10 UI cleanup, 2026-09-24)
+
+- **Readouts**: all 25 flonums are display-only (`ignoreclick 1`), 45×22, default font, 2 decimals (WAVE uses 0).
+- **Labels**: dial and toggle labels are all fontsize 9, 17 px tall. Label boxes are trimmed to their text, so no two presentation rects overlap.
+- **Toggle rows** use a 45 px pitch with the toggle top = dial top + 10 and the label 23 px above it. OSC row: toggles x 187/232/277/322 at y 104, labels at y 81. LFO row: toggles x 762/807/852 at y 219, labels at y 196. "VCO2 O" was renamed "V2 ONLY".
+- **LEGATO** (glide) label and toggle moved under GLD TYP: label [1001,233], toggle [1016,251].
+- **Right edge**: the DSP toggle and label end flush at 1054, and the keyboard panel is 1044 wide, so every row ends at 1054. Window `rect` is [34,208,1064,460] (check the height once in MAX; it assumes ~70 px of toolbars).
+- The OUTPUT header replaces "VOL", so it doesn't repeat the VOLUME dial label.
+- Parameters "Release" → "Release Switch" and "Glide" → "Glide On" (longname, shortname and varname).
+- The stale "INIT" / "init ->" patching comments were renamed UI SYNC, and the dead `receive mt-cc-cutoff` (obj-45) was removed.

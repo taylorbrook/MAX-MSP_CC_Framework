@@ -116,6 +116,14 @@
         "minitaur-voice.js",
         "minitaur-clock.js"
       ]
+    },
+    {
+      "version": "0.1.10",
+      "description": "UI cleanup: readouts non-editable + uniform, label font sizes, 45 px toggle rows, LEGATO under GLD TYP, V2 ONLY label, window fit, flush right edge, stale comments, param names",
+      "timestamp": "2026-09-24T23:59:40.009203+00:00",
+      "files_changed": [
+        "minitaur.maxpat"
+      ]
     }
   ]
 }
