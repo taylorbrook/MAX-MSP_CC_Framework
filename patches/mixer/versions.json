@@ -104,6 +104,11 @@
       "version": "0.7.1",
       "description": "Mute/solo gate moved from end of chain to directly after the fader (fader -> gate -> pan -> out), so Post-Fader and Post-Pan sends are cut by mute and solo; Pre-Fader sends stay live",
       "timestamp": "2026-09-24T23:53:54.583384+00:00"
+    },
+    {
+      "version": "0.8.0",
+      "description": "Instance isolation: mixer-manager makes a per-load ID and renames every internal send~/receive~ (master, bus, solo) inside strips/busses/master via subpatcher() + set (solo uses forward + send); user-facing ports take a prefix set by the 'name mixer' message (<name>-in-N-L/R, <name>-out-L/R). Master: M toggle with 5 ms ramp, 2 outlets and send~ <name>-out-L/R (post-fader, post-mute)",
+      "timestamp": "2026-09-24T23:57:52.321182+00:00"
     }
   ]
 }
