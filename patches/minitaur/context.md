@@ -131,7 +131,7 @@ LFO --> VCO Pitch & VCF Cutoff
 - **Sync**: gen~ master phase drives `saw~`/`rect~` sync inlets. Hard sync resets VCO2 each VCO1 cycle; note sync resets both on retrigger.
 - **Mod wheel** (v0.1.1, per Minitaur manual): `mt-mod-wheel` is initialised to 1.0 by `loadmess 1.` → `send mt-mod-wheel`, so VCO/VCF LFO AMOUNT act directly at load and the MOD WH dial/flonum show max. Once any wheel value arrives (CC1/33 or the MOD WH dial) it scales both depths.
 - **LFO depth ranges**: VCO LFO ±1 octave (`*~ 1.` in `p oscillators`), VCF LFO ±5 octaves (`*~ 5.` in `p filter`).
-- **Not yet built**: VCO2 beat-frequency control, glide-legato mode, MIDI clock sync for the LFO.
+- **Not yet built**: glide-legato mode, MIDI clock sync for the LFO.
 
 ## Decisions (v0.1.2 trig mode + priority, 2026-09-24)
 
@@ -146,3 +146,10 @@ LFO --> VCO Pitch & VCF Cutoff
 - CC107 (up) / CC108 (down) → `/ 16` in `p midi-input` gives the manual's 16-wide quantised bands directly.
 - `p oscillators`: `* 2.` replaced by `expr ($f1>0.)*$f1*$f2+($f1<0.)*$f1*$f3` (bend -1..1 → semitones). Range chain `receive → zl.lookup 0 2 3 4 5 7 12 24 → t b f` sets the cold inlet then bangs, so a range change applies to a held bend immediately.
 - UI: BEND UP / BEND DN umenus beside PRIORITY (pres. x 512 / 580, y 307); keyboard panel widened to 836 px (right edge aligned with the filter panel). `loadmess 2` defaults, `receive → set $1` keeps menus synced with CCs.
+
+## Decisions (v0.1.4 VCO2 beat, 2026-09-24)
+
+- **BEAT** = ±50 cents on VCO2 only. Bus `mt-cc-vco2-beat` carries 0-1 like the other knobs (0.5 = centre, set by a 9th outlet on the loadbang `trigger`).
+- `p oscillators`: `receive → $1 30 → line~ → -~ 0.5` is added via `+~` to the VCO2 semitone offset (`-~ 12.`) ahead of the `pow(2, x/12)` ratio gen~. So ±0.5 st = ±50 cents, and it sums with VCO2 FREQ.
+- MIDI: CC18 (coarse) / CC50 (fine) in `p midi-input`, handled with the same `expr *128 → t i 0` / `t b i → + → scale 0 16383 0. 1.` pair as the other 14-bit CCs.
+- UI: BEAT dial/flonum at pres. x 125 in the OSC panel. The OSC panel is 55 px wider (354), and every row-1 control right of VCO2 FREQ moved +55 px (row 1 now ends at x 904). New fan-outs go through `t f f`.

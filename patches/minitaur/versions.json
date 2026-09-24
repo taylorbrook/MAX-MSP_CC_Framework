@@ -63,6 +63,14 @@
       "files_changed": [
         "minitaur.maxpat"
       ]
+    },
+    {
+      "version": "0.1.4",
+      "description": "VCO2 BEAT: +/-50 cent fine offset on VCO2 (dial/flonum in OSC section, CC18/50 14-bit, default centre)",
+      "timestamp": "2026-09-24T21:32:22.753972+00:00",
+      "files_changed": [
+        "minitaur.maxpat"
+      ]
     }
   ]
 }
