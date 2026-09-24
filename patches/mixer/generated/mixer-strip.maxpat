@@ -217,7 +217,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        24.0,
+                        36.0,
                         24.0,
                         36.0,
                         36.0
@@ -417,7 +417,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        24.0,
+                        36.0,
                         326.0,
                         36.0,
                         36.0
@@ -744,7 +744,7 @@
                     "fontsize": 12.0,
                     "id": "obj-37",
                     "maxclass": "newobj",
-                    "numinlets": 8,
+                    "numinlets": 7,
                     "numoutlets": 0,
                     "patcher": {
                         "fileversion": 1,
