@@ -99,6 +99,11 @@
       "version": "0.7.0",
       "description": "Sound quality: equal-power pan (cos/sin, -3 dB centre, dial 0-128 so 64 = exact centre) on strips and busses; 20 ms line~ smoothing on trim, pan and all 8 send levels; trim now -20..+20 dB via scale -> dbtoa with 64 = exact unity; fader dB labels repositioned on gain~'s curve (128 = 0 dB, 10 steps = 6 dB) on strip/bus/master",
       "timestamp": "2026-09-24T22:15:15.376505+00:00"
+    },
+    {
+      "version": "0.7.1",
+      "description": "Mute/solo gate moved from end of chain to directly after the fader (fader -> gate -> pan -> out), so Post-Fader and Post-Pan sends are cut by mute and solo; Pre-Fader sends stay live",
+      "timestamp": "2026-09-24T23:53:54.583384+00:00"
     }
   ]
 }
