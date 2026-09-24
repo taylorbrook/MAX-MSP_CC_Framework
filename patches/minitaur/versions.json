@@ -29,6 +29,15 @@
       "version": "0.0.5",
       "description": "fix panel gaps and label overlaps",
       "timestamp": "2026-03-31T22:22:59.629099+00:00"
+    },
+    {
+      "version": "0.1.0",
+      "description": "review fixes: mono voice w/ note priority + legato, ZDF ladder, pitch-domain glide, exp envelopes w/ declick, velocity, kb tracking, bend, hard/note sync, VCO2-only LFO, LFO key-trigger edge, 14-bit CC fixes, UI sync",
+      "timestamp": "2026-09-24T15:24:46.098941+00:00",
+      "files_changed": [
+        "minitaur.maxpat",
+        "minitaur-voice.js"
+      ]
     }
   ]
 }
