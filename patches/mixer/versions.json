@@ -84,6 +84,11 @@
       "version": "0.4.0",
       "description": "Cords survive reopen: mixer-manager syncs strips/busses (keeps existing strip-N/bus-N, adds/removes at the end, removes [N] duplicates, leaves other bpatchers alone); tracks change no longer resets busses; strips gain receive~ mixer-in-N-L/R inputs (#2/#3); 6 saved duplicate bpatchers removed; Tracks/Busses number boxes clamped 1-32 / 0-8",
       "timestamp": "2026-09-24T20:25:07.397497+00:00"
+    },
+    {
+      "version": "0.5.0",
+      "description": "State recall: named controls + autopattr (@autorestore 0) in strip, p sends, bus, master; top-level pattrstorage mixstate; closebang/'save' -> store 1 + write mixer-state.json next to the patch; load recalls it 50 ms after init. Load now keeps the saved strip/bus counts (was: init 4 2 wiped strips >4 on reopen); js sets the count number boxes",
+      "timestamp": "2026-09-24T22:05:24.945204+00:00"
     }
   ]
 }
