@@ -2,7 +2,8 @@
 // inlet 0:  "note vel" lists (vel 0 = note off), "priority N" (0 low, 1 high, 2 last),
 //           "trigmode N" (0 Legato ON = no retrigger on overlapping notes,
 //           1 Legato OFF / 2 EG Reset = retrigger; reset shape lives in gen~), "clear"
-// outlets:  0 note (0-72; above 72 folds into the top octave 61-72, fw 2.1), 1 velocity, 2 gate 0/1, 3 retrigger toggle (flips 0/1),
+// outlets:  0 note (0-72; above 72 folds into the top octave 61-72, fw 2.1), 1 velocity, 2 gate 0/1, 3 retrigger counter (steps 0..1023, any change = retrigger;
+//           a counter, not a 0/1 toggle, so two retriggers in one audio vector can't cancel),
 //           4 overlap flag (1 = note sounded while another key was held; drives legato glide)
 
 inlets = 1;
@@ -38,7 +39,7 @@ function sound(n, retrig, overlap) {
     outlet(0, fold(n));
     outlet(2, 1);
     if (retrig) {
-        trigState = 1 - trigState;
+        trigState = (trigState + 1) % 1024;
         outlet(3, trigState);
     }
 }

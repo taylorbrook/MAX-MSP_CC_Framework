@@ -4,7 +4,7 @@
 //           "div N" (division index 0-20 from the menu), "rate 0-1" (LFO RATE knob;
 //           picks the division only while synced)
 // outlets:  0 synced LFO rate in Hz (0 = free-running, use the RATE knob),
-//           1 phase-reset toggle (flips 0/1 on start), 2 division index for the display
+//           1 phase-reset counter (steps 0..1023 on start), 2 division index for the display
 
 inlets = 1;
 outlets = 3;
@@ -64,9 +64,9 @@ function tick(ms) {
 }
 
 function start() {
-    times = [];
+    // keep the tick history: clock ticks run across transport starts, clearing it dropped the synced rate for a tick
     if (syncOn) {
-        resetState = 1 - resetState;
+        resetState = (resetState + 1) % 1024;
         outlet(1, resetState);
     }
 }

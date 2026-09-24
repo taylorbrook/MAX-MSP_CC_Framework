@@ -188,3 +188,16 @@ LFO --> VCO Pitch & VCF Cutoff
 - The centre-detented dials (FINE TUNE, BEAT, EG AMT) use `floatoutput 1` with an initial value of 63.5, so they load exactly at centre (0.5).
 - The parameter system now seeds every bus at load. The 13-outlet loadbang `trigger` (with its messages and sends) and all loadmess objects (PRIORITY, TRIG MODE, BEND UP/DN, GLD TYP, SYNC, `loadmess 1.` mod wheel) were removed so that only one source sets the load values. This also fixes PRIORITY, which had two conflicting loadmess objects (0 and 2).
 - Initial values are the load state. To make the current knob positions the new load state, use the Parameters window's initial-value column (or add autopattr/pattrstorage later).
+
+## Decisions (v0.1.9 review fixes, 2026-09-24)
+
+- **Retrigger is a counter**: `mt-trig` (voice js) and the clock phase reset (clock js) now step 0..1023 instead of flipping 0/1. With a toggle, two retriggers inside one audio vector cancelled out and the note played silent. The gen~ edge test `abs(x - prev) > 0.5` is unchanged; the 1023→0 wrap still counts as an edge.
+- **EG release on gate level**: the EG releases whenever gate < 0.5 in attack/decay, not only on a falling edge. So a note-on + note-off inside one vector releases instead of sticking at sustain. A zero-length note is now silent, which beats a stuck one.
+- **Velocity latched into the EG peak**: each EG gen~ has a 7th input (`expr` → `sig~`), latched on retrigger. Attack rises to the peak, and decay heads for sustain × peak. The old `$1 5 → line~ → *~` output scaling is gone, so there's no velocity blip and no level jump on a soft retrigger in Legato OFF. Legato notes keep the held velocity, and VEL knob changes apply from the next note. The EG decay also snaps to its target to avoid denormals.
+- **VCO1 sync**: `out1 = note_sync` only. Resetting saw~/rect~ on VCO1's own wrap every cycle snapped its period to whole samples and made the pitch jitter.
+- **LFO wave bands**: `expr $i1 * 6 / 128` (six ~21-wide bands) replaces `scale 0 127 0 5`, for both CC85 and the WAVE dial. `scale` with int args truncated, so Filter EG was only reachable at 127.
+- **Centre detents**: FINE TUNE / EG AMT / BEAT use `scale 0. 127. 0. 1.`, because an int-range scale truncated 63.5 to 63. Those dials have `parameter_type 0` (float).
+- **Mixer saturation**: `*~ 0.5 → tanh~ → *~ 2.` = 2·tanh(x/2). It's close to linear at normal levels and only overdrives when hot. Two VCOs at the default 0.8 now peak ~1.33 into the filter (was 0.92 through a plain tanh~), about 3 dB louder.
+- **Glide**: `History armed`. The first target change after load jumps, so the first note no longer glides up from MIDI 0.
+- **Output**: a soft-knee gen~ (linear to 0.8, tanh into a 1.0 ceiling) sits before `clip~`, which stays as a backstop, so resonant peaks round off instead of hard-clipping.
+- **Clock start** keeps its tick history, so the synced rate no longer drops to the free rate for one tick after Start.

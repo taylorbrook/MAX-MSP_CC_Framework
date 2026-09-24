@@ -106,6 +106,16 @@
       "files_changed": [
         "minitaur.maxpat"
       ]
+    },
+    {
+      "version": "0.1.9",
+      "description": "review fixes: retrigger counter, gate-level release, velocity-latched EG peak, VCO1 sync jitter, LFO wave bands, exact centre detents, soft mixer saturation, first-note glide, output soft knee, clock start",
+      "timestamp": "2026-09-24T23:56:04.976573+00:00",
+      "files_changed": [
+        "minitaur.maxpat",
+        "minitaur-voice.js",
+        "minitaur-clock.js"
+      ]
     }
   ]
 }
