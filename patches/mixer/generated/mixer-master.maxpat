@@ -342,7 +342,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        25.0,
+                        58,
                         20.0,
                         12.0
                     ],
@@ -374,7 +374,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        73.02547770700636,
+                        75,
                         20.0,
                         12.0
                     ],
@@ -406,7 +406,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        119.39490445859873,
+                        91,
                         20.0,
                         12.0
                     ],
@@ -438,7 +438,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        145.89171974522293,
+                        107,
                         20.0,
                         12.0
                     ],
@@ -470,7 +470,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        192.26114649681531,
+                        139,
                         20.0,
                         12.0
                     ],
@@ -502,7 +502,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         13.0,
-                        261.81528662420385,
+                        203,
                         20.0,
                         12.0
                     ],
