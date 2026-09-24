@@ -70,7 +70,7 @@
         "box": {
           "maxclass": "codebox",
           "id": "obj-2",
-          "code": "// === PARAMETERS ===\nParam gain(0.5, min=0, max=1);\n\n// === DSP ===\n// Apply gain then soft-clip to prevent overs\nout1 = tanh(in1 * gain);\n",
+          "code": "// === PARAMETERS ===\nParam gain(1, min=0, max=1);\n\n// === DSP ===\n// Unity by default; hard clip at +/-1 as a safety stage only\nout1 = clamp(in1 * gain, -1, 1);\n",
           "numinlets": 1,
           "numoutlets": 1,
           "outlettype": [
