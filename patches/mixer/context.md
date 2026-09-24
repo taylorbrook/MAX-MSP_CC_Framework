@@ -42,3 +42,5 @@ inlet L/R
 - gate~ for mute
 - gain~ + meter~ for metering at multiple points
 - Stereo faders (strip, bus, master): R channel is a second `gain~` slaved to the visible L `gain~` (L outlet 1 → R inlet 0). The R `gain~` is deliberately excluded from presentation (v0.3.0).
+- Dynamic strips/busses are saved with the patch on purpose: mixer-manager.js reuses existing `strip-N`/`bus-N` on load so their patch cords survive. Lowering a count removes the highest-numbered strips (and their cords) (v0.4.0).
+- Strip bpatcher args: `N mixer-in-N-L mixer-in-N-R` (#1 label, #2/#3 `receive~` audio inputs, summed with inlets 1-2).

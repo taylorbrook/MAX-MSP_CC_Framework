@@ -79,6 +79,11 @@
       "version": "0.3.0",
       "description": "Review fixes: linked stereo gain~ pairs (R slaved via right-outlet echo, replaces linear /128) in strip/bus/master; bus mute defaults on with 5ms line~ ramp; bus duplicate obj-26 id resolved (label restored)",
       "timestamp": "2026-09-24T15:50:22.465382+00:00"
+    },
+    {
+      "version": "0.4.0",
+      "description": "Cords survive reopen: mixer-manager syncs strips/busses (keeps existing strip-N/bus-N, adds/removes at the end, removes [N] duplicates, leaves other bpatchers alone); tracks change no longer resets busses; strips gain receive~ mixer-in-N-L/R inputs (#2/#3); 6 saved duplicate bpatchers removed; Tracks/Busses number boxes clamped 1-32 / 0-8",
+      "timestamp": "2026-09-24T20:25:07.397497+00:00"
     }
   ]
 }
