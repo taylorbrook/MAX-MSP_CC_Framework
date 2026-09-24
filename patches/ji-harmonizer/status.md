@@ -1,9 +1,9 @@
 stage: complete
-progress: v0.12.0: Scala .scl import + period. Awaiting MAX confirmation.
+progress: v0.12.0 confirmed working in MAX (user, 2026-09-23) -- Scala .scl import, period honored, read-only period textedit re-fires on preset recall
 created: 2026-08-13T16:23:07.863907+00:00
 last_action: v0.12.0: Scala .scl import
 notes: Confirmed in MAX 2026-08-19: 9/8 sounds D4+4c, table ratio and (actual) decimal agree, ratio column matches the cents column. The VST 'signature' doubled-interval path is gone for good -- see context.md 'Decisions (iterate, 2026-08-19)'.
-current_stage: v0.12.0 - pending test
-status: v0.12.0 -- pending MAX test
+current_stage: v0.12.0 - complete
+status: v0.12.0 confirmed working in MAX
 version: 0.12.0
 note: v0.11.1: ji-engine.js note interface changed to freq <rootHz> <gate> messages
