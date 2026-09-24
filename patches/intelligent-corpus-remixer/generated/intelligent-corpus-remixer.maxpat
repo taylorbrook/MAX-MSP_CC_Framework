@@ -3848,6 +3848,391 @@
                         1.0
                     ]
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-57",
+                    "numinlets": 0,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1028.0,
+                        10.0,
+                        86.0,
+                        22.0
+                    ],
+                    "text": "p about",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "patcher": {
+                        "fileversion": 1,
+                        "appversion": {
+                            "major": 9,
+                            "minor": 0,
+                            "revision": 0,
+                            "architecture": "x64",
+                            "modernui": 1
+                        },
+                        "classnamespace": "box",
+                        "rect": [
+                            120.0,
+                            120.0,
+                            750.0,
+                            434.0
+                        ],
+                        "bglocked": 0,
+                        "openinpresentation": 0,
+                        "default_fontsize": 12.0,
+                        "default_fontface": 0,
+                        "default_fontname": "Arial",
+                        "gridonopen": 1,
+                        "gridsize": [
+                            15.0,
+                            15.0
+                        ],
+                        "gridsnaponopen": 1,
+                        "objectsnaponopen": 1,
+                        "statusbarvisible": 2,
+                        "toolbarvisible": 1,
+                        "lefttoolbarpinned": 0,
+                        "toptoolbarpinned": 0,
+                        "righttoolbarpinned": 0,
+                        "bottomtoolbarpinned": 0,
+                        "toolbars_unpinned_last_save": 0,
+                        "tallnewobj": 0,
+                        "boxanimatetime": 200,
+                        "enablehscroll": 1,
+                        "enablevscroll": 1,
+                        "devicewidth": 0.0,
+                        "description": "",
+                        "digest": "",
+                        "tags": "",
+                        "style": "",
+                        "subpatcher_template": "",
+                        "assistshowspatchername": 0,
+                        "boxes": [
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-1",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        20,
+                                        700,
+                                        26
+                                    ],
+                                    "text": "INTELLIGENT CORPUS REMIXER -- slice a sound, map it by timbre, play it by clicking",
+                                    "fontname": "Arial",
+                                    "fontsize": 16.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-2",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        58,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "USING IT",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-3",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        83,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Drop an audio file on the drop area, or click read to choose one.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-4",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        105,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "The file is sliced at its onsets, analysed and clustered by itself; slices shows the count.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-5",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        127,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "The plotter shows every slice as a dot, placed by timbre and coloured by cluster.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-6",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        149,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Click or drag in the plotter to play the nearest slice.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-7",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        171,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "K clusters: how many timbre groups to find. Click re-cluster to apply a new K.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-8",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        193,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "loop: slices repeat seamlessly while on; turn it off and running loops finish.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-9",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        215,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "random: plays random slices from the chosen cluster every rate (ms).",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-10",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        237,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "randomize pan: each slice gets a random stereo position instead of centre.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-11",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        259,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Use audio on/off to start sound and the gain fader to set the level (meters beside it).",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-12",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        291,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "HOW IT WORKS",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-13",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        316,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Needs the FluCoMa package. fluid.bufonsetslice~ finds onsets; tiny slices merge into neighbours.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-14",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        338,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Each slice gets a 13-band MFCC average, normalised, then mapped to 2D with fluid.umap~.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-15",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        360,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "fluid.kmeans~ groups slices into K clusters; a kd-tree finds the slice nearest your click.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-16",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        382,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "poly~ slice-voice (8 voices) plays slices from one shared buffer with 5 ms fades.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            }
+                        ],
+                        "lines": [],
+                        "dependency_cache": [],
+                        "autosave": 0,
+                        "bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "editing_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "locked_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ]
+                    },
+                    "saved_object_attributes": {
+                        "description": "",
+                        "digest": "",
+                        "globalpatchername": "",
+                        "tags": ""
+                    }
+                }
             }
         ],
         "lines": [
