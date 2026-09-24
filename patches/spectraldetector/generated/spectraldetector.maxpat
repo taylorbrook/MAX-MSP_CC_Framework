@@ -1510,6 +1510,428 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-61",
+                    "numinlets": 0,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        727.0,
+                        10.0,
+                        86.0,
+                        22.0
+                    ],
+                    "text": "p about",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "patcher": {
+                        "fileversion": 1,
+                        "appversion": {
+                            "major": 9,
+                            "minor": 0,
+                            "revision": 0,
+                            "architecture": "x64",
+                            "modernui": 1
+                        },
+                        "classnamespace": "box",
+                        "rect": [
+                            120.0,
+                            120.0,
+                            750.0,
+                            491.0
+                        ],
+                        "bglocked": 0,
+                        "openinpresentation": 0,
+                        "default_fontsize": 12.0,
+                        "default_fontface": 0,
+                        "default_fontname": "Arial",
+                        "gridonopen": 1,
+                        "gridsize": [
+                            15.0,
+                            15.0
+                        ],
+                        "gridsnaponopen": 1,
+                        "objectsnaponopen": 1,
+                        "statusbarvisible": 2,
+                        "toolbarvisible": 1,
+                        "lefttoolbarpinned": 0,
+                        "toptoolbarpinned": 0,
+                        "righttoolbarpinned": 0,
+                        "bottomtoolbarpinned": 0,
+                        "toolbars_unpinned_last_save": 0,
+                        "tallnewobj": 0,
+                        "boxanimatetime": 200,
+                        "enablehscroll": 1,
+                        "enablevscroll": 1,
+                        "devicewidth": 0.0,
+                        "description": "",
+                        "digest": "",
+                        "tags": "",
+                        "style": "",
+                        "subpatcher_template": "",
+                        "assistshowspatchername": 0,
+                        "boxes": [
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-1",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        20,
+                                        700,
+                                        26
+                                    ],
+                                    "text": "SPECTRAL DETECTOR -- tells whether a sound is pitched, noisy or silent",
+                                    "fontname": "Arial",
+                                    "fontsize": 16.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-2",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        58,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "USING IT",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-3",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        83,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Menu: choose Live Input (mic/line input 1) or File Player.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-4",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        105,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "File Player: drop a sound file into the player and press play.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-5",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        127,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "The big label shows the result: PITCH, NOISE or SILENT. The number beside it is 2 / 1 / 0.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-6",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        149,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Pitchedness bar: how periodic the sound is, from 0 (noise) to 1 (clean pitch).",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-7",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        171,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Threshold: how pitched a sound must be to count as PITCH (0.5-0.95).",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-8",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        193,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Smooth ms: how long the result must hold before it flips (50-1000 ms).",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-9",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        215,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Floor dB: input level below which the sound counts as SILENT (-80 to -10 dB).",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-10",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        237,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Monitor: listen to the selected source. It starts silent.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-11",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        269,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "INPUTS & OUTPUTS",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-12",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        294,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "The state (0 silent, 1 noise, 2 pitch) is sent to [receive detector-state] for other patches.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-13",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        316,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "It is only sent when the state changes.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-14",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        348,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "HOW IT WORKS",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-15",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        373,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "A gen~ codebox high-passes the input at 70 Hz and runs an autocorrelation over 80 Hz-2 kHz.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-16",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        395,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "The best correlation peak is the raw pitchedness, then it is smoothed.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-17",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        417,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "A hysteresis band stops the result chattering near the threshold.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-18",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        439,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "The silence gate uses the loudest of RMS, peak and a boosted high-frequency peak.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            }
+                        ],
+                        "lines": [],
+                        "dependency_cache": [],
+                        "autosave": 0,
+                        "bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "editing_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "locked_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ]
+                    },
+                    "saved_object_attributes": {
+                        "description": "",
+                        "digest": "",
+                        "globalpatchername": "",
+                        "tags": ""
+                    }
+                }
             }
         ],
         "lines": [
