@@ -98,6 +98,14 @@
         "minitaur.maxpat",
         "minitaur-voice.js"
       ]
+    },
+    {
+      "version": "0.1.8",
+      "description": "polish: declicked VCO wave switch (10 ms crossfade), DSP toggle, parameter saving with initial values",
+      "timestamp": "2026-09-24T23:34:47.692406+00:00",
+      "files_changed": [
+        "minitaur.maxpat"
+      ]
     }
   ]
 }

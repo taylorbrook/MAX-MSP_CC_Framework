@@ -179,3 +179,12 @@ LFO --> VCO Pitch & VCF Cutoff
 - **FLT VEL / AMP VEL** default 0.5.
 - **Init**: the loadbang `trigger` has 13 outlets. Outlets 9–12 send the four defaults above. Dials and flonums pick them up through the existing `receive → scale → set $1` UI-sync chains.
 - **Note fold** (voice JS `fold()`): n > 72 → `61 + (n - 61) % 12`, so pitch class is kept (84 → 72, 73 → 61).
+
+## Decisions (v0.1.8 polish, 2026-09-24)
+
+- **Wave switch declick**: both `selector~ 2` (+ `+ 1` offset, + the `loadbang → 1` init) in `p oscillators` are replaced by `p wave-xfade` (inlets wave / saw / rect, same order as the old selector~ inlets 0/1/2). Inside: `$1 10 → line~` gives a 10 ms linear crossfade, `!-~ 1.` for the saw gain, `*~` pair and `+~`. line~ starts at 0 = saw, matching the old default.
+- **DSP toggle**: presentation 1034,32 (18 px), "DSP" label at 1002,32, on the nav-button row. `toggle → adstatus switch`, whose right outlet → `set $1` → toggle keeps it in sync with DSP changes made elsewhere, with no feedback loop. The DSP toggle is deliberately NOT parameter-enabled, so audio never auto-starts on load.
+- **Parameter saving**: all 41 dials/toggles/umenus have `parameter_enable 1`, `varname` = longname, and `parameter_initial` + `parameter_initial_enable 1`. Initial values equal the old load defaults: cutoff 89, volume 89, VCO levels 102, sustains/velocity 64, ext 64, KB TRK 32, mod wheel 127, LFO SYNC 1, PRIORITY 2, BEND 2/2, DIV 10 (1/4), everything else 0. The old defaults came from line~/sig~ starting at 0, so the sound at load is unchanged. VCO2 FREQ stays at 0 = -12 st, as before.
+- The centre-detented dials (FINE TUNE, BEAT, EG AMT) use `floatoutput 1` with an initial value of 63.5, so they load exactly at centre (0.5).
+- The parameter system now seeds every bus at load. The 13-outlet loadbang `trigger` (with its messages and sends) and all loadmess objects (PRIORITY, TRIG MODE, BEND UP/DN, GLD TYP, SYNC, `loadmess 1.` mod wheel) were removed so that only one source sets the load values. This also fixes PRIORITY, which had two conflicting loadmess objects (0 and 2).
+- Initial values are the load state. To make the current knob positions the new load state, use the Parameters window's initial-value column (or add autopattr/pattrstorage later).
