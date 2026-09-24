@@ -17,7 +17,7 @@ var presets = [
         },
         master: {
             drive: 1, hp_freq: 30, eq_low_freq: 80, eq_low_gain: 0,
-            eq_mid_freq: 300, eq_mid_gain: 0, lim_ceil: 0, lim_release: 10
+            eq_mid_freq: 300, eq_mid_gain: 0, lim_ceil: 0, lim_release: 60
         }
     },
     { // 1: 808
@@ -30,7 +30,7 @@ var presets = [
         },
         master: {
             drive: 1.5, hp_freq: 25, eq_low_freq: 60, eq_low_gain: 3,
-            eq_mid_freq: 300, eq_mid_gain: -2, lim_ceil: -1, lim_release: 15
+            eq_mid_freq: 300, eq_mid_gain: -2, lim_ceil: -1, lim_release: 80
         }
     },
     { // 2: 909
@@ -43,7 +43,7 @@ var presets = [
         },
         master: {
             drive: 3, hp_freq: 35, eq_low_freq: 80, eq_low_gain: 2,
-            eq_mid_freq: 350, eq_mid_gain: -4, lim_ceil: -2, lim_release: 8
+            eq_mid_freq: 350, eq_mid_gain: -4, lim_ceil: -2, lim_release: 60
         }
     },
     { // 3: Techno
@@ -56,7 +56,7 @@ var presets = [
         },
         master: {
             drive: 4, hp_freq: 40, eq_low_freq: 70, eq_low_gain: 4,
-            eq_mid_freq: 250, eq_mid_gain: -6, lim_ceil: -3, lim_release: 5
+            eq_mid_freq: 250, eq_mid_gain: -6, lim_ceil: -3, lim_release: 50
         }
     },
     { // 4: Trap
@@ -69,7 +69,7 @@ var presets = [
         },
         master: {
             drive: 1.2, hp_freq: 22, eq_low_freq: 55, eq_low_gain: 6,
-            eq_mid_freq: 200, eq_mid_gain: -3, lim_ceil: -1, lim_release: 20
+            eq_mid_freq: 200, eq_mid_gain: -3, lim_ceil: -1, lim_release: 100
         }
     }
 ];
