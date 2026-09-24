@@ -4,14 +4,14 @@
         "appversion": {
             "major": 9,
             "minor": 1,
-            "revision": 2,
+            "revision": 5,
             "architecture": "x64",
             "modernui": 1
         },
         "classnamespace": "box",
         "rect": [
-            134.0,
-            166.0,
+            249.0,
+            105.0,
             1400.0,
             827.0
         ],
@@ -84,6 +84,8 @@
                 "box": {
                     "id": "obj-3",
                     "maxclass": "number",
+                    "maximum": 32,
+                    "minimum": 1,
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [
@@ -97,14 +99,15 @@
                         50.0,
                         22.0
                     ],
-                    "minimum": 1,
-                    "maximum": 32
+                    "varname": "ntracks"
                 }
             },
             {
                 "box": {
                     "id": "obj-6",
                     "maxclass": "number",
+                    "maximum": 8,
+                    "minimum": 0,
                     "numinlets": 1,
                     "numoutlets": 2,
                     "outlettype": [
@@ -118,8 +121,7 @@
                         50.0,
                         22.0
                     ],
-                    "minimum": 0,
-                    "maximum": 8
+                    "varname": "nbusses"
                 }
             },
             {
@@ -280,7 +282,7 @@
                         56.0,
                         22.0
                     ],
-                    "text": "init 4 2"
+                    "text": "load"
                 }
             },
             {
@@ -366,7 +368,7 @@
                         0.0
                     ],
                     "patching_rect": [
-                        602.0,
+                        786.0,
                         190.0,
                         118.0,
                         438.0
@@ -607,26 +609,18 @@
             },
             {
                 "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-55",
-                    "numinlets": 0,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [
-                        358.0,
-                        10.0,
-                        86.0,
-                        22.0
-                    ],
-                    "text": "p about",
                     "fontname": "Arial",
                     "fontsize": 12.0,
+                    "id": "obj-55",
+                    "maxclass": "newobj",
+                    "numinlets": 0,
+                    "numoutlets": 0,
                     "patcher": {
                         "fileversion": 1,
                         "appversion": {
                             "major": 9,
-                            "minor": 0,
-                            "revision": 0,
+                            "minor": 1,
+                            "revision": 5,
                             "architecture": "x64",
                             "modernui": 1
                         },
@@ -637,357 +631,322 @@
                             750.0,
                             469.0
                         ],
-                        "bglocked": 0,
-                        "openinpresentation": 0,
-                        "default_fontsize": 12.0,
-                        "default_fontface": 0,
-                        "default_fontname": "Arial",
-                        "gridonopen": 1,
-                        "gridsize": [
-                            15.0,
-                            15.0
-                        ],
-                        "gridsnaponopen": 1,
-                        "objectsnaponopen": 1,
-                        "statusbarvisible": 2,
-                        "toolbarvisible": 1,
-                        "lefttoolbarpinned": 0,
-                        "toptoolbarpinned": 0,
-                        "righttoolbarpinned": 0,
-                        "bottomtoolbarpinned": 0,
-                        "toolbars_unpinned_last_save": 0,
-                        "tallnewobj": 0,
-                        "boxanimatetime": 200,
-                        "enablehscroll": 1,
-                        "enablevscroll": 1,
-                        "devicewidth": 0.0,
-                        "description": "",
-                        "digest": "",
-                        "tags": "",
-                        "style": "",
-                        "subpatcher_template": "",
-                        "assistshowspatchername": 0,
                         "boxes": [
                             {
                                 "box": {
-                                    "maxclass": "comment",
-                                    "id": "obj-1",
-                                    "numinlets": 1,
-                                    "numoutlets": 0,
-                                    "outlettype": [],
-                                    "patching_rect": [
-                                        20,
-                                        20,
-                                        700,
-                                        26
-                                    ],
-                                    "text": "MIXER -- stereo mixing console with channel strips, busses and master",
+                                    "fontface": 1,
                                     "fontname": "Arial",
                                     "fontsize": 16.0,
-                                    "fontface": 1
+                                    "id": "obj-1",
+                                    "maxclass": "comment",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "patching_rect": [
+                                        20.0,
+                                        20.0,
+                                        700.0,
+                                        26.0
+                                    ],
+                                    "text": "MIXER -- stereo mixing console with channel strips, busses and master"
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontface": 1,
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
                                     "id": "obj-2",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        58,
-                                        700,
-                                        23
+                                        20.0,
+                                        58.0,
+                                        700.0,
+                                        23.0
                                     ],
-                                    "text": "USING IT",
-                                    "fontname": "Arial",
-                                    "fontsize": 13.0,
-                                    "fontface": 1
+                                    "text": "USING IT"
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-3",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        83,
-                                        700,
-                                        22
+                                        20.0,
+                                        83.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Tracks (1-32) and Busses (0-8) set how many strips are built. It opens with 4 tracks, 2 busses.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Tracks (1-32) / Busses (0-8) set the strip counts. All settings save to mixer-state.json on close or via \"save\"."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-4",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        105,
-                                        700,
-                                        22
+                                        20.0,
+                                        105.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Changing a count only adds or removes strips at the end -- existing strips keep their cords and settings.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Changing a count only adds or removes strips at the end -- existing strips keep their cords and settings."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-5",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        127,
-                                        700,
-                                        22
+                                        20.0,
+                                        127.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Each channel strip: Gain (input trim, centre = unity), fader with meters, Pan and M (mute).",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Each channel strip: Gain (input trim, centre = unity), fader with meters, Pan and M (mute)."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-6",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        149,
-                                        700,
-                                        22
+                                        20.0,
+                                        149.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Ins switches the strip to its insert return inlets instead of its own input.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Ins switches the strip to its insert return inlets instead of its own input."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-7",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        171,
-                                        700,
-                                        22
+                                        20.0,
+                                        171.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "S1 and S2 set how much of the strip is sent to bus 1 and bus 2.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "S1 and S2 set how much of the strip is sent to bus 1 and bus 2."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-8",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        193,
-                                        700,
-                                        22
+                                        20.0,
+                                        193.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Bus strips: fader, Pan and M for each bus return.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Bus strips: fader, Pan and M for each bus return."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-9",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        215,
-                                        700,
-                                        22
+                                        20.0,
+                                        215.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Master: overall fader with L/R meters; its speaker button turns audio on.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Master: overall fader with L/R meters; its speaker button turns audio on."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontface": 1,
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
                                     "id": "obj-10",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        247,
-                                        700,
-                                        23
+                                        20.0,
+                                        247.0,
+                                        700.0,
+                                        23.0
                                     ],
-                                    "text": "INPUTS & OUTPUTS",
-                                    "fontname": "Arial",
-                                    "fontsize": 13.0,
-                                    "fontface": 1
+                                    "text": "INPUTS & OUTPUTS"
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-11",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        272,
-                                        700,
-                                        22
+                                        20.0,
+                                        272.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Strip inlets 1-2: audio in L/R (or send~ mixer-in-N-L/R, no cords needed). Inlets 3-4: insert return L/R.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Strip inlets 1-2: audio in L/R (or send~ mixer-in-N-L/R, no cords needed). Inlets 3-4: insert return L/R."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-12",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        294,
-                                        700,
-                                        22
+                                        20.0,
+                                        294.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Strip outlets 1-2: post-fader L/R. Outlets 3-4: insert send (after Gain, before the fader).",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Strip outlets 1-2: post-fader L/R. Outlets 3-4: insert send (after Gain, before the fader)."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-13",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        316,
-                                        700,
-                                        22
+                                        20.0,
+                                        316.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Every strip and bus is also summed into the master automatically.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Every strip and bus is also summed into the master automatically."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
-                                    "id": "obj-14",
-                                    "numinlets": 1,
-                                    "numoutlets": 0,
-                                    "outlettype": [],
-                                    "patching_rect": [
-                                        20,
-                                        348,
-                                        700,
-                                        23
-                                    ],
-                                    "text": "HOW IT WORKS",
+                                    "fontface": 1,
                                     "fontname": "Arial",
                                     "fontsize": 13.0,
-                                    "fontface": 1
+                                    "id": "obj-14",
+                                    "maxclass": "comment",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "patching_rect": [
+                                        20.0,
+                                        348.0,
+                                        700.0,
+                                        23.0
+                                    ],
+                                    "text": "HOW IT WORKS"
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-15",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        373,
-                                        700,
-                                        22
+                                        20.0,
+                                        373.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "mixer-manager.js creates mixer-strip and mixer-bus bpatchers via thispatcher scripting.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "mixer-manager.js creates mixer-strip and mixer-bus bpatchers via thispatcher scripting."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-16",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        395,
-                                        700,
-                                        22
+                                        20.0,
+                                        395.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Each strip's argument is its channel number; sends reach busses over send~ bus-N-L/R.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Each strip's argument is its channel number; sends reach busses over send~ bus-N-L/R."
                                 }
                             },
                             {
                                 "box": {
-                                    "maxclass": "comment",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0,
                                     "id": "obj-17",
+                                    "maxclass": "comment",
                                     "numinlets": 1,
                                     "numoutlets": 0,
-                                    "outlettype": [],
                                     "patching_rect": [
-                                        20,
-                                        417,
-                                        700,
-                                        22
+                                        20.0,
+                                        417.0,
+                                        700.0,
+                                        22.0
                                     ],
-                                    "text": "Strips and busses feed send~ master-L/R, which the mixer-master section receives.",
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0
+                                    "text": "Strips and busses feed send~ master-L/R, which the mixer-master section receives."
                                 }
                             }
                         ],
                         "lines": [],
-                        "dependency_cache": [],
-                        "autosave": 0,
                         "bgcolor": [
                             0.333,
                             0.333,
                             0.333,
                             1.0
                         ],
+                        "editing_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ]
+                    },
+                    "patching_rect": [
+                        358.0,
+                        10.0,
+                        86.0,
+                        22.0
+                    ],
+                    "saved_object_attributes": {
                         "editing_bgcolor": [
                             0.333,
                             0.333,
@@ -1001,12 +960,908 @@
                             1.0
                         ]
                     },
-                    "saved_object_attributes": {
-                        "description": "",
-                        "digest": "",
-                        "globalpatchername": "",
-                        "tags": ""
-                    }
+                    "text": "p about"
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1,
+                        "mixer-in-1-L",
+                        "mixer-in-1-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-8",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        10.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-1[1]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2,
+                        "mixer-in-2-L",
+                        "mixer-in-2-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-13",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        102.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-2[1]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        3,
+                        "mixer-in-3-L",
+                        "mixer-in-3-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-18",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        194.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-3[1]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        4,
+                        "mixer-in-4-L",
+                        "mixer-in-4-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-21",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        286.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-4[1]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1,
+                        "bus-1-L",
+                        "bus-1-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-23",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        394.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-1[1]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2,
+                        "bus-2-L",
+                        "bus-2-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-25",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        486.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-2[1]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1,
+                        "mixer-in-1-L",
+                        "mixer-in-1-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-11",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        10.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-1[2]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2,
+                        "mixer-in-2-L",
+                        "mixer-in-2-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-20",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        102.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-2[2]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        3,
+                        "mixer-in-3-L",
+                        "mixer-in-3-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-24",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        194.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-3[2]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        4,
+                        "mixer-in-4-L",
+                        "mixer-in-4-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-27",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        286.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-4[2]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1,
+                        "bus-1-L",
+                        "bus-1-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-29",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        394.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-1[2]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2,
+                        "bus-2-L",
+                        "bus-2-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-31",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        486.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-2[2]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1,
+                        "mixer-in-1-L",
+                        "mixer-in-1-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-33",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        10.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-1[3]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2,
+                        "mixer-in-2-L",
+                        "mixer-in-2-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-35",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        102.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-2[3]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        3,
+                        "mixer-in-3-L",
+                        "mixer-in-3-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-37",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        194.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-3[3]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        4,
+                        "mixer-in-4-L",
+                        "mixer-in-4-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-39",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        286.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-4[3]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        5,
+                        "mixer-in-5-L",
+                        "mixer-in-5-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-45",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-strip.maxpat",
+                    "numinlets": 4,
+                    "numoutlets": 4,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal",
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        378.0,
+                        190.0,
+                        88.0,
+                        563.0
+                    ],
+                    "varname": "strip-5",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1,
+                        "bus-1-L",
+                        "bus-1-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-47",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        486.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-1[3]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2,
+                        "bus-2-L",
+                        "bus-2-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-49",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        578.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-2[3]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        1,
+                        "bus-1-L",
+                        "bus-1-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-57",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        486.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-1[4]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        2,
+                        "bus-2-L",
+                        "bus-2-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-59",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        578.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-2[4]",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "args": [
+                        3,
+                        "bus-3-L",
+                        "bus-3-R"
+                    ],
+                    "bgmode": 0,
+                    "border": 0,
+                    "clickthrough": 0,
+                    "enablehscroll": 0,
+                    "enablevscroll": 0,
+                    "id": "obj-61",
+                    "lockeddragscroll": 0,
+                    "lockedsize": 0,
+                    "maxclass": "bpatcher",
+                    "name": "mixer-bus.maxpat",
+                    "numinlets": 0,
+                    "numoutlets": 2,
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "outlettype": [
+                        "signal",
+                        "signal"
+                    ],
+                    "patching_rect": [
+                        670.0,
+                        190.0,
+                        88.0,
+                        428.0
+                    ],
+                    "varname": "bus-3",
+                    "viewvisibility": 1
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-62",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        160,
+                        145,
+                        352.0,
+                        22.0
+                    ],
+                    "text": "pattrstorage mixstate @autorestore 0 @savemode 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "varname": "mixstate"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-63",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        460,
+                        11,
+                        79.0,
+                        22.0
+                    ],
+                    "text": "closebang",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-64",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        460,
+                        66,
+                        44.0,
+                        22.0
+                    ],
+                    "text": "save",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
                 }
             }
         ],
@@ -1247,6 +2102,54 @@
                     ],
                     "source": [
                         "obj-6",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-14",
+                        0
+                    ],
+                    "source": [
+                        "obj-7",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "destination": [
+                        "obj-12",
+                        0
+                    ],
+                    "source": [
+                        "obj-9",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-63",
+                        0
+                    ],
+                    "destination": [
+                        "obj-64",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-64",
+                        0
+                    ],
+                    "destination": [
+                        "obj-41",
                         0
                     ]
                 }
