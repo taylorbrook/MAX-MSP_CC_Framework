@@ -22,6 +22,14 @@
         "looper-demo.maxpat",
         "safe-gain.gendsp"
       ]
+    },
+    {
+      "version": "0.0.3",
+      "description": "add p about: user-facing feature description",
+      "timestamp": "2026-09-24T12:52:39.909073+00:00",
+      "files_changed": [
+        "looper.maxpat"
+      ]
     }
   ]
 }
