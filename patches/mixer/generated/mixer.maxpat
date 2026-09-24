@@ -96,7 +96,9 @@
                         55.0,
                         50.0,
                         22.0
-                    ]
+                    ],
+                    "minimum": 1,
+                    "maximum": 32
                 }
             },
             {
@@ -115,7 +117,9 @@
                         55.0,
                         50.0,
                         22.0
-                    ]
+                    ],
+                    "minimum": 0,
+                    "maximum": 8
                 }
             },
             {
@@ -374,7 +378,9 @@
             {
                 "box": {
                     "args": [
-                        1
+                        1,
+                        "mixer-in-1-L",
+                        "mixer-in-1-R"
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -411,7 +417,9 @@
             {
                 "box": {
                     "args": [
-                        2
+                        2,
+                        "mixer-in-2-L",
+                        "mixer-in-2-R"
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -448,7 +456,9 @@
             {
                 "box": {
                     "args": [
-                        3
+                        3,
+                        "mixer-in-3-L",
+                        "mixer-in-3-R"
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -485,7 +495,9 @@
             {
                 "box": {
                     "args": [
-                        4
+                        4,
+                        "mixer-in-4-L",
+                        "mixer-in-4-R"
                     ],
                     "bgmode": 0,
                     "border": 0,
@@ -590,228 +602,6 @@
                         428.0
                     ],
                     "varname": "bus-2",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "args": [
-                        1
-                    ],
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-8",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "mixer-strip.maxpat",
-                    "numinlets": 4,
-                    "numoutlets": 4,
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "outlettype": [
-                        "signal",
-                        "signal",
-                        "signal",
-                        "signal"
-                    ],
-                    "patching_rect": [
-                        10.0,
-                        190.0,
-                        88.0,
-                        563.0
-                    ],
-                    "varname": "strip-1[1]",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "args": [
-                        2
-                    ],
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-13",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "mixer-strip.maxpat",
-                    "numinlets": 4,
-                    "numoutlets": 4,
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "outlettype": [
-                        "signal",
-                        "signal",
-                        "signal",
-                        "signal"
-                    ],
-                    "patching_rect": [
-                        102.0,
-                        190.0,
-                        88.0,
-                        563.0
-                    ],
-                    "varname": "strip-2[1]",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "args": [
-                        3
-                    ],
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-18",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "mixer-strip.maxpat",
-                    "numinlets": 4,
-                    "numoutlets": 4,
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "outlettype": [
-                        "signal",
-                        "signal",
-                        "signal",
-                        "signal"
-                    ],
-                    "patching_rect": [
-                        194.0,
-                        190.0,
-                        88.0,
-                        563.0
-                    ],
-                    "varname": "strip-3[1]",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "args": [
-                        4
-                    ],
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-21",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "mixer-strip.maxpat",
-                    "numinlets": 4,
-                    "numoutlets": 4,
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "outlettype": [
-                        "signal",
-                        "signal",
-                        "signal",
-                        "signal"
-                    ],
-                    "patching_rect": [
-                        286.0,
-                        190.0,
-                        88.0,
-                        563.0
-                    ],
-                    "varname": "strip-4[1]",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "args": [
-                        1,
-                        "bus-1-L",
-                        "bus-1-R"
-                    ],
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-23",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "mixer-bus.maxpat",
-                    "numinlets": 0,
-                    "numoutlets": 2,
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "outlettype": [
-                        "signal",
-                        "signal"
-                    ],
-                    "patching_rect": [
-                        394.0,
-                        190.0,
-                        88.0,
-                        428.0
-                    ],
-                    "varname": "bus-1[1]",
-                    "viewvisibility": 1
-                }
-            },
-            {
-                "box": {
-                    "args": [
-                        2,
-                        "bus-2-L",
-                        "bus-2-R"
-                    ],
-                    "bgmode": 0,
-                    "border": 0,
-                    "clickthrough": 0,
-                    "enablehscroll": 0,
-                    "enablevscroll": 0,
-                    "id": "obj-25",
-                    "lockeddragscroll": 0,
-                    "lockedsize": 0,
-                    "maxclass": "bpatcher",
-                    "name": "mixer-bus.maxpat",
-                    "numinlets": 0,
-                    "numoutlets": 2,
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "outlettype": [
-                        "signal",
-                        "signal"
-                    ],
-                    "patching_rect": [
-                        486.0,
-                        190.0,
-                        88.0,
-                        428.0
-                    ],
-                    "varname": "bus-2[1]",
                     "viewvisibility": 1
                 }
             },
@@ -947,7 +737,7 @@
                                         700,
                                         22
                                     ],
-                                    "text": "Strips are rebuilt when the patch opens or a count changes -- reconnect any cords afterwards.",
+                                    "text": "Changing a count only adds or removes strips at the end -- existing strips keep their cords and settings.",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -1074,7 +864,7 @@
                                         700,
                                         22
                                     ],
-                                    "text": "Strip inlets 1-2: audio in L/R. Inlets 3-4: insert return L/R.",
+                                    "text": "Strip inlets 1-2: audio in L/R (or send~ mixer-in-N-L/R, no cords needed). Inlets 3-4: insert return L/R.",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
