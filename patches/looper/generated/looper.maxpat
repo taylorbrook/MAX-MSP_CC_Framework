@@ -128,8 +128,9 @@
                     "id": "obj-2",
                     "maxclass": "newobj",
                     "numinlets": 1,
-                    "numoutlets": 2,
+                    "numoutlets": 3,
                     "outlettype": [
+                        "signal",
                         "signal",
                         "signal"
                     ],
@@ -172,15 +173,16 @@
                             },
                             {
                                 "box": {
-                                    "code": "Buffer loopbuf;\nParam state(0, min=0, max=4);\nParam feedback(1, min=0, max=1);\nHistory writepos(0);\nHistory playpos(0);\nHistory looplen(0);\nHistory recgain(0);\nHistory outgain(0);\nHistory prevstate(0);\n\nx = in1;\nbufsize = dim(loopbuf);\nrc = exp(-1.0 / (0.01 * samplerate));\nst = state;\nps = prevstate;\nfb = min(max(feedback, 0.0), 1.0);\n\nif (ps == 1 && st != 1) {\n    looplen = writepos;\n    playpos = 0;\n}\nif (ps == 4 && st == 2) {\n    playpos = 0;\n}\nif (ps != 0 && st == 0) {\n    writepos = 0;\n    playpos = 0;\n    looplen = 0;\n}\nif (ps == 0 && st == 1) {\n    writepos = 0;\n    playpos = 0;\n}\n\nrectarget = 0.0;\nif (st == 1) {\n    rectarget = 1.0;\n}\nif (st == 3) {\n    rectarget = 1.0;\n}\nouttarget = 0.0;\nif (st == 2) {\n    outtarget = 1.0;\n}\nif (st == 3) {\n    outtarget = 1.0;\n}\nrecgain = rectarget + rc * (recgain - rectarget);\noutgain = outtarget + rc * (outgain - outtarget);\nwr = recgain;\n\nif (st == 1 && writepos < bufsize) {\n    poke(loopbuf, x * wr, writepos, 0);\n    writepos = writepos + 1;\n}\n\nplaying = 0;\nif (st != 1 && looplen > 0) {\n    playing = 1;\n}\nexisting = 0.0;\nif (playing == 1) {\n    existing = peek(loopbuf, playpos, 0);\n}\ny = existing * outgain;\nnewval = 0.0;\nif (playing == 1 && wr > 0.0005) {\n    newval = existing * (1.0 - wr + wr * fb) + x * wr;\n    poke(loopbuf, newval, playpos, 0);\n}\nadv = 0;\nif (playing == 1 && st == 2) {\n    adv = 1;\n}\nif (playing == 1 && st == 3) {\n    adv = 1;\n}\nif (playing == 1 && st == 4 && outgain > 0.0005) {\n    adv = 1;\n}\nif (adv == 1) {\n    playpos = playpos + 1;\n}\nif (playpos >= looplen && looplen > 0) {\n    playpos = 0;\n}\nprevstate = st;\nout1 = y;\nout2 = looplen;\n",
+                                    "code": "Buffer loopbuf;\nParam state(0, min=0, max=4);\nParam feedback(1, min=0, max=1);\nHistory writepos(0);\nHistory playpos(0);\nHistory looplen(0);\nHistory recgain(0);\nHistory outgain(0);\nHistory prevstate(0);\n\nx = in1;\nbufsize = dim(loopbuf);\nrc = exp(-1.0 / (0.01 * samplerate));\nst = state;\nps = prevstate;\nfb = min(max(feedback, 0.0), 1.0);\n\nif (ps == 1 && st != 1) {\n    looplen = writepos;\n    playpos = 0;\n}\nif (ps == 4 && st == 2) {\n    playpos = 0;\n}\nif (ps != 0 && st == 0) {\n    writepos = 0;\n    playpos = 0;\n    looplen = 0;\n}\nif (ps == 0 && st == 1) {\n    writepos = 0;\n    playpos = 0;\n}\n\nrectarget = 0.0;\nif (st == 1) {\n    rectarget = 1.0;\n}\nif (st == 3) {\n    rectarget = 1.0;\n}\nouttarget = 0.0;\nif (st == 2) {\n    outtarget = 1.0;\n}\nif (st == 3) {\n    outtarget = 1.0;\n}\nrecgain = rectarget + rc * (recgain - rectarget);\noutgain = outtarget + rc * (outgain - outtarget);\nwr = recgain;\n\nif (st == 1 && writepos < bufsize) {\n    poke(loopbuf, x * wr, writepos, 0);\n    writepos = writepos + 1;\n}\n\nplaying = 0;\nif (st != 1 && looplen > 0) {\n    playing = 1;\n}\nadv = 0;\nif (playing == 1 && st == 2) {\n    adv = 1;\n}\nif (playing == 1 && st == 3) {\n    adv = 1;\n}\nif (playing == 1 && st == 4 && outgain > 0.0005) {\n    adv = 1;\n}\nif (playing == 1 && st == 4 && wr > 0.0005) {\n    adv = 1;\n}\nexisting = 0.0;\nif (playing == 1) {\n    existing = peek(loopbuf, playpos, 0);\n}\ny = existing * outgain;\nnewval = 0.0;\nif (adv == 1 && wr > 0.0005) {\n    newval = existing * (1.0 - wr + wr * fb) + x * wr;\n    poke(loopbuf, newval, playpos, 0);\n}\nif (adv == 1) {\n    playpos = playpos + 1;\n}\nif (playpos >= looplen && looplen > 0) {\n    playpos = 0;\n}\nfull = 0;\nif (st == 1 && writepos >= bufsize) {\n    full = 1;\n}\nprevstate = st;\nout1 = y;\nout2 = looplen;\nout3 = full;\n",
                                     "fontface": 0,
                                     "fontname": "<Monospaced>",
                                     "fontsize": 12.0,
                                     "id": "obj-2",
                                     "maxclass": "codebox",
                                     "numinlets": 1,
-                                    "numoutlets": 2,
+                                    "numoutlets": 3,
                                     "outlettype": [
+                                        "",
                                         "",
                                         ""
                                     ],
@@ -225,6 +227,24 @@
                                     ],
                                     "text": "out 2"
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-5",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        465.0,
+                                        300.0,
+                                        51.0,
+                                        22.0
+                                    ],
+                                    "text": "out 3",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
                             }
                         ],
                         "lines": [
@@ -267,6 +287,18 @@
                                     "source": [
                                         "obj-2",
                                         1
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-2",
+                                        2
+                                    ],
+                                    "destination": [
+                                        "obj-5",
+                                        0
                                     ]
                                 }
                             }
@@ -419,7 +451,7 @@
                         72.0,
                         22.0
                     ],
-                    "text": "gain 0.8"
+                    "text": "gain 1."
                 }
             },
             {
@@ -594,20 +626,21 @@
                                     "fontsize": 12.0,
                                     "id": "obj-8",
                                     "maxclass": "newobj",
-                                    "numinlets": 3,
-                                    "numoutlets": 3,
+                                    "numinlets": 1,
+                                    "numoutlets": 4,
                                     "outlettype": [
-                                        "bang",
-                                        "bang",
+                                        "",
+                                        "",
+                                        "",
                                         ""
                                     ],
                                     "patching_rect": [
                                         435.0,
                                         120.0,
-                                        86.0,
+                                        100.0,
                                         22.0
                                     ],
-                                    "text": "select 2 3"
+                                    "text": "select 1 2 3"
                                 }
                             },
                             {
@@ -1437,6 +1470,18 @@
                                         0
                                     ]
                                 }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-8",
+                                        2
+                                    ],
+                                    "destination": [
+                                        "obj-12",
+                                        0
+                                    ]
+                                }
                             }
                         ]
                     },
@@ -1940,10 +1985,10 @@
                         "float"
                     ],
                     "patching_rect": [
-                        255.0,
-                        390.0,
-                        107.0,
-                        22.0
+                        509,
+                        387,
+                        107,
+                        22
                     ],
                     "text": "snapshot~ 100"
                 }
@@ -1960,10 +2005,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        509.0,
-                        420.0,
-                        233.0,
-                        22.0
+                        509,
+                        471,
+                        233,
+                        22
                     ],
                     "text": "expr ($f1 == 0.) * 30000. + $f1"
                 }
@@ -2272,10 +2317,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        0.0,
-                        0.0,
-                        86.0,
-                        22.0
+                        0,
+                        330,
+                        86,
+                        22
                     ],
                     "text": "loopbuf #1",
                     "fontname": "Arial",
@@ -2292,10 +2337,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        0.0,
-                        0.0,
-                        58.0,
-                        22.0
+                        100,
+                        330,
+                        58,
+                        22
                     ],
                     "text": "set #1",
                     "fontname": "Arial",
@@ -2372,7 +2417,50 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.0.1",
+                    "text": "v0.0.2",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-55",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        315,
+                        300,
+                        51.0,
+                        22.0
+                    ],
+                    "text": "edge~",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-56",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "",
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        509,
+                        429,
+                        58.0,
+                        22.0
+                    ],
+                    "text": "change",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -3123,34 +3211,6 @@
                     ],
                     "source": [
                         "obj-31",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-33",
-                        0
-                    ],
-                    "midpoints": [
-                        308.5,
-                        337.0,
-                        472.0,
-                        337.0,
-                        472.0,
-                        453.0,
-                        472.0,
-                        382.0,
-                        413.0,
-                        382.0,
-                        413.0,
-                        428.0,
-                        625.5,
-                        428.0
-                    ],
-                    "source": [
-                        "obj-32",
                         0
                     ]
                 }
@@ -3951,12 +4011,72 @@
             {
                 "patchline": {
                     "source": [
+                        "obj-2",
+                        2
+                    ],
+                    "destination": [
+                        "obj-55",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-55",
+                        0
+                    ],
+                    "destination": [
+                        "obj-10",
+                        0
+                    ],
+                    "midpoints": [
+                        319.5,
+                        110.0,
+                        394.5,
+                        110.0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-32",
+                        0
+                    ],
+                    "destination": [
+                        "obj-56",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-56",
+                        0
+                    ],
+                    "destination": [
+                        "obj-33",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
                         "obj-53",
                         0
                     ],
                     "destination": [
-                        "obj-32",
+                        "obj-33",
                         0
+                    ],
+                    "midpoints": [
+                        1089.5,
+                        460.0,
+                        518.5,
+                        460.0
                     ]
                 }
             }
