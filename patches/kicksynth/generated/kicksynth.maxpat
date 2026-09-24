@@ -4336,6 +4336,391 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-155",
+                    "numinlets": 0,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        5369.0,
+                        10.0,
+                        86.0,
+                        22.0
+                    ],
+                    "text": "p about",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "patcher": {
+                        "fileversion": 1,
+                        "appversion": {
+                            "major": 9,
+                            "minor": 0,
+                            "revision": 0,
+                            "architecture": "x64",
+                            "modernui": 1
+                        },
+                        "classnamespace": "box",
+                        "rect": [
+                            120.0,
+                            120.0,
+                            750.0,
+                            434.0
+                        ],
+                        "bglocked": 0,
+                        "openinpresentation": 0,
+                        "default_fontsize": 12.0,
+                        "default_fontface": 0,
+                        "default_fontname": "Arial",
+                        "gridonopen": 1,
+                        "gridsize": [
+                            15.0,
+                            15.0
+                        ],
+                        "gridsnaponopen": 1,
+                        "objectsnaponopen": 1,
+                        "statusbarvisible": 2,
+                        "toolbarvisible": 1,
+                        "lefttoolbarpinned": 0,
+                        "toptoolbarpinned": 0,
+                        "righttoolbarpinned": 0,
+                        "bottomtoolbarpinned": 0,
+                        "toolbars_unpinned_last_save": 0,
+                        "tallnewobj": 0,
+                        "boxanimatetime": 200,
+                        "enablehscroll": 1,
+                        "enablevscroll": 1,
+                        "devicewidth": 0.0,
+                        "description": "",
+                        "digest": "",
+                        "tags": "",
+                        "style": "",
+                        "subpatcher_template": "",
+                        "assistshowspatchername": 0,
+                        "boxes": [
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-1",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        20,
+                                        700,
+                                        26
+                                    ],
+                                    "text": "KICK SYNTH -- layered kick drum synthesizer",
+                                    "fontname": "Arial",
+                                    "fontsize": 16.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-2",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        58,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "USING IT",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-3",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        83,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Turn audio on with the speaker button, then hit TRIGGER or play any MIDI note.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-4",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        105,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Preset menu: Default, 808, 909, Techno or Trap recall pattr slots 1-5.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-5",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        127,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "BODY: a sine that sweeps from Start Hz down to End Hz over P.Decay ms.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-6",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        149,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "    A.Decay sets its length; P.Curve and A.Curve bend the two envelopes; Level sets its mix.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-7",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        171,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "SUB: a steady sine for low end -- Level and Decay ms.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-8",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        193,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "NOISE and CLICK: short attack bursts, each with Level, Decay ms and Tone Hz.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-9",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        215,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "MASTER: Drive (saturation), HP Hz, Lo and Mid EQ bands, limiter Ceiling dB and Release ms.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-10",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        237,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "PITCH ENVELOPE and AMP ENVELOPE redraw the body's curves as you edit.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-11",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        259,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Slot + Load recalls a slot; Save stores the current sound there; Write saves presets to disk.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-12",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        281,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "OUTPUT: fader for level, plus scope, spectrum and level meter.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-13",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        313,
+                                        700,
+                                        23
+                                    ],
+                                    "text": "HOW IT WORKS",
+                                    "fontname": "Arial",
+                                    "fontsize": 13.0,
+                                    "fontface": 1
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-14",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        338,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "Each trigger fires click~ into a gen~ that restarts body, sub, noise and click layers together.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-15",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        360,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "A second gen~ applies drive, high-pass, two EQ bands and a limiter.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-16",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        20,
+                                        382,
+                                        700,
+                                        22
+                                    ],
+                                    "text": "pattrstorage kicksynth keeps every setting; slots live in kicksynth.json beside the patch.",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            }
+                        ],
+                        "lines": [],
+                        "dependency_cache": [],
+                        "autosave": 0,
+                        "bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "editing_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ],
+                        "locked_bgcolor": [
+                            0.333,
+                            0.333,
+                            0.333,
+                            1.0
+                        ]
+                    },
+                    "saved_object_attributes": {
+                        "description": "",
+                        "digest": "",
+                        "globalpatchername": "",
+                        "tags": ""
+                    }
+                }
             }
         ],
         "lines": [
