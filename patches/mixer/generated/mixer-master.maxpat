@@ -161,7 +161,8 @@
                         30.0,
                         40.0,
                         260.0
-                    ]
+                    ],
+                    "varname": "fader"
                 }
             },
             {
@@ -531,6 +532,29 @@
                         130
                     ],
                     "parameter_enable": 0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-20",
+                    "numinlets": 1,
+                    "numoutlets": 4,
+                    "outlettype": [
+                        "",
+                        "",
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        260,
+                        90,
+                        184.0,
+                        22.0
+                    ],
+                    "text": "autopattr @autorestore 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
                 }
             }
         ],
