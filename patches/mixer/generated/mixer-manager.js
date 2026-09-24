@@ -11,7 +11,7 @@ inlets = 1;
 outlets = 1;
 
 var STRIP_W = 88;
-var STRIP_H = 563;
+var STRIP_H = 702;
 var BUS_W = 88;
 var BUS_H = 428;
 var MASTER_W = 118;
@@ -25,6 +25,7 @@ var MASTER_GAP = 24;
 
 var trackCount = 0;
 var busCount = 0;
+var soloed = {};		// strip number -> 1 while its S is on
 
 function stripX(i) {
 	return X_START + i * (STRIP_W + GAP);
@@ -74,6 +75,9 @@ function syncStrips(p, count) {
 		}
 	}
 	trackCount = count;
+	for (var k in soloed) {
+		if (parseInt(k, 10) > count) delete soloed[k];
+	}
 }
 
 function syncBusses(p, count) {
@@ -132,6 +136,7 @@ function init(t, b) {
 	syncBusses(p, Math.max(0, Math.min(b, 8)));
 	moveMaster(p);
 	setCounts(p);
+	broadcastSolo();
 	post("mixer: init " + trackCount + " track(s), " + busCount + " bus(ses)\n");
 }
 
@@ -190,6 +195,7 @@ function tracks(count) {
 	syncStrips(p, Math.max(1, Math.min(count, 32)));
 	syncBusses(p, busCount);	// reposition only; existing busses are kept
 	moveMaster(p);
+	broadcastSolo();
 	post("mixer: " + trackCount + " track(s)\n");
 }
 
@@ -198,4 +204,19 @@ function busses(count) {
 	syncBusses(p, Math.max(0, Math.min(count, 8)));
 	moveMaster(p);
 	post("mixer: " + busCount + " bus(ses)\n");
+}
+
+// ---- solo-in-place: strips report "solo N 0/1" via send mixer-solo;
+// every strip gates its output on mixer-solo-any (1 while any strip is soloed)
+
+function solo(n, state) {
+	if (state) soloed[n] = 1;
+	else delete soloed[n];
+	broadcastSolo();
+}
+
+function broadcastSolo() {
+	var any = 0;
+	for (var k in soloed) any = 1;
+	messnamed("mixer-solo-any", any);
 }
