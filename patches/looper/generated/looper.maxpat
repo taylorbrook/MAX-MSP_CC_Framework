@@ -27,9 +27,9 @@
                         1.0
                     ],
                     "grad2": [
-                        0.47843137254901963,
-                        0.48627450980392156,
-                        0.5019607843137255,
+                        0.36,
+                        0.365,
+                        0.38,
                         1.0
                     ],
                     "id": "obj-46",
@@ -65,9 +65,9 @@
                         1.0
                     ],
                     "grad2": [
-                        0.6078431372549019,
-                        0.615686274509804,
-                        0.6392156862745098,
+                        0.36,
+                        0.365,
+                        0.38,
                         1.0
                     ],
                     "id": "obj-45",
@@ -172,7 +172,7 @@
                             },
                             {
                                 "box": {
-                                    "code": "Buffer loopbuf;\nParam state(0, min=0, max=4);\nParam feedback(1, min=0, max=1);\nHistory writepos(0);\nHistory playpos(0);\nHistory looplen(0);\nHistory recgain(0);\nHistory outgain(0);\nHistory prevstate(0);\n\nx = in1;\nbufsize = dim(loopbuf);\nrc = exp(-1.0 / (0.01 * samplerate));\nst = state;\nps = prevstate;\nfb = min(max(feedback, 0.0), 1.0);\n\nif (ps == 1 && st != 1) {\n    looplen = writepos;\n    playpos = 0;\n}\nif (ps == 4 && st == 2) {\n    playpos = 0;\n}\nif (ps != 0 && st == 0) {\n    writepos = 0;\n    playpos = 0;\n    looplen = 0;\n}\nif (ps == 0 && st == 1) {\n    writepos = 0;\n    playpos = 0;\n}\n\nrectarget = 0.0;\nif (st == 1) {\n    rectarget = 1.0;\n}\nif (st == 3) {\n    rectarget = 1.0;\n}\nouttarget = 0.0;\nif (st == 2) {\n    outtarget = 1.0;\n}\nif (st == 3) {\n    outtarget = 1.0;\n}\nrecgain = rectarget + rc * (recgain - rectarget);\noutgain = outtarget + rc * (outgain - outtarget);\nwr = recgain;\n\nif (st == 1 && writepos < bufsize) {\n    poke(loopbuf, x * wr, writepos, 0);\n    writepos = writepos + 1;\n}\n\nplaying = 0;\nif (st != 1 && looplen > 0) {\n    playing = 1;\n}\nexisting = 0.0;\nif (playing == 1) {\n    existing = peek(loopbuf, playpos, 0);\n}\ny = existing * outgain;\nnewval = 0.0;\nif (playing == 1 && wr > 0.0005) {\n    newval = existing * (1.0 - wr + wr * fb) + x * wr;\n    poke(loopbuf, newval, playpos, 0);\n}\nadv = 0;\nif (playing == 1 && st == 2) {\n    adv = 1;\n}\nif (playing == 1 && st == 3) {\n    adv = 1;\n}\nif (adv == 1) {\n    playpos = playpos + 1;\n}\nif (playpos >= looplen && looplen > 0) {\n    playpos = 0;\n}\nprevstate = st;\nout1 = y;\nout2 = looplen;\n",
+                                    "code": "Buffer loopbuf;\nParam state(0, min=0, max=4);\nParam feedback(1, min=0, max=1);\nHistory writepos(0);\nHistory playpos(0);\nHistory looplen(0);\nHistory recgain(0);\nHistory outgain(0);\nHistory prevstate(0);\n\nx = in1;\nbufsize = dim(loopbuf);\nrc = exp(-1.0 / (0.01 * samplerate));\nst = state;\nps = prevstate;\nfb = min(max(feedback, 0.0), 1.0);\n\nif (ps == 1 && st != 1) {\n    looplen = writepos;\n    playpos = 0;\n}\nif (ps == 4 && st == 2) {\n    playpos = 0;\n}\nif (ps != 0 && st == 0) {\n    writepos = 0;\n    playpos = 0;\n    looplen = 0;\n}\nif (ps == 0 && st == 1) {\n    writepos = 0;\n    playpos = 0;\n}\n\nrectarget = 0.0;\nif (st == 1) {\n    rectarget = 1.0;\n}\nif (st == 3) {\n    rectarget = 1.0;\n}\nouttarget = 0.0;\nif (st == 2) {\n    outtarget = 1.0;\n}\nif (st == 3) {\n    outtarget = 1.0;\n}\nrecgain = rectarget + rc * (recgain - rectarget);\noutgain = outtarget + rc * (outgain - outtarget);\nwr = recgain;\n\nif (st == 1 && writepos < bufsize) {\n    poke(loopbuf, x * wr, writepos, 0);\n    writepos = writepos + 1;\n}\n\nplaying = 0;\nif (st != 1 && looplen > 0) {\n    playing = 1;\n}\nexisting = 0.0;\nif (playing == 1) {\n    existing = peek(loopbuf, playpos, 0);\n}\ny = existing * outgain;\nnewval = 0.0;\nif (playing == 1 && wr > 0.0005) {\n    newval = existing * (1.0 - wr + wr * fb) + x * wr;\n    poke(loopbuf, newval, playpos, 0);\n}\nadv = 0;\nif (playing == 1 && st == 2) {\n    adv = 1;\n}\nif (playing == 1 && st == 3) {\n    adv = 1;\n}\nif (playing == 1 && st == 4 && outgain > 0.0005) {\n    adv = 1;\n}\nif (adv == 1) {\n    playpos = playpos + 1;\n}\nif (playpos >= looplen && looplen > 0) {\n    playpos = 0;\n}\nprevstate = st;\nout1 = y;\nout2 = looplen;\n",
                                     "fontface": 0,
                                     "fontname": "<Monospaced>",
                                     "fontsize": 12.0,
@@ -1870,12 +1870,12 @@
                         ""
                     ],
                     "patching_rect": [
-                        1050.0,
-                        345.0,
-                        98.0,
-                        22.0
+                        1125,
+                        360,
+                        60,
+                        22
                     ],
-                    "text": "bufname #1"
+                    "text": "set #1"
                 }
             },
             {
@@ -2336,6 +2336,45 @@
                     ],
                     "parameter_enable": 0,
                     "comment": "Loop Out (mono)"
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-53",
+                    "numinlets": 1,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1080,
+                        330,
+                        93.0,
+                        22.0
+                    ],
+                    "text": "trigger b b",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-54",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        550.0,
+                        10.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "v0.0.1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
                 }
             }
         ],
@@ -3033,46 +3072,6 @@
                     "source": [
                         "obj-27",
                         1
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-29",
-                        0
-                    ],
-                    "midpoints": [
-                        1072.0,
-                        292.0,
-                        1072.0,
-                        292.0,
-                        1072.0,
-                        330.0,
-                        1057.0,
-                        330.0
-                    ],
-                    "source": [
-                        "obj-27",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-29",
-                        0
-                    ],
-                    "midpoints": [
-                        1123.0,
-                        333.5,
-                        1057.0,
-                        333.5
-                    ],
-                    "source": [
-                        "obj-28",
-                        0
                     ]
                 }
             },
@@ -3912,6 +3911,54 @@
                         378.5
                     ]
                 }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-28",
+                        0
+                    ],
+                    "destination": [
+                        "obj-53",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-27",
+                        0
+                    ],
+                    "destination": [
+                        "obj-53",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-53",
+                        1
+                    ],
+                    "destination": [
+                        "obj-29",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-53",
+                        0
+                    ],
+                    "destination": [
+                        "obj-32",
+                        0
+                    ]
+                }
             }
         ],
         "autosave": 0,
@@ -3921,6 +3968,18 @@
             0.333,
             1.0
         ],
-        "openinpresentation": 1
+        "openinpresentation": 1,
+        "bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ],
+        "locked_bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ]
     }
 }
