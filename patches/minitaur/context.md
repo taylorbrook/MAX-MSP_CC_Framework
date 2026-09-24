@@ -118,3 +118,16 @@ LFO --> VCO Pitch & VCF Cutoff
 2. **UI**: Full presentation-mode replication of the Minitaur front panel (16 knobs + 2 buttons + waveform selectors)
 3. **External audio**: Include external audio input path through mixer into filter/VCA chain
 4. **MIDI CC**: Full CC map -- all 14-bit parameter pairs, all 7-bit switches, note priority, velocity routing
+
+## Decisions (v0.1.0 review fixes, 2026-09-24)
+
+- **Voice logic** lives in `generated/minitaur-voice.js` (inside `p midi-input`): held-note stack, Low/High/Last priority (umenu PRIORITY, default Low), legato = no envelope retrigger on overlapping notes. Broadcasts `mt-note` (0-72), `mt-vel`, `mt-gate`, `mt-trig` (0/1 toggle that flips on every retrigger). CC 123 clears the stack.
+- **Retrigger** is edge-detected from `mt-trig` inside gen~ (envelopes, LFO key trigger, note sync), never from the gate level. Gate and trig reach gen~ via `sig~`, not `line~`.
+- **Envelopes**: attack/decay knobs map exponentially 1 ms–10 s. Reset mode dumps to 0 over ~3 ms before re-attacking. Release OFF = 5 ms tail (no instant cut).
+- **Velocity**: scales the EG output, `1 - sens + sens * vel/127`, separately for filter EG and amp EG.
+- **Filter**: TPT/ZDF 4-pole ladder with tanh on the feedback sum, k = res × 4.4 (self-oscillation from res ≈ 0.93, in tune from 220 Hz to 20 kHz in the numpy pre-flight), output gain compensation `1 + 0.5k`. Keyboard tracking references C3 (130.81 Hz), measured from the glide output.
+- **Glide** runs in semitones. Rate knob 2 ms–4 s, exponential. Type 0 = constant rate (knob time per octave), 1 = constant time, 2 = exponential.
+- **Pitch bend**: 14-bit via `midiin → xbendin`, fixed ±2 semitones (range not exposed yet).
+- **Sync**: gen~ master phase drives `saw~`/`rect~` sync inlets. Hard sync resets VCO2 each VCO1 cycle; note sync resets both on retrigger.
+- **Mod wheel** still scales both LFO depths (LFO knobs are silent at wheel 0). Kept as-is pending a decision.
+- **Not yet built**: VCO2 beat-frequency control, glide-legato mode, MIDI clock sync for the LFO, adjustable bend range.
