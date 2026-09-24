@@ -132,3 +132,10 @@ LFO --> VCO Pitch & VCF Cutoff
 - **Mod wheel** (v0.1.1, per Minitaur manual): `mt-mod-wheel` is initialised to 1.0 by `loadmess 1.` → `send mt-mod-wheel`, so VCO/VCF LFO AMOUNT act directly at load and the MOD WH dial/flonum show max. Once any wheel value arrives (CC1/33 or the MOD WH dial) it scales both depths.
 - **LFO depth ranges**: VCO LFO ±1 octave (`*~ 1.` in `p oscillators`), VCF LFO ±5 octaves (`*~ 5.` in `p filter`).
 - **Not yet built**: VCO2 beat-frequency control, glide-legato mode, MIDI clock sync for the LFO, adjustable bend range.
+
+## Decisions (v0.1.2 trig mode + priority, 2026-09-24)
+
+- **TRIG MODE** umenu (Legato ON / Legato OFF / EG Reset, default Legato ON via `loadmess 0`) replaces the LEGATO toggle in the same AMP EG slot; bus renamed `mt-cc-legato` → `mt-cc-trig-mode` (0/1/2). CC73 → `/ 43` (0-42/43-85/86-127). UI sync via `receive mt-cc-trig-mode → set $1`.
+- Voice JS takes `trigmode N`: mode 0 = no retrigger on overlapping notes; modes 1/2 retrigger. The retrigger *shape* lives in the EG gen~s via `Param trig_mode`: 0/1 attack from the current level, 2 dumps to zero over ~3 ms first (the pre-v0.1.2 behaviour, now only in EG Reset). Fresh notes during release follow the same rule.
+- **PRIORITY** default Last (`loadmess 2` → umenu; JS default `prio = 2`). CC91 → `/ 43` → `mt-cc-note-priority` (0 Low, 1 High, 2 Last); `receive mt-cc-note-priority → set $1` keeps the menu in sync.
+- EG codebox local `e` renamed `ev` (GenExpr constant-name trap, see CLAUDE.md).

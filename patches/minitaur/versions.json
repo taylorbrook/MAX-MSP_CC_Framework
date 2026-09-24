@@ -46,6 +46,15 @@
       "files_changed": [
         "minitaur.maxpat"
       ]
+    },
+    {
+      "version": "0.1.2",
+      "description": "TRIG MODE umenu (Legato ON/OFF, EG Reset) + CC73 3-way; PRIORITY default Last + CC91 w/ menu sync",
+      "timestamp": "2026-09-24T15:51:38.070121+00:00",
+      "files_changed": [
+        "minitaur.maxpat",
+        "minitaur-voice.js"
+      ]
     }
   ]
 }

@@ -1,6 +1,7 @@
 // minitaur-voice.js -- monophonic voice allocator
 // inlet 0:  "note vel" lists (vel 0 = note off), "priority N" (0 low, 1 high, 2 last),
-//           "legato N" (1 = no envelope retrigger on overlapping notes), "clear"
+//           "trigmode N" (0 Legato ON = no retrigger on overlapping notes,
+//           1 Legato OFF / 2 EG Reset = retrigger; reset shape lives in gen~), "clear"
 // outlets:  0 note (clamped 0-72), 1 velocity, 2 gate 0/1, 3 retrigger toggle (flips 0/1)
 
 inlets = 1;
@@ -8,8 +9,8 @@ outlets = 4;
 
 var held = [];      // held notes, oldest first
 var vels = {};      // velocity per held note
-var prio = 0;
-var legatoMode = 0;
+var prio = 2;        // Last (Minitaur default)
+var legatoMode = 1;  // trig mode 0 = Legato ON
 var current = -1;
 var trigState = 0;
 
@@ -61,8 +62,8 @@ function priority(p) {
     prio = Math.max(0, Math.min(2, Math.floor(p)));
 }
 
-function legato(l) {
-    legatoMode = l > 0.5 ? 1 : 0;
+function trigmode(m) {
+    legatoMode = Math.floor(m) === 0 ? 1 : 0;
 }
 
 function clear() {
