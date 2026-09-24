@@ -38,6 +38,14 @@
         "minitaur.maxpat",
         "minitaur-voice.js"
       ]
+    },
+    {
+      "version": "0.1.1",
+      "description": "LFO amounts active at load (mod wheel init 1.0), VCO LFO depth capped at \u00b11 oct",
+      "timestamp": "2026-09-24T15:45:46.057532+00:00",
+      "files_changed": [
+        "minitaur.maxpat"
+      ]
     }
   ]
 }

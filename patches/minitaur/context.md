@@ -129,5 +129,6 @@ LFO --> VCO Pitch & VCF Cutoff
 - **Glide** runs in semitones. Rate knob 2 ms–4 s, exponential. Type 0 = constant rate (knob time per octave), 1 = constant time, 2 = exponential.
 - **Pitch bend**: 14-bit via `midiin → xbendin`, fixed ±2 semitones (range not exposed yet).
 - **Sync**: gen~ master phase drives `saw~`/`rect~` sync inlets. Hard sync resets VCO2 each VCO1 cycle; note sync resets both on retrigger.
-- **Mod wheel** still scales both LFO depths (LFO knobs are silent at wheel 0). Kept as-is pending a decision.
+- **Mod wheel** (v0.1.1, per Minitaur manual): `mt-mod-wheel` is initialised to 1.0 by `loadmess 1.` → `send mt-mod-wheel`, so VCO/VCF LFO AMOUNT act directly at load and the MOD WH dial/flonum show max. Once any wheel value arrives (CC1/33 or the MOD WH dial) it scales both depths.
+- **LFO depth ranges**: VCO LFO ±1 octave (`*~ 1.` in `p oscillators`), VCF LFO ±5 octaves (`*~ 5.` in `p filter`).
 - **Not yet built**: VCO2 beat-frequency control, glide-legato mode, MIDI clock sync for the LFO, adjustable bend range.
