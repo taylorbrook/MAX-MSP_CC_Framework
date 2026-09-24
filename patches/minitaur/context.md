@@ -127,11 +127,11 @@ LFO --> VCO Pitch & VCF Cutoff
 - **Velocity**: scales the EG output, `1 - sens + sens * vel/127`, separately for filter EG and amp EG.
 - **Filter**: TPT/ZDF 4-pole ladder with tanh on the feedback sum, k = res × 4.4 (self-oscillation from res ≈ 0.93, in tune from 220 Hz to 20 kHz in the numpy pre-flight), output gain compensation `1 + 0.5k`. Keyboard tracking references C3 (130.81 Hz), measured from the glide output.
 - **Glide** runs in semitones. Rate knob 2 ms–4 s, exponential. Type 0 = constant rate (knob time per octave), 1 = constant time, 2 = exponential.
-- **Pitch bend**: 14-bit via `midiin → xbendin`, fixed ±2 semitones (range not exposed yet).
+- **Pitch bend**: 14-bit via `midiin → xbendin`, range adjustable since v0.1.3 (see below).
 - **Sync**: gen~ master phase drives `saw~`/`rect~` sync inlets. Hard sync resets VCO2 each VCO1 cycle; note sync resets both on retrigger.
 - **Mod wheel** (v0.1.1, per Minitaur manual): `mt-mod-wheel` is initialised to 1.0 by `loadmess 1.` → `send mt-mod-wheel`, so VCO/VCF LFO AMOUNT act directly at load and the MOD WH dial/flonum show max. Once any wheel value arrives (CC1/33 or the MOD WH dial) it scales both depths.
 - **LFO depth ranges**: VCO LFO ±1 octave (`*~ 1.` in `p oscillators`), VCF LFO ±5 octaves (`*~ 5.` in `p filter`).
-- **Not yet built**: VCO2 beat-frequency control, glide-legato mode, MIDI clock sync for the LFO, adjustable bend range.
+- **Not yet built**: VCO2 beat-frequency control, glide-legato mode, MIDI clock sync for the LFO.
 
 ## Decisions (v0.1.2 trig mode + priority, 2026-09-24)
 
@@ -139,3 +139,10 @@ LFO --> VCO Pitch & VCF Cutoff
 - Voice JS takes `trigmode N`: mode 0 = no retrigger on overlapping notes; modes 1/2 retrigger. The retrigger *shape* lives in the EG gen~s via `Param trig_mode`: 0/1 attack from the current level, 2 dumps to zero over ~3 ms first (the pre-v0.1.2 behaviour, now only in EG Reset). Fresh notes during release follow the same rule.
 - **PRIORITY** default Last (`loadmess 2` → umenu; JS default `prio = 2`). CC91 → `/ 43` → `mt-cc-note-priority` (0 Low, 1 High, 2 Last); `receive mt-cc-note-priority → set $1` keeps the menu in sync.
 - EG codebox local `e` renamed `ev` (GenExpr constant-name trap, see CLAUDE.md).
+
+## Decisions (v0.1.3 bend range, 2026-09-24)
+
+- **Separate up/down bend range** per the manual, default ±3 st. Buses `mt-cc-bend-up` / `mt-cc-bend-dn` carry the menu index 0-7 → 0 (OFF)/2/3/4/5/7/12/24 st.
+- CC107 (up) / CC108 (down) → `/ 16` in `p midi-input` gives the manual's 16-wide quantised bands directly.
+- `p oscillators`: `* 2.` replaced by `expr ($f1>0.)*$f1*$f2+($f1<0.)*$f1*$f3` (bend -1..1 → semitones). Range chain `receive → zl.lookup 0 2 3 4 5 7 12 24 → t b f` sets the cold inlet then bangs, so a range change applies to a held bend immediately.
+- UI: BEND UP / BEND DN umenus beside PRIORITY (pres. x 512 / 580, y 307); keyboard panel widened to 836 px (right edge aligned with the filter panel). `loadmess 2` defaults, `receive → set $1` keeps menus synced with CCs.

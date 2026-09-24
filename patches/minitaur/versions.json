@@ -55,6 +55,14 @@
         "minitaur.maxpat",
         "minitaur-voice.js"
       ]
+    },
+    {
+      "version": "0.1.3",
+      "description": "Pitch bend range per manual: separate up/down (default \u00b13), CC107/CC108 quantised table, BEND UP/DN umenus in keyboard panel",
+      "timestamp": "2026-09-24T20:25:18.911549+00:00",
+      "files_changed": [
+        "minitaur.maxpat"
+      ]
     }
   ]
 }
