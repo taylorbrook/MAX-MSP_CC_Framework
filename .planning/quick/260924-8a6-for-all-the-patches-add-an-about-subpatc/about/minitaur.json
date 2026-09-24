@@ -1,0 +1,29 @@
+{
+  "patch": "patches/minitaur/generated/minitaur.maxpat",
+  "title": "MINITAUR -- Moog Minitaur-style monophonic bass synth",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Turn audio on (Options > Audio Status), then play MIDI or the KEYBOARD. Notes above C5 are clamped.",
+      "OSC: FINE TUNE, VCO2 FREQ (+/-12 semitones), VCO1/VCO2 SQ (on = square, off = saw).",
+      "    H.SYNC locks VCO2 to VCO1; N.SYNC restarts both oscillators on each note.",
+      "MIX: VCO1 LVL, VCO2 LVL and EXT LVL (audio input 1); high levels saturate gently.",
+      "FILTER: CUTOFF, RESONANCE (self-oscillates near max), EG AMT (bipolar), KB TRK, FLT VEL.",
+      "FILT EG and AMP EG: attack, decay and sustain; RELEASE on = release uses the decay time.",
+      "    AMP VEL sets velocity to loudness; LEGATO stops envelopes restarting on tied notes.",
+      "LFO: RATE, LFO>VCO and LFO>VCF depths, WAVE (tri, square, saw, ramp, S&H, filter EG).",
+      "    KEY TR restarts the LFO on each note; VCO2 O sends pitch LFO to VCO2 only.",
+      "PERF: GLIDE on/off, GLIDE RT, GLD TYP (constant rate, constant time, exponential), MOD WH.",
+      "VOLUME sets the output level. Number boxes beside each dial show its value.",
+      "The MIDI, OSC, MIX, GLIDE, ENV, LFO, FILT and VCA buttons open each section's subpatcher."
+    ]},
+    {"heading": "INPUTS & OUTPUTS", "lines": [
+      "MIDI notes, velocity, pitch bend, mod wheel and a Minitaur-style CC map (see p midi-input).",
+      "Audio in: adc~ 1 feeds EXT LVL. Audio out: the same mono voice on dac~ 1 and 2."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "Two saw/square oscillators and the external input are mixed and soft-clipped with tanh~.",
+      "A gen~ Huovilainen ladder filter (24 dB/oct lowpass) shapes the tone.",
+      "gen~ envelopes, LFO and glide run at audio rate; sections talk over send/receive (mt-*)."
+    ]}
+  ]
+}

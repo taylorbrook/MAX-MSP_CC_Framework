@@ -1,0 +1,23 @@
+{"patch": "patches/performancepatchtest/generated/performance-patch-template.maxpat",
+ "title": "PERFORMANCE PATCH TEMPLATE -- cue-driven live electronics for one mic",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Turn on audio. The mono mic input (adc~ 1) is always processed by EQ and a 4-band compressor.",
+   "NEXT button (or MIDI note 64 from a pedal) advances to the next cue. CUE shows the current number.",
+   "Each cue sets the delay, distortion and detune send levels and their settings.",
+   "    A cue can also start up to three soundfiles at once.",
+   "Mixer faders: DRY, DELAY, DIST, DETUNE, FILES and MASTER, each with a level meter.",
+   "Buttons Input, Cues, Delay, Distortion, Detune and Soundfiles open each section's subpatch.",
+   "Input opens the 5-band EQ and the 4 compressor bands (Thresh, Ratio, Gain, Atk, Rel)."
+  ]},
+  {"heading": "EDITING CUES", "lines": [
+   "Cues live in cue-data.txt, one line per cue, loaded into coll cue-data at startup.",
+   "Line format: delay send, dist send, detune send, delay ms, delay feedback, drive, detune Hz,",
+   "    then three soundfile names (none = no file)."
+  ]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "The processed input is shared on send~ proc-out; each effect picks it up with receive~.",
+   "Cue values fan out through named sends; send levels ramp over 50 ms to avoid clicks.",
+   "Compressor settings are kept by pattrstorage comp-state and restored on load."
+  ]}
+ ]}

@@ -1,0 +1,33 @@
+{
+  "patch": "patches/gong-model/generated/gong-model.maxpat",
+  "title": "GONG MODEL -- physical-model gong, from harmonic string to tam-tam",
+  "sections": [
+    {
+      "heading": "USING IT",
+      "lines": [
+        "Turn on audio with the speaker button (top right). Pick a sound from the preset menu.",
+        "Play MIDI notes: note = pitch, velocity = strike force, aftertouch = hand damping.",
+        "Or click test strike: the upper number is its pitch (Hz), vel: is its strike force (0-1).",
+        "random: sets every dial to a random value (output gain excepted).",
+        "Tone: Structure morphs harmonic > gamelan > nipple gong > church bell > tam-tam.",
+        "    Brightness, Decay, Nonlinearity; Material picks wool, felt, rubber, wood or metal mallet.",
+        "Exciter: Hardness, Vel Curve, Audio In (feeds live input into the gong).",
+        "Strike XY: where on the gong surface the mallet hits.",
+        "Bloom: Bloom, Bloom Speed, Bloom Persist -- the slow swell of high partials after a hard strike.",
+        "Output: Gain, Noise Level, Stereo Width, Modes (8-32 resonators), Detune.",
+        "Mode Spectrum: draw the level of each mode.",
+        "Drift: toggle On/Off to let the dials wander around their current positions.",
+        "    Enable / Range / Rate set each dial's drift; Speed (ms) sets the update rate."
+      ]
+    },
+    {
+      "heading": "HOW IT WORKS",
+      "lines": [
+        "gen~ gong-engine is a bank of up to 32 resonators whose tuning morphs between five ratio tables.",
+        "A mallet model excites them; nonlinear coupling passes energy from low to high modes (bloom).",
+        "It is one voice: a new strike damps and re-excites the modes that are still ringing.",
+        "Dials reach gen~ through send gong-ctrl; js scripts handle mode gains, randomize and drift."
+      ]
+    }
+  ]
+}

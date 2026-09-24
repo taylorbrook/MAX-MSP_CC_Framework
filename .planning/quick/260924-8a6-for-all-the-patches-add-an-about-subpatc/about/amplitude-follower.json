@@ -1,0 +1,27 @@
+{
+  "patch": "patches/amplitude-follower/generated/amplitude-follower.maxpat",
+  "title": "AMPLITUDE FOLLOWER -- smooth 0-1 envelope from live input",
+  "sections": [
+    {
+      "heading": "USING IT",
+      "lines": [
+        "Listens to the left channel of the audio input (adc~). Turn on DSP to start.",
+        "smoothing (ms): how slowly the envelope rises and falls (1-5000, default 100).",
+        "floor (dB): the input level that reads as 0 (-96 to -6, default -60).",
+        "curve (S): shapes the response. 1 = straight; above 1 = S-curve; below 1 = inverse S.",
+        "input meter: the raw input level.",
+        "amplitude 0-1 (RMS/peak): the follower output, ready to use as a modulation source.",
+        "The output signal stops at the readout -- copy the gen~ into another patch to use it."
+      ]
+    },
+    {
+      "heading": "HOW IT WORKS",
+      "lines": [
+        "A gen~ codebox tracks RMS level plus a scaled peak envelope and takes the larger.",
+        "    The peak branch keeps noisy sounds from reading too low next to pitched ones.",
+        "A boosted high-pass branch (above ~1.2 kHz) makes hiss and 'sh' sounds read as loud as they feel.",
+        "The level is converted to dB, mapped from floor to 0 dB onto 0-1, then shaped by curve."
+      ]
+    }
+  ]
+}

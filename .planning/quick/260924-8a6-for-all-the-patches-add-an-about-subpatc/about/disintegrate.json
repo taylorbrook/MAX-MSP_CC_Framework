@@ -1,0 +1,31 @@
+{
+  "patch": "patches/disintegrate/generated/disintegrate.maxpat",
+  "title": "DISINTEGRATE -- one-knob stereo effect that breaks a sound down to silence",
+  "sections": [
+    {
+      "heading": "USING IT",
+      "lines": [
+        "Turn the disintegrate dial: 0 = clean bypass, 1 = silence.",
+        "On the way up the sound wobbles in pitch, saturates, then the filters close in from both ends.",
+        "The last stretch (above ~0.85) fades the output to nothing.",
+        "The number below the dial shows the current amount. It resets to 0 when the patch loads."
+      ]
+    },
+    {
+      "heading": "AS A BPATCHER",
+      "lines": [
+        "Inlets: audio L, audio R, amount (float 0-1 -- the dial follows it).",
+        "Outlets: audio L, audio R. No adc~, dac~ or output gain inside -- the host provides those.",
+        "See disintegrate-helper.maxpat: live input, output gain + meters, and an automated amount sweep."
+      ]
+    },
+    {
+      "heading": "HOW IT WORKS",
+      "lines": [
+        "One gen~ codebox, driven by a single amount Param (smoothed, so dial jumps do not click).",
+        "Each stage -- tape wobble, drive, low/high-pass narrowing, gain fade -- ramps over its own range.",
+        "Near 0 the effect crossfades to the dry signal, so 0 is a true bypass."
+      ]
+    }
+  ]
+}

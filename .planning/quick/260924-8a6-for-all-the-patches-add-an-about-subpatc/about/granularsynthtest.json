@@ -1,0 +1,26 @@
+{
+  "patch": "patches/granularsynthtest/generated/granularsynthtest.maxpat",
+  "title": "GRANULAR -- multichannel granular synth for files or live input",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Load File: pick a sound file (it replaces the buffer, shown in the BUFFER display).",
+      "Live Input: records adc 1 into the buffer in a continuous loop instead.",
+      "DSP: turns audio on. Raise the OUTPUT fader -- it starts at 0 (silent) on open.",
+      "GRAIN: Size (10-500 ms), Density (1-100 grains/s), Position (0-1 in the buffer), Pitch.",
+      "    Pitch is a playback rate from 0.25x to 4x; 1.0x sits at the centre of the dial.",
+      "ENVELOPE Shape: 0 = Hann window, 1 = triangle, blends in between.",
+      "SCATTER: Pos Jit, Pitch Jit and Size Jit randomise each grain around the GRAIN settings.",
+      "SPACE: Pan sets the centre, Spread the random width, Spkrs the speaker count (2-8)."
+    ]},
+    {"heading": "INPUTS & OUTPUTS", "lines": [
+      "Input: adc~ channel 1 (only while Live Input is on).",
+      "Output: mc.dac~ on channels 1-8; only the first Spkrs channels carry sound (stereo = 1-2)."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "gen~ granular-sched owns every parameter and schedules grains onto 32 voices.",
+      "Each grain's start, pitch, size and pan are fixed when it starts, so dial moves never click.",
+      "mc.gen~ granular-voice plays one grain per channel from buffer~ granular_buf.",
+      "mc.mixdown~ pans each grain across the active speakers; gain~ sets the final level."
+    ]}
+  ]
+}

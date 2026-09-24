@@ -1,0 +1,24 @@
+{
+  "patch": "patches/bassoon-model/generated/bassoon-model.maxpat",
+  "title": "BASSOON MODEL -- physical-model bassoon with exact pitch for microtonal music",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Turn on DSP. Set freq (Hz) to any frequency -- the model plays it in tune.",
+      "Breath slider: blowing pressure. The reed starts to speak around 0.35-0.4.",
+      "master: output level (then a limiter before the dac~).",
+      "ARTICULATION: Attack / Release (ms) shape note starts and ends.",
+      "    staccato plays a short note; tongue adds a tongued attack; drift = reed 'speaks up' to pitch.",
+      "REED: Stiffness, Aperture, Reed Freq, Reed Q, Register (pushes toward the upper mode).",
+      "BORE / BELL: Bore Damp (darker, more loss) and Bell (brightness).",
+      "VIBRATO: Rate, Depth (cents), Tremolo, Trem Lag, Onset, Ramp, Rate Jitter.",
+      "AIR: Noise (breath noise) and Chiff (noise burst on attacks).",
+      "PRESETS: click a slot to recall. Shift-click stores; Save Presets writes them to disk.",
+      "BORE WAVEFORM and SPECTRUM show the output."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "gen~ bassoon runs a waveguide bore driven by a nonlinear reed, one sample at a time.",
+      "The delay length is corrected for the filters' phase delay, so pitch lands within a few cents.",
+      "Frequency and breath arrive as signals (sig~); the dials set gen~ Params directly."
+    ]}
+  ]
+}

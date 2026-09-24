@@ -1,0 +1,21 @@
+{"patch": "patches/simple-fm/generated/simple-fm.maxpat",
+ "title": "SIMPLE FM -- teaching patch for 2-operator (Chowning) FM synthesis",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Click the keys to play (click height = velocity), or play a MIDI keyboard.",
+   "Notes sound while held and fade out when released.",
+   "The menu under the keyboard changes the keyboard mode.",
+   "ratio: modulator frequency = carrier x ratio.",
+   "    Whole-number ratios sound harmonic, fractional ones sound inharmonic or bell-like.",
+   "index: modulation depth. Higher = more sidebands = brighter.",
+   "carrier / modulator / deviation readouts show the FM math in Hz as you play.",
+   "preset: loads a tone (E-Piano, Bell, Bass, Brass, Marimba, Glass) by setting ratio and index.",
+   "engine A/B: switch between the MSP chain and the gen~ codebox. They should sound the same.",
+   "vol: output level.",
+   "waveform and spectrum: watch the sidebands spread as you raise index."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "A sine modulator at carrier x ratio is scaled by the deviation (modulator x index).",
+   "That signal is added to the carrier frequency, which drives a second sine: the carrier.",
+   "The patching view shows this as plain cycle~ / *~ / +~ objects, with a gen~ copy beside it.",
+   "A line~ envelope (about 10 ms attack, 200 ms release) follows the key velocity."]}
+ ]}

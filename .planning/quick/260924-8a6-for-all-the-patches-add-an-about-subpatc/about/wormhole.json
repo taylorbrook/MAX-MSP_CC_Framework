@@ -1,0 +1,22 @@
+{"patch": "patches/wormhole/generated/wormhole.maxpat",
+ "title": "WORMHOLE -- stereo spectral-style effects chain: warp, shift, dual reverb, blend",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "DELAY L / R: delays each channel by up to 500 ms. Different values widen the stereo image.",
+   "WARP Depth / Poles / Tilt: allpass warping that smears and colors the spectrum.",
+   "SHIFT Pitch: +/-48 semitones. FShift: frequency shift, +/-4000 Hz.",
+   "SHIFT Mode: Smooth, Tight, Det A or Det B (L/R detune). Decay: shortens ringing.",
+   "REV PRE Mix / Size / Damp: reverb before the blend stage.",
+   "BLEND: dry/effect amount. Mode: XFade (plain crossfade) or Morph (effect follows dry envelope).",
+   "REV POST Mix / Size / Damp: reverb on the final blended signal.",
+   "A dial only sends its value once it is moved. Until then the built-in default is used."]},
+  {"heading": "AS A BPATCHER", "lines": [
+   "Inlets: audio L and R. Outlets: processed audio L and R.",
+   "It opens in presentation, so it shows as a control panel when loaded as a bpatcher.",
+   "See wormhole-test.maxpat: input selector, this bpatcher and an output gain.",
+   "The dry signal travels by send~ wormhole_dry_L / _R, so use one instance per Max session."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "Six gen~ stages in series: delay > warp > shift > reverb pre > blend > reverb post.",
+   "The pitch shifter uses two crossfading delay reads. The frequency shifter uses a Hilbert transform.",
+   "Each reverb is an 8-line feedback delay network with randomly modulated delay lengths."]}
+ ]}

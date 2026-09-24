@@ -1,0 +1,46 @@
+{
+ "patch": "patches/reverse-delay/generated/reverse-delay.maxpat",
+ "title": "REVERSE DELAY -- granular delay that plays its echoes backwards (stereo in)",
+ "sections": [
+  {
+   "heading": "USING IT (CORE)",
+   "lines": [
+    "Click the speaker (ezdac~) to start audio. The output is 100% wet -- mix dry elsewhere.",
+    "Preset: slots 1-6 are factory sounds; slot 1 Reverse Bloom loads on open. Faders are not stored.",
+    "Time: delay before each grain plays (50-4000 ms). Grain: length of each reversed grain.",
+    "    For an obvious reversal use Grain 500-2000 ms; short grains give a backwards smear.",
+    "Density: how many grains overlap. Feedback: how much output returns into the delay.",
+    "Low Cut / High Cut: filters in the feedback path only -- each repeat gets thinner or darker.",
+    "Width: random left/right spread per grain.",
+    "Sync on: Time follows the global transport BPM and Division. Run and BPM drive that transport."
+   ]
+  },
+  {
+   "heading": "ADVANCED",
+   "lines": [
+    "Jitter, Scatter ms, Size Rand, Gain Rand: randomise spawn timing, delay, length and level.",
+    "Shape: grain window (Hann, Tukey, Gaussian, Triangular, Expo-Decay). Tilt, Tukey a reshape it.",
+    "Grain Count: max simultaneous grains. Direction: chance a grain plays forward instead.",
+    "Regen dB, Diffusion, Drive: gain, allpass smear and tanh grit inside the feedback loop.",
+    "Duck: pushes the wet signal down while you play. Drift Rate / Depth: slow wobble of Time.",
+    "Source: Mono Sum reads L+R; Stereo lets each grain read one input channel."
+   ]
+  },
+  {
+   "heading": "INPUTS & OUTPUTS",
+   "lines": [
+    "Stereo input (adc~ 1 2), stereo output. The in and out fader pairs are linked.",
+    "In and out gain~ faders with meters; both reset to unity on load."
+   ]
+  },
+  {
+   "heading": "HOW IT WORKS",
+   "lines": [
+    "One gen~ codebox writes the input into a 14-second ring buffer.",
+    "A scheduler spawns up to 32 windowed grains that read the ring backwards.",
+    "Feedback goes back into the same ring, so each repeat flips direction again.",
+    "All per-grain values are fixed when the grain starts, so knob moves stay click-free."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+{
+  "patch": "patches/gen-eq/generated/gen-eq.maxpat",
+  "title": "GEN-EQ -- 5-band analog-style parametric EQ (mono module)",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Bands run left to right: HPF > Low > Mid > High > LPF.",
+      "HPF / LPF: Freq (20 Hz-20 kHz) and Slope (6, 12, 18 or 24 dB/oct).",
+      "Low / Mid / High bells: Freq, Gain (+/-18 dB) and Q (0.1-10, 1 at the centre of the dial).",
+      "Character: Drive = amount of warm saturation (level stays the same). Bias = more even harmonics.",
+      "The numbers under the dials show the current values."
+    ]},
+    {"heading": "AS A BPATCHER", "lines": [
+      "Inlet: mono signal in. Outlet: mono signal out.",
+      "Each control has a scripting name matching its parameter (hpf_freq, bell1_gain, drive ...).",
+      "    Add a pattrstorage in the parent to store and recall settings -- see gen-eq-test.maxpat.",
+      "For stereo or multichannel use gen-eq-mc.maxpat, which has the same face."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "gen~ gen-eq-engine: zero-delay-feedback state-variable filters, one per band.",
+      "All four slopes run in parallel and crossfade, so switching slope never clicks.",
+      "A soft, slightly asymmetric saturation sits between stages, then a DC blocker at the output.",
+      "Every parameter is smoothed inside gen~, so dial moves do not zipper."
+    ]}
+  ]
+}

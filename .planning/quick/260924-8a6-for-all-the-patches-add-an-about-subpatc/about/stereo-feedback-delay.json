@@ -1,0 +1,21 @@
+{"patch": "patches/stereo-feedback-delay/generated/stereo-feedback-delay.maxpat",
+ "title": "STEREO FEEDBACK DELAY -- mono-in, stereo-out tape-style echo",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Turn on audio with the speaker button. Input is mic/line input 1.",
+   "mono in slider: input level, with its meter beside it.",
+   "Time: delay time, 1-2000 ms. Changing it glides the pitch like tape.",
+   "Feedback: how much of each echo repeats (up to 95%, so it always dies away).",
+   "Damp: cutoff of the filter inside the loop. Lower = darker repeats.",
+   "Rate / Depth: speed and amount of the slow tape warble.",
+   "Drive: soft saturation inside the loop. More drive = grittier, quieter repeats.",
+   "Width: offset of the right channel (0-30 ms) for stereo width.",
+   "Mix: dry/wet balance.",
+   "stereo out sliders: output level for left and right.",
+   "Presets 1-6: Slapback, Dub Echo, Tape Wobble, Wide Ambience, Long Trails, Clean Digital.",
+   "    Shift-click a preset bubble to store the current dials. Gain sliders are not stored."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "One gen~ codebox holds a single delay line (up to 2 s) with a smoothed, interpolated read.",
+   "The loop runs: read > lowpass > soft clip > feedback amount > back into the line.",
+   "The right channel is a second read slightly later than the left, outside the loop."]}
+ ]}

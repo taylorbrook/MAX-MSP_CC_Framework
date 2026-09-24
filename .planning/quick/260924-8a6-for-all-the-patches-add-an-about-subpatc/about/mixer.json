@@ -1,0 +1,25 @@
+{
+  "patch": "patches/mixer/generated/mixer.maxpat",
+  "title": "MIXER -- stereo mixing console with channel strips, busses and master",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Tracks (1-32) and Busses (0-8) set how many strips are built. It opens with 4 tracks, 2 busses.",
+      "Strips are rebuilt when the patch opens or a count changes -- reconnect any cords afterwards.",
+      "Each channel strip: Gain (input trim, centre = unity), fader with meters, Pan and M (mute).",
+      "Ins switches the strip to its insert return inlets instead of its own input.",
+      "S1 and S2 set how much of the strip is sent to bus 1 and bus 2.",
+      "Bus strips: fader, Pan and M for each bus return.",
+      "Master: overall fader with L/R meters; its speaker button turns audio on."
+    ]},
+    {"heading": "INPUTS & OUTPUTS", "lines": [
+      "Strip inlets 1-2: audio in L/R. Inlets 3-4: insert return L/R.",
+      "Strip outlets 1-2: post-fader L/R. Outlets 3-4: insert send (after Gain, before the fader).",
+      "Every strip and bus is also summed into the master automatically."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "mixer-manager.js creates mixer-strip and mixer-bus bpatchers via thispatcher scripting.",
+      "Each strip's argument is its channel number; sends reach busses over send~ bus-N-L/R.",
+      "Strips and busses feed send~ master-L/R, which the mixer-master section receives."
+    ]}
+  ]
+}

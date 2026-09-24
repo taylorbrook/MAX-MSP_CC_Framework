@@ -1,0 +1,36 @@
+{
+ "patch": "patches/terrain-synth/generated/terrain-synth.maxpat",
+ "title": "TERRAIN SYNTH -- 8-voice wave-terrain synth: two orbits scanning two 3D terrains",
+ "sections": [
+  {
+   "heading": "USING IT",
+   "lines": [
+    "Turn on audio with the speaker button, then play the keyboard or a MIDI keyboard.",
+    "TERRAIN A / B menu: the surface each oscillator reads (19 sources incl. noise and an image file).",
+    "DETAIL and REGEN: change the resolution of the surface and roll a new random one.",
+    "ORBIT A / B: SHAPE plus RADIUS X/Y, ROTATE, LOBES, LOBE AMT set the path over the terrain.",
+    "    FEEDBACK bends the path with its own output, DRIVE adds saturation.",
+    "    ZOOM HZ shrinks the orbit above that pitch so high notes stay tame.",
+    "ORBIT CENTRE pads: drag to move each orbit across its terrain.",
+    "TERRAIN MOD A + B: an audio-rate wobble of both orbits (RATIO to the note, + HZ, X/Y/R DEPTH).",
+    "OSC MIX: A > B MIX crossfades the two oscillators.",
+    "OSC B PITCH: B RATIO (0.5-4 in steps) and B DETUNE (+/-50 cents).",
+    "3D VIEW: ON, ROTATE, TILT for the terrain pictures. A white dot follows each playing orbit.",
+    "CHEBY CORE: switch a slot to a bandlimited Chebyshev core with a preset menu and BRIGHT.",
+    "ANIMATE: ON and FPS run the animation. Per slot, MORPH blends toward SOURCE 2 (AUTO HZ sweeps it).",
+    "    EXCITE (or NOTE, on every note) starts a ripple. TENSION and DAMP shape the ripple.",
+    "MOTION LFO / ENV 2: per-voice LFO and second envelope, with depths to each orbit.",
+    "FILTER (CUTOFF, RESO, ENV > HZ), ENVELOPE (ADSR) and OUTPUT (VOLUME, scope).",
+    "OVERSAMPLE: run the voices at 1x, 2x or 4x to reduce aliasing (more CPU)."
+   ]
+  },
+  {
+   "heading": "HOW IT WORKS",
+   "lines": [
+    "Each terrain is a 256x256 Jitter matrix copied into a buffer~ the audio can read.",
+    "poly~ terrain-voice runs 8 voices. Each has two gen~ oscillators that trace an orbit at note pitch.",
+    "The height of the terrain under the orbit is the waveform, then svf~ filter and adsr~ envelope."
+   ]
+  }
+ ]
+}

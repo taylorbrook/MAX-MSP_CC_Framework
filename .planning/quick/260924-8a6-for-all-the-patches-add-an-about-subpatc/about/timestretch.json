@@ -1,0 +1,21 @@
+{"patch": "patches/timestretch/generated/timestretch.maxpat",
+ "title": "TIMESTRETCH -- WSOLA granular time-stretch for live input or a loaded file",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "SOURCE menu: none (silent), live (input 1) or buffer (a loaded file).",
+   "LOAD: choose a sound file into the buffer. The waveform shows it.",
+   "Play / Loop: transport toggles for the loaded file.",
+   "TIME / PITCH: Stretch slows the sound down, 1x to 16x.",
+   "Grain: grain length, 5-200 ms. Pitch ct: pitch shift in cents (+/-2400).",
+   "Gain: output level, shown on the meter.",
+   "QUALITY: WSOLA sets how far each grain searches for a smooth join (0 = off).",
+   "Jitter: small random offset on grain starts. Sens: transient detection sensitivity.",
+   "Density: 2, 4 or 8 overlapping grains. More = smoother, more CPU.",
+   "Adaptive: shorter grains on transients (the Transient light shows them).",
+   "Extreme: Paulstretch-style smearing for very long stretches.",
+   "PRESETS: click a slot to recall, shift-click to store."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "A gen~ codebox records live input into a ~3 s ring buffer, or reads the file buffer directly.",
+   "Hann-windowed grains overlap and add. The read point moves at 1/Stretch speed.",
+   "Each new grain searches nearby for the best-matching start (WSOLA) to avoid phasing."]}
+ ]}

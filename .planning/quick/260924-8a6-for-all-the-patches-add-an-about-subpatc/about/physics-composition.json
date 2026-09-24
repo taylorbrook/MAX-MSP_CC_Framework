@@ -1,0 +1,22 @@
+{"patch": "patches/physics-composition/generated/physics-composition.maxpat",
+ "title": "PHYSICS COMPOSITION -- five bouncing balls play pitches and write a piano roll",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Needs the Dada and bach packages. Turn on audio, then the Play / Stop toggle.",
+   "Five coloured balls bounce inside a V-shaped funnel. Every bounce plays a note.",
+   "Where a ball hits (left to right) sets its pitch, from Min Hz up to Max Hz (default 55-4186).",
+   "    Pitch is continuous -- no scale -- and the note is panned by the same left/right position.",
+   "Harder hits play louder. Each ball has its own timbre (a different upper partial).",
+   "Speed (playstep ms): lower = faster simulation. Ball size: ball radius in pixels.",
+   "Reset: puts the five balls back at their start and clears the roll.",
+   "Clear notation: clears the bach.roll only; the balls keep moving.",
+   "The two gain~ faders set the left and right master level."
+  ]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "dada.bounce is used only as a physics engine; its bounce data goes out on send ball-event.",
+   "p voice-1 to p voice-5 each pick their ball and map hit x to frequency on a log sweep.",
+   "Each voice is two cycle~ oscillators with an adsr~ envelope and constant-power pan.",
+   "Each note is also sent to bach.roll (onset, pitch in midicents, 500 ms, velocity).",
+   "The voices are summed, then limi~ protects the output before dac~ 1 2."
+  ]}
+ ]}

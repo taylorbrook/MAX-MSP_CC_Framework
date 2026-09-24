@@ -1,0 +1,23 @@
+{"patch": "patches/stutter/generated/stutter.maxpat",
+ "title": "STUTTER -- glitchy stereo stutter / beat-repeat effect",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Audio starts when the patch opens.",
+   "INPUT toggle: off = live input 1-2, on = sound file.",
+   "Open File: choose a sound file. It starts playing right away. Loop repeats it.",
+   "STUTTER toggle (top left): engages the effect. The light shows when it is on.",
+   "Waveform: the last 4 s of input. The highlighted region is the slice being repeated.",
+   "BPM (20-300) and Division (1/4 to 1/64, dotted, triplets, quintuplets, septuplets):",
+   "    together they set the slice length. Changes take effect at once.",
+   "Slice: shortens the slice within the division (0.1-1).",
+   "Pitch: playback rate, 0.5 (one octave down) to 2 (one octave up).",
+   "Rev: plays the slice backwards.",
+   "Chaos: blends from strict rhythmic repeats to random slice start, length and rate.",
+   "Feedback: feeds the output back into the recording buffer (up to 0.95).",
+   "Dry/Wet: balance of the original and the stuttered sound.",
+   "IN / OUT meters: input and output level."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "gen~ stutter-engine records the input into a 4 s stereo buffer all the time.",
+   "Two playback voices take turns, with about 5 ms crossfades, so every change is click-free.",
+   "gen~ brickwall-limiter after the engine keeps feedback from blowing up."]}
+ ]}

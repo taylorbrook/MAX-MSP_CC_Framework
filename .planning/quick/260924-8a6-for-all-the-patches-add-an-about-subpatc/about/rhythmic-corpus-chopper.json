@@ -1,0 +1,19 @@
+{"patch": "patches/rhythmic-corpus-chopper/generated/rhythmic-corpus-chopper.maxpat",
+ "title": "RHYTHMIC CORPUS CHOPPER -- slice a loop at its hits and resequence them",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Needs the FluCoMa, EARS (with bach) and Rhythm and Time Toolkit packages.",
+   "Load loop: drop an audio file here. The waveform shows it and it is sliced at each hit.",
+   "Slices: how many hits were found. Sens (0-100): higher finds more slices.",
+   "Play: starts and stops the sequencer. Tempo: 40-240 BPM (default 120).",
+   "Steps (1-64): sequence length. Steps loop back over the slices if there are fewer.",
+   "Mode Straight: every step plays a slice. Euclid: only Euclid k hits spread over the steps play.",
+   "Scramble: shuffles the step order (each slice once per cycle).",
+   "Auto bars: toggle on to reshuffle automatically every N bars (default 4)."
+  ]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "fluid.bufonsetslice~ finds the hit points; ears.split~ cuts the loop into one buffer per slice.",
+   "rtt.clock~ runs a bar-rate ramp that is split into steps.",
+   "Each step picks a slice buffer name, and groove~ plays that slice in stereo to dac~ 1 2."
+  ]}
+ ]}

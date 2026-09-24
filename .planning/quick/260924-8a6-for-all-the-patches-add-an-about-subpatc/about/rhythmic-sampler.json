@@ -1,0 +1,22 @@
+{"patch": "patches/rhythmic-sampler/generated/rhythmic-sampler.maxpat",
+ "title": "RHYTHMIC SAMPLER -- eight sample slots, each with its own sliced step sequence",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Audio On/Off: starts audio. PLAY: starts all slots. BPM: master tempo (default 120).",
+   "Each slot: LOAD SOUND opens a file. The waveform shows it with a playhead.",
+   "STEPS: how many slices the sound is cut into; it is also the pattern length (up to 16).",
+   "    Each step plays the matching slice, one step per 16th note.",
+   "Step Pattern: bar height = velocity for that step. A bar at 0 turns the step off.",
+   "Start: shifts where slicing begins within the sound.",
+   "Pitch (+/-1200 cents), Cutoff, Reso and Type (LP, HP, BP, Notch): pitch and filter.",
+   "Degrd: sample-rate reduction. Atk / Dec: envelope for each step. Vol: slot level.",
+   "MUTE silences the slot. BPM OVRD: run this slot at its own tempo instead of the master.",
+   "MASTER: final level fader and meter."
+  ]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "Each slot is slot.maxpat loaded as a bpatcher with a buffer name and a send~ name.",
+   "slot-engine.js works out each slice's start and end; groove~ plays that range.",
+   "Chain per slot: groove~ > svf~ filter > degrade~ > envelope > volume > send~.",
+   "The main patch sums all eight slots (mono) and sends them to both outputs."
+  ]}
+ ]}

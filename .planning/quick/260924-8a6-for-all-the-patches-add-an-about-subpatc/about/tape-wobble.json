@@ -1,0 +1,20 @@
+{"patch": "patches/tape-wobble/generated/tape-wobble.maxpat",
+ "title": "TAPE WOBBLE -- stereo analog tape wow, flutter and saturation",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "AUDIO: drop a sound file into the player and play it. Turn on audio with the speaker button.",
+   "WOW Rate / Depth: slow pitch drift (0.1-6 Hz).",
+   "FLUTTER Rate / Depth: fast pitch wobble (3-30 Hz).",
+   "TAPE Drift: random slow wander, like old or worn tape.",
+   "TAPE Drive: tape saturation for warmth.",
+   "EQ HF Cut: high-frequency rolloff (4-15 kHz).",
+   "EQ Gain / Freq: low 'head bump' boost (0-6 dB at 60-200 Hz).",
+   "OUTPUT Spread: stereo difference between left and right.",
+   "OUTPUT Mix: dry/wet balance.",
+   "VISUALIZATION: dry input, wet output and the combined pitch-modulation signal."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "One gen~ codebox does all the processing: saturation, then a short modulated delay.",
+   "The delay time is moved by wow (sine), flutter (3 harmonics) and a random drift.",
+   "A low peaking EQ and a lowpass then shape the tone before the dry/wet mix.",
+   "p param-routing turns the dials into gen~ parameter messages."]}
+ ]}

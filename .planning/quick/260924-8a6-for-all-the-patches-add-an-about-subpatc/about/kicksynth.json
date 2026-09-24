@@ -1,0 +1,23 @@
+{
+  "patch": "patches/kicksynth/generated/kicksynth.maxpat",
+  "title": "KICK SYNTH -- layered kick drum synthesizer",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Turn audio on with the speaker button, then hit TRIGGER or play any MIDI note.",
+      "Preset menu: Default, 808, 909, Techno or Trap recall pattr slots 1-5.",
+      "BODY: a sine that sweeps from Start Hz down to End Hz over P.Decay ms.",
+      "    A.Decay sets its length; P.Curve and A.Curve bend the two envelopes; Level sets its mix.",
+      "SUB: a steady sine for low end -- Level and Decay ms.",
+      "NOISE and CLICK: short attack bursts, each with Level, Decay ms and Tone Hz.",
+      "MASTER: Drive (saturation), HP Hz, Lo and Mid EQ bands, limiter Ceiling dB and Release ms.",
+      "PITCH ENVELOPE and AMP ENVELOPE redraw the body's curves as you edit.",
+      "Slot + Load recalls a slot; Save stores the current sound there; Write saves presets to disk.",
+      "OUTPUT: fader for level, plus scope, spectrum and level meter."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "Each trigger fires click~ into a gen~ that restarts body, sub, noise and click layers together.",
+      "A second gen~ applies drive, high-pass, two EQ bands and a limiter.",
+      "pattrstorage kicksynth keeps every setting; slots live in kicksynth.json beside the patch."
+    ]}
+  ]
+}

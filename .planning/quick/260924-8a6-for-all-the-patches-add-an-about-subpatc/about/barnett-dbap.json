@@ -1,0 +1,34 @@
+{
+  "patch": "patches/barnett-dbap/generated/barnett-dbap.maxpat",
+  "title": "BARNETT DBAP -- two sources panned over the 8-speaker Barnett Hall rig",
+  "sections": [
+    {
+      "heading": "USING IT",
+      "lines": [
+        "Turn on DSP (OUTPUT). Speaker N plays on interface output N.",
+        "Source A is mono, source B is stereo. Each picks File, Live (adc ch) or Inlet in its SOURCE menu.",
+        "File: drop an audio file or click open, then play (and loop). trim sets the input level.",
+        "Drag the puck on the plan to place the source. src Z (m) sets its height.",
+        "rolloff, blur: how sharply level falls off with distance, and how much it spreads.",
+        "width, decorr: spread the source into two points and blur them apart.",
+        "air: distance high-cut. hull: dB/m of fade when the source moves outside the speaker ring.",
+        "WEIGHTS favour or mute speakers. TRIMS (dB) offset each speaker. MASTER sets the output level.",
+        "SCENES: pick a slot number, then store or recall. read / write save the slots to disk.",
+        "MOTION -> A: switch on, pick a path (orbit ... spiral, recorded) and shape it with the dials.",
+        "    rec: draw a gesture with the puck to make the recorded path. loop menu + cue fire one-shots.",
+        "    wander adds drift on top of any path. Motion settings are stored in source A's scenes.",
+        "VERIFY PING: pick a speaker number and click to send a noise burst to that speaker only.",
+        "VENUE read: load another venue layout (JSON) with speaker positions and alignment delays."
+      ]
+    },
+    {
+      "heading": "HOW IT WORKS",
+      "lines": [
+        "Each source is a dbap-source bpatcher (args: name, 1 = mono / 2 = stereo) with its own js dbap.js.",
+        "The js solves Distance-Based Amplitude Panning over the hall's speaker layout into 8 gains.",
+        "The gains ramp an 8-channel mc signal. Both sources sum through alignment delays to mc.dac~ 1-8.",
+        "Both modules also accept '<control> <value>' messages to set any control (see control-demo)."
+      ]
+    }
+  ]
+}

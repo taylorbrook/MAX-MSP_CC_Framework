@@ -1,0 +1,21 @@
+{"patch": "patches/spectraldetector/generated/spectraldetector.maxpat",
+ "title": "SPECTRAL DETECTOR -- tells whether a sound is pitched, noisy or silent",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Menu: choose Live Input (mic/line input 1) or File Player.",
+   "File Player: drop a sound file into the player and press play.",
+   "The big label shows the result: PITCH, NOISE or SILENT. The number beside it is 2 / 1 / 0.",
+   "Pitchedness bar: how periodic the sound is, from 0 (noise) to 1 (clean pitch).",
+   "Threshold: how pitched a sound must be to count as PITCH (0.5-0.95).",
+   "Smooth ms: how long the result must hold before it flips (50-1000 ms).",
+   "Floor dB: input level below which the sound counts as SILENT (-80 to -10 dB).",
+   "Monitor: listen to the selected source. It starts silent."]},
+  {"heading": "INPUTS & OUTPUTS", "lines": [
+   "The state (0 silent, 1 noise, 2 pitch) is sent to [receive detector-state] for other patches.",
+   "It is only sent when the state changes."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "A gen~ codebox high-passes the input at 70 Hz and runs an autocorrelation over 80 Hz-2 kHz.",
+   "The best correlation peak is the raw pitchedness, then it is smoothed.",
+   "A hysteresis band stops the result chattering near the threshold.",
+   "The silence gate uses the loudest of RMS, peak and a boosted high-frequency peak."]}
+ ]}

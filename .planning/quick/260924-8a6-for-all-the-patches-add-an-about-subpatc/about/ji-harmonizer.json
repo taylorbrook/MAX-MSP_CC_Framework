@@ -1,0 +1,28 @@
+{
+  "patch": "patches/ji-harmonizer/generated/ji-harmonizer.maxpat",
+  "title": "JI HARMONIZER -- one key plays a microtonally tuned wavetable chord",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Play MIDI or click the keyboard: each key sounds a chord of up to 12 voices (one key at a time).",
+      "Turn audio on with the speaker button in the patching view; the fader sets the level.",
+      "ratio column: type a ratio (3/2) or cents (701.955c) per scale degree; on picks the degrees used.",
+      "temperament: load a preset scale. It reads Custom when the table matches none.",
+      "load .scl or drop a 12-note Scala file on the drop zone; period shows its repeat interval.",
+      "tonic sets the scale's root key; A4 sets the reference pitch (Hz).",
+      "voices, complexity and voicing shape the chord; spacing and inversion add octave copies.",
+      "CHORD FEEL: spread = stereo width, detune ct = random detune, timing ms = random stagger.",
+      "WAVETABLE ENGINE: bank A/B pick each oscillator's table; wt pos morphs through it.",
+      "    lfo A/B rate and depth sweep the positions; osc gain A/B mix the two oscillators.",
+      "FILTER: cutoff, resonance, filter lfo (A) and vel > filter drive a master lowpass.",
+      "ENVELOPE: atk / dec / sus / rel for the whole chord.",
+      "SOUNDING PITCHES lists each voice's frequency, interval and nearest 12-TET note.",
+      "presets: click a slot to recall, shift-click to store. Slots save with the patch."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "ji-engine.js tunes the scale from the tonic and builds the chord's frequencies and gains.",
+      "A 12-channel mc.gen~ plays two morphing wavetable oscillators per voice from buffer~s.",
+      "The chord is panned to stereo, shaped by adsr~, then filtered by a gen~ TPT lowpass.",
+      "pattrstorage jhpresets stores every setting, including the ratio table and period."
+    ]}
+  ]
+}

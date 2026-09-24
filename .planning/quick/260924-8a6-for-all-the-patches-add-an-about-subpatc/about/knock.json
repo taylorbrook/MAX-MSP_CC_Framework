@@ -1,0 +1,21 @@
+{
+  "patch": "patches/knock/generated/knock.maxpat",
+  "title": "KNOCK -- deep knocking sound with per-hit variation",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Turn audio on with the speaker button under output.",
+      "velocity: enter or drag a value (0-127) -- each new value plays a knock at that loudness.",
+      "    Harder hits are also slightly brighter.",
+      "hit: plays a knock again at the last velocity.",
+      "randomness (0-1): 0 = every knock identical; higher = more varied length, sweep and click.",
+      "bassiness (0-1): low = dry, higher tap; high = deep, long, darker boom.",
+      "output: master level fader with meter."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "Each hit sends a click~ impulse into one gen~ codebox; velocity is set just before it.",
+      "The knock is a pitch-swept sine, a damped body tone at 2.7x its pitch, and a filtered noise click.",
+      "Random offsets are drawn once per hit and scaled by randomness; the base pitch never varies.",
+      "Four voices take turns, so earlier knocks ring out when you retrigger."
+    ]}
+  ]
+}

@@ -1,0 +1,24 @@
+{"patch": "patches/scala-synth/generated/scala-synth.maxpat",
+ "title": "SCALA SYNTH -- 16-voice additive synth with Scala (.scl) microtuning",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Turn on audio with the DSP ON/OFF speaker, then play the KEYBOARD or a MIDI keyboard.",
+   "TEST NOTE: ON starts a middle C, OFF releases it.",
+   "Load .scl: click the button or drop a .scl file on the box next to it.",
+   "Scale / Degrees show the loaded tuning. It starts in 12-TET until a file is loaded.",
+   "PARTIALS: how many sine partials each voice uses (1-32).",
+   "TILT: how fast upper partials fade. 0 = flat, higher = darker.",
+   "STRETCH: partial spacing. 1 = harmonic, above or below 1 = inharmonic, bell-like.",
+   "EVEN/ODD: balance between even and odd partials.",
+   "DRIFT: slow random detuning of each partial for a moving, organic sound.",
+   "ATTACK / DECAY / SUSTAIN / RELEASE: the amplitude envelope of each note.",
+   "VOLUME: master level (0-1), shown on the meters.",
+   "Partial Amplitudes: the level of each partial. TILT and EVEN/ODD redraw it.",
+   "    You can also draw on it by hand to shape the spectrum.",
+   "Spectrum: live spectrum of the output."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "scala-parser.js reads the .scl file and fills a 128-note frequency table (buffer~ scala-tuning).",
+   "poly~ runs 16 voices. Each voice looks up its note's frequency in that table.",
+   "A gen~ codebox in each voice sums up to 32 sines, with levels read from the partial-amps buffer.",
+   "Each voice has its own adsr~ envelope. Voices are mixed and scaled by VOLUME."]}
+ ]}

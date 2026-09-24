@@ -1,0 +1,23 @@
+{
+  "patch": "patches/intelligent-corpus-remixer/generated/intelligent-corpus-remixer.maxpat",
+  "title": "INTELLIGENT CORPUS REMIXER -- slice a sound, map it by timbre, play it by clicking",
+  "sections": [
+    {"heading": "USING IT", "lines": [
+      "Drop an audio file on the drop area, or click read to choose one.",
+      "The file is sliced at its onsets, analysed and clustered by itself; slices shows the count.",
+      "The plotter shows every slice as a dot, placed by timbre and coloured by cluster.",
+      "Click or drag in the plotter to play the nearest slice.",
+      "K clusters: how many timbre groups to find. Click re-cluster to apply a new K.",
+      "loop: slices repeat seamlessly while on; turn it off and running loops finish.",
+      "random: plays random slices from the chosen cluster every rate (ms).",
+      "randomize pan: each slice gets a random stereo position instead of centre.",
+      "Use audio on/off to start sound and the gain fader to set the level (meters beside it)."
+    ]},
+    {"heading": "HOW IT WORKS", "lines": [
+      "Needs the FluCoMa package. fluid.bufonsetslice~ finds onsets; tiny slices merge into neighbours.",
+      "Each slice gets a 13-band MFCC average, normalised, then mapped to 2D with fluid.umap~.",
+      "fluid.kmeans~ groups slices into K clusters; a kd-tree finds the slice nearest your click.",
+      "poly~ slice-voice (8 voices) plays slices from one shared buffer with 5 ms fades."
+    ]}
+  ]
+}

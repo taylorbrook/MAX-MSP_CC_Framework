@@ -1,0 +1,45 @@
+{
+ "patch": "patches/reverse-delay/generated/reverse-delay-mono.maxpat",
+ "title": "REVERSE DELAY MONO -- granular reverse delay, mono in / stereo out",
+ "sections": [
+  {
+   "heading": "USING IT (CORE)",
+   "lines": [
+    "Click the speaker (ezdac~) to start audio. The output is 100% wet -- mix dry elsewhere.",
+    "Preset: slots 1-6 are factory sounds; slot 1 Reverse Bloom loads on open. Faders are not stored.",
+    "Time: delay before each grain plays (50-4000 ms). Grain: length of each reversed grain.",
+    "    For an obvious reversal use Grain 500-2000 ms; short grains give a backwards smear.",
+    "Density: how many grains overlap. Feedback: how much output returns into the delay.",
+    "Low Cut / High Cut: filters in the feedback path only -- each repeat gets thinner or darker.",
+    "Width: random left/right spread per grain.",
+    "Sync on: Time follows the global transport BPM and Division. Run and BPM drive that transport."
+   ]
+  },
+  {
+   "heading": "ADVANCED",
+   "lines": [
+    "Jitter, Scatter ms, Size Rand, Gain Rand: randomise spawn timing, delay, length and level.",
+    "Shape: grain window (Hann, Tukey, Gaussian, Triangular, Expo-Decay). Tilt, Tukey a reshape it.",
+    "Grain Count: max simultaneous grains. Direction: chance a grain plays forward instead.",
+    "Regen dB, Diffusion, Drive: gain, allpass smear and tanh grit inside the feedback loop.",
+    "Duck: pushes the wet signal down while you play. Drift Rate / Depth: slow wobble of Time."
+   ]
+  },
+  {
+   "heading": "INPUTS & OUTPUTS",
+   "lines": [
+    "Mono input (adc~ 1), stereo output.",
+    "In and out gain~ faders with meters; both reset to unity on load."
+   ]
+  },
+  {
+   "heading": "HOW IT WORKS",
+   "lines": [
+    "One gen~ codebox writes the input into a 14-second ring buffer.",
+    "A scheduler spawns up to 32 windowed grains that read the ring backwards.",
+    "Feedback goes back into the same ring, so each repeat flips direction again.",
+    "All per-grain values are fixed when the grain starts, so knob moves stay click-free."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+{"patch": "patches/sample-layers/generated/sample-layers.maxpat",
+ "title": "SAMPLE LAYERS -- six sounds, each played as endless long random grains",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Drop an audio file onto a slot's waveform to load it (six slots).",
+   "MASTER on / off: starts all layers with a fade-in; off fades them out.",
+   "attack ms / release ms: length of that master fade-in and fade-out.",
+   "taper ms: soft fade at the start and end of every grain (shared by all slots).",
+   "volume: master level, with stereo meters. Click the speaker to start audio.",
+   "Each slot: on / off toggle, gain dial, and min ms / max ms for grain length.",
+   "    Each new grain picks a random length in that range (default 3000-8000 ms).",
+   "The highlighted area on each waveform is the grain playing now."
+  ]},
+  {"heading": "AS A BPATCHER", "lines": [
+   "sample-layers-slot.maxpat: argument 1 = buffer name (slot1 ... slot6), unique per slot.",
+   "Inlet 1: slot on/off (0/1). Inlet 2: slot gain 0.-1. Outlets: grain audio L and R."
+  ]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "Each slot's gen~ plays one grain at a time and starts the next the moment it ends.",
+   "Every grain gets a random start point, length and stereo position.",
+   "The slots are summed into a master gen~ that applies the attack/release fade."
+  ]}
+ ]}

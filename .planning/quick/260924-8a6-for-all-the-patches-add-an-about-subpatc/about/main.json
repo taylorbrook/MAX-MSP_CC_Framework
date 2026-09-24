@@ -1,0 +1,26 @@
+{"patch": "patches/psycography/generated/main.maxpat",
+ "title": "PSYCOGRAPHY -- performance panel: click track + 9-channel playback, synced",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Opens in presentation mode as the performance panel. Cmd+E shows the full wiring.",
+   "DSP toggle: turns audio on and off.",
+   "GO: starts the next section. Click sections run and stop by themselves at the next free section.",
+   "    In a free section the clock waits; press GO again when the conductor moves on.",
+   "STOP: halts the transport. RESET: returns the cue list to the start.",
+   "start @ measure (rehearsal): type a measure number to jump click and audio there and start.",
+   "BAR : BEAT shows the live position; section shows number, start measure, type and total.",
+   "master sample: the clock position in samples.",
+   "PROGRAM VOICE METERS: the 9 playback slots. Use each slot's read button to load its WAV."
+  ]},
+  {"heading": "INPUTS & OUTPUTS", "lines": [
+   "Outputs 1-9: the nine mono program files. Output 10: the click, for the monitor mix.",
+   "Inputs 1-10: mic channels with meters and an empty insert slot per mic (mics tile)."
+  ]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "transport runs one master sample clock (send~ master); click and playback both read from it.",
+   "Jumping to a measure just moves that clock, so click and audio land together.",
+   "cues steps through psycography_sections.txt (start measure + click/free per section).",
+   "The click is generated from the MIDI tempo map: accent, beat and subdivision.",
+   "Edit psycography_sections.txt with the real sections before a rehearsal."
+  ]}
+ ]}

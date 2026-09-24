@@ -1,0 +1,22 @@
+{"patch": "patches/subtractive-synth/generated/subtractive-synth.maxpat",
+ "title": "SUBTRACTIVE SYNTH -- classic mono synth: 2 oscillators, resonant filter, 2 envelopes, LFO",
+ "sections": [
+  {"heading": "USING IT", "lines": [
+   "Turn on audio with the speaker button, then play the keyboard or a MIDI keyboard.",
+   "It is monophonic: the last note held wins.",
+   "The menu by the keyboard changes the keyboard mode.",
+   "OSCILLATORS: Osc 1 / Osc 2 waveform (Saw, Square, Triangle, Sine).",
+   "Detune: shifts Osc 2 by up to +/-25 Hz. Balance: mix of Osc 1 and Osc 2.",
+   "Noise: adds white noise. Glide: pitch slide between notes (0-500 ms).",
+   "FILTER (LORES): Cutoff (20-8000 Hz) and Resonance.",
+   "Env Amt: how far the filter envelope opens the cutoff.",
+   "AMP ENVELOPE (VCA): Attack / Decay / Sustain / Release of the volume.",
+   "FILTER ENVELOPE: Attack / Decay / Sustain / Release of the cutoff.",
+   "LFO: Rate (0.05-20 Hz), Depth, and Target (Pitch or Cutoff).",
+   "OUTPUT: master level slider with meter."]},
+  {"heading": "HOW IT WORKS", "lines": [
+   "ddg.mono picks the note. mtof and line~ turn it into a gliding pitch signal.",
+   "Each oscillator runs saw~ / rect~ / tri~ / cycle~ and a selector~ picks one.",
+   "The mix goes through lores~, then the amp envelope, then the output slider.",
+   "All controls go by send/receive to p synth-engine, which holds the audio chain."]}
+ ]}
