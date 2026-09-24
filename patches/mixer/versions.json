@@ -89,6 +89,11 @@
       "version": "0.5.0",
       "description": "State recall: named controls + autopattr (@autorestore 0) in strip, p sends, bus, master; top-level pattrstorage mixstate; closebang/'save' -> store 1 + write mixer-state.json next to the patch; load recalls it 50 ms after init. Load now keeps the saved strip/bus counts (was: init 4 2 wiped strips >4 on reopen); js sets the count number boxes",
       "timestamp": "2026-09-24T22:05:24.945204+00:00"
+    },
+    {
+      "version": "0.6.0",
+      "description": "Sends on the strip face: 8 rows (level dial + Pre/Post/Pan tap menu), driven into p sends via 'level N v' / 'tap N i' messages on one control inlet (internal dials/menus removed, sends 1-2 /127 wired). Solo-in-place: S toggle per strip, manager counts soloed strips and broadcasts mixer-solo-any; strip gate = (1-mute)*(!any || solo) into the 5ms ramp; busses solo-safe. Strip height 563->702. Gain/Pan dials moved clear of their labels",
+      "timestamp": "2026-09-24T22:11:24.572348+00:00"
     }
   ]
 }
