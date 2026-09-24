@@ -636,7 +636,8 @@
                         92.0,
                         22.0
                     ],
-                    "text": "send~ master-L"
+                    "text": "send~ master-L",
+                    "varname": "tomasterL"
                 }
             },
             {
@@ -653,7 +654,8 @@
                         94.0,
                         22.0
                     ],
-                    "text": "send~ master-R"
+                    "text": "send~ master-R",
+                    "varname": "tomasterR"
                 }
             },
             {
@@ -1119,7 +1121,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-1-L"
+                                    "text": "send~ bus-1-L",
+                                    "varname": "bus1L"
                                 }
                             },
                             {
@@ -1136,7 +1139,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-1-R"
+                                    "text": "send~ bus-1-R",
+                                    "varname": "bus1R"
                                 }
                             },
                             {
@@ -1297,7 +1301,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-2-L"
+                                    "text": "send~ bus-2-L",
+                                    "varname": "bus2L"
                                 }
                             },
                             {
@@ -1314,7 +1319,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-2-R"
+                                    "text": "send~ bus-2-R",
+                                    "varname": "bus2R"
                                 }
                             },
                             {
@@ -1475,7 +1481,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-3-L"
+                                    "text": "send~ bus-3-L",
+                                    "varname": "bus3L"
                                 }
                             },
                             {
@@ -1492,7 +1499,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-3-R"
+                                    "text": "send~ bus-3-R",
+                                    "varname": "bus3R"
                                 }
                             },
                             {
@@ -1653,7 +1661,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-4-L"
+                                    "text": "send~ bus-4-L",
+                                    "varname": "bus4L"
                                 }
                             },
                             {
@@ -1670,7 +1679,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-4-R"
+                                    "text": "send~ bus-4-R",
+                                    "varname": "bus4R"
                                 }
                             },
                             {
@@ -1831,7 +1841,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-5-L"
+                                    "text": "send~ bus-5-L",
+                                    "varname": "bus5L"
                                 }
                             },
                             {
@@ -1848,7 +1859,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-5-R"
+                                    "text": "send~ bus-5-R",
+                                    "varname": "bus5R"
                                 }
                             },
                             {
@@ -2009,7 +2021,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-6-L"
+                                    "text": "send~ bus-6-L",
+                                    "varname": "bus6L"
                                 }
                             },
                             {
@@ -2026,7 +2039,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-6-R"
+                                    "text": "send~ bus-6-R",
+                                    "varname": "bus6R"
                                 }
                             },
                             {
@@ -2187,7 +2201,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-7-L"
+                                    "text": "send~ bus-7-L",
+                                    "varname": "bus7L"
                                 }
                             },
                             {
@@ -2204,7 +2219,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-7-R"
+                                    "text": "send~ bus-7-R",
+                                    "varname": "bus7R"
                                 }
                             },
                             {
@@ -2365,7 +2381,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-8-L"
+                                    "text": "send~ bus-8-L",
+                                    "varname": "bus8L"
                                 }
                             },
                             {
@@ -2382,7 +2399,8 @@
                                         88.0,
                                         22.0
                                     ],
-                                    "text": "send~ bus-8-R"
+                                    "text": "send~ bus-8-R",
+                                    "varname": "bus8R"
                                 }
                             },
                             {
@@ -5856,7 +5874,8 @@
                     ],
                     "text": "receive~ #2",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "varname": "inL"
                 }
             },
             {
@@ -5876,7 +5895,8 @@
                     ],
                     "text": "receive~ #3",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "varname": "inR"
                 }
             },
             {
@@ -7038,7 +7058,8 @@
                     ],
                     "text": "receive mixer-solo-any",
                     "fontname": "Arial",
-                    "fontsize": 12.0
+                    "fontsize": 12.0,
+                    "varname": "soloany"
                 }
             },
             {
@@ -7097,24 +7118,6 @@
                         22.0
                     ],
                     "text": "prepend solo #1",
-                    "fontname": "Arial",
-                    "fontsize": 12.0
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "newobj",
-                    "id": "obj-118",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [
-                        790,
-                        410,
-                        121.0,
-                        22.0
-                    ],
-                    "text": "send mixer-solo",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -7300,6 +7303,25 @@
                     "text": "line~",
                     "fontname": "Arial",
                     "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-128",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        790,
+                        410,
+                        65.0,
+                        22.0
+                    ],
+                    "text": "forward",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "varname": "solofwd"
                 }
             }
         ],
@@ -8474,18 +8496,6 @@
             {
                 "patchline": {
                     "source": [
-                        "obj-117",
-                        0
-                    ],
-                    "destination": [
-                        "obj-118",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "source": [
                         "obj-25",
                         0
                     ],
@@ -8827,6 +8837,18 @@
                     ],
                     "destination": [
                         "obj-34",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-117",
+                        0
+                    ],
+                    "destination": [
+                        "obj-128",
                         0
                     ]
                 }
