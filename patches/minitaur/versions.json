@@ -89,6 +89,15 @@
         "minitaur.maxpat",
         "minitaur-clock.js"
       ]
+    },
+    {
+      "version": "0.1.7",
+      "description": "manual ranges/defaults: EG A/D 1 ms-30 s, EXT LVL 0-200% (default unity), KB TRK 0-200% 14-bit CC20/52 (default 32/127), FLT/AMP VEL default 50%, notes >72 fold into top octave",
+      "timestamp": "2026-09-24T23:27:45.719517+00:00",
+      "files_changed": [
+        "minitaur.maxpat",
+        "minitaur-voice.js"
+      ]
     }
   ]
 }

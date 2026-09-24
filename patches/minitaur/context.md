@@ -24,7 +24,7 @@ LFO --> VCO Pitch & VCF Cutoff
 
 ### Oscillator Section (2x VCO)
 - Waveforms: Sawtooth or Square per oscillator (switchable, not simultaneous)
-- Note range: MIDI 0-72 (C-1 to C5), clamped -- bass synth by design
+- Note range: MIDI 0-72 (C-1 to C5); notes above 72 fold into the top octave (fw 2.1, since v0.1.7)
 - Fine tune: +/-1 semitone (both VCOs)
 - VCO 2 frequency offset: -12 to +12 semitones
 - VCO 2 beat frequency: fine Hz offset for chorus/beating effects
@@ -170,3 +170,12 @@ LFO --> VCO Pitch & VCF Cutoff
 - **LFO gen~** has 7 inputs now: in6 = synced Hz (0 = free, use in1), in7 = start toggle. A start edge resets the phase like key trigger does. It only flips while SYNC is on.
 - Drift: the rate is derived, not phase-locked. Phase realigns only on Start.
 - **UI**: the LFO panel is 45 px wider (360). SYNC label/toggle are at pres. 837/842 (the column after VCO2 O), and DIV label + 21-item umenu sit at pres. 757/785, y 251. The PERF panel and its contents moved +45 px (901…1054).
+
+## Decisions (v0.1.7 manual ranges + defaults, 2026-09-24)
+
+- **EG attack / decay-release**: 1 ms–30 s exponential (`pow(30000, x)` in both EG codeboxes; was 10 s).
+- **EXT LVL** 0–200%: bus stays 0–1, `* 2.` in `p mixer` ahead of the `$1 30 → line~` ramp. Default 64/127 (0.503937) ≈ unity.
+- **KB TRK** 0–200%: filter gen~ uses `kb = clamp(in5, 0, 1) * 2`. Now 14-bit, CC20 coarse / CC52 fine (the same `expr *128 → t i 0` / `t b i → + → scale 0 16383 0. 1.` pair as the other 14-bit CCs; chain moved to y 1050 in `p midi-input`). Default 32/127 (0.251969) ≈ 50%.
+- **FLT VEL / AMP VEL** default 0.5.
+- **Init**: the loadbang `trigger` has 13 outlets. Outlets 9–12 send the four defaults above. Dials and flonums pick them up through the existing `receive → scale → set $1` UI-sync chains.
+- **Note fold** (voice JS `fold()`): n > 72 → `61 + (n - 61) % 12`, so pitch class is kept (84 → 72, 73 → 61).

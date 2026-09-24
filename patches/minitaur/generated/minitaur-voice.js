@@ -2,7 +2,7 @@
 // inlet 0:  "note vel" lists (vel 0 = note off), "priority N" (0 low, 1 high, 2 last),
 //           "trigmode N" (0 Legato ON = no retrigger on overlapping notes,
 //           1 Legato OFF / 2 EG Reset = retrigger; reset shape lives in gen~), "clear"
-// outlets:  0 note (clamped 0-72), 1 velocity, 2 gate 0/1, 3 retrigger toggle (flips 0/1),
+// outlets:  0 note (0-72; above 72 folds into the top octave 61-72, fw 2.1), 1 velocity, 2 gate 0/1, 3 retrigger toggle (flips 0/1),
 //           4 overlap flag (1 = note sounded while another key was held; drives legato glide)
 
 inlets = 1;
@@ -25,11 +25,17 @@ function select() {
     return best;
 }
 
+// firmware 2.1: notes above C5 (72) play in the top octave, keeping pitch class
+function fold(n) {
+    if (n > 72) return 61 + ((n - 61) % 12);
+    return Math.max(0, n);
+}
+
 function sound(n, retrig, overlap) {
     current = n;
     outlet(4, overlap ? 1 : 0);
     outlet(1, vels[n]);
-    outlet(0, Math.max(0, Math.min(72, n)));
+    outlet(0, fold(n));
     outlet(2, 1);
     if (retrig) {
         trigState = 1 - trigState;
