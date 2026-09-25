@@ -230,3 +230,10 @@ Still requires live help-patch observation:
 
 - Pitch and pan are latched at signal rate: `sig~` → `sah~ 0.001` with the adsr~ envelope as trigger. adsr~ ramps to 0 over `retrigger` (default 5 ms) before re-attacking, so the new pitch/pan are captured exactly when the envelope leaves zero. Don't raise the sah~ threshold much above 0.001 or the start of the attack plays at the old pitch.
 - Before v0.0.6 the voice-side `f` holding session_start was never banged, so onsets were raw cpuclock ms. `receive session_start` now goes straight into the onset expr's right inlet.
+
+## v0.0.7 dada.bounce format corrections (2026-09-24)
+
+- **The refpage graph syntax is stale.** dada's own saved/dumped state uses KEYED graph lllls: `bounce [room [vertices [[coord x y] META...] ...] [edges [i j META...] ...]] [balls ...]`. The unkeyed `[VERTICES] [EDGES]` form from the refpage (and the `llll` prefix) never applied the room — the patch ran in dada's default ±100 square the whole time.
+- The saved box state lives in `bounce_data_0000000000` (bach native encoding: `_x_x_x_x_bach_float64_x_x_x_x_`, lo, hi uint32 of a little-endian double). Writing the room there guarantees it at load.
+- **Speed units are ~coordinates per second** — help and bounce-outlet2-test use 100–200. The earlier 1.5–2.3 values made balls crawl (~1 min to a wall). The context.md "speed" examples above predate this.
+- Hit-speed → amplitude normalisation is now /200 (magnitudes ~140–170 → 0.7–0.85 amplitude).

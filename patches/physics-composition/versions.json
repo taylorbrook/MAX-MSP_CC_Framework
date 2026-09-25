@@ -46,6 +46,14 @@
       "files_changed": [
         "physics-composition.maxpat"
       ]
+    },
+    {
+      "version": "0.0.7",
+      "description": "Fix no-collisions: room setup message used the refpage's unkeyed graph syntax behind an 'llll' prefix and never applied (the saved state still held dada's default square); now 'bounce [room [vertices ...] [edges ...]]' matching dada's own dump format, and the triangle + 5 balls are also written into the saved bounce_data so they exist at load. Ball speeds were ~2 units (help/test patches use 100-200) -- balls crawled and took ~a minute to reach a wall; now 138-172 magnitude. Velocity scaling /8 -> /200 to match. bouncedata 1 saved as a box attribute.",
+      "timestamp": "2026-09-25T02:54:51.005498+00:00",
+      "files_changed": [
+        "physics-composition.maxpat"
+      ]
     }
   ]
 }
