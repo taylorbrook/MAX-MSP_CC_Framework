@@ -38,6 +38,14 @@
       "files_changed": [
         "physics-composition.maxpat"
       ]
+    },
+    {
+      "version": "0.0.6",
+      "description": "Voices: pitch + pan now reach the oscillators/pan gains through sig~ -> sah~ 0.001 triggered by the adsr~ output, so they change only when the envelope restarts from zero (adsr~ 5 ms retrigger ramp) -- no mid-release pitch/pan jumps; harmonic partial is *~ ratio at signal rate. Fixed session_start: the voice-side f was never banged, so onsets were raw cpuclock and Clear never restarted at 0 -- receive session_start now feeds the onset expr directly. Trigger objects on all remaining control fan-outs. Voice interiors re-laid out (input/pitch left, pan middle, envelope + score right).",
+      "timestamp": "2026-09-25T02:49:06.661947+00:00",
+      "files_changed": [
+        "physics-composition.maxpat"
+      ]
     }
   ]
 }

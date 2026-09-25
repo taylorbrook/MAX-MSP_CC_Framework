@@ -225,3 +225,8 @@ Still requires live help-patch observation:
 - bach.roll view: `domain start end` after every note — 0–20 s, then a scrolling 20 s window (18 s back, 2 s ahead).
 - Presentation exclusion (Rule #9): the right `gain~` (obj-86) is left out on purpose — it follows the left fader through L outlet 1 → R inlet 0.
 - Known critic false positives: bach llll mismatch on message boxes to bach.roll; hot/cold warning on the domain `pack` (ordered by `t l f f`); default-text contrast 2.81:1.
+
+## v0.0.6 voice internals (2026-09-24)
+
+- Pitch and pan are latched at signal rate: `sig~` → `sah~ 0.001` with the adsr~ envelope as trigger. adsr~ ramps to 0 over `retrigger` (default 5 ms) before re-attacking, so the new pitch/pan are captured exactly when the envelope leaves zero. Don't raise the sah~ threshold much above 0.001 or the start of the attack plays at the old pitch.
+- Before v0.0.6 the voice-side `f` holding session_start was never banged, so onsets were raw cpuclock ms. `receive session_start` now goes straight into the onset expr's right inlet.
