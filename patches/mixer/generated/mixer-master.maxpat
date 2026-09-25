@@ -664,7 +664,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         85.0,
-                        49,
+                        51.0,
                         20.0,
                         16.0
                     ],
