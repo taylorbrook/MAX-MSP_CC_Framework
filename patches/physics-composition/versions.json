@@ -54,6 +54,14 @@
       "files_changed": [
         "physics-composition.maxpat"
       ]
+    },
+    {
+      "version": "0.0.8",
+      "description": "Diagnostic + UI: 'last hit' readout in presentation (Ball, Hit x, Hz) fed by send last_hit (p dispatch) and send last_hz (voices), to diagnose 'only really low notes'.",
+      "timestamp": "2026-09-25T03:00:09.130510+00:00",
+      "files_changed": [
+        "physics-composition.maxpat"
+      ]
     }
   ]
 }
