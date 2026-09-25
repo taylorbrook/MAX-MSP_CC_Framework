@@ -119,6 +119,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.1.2",
+      "description": "player: tosymbol before route symbol so bare-selector slice names from zl.lookup reach groove~",
+      "timestamp": "2026-09-25T04:16:40.469383+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
