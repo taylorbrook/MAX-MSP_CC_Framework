@@ -35,6 +35,14 @@
       "files_changed": [
         "sample-layers-slot.maxpat"
       ]
+    },
+    {
+      "version": "0.5.2",
+      "description": "waveform~ view refits to the loaded file's duration (info~ total ms -> display length, start 0)",
+      "timestamp": "2026-09-25T20:53:39.137052+00:00",
+      "files_changed": [
+        "sample-layers-slot.maxpat"
+      ]
     }
   ]
 }

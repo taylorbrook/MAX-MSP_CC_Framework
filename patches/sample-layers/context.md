@@ -219,3 +219,12 @@ Drag-and-drop was dead in v0.5.0: `p audio-only` used `t a a b`, but `a` is not 
 trigger type (the refpage lists only i f b l s). MAX treated it as a constant, so the
 gate received the literal symbol `a` and the regexp never matched. Now `t s s b`
 (the form used with dropfile in v0.1.0). The regexp was identical to MAX's own help patch.
+
+## Fix v0.5.2 (2026-09-25)
+
+The waveform~ view did not refit when a new file loaded, so a file shorter than the
+current view drew only part of the display. Now `info~` outlet 6 (total ms) ->
+`send #0` -> `receive #0` beside the waveform -> `t b f`: display length (inlet 1,
+cold) first, then `0` into inlet 0 (display start, hot) to redraw. `#0` is standalone
+(the validator rejects compound `#0-name`) and is unique per slot instance. Grain length
+was already capped at the file length in the voice (v0.5.0).
