@@ -212,3 +212,10 @@ GenExpr constant names). Voice codebox audited — no collisions.
   inlets, zl.reg hot/cold (ordered by `t b s b` + delay), "missing midpoints" on
   single-port boxes (the critic puts single ports at box centre; MAX puts them at the
   left edge), companion meter~ upward cords.
+
+## Fix v0.5.1 (2026-09-25)
+
+Drag-and-drop was dead in v0.5.0: `p audio-only` used `t a a b`, but `a` is not a
+trigger type (the refpage lists only i f b l s). MAX treated it as a constant, so the
+gate received the literal symbol `a` and the regexp never matched. Now `t s s b`
+(the form used with dropfile in v0.1.0). The regexp was identical to MAX's own help patch.
