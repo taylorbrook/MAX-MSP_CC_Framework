@@ -1657,7 +1657,7 @@
                                 "box": {
                                     "maxclass": "newobj",
                                     "id": "obj-57",
-                                    "numinlets": 3,
+                                    "numinlets": 1,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -1735,7 +1735,7 @@
                                 "box": {
                                     "maxclass": "inlet",
                                     "id": "obj-61",
-                                    "numinlets": 1,
+                                    "numinlets": 0,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -3445,7 +3445,7 @@
                                 "box": {
                                     "maxclass": "newobj",
                                     "id": "obj-57",
-                                    "numinlets": 3,
+                                    "numinlets": 1,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -3523,7 +3523,7 @@
                                 "box": {
                                     "maxclass": "inlet",
                                     "id": "obj-61",
-                                    "numinlets": 1,
+                                    "numinlets": 0,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -5233,7 +5233,7 @@
                                 "box": {
                                     "maxclass": "newobj",
                                     "id": "obj-57",
-                                    "numinlets": 3,
+                                    "numinlets": 1,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -5311,7 +5311,7 @@
                                 "box": {
                                     "maxclass": "inlet",
                                     "id": "obj-61",
-                                    "numinlets": 1,
+                                    "numinlets": 0,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -7022,7 +7022,7 @@
                                 "box": {
                                     "maxclass": "newobj",
                                     "id": "obj-57",
-                                    "numinlets": 3,
+                                    "numinlets": 1,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -7100,7 +7100,7 @@
                                 "box": {
                                     "maxclass": "inlet",
                                     "id": "obj-61",
-                                    "numinlets": 1,
+                                    "numinlets": 0,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -8811,7 +8811,7 @@
                                 "box": {
                                     "maxclass": "newobj",
                                     "id": "obj-57",
-                                    "numinlets": 3,
+                                    "numinlets": 1,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -8889,7 +8889,7 @@
                                 "box": {
                                     "maxclass": "inlet",
                                     "id": "obj-61",
-                                    "numinlets": 1,
+                                    "numinlets": 0,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -12540,7 +12540,7 @@
                                 "box": {
                                     "maxclass": "outlet",
                                     "id": "obj-1",
-                                    "numinlets": 2,
+                                    "numinlets": 1,
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
@@ -13260,7 +13260,7 @@
                                 "box": {
                                     "maxclass": "inlet",
                                     "id": "obj-1",
-                                    "numinlets": 1,
+                                    "numinlets": 0,
                                     "numoutlets": 1,
                                     "outlettype": [
                                         ""
@@ -13279,7 +13279,7 @@
                                 "box": {
                                     "maxclass": "outlet",
                                     "id": "obj-2",
-                                    "numinlets": 2,
+                                    "numinlets": 1,
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
@@ -13296,7 +13296,7 @@
                                 "box": {
                                     "maxclass": "outlet",
                                     "id": "obj-3",
-                                    "numinlets": 2,
+                                    "numinlets": 1,
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
@@ -13313,7 +13313,7 @@
                                 "box": {
                                     "maxclass": "outlet",
                                     "id": "obj-4",
-                                    "numinlets": 2,
+                                    "numinlets": 1,
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
@@ -13330,7 +13330,7 @@
                                 "box": {
                                     "maxclass": "outlet",
                                     "id": "obj-5",
-                                    "numinlets": 2,
+                                    "numinlets": 1,
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
@@ -13347,7 +13347,7 @@
                                 "box": {
                                     "maxclass": "outlet",
                                     "id": "obj-6",
-                                    "numinlets": 2,
+                                    "numinlets": 1,
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
@@ -14062,8 +14062,8 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        110,
-                        880,
+                        115,
+                        775,
                         156.0,
                         20.0
                     ],
@@ -14080,8 +14080,8 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        20,
-                        990,
+                        115,
+                        750,
                         51.0,
                         20.0
                     ],
