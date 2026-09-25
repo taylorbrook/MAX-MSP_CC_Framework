@@ -42,22 +42,24 @@ function busX(i) {
 }
 
 // p is passed in explicitly: helpers are called as plain functions.
-// Keep prefix1..prefixN bpatchers, remove everything else carrying the prefix.
+// Boxes are matched by varname only: the old maxclass === "bpatcher" test
+// never matched saved strips in MAX (each load stacked a "[N]" duplicate set).
+// Keeps prefix1..prefixN (found with getnamed), removes every other box whose
+// varname carries the prefix (extras beyond count, "[N]" duplicates).
 // Returns an array indexed by number (1-based) of kept objects.
 function prune(p, prefix, count) {
 	var kept = [];
+	for (var n = 1; n <= count; n++) {
+		kept[n] = p.getnamed(prefix + n) || null;
+	}
 	var obj = p.firstobject;
 	while (obj) {
 		var next = obj.nextobject;
 		var vn = obj.varname;
-		if (obj.maxclass === "bpatcher" && vn && vn.indexOf(prefix) === 0) {
+		if (vn && vn.indexOf(prefix) === 0) {
 			var tail = vn.substring(prefix.length);
-			var n = /^[0-9]+$/.test(tail) ? parseInt(tail, 10) : 0;
-			if (n >= 1 && n <= count && !kept[n]) {
-				kept[n] = obj;
-			} else {
-				p.remove(obj);
-			}
+			var n2 = /^[0-9]+$/.test(tail) ? parseInt(tail, 10) : 0;
+			if (!(n2 >= 1 && n2 <= count)) p.remove(obj);
 		}
 		obj = next;
 	}
@@ -113,19 +115,11 @@ function moveMaster(p) {
 	}
 }
 
-// Highest N among exact "prefixN" bpatchers already in the patch
-function countExisting(p, prefix) {
-	var max = 0;
-	var obj = p.firstobject;
-	while (obj) {
-		var vn = obj.varname;
-		if (obj.maxclass === "bpatcher" && vn && vn.indexOf(prefix) === 0) {
-			var tail = vn.substring(prefix.length);
-			if (/^[0-9]+$/.test(tail)) max = Math.max(max, parseInt(tail, 10));
-		}
-		obj = obj.nextobject;
-	}
-	return max;
+// Highest N such that "prefix1".."prefixN" all exist in the patch
+function countExisting(p, prefix, max) {
+	var n = 0;
+	while (n < max && p.getnamed(prefix + (n + 1))) n++;
+	return n;
 }
 
 function setCounts(p) {
@@ -151,8 +145,9 @@ function init(t, b) {
 // recall mixer-state.json once every strip's own loadbang defaults are done.
 function load() {
 	var p = this.patcher;
-	var t = countExisting(p, "strip-");
-	var b = countExisting(p, "bus-");
+	var t = countExisting(p, "strip-", 32);
+	var b = countExisting(p, "bus-", 8);
+	post("mixer: found " + t + " saved strip(s), " + b + " bus(ses)\n");
 	if (t === 0) { t = 4; b = 2; }
 	init.call(this, t, b);
 	recallTask = new Task(recallState, this);
