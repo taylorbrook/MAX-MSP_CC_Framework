@@ -3623,6 +3623,26 @@
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-19",
+                                    "numinlets": 3,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        420.0,
+                                        52.0,
+                                        100.0,
+                                        22.0
+                                    ],
+                                    "text": "clip 0. 0.95",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
                             }
                         ],
                         "lines": [
@@ -3668,28 +3688,6 @@
                                     "order": 1,
                                     "source": [
                                         "obj-10",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-13",
-                                        0
-                                    ],
-                                    "midpoints": [
-                                        403.5,
-                                        54.0,
-                                        357.0,
-                                        54.0,
-                                        357.0,
-                                        72.0,
-                                        354.5,
-                                        72.0
-                                    ],
-                                    "source": [
-                                        "obj-12",
                                         0
                                     ]
                                 }
@@ -3918,6 +3916,30 @@
                                     ],
                                     "destination": [
                                         "obj-10",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-12",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-19",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-19",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-13",
                                         0
                                     ]
                                 }
@@ -9000,6 +9022,60 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "ezdac~",
+                    "id": "obj-87",
+                    "numinlets": 2,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1440.0,
+                        120.0,
+                        45.0,
+                        45.0
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        455.0,
+                        264.0,
+                        40.0,
+                        40.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-88",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        2280.0,
+                        510.0,
+                        51.0,
+                        20.0
+                    ],
+                    "text": "AUDIO",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        500.0,
+                        274.0,
+                        55.0,
+                        20.0
+                    ],
+                    "textcolor": [
+                        0.9,
+                        0.9,
+                        0.9,
+                        1.0
+                    ]
+                }
             }
         ],
         "lines": [
@@ -9773,6 +9849,18 @@
         ],
         "autosave": 0,
         "editing_bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ],
+        "bgcolor": [
+            0.333,
+            0.333,
+            0.333,
+            1.0
+        ],
+        "locked_bgcolor": [
             0.333,
             0.333,
             0.333,
