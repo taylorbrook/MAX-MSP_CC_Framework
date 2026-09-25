@@ -1964,12 +1964,12 @@
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
-                                        110,
-                                        455,
-                                        702.0,
-                                        20.0
+                                        200,
+                                        425,
+                                        400,
+                                        20
                                     ],
-                                    "text": "pitch + pan latch when the envelope restarts from 0 (adsr~ retrigger ramp) -- no mid-release jumps",
+                                    "text": "pitch + pan latch at envelope restart (no mid-release jumps)",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -3839,12 +3839,12 @@
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
-                                        110,
-                                        455,
-                                        702.0,
-                                        20.0
+                                        200,
+                                        425,
+                                        400,
+                                        20
                                     ],
-                                    "text": "pitch + pan latch when the envelope restarts from 0 (adsr~ retrigger ramp) -- no mid-release jumps",
+                                    "text": "pitch + pan latch at envelope restart (no mid-release jumps)",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -5714,12 +5714,12 @@
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
-                                        110,
-                                        455,
-                                        702.0,
-                                        20.0
+                                        200,
+                                        425,
+                                        400,
+                                        20
                                     ],
-                                    "text": "pitch + pan latch when the envelope restarts from 0 (adsr~ retrigger ramp) -- no mid-release jumps",
+                                    "text": "pitch + pan latch at envelope restart (no mid-release jumps)",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -7590,12 +7590,12 @@
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
-                                        110,
-                                        455,
-                                        702.0,
-                                        20.0
+                                        200,
+                                        425,
+                                        400,
+                                        20
                                     ],
-                                    "text": "pitch + pan latch when the envelope restarts from 0 (adsr~ retrigger ramp) -- no mid-release jumps",
+                                    "text": "pitch + pan latch at envelope restart (no mid-release jumps)",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -9466,12 +9466,12 @@
                                     "numoutlets": 0,
                                     "outlettype": [],
                                     "patching_rect": [
-                                        110,
-                                        455,
-                                        702.0,
-                                        20.0
+                                        200,
+                                        425,
+                                        400,
+                                        20
                                     ],
-                                    "text": "pitch + pan latch when the envelope restarts from 0 (adsr~ retrigger ramp) -- no mid-release jumps",
+                                    "text": "pitch + pan latch at envelope restart (no mid-release jumps)",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
