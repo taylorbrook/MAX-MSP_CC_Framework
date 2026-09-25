@@ -215,3 +215,13 @@ Still requires live help-patch observation:
 - adsr~ uses the incoming number as peak amplitude (refpage): feed 0–1, never 0–127. 0 = note-off, so amplitude is floored at 0.05.
 - The structure critic's "Bach llll type mismatch" blocker on message boxes → bach.roll is a false positive: bach parses bracketed text messages (help patches use `addchord [1000 [6000 500 50]]`).
 - Still open: roll `zoom`/scroll as score grows; V-funnel is open-topped (balls can escape); top-level layout sprawl + no presentation mode; 5× redundant bach parsing per event (each voice parses every event).
+
+## v0.0.5 structure (2026-09-24)
+
+- **Geometry changed**: the room is now a closed triangle (edges `[1 2] [2 3] [3 1]`) — the open V let balls escape. Balls 1 and 5 were spawning at (±60, 0), outside the V (the funnel is only ±50 wide at y=0); now at (±40, 30).
+- `p dispatch`: one `t l l l` → `bach.keys position/speed/ball @out t` → `pack N x speed` → `route 1 2 3 4 5` → voice inlets. Voices receive `x speed` (speed already a magnitude).
+- `p init`: loadbang / `receive init-bang` → ball setup; `receive roll-clear` → `cpuclock` → `send session_start` (onset 0 resets with every roll clear).
+- Shared `send`/`receive` names: `min_hz`, `max_hz`, `session_start`, `bach_note`, `init-bang`, `roll-clear`.
+- bach.roll view: `domain start end` after every note — 0–20 s, then a scrolling 20 s window (18 s back, 2 s ahead).
+- Presentation exclusion (Rule #9): the right `gain~` (obj-86) is left out on purpose — it follows the left fader through L outlet 1 → R inlet 0.
+- Known critic false positives: bach llll mismatch on message boxes to bach.roll; hot/cold warning on the domain `pack` (ordered by `t l f f`); default-text contrast 2.81:1.

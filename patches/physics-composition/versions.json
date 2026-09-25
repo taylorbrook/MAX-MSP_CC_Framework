@@ -30,6 +30,14 @@
       "files_changed": [
         "physics-composition.maxpat"
       ]
+    },
+    {
+      "version": "0.0.5",
+      "description": "Structure + UI pass: p dispatch parses each bounce once (bach.keys ball/position/speed -> pack -> route 1-5 -> voice inlets; voices take 'x speed'); shared receives min_hz/max_hz/session_start replace 15 per-voice sends; p init holds ball setup + session clock; loadmess defaults; room closed into a triangle ([3 1] edge) and balls 1/5 moved inside it; bach.roll scrolls via 'domain' (0-20 s, then 18 s back / 2 s ahead); patching layout reorganised (controls row, engine, score, voices/mix); presentation mode (bounce canvas | roll | Level fader, controls row) with openinpresentation + canvas bgcolor.",
+      "timestamp": "2026-09-25T02:38:35.659905+00:00",
+      "files_changed": [
+        "physics-composition.maxpat"
+      ]
     }
   ]
 }
