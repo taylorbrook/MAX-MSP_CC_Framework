@@ -133,6 +133,16 @@
       "files_changed": [
         "slot.maxpat"
       ]
+    },
+    {
+      "version": "0.4.0",
+      "description": "review fixes: js Buffer methods (slicing works), slice-accurate playhead, master step clock, PLAY first-step fix, ranges, unmuted init, exp cutoff, click-free mute/vol, decay clamp, Bits dial, fan-out triggers, presentation fixes, cord cleanup",
+      "timestamp": "2026-09-25T03:53:07.058393+00:00",
+      "files_changed": [
+        "slot.maxpat",
+        "rhythmic-sampler.maxpat",
+        "slot-engine.js"
+      ]
     }
   ]
 }

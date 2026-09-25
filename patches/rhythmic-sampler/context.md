@@ -91,3 +91,13 @@ groove~ → pitch (gizmo~/pfft~ or rate) → filter (svf~) → stutter → bitcr
 
 ## Version
 - MAX 9 (required)
+
+### 7. Master step clock (v0.4.0)
+- Main patch `metro` drives `counter 0 720719` → `send tick` (global step index). 720720 = lcm(1..16), so `% steps` stays continuous across the wrap.
+- Each slot takes `tick % steps` while BPM OVRD is off (the gate in `p clock` is open), so every non-overridden slot shares one phase and one step grid. Turning override off snaps the slot back into alignment.
+- A slot's own `metro` only runs while PLAY and BPM OVRD are both on (`pak` → `expr $i1 * $i2`).
+- PLAY sends `0` into the counter's inlet 2 (reset on the next clock) before starting the metro, so the first tick is step 0.
+
+### 8. Start offset semantics (v0.4.0)
+- Start shifts where the slice grid begins: the N slices evenly divide `[start%, end]` of the file (capped at 95%). It does not trim individual slices.
+- Playhead = `sliceStart + sync * (sliceEnd - sliceStart)`, fed from slot-engine.js outlets.
