@@ -1958,14 +1958,14 @@
                                     "patching_rect": [
                                         30.0,
                                         95.0,
-                                        240.0,
+                                        150.0,
                                         22.0
                                     ],
                                     "saved_object_attributes": {
                                         "parameter_enable": 0,
                                         "parameter_mappable": 0
                                     },
-                                    "text": "rtt.clock~ @bpm 120 @barlength 4"
+                                    "text": "rtt.clock~ @barlength 4"
                                 }
                             },
                             {
@@ -2753,7 +2753,7 @@
                                         0
                                     ],
                                     "midpoints": [
-                                        266.0,
+                                        176.0,
                                         120.0,
                                         804.0,
                                         120.0
@@ -2772,13 +2772,9 @@
                                     ],
                                     "midpoints": [
                                         254.0,
-                                        86.0,
-                                        18.0,
-                                        86.0,
-                                        18.0,
-                                        131.0,
+                                        125.0,
                                         134.0,
-                                        131.0
+                                        125.0
                                     ],
                                     "source": [
                                         "obj-38",
@@ -3538,9 +3534,9 @@
                                     ],
                                     "midpoints": [
                                         114,
-                                        91.0,
+                                        85.0,
                                         34.0,
-                                        91.0
+                                        85.0
                                     ]
                                 }
                             }
