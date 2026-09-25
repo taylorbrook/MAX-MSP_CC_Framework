@@ -38,6 +38,16 @@
         "performance-patch-template.maxpat",
         "crossover-4band.gendsp"
       ]
+    },
+    {
+      "version": "1.3.0",
+      "description": "Comp-band polish (curved dials, 0 dB gain centre, click-through readouts, band labels, ordered fan-outs), canvas bgcolor, ezdac~ in presentation, delay feedback clamp",
+      "timestamp": "2026-09-25T02:58:15.347042+00:00",
+      "files_changed": [
+        "performance-patch-template.maxpat",
+        "comp-band.maxpat",
+        "comp-state.json"
+      ]
     }
   ]
 }

@@ -57,3 +57,6 @@ Performance patch for instrument and live electronics. Triggers events that chan
 - v1.2.0: `limi~ 2 @threshold -1.` between master faders and dac~; meters are post-fader, pre-limiter.
 - v1.2.0: delay time -> `$1 200` -> line~ -> tapout~ signal inlet (interpolating). Time changes glide (tape-style pitch bend over 200 ms) instead of clicking.
 - v1.2.0: soundfiles are preloaded at startup: cue-system sends `cues-loaded <count>` after reading; each player preloads `preload <cue+2> <file>` for every cue, then plays int (cue+2) when a cue names a file. Editing cue-data.txt requires reopening the patch to re-preload.
+- v1.3.0: comp-band dials use power curves (`scale ... @classic 0`): ratio exp 2, attack exp 3, release exp 2.5; gain dial is 0..128 so 64 = 0 dB. Stored comp-state.json dial positions were converted so saved settings keep their real values (Low band 4.19:1 @ -10.4 dB).
+- v1.3.0: comp-band readouts are `ignoreclick 1` (display only); band name comes from bpatcher arg via loadbang -> `set #1` -> comment.
+- v1.3.0: canvas bgcolor set (0.333 grey, all three keys); `ezdac~` + AUDIO label in presentation cue row; delay feedback clipped to 0-0.95.
