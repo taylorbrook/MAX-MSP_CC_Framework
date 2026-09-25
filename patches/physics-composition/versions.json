@@ -62,6 +62,14 @@
       "files_changed": [
         "physics-composition.maxpat"
       ]
+    },
+    {
+      "version": "0.0.9",
+      "description": "Fix roll notes at pitch 0: the score trigger was 't l f f' with outlet 2 (an 'f') wired to the addchord message, so addchord got only the onset and $2-$4 defaulted to 0. Now 't f f l' (outlet 2 = list). ftom -> 'ftom 0.' so roll pitches keep their microtonal cents. Removed temporary print ROLL.",
+      "timestamp": "2026-09-25T03:20:32.951569+00:00",
+      "files_changed": [
+        "physics-composition.maxpat"
+      ]
     }
   ]
 }

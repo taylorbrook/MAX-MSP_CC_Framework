@@ -237,3 +237,4 @@ Still requires live help-patch observation:
 - The saved box state lives in `bounce_data_0000000000` (bach native encoding: `_x_x_x_x_bach_float64_x_x_x_x_`, lo, hi uint32 of a little-endian double). Writing the room there guarantees it at load.
 - **Speed units are ~coordinates per second** — help and bounce-outlet2-test use 100–200. The earlier 1.5–2.3 values made balls crawl (~1 min to a wall). The context.md "speed" examples above predate this.
 - Hit-speed → amplitude normalisation is now /200 (magnitudes ~140–170 → 0.7–0.85 amplitude).
+- v0.0.9: trigger outlet N carries the type of argument N (left to right) — `t l f f` outlet 2 is `f`. The score trigger is `t f f l` so outlet 2 (fires first) sends the full list to addchord. `ftom 0.` outputs fractional MIDI so the roll shows microtonal pitch.
