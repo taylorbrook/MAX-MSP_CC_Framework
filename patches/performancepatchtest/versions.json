@@ -48,6 +48,15 @@
         "comp-band.maxpat",
         "comp-state.json"
       ]
+    },
+    {
+      "version": "1.3.1",
+      "description": "Subpatch cord cleanup: column layouts + orthogonal cord routing in all subpatches and comp-band (positions only)",
+      "timestamp": "2026-09-25T03:10:41.191652+00:00",
+      "files_changed": [
+        "performance-patch-template.maxpat",
+        "comp-band.maxpat"
+      ]
     }
   ]
 }
