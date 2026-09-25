@@ -29,6 +29,15 @@
         "comp-engine.gendsp",
         "crossover-4band.gendsp"
       ]
+    },
+    {
+      "version": "1.2.0",
+      "description": "Crossover allpass compensation (flat sum), limi~ 2 master limiter @-1 dB, delay-time line~ ramp into signal tapout~, soundfile preload via sfplay~ cues",
+      "timestamp": "2026-09-25T02:54:16.258457+00:00",
+      "files_changed": [
+        "performance-patch-template.maxpat",
+        "crossover-4band.gendsp"
+      ]
     }
   ]
 }

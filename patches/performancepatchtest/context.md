@@ -53,3 +53,7 @@ Performance patch for instrument and live electronics. Triggers events that chan
 - **Presentation exclusions:** the slaved R `gain~` for FILES and MASTER are deliberately NOT in presentation (the L fader drives both); both stereo meters are shown.
 - Cues: state is an `int` pair + `clip 0 <last>`; `trigger i i i i` stores current, sends `cue-number`, then fires coll. NEXT (button, note 64, sustain CC 64 via `> 63 -> change`), PREV, RESET (cue 0), goto via CUE number box (`send goto-cue`; display uses `prepend set` to avoid feedback). Last cue = coll `length - 1` after read, so cue numbers must be contiguous from 0. Cue 0 is the reset state, applied at startup.
 - v1.1.1: gen~ files use the `History one(1)` de-hoist pattern (srs, k_* copies); no `sr` alias, no reassignment of built-ins `pi`/`sqrt2`. Math unchanged.
+- v1.2.0: crossover low band gets 1k+5k allpass, lo-mid gets 5k allpass (LR4 LP+HP == 2nd-order allpass) -> 4-band sum is flat (numpy: was -0.47 dB dip at ~260 Hz, now <0.01 dB).
+- v1.2.0: `limi~ 2 @threshold -1.` between master faders and dac~; meters are post-fader, pre-limiter.
+- v1.2.0: delay time -> `$1 200` -> line~ -> tapout~ signal inlet (interpolating). Time changes glide (tape-style pitch bend over 200 ms) instead of clicking.
+- v1.2.0: soundfiles are preloaded at startup: cue-system sends `cues-loaded <count>` after reading; each player preloads `preload <cue+2> <file>` for every cue, then plays int (cue+2) when a cue names a file. Editing cue-data.txt requires reopening the patch to re-preload.
