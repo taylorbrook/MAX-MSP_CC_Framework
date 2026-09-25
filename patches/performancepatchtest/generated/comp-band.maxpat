@@ -238,7 +238,7 @@
                     ],
                     "parameter_enable": 0,
                     "patching_rect": [
-                        203.0,
+                        211.0,
                         170.0,
                         55.0,
                         19.0
@@ -361,7 +361,7 @@
                     ],
                     "parameter_enable": 0,
                     "patching_rect": [
-                        483.0,
+                        491.0,
                         170.0,
                         55.0,
                         19.0
@@ -485,7 +485,7 @@
                     ],
                     "parameter_enable": 0,
                     "patching_rect": [
-                        763.0,
+                        771.0,
                         170.0,
                         55.0,
                         19.0
@@ -608,7 +608,7 @@
                     ],
                     "parameter_enable": 0,
                     "patching_rect": [
-                        203.0,
+                        211.0,
                         355.0,
                         55.0,
                         19.0
@@ -731,7 +731,7 @@
                     ],
                     "parameter_enable": 0,
                     "patching_rect": [
-                        483.0,
+                        491.0,
                         355.0,
                         55.0,
                         19.0
@@ -847,7 +847,7 @@
                     "patching_rect": [
                         90.0,
                         135.0,
-                        120.0,
+                        128.0,
                         22.0
                     ],
                     "text": "trigger f f",
@@ -868,7 +868,7 @@
                     "patching_rect": [
                         370.0,
                         135.0,
-                        120.0,
+                        128.0,
                         22.0
                     ],
                     "text": "trigger f f",
@@ -889,7 +889,7 @@
                     "patching_rect": [
                         650.0,
                         135.0,
-                        120.0,
+                        128.0,
                         22.0
                     ],
                     "text": "trigger f f",
@@ -910,7 +910,7 @@
                     "patching_rect": [
                         90.0,
                         320.0,
-                        120.0,
+                        128.0,
                         22.0
                     ],
                     "text": "trigger f f",
@@ -931,7 +931,7 @@
                     "patching_rect": [
                         370.0,
                         320.0,
-                        120.0,
+                        128.0,
                         22.0
                     ],
                     "text": "trigger f f",
