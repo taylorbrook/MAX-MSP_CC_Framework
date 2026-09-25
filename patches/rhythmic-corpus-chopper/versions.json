@@ -102,6 +102,15 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.1.0",
+      "description": "review fixes: zl.lookup step/name lookup, sequencer outlet x-order, counter-max auto reshuffle, step wrap mod slice count, Sens inverted + live re-slice, signal-edge step timing, 2-voice crossfade player, mono->both channels, volume + ezdac~ + meters, waveform playhead, ears.split~ @naming static, cord cleanup",
+      "timestamp": "2026-09-25T03:55:51.470838+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat",
+        "read_indices.js"
+      ]
     }
   ]
 }
