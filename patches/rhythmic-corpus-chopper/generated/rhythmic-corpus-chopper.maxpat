@@ -2781,6 +2781,26 @@
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-78",
+                                    "numinlets": 2,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        "signal"
+                                    ],
+                                    "patching_rect": [
+                                        30,
+                                        310.0,
+                                        91.75,
+                                        22.0
+                                    ],
+                                    "text": "sah~ 0.5",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
                             }
                         ],
                         "lines": [
@@ -2997,18 +3017,6 @@
                             {
                                 "patchline": {
                                     "destination": [
-                                        "obj-46",
-                                        0
-                                    ],
-                                    "source": [
-                                        "obj-41",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
                                         "obj-43",
                                         0
                                     ],
@@ -3050,9 +3058,9 @@
                                     ],
                                     "midpoints": [
                                         114.0,
-                                        330.0,
+                                        336.0,
                                         34.0,
-                                        330.0
+                                        336.0
                                     ],
                                     "source": [
                                         "obj-45",
@@ -3357,24 +3365,6 @@
                                     "source": [
                                         "obj-61",
                                         0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-63",
-                                        0
-                                    ],
-                                    "midpoints": [
-                                        311.0,
-                                        160.0,
-                                        284.0,
-                                        160.0
-                                    ],
-                                    "source": [
-                                        "obj-62",
-                                        1
                                     ]
                                 }
                             },
@@ -3689,6 +3679,66 @@
                                         216,
                                         1084.0,
                                         216
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-62",
+                                        2
+                                    ],
+                                    "destination": [
+                                        "obj-63",
+                                        0
+                                    ],
+                                    "midpoints": [
+                                        338.0,
+                                        160.0,
+                                        284.0,
+                                        160.0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-41",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-78",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-44",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-78",
+                                        1
+                                    ],
+                                    "midpoints": [
+                                        114.0,
+                                        300.0,
+                                        117.75,
+                                        300.0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-78",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-46",
+                                        0
                                     ]
                                 }
                             }
@@ -5448,7 +5498,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.1.4"
+                    "text": "v0.1.5"
                 }
             },
             {
