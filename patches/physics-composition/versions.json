@@ -22,6 +22,14 @@
       "files_changed": [
         "physics-composition.maxpat"
       ]
+    },
+    {
+      "version": "0.0.4",
+      "description": "Review fixes: pitch expr now fires on x (min/max Hz straight into cold inlets); speed list feeds sqrt expr directly (velocity was never computed -> adsr~ got 0 = note-off); adsr~ amplitude 0.05-1 (was 0-127), x127 only for score velocity; pipe->delay 400 note-off; trigger order pitch->env->note-off->score; bach.roll fed one addchord per collision (separate-syntax bang was wiping the roll, autoclear=1); cpuclock session start resets on roll-clear; Reset button fan-out via t b b; gain~ pair linked (L.1->R.0) with loadmess 110; removed dead y-position path.",
+      "timestamp": "2026-09-25T02:33:55.924180+00:00",
+      "files_changed": [
+        "physics-composition.maxpat"
+      ]
     }
   ]
 }

@@ -208,3 +208,10 @@ Resolved 2026-04-17 via `bounce-outlet2-test.maxpat` live capture:
 
 Still requires live help-patch observation:
 - Auto-respawn behavior when a ball exits the room — is this default, or does it require a `flags` setting or wrap-around attribute? Test by giving a ball a velocity high enough to exit the V-funnel and watching whether it reappears. Low priority — worst case is a `clear balls` + re-`addball` on a timer.
+
+## v0.0.4 review notes (2026-09-24)
+
+- bach.roll separate-syntax bang REBUILDS content (`autoclear` defaults to 1) — it cannot accumulate. Voices now `pack` onset/pitch/dur/vel → `send bach_note` → `addchord [ $1 [ $2 $3 $4 ] ]` → bach.roll inlet 0.
+- adsr~ uses the incoming number as peak amplitude (refpage): feed 0–1, never 0–127. 0 = note-off, so amplitude is floored at 0.05.
+- The structure critic's "Bach llll type mismatch" blocker on message boxes → bach.roll is a false positive: bach parses bracketed text messages (help patches use `addchord [1000 [6000 500 50]]`).
+- Still open: roll `zoom`/scroll as score grows; V-funnel is open-topped (balls can escape); top-level layout sprawl + no presentation mode; 5× redundant bach parsing per event (each voice parses every event).
