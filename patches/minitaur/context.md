@@ -212,3 +212,12 @@ LFO --> VCO Pitch & VCF Cutoff
 - The OUTPUT header replaces "VOL", so it doesn't repeat the VOLUME dial label.
 - Parameters "Release" → "Release Switch" and "Glide" → "Glide On" (longname, shortname and varname).
 - The stale "INIT" / "init ->" patching comments were renamed UI SYNC, and the dead `receive mt-cc-cutoff` (obj-45) was removed.
+
+## Decisions (v0.1.11 subpatcher layout, 2026-09-24)
+
+- All functional subpatchers were relaid out: midi-input, oscillators (+ both wave-xfade), mixer, glide, envelopes, lfo, filter, vca-output. `p about` (text only), the gen~ internals and the top-level patching view are untouched.
+- **Method**: each connected chain uses a layered top-down layout. Each source sits directly above its consumer, node order is chosen to minimise crossings, and a compaction pass closes empty vertical strips. Cables are routed at right angles, with each horizontal run in its own channel between rows. `newobj`/message boxes are sized to their text.
+- **midi-input**: chains are packed into rows ≤ 1400 px wide in their original reading order. Each `---` section header starts a new row. Comments that name a CC sit next to that `ctlin`.
+- Other comments sit beside the object they described, in the nearest spot clear of boxes and cables. Inlet/outlet x-order is unchanged (asserted), so parent connections map the same.
+- Result: 0 overlaps and 0 upward cables in every subpatcher. Widths: envelopes ~1900, lfo ~1830, oscillators ~1560 (14 parallel input chains into the gen~s); everything else is < 1000.
+- The critic's remaining 106 overlap and 122 missing-midpoint warnings are all in the top-level patching view (UI-sync area), which this pass left alone.

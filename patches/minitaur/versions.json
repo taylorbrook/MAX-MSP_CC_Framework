@@ -124,6 +124,14 @@
       "files_changed": [
         "minitaur.maxpat"
       ]
+    },
+    {
+      "version": "0.1.11",
+      "description": "subpatcher layout cleanup: layered top-down chains, crossing-minimised ordering, orthogonal cable routing, CC chains shelf-packed by section, comments anchored to their objects",
+      "timestamp": "2026-09-25T00:16:12.305824+00:00",
+      "files_changed": [
+        "minitaur.maxpat"
+      ]
     }
   ]
 }
