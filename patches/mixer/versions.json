@@ -109,6 +109,11 @@
       "version": "0.8.0",
       "description": "Instance isolation: mixer-manager makes a per-load ID and renames every internal send~/receive~ (master, bus, solo) inside strips/busses/master via subpatcher() + set (solo uses forward + send); user-facing ports take a prefix set by the 'name mixer' message (<name>-in-N-L/R, <name>-out-L/R). Master: M toggle with 5 ms ramp, 2 outlets and send~ <name>-out-L/R (post-fader, post-mute)",
       "timestamp": "2026-09-24T23:57:52.321182+00:00"
+    },
+    {
+      "version": "0.8.1",
+      "description": "Cosmetic: presentation labels 7-8 pt -> 9 pt (send menus stay 8 pt), strip panel uses the bus/master gradient fill, patcher bgcolor set on all four patches, bpatchers sized to their panels (80x694 / 80x420 / 110x430, gap 12 -> same 92 px pitch), patching-view overlaps fixed locally, p sends laid out one column per send. Fix: mixer-manager matched strips with maxclass === 'bpatcher', which never matched in MAX -- every load stacked a new duplicate set; now matches by varname/getnamed and prints what it found. 26 stacked duplicate bpatchers removed from mixer.maxpat (kept strip-1..5, bus-1..3)",
+      "timestamp": "2026-09-25T00:01:31.393428+00:00"
     }
   ]
 }
