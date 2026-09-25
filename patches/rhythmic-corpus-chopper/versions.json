@@ -135,6 +135,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.1.4",
+      "description": "diagnostic probes: print rcc_0_clock..rcc_4_level along the playback chain (temporary)",
+      "timestamp": "2026-09-25T20:48:28.272634+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
