@@ -26,17 +26,9 @@ var startOffsetPct = 0;
 
 function getBufferLengthMs() {
 	if (!buf) return 0;
-	// Buffer.length() / framecount() are methods, not properties
+	// Buffer.length() is a method (returns ms), not a property
 	var len = buf.length();
-	if (typeof len === "number" && len > 0) return len;
-	var fc = buf.framecount();
-	if (fc > 0) return fc / samplerate() * 1000;
-	return 0;
-}
-
-function samplerate() {
-	// Fallback only: dspstate~ is not available from js, assume 48k
-	return 48000;
+	return (typeof len === "number" && len > 0) ? len : 0;
 }
 
 function msg_int(v) {
