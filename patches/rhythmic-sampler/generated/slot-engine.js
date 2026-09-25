@@ -9,8 +9,11 @@
 //   3: float (start offset percentage, 0-100)
 //
 // outlets:
-//   0: float (slice start ms -> groove~ inlet 1)
-//   1: float (slice end ms -> groove~ inlet 2)
+//   0: float (slice start ms -> groove~ inlet 1, playhead expr inlet 2)
+//   1: float (slice end ms -> groove~ inlet 2, playhead expr inlet 1)
+//
+// Start offset shifts where the slice grid begins: the N slices divide
+// the region [offset, bufferEnd], so 0% slices the whole file.
 
 autowatch = 1;
 inlets = 4;
@@ -23,14 +26,17 @@ var startOffsetPct = 0;
 
 function getBufferLengthMs() {
 	if (!buf) return 0;
-	// Try property access first (MAX 9 js Buffer.length returns ms)
-	var len = buf.length;
+	// Buffer.length() / framecount() are methods, not properties
+	var len = buf.length();
 	if (typeof len === "number" && len > 0) return len;
-	// Fallback: compute from framecount and samplerate
-	var fc = buf.framecount;
-	var sr = buf.samplerate;
-	if (fc > 0 && sr > 0) return fc / sr * 1000;
+	var fc = buf.framecount();
+	if (fc > 0) return fc / samplerate() * 1000;
 	return 0;
+}
+
+function samplerate() {
+	// Fallback only: dspstate~ is not available from js, assume 48k
+	return 48000;
 }
 
 function msg_int(v) {
@@ -38,21 +44,20 @@ function msg_int(v) {
 		// Refresh buffer length each step (handles re-loads)
 		var len = getBufferLengthMs();
 		if (len > 0) bufferLength = len;
-		// Compute slice boundaries
+		// Compute slice boundaries within [offset, bufferLength]
 		if (bufferLength > 0 && numSlices > 0) {
 			var sliceIndex = v % numSlices;
-			var sliceLen = bufferLength / numSlices;
-			var endMs = (sliceIndex + 1) * sliceLen;
-			var offsetMs = sliceLen * (startOffsetPct / 100);
-			var startMs = sliceIndex * sliceLen + offsetMs;
-			if (startMs >= endMs) startMs = endMs - 1;
+			var offsetMs = bufferLength * (startOffsetPct / 100);
+			var sliceLen = (bufferLength - offsetMs) / numSlices;
+			var startMs = offsetMs + sliceIndex * sliceLen;
+			var endMs = startMs + sliceLen;
 			outlet(1, endMs);
 			outlet(0, startMs);
 		}
 	} else if (inlet === 2) {
-		numSlices = Math.max(1, v);
+		numSlices = Math.max(1, Math.min(16, v));
 	} else if (inlet === 3) {
-		startOffsetPct = Math.max(0, Math.min(100, v));
+		setStart(v);
 	}
 }
 
@@ -60,10 +65,15 @@ function msg_float(v) {
 	if (inlet === 0) {
 		msg_int(Math.floor(v));
 	} else if (inlet === 2) {
-		numSlices = Math.max(1, Math.floor(v));
+		msg_int(Math.floor(v));
 	} else if (inlet === 3) {
-		startOffsetPct = Math.max(0, Math.min(100, v));
+		setStart(v);
 	}
+}
+
+function setStart(v) {
+	// Cap below 100% so the slice region never collapses to zero length
+	startOffsetPct = Math.max(0, Math.min(95, v));
 }
 
 function setbuffer(name) {
