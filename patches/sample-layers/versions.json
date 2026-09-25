@@ -18,6 +18,15 @@
         "sample-layers.maxpat",
         "sample-layers-slot.maxpat"
       ]
+    },
+    {
+      "version": "0.5.0",
+      "description": "review fixes: master release/attack via env signal, tanh headroom, short-file clamp, stereo read, click-free file swap, idle highlight off, audio-file filter, pattrstorage persistence, gain readout, label fixes; loadmess init + cord cleanup",
+      "timestamp": "2026-09-25T19:03:16.148661+00:00",
+      "files_changed": [
+        "sample-layers.maxpat",
+        "sample-layers-slot.maxpat"
+      ]
     }
   ]
 }

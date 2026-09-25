@@ -173,3 +173,42 @@ GenExpr constant names). Voice codebox audited — no collisions.
   inlets are for external control).
 - Critic warnings: control->signal on gen~ param messages (known false-positive
   class), cosmetic missing-midpoints on new cables. No blockers.
+
+## Iteration v0.5.0 (2026-09-25) -- review fixes + cord cleanup
+
+- **Master gate is now the master envelope signal.** Master gen~ gained `out3 = ev`
+  -> `send~ layers-env`; each slot `receive~ layers-env` -> voice gen~ in1 (replaces
+  `t i i` / `s layers-on` / `r layers-on` / `on $1`; voice Param `on` removed).
+  Voices schedule grains while env > 0 and hard-stop only once env hits 0 (silent),
+  so `rel` is the real fade-out length. The first grain after a master restart skips
+  its taper fade-in (History `mstop`) so `atk` < taper is audible. The per-slot
+  `active` toggle still does the taper fade-out.
+- **Headroom:** master output `tanh(x * env^2 * 0.5)`. A single layer sits ~6 dB lower
+  than v0.4; six full-scale layers peak < 1.
+- **Short files:** grain length capped at `frames / rate`.
+- **Stereo files:** ch0/ch1 averaged when `channels(buf) > 1`.
+- **Click-free file swap:** path -> `t b s b` -> `mute 1` (voice ducks over ~23 ms,
+  then kills the grain) + `zl.reg` store + `delay 40` -> replace. `buffer~` done ->
+  `t b b` -> info~ (filesr) then `mute 0`.
+- **Highlight clears** when the voice is idle (out3/out4 = 0 outside a grain).
+- **Audio-only filter:** `p audio-only` (t a a b -> tosymbol -> regexp
+  `.+\\.(?i:aiff?|aifc|wave?|flac|mp3|m4a|caf)` unmatched -> close gate) before and
+  after `pattr path`. Chosen over dropfile `types` because audio type codes could
+  not be verified.
+- **Persistence (not yet confirmed in MAX):** main `pattrstorage sample-layers
+  @savemode 3` + `autopattr`; `loadbang -> deferlow -> recall 1`, `closebang ->
+  store 1`. Clients: bpatcher varnames slot1..6 -> slot `autopattr` (dial `gain`,
+  flonums `minlen`/`maxlen`, toggle `active`) + `pattr path`; main flonums
+  `attack`/`release`/`taper`, gain~ `volume`. Master on/off deliberately not stored.
+  The file lands next to the patch as sample-layers.json.
+- **UI:** gain readout flonum (0.00-1.00, ignoreclick) over the slot dial, fed via
+  `t f f` from the scale; the `on / off` label is now fontsize 10; the stored label
+  text is back to `slot`.
+- **Cord cleanup:** the slot's loadbang -> 7-way trigger fan was replaced by one
+  `loadmess` above each target (same values). Both patches hand-laid out in
+  functional columns with orthogonal cord routing. Main slot outputs run on two
+  buses (L y=215, R y=227). Presentation layouts unchanged.
+- Critic: no blockers. Known false positives: control->signal on gen~ message
+  inlets, zl.reg hot/cold (ordered by `t b s b` + delay), "missing midpoints" on
+  single-port boxes (the critic puts single ports at box centre; MAX puts them at the
+  left edge), companion meter~ upward cords.
