@@ -1259,7 +1259,7 @@
                                         107.0,
                                         22.0
                                     ],
-                                    "text": "trigger a a b",
+                                    "text": "trigger s s b",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -1648,7 +1648,7 @@
                                         107.0,
                                         22.0
                                     ],
-                                    "text": "trigger a a b",
+                                    "text": "trigger s s b",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
