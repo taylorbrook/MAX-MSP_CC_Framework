@@ -9,6 +9,17 @@
       "version": "1.0.0",
       "description": "Renamed to performance-patch-template, marked as v1.0.0",
       "timestamp": "2026-03-30T21:47:27.180359+00:00"
+    },
+    {
+      "version": "1.1.0",
+      "description": "Review fixes: EQ band menus target correct filter + flat curve, fader init, stereo files/master, cue prev/reset/goto + CC64 pedal, pattrstorage owns state",
+      "timestamp": "2026-09-25T02:35:53.860240+00:00",
+      "files_changed": [
+        "performance-patch-template.maxpat",
+        "comp-band.maxpat",
+        "comp-state.json",
+        "cue-data.txt"
+      ]
     }
   ]
 }

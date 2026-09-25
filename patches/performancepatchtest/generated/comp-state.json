@@ -5,52 +5,184 @@
             "1": {
                 "id": 1,
                 "data": {
-                    "filtergraph~": [ 5, 0, 7, 1, 0, 0, 108.45098876953125, 1.6795732975006104, 0.7070000171661377, 1, 5, 1, 0, 0, 495.1322021484375, 0.25049784779548645, 1.0, 2, 5, 1, 0, 0, 826.05615234375, 1.6795732975006104, 1.0, 3, 1, 1, 0, 0, 3533.4052734375, 1.1306354999542236, 1.0, 4, 7, 1, 0, 0, 8000.0, 1.0, 0.7070000171661377 ],
-                    "umenu": [ 6 ],
-                    "umenu[1]": [ 4 ],
-                    "umenu[2]": [ 4 ],
-                    "umenu[3]": [ 4 ],
-                    "umenu[4]": [ 5 ],
-                    "comp-band::atk": [ 13 ],
-                    "comp-band::gain": [ 64 ],
-                    "comp-band::number": [ 103.54330708661418 ],
-                    "comp-band::number[1]": [ 10.325984251968505 ],
-                    "comp-band::number[2]": [ 0.09448818897637778 ],
-                    "comp-band::number[3]": [ 1.0 ],
-                    "comp-band::number[4]": [ 0.0 ],
-                    "comp-band::ratio": [ 0 ],
-                    "comp-band::rel": [ 12 ],
-                    "comp-band::thresh": [ 127 ],
-                    "comp-band[1]::atk": [ 13 ],
-                    "comp-band[1]::gain": [ 64 ],
-                    "comp-band[1]::number": [ 103.54330708661418 ],
-                    "comp-band[1]::number[1]": [ 10.325984251968505 ],
-                    "comp-band[1]::number[2]": [ 0.09448818897637778 ],
-                    "comp-band[1]::number[3]": [ 1.0 ],
-                    "comp-band[1]::number[4]": [ 0.0 ],
-                    "comp-band[1]::ratio": [ 0 ],
-                    "comp-band[1]::rel": [ 12 ],
-                    "comp-band[1]::thresh": [ 127 ],
-                    "comp-band[2]::atk": [ 13 ],
-                    "comp-band[2]::gain": [ 64 ],
-                    "comp-band[2]::number": [ 103.54330708661418 ],
-                    "comp-band[2]::number[1]": [ 10.325984251968505 ],
-                    "comp-band[2]::number[2]": [ 0.09448818897637778 ],
-                    "comp-band[2]::number[3]": [ 1.0 ],
-                    "comp-band[2]::number[4]": [ 0.0 ],
-                    "comp-band[2]::ratio": [ 0 ],
-                    "comp-band[2]::rel": [ 12 ],
-                    "comp-band[2]::thresh": [ 127 ],
-                    "comp-band[3]::atk": [ 13 ],
-                    "comp-band[3]::gain": [ 64 ],
-                    "comp-band[3]::number": [ 103.54330708661418 ],
-                    "comp-band[3]::number[1]": [ 10.325984251968505 ],
-                    "comp-band[3]::number[2]": [ 0.09448818897637778 ],
-                    "comp-band[3]::number[3]": [ 4.141732283464567 ],
-                    "comp-band[3]::number[4]": [ -10.393700787401576 ],
-                    "comp-band[3]::ratio": [ 21 ],
-                    "comp-band[3]::rel": [ 12 ],
-                    "comp-band[3]::thresh": [ 105 ]
+                    "filtergraph~": [
+                        5,
+                        0,
+                        6,
+                        1,
+                        0,
+                        0,
+                        100.0,
+                        1.0,
+                        0.707,
+                        1,
+                        5,
+                        1,
+                        0,
+                        0,
+                        400.0,
+                        1.0,
+                        1.0,
+                        2,
+                        5,
+                        1,
+                        0,
+                        0,
+                        1000.0,
+                        1.0,
+                        1.0,
+                        3,
+                        5,
+                        1,
+                        0,
+                        0,
+                        3000.0,
+                        1.0,
+                        1.0,
+                        4,
+                        7,
+                        1,
+                        0,
+                        0,
+                        8000.0,
+                        1.0,
+                        0.707
+                    ],
+                    "umenu": [
+                        6
+                    ],
+                    "umenu[1]": [
+                        4
+                    ],
+                    "umenu[2]": [
+                        4
+                    ],
+                    "umenu[3]": [
+                        4
+                    ],
+                    "umenu[4]": [
+                        5
+                    ],
+                    "comp-band::atk": [
+                        13
+                    ],
+                    "comp-band::gain": [
+                        64
+                    ],
+                    "comp-band::number": [
+                        103.54330708661418
+                    ],
+                    "comp-band::number[1]": [
+                        10.325984251968505
+                    ],
+                    "comp-band::number[2]": [
+                        0.09448818897637778
+                    ],
+                    "comp-band::number[3]": [
+                        1.0
+                    ],
+                    "comp-band::number[4]": [
+                        0.0
+                    ],
+                    "comp-band::ratio": [
+                        0
+                    ],
+                    "comp-band::rel": [
+                        12
+                    ],
+                    "comp-band::thresh": [
+                        127
+                    ],
+                    "comp-band[1]::atk": [
+                        13
+                    ],
+                    "comp-band[1]::gain": [
+                        64
+                    ],
+                    "comp-band[1]::number": [
+                        103.54330708661418
+                    ],
+                    "comp-band[1]::number[1]": [
+                        10.325984251968505
+                    ],
+                    "comp-band[1]::number[2]": [
+                        0.09448818897637778
+                    ],
+                    "comp-band[1]::number[3]": [
+                        1.0
+                    ],
+                    "comp-band[1]::number[4]": [
+                        0.0
+                    ],
+                    "comp-band[1]::ratio": [
+                        0
+                    ],
+                    "comp-band[1]::rel": [
+                        12
+                    ],
+                    "comp-band[1]::thresh": [
+                        127
+                    ],
+                    "comp-band[2]::atk": [
+                        13
+                    ],
+                    "comp-band[2]::gain": [
+                        64
+                    ],
+                    "comp-band[2]::number": [
+                        103.54330708661418
+                    ],
+                    "comp-band[2]::number[1]": [
+                        10.325984251968505
+                    ],
+                    "comp-band[2]::number[2]": [
+                        0.09448818897637778
+                    ],
+                    "comp-band[2]::number[3]": [
+                        1.0
+                    ],
+                    "comp-band[2]::number[4]": [
+                        0.0
+                    ],
+                    "comp-band[2]::ratio": [
+                        0
+                    ],
+                    "comp-band[2]::rel": [
+                        12
+                    ],
+                    "comp-band[2]::thresh": [
+                        127
+                    ],
+                    "comp-band[3]::atk": [
+                        13
+                    ],
+                    "comp-band[3]::gain": [
+                        64
+                    ],
+                    "comp-band[3]::number": [
+                        103.54330708661418
+                    ],
+                    "comp-band[3]::number[1]": [
+                        10.325984251968505
+                    ],
+                    "comp-band[3]::number[2]": [
+                        0.09448818897637778
+                    ],
+                    "comp-band[3]::number[3]": [
+                        4.141732283464567
+                    ],
+                    "comp-band[3]::number[4]": [
+                        -10.393700787401576
+                    ],
+                    "comp-band[3]::ratio": [
+                        21
+                    ],
+                    "comp-band[3]::rel": [
+                        12
+                    ],
+                    "comp-band[3]::thresh": [
+                        105
+                    ]
                 }
             }
         }

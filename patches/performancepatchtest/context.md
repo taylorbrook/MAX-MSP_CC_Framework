@@ -44,3 +44,11 @@ Performance patch for instrument and live electronics. Triggers events that chan
 
 ## Target
 - MAX 9
+
+## Decisions (v1.1.0 review fixes, 2026-09-24)
+- EQ band menus: umenu index -> `+ 1` -> `setfilter <0-based band>, mode $1` (filtergraph~ type messages only hit the *selected* filter). Stored curve reset to flat: lowshelf 100 / peak 400, 1k, 3k / highshelf 8k, all 0 dB.
+- pattrstorage `comp-state` owns EQ + compressor state; the default-setting loadbangs in input-processing and comp-band.maxpat were removed. If comp-state.json is missing, menus/dials show their zero positions until restored.
+- Mixer faders init via `p fader-init` (loadbang): channels 128 (0 dB), master 118 (~ -6 dB headroom, no limiter yet).
+- Stereo: soundfile players sum per-side to `sfplay-ret-L`/`-R`; dry + fx returns stay mono and feed both sides. FILES and MASTER are slaved stereo `gain~` pairs (L outlet 1 -> R inlet 0).
+- **Presentation exclusions:** the slaved R `gain~` for FILES and MASTER are deliberately NOT in presentation (the L fader drives both); both stereo meters are shown.
+- Cues: state is an `int` pair + `clip 0 <last>`; `trigger i i i i` stores current, sends `cue-number`, then fires coll. NEXT (button, note 64, sustain CC 64 via `> 63 -> change`), PREV, RESET (cue 0), goto via CUE number box (`send goto-cue`; display uses `prepend set` to avoid feedback). Last cue = coll `length - 1` after read, so cue numbers must be contiguous from 0. Cue 0 is the reset state, applied at startup.
