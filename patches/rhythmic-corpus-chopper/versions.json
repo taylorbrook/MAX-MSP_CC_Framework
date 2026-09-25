@@ -127,6 +127,14 @@
       "files_changed": [
         "rhythmic-corpus-chopper.maxpat"
       ]
+    },
+    {
+      "version": "0.1.3",
+      "description": "rtt.clock~: tempo as bpm message to inlet 0 (was transport-signal inlet 1), explicit @barlength 4",
+      "timestamp": "2026-09-25T04:25:47.218226+00:00",
+      "files_changed": [
+        "rhythmic-corpus-chopper.maxpat"
+      ]
     }
   ]
 }
