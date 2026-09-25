@@ -15091,6 +15091,24 @@
                         20.0
                     ]
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-123",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        955,
+                        330,
+                        102.0,
+                        22.0
+                    ],
+                    "text": "print ROLL",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
@@ -16078,6 +16096,18 @@
                     ],
                     "destination": [
                         "obj-119",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-107",
+                        0
+                    ],
+                    "destination": [
+                        "obj-123",
                         0
                     ]
                 }
