@@ -20,6 +20,15 @@
         "comp-state.json",
         "cue-data.txt"
       ]
+    },
+    {
+      "version": "1.1.1",
+      "description": "gen~ de-hoist: History one(1) + srs/k_* in comp-engine and crossover; drop sr alias and pi/sqrt2 reassignment",
+      "timestamp": "2026-09-25T02:47:03.510963+00:00",
+      "files_changed": [
+        "comp-engine.gendsp",
+        "crossover-4band.gendsp"
+      ]
     }
   ]
 }
