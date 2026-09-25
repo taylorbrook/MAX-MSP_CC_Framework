@@ -3867,8 +3867,8 @@
                                     "patching_rect": [
                                         720.0,
                                         300.0,
-                                        30.0,
-                                        30.0
+                                        25.0,
+                                        25.0
                                     ],
                                     "parameter_enable": 0,
                                     "comment": "Global step index (master tick)"
