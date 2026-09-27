@@ -16201,6 +16201,49 @@
         "confidence": "HIGH",
         "source": "Rhythm and Time Toolkit/help/rtt.clock~.maxhelp, verified 2026-09-24"
       }
+    },
+    "vexpr": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "hot": true,
+          "digest": "List (or single value in scalarmode) replacing $i1/$f1; evaluates element-wise"
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "anything",
+          "signal": false,
+          "digest": "Expression result (int/float depending on expression)"
+        }
+      ],
+      "messages": [
+        "bang",
+        "int",
+        "float",
+        "list",
+        "anything",
+        "maxsize",
+        "scalarmode"
+      ],
+      "arguments": [
+        {
+          "name": "expression",
+          "type": "list",
+          "optional": false,
+          "description": "Mathematical expression using $i/$f/$s variables and C-style operators"
+        }
+      ],
+      "variable_io": true,
+      "_note": "List-wise expr: inlet count = highest $iN/$fN/$sN index (max 9). @scalarmode 1 broadcasts single values across lists. Functions: abs min max sin cos tan asin acos atan atan2 sinh cosh tanh int float pow sqrt fact exp log10 ln log random (commas must be backslash-escaped).",
+      "_audit": {
+        "source": "max_docs vexpr.maxref.xml",
+        "confidence": "HIGH",
+        "date": "2026-09-27"
+      }
     }
   },
   "version_map": {
@@ -16533,6 +16576,12 @@
         "source": "barnett-dbap v0.3.0 build (sfplay~ 2 confirmed 3 outlets in the v0.2 patch: sfplay~ 1 saved with 2)",
         "confidence": "HIGH"
       }
+    },
+    "vexpr": {
+      "inlet_count": "arg_count",
+      "outlet_count": "fixed:1",
+      "default_inlets": 1,
+      "description": "Inlet count equals the highest $iN/$fN/$sN index in the expression (max 9). Default 1. Refpage-verified 2026-09-27."
     }
   },
   "_uncovered_empty_io": {
