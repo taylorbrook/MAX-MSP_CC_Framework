@@ -418,8 +418,9 @@ def _sweep_empty_io_warned_names(db) -> set[str]:
 def test_lookup_does_not_warn_for_zero_outlet_sink():
     """A zero-outlet sink is legitimate DB data, not a defect (D-01).
 
-    'dac~' is the canary: populated inlets, genuinely no outlets, no
-    variable_io_rules entry (2 inlets / 0 outlets measured 2026-09-21).
+    'midiout' is the canary: populated inlets, genuinely no outlets, no
+    variable_io_rules entry. (Was 'dac~' until 2026-09-27, when dac~ gained
+    an arg_count_or_default rule for its per-channel inlets.)
     Before MF-03 this fired the "patch generation may fail silently"
     warning on every lookup. Fallback if the DB changes, rescan with:
       [n for n, o in db._objects.items()
@@ -427,17 +428,17 @@ def test_lookup_does_not_warn_for_zero_outlet_sink():
        and n not in db._variable_io_rules]
     """
     db = ObjectDatabase()
-    sink = db._objects.get("dac~")
-    assert sink is not None, "precondition: 'dac~' must exist in DB"
-    assert sink.get("inlets"), "precondition: 'dac~' must have populated inlets"
-    assert not sink.get("outlets"), "precondition: 'dac~' must have empty outlets"
-    assert "dac~" not in db._variable_io_rules, (
-        "precondition: 'dac~' must have no variable_io_rules entry"
+    sink = db._objects.get("midiout")
+    assert sink is not None, "precondition: 'midiout' must exist in DB"
+    assert sink.get("inlets"), "precondition: 'midiout' must have populated inlets"
+    assert not sink.get("outlets"), "precondition: 'midiout' must have empty outlets"
+    assert "midiout" not in db._variable_io_rules, (
+        "precondition: 'midiout' must have no variable_io_rules entry"
     )
 
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
-        result = db.lookup("dac~")
+        result = db.lookup("midiout")
     assert result is not None
     user_warnings = [w for w in caught if issubclass(w.category, UserWarning)]
     assert len(user_warnings) == 0, (
@@ -548,7 +549,7 @@ def test_audit_half_empty_io_shape():
     sources = set(half["sources"])
     assert sinks.isdisjoint(sources), "sinks and sources must be disjoint"
 
-    assert "dac~" in sinks, "'dac~' (2 inlets, 0 outlets) must be a sink"
+    assert "midiout" in sinks, "'midiout' (inlets, 0 outlets) must be a sink"
     assert "begin~" in sources, "'begin~' (0 inlets, 1 outlet) must be a source"
 
     # The half-empty set is orthogonal to every audit_empty_io() bucket.

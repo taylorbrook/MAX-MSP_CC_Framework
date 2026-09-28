@@ -449,7 +449,9 @@ def generate_rnbo_wrapper(
     p = PatcherClass()
 
     # Add adc~ for audio input
-    adc_args = [str(audio_ins)] if audio_ins > 1 else []
+    # One channel-number arg per input (adc~ 1 2 = 2 outlets). A lone
+    # count like "adc~ 2" would mean *channel 2 only* (1 outlet).
+    adc_args = [str(i + 1) for i in range(audio_ins)] if audio_ins > 1 else []
     adc_box = p.add_box("adc~", args=adc_args, x=50.0, y=50.0)
 
     # Add rnbo~ container
@@ -464,7 +466,7 @@ def generate_rnbo_wrapper(
     )
 
     # Add dac~ for audio output
-    dac_args = [str(audio_outs)] if audio_outs > 1 else []
+    dac_args = [str(i + 1) for i in range(audio_outs)] if audio_outs > 1 else []
     dac_box = p.add_box("dac~", args=dac_args, x=50.0, y=350.0)
 
     # Connect adc~ -> rnbo~ (signal inputs)

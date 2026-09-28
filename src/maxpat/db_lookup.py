@@ -28,6 +28,7 @@ SUPPORTED_IO_FORMULAS = frozenset({
     "",
     "arg_count",
     "arg_count+1",
+    "arg_count_or_default",
     "first_arg",
     "first_arg+1",
     "second_arg",
@@ -735,6 +736,8 @@ class ObjectDatabase:
         Supported formulas (from overrides.json):
         - "arg_count": number of args
         - "arg_count+1": number of args + 1
+        - "arg_count_or_default": number of args, or default when no args
+          (adc~/dac~: one port per channel arg, 2 with none)
         - "fixed:N": always N
         - "first_arg": first numeric argument
         - "first_arg+1": first numeric argument + 1
@@ -759,6 +762,9 @@ class ObjectDatabase:
 
         if formula == "arg_count+1":
             return len(args) + 1
+
+        if formula == "arg_count_or_default":
+            return len(args) if args else default
 
         if formula == "first_arg":
             if not args:

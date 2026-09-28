@@ -1989,33 +1989,27 @@
           "id": 0,
           "type": "signal",
           "signal_role": "audio",
-          "digest": "Signal output"
+          "digest": "(signal) Audio In Ch 1"
         },
         {
           "id": 1,
           "type": "signal",
           "signal_role": "audio",
-          "digest": "Signal output"
-        },
-        {
-          "id": 2,
-          "type": "signal",
-          "signal_role": "audio",
-          "digest": "Signal output"
+          "digest": "(signal) Audio In Ch 2"
         }
       ],
+      "variable_io": true,
+      "_note": "One signal outlet per channel argument (adc~ 1 2 3 4 5 6 = 6 outlets); no args = 2. Refpage + saved patches (adc~ 1 = 1 outlet, adc~ 7 8 = 2). 'set <outlet> <channel>' remaps an outlet.",
       "_audit": {
-        "confidence": "MEDIUM",
-        "instances": 5,
-        "agreement": 0.8,
-        "source": "outlet_type_finding"
+        "confidence": "HIGH",
+        "source": "msp-ref adc~.maxref.xml + saved .maxpat instances, verified 2026-09-27"
       },
       "inlets": [
         {
           "id": 0,
           "type": "",
           "signal": false,
-          "digest": ""
+          "digest": "start, stop Turn Audio On and Off; set <outlet> <channel>"
         }
       ]
     },
@@ -2152,6 +2146,7 @@
       }
     },
     "dac~": {
+      "variable_io": true,
       "inlets": [
         {
           "id": 0,
@@ -16266,6 +16261,18 @@
     }
   },
   "variable_io_rules": {
+    "adc~": {
+      "inlet_count": "fixed:1",
+      "outlet_count": "arg_count_or_default",
+      "default_outlets": 2,
+      "description": "One signal outlet per channel argument. Default (no args): 2 outlets."
+    },
+    "dac~": {
+      "inlet_count": "arg_count_or_default",
+      "outlet_count": "fixed:0",
+      "default_inlets": 2,
+      "description": "One signal inlet per channel argument. Default (no args): 2 inlets."
+    },
     "pack": {
       "inlet_count": "arg_count",
       "outlet_count": "fixed:1",

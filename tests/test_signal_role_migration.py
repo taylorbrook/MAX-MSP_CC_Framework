@@ -50,7 +50,6 @@ _PROJECTED_SIGNAL_BOOL_EXPECTATIONS = [
     ("2d.wave~", 1, True),
     ("adc~", 0, True),
     ("adc~", 1, True),
-    ("adc~", 2, True),
     ("curve~", 0, True),
     ("curve~", 1, False),     # trigger (bang when curve reaches destination)
     ("fffb~", 0, True),
