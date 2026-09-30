@@ -45641,7 +45641,7 @@
                     "maxclass": "newobj",
                     "id": "obj-832",
                     "numinlets": 1,
-                    "numoutlets": 3,
+                    "numoutlets": 2,
                     "outlettype": [
                         "",
                         "",
@@ -45836,7 +45836,7 @@
                 "box": {
                     "maxclass": "newobj",
                     "id": "obj-841",
-                    "numinlets": 12,
+                    "numinlets": 2,
                     "numoutlets": 1,
                     "outlettype": [
                         ""
@@ -45915,7 +45915,7 @@
                     "maxclass": "newobj",
                     "id": "obj-845",
                     "numinlets": 1,
-                    "numoutlets": 3,
+                    "numoutlets": 2,
                     "outlettype": [
                         "",
                         "",
