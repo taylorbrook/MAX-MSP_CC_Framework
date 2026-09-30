@@ -37,6 +37,15 @@
         "wormhole-test.maxpat",
         "wormhole.maxpat"
       ]
+    },
+    {
+      "version": "1.1.0",
+      "description": "review fixes: pitch-up direction, true Hilbert SSB, level-independent decay, unity tilt, pitch-0 bypass, exact-centre dials + loadmess init, direct dry cords, 96k-safe smoothed delay, smoothed reverb size",
+      "timestamp": "2026-09-30T18:13:00.824010+00:00",
+      "files_changed": [
+        "wormhole.maxpat",
+        "wormhole-test.maxpat"
+      ]
     }
   ]
 }
