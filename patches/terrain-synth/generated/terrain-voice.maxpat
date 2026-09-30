@@ -1839,7 +1839,7 @@
                                         51.0,
                                         22.0
                                     ],
-                                    "text": "$1 20",
+                                    "text": "$1 0",
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
@@ -4912,6 +4912,88 @@
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-67",
+                                    "numinlets": 2,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        465.0,
+                                        180.0,
+                                        51.0,
+                                        22.0
+                                    ],
+                                    "text": "> 0.5",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-68",
+                                    "numinlets": 1,
+                                    "numoutlets": 2,
+                                    "outlettype": [
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        465.0,
+                                        225.0,
+                                        54.0,
+                                        22.0
+                                    ],
+                                    "text": "sel 1",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "newobj",
+                                    "id": "obj-69",
+                                    "numinlets": 5,
+                                    "numoutlets": 4,
+                                    "outlettype": [
+                                        "",
+                                        "",
+                                        "",
+                                        ""
+                                    ],
+                                    "patching_rect": [
+                                        465.0,
+                                        270.0,
+                                        114.0,
+                                        22.0
+                                    ],
+                                    "text": "counter 1 1024",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
+                            },
+                            {
+                                "box": {
+                                    "maxclass": "comment",
+                                    "id": "obj-70",
+                                    "numinlets": 1,
+                                    "numoutlets": 0,
+                                    "outlettype": [],
+                                    "patching_rect": [
+                                        560,
+                                        157,
+                                        744.0,
+                                        20.0
+                                    ],
+                                    "text": "note-on counter: every note-on changes the value, so a stolen voice (no note-off) still restarts the LFO",
+                                    "fontname": "Arial",
+                                    "fontsize": 12.0
+                                }
                             }
                         ],
                         "lines": [
@@ -5056,18 +5138,6 @@
                                         128.5,
                                         446.5,
                                         128.5
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "source": [
-                                        "obj-24",
-                                        0
-                                    ],
-                                    "destination": [
-                                        "obj-25",
-                                        0
                                     ]
                                 }
                             },
@@ -6984,6 +7054,54 @@
                                         526.0,
                                         792.0,
                                         526.0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-24",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-67",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-67",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-68",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-68",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-69",
+                                        0
+                                    ]
+                                }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-69",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-25",
+                                        0
                                     ]
                                 }
                             }
