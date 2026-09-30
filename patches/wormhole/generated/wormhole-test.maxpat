@@ -216,7 +216,7 @@
                     "lockedsize": 0,
                     "maxclass": "bpatcher",
                     "name": "wormhole.maxpat",
-                    "numinlets": 2,
+                    "numinlets": 3,
                     "numoutlets": 2,
                     "offset": [
                         0.0,
@@ -336,7 +336,7 @@
                         80.0,
                         18.0
                     ],
-                    "text": "v1.3.0"
+                    "text": "v1.4.0"
                 }
             },
             {
@@ -633,6 +633,85 @@
                     "text": "loadmess modout 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-32",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1180,
+                        225,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "Remote",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        70.0,
+                        250.0,
+                        50.0,
+                        18.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-33",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1180,
+                        250,
+                        65.0,
+                        22.0
+                    ],
+                    "text": "pitch 7",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        70.0,
+                        270.0,
+                        55.0,
+                        22.0
+                    ]
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-34",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        1250,
+                        250,
+                        65.0,
+                        22.0
+                    ],
+                    "text": "pitch 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        130.0,
+                        270.0,
+                        55.0,
+                        22.0
+                    ]
                 }
             }
         ],
@@ -1058,6 +1137,30 @@
                     "destination": [
                         "obj-19",
                         0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-33",
+                        0
+                    ],
+                    "destination": [
+                        "obj-13",
+                        2
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-34",
+                        0
+                    ],
+                    "destination": [
+                        "obj-13",
+                        2
                     ]
                 }
             }
