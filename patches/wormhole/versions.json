@@ -64,6 +64,15 @@
         "wormhole.maxpat",
         "wormhole-test.maxpat"
       ]
+    },
+    {
+      "version": "1.4.0",
+      "description": "parameter mode on all 19 controls (snapshot recall, initial values replace loadmess); third inlet remote control via p remote (route + inverse mapping into the dials)",
+      "timestamp": "2026-09-30T21:17:57.671196+00:00",
+      "files_changed": [
+        "wormhole.maxpat",
+        "wormhole-test.maxpat"
+      ]
     }
   ]
 }
