@@ -1015,3 +1015,33 @@ Unverified in MAX: all of v0.16.1.
 User: "it all works". Confirmed: fixnan in terrain-osc / -b, note-on counter LFO restart (terrain-lfo v0.2), instant
 LFO shape switch, FEEDBACK clamp, scaled terrain 3, ripple step, jit.expr removal, presentation fixes, ABOUT button
 (textbutton -> open -> pcontrol -> p about inlet).
+
+## Play controls (2026-09-30, v0.17.0)
+
+User request: pitch bend, mod wheel, sustain pedal, panic. Decisions (multiple-choice): mod wheel = **LFO motion
+boost**; bend = **range box, default +/-2**.
+
+- **Sustain:** `sustain` object between the note sources and `pack i i` (obj-823). notein AND makenote (on-screen
+  keys) both feed it; the old second `pack i i` (obj-9) is gone. Pedal: `ctlin 64 -> > 63 -> change -> toggle
+  (SUSTAIN, clickable) -> send tsyn-sustain -> receive -> sustain inlet 2`; releasing flushes the held note-offs.
+- **Pitch bend:** `bendin -> pak 64. 2. -> expr pow(2, clamp((b - 64) / 63, -1, 1) * range / 12) -> float ->
+  send tsyn-bend` (range = BEND number box 0-24, loadmess 2, into pak inlet 1 so a range change re-applies at once).
+  Voice: `receive tsyn-bend` (+ `loadmess 1.`) -> `$1 10` -> `line~` -> `*~` right after the pitch `sig~`; every
+  former sig~ destination (terrain-osc A, slot-B `*~ bmul`, cheby A Hz, terrain-mod `*~ modratio`) now takes the
+  bent Hz, so the cheby limiter and terrain mod follow the bend. The play marker ignores bend.
+- **Mod wheel:** `ctlin 1 -> slider (MOD, clickable) -> / 127. -> float -> send tsyn-wheel`. Voice `p motion`:
+  `receive tsyn-wheel -> $1 20 -> line~ -> *~ 0.5 / *~ 0.1` added (`+~`) onto the LFO > A / B RADIUS and ROTATE
+  depth signals before the matrix gen~ (in6 / in7 / in10 / in11). Wheel 0 = unchanged sound; full wheel = +0.5
+  radius depth and +0.1 turn rotate depth on top of the dials, at the current LFO rate / shape.
+- **Resend:** bend and wheel `float`s re-bang on `tsyn-resend`, so an oversample reload keeps the current bend /
+  wheel. Sustain state lives in the main patch (no resend needed).
+- **PANIC:** textbutton -> `t b b`: `0` -> SUSTAIN toggle (pedal off, flushes held), then `send tsyn-panic` ->
+  (near the note chain) `t b b`: `stop` -> makenote (pending on-screen note-offs now), then `uzi 128 0` ->
+  `pack 0 0` -> `prepend midinote` = note-off on every pitch. Voices still play their release tails.
+- **Presentation:** header row (was empty between the title and ABOUT): SUSTAIN toggle [312, 14], BEND +/- number
+  [396, 13], MOD slider [480, 15, 110, 16], PANIC [690, 14, 56, 20] (red). Labels light 9 pt like the version text.
+  Window size unchanged.
+- Threading: ctlin / bendin run on the scheduler thread; their paths only reach UI (toggle / slider), `send`,
+  `sustain`, `poly~` and voice `line~` -- no Jitter.
+
+Unverified in MAX: all of v0.17.0.

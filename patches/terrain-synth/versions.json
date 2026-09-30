@@ -237,6 +237,15 @@
         "terrain-osc-b.maxpat",
         "terrain-lfo.maxpat"
       ]
+    },
+    {
+      "version": "0.17.0",
+      "description": "v0.17.0: CC64 sustain (sustain object, MIDI + on-screen keys), pitch bend with BEND range box, CC1 mod wheel -> LFO radius/rotate depth boost, PANIC button",
+      "timestamp": "2026-09-30T21:19:22.907308+00:00",
+      "files_changed": [
+        "terrain-synth.maxpat",
+        "terrain-voice.maxpat"
+      ]
     }
   ]
 }
