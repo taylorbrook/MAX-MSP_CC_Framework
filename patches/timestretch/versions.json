@@ -97,6 +97,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.6.0",
+      "description": "transient preservation: Preserve toggle -> onsets pass through at 1x (coherent grains, no jitter/WSOLA inside window), lookahead tap = 1 grain + tol, approach slow-down + drift payback keep onsets on time (file), 2-slot window queue, 20 ms detector warm-up after resets, detector time constants follow actual read rate",
+      "timestamp": "2026-09-30T20:55:13.004992+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }

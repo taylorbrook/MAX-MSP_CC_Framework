@@ -186,3 +186,15 @@ Full presentation mode with:
 - **UI:** waveform~ playhead via `line <ms>` from out3; Transient toggle ignoreclick; preset excludes Source/Play/Loop/Transient.
 - Pre-flighted with a Python mirror of the codebox (file + live, stretch 1-4, ±1200 ct, adaptive, transport, bufsr).
 - Deliberately unchanged: Stretch dial range stays 1-16 (Param accepts 0.25-16).
+
+---
+
+## v0.3.0 - v0.6.0 (2026-09-30) -- next-steps round
+
+Built in four separate saves so a regression can be bisected per feature. Each was pre-flighted in the Python mirror; for every earlier setting, v0.6.0 output with Preserve off is bit-identical to v0.5.0.
+
+- **v0.3.0 UI:** Stretch dial 0.25-16 with 1x at 12 o'clock (`parameter_exponent 4.39`, custom unit "x"). OUTPUT column (Gain + meters), Density moved into row 1, dark card panel + patcher `bgcolor`/`locked_bgcolor` (editing bg left at 0.333), descriptive varnames.
+- **v0.4.0 buffer workflow:** waveform~ `outmode up` (loadmess). Selection start/end -> `sel_a`/`sel_b` (ms at the file rate). A click (< 10 ms wide) = seek, whole file loops; a drag = seek + loop region. Loading a file clears the selection (`t b b b`: gen reset, waveform `0 0`, then info~). FREEZE (live.text): file = read head held; live = recording stops too, so the frozen moment is kept indefinitely.
+- **v0.5.0 stereo:** gen~ 2 in / 5 out, and **out5 = R** (out1-4 kept their meaning so existing wiring stayed). `Data circ(524288, 2)`, linked grains with WSOLA on L+R, mono files duplicate to R. adc~ 1 2 -> two selector~ driven by `t i i i`; second `*~` shares the line~ gain; second levelmeter~.
+- **v0.6.0 Preserve:** the tap looks ahead 1 grain·speed + tol. A detected onset opens a window [onset - lead, onset + max(grain/2, 30 ms)) where the read head runs at 1x and grains launch exactly at rp (no jitter/WSOLA), so all grains read the same source time and the attack is reproduced. File mode: the read head slows on approach by the lead-in's gain and pays back leftover drift afterwards (τ 20 ms, ±50% rate), so onsets land on time (measured 1-17 ms at 2x/4x/8x). Window 1 + one queued slot; an overlapping onset extends the window. 50 ms refractory, 20 ms detector warm-up after seek/mode change/restart. Live mode: no timing payback (drift = 0).
+- Known limits: an onset within the first lookahead after a seek/start can't be preserved. Dense onsets closer than about a grain + 50 ms merge into one longer 1x window. Uncorrelated L/R material can only be aligned on the sum.
