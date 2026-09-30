@@ -4692,10 +4692,10 @@
                     "patching_rect": [
                         29.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -4780,10 +4780,10 @@
                     "patching_rect": [
                         149.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -4848,10 +4848,10 @@
                     "patching_rect": [
                         414.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -4937,10 +4937,10 @@
                     "patching_rect": [
                         789.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger i i",
+                    "text": "t i i",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5005,10 +5005,10 @@
                     "patching_rect": [
                         2304,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5074,10 +5074,10 @@
                     "patching_rect": [
                         669.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5163,10 +5163,10 @@
                     "patching_rect": [
                         1164.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger i i",
+                    "text": "t i i",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5231,10 +5231,10 @@
                     "patching_rect": [
                         1044.0,
                         367.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5300,10 +5300,10 @@
                     "patching_rect": [
                         924.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5369,10 +5369,10 @@
                     "patching_rect": [
                         1419.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5438,10 +5438,10 @@
                     "patching_rect": [
                         1674.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5507,10 +5507,10 @@
                     "patching_rect": [
                         1554.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5576,10 +5576,10 @@
                     "patching_rect": [
                         1809.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5645,10 +5645,10 @@
                     "patching_rect": [
                         2184.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5714,10 +5714,10 @@
                     "patching_rect": [
                         2049.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -5783,10 +5783,10 @@
                     "patching_rect": [
                         1929.0,
                         272.0,
-                        93.0,
+                        50.0,
                         22.0
                     ],
-                    "text": "trigger f f",
+                    "text": "t f f",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
