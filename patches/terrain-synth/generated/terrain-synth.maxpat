@@ -45487,10 +45487,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        90,
+                        15,
                         140,
-                        156.0,
-                        22.0
+                        130,
+                        22
                     ],
                     "text": "receive tsyn-sustain",
                     "fontname": "Arial",
@@ -45509,8 +45509,8 @@
                     "patching_rect": [
                         160,
                         295,
-                        142.0,
-                        22.0
+                        120,
+                        22
                     ],
                     "text": "receive tsyn-panic",
                     "fontname": "Arial",
@@ -45530,8 +45530,8 @@
                     "patching_rect": [
                         160,
                         325,
-                        93.0,
-                        22.0
+                        51,
+                        22
                     ],
                     "text": "trigger b b",
                     "fontname": "Arial",
@@ -45548,10 +45548,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        240,
+                        250,
                         355,
-                        44.0,
-                        22.0
+                        40,
+                        22
                     ],
                     "text": "stop",
                     "fontname": "Arial",
@@ -45572,8 +45572,8 @@
                     "patching_rect": [
                         160,
                         355,
-                        79.0,
-                        22.0
+                        70,
+                        22
                     ],
                     "text": "uzi 128 0",
                     "fontname": "Arial",
@@ -45592,8 +45592,8 @@
                     "patching_rect": [
                         160,
                         390,
-                        88.0,
-                        22.0
+                        60,
+                        22
                     ],
                     "text": "pack 0 0",
                     "fontname": "Arial",
@@ -45610,8 +45610,8 @@
                     "patching_rect": [
                         160,
                         420,
-                        506.0,
-                        20.0
+                        250,
+                        34
                     ],
                     "text": "panic: makenote stop, then note-off (midinote p 0) for all 128 pitches",
                     "fontname": "Arial",
@@ -45628,8 +45628,8 @@
                     "patching_rect": [
                         2540,
                         280,
-                        975.0,
-                        20.0
+                        700,
+                        20
                     ],
                     "text": "7. play controls: CC64 sustain, pitch bend (range in semitones), CC1 mod wheel (adds LFO > A/B radius + rotate depth in the voice), panic",
                     "fontname": "Arial",
@@ -45650,8 +45650,8 @@
                     "patching_rect": [
                         2540,
                         310,
-                        72.0,
-                        22.0
+                        60,
+                        22
                     ],
                     "text": "ctlin 64",
                     "fontname": "Arial",
@@ -45670,8 +45670,8 @@
                     "patching_rect": [
                         2540,
                         340,
-                        44.0,
-                        22.0
+                        40,
+                        22
                     ],
                     "text": "> 63",
                     "fontname": "Arial",
@@ -45692,8 +45692,8 @@
                     "patching_rect": [
                         2540,
                         370,
-                        58.0,
-                        22.0
+                        50,
+                        22
                     ],
                     "text": "change",
                     "fontname": "Arial",
@@ -45712,8 +45712,8 @@
                     "patching_rect": [
                         2540,
                         400,
-                        24.0,
-                        24.0
+                        24,
+                        24
                     ],
                     "parameter_enable": 0,
                     "presentation": 1,
@@ -45734,9 +45734,9 @@
                     "outlettype": [],
                     "patching_rect": [
                         2540,
-                        430,
-                        135.0,
-                        22.0
+                        435,
+                        120,
+                        22
                     ],
                     "text": "send tsyn-sustain",
                     "fontname": "Arial",
@@ -45754,10 +45754,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2680,
+                        2700,
                         310,
-                        58.0,
-                        22.0
+                        55,
+                        22
                     ],
                     "text": "bendin",
                     "fontname": "Arial",
@@ -45774,10 +45774,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2780,
+                        2800,
                         310,
-                        87.5,
-                        22.0
+                        70,
+                        22
                     ],
                     "text": "loadmess 2",
                     "fontname": "Arial",
@@ -45795,10 +45795,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2780,
+                        2800,
                         340,
-                        50.0,
-                        22.0
+                        50,
+                        22
                     ],
                     "parameter_enable": 0,
                     "presentation": 1,
@@ -45822,10 +45822,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2680,
+                        2700,
                         375,
-                        113.75,
-                        22.0
+                        120,
+                        22
                     ],
                     "text": "pak 64. 2.",
                     "fontname": "Arial",
@@ -45842,10 +45842,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2680,
+                        2700,
                         405,
-                        471.0,
-                        22.0
+                        400,
+                        22
                     ],
                     "text": "expr pow(2.\\, max(min(($f1 - 64.) / 63.\\, 1.)\\, -1.) * $f2 / 12.)",
                     "fontname": "Arial",
@@ -45862,10 +45862,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2680,
+                        2700,
                         435,
-                        51.0,
-                        22.0
+                        40,
+                        22
                     ],
                     "text": "float",
                     "fontname": "Arial",
@@ -45880,10 +45880,10 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        2680,
+                        2700,
                         465,
-                        114.0,
-                        22.0
+                        110,
+                        22
                     ],
                     "text": "send tsyn-bend",
                     "fontname": "Arial",
@@ -45900,10 +45900,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2770,
+                        2780,
                         435,
-                        149.0,
-                        22.0
+                        130,
+                        22
                     ],
                     "text": "receive tsyn-resend",
                     "fontname": "Arial",
@@ -45922,10 +45922,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2920,
+                        3160,
                         310,
-                        65.0,
-                        22.0
+                        55,
+                        22
                     ],
                     "text": "ctlin 1",
                     "fontname": "Arial",
@@ -45942,10 +45942,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2920,
+                        3160,
                         340,
-                        20.0,
-                        140.0
+                        140,
+                        20
                     ],
                     "parameter_enable": 0,
                     "presentation": 1,
@@ -45967,10 +45967,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2920,
+                        3160,
                         375,
-                        58.0,
-                        22.0
+                        50,
+                        22
                     ],
                     "text": "/ 127.",
                     "fontname": "Arial",
@@ -45987,10 +45987,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2920,
+                        3160,
                         405,
-                        51.0,
-                        22.0
+                        40,
+                        22
                     ],
                     "text": "float",
                     "fontname": "Arial",
@@ -46005,10 +46005,10 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        2920,
+                        3160,
                         435,
-                        121.0,
-                        22.0
+                        115,
+                        22
                     ],
                     "text": "send tsyn-wheel",
                     "fontname": "Arial",
@@ -46025,10 +46025,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        3000,
+                        3240,
                         375,
-                        149.0,
-                        22.0
+                        130,
+                        22
                     ],
                     "text": "receive tsyn-resend",
                     "fontname": "Arial",
@@ -46049,8 +46049,8 @@
                     "patching_rect": [
                         2540,
                         480,
-                        100.0,
-                        20.0
+                        56,
+                        20
                     ],
                     "parameter_enable": 0,
                     "presentation": 1,
@@ -46102,8 +46102,8 @@
                     "patching_rect": [
                         2540,
                         510,
-                        93.0,
-                        22.0
+                        51,
+                        22
                     ],
                     "text": "trigger b b",
                     "fontname": "Arial",
@@ -46120,10 +46120,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        2600,
+                        2610,
                         540,
-                        40.0,
-                        22.0
+                        30,
+                        22
                     ],
                     "text": "0",
                     "fontname": "Arial",
@@ -46140,8 +46140,8 @@
                     "patching_rect": [
                         2540,
                         570,
-                        121.0,
-                        22.0
+                        110,
+                        22
                     ],
                     "text": "send tsyn-panic",
                     "fontname": "Arial",
@@ -46157,9 +46157,9 @@
                     "outlettype": [],
                     "patching_rect": [
                         2570,
-                        400,
-                        65.0,
-                        20.0
+                        402,
+                        60,
+                        17
                     ],
                     "text": "SUSTAIN",
                     "fontname": "Arial",
@@ -46187,10 +46187,10 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        2840,
-                        340,
-                        72.0,
-                        20.0
+                        2855,
+                        342,
+                        60,
+                        17
                     ],
                     "text": "BEND +/-",
                     "fontname": "Arial",
@@ -46218,10 +46218,10 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        2960,
-                        340,
-                        40.0,
-                        20.0
+                        3305,
+                        342,
+                        40,
+                        17
                     ],
                     "text": "MOD",
                     "fontname": "Arial",
