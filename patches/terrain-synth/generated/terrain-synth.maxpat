@@ -44820,7 +44820,7 @@
                     "outlettype": [],
                     "patching_rect": [
                         694.0,
-                        70.0,
+                        154.0,
                         86.0,
                         22.0
                     ],
@@ -45293,15 +45293,20 @@
                             },
                             {
                                 "box": {
+                                    "maxclass": "inlet",
+                                    "id": "obj-24",
+                                    "numinlets": 0,
+                                    "numoutlets": 1,
+                                    "outlettype": [
+                                        ""
+                                    ],
                                     "patching_rect": [
                                         15.0,
                                         570.0,
                                         30.0,
                                         30.0
                                     ],
-                                    "numinlets": 1,
-                                    "numoutlets": 1,
-                                    "text": "inlet"
+                                    "comment": "open (from pcontrol)"
                                 }
                             }
                         ],
@@ -45389,9 +45394,9 @@
                         ""
                     ],
                     "patching_rect": [
-                        690.0,
-                        -15.0,
-                        100.0,
+                        694.0,
+                        70.0,
+                        56.0,
                         20.0
                     ],
                     "parameter_enable": 0,
@@ -45442,7 +45447,7 @@
                     ],
                     "patching_rect": [
                         694.0,
-                        10.0,
+                        98.0,
                         44.0,
                         22.0
                     ],
@@ -45461,8 +45466,8 @@
                         ""
                     ],
                     "patching_rect": [
-                        690.0,
-                        105.0,
+                        694.0,
+                        126.0,
                         72.0,
                         22.0
                     ],
