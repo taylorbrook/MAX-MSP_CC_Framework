@@ -1009,3 +1009,9 @@ individually reported).
   CHEBY vs TERRAIN level (needs ears).
 
 Unverified in MAX: all of v0.16.1.
+
+### v0.16.1 confirmed in MAX (2026-09-30)
+
+User: "it all works". Confirmed: fixnan in terrain-osc / -b, note-on counter LFO restart (terrain-lfo v0.2), instant
+LFO shape switch, FEEDBACK clamp, scaled terrain 3, ripple step, jit.expr removal, presentation fixes, ABOUT button
+(textbutton -> open -> pcontrol -> p about inlet).
