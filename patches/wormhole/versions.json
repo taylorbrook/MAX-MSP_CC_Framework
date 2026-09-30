@@ -55,6 +55,15 @@
         "wormhole.maxpat",
         "wormhole-test.maxpat"
       ]
+    },
+    {
+      "version": "1.3.0",
+      "description": "additional fixes: dial value readouts, delay Route (Both/Dry/FX), output safety stage (NaN guard, 5 Hz DC block, -0.3 dB zero-latency limiter)",
+      "timestamp": "2026-09-30T20:26:21.720686+00:00",
+      "files_changed": [
+        "wormhole.maxpat",
+        "wormhole-test.maxpat"
+      ]
     }
   ]
 }
