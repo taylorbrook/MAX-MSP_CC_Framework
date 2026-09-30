@@ -81,6 +81,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.4.0",
+      "description": "buffer workflow: waveform click = seek, drag = loop region (sel_a/sel_b, outmode up), selection cleared on load, FREEZE (file: hold read head; live: stop recording + hold)",
+      "timestamp": "2026-09-30T20:31:35.583846+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }
