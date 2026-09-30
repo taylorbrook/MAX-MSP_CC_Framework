@@ -229,14 +229,14 @@
                     "patching_rect": [
                         100.0,
                         300.0,
-                        950.0,
+                        998.0,
                         130.0
                     ],
                     "presentation": 1,
                     "presentation_rect": [
                         15.0,
                         100.0,
-                        950.0,
+                        998.0,
                         130.0
                     ],
                     "viewvisibility": 1
@@ -265,7 +265,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        975.0,
+                        1023.0,
                         100.0,
                         48.0,
                         130.0
@@ -331,12 +331,12 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        970.0,
+                        1018.0,
                         10.0,
                         80.0,
                         18.0
                     ],
-                    "text": "v1.1.0"
+                    "text": "v1.2.0"
                 }
             },
             {
@@ -594,6 +594,46 @@
                     ],
                     "text": "Play"
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-30",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        610,
+                        210,
+                        51.0,
+                        22.0
+                    ],
+                    "text": "set 0",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-31",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        300,
+                        175,
+                        135.0,
+                        22.0
+                    ],
+                    "text": "loadmess modout 1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
@@ -738,28 +778,6 @@
                     "source": [
                         "obj-19",
                         1
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-21",
-                        0
-                    ],
-                    "midpoints": [
-                        591.5,
-                        198.0,
-                        603.0,
-                        198.0,
-                        603.0,
-                        42.0,
-                        509.5,
-                        42.0
-                    ],
-                    "source": [
-                        "obj-19",
-                        2
                     ]
                 }
             },
@@ -1004,6 +1022,42 @@
                     "source": [
                         "obj-9",
                         1
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-19",
+                        2
+                    ],
+                    "destination": [
+                        "obj-30",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-30",
+                        0
+                    ],
+                    "destination": [
+                        "obj-21",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-31",
+                        0
+                    ],
+                    "destination": [
+                        "obj-19",
+                        0
                     ]
                 }
             }
