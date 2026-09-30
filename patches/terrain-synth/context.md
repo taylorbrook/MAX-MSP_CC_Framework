@@ -963,7 +963,9 @@ Full static review of v0.15.2 (voice, main control side, Jitter side, all codebo
 - **Stale excite.** EXCITE / NOTE with animate OFF left `ex_amp 0.7` pending until the next tick. `rclear` now also
   sends `param ex_amp 0.` (`t b b b`, obj-113 in both sources) and `p animate` sends rclear on ON as well as OFF.
 - **sizeinsamps once.** `p matrix2buffer` re-sent `sizeinsamps 65536` to jit.buffer~ on every static copy; now a
-  `loadbang` sends it once and the inlet goes straight to `uzi`.
+  `loadbang` sends it once. The inlet still needs a `t b` before `uzi` -- it receives the `jit_matrix` message, not
+  a bang (v0.16.0 wired it straight in: "uzi: doesn't understand jit_matrix", empty terrainbuf, no sound; fixed
+  same day).
 - **Views rebuild only while ON.** `gate 1 1` on the rebuild bang, driven by the ON inlet via `t i i i`
   (gate, then `enable`, then `sel 1` -> one rebuild when switched on).
 - **Window 900 x 1096** so the keyboard (presentation bottom 1086) is not cut off.
