@@ -218,7 +218,8 @@
                         30.0,
                         640.0,
                         100.0
-                    ]
+                    ],
+                    "setmode": 1
                 }
             },
             {
@@ -1562,7 +1563,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.6.0"
+                    "text": "v0.6.1"
                 }
             },
             {
@@ -2274,7 +2275,7 @@
                         105.0,
                         22.0
                     ],
-                    "text": "loadmess outmode up",
+                    "text": "loadmess mouseoutput up",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
