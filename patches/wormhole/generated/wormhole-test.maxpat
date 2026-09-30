@@ -229,15 +229,15 @@
                     "patching_rect": [
                         100.0,
                         300.0,
-                        998.0,
-                        130.0
+                        1058.0,
+                        140.0
                     ],
                     "presentation": 1,
                     "presentation_rect": [
                         15.0,
                         100.0,
-                        998.0,
-                        130.0
+                        1058.0,
+                        140.0
                     ],
                     "viewvisibility": 1
                 }
@@ -265,7 +265,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        1023.0,
+                        1083.0,
                         100.0,
                         48.0,
                         130.0
@@ -309,7 +309,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         15.0,
-                        240.0,
+                        250.0,
                         45.0,
                         45.0
                     ]
@@ -331,12 +331,12 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        1018.0,
+                        1078.0,
                         10.0,
                         80.0,
                         18.0
                     ],
-                    "text": "v1.2.0"
+                    "text": "v1.3.0"
                 }
             },
             {
