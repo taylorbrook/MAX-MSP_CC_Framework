@@ -8501,10 +8501,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        75.0,
-                        645.0,
-                        135.0,
-                        22.0
+                        300,
+                        62,
+                        110,
+                        22
                     ],
                     "text": "receive tsyn-bend",
                     "fontname": "Arial",
@@ -8521,10 +8521,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        180.0,
-                        690.0,
-                        93.0,
-                        22.0
+                        420,
+                        62,
+                        75,
+                        22
                     ],
                     "text": "loadmess 1.",
                     "fontname": "Arial",
@@ -8541,10 +8541,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        80,
-                        130,
-                        51.0,
-                        22.0
+                        300,
+                        92,
+                        50,
+                        22
                     ],
                     "text": "$1 10",
                     "fontname": "Arial",
@@ -8562,10 +8562,10 @@
                         ""
                     ],
                     "patching_rect": [
-                        75.0,
-                        690.0,
-                        51.0,
-                        22.0
+                        300,
+                        125,
+                        45,
+                        22
                     ],
                     "text": "line~",
                     "fontname": "Arial",
@@ -8582,10 +8582,10 @@
                         "signal"
                     ],
                     "patching_rect": [
-                        15,
-                        195,
-                        42.0,
-                        22.0
+                        240,
+                        160,
+                        42,
+                        22
                     ],
                     "text": "*~",
                     "fontname": "Arial",
@@ -8600,10 +8600,10 @@
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
-                        140,
+                        355,
+                        125,
                         160,
-                        366.0,
-                        20.0
+                        34
                     ],
                     "text": "pitch bend: tsyn-bend = frequency ratio (1 = none)",
                     "fontname": "Arial",
