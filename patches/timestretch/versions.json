@@ -89,6 +89,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.5.0",
+      "description": "stereo: gen~ 2 in / 5 out (out5 = R), Data circ 2ch, linked grains + WSOLA on L+R sum, mono files duplicate to R; adc~ 1 2 + second selector~ via trigger i i i; *~ R + dac right + second levelmeter~",
+      "timestamp": "2026-09-30T20:33:40.542245+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }
