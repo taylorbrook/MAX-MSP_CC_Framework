@@ -1001,7 +1001,7 @@
                             },
                             {
                                 "box": {
-                                    "comment": "Display matrix 0-1 (jit_matrix) for jit.pwindow",
+                                    "comment": "terrain changed (jit_matrix of the composed 256x256 terrain)",
                                     "id": "obj-3",
                                     "index": 1,
                                     "maxclass": "outlet",
@@ -1157,7 +1157,7 @@
                                         649.0,
                                         22.0
                                     ],
-                                    "text": "exprfill 0 snorm[0]*snorm[1]+0.5*sin(snorm[0]*PI*9.)*sin(snorm[1]*PI*7.), bang"
+                                    "text": "exprfill 0 (snorm[0]*snorm[1]+0.5*sin(snorm[0]*PI*9.)*sin(snorm[1]*PI*7.))*0.725, bang"
                                 }
                             },
                             {
@@ -1481,27 +1481,6 @@
                                         22.0
                                     ],
                                     "text": "trigger l l"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0,
-                                    "id": "obj-27",
-                                    "maxclass": "newobj",
-                                    "numinlets": 2,
-                                    "numoutlets": 2,
-                                    "outlettype": [
-                                        "jit_matrix",
-                                        ""
-                                    ],
-                                    "patching_rect": [
-                                        15.0,
-                                        870.0,
-                                        212.0,
-                                        22.0
-                                    ],
-                                    "text": "jit.expr @expr in[0]*0.5+0.5"
                                 }
                             },
                             {
@@ -2241,7 +2220,7 @@
                                         649.0,
                                         22.0
                                     ],
-                                    "text": "exprfill 0 snorm[0]*snorm[1]+0.5*sin(snorm[0]*PI*9.)*sin(snorm[1]*PI*7.), bang"
+                                    "text": "exprfill 0 (snorm[0]*snorm[1]+0.5*sin(snorm[0]*PI*9.)*sin(snorm[1]*PI*7.))*0.725, bang"
                                 }
                             },
                             {
@@ -3486,7 +3465,7 @@
                                                         200.0
                                                     ],
                                                     "parameter_enable": 0,
-                                                    "code": "// ripple v0.1: damped 2D wave equation on a 64x64 displacement field (jit.gen, one step per frame)\n// in1 = u (current) | in2 = u_prev | out1 = u_next | out2 = u (becomes the next u_prev)\n// clamp + leak: u can never leave -1..1 and always relaxes to 0 (terrain returns to its source)\nParam tension(0.3);\nParam damp(0.01);\nParam leak(0.003);\nParam ex_amp(0.);\nParam ex_x(0.5);\nParam ex_y(0.5);\nParam ex_r(0.07);\ndel = concat(1. / dim, 0.);\nu = sample(in1, norm, boundmode=\"clamp\");\nup = sample(in2, norm, boundmode=\"clamp\");\nnb = sample(in1, norm - del.xz, boundmode=\"clamp\") + sample(in1, norm + del.xz, boundmode=\"clamp\") + sample(in1, norm - del.zy, boundmode=\"clamp\") + sample(in1, norm + del.zy, boundmode=\"clamp\");\nlap = nb - 4. * u;\nc2 = clamp(tension, 0., 0.48);\nkeep = 1. - clamp(damp, 0., 1.);\nnxt = (u + keep * (u - up) + c2 * lap) * (1. - clamp(leak, 0., 1.));\ndx = norm.x - ex_x;\ndy = norm.y - ex_y;\nbump = ex_amp * exp(-(dx * dx + dy * dy) / max(ex_r * ex_r, 0.0001));\nout1 = clamp(nxt + bump, -1., 1.);\nout2 = u;\n",
+                                                    "code": "// ripple v0.1: damped 2D wave equation on a 64x64 displacement field (jit.gen, one step per frame)\n// in1 = u (current) | in2 = u_prev | out1 = u_next | out2 = u (becomes the next u_prev)\n// clamp + leak: u can never leave -1..1 and always relaxes to 0 (terrain returns to its source)\nParam tension(0.3);\nParam damp(0.01);\nParam leak(0.003);\nParam ex_amp(0.);\nParam ex_x(0.5);\nParam ex_y(0.5);\nParam ex_r(0.07);\n// one cell in norm coords (norm runs 0..1 across dim - 1 cell steps)\ndel = concat(1. / (dim - 1.), 0.);\nu = sample(in1, norm, boundmode=\"clamp\");\nup = sample(in2, norm, boundmode=\"clamp\");\nnb = sample(in1, norm - del.xz, boundmode=\"clamp\") + sample(in1, norm + del.xz, boundmode=\"clamp\") + sample(in1, norm - del.zy, boundmode=\"clamp\") + sample(in1, norm + del.zy, boundmode=\"clamp\");\nlap = nb - 4. * u;\nc2 = clamp(tension, 0., 0.48);\nkeep = 1. - clamp(damp, 0., 1.);\nnxt = (u + keep * (u - up) + c2 * lap) * (1. - clamp(leak, 0., 1.));\ndx = norm.x - ex_x;\ndy = norm.y - ex_y;\nbump = ex_amp * exp(-(dx * dx + dy * dy) / max(ex_r * ex_r, 0.0001));\nout1 = clamp(nxt + bump, -1., 1.);\nout2 = u;\n",
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
@@ -6229,30 +6208,6 @@
                             {
                                 "patchline": {
                                     "destination": [
-                                        "obj-27",
-                                        0
-                                    ],
-                                    "source": [
-                                        "obj-26",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-3",
-                                        0
-                                    ],
-                                    "source": [
-                                        "obj-27",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
                                         "obj-10",
                                         0
                                     ],
@@ -7751,6 +7706,18 @@
                                         0
                                     ]
                                 }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-26",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-3",
+                                        0
+                                    ]
+                                }
                             }
                         ]
                     },
@@ -8805,7 +8772,7 @@
                         170.0,
                         22.0
                     ],
-                    "text": "expr ($f1 - 64.) / 63."
+                    "text": "expr max(($f1 - 64.) / 63.\\, -1.)"
                 }
             },
             {
@@ -13686,7 +13653,7 @@
                             },
                             {
                                 "box": {
-                                    "comment": "Display matrix 0-1 (jit_matrix) for jit.pwindow",
+                                    "comment": "terrain changed (jit_matrix of the composed 256x256 terrain)",
                                     "id": "obj-3",
                                     "index": 1,
                                     "maxclass": "outlet",
@@ -13842,7 +13809,7 @@
                                         649.0,
                                         22.0
                                     ],
-                                    "text": "exprfill 0 snorm[0]*snorm[1]+0.5*sin(snorm[0]*PI*9.)*sin(snorm[1]*PI*7.), bang"
+                                    "text": "exprfill 0 (snorm[0]*snorm[1]+0.5*sin(snorm[0]*PI*9.)*sin(snorm[1]*PI*7.))*0.725, bang"
                                 }
                             },
                             {
@@ -14166,27 +14133,6 @@
                                         22.0
                                     ],
                                     "text": "trigger l l"
-                                }
-                            },
-                            {
-                                "box": {
-                                    "fontname": "Arial",
-                                    "fontsize": 12.0,
-                                    "id": "obj-27",
-                                    "maxclass": "newobj",
-                                    "numinlets": 2,
-                                    "numoutlets": 2,
-                                    "outlettype": [
-                                        "jit_matrix",
-                                        ""
-                                    ],
-                                    "patching_rect": [
-                                        15.0,
-                                        870.0,
-                                        212.0,
-                                        22.0
-                                    ],
-                                    "text": "jit.expr @expr in[0]*0.5+0.5"
                                 }
                             },
                             {
@@ -14926,7 +14872,7 @@
                                         649.0,
                                         22.0
                                     ],
-                                    "text": "exprfill 0 snorm[0]*snorm[1]+0.5*sin(snorm[0]*PI*9.)*sin(snorm[1]*PI*7.), bang"
+                                    "text": "exprfill 0 (snorm[0]*snorm[1]+0.5*sin(snorm[0]*PI*9.)*sin(snorm[1]*PI*7.))*0.725, bang"
                                 }
                             },
                             {
@@ -16171,7 +16117,7 @@
                                                         200.0
                                                     ],
                                                     "parameter_enable": 0,
-                                                    "code": "// ripple v0.1: damped 2D wave equation on a 64x64 displacement field (jit.gen, one step per frame)\n// in1 = u (current) | in2 = u_prev | out1 = u_next | out2 = u (becomes the next u_prev)\n// clamp + leak: u can never leave -1..1 and always relaxes to 0 (terrain returns to its source)\nParam tension(0.3);\nParam damp(0.01);\nParam leak(0.003);\nParam ex_amp(0.);\nParam ex_x(0.5);\nParam ex_y(0.5);\nParam ex_r(0.07);\ndel = concat(1. / dim, 0.);\nu = sample(in1, norm, boundmode=\"clamp\");\nup = sample(in2, norm, boundmode=\"clamp\");\nnb = sample(in1, norm - del.xz, boundmode=\"clamp\") + sample(in1, norm + del.xz, boundmode=\"clamp\") + sample(in1, norm - del.zy, boundmode=\"clamp\") + sample(in1, norm + del.zy, boundmode=\"clamp\");\nlap = nb - 4. * u;\nc2 = clamp(tension, 0., 0.48);\nkeep = 1. - clamp(damp, 0., 1.);\nnxt = (u + keep * (u - up) + c2 * lap) * (1. - clamp(leak, 0., 1.));\ndx = norm.x - ex_x;\ndy = norm.y - ex_y;\nbump = ex_amp * exp(-(dx * dx + dy * dy) / max(ex_r * ex_r, 0.0001));\nout1 = clamp(nxt + bump, -1., 1.);\nout2 = u;\n",
+                                                    "code": "// ripple v0.1: damped 2D wave equation on a 64x64 displacement field (jit.gen, one step per frame)\n// in1 = u (current) | in2 = u_prev | out1 = u_next | out2 = u (becomes the next u_prev)\n// clamp + leak: u can never leave -1..1 and always relaxes to 0 (terrain returns to its source)\nParam tension(0.3);\nParam damp(0.01);\nParam leak(0.003);\nParam ex_amp(0.);\nParam ex_x(0.5);\nParam ex_y(0.5);\nParam ex_r(0.07);\n// one cell in norm coords (norm runs 0..1 across dim - 1 cell steps)\ndel = concat(1. / (dim - 1.), 0.);\nu = sample(in1, norm, boundmode=\"clamp\");\nup = sample(in2, norm, boundmode=\"clamp\");\nnb = sample(in1, norm - del.xz, boundmode=\"clamp\") + sample(in1, norm + del.xz, boundmode=\"clamp\") + sample(in1, norm - del.zy, boundmode=\"clamp\") + sample(in1, norm + del.zy, boundmode=\"clamp\");\nlap = nb - 4. * u;\nc2 = clamp(tension, 0., 0.48);\nkeep = 1. - clamp(damp, 0., 1.);\nnxt = (u + keep * (u - up) + c2 * lap) * (1. - clamp(leak, 0., 1.));\ndx = norm.x - ex_x;\ndy = norm.y - ex_y;\nbump = ex_amp * exp(-(dx * dx + dy * dy) / max(ex_r * ex_r, 0.0001));\nout1 = clamp(nxt + bump, -1., 1.);\nout2 = u;\n",
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
@@ -18914,30 +18860,6 @@
                             {
                                 "patchline": {
                                     "destination": [
-                                        "obj-27",
-                                        0
-                                    ],
-                                    "source": [
-                                        "obj-26",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
-                                        "obj-3",
-                                        0
-                                    ],
-                                    "source": [
-                                        "obj-27",
-                                        0
-                                    ]
-                                }
-                            },
-                            {
-                                "patchline": {
-                                    "destination": [
                                         "obj-10",
                                         0
                                     ],
@@ -20436,6 +20358,18 @@
                                         0
                                     ]
                                 }
+                            },
+                            {
+                                "patchline": {
+                                    "source": [
+                                        "obj-26",
+                                        0
+                                    ],
+                                    "destination": [
+                                        "obj-3",
+                                        0
+                                    ]
+                                }
                             }
                         ]
                     },
@@ -21700,7 +21634,7 @@
                         170.0,
                         22.0
                     ],
-                    "text": "expr ($f1 - 64.) / 63."
+                    "text": "expr max(($f1 - 64.) / 63.\\, -1.)"
                 }
             },
             {
@@ -23087,7 +23021,7 @@
                     "presentation_rect": [
                         370.0,
                         415.0,
-                        150.0,
+                        128.0,
                         19.0
                     ],
                     "text": "OSC B PITCH",
@@ -43935,7 +43869,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         773.0,
-                        493.0,
+                        495.0,
                         38.0,
                         20.0
                     ],
@@ -44490,7 +44424,7 @@
                     "presentation": 1,
                     "presentation_rect": [
                         849.0,
-                        493.0,
+                        495.0,
                         38.0,
                         20.0
                     ],
@@ -44881,7 +44815,7 @@
                 "box": {
                     "maxclass": "newobj",
                     "id": "obj-817",
-                    "numinlets": 0,
+                    "numinlets": 1,
                     "numoutlets": 0,
                     "outlettype": [],
                     "patching_rect": [
@@ -45356,6 +45290,19 @@
                                     "fontname": "Arial",
                                     "fontsize": 12.0
                                 }
+                            },
+                            {
+                                "box": {
+                                    "patching_rect": [
+                                        15.0,
+                                        570.0,
+                                        30.0,
+                                        30.0
+                                    ],
+                                    "numinlets": 1,
+                                    "numoutlets": 1,
+                                    "text": "inlet"
+                                }
                             }
                         ],
                         "lines": [],
@@ -45426,6 +45373,100 @@
                         22.0
                     ],
                     "text": "trigger b i",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "textbutton",
+                    "id": "obj-820",
+                    "numinlets": 1,
+                    "numoutlets": 3,
+                    "outlettype": [
+                        "",
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        690.0,
+                        -15.0,
+                        100.0,
+                        20.0
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        770.0,
+                        14.0,
+                        56.0,
+                        20.0
+                    ],
+                    "text": "ABOUT",
+                    "fontsize": 9.0,
+                    "bgcolor": [
+                        0.25,
+                        0.25,
+                        0.28,
+                        1.0
+                    ],
+                    "bgoncolor": [
+                        0.25,
+                        0.25,
+                        0.28,
+                        1.0
+                    ],
+                    "textcolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ],
+                    "textoncolor": [
+                        0.8,
+                        0.8,
+                        0.82,
+                        1.0
+                    ],
+                    "rounded": 4.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "message",
+                    "id": "obj-821",
+                    "numinlets": 2,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        694.0,
+                        10.0,
+                        44.0,
+                        22.0
+                    ],
+                    "text": "open",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-822",
+                    "numinlets": 1,
+                    "numoutlets": 1,
+                    "outlettype": [
+                        ""
+                    ],
+                    "patching_rect": [
+                        690.0,
+                        105.0,
+                        72.0,
+                        22.0
+                    ],
+                    "text": "pcontrol",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -54542,6 +54583,42 @@
                     ],
                     "destination": [
                         "obj-685",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-820",
+                        0
+                    ],
+                    "destination": [
+                        "obj-821",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-821",
+                        0
+                    ],
+                    "destination": [
+                        "obj-822",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-822",
+                        0
+                    ],
+                    "destination": [
+                        "obj-817",
                         0
                     ]
                 }
