@@ -946,3 +946,35 @@ oscillator CPU bench (terrain-osc-test.maxpat, terrain-osc-core.maxpat, terrain-
 v0.12 checklists (cheby-preflight.md, v0.12.0-cheby-checklist.md) and tools/cheby_preflight.py. Earlier notes
 that mention them are historical. Live set: terrain-synth, terrain-voice, terrain-osc, terrain-osc-b,
 terrain-cheby, terrain-lfo, cheby-coefs.js.
+
+## Review fixes (2026-09-30, v0.16.0)
+
+Full static review of v0.15.2 (voice, main control side, Jitter side, all codeboxes). Fixed:
+
+- **DETAIL regenerates.** It only set `dim` / `scale` on jit.noise / jit.bfg (neither outputs without a bang), so
+  nothing changed until REGEN. Now number -> `t b i` (obj-818 / obj-819): value to source inlet 1, then REGEN's `t b b`.
+- **LOBES integer steps.** `1 + d/127*15` was only integral at 1 and 16 (default 3.008 -> phase-wrap buzz on
+  epitrochoid / lissajous / rose / hypotrochoid / spiral, -44 dB non-harmonic in CHEBY). Dials obj-73 / obj-339
+  `size 16`, `expr 1. + $f1`, `loadmess 2` (= 3).
+- **svf~ cutoff cap (voice).** `clip~ 20. 18000.` -> gen~ `clamp(in1, 20, min(18000, 0.24 * samplerate))`; svf~ is
+  only valid below sr / 4, which 18 kHz exceeded at `up 1`. samplerate is the poly~-upsampled rate.
+- **Voices muted at load (voice).** `loadbang -> mute 1 -> thispoly~`; the velocity `t f f` became `t f f f` with
+  `> 0. -> sel 1 -> mute 0 -> thispoly~` fired first, so unmuting does not depend on adsr~'s internal mute state.
+- **Stale excite.** EXCITE / NOTE with animate OFF left `ex_amp 0.7` pending until the next tick. `rclear` now also
+  sends `param ex_amp 0.` (`t b b b`, obj-113 in both sources) and `p animate` sends rclear on ON as well as OFF.
+- **sizeinsamps once.** `p matrix2buffer` re-sent `sizeinsamps 65536` to jit.buffer~ on every static copy; now a
+  `loadbang` sends it once and the inlet goes straight to `uzi`.
+- **Views rebuild only while ON.** `gate 1 1` on the rebuild bang, driven by the ON inlet via `t i i i`
+  (gate, then `enable`, then `sel 1` -> one rebuild when switched on).
+- **Window 900 x 1096** so the keyboard (presentation bottom 1086) is not cut off.
+
+Left as documented (not fixed): no fixnan in terrain-osc (add if silence + frozen views recurs), FEEDBACK expr
+-1.016 at 0 (Param clamps), source 3 peaks +/-1.38 (jit.clip flattens corners), ripple `del = 1/dim` vs
+`1/(dim-1)`, LFO shape change ramps 20 ms, stolen voice gets no LFO restart edge, CHEBY vs TERRAIN level
+unmeasured, dead `jit.expr` display branch + `*~ 0.` sinks in the views, cosmetic label overlaps, `p about` not
+in presentation.
+
+Tooling trap hit this session: `validate_patch(d)` mutates `d` (it removed the signal-into-`p motion` line as a
+"false positive") -- validate a deepcopy, never the dict you save. Caught by line diff and restored.
+
+Unverified in MAX: all of v0.16.0, plus everything from v0.13.0 - v0.15.2.

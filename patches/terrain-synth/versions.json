@@ -216,6 +216,15 @@
       "files_changed": [
         "terrain-synth.maxpat"
       ]
+    },
+    {
+      "version": "0.16.0",
+      "description": "v0.16.0: review fixes: DETAIL regenerates, integer LOBES, svf~ cutoff cap, voices muted at load, excite reset on animate toggle, sizeinsamps once, views rebuild only while ON, window fits keyboard",
+      "timestamp": "2026-09-30T20:12:04.037547+00:00",
+      "files_changed": [
+        "terrain-synth.maxpat",
+        "terrain-voice.maxpat"
+      ]
     }
   ]
 }
