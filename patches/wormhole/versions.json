@@ -46,6 +46,15 @@
         "wormhole.maxpat",
         "wormhole-test.maxpat"
       ]
+    },
+    {
+      "version": "1.2.0",
+      "description": "open items: true 2-32 pole warp + Fdbk dial, distinct Det B, SR-relative reverbs w/ distinct post primes + wider damping, 50 ms morph release, label contrast, test-patch sfplay~ stop + modout",
+      "timestamp": "2026-09-30T20:10:54.838553+00:00",
+      "files_changed": [
+        "wormhole.maxpat",
+        "wormhole-test.maxpat"
+      ]
     }
   ]
 }
