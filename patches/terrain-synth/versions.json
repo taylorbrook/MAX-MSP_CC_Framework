@@ -225,6 +225,18 @@
         "terrain-synth.maxpat",
         "terrain-voice.maxpat"
       ]
+    },
+    {
+      "version": "0.16.1",
+      "description": "v0.16.1: low-priority review items: fixnan in terrain-osc/-b, note-on counter LFO restart (stolen voices), instant LFO shape switch, FEEDBACK clamp, terrain 3 scaled into +/-1, ripple 1/(dim-1) step, dead jit.expr removed, presentation overlaps, ABOUT button",
+      "timestamp": "2026-09-30T20:39:02.034618+00:00",
+      "files_changed": [
+        "terrain-synth.maxpat",
+        "terrain-voice.maxpat",
+        "terrain-osc.maxpat",
+        "terrain-osc-b.maxpat",
+        "terrain-lfo.maxpat"
+      ]
     }
   ]
 }

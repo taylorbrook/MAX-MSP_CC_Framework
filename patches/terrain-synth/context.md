@@ -986,3 +986,26 @@ Unverified in MAX: all of v0.16.0, plus everything from v0.13.0 - v0.15.2.
 User: "ok it works now" -- sound back, console clean. Checklist items not itemised (DETAIL regen, LOBES steps, 1x
 cutoff cap, mute-at-load, excite reset, view gating, window height, and the v0.13-v0.15 shapes / terrains were not
 individually reported).
+
+## Low-priority review items (2026-09-30, v0.16.1)
+
+- **terrain-osc / -b v0.6:** `fixnan` on the bilinear terrain read (before `dcblock`) and on `yprev`, so one bad
+  terrain value cannot latch NaN into the filter / feedback state.
+- **LFO restart for stolen voices:** `p motion` gate -> `> 0.5 -> sel 1 -> counter 1 1024 -> sig~` (was the 0/1 gate).
+  terrain-lfo v0.2 restarts on a rising 0.5 crossing (first note, the views' `1 1 0 5` pulse) OR any jump > 0.5
+  (every later note-on, including a steal with no note-off, and two note-ons inside one vector).
+- **LFO shape switch instant:** `lfoshape` message `$1 20` -> `$1 0` (no triangle passing between sine and S&H).
+- **FEEDBACK:** `expr max(($f1 - 64.) / 63.\, -1.)` (was -1.016 at 0, Param-clamped).
+- **Terrain 3** (sine product, all four menus) `* 0.725` -> peak +/-0.999, no longer flattened by jit.clip.
+- **Ripple:** neighbour step `1 / (dim - 1)` (exact cell spacing in norm coords). Waves ~1.6 % faster.
+- **Dead code:** the 256x256 `jit.expr` display branch in both sources removed; outlet now carries the composed
+  terrain matrix straight from `t l l` (the main `t b l` only uses the bang). The views' `*~ 0.` boxes are KEPT
+  (CLAUDE.md signal-termination rule), not dead code.
+- **Presentation:** BRIGHT readouts moved to y 495 (off their labels); OSC B PITCH header width 128 (inside its
+  panel, off the ROTATE label). New **ABOUT** textbutton [770, 14, 56, 20] -> `open` -> `pcontrol` -> `p about`
+  (p about got an inlet; moved to y 154 in patching view).
+- Not changed: `p about` text (user's own; its "white dot follows each playing orbit" line is a slight
+  overstatement -- the marker follows the latest note only), 2 px section-header / label overlaps,
+  CHEBY vs TERRAIN level (needs ears).
+
+Unverified in MAX: all of v0.16.1.
