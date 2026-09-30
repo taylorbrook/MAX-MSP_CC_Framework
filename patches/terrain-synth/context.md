@@ -980,3 +980,9 @@ Tooling trap hit this session: `validate_patch(d)` mutates `d` (it removed the s
 "false positive") -- validate a deepcopy, never the dict you save. Caught by line diff and restored.
 
 Unverified in MAX: all of v0.16.0, plus everything from v0.13.0 - v0.15.2.
+
+### v0.16.0 (+ matrix2buffer `t b` fix) confirmed in MAX (2026-09-30)
+
+User: "ok it works now" -- sound back, console clean. Checklist items not itemised (DETAIL regen, LOBES steps, 1x
+cutoff cap, mute-at-load, excite reset, view gating, window height, and the v0.13-v0.15 shapes / terrains were not
+individually reported).
