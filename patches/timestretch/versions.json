@@ -73,6 +73,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.3.0",
+      "description": "UI polish: Stretch 0.25-16 w/ 1x centred (exponent 4.39, x units), OUTPUT column (gain + meter), density into row 1, dark card panel + bgcolor, descriptive varnames",
+      "timestamp": "2026-09-30T20:29:32.166936+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }
