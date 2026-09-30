@@ -19,6 +19,40 @@
         "boxes": [
             {
                 "box": {
+                    "maxclass": "panel",
+                    "id": "obj-81",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1420.0,
+                        400.0,
+                        60.0,
+                        30.0
+                    ],
+                    "parameter_enable": 0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        4.0,
+                        2.0,
+                        652.0,
+                        343.0
+                    ],
+                    "background": 1,
+                    "ignoreclick": 1,
+                    "border": 0,
+                    "rounded": 8,
+                    "mode": 0,
+                    "bgcolor": [
+                        0.24,
+                        0.24,
+                        0.27,
+                        1.0
+                    ]
+                }
+            },
+            {
+                "box": {
                     "fontname": "Arial",
                     "fontsize": 12.0,
                     "id": "obj-2",
@@ -170,10 +204,10 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        350.5,
-                        274.75,
-                        117.0,
-                        58.5
+                        532.0,
+                        225.0,
+                        118.0,
+                        50.0
                     ]
                 }
             },
@@ -245,7 +279,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        470.0,
+                        416.0,
                         240.0,
                         18.0,
                         18.0
@@ -413,14 +447,16 @@
                             "parameter_initial_enable": 1,
                             "parameter_longname": "Stretch [ts-1]",
                             "parameter_mmax": 16.0,
-                            "parameter_mmin": 1.0,
+                            "parameter_mmin": 0.25,
                             "parameter_modmode": 0,
                             "parameter_shortname": "Stretch",
                             "parameter_type": 0,
-                            "parameter_unitstyle": 1
+                            "parameter_unitstyle": 9,
+                            "parameter_exponent": 4.39,
+                            "parameter_units": "x"
                         }
                     },
-                    "varname": "live.dial"
+                    "varname": "stretch"
                 }
             },
             {
@@ -482,7 +518,7 @@
                             "parameter_unitstyle": 0
                         }
                     },
-                    "varname": "live.dial[1]"
+                    "varname": "grain"
                 }
             },
             {
@@ -544,7 +580,7 @@
                             "parameter_unitstyle": 0
                         }
                     },
-                    "varname": "live.dial[2]"
+                    "varname": "pitch"
                 }
             },
             {
@@ -605,7 +641,7 @@
                             "parameter_unitstyle": 0
                         }
                     },
-                    "varname": "live.dial[3]"
+                    "varname": "wsola"
                 }
             },
             {
@@ -666,7 +702,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "live.dial[4]"
+                    "varname": "jitter"
                 }
             },
             {
@@ -727,7 +763,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "live.dial[5]"
+                    "varname": "sens"
                 }
             },
             {
@@ -769,8 +805,8 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        260.0,
-                        145.0,
+                        475.0,
+                        240.0,
                         50.0,
                         48.0
                     ],
@@ -788,7 +824,7 @@
                             "parameter_unitstyle": 1
                         }
                     },
-                    "varname": "live.dial[6]"
+                    "varname": "gain"
                 }
             },
             {
@@ -838,9 +874,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        350.0,
+                        260.0,
                         165.0,
-                        90.0,
+                        80.0,
                         22.0
                     ]
                 }
@@ -946,7 +982,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        350.0,
+                        260.0,
                         240.0,
                         18.0,
                         18.0
@@ -968,7 +1004,7 @@
                             "parameter_type": 2
                         }
                     },
-                    "varname": "live.toggle"
+                    "varname": "adaptive"
                 }
             },
             {
@@ -1009,7 +1045,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        410.0,
+                        364.0,
                         240.0,
                         18.0,
                         18.0
@@ -1031,7 +1067,7 @@
                             "parameter_type": 2
                         }
                     },
-                    "varname": "live.toggle[1]"
+                    "varname": "extreme"
                 }
             },
             {
@@ -1322,7 +1358,7 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        350.0,
+                        260.0,
                         148.0,
                         55.0,
                         18.0
@@ -1346,9 +1382,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        350.0,
+                        260.0,
                         225.0,
-                        55.0,
+                        50.0,
                         18.0
                     ],
                     "text": "Adaptive"
@@ -1370,9 +1406,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        410.0,
+                        364.0,
                         225.0,
-                        55.0,
+                        50.0,
                         18.0
                     ],
                     "text": "Extreme"
@@ -1394,9 +1430,9 @@
                     ],
                     "presentation": 1,
                     "presentation_rect": [
-                        470.0,
+                        416.0,
                         225.0,
-                        55.0,
+                        50.0,
                         18.0
                     ],
                     "text": "Transient"
@@ -1567,7 +1603,7 @@
                         58.0,
                         20.0
                     ],
-                    "text": "v0.2.0"
+                    "text": "v0.3.0"
                 }
             },
             {
@@ -2495,6 +2531,31 @@
                     "text": "receive ts-stop",
                     "fontname": "Arial",
                     "fontsize": 12.0
+                }
+            },
+            {
+                "box": {
+                    "maxclass": "comment",
+                    "id": "obj-80",
+                    "numinlets": 1,
+                    "numoutlets": 0,
+                    "outlettype": [],
+                    "patching_rect": [
+                        1300.0,
+                        305.0,
+                        58.0,
+                        20.0
+                    ],
+                    "text": "OUTPUT",
+                    "fontname": "Arial",
+                    "fontsize": 10.0,
+                    "presentation": 1,
+                    "presentation_rect": [
+                        475.0,
+                        212.0,
+                        60.0,
+                        18.0
+                    ]
                 }
             }
         ],
@@ -3642,6 +3703,18 @@
             0.333,
             0.333,
             0.333,
+            1.0
+        ],
+        "bgcolor": [
+            0.18,
+            0.18,
+            0.2,
+            1.0
+        ],
+        "locked_bgcolor": [
+            0.18,
+            0.18,
+            0.2,
             1.0
         ]
     }
