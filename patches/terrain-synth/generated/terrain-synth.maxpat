@@ -1805,6 +1805,26 @@
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "newobj",
+                                                    "id": "obj-15",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        70,
+                                                        80.5,
+                                                        22.0
+                                                    ],
+                                                    "text": "trigger b",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
                                             }
                                         ],
                                         "lines": [
@@ -2035,11 +2055,11 @@
                                             {
                                                 "patchline": {
                                                     "source": [
-                                                        "obj-1",
+                                                        "obj-14",
                                                         0
                                                     ],
                                                     "destination": [
-                                                        "obj-5",
+                                                        "obj-4",
                                                         0
                                                     ]
                                                 }
@@ -2047,11 +2067,23 @@
                                             {
                                                 "patchline": {
                                                     "source": [
-                                                        "obj-14",
+                                                        "obj-1",
                                                         0
                                                     ],
                                                     "destination": [
-                                                        "obj-4",
+                                                        "obj-15",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-15",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-5",
                                                         0
                                                     ]
                                                 }
@@ -14458,6 +14490,26 @@
                                                     "fontname": "Arial",
                                                     "fontsize": 12.0
                                                 }
+                                            },
+                                            {
+                                                "box": {
+                                                    "maxclass": "newobj",
+                                                    "id": "obj-15",
+                                                    "numinlets": 1,
+                                                    "numoutlets": 1,
+                                                    "outlettype": [
+                                                        ""
+                                                    ],
+                                                    "patching_rect": [
+                                                        15,
+                                                        70,
+                                                        80.5,
+                                                        22.0
+                                                    ],
+                                                    "text": "trigger b",
+                                                    "fontname": "Arial",
+                                                    "fontsize": 12.0
+                                                }
                                             }
                                         ],
                                         "lines": [
@@ -14688,11 +14740,11 @@
                                             {
                                                 "patchline": {
                                                     "source": [
-                                                        "obj-1",
+                                                        "obj-14",
                                                         0
                                                     ],
                                                     "destination": [
-                                                        "obj-5",
+                                                        "obj-4",
                                                         0
                                                     ]
                                                 }
@@ -14700,11 +14752,23 @@
                                             {
                                                 "patchline": {
                                                     "source": [
-                                                        "obj-14",
+                                                        "obj-1",
                                                         0
                                                     ],
                                                     "destination": [
-                                                        "obj-4",
+                                                        "obj-15",
+                                                        0
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "patchline": {
+                                                    "source": [
+                                                        "obj-15",
+                                                        0
+                                                    ],
+                                                    "destination": [
+                                                        "obj-5",
                                                         0
                                                     ]
                                                 }
