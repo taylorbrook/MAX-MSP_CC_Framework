@@ -65,6 +65,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.2.0",
+      "description": "review fixes: source mode 0/1/2, live read-head latency window + lap jump, WSOLA ref = previous grain continuation (amortised coarse/fine search, normalised), codebox safe constructs, 16 voices w/ free-slot allocation, transport in gen~ (playing/looping/end), bufsr file-rate correction, read-head transient detection, waveform playhead, preset exclusions",
+      "timestamp": "2026-09-30T20:20:49.045036+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }

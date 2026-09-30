@@ -170,3 +170,19 @@ Full presentation mode with:
 - SuperCollider GrainUGens -- Recursive Hann envelope
 - SoundTouch TDStretch -- WSOLA reference implementation
 - Rubber Band R3 -- Multi-resolution phase vocoder with HPSS
+
+---
+
+## v0.2.0 (2026-09-30) -- review fixes
+
+- **Source modes:** gen~ `mode` Param is 0 none / 1 live / 2 buffer (umenu index sent directly). `groove~` removed -- gen~ reads the buffer itself.
+- **Live read head:** ring buffer is 524288 samples (~11 s @ 48k). Read head is clamped to `wp - reach` (reach = grain span + WSOLA tolerance + search span; ~47 ms at defaults). When stretch > 1 drains the buffer, the read head jumps back to "now" (one brief level dip per lap, ~22 s at 2x).
+- **WSOLA:** reference = where the previous grain will be at the next launch. Search spans 128 points at stride 3·speed, coarse ±tol in 4-sample steps (centre-out) then ±3 fine, normalised correlation with centre bias. Amortised at 64 points/sample (single constant-bound loop); if a hop is too short to finish, the best-so-far offset is used. A prediction mismatch (> 32 samples, e.g. after a lap jump or param change) skips alignment for that grain.
+- **Voices:** 16 (adaptive mixes long + short grains; 8 was stolen from at density 8). A new grain takes a free slot, else the oldest. Output normalised by max(Σwindow, density/2).
+- **Transport:** `playing` / `looping` Params. Non-loop end sets out4 -> snapshot~/change/select -> `s ts-stop` -> Play toggle off; next Play restarts from the top.
+- **File rate:** buffer~ read-done -> info~ -> `bufsr $1`, so 44.1k files play at the correct pitch/speed on 48k.
+- **Transients:** detected at the read head (tap 0.25 grain ahead), time constants scaled by stretch, held for max(grain, 60 ms).
+- **Extreme:** scatter of ±1 grain around the read head, WSOLA off (not random whole-buffer positions).
+- **UI:** waveform~ playhead via `line <ms>` from out3; Transient toggle ignoreclick; preset excludes Source/Play/Loop/Transient.
+- Pre-flighted with a Python mirror of the codebox (file + live, stretch 1-4, ±1200 ct, adaptive, transport, bufsr).
+- Deliberately unchanged: Stretch dial range stays 1-16 (Param accepts 0.25-16).
