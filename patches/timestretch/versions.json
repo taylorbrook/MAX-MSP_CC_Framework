@@ -113,6 +113,15 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.6.2",
+      "description": "patching tidy-up (no behaviour change): dial messages -> own s ts-gen (no long cords into gen~), loadbang fan-out -> loadmess x3, density select+3 msgs -> expr 2^(i+1), source/selector cluster by adc~, transport cluster left, comment column clear of buffer~; context.md trimmed to as-built",
+      "timestamp": "2026-09-30T21:25:06.773590+00:00",
+      "files_changed": [
+        "timestretch.maxpat",
+        "context.md"
+      ]
     }
   ]
 }

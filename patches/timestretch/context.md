@@ -25,7 +25,7 @@ Granular time-stretching instrument built in gen~ with both real-time and offlin
 
 - gen~ codebox for the grain engine core (sample-rate precision, single-sample feedback)
 - Buffer~ for file playback source, live input via adc~ for real-time mode
-- Overlap-add with configurable grain count, window function, and scatter
+- Overlap-add with configurable grain density and scatter (Hann window)
 - Waveform~ for visual feedback of playback position
 
 ---
@@ -65,95 +65,46 @@ This avoids the complexity of a full phase vocoder (Rubber Band R3 uses multi-re
 - Grain density regimes (Roads): 50-200 grains/sec for tonal fusion. Below 20/sec = pointillistic. Above 500/sec = texture/noise.
 - Driedger & Muller (2016) survey finding: WSOLA and phase-locked phase vocoder produce comparable quality for moderate stretch (0.5x-2x). Phase vocoder is only definitively better at extreme ratios (>4x).
 
-### gen~ Architecture
+### As built (v0.6.2)
+
+The original plan (8 voices, selectable Hann/Tukey/Gaussian windows, "quality tiers", 8 preset slots) was superseded during the build. This section describes what exists.
 
 ```
-                          GRAIN ENGINE (gen~ codebox)
-                    +-----------------------------------+
-                    |                                   |
- adc~/buffer~ ----->| Data buf(131072)  [circular buf]  |
-                    |                                   |
-                    | write_pos: always advancing        |
-                    | read_pos: advancing at 1/stretch   |
-                    |                                   |
-                    | 8 grain voices (75% overlap):      |
-                    |   g0: [pos, phase, active]         |
-                    |   g1: [pos, phase, active]         |
-                    |   ...                              |
-                    |   g7: [pos, phase, active]         |
-                    |                                   |
-                    | Per grain each sample:             |
-                    |   sample = buf.peek(grain_pos)     |
-                    |   env = hann(grain_phase)          |
-                    |   output += sample * env           |
-                    |   grain_pos += playback_speed      |
-                    |   grain_phase += 1/grain_size      |
-                    |                                   |
-                    | Grain launch (every hop samples):  |
-                    |   WSOLA search: +/-128 samples     |
-                    |   find best correlation            |
-                    |   set grain_pos = best_pos         |
-                    |   apply +/-5% jitter               |
-                    |                                   |
-                    | Transient detector:                |
-                    |   envelope follower (1ms atk/50ms) |
-                    |   when transient: grain_size=10ms  |
-                    |   otherwise: grain_size=40ms       |
-                    +-----------------------------------+
-                              |
-                              v
-                          *~ gain --> dac~
+adc~ 1 2 -> selector~ x2 (source menu) -> gen~ in1/in2        buffer~ timestretch-source (read by gen~ directly)
+                                            |
+     gen~ codebox: out1 L, out5 R -> *~ (line~ gain) -> dac~ 1 2 + levelmeter~ x2
+                   out2 transient flag -> snapshot~ -> indicator
+                   out3 read position (ms, -1 when not in buffer mode) -> waveform~ `line`
+                   out4 end-of-file -> snapshot~/change/select -> s ts-stop -> Play toggle off
+All control messages reach gen~ inlet 0 through `s ts-gen` / `r ts-gen`.
 ```
 
-### Implementation Parameters
+**Engine (single codebox):**
+- Source modes: 0 none, 1 live (stereo 524288-sample ring buffer, ~11 s @ 48k), 2 buffer (mono or stereo file; mono duplicates to R).
+- 16 grain voices, Hann window only, linear interpolation, output normalised by max(sum of windows, density/2). Density 2/4/8 sets the overlap (hop = grain / density).
+- WSOLA: the reference is where the previous grain will be at the next launch. Correlation is 128 points at stride 3·speed on L+R, coarse ±tol in 4-sample steps (centre-out), then ±3 fine, normalised, with a centre bias. Amortised at 64 points/sample.
+- Live read head: clamped to write head minus latency (~47 ms at defaults, more with long grains/tol/pitch-up). Jumps back to "now" when stretch > 1 drains the ring buffer.
+- Adaptive: shorter grains around detected transients. Preserve: onsets play through at 1x with the time paid back afterwards (buffer mode keeps the long-term stretch exact). Extreme: ±1 grain position scatter, WSOLA off. Freeze: holds the read point (live: recording stops too).
+- File sample rate comes from info~ (`bufsr`), so pitch and speed are correct for any file rate. Waveform selection -> `sel_a` / `sel_b` (click = seek, drag = loop region).
 
-| Parameter | Default | Range | Notes |
-|-----------|---------|-------|-------|
-| Stretch ratio | 1.0 | 0.25 - 8.0 | Read pointer speed = 1/ratio |
-| Grain size | 40ms | 5-200ms | ~1764 samples at 44.1kHz |
-| Overlap | 75% (4 grains) | 50-87.5% (2-8 grains) | Higher = smoother, more CPU |
-| Grain voices | 8 | Fixed | Supports up to 87.5% overlap |
-| WSOLA tolerance | 128 samples | 0-256 | 0 = disable WSOLA search |
-| Pitch shift | 0 cents | -2400 to +2400 cents | Grain playback speed = 2^(cents/1200) |
-| Jitter | 5% | 0-25% | Random offset on grain start |
-| Window | Hann | Hann/Tukey/Gaussian | Hann for COLA compliance |
-| Transient sensitivity | 0.5 | 0-1 | Threshold for adaptive grain size |
-| Buffer size | 131072 | Fixed | ~3 seconds at 44.1kHz |
+**Parameters (gen~ Params):**
 
-### Quality Tiers
+| Param | Range | UI |
+|---|---|---|
+| stretch | 0.25 - 16 (1x at 12 o'clock) | Stretch dial |
+| grain_ms | 5 - 200 | Grain dial |
+| pitch | ±2400 cents | Pitch dial |
+| wsola_tol | 0 - 256 samples | WSOLA dial |
+| jitter_amt | 0 - 0.25 (fraction of hop) | Jitter dial |
+| sensitivity | 0 - 1 | Sens dial |
+| density | 2 / 4 / 8 | Density menu |
+| adapt / preserve / extreme | 0/1 | toggles |
+| mode | 0 / 1 / 2 | Source menu |
+| playing / looping / freeze | 0/1 | Play, Loop, FREEZE |
+| sel_a / sel_b | ms | waveform~ selection |
+| bufsr | Hz | info~ after load |
 
-**Standard (4 grains, 75% overlap):**
-- Hann window, WSOLA search, 40ms grains
-- Good for moderate stretch (0.5x-2x)
-- Low CPU
-
-**High (8 grains, 87.5% overlap):**
-- Hann window, WSOLA search, adaptive grain sizing
-- Transient detection active
-- Good for 0.25x-4x stretch
-- Moderate CPU
-
-**Extreme/Creative (8 grains + phase randomization):**
-- Large grains (100-500ms), high scatter
-- Paul Stretch-style phase randomization on grain positions
-- For >4x stretch, ambient textures
-- Moderate CPU
-
-### UI Design
-
-Full presentation mode with:
-- **Waveform display** (waveform~) showing source audio with playback position indicator
-- **Stretch ratio** -- large dial or slider, center-detented at 1.0
-- **Grain size** -- dial with adaptive mode toggle
-- **Pitch shift** -- dial in cents (hundredths of a semitone)
-- **Overlap/density** -- dial or dropdown (2/4/8 voices)
-- **WSOLA amount** -- tolerance dial (0=off, full=256 samples)
-- **Jitter** -- dial (0-25%)
-- **Transient sensitivity** -- dial with LED indicator showing detected transients
-- **Mode switch** -- live input / file playback toggle
-- **File controls** -- load, play/stop, loop toggle
-- **Preset recall** -- 8 preset slots
-- **Output level** -- meter~ + gain dial
+**UI:** presentation card with the waveform + playhead, TIME / PITCH, QUALITY, OUTPUT (gain + L/R meters), SOURCE / transport and a preset object (Source, Play, Loop, FREEZE and the Transient light are excluded from presets).
 
 ### References
 
