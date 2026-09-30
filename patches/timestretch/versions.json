@@ -105,6 +105,14 @@
       "files_changed": [
         "timestretch.maxpat"
       ]
+    },
+    {
+      "version": "0.6.1",
+      "description": "fix waveform click: setmode 1 (select; default 0 is display-only), loadmess mouseoutput up (outmode is an int attr, symbol set it to none)",
+      "timestamp": "2026-09-30T21:13:45.428830+00:00",
+      "files_changed": [
+        "timestretch.maxpat"
+      ]
     }
   ]
 }
