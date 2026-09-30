@@ -11053,6 +11053,18 @@
                         0
                     ]
                 }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-16",
+                        0
+                    ],
+                    "destination": [
+                        "obj-60",
+                        0
+                    ]
+                }
             }
         ],
         "dependency_cache": [],
