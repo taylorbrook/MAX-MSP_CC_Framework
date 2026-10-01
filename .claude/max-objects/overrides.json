@@ -16242,6 +16242,22 @@
     }
   },
   "version_map": {
+    "9.2": {
+      "exact": [
+        "abl.device.reverb2~",
+        "abl.device.stereocompressor~",
+        "abl.dsp.djfilter~",
+        "dspstress~",
+        "jit.gl.tex2mat",
+        "jit.gl.web",
+        "jit.gl.web~",
+        "jit.message",
+        "jit.path.ui",
+        "jit.unpack.geomat",
+        "jit.web",
+        "jit.web~"
+      ]
+    },
     "9": {
       "prefixes": [
         "array.",

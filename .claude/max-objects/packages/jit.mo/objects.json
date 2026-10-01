@@ -191,6 +191,92 @@
     "rnbo_compatible": false,
     "package": "jit.mo"
   },
+  "jit.message": {
+    "name": "jit.message",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "jit.mo,  Time",
+    "digest": "Output a message every frame",
+    "description": "Outputs the message argument every time a frame is rendered by the attached context.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [
+      {
+        "name": "message",
+        "type": "anything",
+        "optional": true,
+        "digest": "Message to ouptut"
+      }
+    ],
+    "messages": [
+      "bang",
+      "update"
+    ],
+    "attributes": {
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.mo.time",
+      "jit.line",
+      "jit.framecount",
+      "jit.bang"
+    ],
+    "tags": [
+      "jit.mo",
+      "Time"
+    ],
+    "min_version": 9.2,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "jit.mo"
+  },
   "jit.mo.field": {
     "name": "jit.mo.field",
     "maxclass": "newobj",

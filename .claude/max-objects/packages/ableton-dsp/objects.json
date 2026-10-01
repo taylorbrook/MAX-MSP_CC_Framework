@@ -2115,6 +2115,239 @@
     "rnbo_compatible": false,
     "package": "ableton-dsp"
   },
+  "abl.device.reverb2~": {
+    "name": "abl.device.reverb2~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Effects",
+    "digest": "Feedback Delay Network Reverb",
+    "description": "A reverb audio effect with early reflections, a diffusion network, input filtering, and freeze capabilities. The\n        reverb's input signal passes through high- and low-cut filters before being processed through early reflections\n        and a diffusion network that creates the reverberant tail.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Left Input Channel",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Right Input Channel",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "signal",
+        "signal": true,
+        "digest": "decaytime",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "signal",
+        "signal": true,
+        "digest": "size",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Left Output Channel"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Right Output Channel"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "int",
+      "float",
+      "reset",
+      "signal"
+    ],
+    "attributes": {
+      "bandpassfreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "bandwidth": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "chorus": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "chorusamount": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "chorusrate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "cut": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "decaytime": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "density": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "diffuse": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "diffusion": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "flat": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "freeze": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "highcut": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "highpass": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "highpassfreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "highpasstype": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "highpassgain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "lowcut": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "lowshelf": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "lowshelffreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "lowshelfgain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mix": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "predelay": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "reflections": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "scale": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "shape": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "size": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "smoothing": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "spin": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "spinamount": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "spinrate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "stereo": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abl.device.reverb~"
+    ],
+    "tags": [
+      "effect"
+    ],
+    "min_version": 9.2,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
+  },
   "abl.device.reverb~": {
     "name": "abl.device.reverb~",
     "maxclass": "newobj",
@@ -2802,6 +3035,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "quantize": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -2979,6 +3217,189 @@
       "spectral"
     ],
     "min_version": 9,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
+  },
+  "abl.device.stereocompressor~": {
+    "name": "abl.device.stereocompressor~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Stereo Compressor",
+    "description": "A stereo compressor with three compression modes.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Left Input Channel",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Right Input Channel",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "signal",
+        "signal": true,
+        "digest": "attack",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "signal",
+        "signal": true,
+        "digest": "release",
+        "hot": false
+      },
+      {
+        "id": 4,
+        "type": "signal",
+        "signal": true,
+        "digest": "threshold",
+        "hot": false
+      },
+      {
+        "id": 5,
+        "type": "signal",
+        "signal": true,
+        "digest": "gain",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Left Output Channel"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Right Output Channel"
+      },
+      {
+        "id": 2,
+        "type": "signal",
+        "signal": true,
+        "digest": ""
+      }
+    ],
+    "arguments": [
+      {
+        "name": "attack",
+        "type": "number",
+        "optional": true,
+        "digest": "Attack time"
+      },
+      {
+        "name": "release",
+        "type": "number",
+        "optional": true,
+        "digest": "Release time"
+      },
+      {
+        "name": "threshold",
+        "type": "number",
+        "optional": true,
+        "digest": "Threshold"
+      },
+      {
+        "name": "gain",
+        "type": "number",
+        "optional": true,
+        "digest": "Make-up gain"
+      }
+    ],
+    "messages": [
+      "float",
+      "reset",
+      "signal"
+    ],
+    "attributes": {
+      "attack": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "autorelease": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "compression": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "envfollowermode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "expansion": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gain": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "knee": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "makeup": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "mix": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "model": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "release": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "threshold": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "ins": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abl.device.compressor~"
+    ],
+    "tags": [
+      "utility",
+      "dynamics"
+    ],
+    "min_version": 9.2,
     "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
@@ -4116,6 +4537,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "freezein": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -4390,6 +4816,115 @@
       "effect"
     ],
     "min_version": 9,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false,
+    "package": "ableton-dsp"
+  },
+  "abl.dsp.djfilter~": {
+    "name": "abl.dsp.djfilter~",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "DJ-style filter",
+    "description": "A DJ-style filter with low-pass and high-pass modes controlled by a bipolar control parameter.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Input",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "control",
+        "hot": false
+      },
+      {
+        "id": 2,
+        "type": "signal",
+        "signal": true,
+        "digest": "resonance",
+        "hot": false
+      },
+      {
+        "id": 3,
+        "type": "signal",
+        "signal": true,
+        "digest": "drive",
+        "hot": false
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Output"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "control",
+        "type": "number",
+        "optional": true,
+        "digest": "Control"
+      },
+      {
+        "name": "resonance",
+        "type": "number",
+        "optional": true,
+        "digest": "Resonance"
+      },
+      {
+        "name": "drive",
+        "type": "number",
+        "optional": true,
+        "digest": "Drive"
+      }
+    ],
+    "messages": [
+      "float",
+      "reset",
+      "signal"
+    ],
+    "attributes": {
+      "control": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "drive": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "resonance": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "ins": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "abl.device.autofilter~",
+      "abl.dsp.dfm~",
+      "abl.dsp.filther~",
+      "abl.dsp.meldfilter~"
+    ],
+    "tags": [
+      "filter",
+      "effect"
+    ],
+    "min_version": 9.2,
     "verified": true,
     "variable_io": false,
     "rnbo_compatible": false,
@@ -7379,6 +7914,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "freezein": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -7696,6 +8236,11 @@
       },
       "ins": {
         "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "freezein": {
+        "type": "int",
         "get": true,
         "set": true
       }
@@ -8161,6 +8706,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "bassthreshold": {
+        "type": "float",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -8426,6 +8976,11 @@
       },
       "ins": {
         "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "freezein": {
+        "type": "int",
         "get": true,
         "set": true
       }
@@ -9252,6 +9807,11 @@
       },
       "ins": {
         "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "freezein": {
+        "type": "int",
         "get": true,
         "set": true
       }

@@ -2616,7 +2616,12 @@
       "writeaiff",
       "writeflac",
       "writeraw",
-      "writewave"
+      "writewave",
+      "crop_samples",
+      "replacechannel",
+      "replacechannel_samples",
+      "trim",
+      "trim_samples"
     ],
     "attributes": {
       "chans": {
@@ -2661,6 +2666,11 @@
       },
       "sr": {
         "type": "float",
+        "get": true,
+        "set": true
+      },
+      "url": {
+        "type": "symbol",
         "get": true,
         "set": true
       }
@@ -3940,6 +3950,11 @@
       },
       "phase": {
         "type": "float",
+        "get": true,
+        "set": true
+      },
+      "buffer_autoupdate": {
+        "type": "int",
         "get": true,
         "set": true
       }
@@ -5261,7 +5276,8 @@
       }
     ],
     "messages": [
-      "signal"
+      "signal",
+      "updatewindow"
     ],
     "attributes": {
       "nofft": {
@@ -5351,7 +5367,10 @@
       }
     ],
     "messages": [
-      "signal"
+      "signal",
+      "copyinput",
+      "copyoutput",
+      "updatewindow"
     ],
     "attributes": {
       "nofft": {
@@ -17545,7 +17564,9 @@
       "print",
       "record",
       "samptype",
-      "signal"
+      "signal",
+      "start",
+      "stop"
     ],
     "attributes": {
       "beginramp": {

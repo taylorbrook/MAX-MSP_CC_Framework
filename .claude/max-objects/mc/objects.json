@@ -4154,6 +4154,11 @@
         "type": "float",
         "get": true,
         "set": true
+      },
+      "buffer_autoupdate": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -14708,7 +14713,9 @@
       "print",
       "record",
       "samptype",
-      "signal"
+      "signal",
+      "start",
+      "stop"
     ],
     "attributes": {
       "beginramp": {

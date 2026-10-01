@@ -740,6 +740,11 @@
         "type": "float",
         "get": true,
         "set": false
+      },
+      "scalemode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -4232,7 +4237,58 @@
     ],
     "arguments": [],
     "messages": [],
-    "attributes": {},
+    "attributes": {
+      "adapt": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "anchor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "boundmode": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "bypass": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "dim": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "enable": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "offset": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "theta": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "zoom": {
+        "type": "float",
+        "get": true,
+        "set": true
+      }
+    },
     "seealso": [],
     "tags": [
       "Jitter",
@@ -4564,6 +4620,16 @@
       },
       "texture": {
         "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "adapt": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dim": {
+        "type": "int",
         "get": true,
         "set": true
       }
@@ -6312,6 +6378,16 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "instances": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "usebvh": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -6491,6 +6567,11 @@
         "type": "int",
         "get": true,
         "set": true
+      },
+      "concat_geometry": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -6601,7 +6682,8 @@
       "rotate_matrix",
       "rotatexyz_matrix",
       "scale_matrix",
-      "texture_matrix"
+      "texture_matrix",
+      "texcoord_matrix"
     ],
     "attributes": {
       "dimparam": {
@@ -6885,7 +6967,8 @@
       "(drag)",
       "(mouse)",
       "param",
-      "read"
+      "read",
+      "open"
     ],
     "attributes": {
       "amount": {
@@ -7179,8 +7262,195 @@
       }
     ],
     "arguments": [],
-    "messages": [],
-    "attributes": {},
+    "messages": [
+      "albedo_texture",
+      "ambient_texture",
+      "clear",
+      "emission_texture",
+      "environment_texture",
+      "getparamdefault",
+      "getparamlist",
+      "getparamtype",
+      "getparamval",
+      "heightmap_texture",
+      "metallic_texture",
+      "normals_texture",
+      "param",
+      "roughness_texture",
+      "sendinput"
+    ],
+    "attributes": {
+      "auto_material": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "darkness": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "diffuse_model": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "diffuse_size": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "diffuse_smooth": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "fog": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "gamma_correction": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "height_scale": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "heightmap_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "lighting_enable": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "material": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "metalness": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "override": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "parallax": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "parallax_shadowing": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "reflection": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "roughness": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "self_shadow": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "shader": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "shadow_caster": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "shadow_eps": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "shadow_hard": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "shadow_radius": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "shadow_soft": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "specular_model": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "specular_size": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "specular_smooth": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "tex_gen": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "tex_repeat": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "triplanar_blend": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "two_sided": {
+        "type": "atom",
+        "get": true,
+        "set": true
+      },
+      "type": {
+        "type": "symbol",
+        "get": true,
+        "set": false
+      }
+    },
     "seealso": [],
     "tags": [
       "Jitter",
@@ -8078,7 +8348,8 @@
       "param",
       "program_param",
       "read",
-      "unbind"
+      "unbind",
+      "open"
     ],
     "attributes": {
       "autowatch": {
@@ -8356,7 +8627,8 @@
       "read",
       "sendinput",
       "sendoutput",
-      "sendshader"
+      "sendshader",
+      "open"
     ],
     "attributes": {
       "autowatch": {
@@ -9016,6 +9288,246 @@
       "Jitter OpenGL"
     ],
     "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.gl.web": {
+    "name": "jit.gl.web",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter",
+    "digest": "Render a web browser to a GL texture or matrix (max define jit.gl.web jit.web output_texture;)",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "jit_gl_texture"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "int",
+      "float",
+      "list",
+      "anything",
+      "back",
+      "forward",
+      "keydown",
+      "keyup",
+      "(mouse)",
+      "mousemove",
+      "mousescroll",
+      "readfile",
+      "reload"
+    ],
+    "attributes": {
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "consolelog": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dim": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fps": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "texture_name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "ui_listen": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "ui_priority": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "url": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [],
+    "tags": [],
+    "min_version": 9.2,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.gl.web~": {
+    "name": "jit.gl.web~",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter",
+    "digest": "Render a web browser to a GL texture or matrix with audio output (max define jit.gl.web~ jit.web~ output_texture;)",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": ""
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": ""
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "jit_gl_texture"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": ""
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "int",
+      "float",
+      "list",
+      "anything",
+      "back",
+      "forward",
+      "keydown",
+      "keyup",
+      "(mouse)",
+      "mousemove",
+      "mousescroll",
+      "mute",
+      "readfile",
+      "reload"
+    ],
+    "attributes": {
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "consolelog": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dim": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fps": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "latency": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "texture_name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "ui_listen": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "ui_priority": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "url": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [],
+    "tags": [],
+    "min_version": 9.2,
     "verified": true,
     "variable_io": false,
     "rnbo_compatible": false
@@ -11261,7 +11773,9 @@
       "start",
       "stop",
       "read",
-      "unloadram"
+      "unloadram",
+      "frame_coarse",
+      "jump_coarse"
     ],
     "attributes": {
       "adapt": {
@@ -11461,6 +11975,11 @@
       },
       "vol": {
         "type": "float",
+        "get": true,
+        "set": true
+      },
+      "seamless_loopcount": {
+        "type": "int",
         "get": true,
         "set": true
       }

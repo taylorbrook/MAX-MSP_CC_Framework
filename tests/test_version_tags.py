@@ -36,12 +36,17 @@ class TestVersionTags:
             )
 
     def test_abl_objects_are_max9(self, all_objects):
-        """Objects starting with 'abl.' must have min_version 9."""
+        """Objects starting with 'abl.' must have a Max 9 min_version (9 <= v < 10).
+
+        Point releases are legal: the abl.* objects added in Max 9.2
+        (quick-261001-hwb) carry min_version 9.2.
+        """
         abl_objs = [o for o in all_objects if o["name"].startswith("abl.")]
         assert len(abl_objs) > 0, "No abl.* objects found"
         for obj in abl_objs:
-            assert obj["min_version"] == 9, (
-                f"{obj['name']} should be min_version 9, got {obj['min_version']}"
+            assert 9 <= obj["min_version"] < 10, (
+                f"{obj['name']} should be a Max 9 min_version (>= 9, < 10), "
+                f"got {obj['min_version']}"
             )
 
     def test_mc_objects_have_version(self, all_objects):

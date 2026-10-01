@@ -8027,7 +8027,9 @@
       "symbol",
       "wclose",
       "write",
-      "writeagain"
+      "writeagain",
+      "maxany",
+      "minany"
     ],
     "attributes": {
       "embed": {
@@ -8160,7 +8162,9 @@
       "swap",
       "wclose",
       "write",
-      "writeagain"
+      "writeagain",
+      "maxany",
+      "minany"
     ],
     "attributes": {
       "bgcolor": {
@@ -10740,7 +10744,8 @@
       }
     ],
     "messages": [
-      "anything"
+      "anything",
+      "string"
     ],
     "attributes": {
       "name": {
@@ -11014,7 +11019,9 @@
       "anything",
       "array",
       "dictionary",
-      "string"
+      "string",
+      "clear",
+      "reset"
     ],
     "attributes": {
       "keys": {
@@ -11228,6 +11235,11 @@
       },
       "mode": {
         "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "stringmode": {
+        "type": "int",
         "get": true,
         "set": true
       }
@@ -16150,7 +16162,12 @@
       "mute",
       "read",
       "readfile",
-      "reload"
+      "reload",
+      "bang",
+      "int",
+      "float",
+      "list",
+      "jit_matrix"
     ],
     "attributes": {
       "disablefind": {
@@ -18076,7 +18093,9 @@
       "userdb.purge",
       "userdb.reset",
       "userdb.resetvalidated",
-      "window"
+      "window",
+      "closedspstatus",
+      "closepreferences"
     ],
     "attributes": {
       "assistance": {
@@ -20169,7 +20188,13 @@
       "list",
       "anything"
     ],
-    "attributes": {},
+    "attributes": {
+      "button": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
     "seealso": [
       "mousestate"
     ],
@@ -24588,7 +24613,9 @@
       "write",
       "writeagain",
       "writejson",
-      "writexml"
+      "writexml",
+      "getstate",
+      "setstate"
     ],
     "attributes": {
       "activewritemode": {
@@ -28312,6 +28339,11 @@
         "type": "float",
         "get": true,
         "set": true
+      },
+      "inputrangemode": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -28972,7 +29004,8 @@
       "start",
       "stop",
       "tick",
-      "write"
+      "write",
+      "insert"
     ],
     "attributes": {
       "overridetempo": {
@@ -34695,6 +34728,11 @@
         "type": "int",
         "get": true,
         "set": true
+      },
+      "usegradient": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -36396,6 +36434,21 @@
         "type": "int",
         "get": true,
         "set": true
+      },
+      "active": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "port": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "usestring": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -36446,9 +36499,26 @@
       "maxqueuesize",
       "osc_packet",
       "port",
-      "rawbytes"
+      "rawbytes",
+      "string"
     ],
-    "attributes": {},
+    "attributes": {
+      "active": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "host": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "port": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
     "seealso": [
       "udpreceive"
     ],

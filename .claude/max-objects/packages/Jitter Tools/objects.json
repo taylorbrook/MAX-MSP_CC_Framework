@@ -8183,7 +8183,10 @@
       "reset",
       "reset_mask",
       "save",
-      "undo"
+      "undo",
+      "maskfeatherat",
+      "maskfeathercurveat",
+      "scalemaskat"
     ],
     "attributes": {
       "apply_mask": {
@@ -8277,6 +8280,71 @@
         "set": true
       },
       "grid_color": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "checkerboard": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "checkerboardscale": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgeblendleft": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgeblendright": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgeblendtop": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgeblendbottom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgeblendcurveleft": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgeblendcurveright": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgeblendcurvetop": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "edgeblendcurvebottom": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "maskfeather": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "maskfeathercurve": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "scalemask": {
         "type": "",
         "get": true,
         "set": true
@@ -8584,6 +8652,65 @@
     "package": "Jitter Tools",
     "rnbo_compatible": false
   },
+  "jit.gl.tex2mat": {
+    "name": "jit.gl.tex2mat",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Convert an OpenGL texture to a matrix",
+    "description": "Convert an OpenGL texture to a matrix using an internal jit.gl.asyncread in non-automatic mode.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "texture input and jit.gl.asyncread messages",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "matrix output"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "dimensions",
+        "type": "list",
+        "optional": true,
+        "digest": "Output dimensions"
+      }
+    ],
+    "messages": [
+      "jit_gl_texture"
+    ],
+    "attributes": {
+      "adapt": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dim": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.gl.asyncread",
+      "jit.gl.texture"
+    ],
+    "tags": [],
+    "min_version": 9.2,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
+  },
   "jit.gl.textmult": {
     "name": "jit.gl.textmult",
     "maxclass": "newobj",
@@ -8618,7 +8745,8 @@
     ],
     "messages": [
       "clear",
-      "jit_matrix"
+      "jit_matrix",
+      "outputlayoutmatrix"
     ],
     "attributes": {
       "align": {
@@ -8652,6 +8780,41 @@
         "set": true
       },
       "use_individual_texcoord": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "line_length": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "leadscale": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "tracking": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "fontname": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "depth": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "weight": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "slant": {
         "type": "",
         "get": true,
         "set": true
@@ -8712,6 +8875,11 @@
         "set": true
       },
       "index": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "insert": {
         "type": "int",
         "get": true,
         "set": true
@@ -8855,6 +9023,245 @@
     ],
     "min_version": 8,
     "verified": false,
+    "variable_io": false,
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
+  },
+  "jit.path.ui": {
+    "name": "jit.path.ui",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Creates a 3d path with visual interface",
+    "description": "The jit.path.ui object combines the functionality of jit.path and jit.gl.path, \n        adding the capability of editing the path directly in the rendering window.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "message",
+        "signal": false,
+        "digest": "Inlet 0",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "point matrix"
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": "evaluated matrix"
+      },
+      {
+        "id": 2,
+        "type": "control",
+        "signal": false,
+        "digest": "evaluated values"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "dumput"
+      }
+    ],
+    "arguments": [
+      {
+        "name": "drawto",
+        "type": "message",
+        "optional": false,
+        "digest": "The named drawing context in which to draw (default = none). A named drawing context \n                is a named instance of a"
+      }
+    ],
+    "messages": [
+      "bang",
+      "append",
+      "calchandles",
+      "clear",
+      "closepath",
+      "delete_point",
+      "editpoint",
+      "edithandle",
+      "eval",
+      "evallength",
+      "evaltime",
+      "gethandle",
+      "getpoint",
+      "get_pointcount",
+      "get_duration",
+      "get_length",
+      "gotopoint",
+      "insert_point",
+      "load",
+      "next",
+      "openpath",
+      "outputeval",
+      "outputpath",
+      "prev",
+      "setduration",
+      "settime",
+      "start",
+      "stop",
+      "write"
+    ],
+    "attributes": {
+      "animation_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "autohandles": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "color": {
+        "type": "list",
+        "get": true,
+        "set": true
+      },
+      "continuous_path_matrix_output": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "duration": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "edit_handles_x": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "edit_handles_y": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "edit_handles_z": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "edit_points_x": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "edit_points_y": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "edit_points_z": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "endreport": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "evalreport": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "evalautorotatexyz": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "evalmatrixmode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "evalmatrixsize": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "extrudescale": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "interpmode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "length": {
+        "type": "float",
+        "get": true,
+        "set": false
+      },
+      "loop": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "loopreport": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "play": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "rate": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "show": {
+        "type": "",
+        "get": true,
+        "set": true
+      },
+      "time": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "timemode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "usetime": {
+        "type": "int",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.path",
+      "jit.gl.path",
+      "jit.anim.path"
+    ],
+    "tags": [
+      "Jitter-Tools",
+      "Jitter"
+    ],
+    "min_version": 9.2,
+    "verified": true,
     "variable_io": false,
     "package": "Jitter Tools",
     "rnbo_compatible": false
@@ -10656,6 +11063,75 @@
       "Jitter"
     ],
     "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
+  },
+  "jit.unpack.geomat": {
+    "name": "jit.unpack.geomat",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Packages",
+    "category": "Jitter Data",
+    "digest": "Make multiple matrix outputs from jit.gl matrix input",
+    "description": "The jit.unpack.geomat object splits jit.gl matrixoutput type matrix data into 4 multi-plane matrices of geometry data. The outputs are 3 position planes, 2 texcoord planes, 3 normal planes, and 4 color planes. The object is equivalent to jit.unpack 4 @jump 3 2 3 4 @offset 0 3 5 8.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "in",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "out"
+      },
+      {
+        "id": 1,
+        "type": "matrix",
+        "signal": false,
+        "digest": "out2"
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": "out3"
+      },
+      {
+        "id": 3,
+        "type": "matrix",
+        "signal": false,
+        "digest": "out4"
+      },
+      {
+        "id": 4,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "anything"
+    ],
+    "attributes": {},
+    "seealso": [
+      "Matrix Geometry",
+      "jit.unpack",
+      "jit.pack"
+    ],
+    "tags": [
+      "Jitter",
+      "Jitter Data"
+    ],
+    "min_version": 9.2,
     "verified": true,
     "variable_io": false,
     "package": "Jitter Tools",

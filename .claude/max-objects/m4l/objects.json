@@ -3864,6 +3864,11 @@
         "type": "int",
         "get": true,
         "set": true
+      },
+      "_parameter_visible_undoable": {
+        "type": "int",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [],
@@ -3909,7 +3914,8 @@
     ],
     "arguments": [],
     "messages": [
-      "signal"
+      "signal",
+      "bang"
     ],
     "attributes": {
       "active": {
@@ -3949,6 +3955,91 @@
       },
       "style": {
         "type": "int",
+        "get": true,
+        "set": true
+      },
+      "line_width": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "grid_line_width": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "vertical_divisions": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "grid": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "smooth": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "trigger_direction": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "trigger_threshold": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "samples": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "decay_time": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "interval": {
+        "type": "float64",
+        "get": true,
+        "set": true
+      },
+      "horizontal_divisions": {
+        "type": "long",
+        "get": true,
+        "set": true
+      },
+      "activebgcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "linecolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "activelinecolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "gridcolor": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "activegridcolor": {
+        "type": "float",
         "get": true,
         "set": true
       }

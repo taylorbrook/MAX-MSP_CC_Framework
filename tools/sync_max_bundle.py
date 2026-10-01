@@ -42,6 +42,7 @@ Usage
     python3 tools/sync_max_bundle.py                         # dry-run report
     python3 tools/sync_max_bundle.py --json /tmp/sync.json   # + full JSON
     python3 tools/sync_max_bundle.py --apply new --names dspstress~ jit.web
+    python3 tools/sync_max_bundle.py --apply define --names jit.gl.web jit.gl.tex2mat
     python3 tools/sync_max_bundle.py --apply deltas
     python3 tools/sync_max_bundle.py --snapshot-io /tmp/io.json
     python3 tools/sync_max_bundle.py --compare-io /tmp/io.json
@@ -1190,10 +1191,240 @@ def _core_destination(entry: dict) -> str | None:
     return f"{directory}/objects.json" if directory else None
 
 
+def _abort(result: dict, reason: str) -> dict:
+    result["status"] = "aborted"
+    result["reason"] = reason
+    result.pop("entry", None)
+    return result
+
+
+def _stem_refpage(index: dict, stem: str) -> dict | None:
+    """The refpage FILE named after `stem`, whatever its name attribute says."""
+    return next((ref for ref in index["refs"] if ref["stem"] == stem), None)
+
+
+def _fresh_inlets(count: int, signal: bool) -> list[dict]:
+    return [
+        {"id": i, "type": "signal" if signal else "control", "signal": signal, "digest": ""}
+        for i in range(count)
+    ]
+
+
+def _new_refpage_object(
+    name: str, ref: dict, index: dict, db_root: Path, raw_db: dict
+) -> tuple[dict, str | None]:
+    """--apply new for one name: build the entry and pick its destination (S4)."""
+    package_dir = None
+    if ref["root"] == "package":
+        # Bundled-package objects go to that package's DB file, which must
+        # already exist -- this tool never creates a package.
+        package_dir = db_package_dir(db_root, ref["package"] or "")
+        if package_dir is None:
+            return (
+                _abort(
+                    {"name": name, "source": ref["file"], "notes": {}},
+                    f"bundle package {ref['package']!r} has no DB package directory "
+                    "with an objects.json",
+                ),
+                None,
+            )
+    define = index["defines"].get(name)
+    built = build_refpage_entry(
+        name,
+        ref,
+        index,
+        package_dir=package_dir,
+        help_stems=(define["target"],) if define else (),
+    )
+    if built["status"] != "built":
+        return built, None
+    if package_dir is not None:
+        rel = f"packages/{package_dir}/objects.json"
+    else:
+        rel = _core_destination(built["entry"])
+    if rel is None or rel not in raw_db:
+        return (
+            _abort(built, f"no writable destination for domain {built['entry'].get('domain')!r}"),
+            None,
+        )
+    return built, rel
+
+
+def build_define_entry(
+    alias: str, index: dict, db: ObjectDatabase, raw_db: dict, db_root: Path
+) -> tuple[dict, str | None]:
+    """--apply define for one alias: mapping line + help-patch box (S5, S6).
+
+    I/O counts and outlet types come from the help box Max serialized.
+    Descriptive fields come from the refpage whose filename stem is the alias
+    (whatever its name attribute says), else messages / attributes are
+    inherited from the define target's resolved DB entry.
+    """
+    result: dict = {"name": alias, "status": "aborted", "notes": {}}
+    define = index["defines"].get(alias)
+    if define is None:
+        return _abort(result, f"no `max define {alias} ...` mapping line in the bundle"), None
+    result["source"] = define["mapping_file"]
+    result["notes"]["define"] = define["line"]
+    if index.get("version") is None:
+        return _abort(result, "installed Max version is not parseable as major.minor"), None
+
+    evidence = find_help_boxes(index, alias, (define["target"],))
+    boxes = evidence["boxes"]
+    result["notes"]["help_boxes"] = len(boxes)
+    if not boxes:
+        return (
+            _abort(
+                result,
+                f"no help-patch box found for {alias!r} (searched {alias}.maxhelp, "
+                f"then {define['target']}.maxhelp)",
+            ),
+            None,
+        )
+    counts = sorted({(b["numinlets"], b["numoutlets"]) for b in boxes})
+    if len(counts) > 1:
+        return _abort(result, f"help boxes disagree on inlet/outlet counts: {counts}"), None
+    num_in, num_out = counts[0]
+    result["notes"]["io_source"] = f"{evidence['help_stem']}.maxhelp: counts and outlet types"
+
+    target = _muted_lookup(db, define["target"])
+    ref = _stem_refpage(index, alias)
+    refpage_outlets: list[dict] = []
+    if ref is not None:
+        parsed = parse_refpage(ref)
+        if parsed is None or "_error" in parsed:
+            return _abort(result, f"alias refpage did not parse: {ref['file']}"), None
+        entry = copy.deepcopy(parsed)
+        entry["name"] = alias
+        result["notes"]["refpage"] = ref["file"]
+        result["notes"]["scrubbed"] = scrub_templates(entry)  # C2
+        _type_inlets(entry, ref)  # C3
+        named = _muted_lookup(db, ref["name"]) if ref["name"] != alias else None
+        if named is not None and entry["messages"] and entry["messages"] == named.get("messages"):
+            # A refpage cloned from the implementing class documents that
+            # class, not the alias.
+            entry["messages"] = []
+            entry["attributes"] = {}
+            result["notes"]["cloned_template"] = (
+                f"refpage message list is identical to {ref['name']!r}'s DB entry; "
+                "messages and attributes left empty"
+            )
+        if len(entry["inlets"]) != num_in:
+            result["notes"]["refpage_inlets_ignored"] = (
+                f"refpage declares {len(entry['inlets'])} inlets, help box has {num_in}"
+            )
+            entry["inlets"] = _fresh_inlets(num_in, "signal" in (ref.get("methods") or []))
+        if len(entry["outlets"]) == num_out:
+            refpage_outlets = entry["outlets"]
+        elif entry["outlets"]:
+            result["notes"]["refpage_outlets_ignored"] = (
+                f"refpage declares {len(entry['outlets'])} outlets, help box has {num_out}"
+            )
+    else:
+        if target is None:
+            return (
+                _abort(
+                    result,
+                    f"define target {define['target']!r} is not in the DB and the alias "
+                    "has no refpage to describe it",
+                ),
+                None,
+            )
+        messages = list(target.get("messages") or [])
+        digest = " ".join(part for part in (target.get("digest", ""), f"({define['line']})") if part)
+        entry = {
+            "name": alias,
+            "maxclass": "newobj",
+            "module": target.get("module", "max"),
+            "domain": target.get("domain"),
+            "category": target.get("category", ""),
+            "digest": digest,
+            "description": "",
+            "inlets": _fresh_inlets(num_in, "signal" in messages),
+            "outlets": [],
+            "arguments": [],
+            "messages": messages,
+            "attributes": copy.deepcopy(target.get("attributes") or {}),
+            "seealso": [],
+            "tags": [],
+            "variable_io": False,
+        }
+        result["notes"]["inherited_from"] = define["target"]
+
+    outlettypes = boxes[0]["outlettype"]
+    entry["outlets"] = [
+        outlet_from_help(  # C4
+            i,
+            outlettypes[i] if i < len(outlettypes) else "",
+            refpage_outlets[i].get("digest", "") if i < len(refpage_outlets) else "",
+        )
+        for i in range(num_out)
+    ]
+    entry["maxclass"] = "newobj"
+    _hot_flags(entry)  # C7
+    entry["rnbo_compatible"] = False  # C1
+    entry["min_version"] = index["version"]  # C5
+    entry["verified"] = bool(entry["inlets"] or entry["outlets"])
+
+    # S4: the package that owns the mapping line, else the core domain file
+    # that holds the define target (precedent: jit.gl.movie beside jit.movie).
+    if define["package"] is not None:
+        package_dir = db_package_dir(db_root, define["package"])
+        if package_dir is None:
+            return (
+                _abort(
+                    result,
+                    f"bundle package {define['package']!r} has no DB package directory "
+                    "with an objects.json",
+                ),
+                None,
+            )
+        entry["domain"] = "Packages"  # C6
+        entry["package"] = package_dir
+        rel = f"packages/{package_dir}/objects.json"
+    else:
+        located = locate_base_entry(target, define["target"], raw_db) if target else None
+        if located is None or located[0].startswith("packages/"):
+            return (
+                _abort(
+                    result,
+                    f"define target {define['target']!r} is not held by a writable core "
+                    "domain file",
+                ),
+                None,
+            )
+        rel = located[0]
+        entry["domain"] = target.get("domain")
+
+    result["status"] = "built"
+    result["entry"] = entry
+    return result, rel
+
+
+def update_package_counts(db_root: Path, packages: set[str]) -> list[str]:
+    """Set `object_count` in package_info.json to each touched file's length."""
+    info_path = db_root / "package_info.json"
+    if not info_path.exists():
+        return []
+    info = json.loads(info_path.read_text())
+    changed: list[str] = []
+    for package in sorted(packages):
+        row = info.get(package)
+        if not isinstance(row, dict) or "object_count" not in row:
+            continue
+        count = len(json.loads((db_root / "packages" / package / "objects.json").read_text()))
+        if row["object_count"] != count:
+            row["object_count"] = count
+            changed.append(package)
+    if changed:
+        write_db_file(info_path, info, db_root)
+    return changed
+
+
 def apply_objects(
     modes: list[str], names: list[str], index: dict, db_root: Path
 ) -> list[dict]:
-    """--apply new: land explicitly named objects. Never lands an unnamed one."""
+    """--apply new / --apply define: land explicitly named objects only."""
     db = load_db(db_root)
     raw_db = load_raw_db(db_root)
     classified = classify_refs(index, db, db_root)
@@ -1206,49 +1437,26 @@ def apply_objects(
             continue
         ref = classified["authoritative"].get(name)
         if "new" in modes and ref is not None and not _is_doc_page(ref):
-            if ref["root"] == "package":
-                results.append(
-                    {
-                        "name": name,
-                        "status": "aborted",
-                        "reason": "package destinations are not supported by --apply new yet",
-                    }
-                )
-                continue
-            define = index["defines"].get(name)
-            built = build_refpage_entry(
-                name, ref, index, help_stems=(define["target"],) if define else ()
-            )
-            if built["status"] != "built":
-                results.append(built)
-                continue
-            rel = _core_destination(built["entry"])
-            if rel is None or rel not in raw_db:
-                built["status"] = "aborted"
-                built["reason"] = (
-                    f"no writable destination for domain {built['entry'].get('domain')!r}"
-                )
-                built.pop("entry", None)
-                results.append(built)
-                continue
+            built, rel = _new_refpage_object(name, ref, index, db_root, raw_db)
+        elif "define" in modes:
+            built, rel = build_define_entry(name, index, db, raw_db, db_root)
         else:
-            results.append(
-                {
-                    "name": name,
-                    "status": "aborted",
-                    "reason": "not a new refpage-backed object in this bundle "
-                    f"for mode(s) {', '.join(m for m in modes if m != 'deltas')}",
-                }
+            built, rel = (
+                _abort(
+                    {"name": name, "notes": {}},
+                    "not a new refpage-backed object in this bundle (documentation "
+                    "page, alias document, or unknown name)",
+                ),
+                None,
             )
+        if built["status"] != "built" or rel is None:
+            results.append(built)
             continue
 
         # C6: the new entry must look exactly like its neighbours.
         template = match_key_template(built["entry"], raw_db[rel])
         if template is None:
-            built["status"] = "aborted"
-            built["reason"] = f"key set does not match any existing entry in {rel}"
-            built.pop("entry", None)
-            results.append(built)
+            results.append(_abort(built, f"key set does not match any existing entry in {rel}"))
             continue
         entry = order_like(built.pop("entry"), template)
         pending.setdefault(rel, {})[name] = entry
@@ -1261,6 +1469,9 @@ def apply_objects(
         data = dict(raw_db[rel])
         data.update(entries)
         write_db_file(db_root / rel, data, db_root)
+    touched_packages = {rel.split("/")[1] for rel in pending if rel.startswith("packages/")}
+    if touched_packages:
+        update_package_counts(db_root, touched_packages)
     return results
 
 
@@ -1438,10 +1649,6 @@ def main(argv: list[str] | None = None) -> int:
             file=sys.stderr,
         )
         return 2
-    if "define" in modes:
-        print("error: --apply define is not implemented yet.", file=sys.stderr)
-        return 2
-
     exit_code = 0
     applied: dict = {}
     index = build_bundle_index(args.max_app)

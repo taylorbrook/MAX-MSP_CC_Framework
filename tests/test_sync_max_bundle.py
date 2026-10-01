@@ -83,7 +83,7 @@ def _newobj(text: str, numinlets: int, numoutlets: int, outlettype: list[str] | 
 
 
 def _make_bundle(tmp_path: Path, short_version: str = "9.7.3 (abc123)") -> Path:
-    """A minimal but structurally real Max.app: version 9.7, eleven refpages."""
+    """A minimal but structurally real Max.app, version 9.7."""
     app = tmp_path / "Max.app"
     contents = app / "Contents"
     contents.mkdir(parents=True)
@@ -230,7 +230,89 @@ def _make_bundle(tmp_path: Path, short_version: str = "9.7.3 (abc123)") -> Path:
             attributes=["evilattr"],
         )
     )
+    _add_define_fixtures(c74)
     return app
+
+
+def _add_define_fixtures(c74: Path) -> None:
+    """`max define` aliases plus one refpage-backed package object."""
+    pkg = c74 / "packages" / "FakePkg"
+    pkg_docs = pkg / "docs"
+    pkg_help = pkg / "help"
+    help_jit = c74 / "help" / "jitter"
+    for directory in (pkg / "init", pkg_help, help_jit):
+        directory.mkdir(parents=True)
+
+    # Core mapping: alias of a core object, no refpage, boxes live in the
+    # define TARGET's help file.
+    (c74 / "init" / "fake-objectmappings.txt").write_text(
+        "max objectfile jit.gl.fresh jit.old;\n"
+        "max define jit.gl.fresh jit.old @output_texture 1;\n"
+        "max definesubstitution jit.sub bpatcher @name jit.sub.maxpat;\n"
+    )
+    (help_jit / "jit.old.maxhelp").write_text(
+        _help_patch(
+            [
+                _newobj("jit.old", 1, 1, ["jit_matrix"]),
+                _newobj("jit.gl.fresh", 1, 2, ["jit_gl_texture", ""]),
+                _newobj("jit.gl.fresh @dim 4 4", 1, 2, ["jit_gl_texture", ""]),
+            ]
+        )
+    )
+    # Package mappings: every alias is implemented by the core `corething`.
+    (pkg / "init" / "fakepkg-objectmappings.txt").write_text(
+        "max define pkg.alias corething alias.js;\n"
+        "max define pkg.clone corething clone.js;\n"
+        "max define pkg.split corething split.js;\n"
+        "max define pkg.nobox corething nobox.js;\n"
+    )
+    # Alias refpage whose name attribute is the implementing class (the
+    # jit.gl.tex2mat / `v8` shape): it documents the ALIAS.
+    (pkg_docs / "pkg.alias.maxref.xml").write_text(
+        _refpage(
+            "corething",
+            digest="Convert a thing",
+            description="Alias description",
+            inlets=[("INLET_TYPE", "thing input")],
+            outlets=[("OUTLET_TYPE", "matrix output")],
+            methods=["special"],
+            attributes=["dim"],
+        )
+    )
+    (pkg_help / "pkg.alias.maxhelp").write_text(
+        _help_patch([_newobj("pkg.alias 4 4", 1, 1, ["jit_matrix"]), _newobj("pkg.alias", 1, 1, ["jit_matrix"])])
+    )
+    # Alias refpage that is an untouched clone of the core page: its message
+    # list equals the core entry's.
+    (pkg_docs / "pkg.clone.maxref.xml").write_text(
+        _refpage(
+            "corething",
+            digest="Cloned",
+            inlets=[("int", "in")],
+            outlets=[("int", "out")],
+            methods=["bang"],
+            attributes=["cloneattr"],
+        )
+    )
+    (pkg_help / "pkg.clone.maxhelp").write_text(_help_patch([_newobj("pkg.clone", 1, 1, [""])]))
+    # Help boxes that disagree on the outlet count.
+    (pkg_help / "pkg.split.maxhelp").write_text(
+        _help_patch([_newobj("pkg.split", 1, 1, [""]), _newobj("pkg.split 2", 1, 2, ["", ""])])
+    )
+    # pkg.nobox: a mapping line and nothing else.
+    # A normal refpage-backed package object (name attribute == stem).
+    (pkg_docs / "pkg.fresh.maxref.xml").write_text(
+        _refpage(
+            "pkg.fresh",
+            inlets=[("message", "in")],
+            outlets=[("message", "out"), ("message", "dump")],
+            methods=["bang"],
+            attributes=["size"],
+        )
+    )
+    (pkg_help / "pkg.fresh.maxhelp").write_text(
+        _help_patch([_newobj("pkg.fresh", 1, 2, ["jit_matrix", ""])])
+    )
 
 
 # ── Fake DB ───────────────────────────────────────────────────────
@@ -733,3 +815,194 @@ class TestIoSnapshot:
         data["old"]["outlets"].append({"id": 1, "type": "int", "signal": False, "digest": ""})
         path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         assert _run(world, "--compare-io", str(snap)) == 1
+
+
+# ── Apply define and package destinations (Task 2) ────────────────
+
+
+def _results(world: dict, tmp_path: Path, *extra: str) -> tuple[int, dict]:
+    """Run the CLI and return (exit code, per-name apply results)."""
+    out = tmp_path / "apply.json"
+    code = _run(world, *extra, "--json", str(out))
+    applied = json.loads(out.read_text()).get("applied", {}).get("objects", [])
+    return code, {r["name"]: r for r in applied}
+
+
+class TestApplyDefine:
+    def test_alias_without_refpage_is_built_from_mapping_line_and_help_box(
+        self, world: dict
+    ) -> None:
+        before = _load(world, "jitter/objects.json")
+        assert _run(world, "--apply", "define", "--names", "jit.gl.fresh") == 0
+        # Core mapping line -> the core domain file that holds the define target.
+        after = _load(world, "jitter/objects.json")
+        entry = after["jit.gl.fresh"]
+        target = before["jit.old"]
+        assert list(entry) == list(target)
+        assert "package" not in entry
+        # I/O counts and outlet types from the help box (found in the TARGET's
+        # help file), not from the target entry.
+        assert len(entry["inlets"]) == 1 and len(entry["outlets"]) == 2
+        assert [(o["type"], o["signal"], o["digest"]) for o in entry["outlets"]] == [
+            ("control", False, "jit_gl_texture"),
+            ("control", False, ""),
+        ]
+        assert entry["inlets"][0]["hot"] is True
+        # Messages / attributes inherited from the define target's DB entry.
+        assert entry["messages"] == target["messages"]
+        assert entry["attributes"] == target["attributes"]
+        assert entry["digest"] == (
+            "Curated digest (max define jit.gl.fresh jit.old @output_texture 1;)"
+        )
+        assert entry["description"] == ""
+        assert entry["maxclass"] == "newobj"
+        assert entry["min_version"] == 9.7
+        assert entry["rnbo_compatible"] is False
+        assert (entry["domain"], entry["module"]) == ("Jitter", "jit")
+        assert after["jit.old"] == target
+
+    def test_alias_refpage_supplies_descriptive_fields_whatever_its_name_attribute(
+        self, world: dict
+    ) -> None:
+        core_before = _load(world, "max/objects.json")
+        assert _run(world, "--apply", "define", "--names", "pkg.alias") == 0
+        # Package mapping line -> that package's file.
+        entry = _load(world, "packages/FakePkg/objects.json")["pkg.alias"]
+        assert entry["name"] == "pkg.alias"
+        assert entry["digest"] == "Convert a thing"
+        assert entry["description"] == "Alias description"
+        assert entry["messages"] == ["special"]
+        assert list(entry["attributes"]) == ["dim"]
+        assert (entry["package"], entry["domain"]) == ("FakePkg", "Packages")
+        # Counts and outlet type from the box; the refpage digests are kept.
+        assert [(i["type"], i["signal"], i["digest"]) for i in entry["inlets"]] == [
+            ("control", False, "thing input")
+        ]
+        assert [(o["type"], o["digest"]) for o in entry["outlets"]] == [("matrix", "matrix output")]
+        # ...and the object the name attribute points at is untouched.
+        assert _load(world, "max/objects.json") == core_before
+
+    def test_cloned_template_refpage_yields_empty_messages_and_is_reported(
+        self, world: dict, tmp_path: Path
+    ) -> None:
+        code, results = _results(world, tmp_path, "--apply", "define", "--names", "pkg.clone")
+        assert code == 0
+        entry = _load(world, "packages/FakePkg/objects.json")["pkg.clone"]
+        assert entry["messages"] == []
+        assert entry["attributes"] == {}
+        assert "cloned_template" in results["pkg.clone"]["notes"]
+
+    def test_disagreeing_help_boxes_abort(self, world: dict, tmp_path: Path) -> None:
+        before = _tree_bytes(world["db_root"])
+        code, results = _results(world, tmp_path, "--apply", "define", "--names", "pkg.split")
+        assert code == 1
+        assert results["pkg.split"]["status"] == "aborted"
+        assert "disagree" in results["pkg.split"]["reason"]
+        assert _tree_bytes(world["db_root"]) == before
+
+    def test_no_help_box_aborts(self, world: dict, tmp_path: Path) -> None:
+        before = _tree_bytes(world["db_root"])
+        code, results = _results(world, tmp_path, "--apply", "define", "--names", "pkg.nobox")
+        assert code == 1
+        assert "no help-patch box" in results["pkg.nobox"]["reason"]
+        assert _tree_bytes(world["db_root"]) == before
+
+    def test_name_without_a_mapping_line_aborts(self, world: dict, tmp_path: Path) -> None:
+        before = _tree_bytes(world["db_root"])
+        # `newthing` is a real new refpage object, but it is no define alias;
+        # `jit.sub` only has a definesubstitution line.
+        code, results = _results(
+            world, tmp_path, "--apply", "define", "--names", "newthing", "jit.sub"
+        )
+        assert code == 1
+        for name in ("newthing", "jit.sub"):
+            assert results[name]["status"] == "aborted"
+            assert "max define" in results[name]["reason"]
+        assert _tree_bytes(world["db_root"]) == before
+
+    def test_define_missing_lists_unresolved_aliases(self, world: dict) -> None:
+        missing = _report(world)["define_missing"]
+        assert {"jit.gl.fresh", "pkg.alias", "pkg.clone", "pkg.split", "pkg.nobox"} <= set(
+            missing["names"]
+        )
+        assert "jit.sub" not in missing["names"]  # definesubstitution is not a define
+        assert _run(world, "--apply", "define", "--names", "jit.gl.fresh", "pkg.alias") == 0
+        after = set(_report(world)["define_missing"]["names"])
+        assert not after & {"jit.gl.fresh", "pkg.alias"}
+
+    def test_alias_refpage_never_changes_the_entry_its_name_attribute_names(
+        self, world: dict
+    ) -> None:
+        """pkg.alias / pkg.clone both declare name="corething"."""
+        section = _report(world)
+        assert {a["alias"] for a in section["alias_docs"]["entries"]} >= {"pkg.alias", "pkg.clone"}
+        before = _load(world, "max/objects.json")["corething"]
+        assert _run(world, "--apply", "deltas") == 0
+        after = _load(world, "max/objects.json")["corething"]
+        assert after == before
+        assert not {"special", "dim", "cloneattr"} & (set(after["messages"]) | set(after["attributes"]))
+
+    def test_define_apply_is_idempotent(self, world: dict) -> None:
+        argv = ["--apply", "define", "--names", "jit.gl.fresh", "pkg.alias", "pkg.clone"]
+        assert _run(world, *argv) == 0
+        first = _tree_bytes(world["db_root"])
+        assert _run(world, *argv) == 0
+        assert _tree_bytes(world["db_root"]) == first
+
+
+class TestPackageDestinations:
+    def test_new_package_object_gets_package_field_and_bumps_object_count(
+        self, world: dict
+    ) -> None:
+        neighbour = _load(world, "packages/FakePkg/objects.json")["pkg.old"]
+        assert _load(world, "package_info.json")["FakePkg"]["object_count"] == 1
+        assert _run(world, "--apply", "new", "--names", "pkg.fresh") == 0
+
+        objects = _load(world, "packages/FakePkg/objects.json")
+        entry = objects["pkg.fresh"]
+        assert list(entry) == list(neighbour)
+        assert entry["package"] == "FakePkg"
+        assert entry["domain"] == "Packages"
+        assert entry["min_version"] == 9.7
+        assert [o["type"] for o in entry["outlets"]] == ["matrix", "control"]
+        assert objects["pkg.old"] == neighbour
+        info = _load(world, "package_info.json")
+        assert info["FakePkg"] == {"name": "FakePkg", "object_count": 2}
+
+    def test_object_count_tracks_define_aliases_too(self, world: dict) -> None:
+        argv = ["--apply", "new", "--apply", "define", "--names", "pkg.fresh", "pkg.alias"]
+        assert _run(world, *argv) == 0
+        assert _load(world, "package_info.json")["FakePkg"]["object_count"] == 3
+        assert len(_load(world, "packages/FakePkg/objects.json")) == 3
+
+    def test_unknown_db_package_is_refused(self, world: dict, tmp_path: Path) -> None:
+        docs = world["app"] / "Contents/Resources/C74/packages/Stranger/docs"
+        docs.mkdir(parents=True)
+        (docs / "stranger.obj.maxref.xml").write_text(
+            _refpage("stranger.obj", inlets=[("int", "in")], outlets=[("int", "out")], methods=["bang"])
+        )
+        before = _tree_bytes(world["db_root"])
+        code, results = _results(world, tmp_path, "--apply", "new", "--names", "stranger.obj")
+        assert code == 1
+        assert "Stranger" in results["stranger.obj"]["reason"]
+        assert _tree_bytes(world["db_root"]) == before
+
+    def test_package_info_only_object_count_may_change(self, world: dict) -> None:
+        path = world["db_root"] / "package_info.json"
+        info = json.loads(path.read_text())
+        info["FakePkg"]["name"] = "Renamed"
+        with pytest.raises(sync.AdditiveViolation):
+            sync.write_db_file(path, info, world["db_root"])
+        info = json.loads(path.read_text())
+        info["FakePkg"]["object_count"] = 0
+        with pytest.raises(sync.AdditiveViolation, match="shrink"):
+            sync.write_db_file(path, info, world["db_root"])
+
+    def test_overrides_sha_is_unchanged_after_define_and_package_applies(
+        self, world: dict
+    ) -> None:
+        overrides = world["db_root"] / "overrides.json"
+        before = _sha(overrides)
+        argv = ["--apply", "new", "--apply", "define", "--names", "pkg.fresh", "pkg.alias", "jit.gl.fresh"]
+        assert _run(world, *argv) == 0
+        assert _sha(overrides) == before

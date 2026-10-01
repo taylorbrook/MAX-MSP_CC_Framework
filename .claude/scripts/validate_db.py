@@ -336,7 +336,7 @@ def check_min_version_range() -> ValidationResult:
 
 
 def check_max9_objects() -> ValidationResult:
-    """MAX 9 objects (array.*, string.*, abl.*) have min_version: 9."""
+    """MAX 9 objects (array.*, string.*, abl.*) have a Max 9 min_version (9 <= v < 10)."""
     r = ValidationResult("max9_objects")
     errors = []
     max9_prefixes = ("array.", "string.", "abl.")
@@ -347,8 +347,9 @@ def check_max9_objects() -> ValidationResult:
         for name, obj in data.items():
             if any(name.startswith(p) for p in max9_prefixes):
                 mv = obj.get("min_version")
-                if mv != 9:
-                    errors.append(f"{domain}/{name}: min_version={mv} (expected 9)")
+                # Point releases count: objects new in 9.2 carry 9.2.
+                if not isinstance(mv, (int, float)) or not 9 <= mv < 10:
+                    errors.append(f"{domain}/{name}: min_version={mv} (expected 9.x)")
     if errors:
         return r.failed(f"{len(errors)} wrong version", errors[:10])
     return r.passed("all MAX 9 objects tagged correctly")

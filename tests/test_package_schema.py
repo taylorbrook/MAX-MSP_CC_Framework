@@ -149,7 +149,7 @@ class TestPackageAPI:
         """DBSI-04: get_package_objects() returns objects for a package."""
         objs = db.get_package_objects("ableton-dsp")
         assert isinstance(objs, list)
-        assert len(objs) == 77, f"Expected 77 ableton-dsp objects, got {len(objs)}"
+        assert len(objs) == 80, f"Expected 80 ableton-dsp objects, got {len(objs)}"
         for obj in objs:
             assert isinstance(obj.get("name"), str), "Each object must have a name"
 
