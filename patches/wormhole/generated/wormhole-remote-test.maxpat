@@ -479,10 +479,10 @@
                     "patching_rect": [
                         930,
                         265,
-                        163.0,
+                        100.0,
                         22.0
                     ],
-                    "text": "receive whtest-remote",
+                    "text": "receive whrt",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -624,7 +624,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_L 0",
+                    "text": ";\rwhrt delay_L 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -644,7 +644,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_L 250",
+                    "text": ";\rwhrt delay_L 250",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -664,7 +664,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_L 500",
+                    "text": ";\rwhrt delay_L 500",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -702,7 +702,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_R 0",
+                    "text": ";\rwhrt delay_R 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -722,7 +722,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_R 250",
+                    "text": ";\rwhrt delay_R 250",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -742,7 +742,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_R 500",
+                    "text": ";\rwhrt delay_R 500",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -780,7 +780,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_route 0",
+                    "text": ";\rwhrt delay_route 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -800,7 +800,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_route 1",
+                    "text": ";\rwhrt delay_route 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -820,7 +820,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote delay_route 2",
+                    "text": ";\rwhrt delay_route 2",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -858,7 +858,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote depth 0",
+                    "text": ";\rwhrt depth 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -878,7 +878,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote depth 0.5",
+                    "text": ";\rwhrt depth 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -898,7 +898,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote depth 1",
+                    "text": ";\rwhrt depth 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -936,7 +936,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote poles 2",
+                    "text": ";\rwhrt poles 2",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -956,7 +956,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote poles 8",
+                    "text": ";\rwhrt poles 8",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -976,7 +976,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote poles 32",
+                    "text": ";\rwhrt poles 32",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1014,7 +1014,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote feedback 0",
+                    "text": ";\rwhrt feedback 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1034,7 +1034,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote feedback 0.5",
+                    "text": ";\rwhrt feedback 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1054,7 +1054,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote feedback 1",
+                    "text": ";\rwhrt feedback 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1092,7 +1092,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote tilt -1",
+                    "text": ";\rwhrt tilt -1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1112,7 +1112,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote tilt 0",
+                    "text": ";\rwhrt tilt 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1132,7 +1132,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote tilt 1",
+                    "text": ";\rwhrt tilt 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1170,7 +1170,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pitch -48",
+                    "text": ";\rwhrt pitch -48",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1190,7 +1190,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pitch 0",
+                    "text": ";\rwhrt pitch 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1210,7 +1210,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pitch 48",
+                    "text": ";\rwhrt pitch 48",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1248,7 +1248,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote freq_shift -4000",
+                    "text": ";\rwhrt freq_shift -4000",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1268,7 +1268,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote freq_shift 0",
+                    "text": ";\rwhrt freq_shift 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1288,7 +1288,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote freq_shift 4000",
+                    "text": ";\rwhrt freq_shift 4000",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1326,7 +1326,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pitch_mode 0",
+                    "text": ";\rwhrt pitch_mode 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1346,7 +1346,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pitch_mode 2",
+                    "text": ";\rwhrt pitch_mode 2",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1366,7 +1366,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pitch_mode 3",
+                    "text": ";\rwhrt pitch_mode 3",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1404,7 +1404,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote decay_time 0.01",
+                    "text": ";\rwhrt decay_time 0.01",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1424,7 +1424,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote decay_time 0.5",
+                    "text": ";\rwhrt decay_time 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1444,7 +1444,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote decay_time 1",
+                    "text": ";\rwhrt decay_time 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1482,7 +1482,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_mix 0",
+                    "text": ";\rwhrt pre_mix 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1502,7 +1502,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_mix 0.3",
+                    "text": ";\rwhrt pre_mix 0.3",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1522,7 +1522,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_mix 1",
+                    "text": ";\rwhrt pre_mix 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1560,7 +1560,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_size 0.1",
+                    "text": ";\rwhrt pre_size 0.1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1580,7 +1580,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_size 0.7",
+                    "text": ";\rwhrt pre_size 0.7",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1600,7 +1600,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_size 1",
+                    "text": ";\rwhrt pre_size 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1638,7 +1638,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_damping 0",
+                    "text": ";\rwhrt pre_damping 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1658,7 +1658,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_damping 0.5",
+                    "text": ";\rwhrt pre_damping 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1678,7 +1678,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote pre_damping 1",
+                    "text": ";\rwhrt pre_damping 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1716,7 +1716,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote blend 0",
+                    "text": ";\rwhrt blend 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1736,7 +1736,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote blend 0.5",
+                    "text": ";\rwhrt blend 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1756,7 +1756,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote blend 1",
+                    "text": ";\rwhrt blend 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1794,7 +1794,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote morph_mode 0",
+                    "text": ";\rwhrt morph_mode 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1814,7 +1814,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote morph_mode 1",
+                    "text": ";\rwhrt morph_mode 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1852,7 +1852,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_mix 0",
+                    "text": ";\rwhrt post_mix 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1872,7 +1872,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_mix 0.3",
+                    "text": ";\rwhrt post_mix 0.3",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1892,7 +1892,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_mix 1",
+                    "text": ";\rwhrt post_mix 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1930,7 +1930,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_size 0.1",
+                    "text": ";\rwhrt post_size 0.1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1950,7 +1950,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_size 0.7",
+                    "text": ";\rwhrt post_size 0.7",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -1970,7 +1970,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_size 1",
+                    "text": ";\rwhrt post_size 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2008,7 +2008,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_damping 0",
+                    "text": ";\rwhrt post_damping 0",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2028,7 +2028,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_damping 0.5",
+                    "text": ";\rwhrt post_damping 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2048,7 +2048,7 @@
                         195,
                         36.0
                     ],
-                    "text": ";\rwhtest-remote post_damping 1",
+                    "text": ";\rwhrt post_damping 1",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2105,7 +2105,7 @@
                         230,
                         306.0
                     ],
-                    "text": ";\rwhtest-remote delay_L 0;\rwhtest-remote delay_R 0;\rwhtest-remote delay_route 0;\rwhtest-remote depth 0.5;\rwhtest-remote poles 8;\rwhtest-remote feedback 0.5;\rwhtest-remote tilt 0;\rwhtest-remote pitch 0;\rwhtest-remote freq_shift 0;\rwhtest-remote pitch_mode 0;\rwhtest-remote decay_time 1;\rwhtest-remote pre_mix 0.3;\rwhtest-remote pre_size 0.7;\rwhtest-remote pre_damping 0.5;\rwhtest-remote blend 0.5;\rwhtest-remote morph_mode 0;\rwhtest-remote post_mix 0.3;\rwhtest-remote post_size 0.7;\rwhtest-remote post_damping 0.5",
+                    "text": ";\rwhrt delay_L 0;\rwhrt delay_R 0;\rwhrt delay_route 0;\rwhrt depth 0.5;\rwhrt poles 8;\rwhrt feedback 0.5;\rwhrt tilt 0;\rwhrt pitch 0;\rwhrt freq_shift 0;\rwhrt pitch_mode 0;\rwhrt decay_time 1;\rwhrt pre_mix 0.3;\rwhrt pre_size 0.7;\rwhrt pre_damping 0.5;\rwhrt blend 0.5;\rwhrt morph_mode 0;\rwhrt post_mix 0.3;\rwhrt post_size 0.7;\rwhrt post_damping 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2143,7 +2143,7 @@
                         230,
                         126.0
                     ],
-                    "text": ";\rwhtest-remote pitch 12;\rwhtest-remote pitch_mode 0;\rwhtest-remote pre_mix 0.6;\rwhtest-remote pre_size 1;\rwhtest-remote blend 0.6;\rwhtest-remote post_mix 0.5;\rwhtest-remote post_size 0.9",
+                    "text": ";\rwhrt pitch 12;\rwhrt pitch_mode 0;\rwhrt pre_mix 0.6;\rwhrt pre_size 1;\rwhrt blend 0.6;\rwhrt post_mix 0.5;\rwhrt post_size 0.9",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2181,7 +2181,7 @@
                         230,
                         111.0
                     ],
-                    "text": ";\rwhtest-remote freq_shift 7;\rwhtest-remote poles 24;\rwhtest-remote feedback 0.7;\rwhtest-remote depth 0.8;\rwhtest-remote tilt 0.4;\rwhtest-remote blend 0.8",
+                    "text": ";\rwhrt freq_shift 7;\rwhrt poles 24;\rwhrt feedback 0.7;\rwhrt depth 0.8;\rwhrt tilt 0.4;\rwhrt blend 0.8",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2219,7 +2219,7 @@
                         230,
                         81.0
                     ],
-                    "text": ";\rwhtest-remote delay_route 1;\rwhtest-remote delay_L 12;\rwhtest-remote delay_R 31;\rwhtest-remote blend 0.5",
+                    "text": ";\rwhrt delay_route 1;\rwhrt delay_L 12;\rwhrt delay_R 31;\rwhrt blend 0.5",
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
@@ -2663,7 +2663,7 @@
                         2
                     ],
                     "midpoints": [
-                        1011.5,
+                        980.0,
                         298.5,
                         1081.0,
                         298.5
