@@ -73,6 +73,14 @@
         "wormhole.maxpat",
         "wormhole-test.maxpat"
       ]
+    },
+    {
+      "version": "1.4.1",
+      "description": "add wormhole-remote-test.maxpat: min/default/max remote grid for all 19 controls, reset-all + 3 presets, snapshot recall steps",
+      "timestamp": "2026-10-01T00:50:09.926233+00:00",
+      "files_changed": [
+        "wormhole-remote-test.maxpat"
+      ]
     }
   ]
 }
