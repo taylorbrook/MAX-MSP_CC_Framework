@@ -312,7 +312,7 @@ def check_domain_values() -> ValidationResult:
 
 
 def check_min_version_range() -> ValidationResult:
-    """min_version is int >= 4 and <= 9."""
+    """min_version is a number >= 4 and < 10 (any Max 4-9 release, e.g. 8.1, 9.2)."""
     r = ValidationResult("min_version_range")
     errors = []
     for domain in CORE_DOMAIN_DIRS:
@@ -326,17 +326,13 @@ def check_min_version_range() -> ValidationResult:
             elif not isinstance(mv, (int, float)):
                 errors.append(f"{domain}/{name}: min_version type={type(mv).__name__}")
             else:
-                v = int(mv) if isinstance(mv, float) and mv == int(mv) else mv
-                # Allow float versions like 8.1 for MC objects
-                if isinstance(mv, float):
-                    if mv < 4 or mv > 9:
-                        errors.append(f"{domain}/{name}: min_version={mv}")
-                elif isinstance(mv, int):
-                    if mv < 4 or mv > 9:
-                        errors.append(f"{domain}/{name}: min_version={mv}")
+                # Point releases are legal: 8.1 for MC objects, 9.2 for the
+                # objects new in Max 9.2 (quick-261001-hwb).
+                if mv < 4 or mv >= 10:
+                    errors.append(f"{domain}/{name}: min_version={mv}")
     if errors:
         return r.failed(f"{len(errors)} out of range", errors[:10])
-    return r.passed("all min_version in [4, 9]")
+    return r.passed("all min_version in [4, 10)")
 
 
 def check_max9_objects() -> ValidationResult:

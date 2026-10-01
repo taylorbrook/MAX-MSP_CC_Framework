@@ -4575,6 +4575,40 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "dspstress~": {
+    "name": "dspstress~",
+    "maxclass": "newobj",
+    "module": "msp",
+    "domain": "MSP",
+    "category": "",
+    "digest": "",
+    "description": "",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Specify cpu usage % here",
+        "hot": true
+      }
+    ],
+    "outlets": [],
+    "arguments": [],
+    "messages": [
+      "int",
+      "float",
+      "signal"
+    ],
+    "attributes": {},
+    "seealso": [
+      "bogus"
+    ],
+    "tags": [],
+    "min_version": 9.2,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "dsptime~": {
     "name": "dsptime~",
     "maxclass": "dsptime~",

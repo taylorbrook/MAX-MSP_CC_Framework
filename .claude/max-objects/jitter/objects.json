@@ -20640,6 +20640,262 @@
     "variable_io": false,
     "rnbo_compatible": false
   },
+  "jit.web": {
+    "name": "jit.web",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter",
+    "digest": "Render a web browser to a GL texture or matrix",
+    "description": "Embeds a Chromium (CEF) browser engine for offscreen web rendering. Renders HTML/CSS/JavaScript content including WebGL and WebGPU to a jit.matrix or jit.gl.texture for use in the Jitter GL pipeline. Supports mouse and keyboard interaction, and transparent backgrounds.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages and attributes",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "texture or matrix output"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "int",
+      "float",
+      "list",
+      "anything",
+      "back",
+      "forward",
+      "keydown",
+      "keyup",
+      "(mouse)",
+      "mousemove",
+      "mousescroll",
+      "readfile",
+      "reload"
+    ],
+    "attributes": {
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "consolelog": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dim": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fps": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "texture_name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "ui_listen": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "ui_priority": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "url": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.web~",
+      "jweb",
+      "jweb~",
+      "jit.world",
+      "jit.gl.texture"
+    ],
+    "tags": [
+      "Jitter Graphics Web"
+    ],
+    "min_version": 9.2,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
+  "jit.web~": {
+    "name": "jit.web~",
+    "maxclass": "newobj",
+    "module": "jit",
+    "domain": "Jitter",
+    "category": "Jitter",
+    "digest": "Render a web browser to a GL texture or matrix with audio output",
+    "description": "Embeds a Chromium (CEF) browser engine for offscreen web rendering with stereo audio output. Renders HTML/CSS/JavaScript content including WebGL and WebGPU to a jit.matrix or jit.gl.texture for use in the Jitter GL pipeline. Audio from the web page (e.g. Web Audio API, HTML5 audio/video) is streamed to the signal outlets. Supports mouse and keyboard interaction, and transparent backgrounds.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "Messages and attributes",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio Output"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Audio Output"
+      },
+      {
+        "id": 2,
+        "type": "matrix",
+        "signal": false,
+        "digest": "texture or matrix output"
+      },
+      {
+        "id": 3,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "int",
+      "float",
+      "list",
+      "anything",
+      "back",
+      "forward",
+      "keydown",
+      "keyup",
+      "(mouse)",
+      "mousemove",
+      "mousescroll",
+      "mute",
+      "readfile",
+      "reload"
+    ],
+    "attributes": {
+      "automatic": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "consolelog": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dim": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "drawto": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "fixed_delta": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "fps": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "latency": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "texture_name": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "ui_listen": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "ui_priority": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "url": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "jit.web",
+      "jweb",
+      "jweb~",
+      "jit.world",
+      "jit.gl.texture"
+    ],
+    "tags": [
+      "Jitter Graphics Web MSP"
+    ],
+    "min_version": 9.2,
+    "verified": true,
+    "variable_io": false,
+    "rnbo_compatible": false
+  },
   "jit.window": {
     "name": "jit.window",
     "maxclass": "jit.window",
