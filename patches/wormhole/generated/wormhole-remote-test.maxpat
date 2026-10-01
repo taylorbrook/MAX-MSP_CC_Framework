@@ -494,8 +494,8 @@
                     "numinlets": 3,
                     "numoutlets": 2,
                     "outlettype": [
-                        "",
-                        ""
+                        "signal",
+                        "signal"
                     ],
                     "patching_rect": [
                         30,
