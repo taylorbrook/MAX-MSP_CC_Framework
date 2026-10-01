@@ -6,6 +6,7 @@ Covers requirements:
   RW-06: All user state preserved on edit (colors, positions, attrs)
 """
 
+import copy
 import json
 import pathlib
 import re
@@ -14,6 +15,7 @@ import pytest
 
 from src.maxpat.patcher import Patcher, Box, Patchline
 from src.maxpat.hooks import detect_indent
+from src.maxpat.validation import validate_patch
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -298,6 +300,61 @@ class TestPatchlineAttrs:
             f"Original: {json.dumps(orig_line, indent=2)}\n"
             f"Result:   {json.dumps(result_line, indent=2)}"
         )
+
+
+# ---------------------------------------------------------------------------
+# TestUnknownKeyTolerance -- MAX92-06: keys a newer Max adds are tolerated
+# ---------------------------------------------------------------------------
+
+# Deliberately synthetic. Max 9.2 can put patch cords in the background layer,
+# but no patch saved by 9.2 with such a cord has been observed, so the real
+# JSON key is unknown and must not be guessed (quick-261001-hwb). What matters
+# is that ANY key this repo does not model survives load, save and validation.
+_SYNTHETIC_KEY = "zz_synthetic_unknown_key_quick_261001_hwb"
+
+
+class TestUnknownKeyTolerance:
+    """Unmodelled keys on a patchline, a box and the patcher are preserved."""
+
+    @staticmethod
+    def _patch_with_unknown_keys() -> dict:
+        patch = copy.deepcopy(_load_fixture("colored_patchlines.maxpat"))
+        patcher = patch["patcher"]
+        patcher[_SYNTHETIC_KEY] = {"level": "patcher"}
+        patcher["boxes"][0]["box"][_SYNTHETIC_KEY] = [1, "box"]
+        patcher["lines"][0]["patchline"][_SYNTHETIC_KEY] = 1
+        return patch
+
+    def test_unknown_keys_survive_round_trip_and_validation(self):
+        """from_dict -> to_dict is identity, and validate_patch neither strips
+        the line nor raises an error naming the unknown key."""
+        original = self._patch_with_unknown_keys()
+        pristine = copy.deepcopy(original)
+
+        result = Patcher.from_dict(original).to_dict()
+
+        assert result == pristine, "unknown keys changed the round-trip output"
+        assert result["patcher"][_SYNTHETIC_KEY] == {"level": "patcher"}
+        assert result["patcher"]["boxes"][0]["box"][_SYNTHETIC_KEY] == [1, "box"]
+        assert result["patcher"]["lines"][0]["patchline"][_SYNTHETIC_KEY] == 1
+
+        # validate_patch mutates the dict it is given (it strips lines it
+        # rejects), so it runs on a deep copy and the copy is inspected.
+        validated = copy.deepcopy(pristine)
+        findings = validate_patch(validated)
+
+        assert len(validated["patcher"]["lines"]) == len(pristine["patcher"]["lines"]), (
+            "validation removed a patchline that carries an unknown key"
+        )
+        assert validated["patcher"]["lines"][0]["patchline"][_SYNTHETIC_KEY] == 1
+        assert validated["patcher"]["boxes"][0]["box"][_SYNTHETIC_KEY] == [1, "box"]
+        assert validated["patcher"][_SYNTHETIC_KEY] == {"level": "patcher"}
+
+        naming = [
+            f for f in findings
+            if f.level == "error" and _SYNTHETIC_KEY in f.message
+        ]
+        assert naming == [], f"validation errors name the unknown key: {naming}"
 
 
 # ---------------------------------------------------------------------------

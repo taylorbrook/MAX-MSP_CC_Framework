@@ -9,13 +9,13 @@ The object knowledge base lives at `.claude/max-objects/` with one subdirectory 
 ```
 .claude/max-objects/
   max/objects.json       # Control flow, data, UI (473 objects)
-  msp/objects.json       # Audio/signal processing (246 objects)
-  jitter/objects.json    # Video, matrix, OpenGL (218 objects)
+  msp/objects.json       # Audio/signal processing (247 objects)
+  jitter/objects.json    # Video, matrix, OpenGL (222 objects)
   mc/objects.json        # Multichannel wrappers (222 objects)
   gen/objects.json       # Gen~ DSP and Jitter operators (189 objects)
   m4l/objects.json       # Max for Live objects (35 objects)
   rnbo/objects.json      # RNBO export-compatible objects (560 objects)
-  packages/<Package>/objects.json  # Package objects, one dir per package (29 packages, 1489 objects)
+  packages/<Package>/objects.json  # Package objects, one dir per package (29 packages, 1496 objects)
 ```
 
 Each domain file is a JSON object keyed by object name. Every object entry contains: `name`, `maxclass`, `module`, `domain`, `inlets` (array with id/type/signal/hot), `outlets` (array with id/type/signal), `arguments`, `messages`, `min_version`, `verified`, `rnbo_compatible`, `variable_io`.
@@ -52,9 +52,11 @@ db.get_outlet_types("cycle~")                      # ["signal"]
 
 **The `maxclass` field in the DB is NOT authoritative.** Most MAX objects (`gen~`, `click~`, `expr`, `expr~`, `pack`, `route`, etc.) use `maxclass: "newobj"` with the object name in the `text` field. Only true UI widgets (`button`, `toggle`, `dial`, `meter~`, `gain~`, `ezdac~`, `flonum`, `number`, `scope~`, `spectroscope~`, `levelmeter~`, `multislider`, etc.) use their own name as `maxclass` with no `text` field. The authoritative source is `UI_MAXCLASSES` in `src/maxpat/maxclass_map.py`, NOT the database's `maxclass` field. Setting `maxclass` to a non-UI name causes "invalid attribute maxclass" errors at load.
 
-**The authoritative object name is the refpage's `<c74object name>` attribute, never the filename.** 808 of 1932 bundled refpages disagree: `bitand.maxref.xml` documents `&`, `greaterthan.maxref.xml` documents `>`, `fswap.maxref.xml` documents `swap`, `gswitch2.maxref.xml` documents `ggate`. Any extraction or audit keyed off filenames manufactures ~795 phantom "missing from DB" gaps; keyed off the `name` attribute, only 9 installed names fail to resolve.
+**The authoritative object name is the refpage's `<c74object name>` attribute, never the filename.** 808 of 1935 bundled refpages disagree: `bitand.maxref.xml` documents `&`, `greaterthan.maxref.xml` documents `>`, `fswap.maxref.xml` documents `swap`, `gswitch2.maxref.xml` documents `ggate`. Any extraction or audit keyed off filenames manufactures ~795 phantom "missing from DB" gaps; keyed off the `name` attribute, only 7 installed names fail to resolve. **Exception — define-mapped objects:** an object created by a `max define ALIAS TARGET ...;` line in the bundle's `*objectmappings*.txt` files can ship a refpage whose `name` attribute is the implementing class or a typo. Two Max 9.2 cases: `jit.gl.tex2mat.maxref.xml` declares `v8` (the alias is `max define jit.gl.tex2mat v8 jit.gl.tex2mat.js;`) and `jit.unpack.geomat.maxref.xml` declares `jit.unpackl.gl`. For these the alias IS the object name, and the refpage must never be merged into the object its `name` attribute points at (it would write Jitter Tools documentation into core `v8`).
 
-**Refpages are authoritative for I/O counts far more than for types, and must never overwrite expert overrides.** 640 of 1175 core refpages (54.5%) carry unfilled Cycling '74 template placeholders — `TEXT_HERE`, `INLET_TYPE`, `OUTLET_TYPE`, `undefined`, `Dummy` — with `max-ref` worst at 429/473. `spectroscope~`'s maxref declares 1 outlet typed `OUTLET_TYPE`; `in`'s declares 1 inlet described `Dummy`. Both are wrong and both are already corrected in `overrides.json`. A re-extraction that trusts refpage types would silently revert 36 curated outlets.
+**Refpages are authoritative for I/O counts far more than for types, and must never overwrite expert overrides.** 640 of 1175 core refpages (54.5%) carry unfilled Cycling '74 template placeholders — `TEXT_HERE`, `INLET_TYPE`, `OUTLET_TYPE`, `undefined`, `Dummy` — with `max-ref` worst at 429/473. `spectroscope~`'s maxref declares 1 outlet typed `OUTLET_TYPE`; `in`'s declares 1 inlet described `Dummy`. Both are wrong and both are already corrected in `overrides.json`. Max 9.2's `jit.web~` refpage types all four outlets `signal`; the help-patch box Max itself serialized says `signal, signal, jit_matrix, ""` — when a refpage and a shipped help box disagree on types, the help box wins. A re-extraction that trusts refpage types would silently revert 36 curated outlets.
+
+**After a Max update, re-sync the DB from the installed bundle:** run `python3 tools/audit_db.py` (read-only drift report), then `python3 tools/sync_max_bundle.py` (dry-run: new objects, define aliases, message/attribute deltas), then `--apply new|define --names <explicit names>` and `--apply deltas`. The sync tool is additive and idempotent, never changes existing I/O, and cannot write `overrides.json`. Last synced against Max 9.2.0.
 
 ## Rules
 
@@ -191,6 +193,7 @@ Set the patcher-level **`bgcolor`** key, not just `editing_bgcolor`/`locked_bgco
 - Multichannel: `mc.` prefix objects handle multiple channels -- use `mc.pack~`/`mc.unpack~` to convert between MC and individual channels
 - `line~` (signal-rate) **replaces** the active ramp on every new message. For multi-segment envelopes send a single space-delimited list (`$1 $2 0. $3` -- no comma). Comma-separated segments arrive as separate messages in the same scheduler tick and only the last takes effect (envelope never opens). Control-rate `line` queues comma-segments correctly; `line~` does not.
 - `buffer~` has no `info` query and bare attribute names (`sizeinsamps`, `samplerate`) are setters, not getters. To read buffer contents/size, bridge through `fluid.buf2list` (FluCoMa: `buffer <name>` then `bang`) or `jit.buffer~` + `jit.matrixinfo` for dimensions, or drive `peek~` with `uzi N` when an upper bound on length is known. The right outlet only emits state after operations like `read`.
+- Max 9.2 adds to `buffer~` the messages `replacechannel` / `replacechannel_samples` (copy a channel within the buffer or from a file), `trim` / `trim_samples` (strip leading/trailing silence, optional padding) and the `url` attribute. All are 9.2-only and in the DB; exact argument forms are in `.claude/skills/references/max-9.2-changes.md`. The retain-contents argument the release notes describe for `setsize` / `sizeinsamps` is NOT in the 9.2 refpage — untested, do not generate it. The rule above is unchanged.
 - If a control connection from an MSP object's non-primary outlet gets stripped by validation, the DB likely mis-marks that outlet as signal (bulk-extraction bug — many MSP right outlets are actually bangs/floats/indices). Fix the outlet types in `overrides.json` rather than rerouting the patch.
 - `expr` and `expr~` do NOT have a `clip()` function. Use `min(max(x, lo), hi)` instead. `expr clip($f1, 0., 1.)` errors with "function clip not found".
 - `floor~` is RNBO-only. In standard MSP use `trunc~` (equivalent for non-negative input -- covers `phasor * N` use cases). For signed input or true floor semantics, do the math in a Gen~ codebox where `floor` is native. Always check `domain` on DB lookups before using a tilde object at the top level.
@@ -223,6 +226,7 @@ Set the patcher-level **`bgcolor`** key, not just `editing_bgcolor`/`locked_bgco
   - **For loops: single, non-nested, CONSTANT bounds** (`for (i = 0; i < 600; i += 1)`), with a variable inner guard (`if (i < win) { ... }`) when the effective range is runtime-dependent. No confirmed-working codebox uses variable loop bounds or nested loops (the two patches that did — scala-synth, spectraldetector v0.1.x — both failed to compile).
   - **Amortize heavy scans across samples** instead of bursting inside one sample: keep a `History` cursor (e.g. one autocorrelation lag evaluated per sample) and publish the result when the cursor wraps. Same average CPU as a per-hop burst, no CPU spike, and it avoids the nested-loop pattern entirely.
   - Caveat: v0.2.0 fixed tabs + loops + else in one pass, so causes are not individually isolated — treat the full set as the proven-safe pattern. A minimal bisect codebox is the next diagnostic step if a codebox ever fails with this generic error again.
+- **Max 9.2's Gen compiler fixes do NOT retire any rule above.** The 9.2 release notes describe fixes to dead-code elimination, constant folding, variable collapsing and aliasing, and an improved `require` — plausibly the cause of some hoisting/aliasing failures listed here — but no rule in this section has been re-tested on 9.2, and patches must still compile on collaborators' older 9.x builds. Every workaround (de-hoisting via `History one(1)`, no local aliases in Param-only expressions, the codebox safe-construct set, constant-name avoidance, declaration ordering) stays in force until it is individually re-verified in MAX and that result is recorded here.
 
 ### Subpatcher Inlet/Outlet Access
 
@@ -270,6 +274,8 @@ inner.add_connection(some_box, 0, inlets[2], 0)
 - `post('message')` for console output
 - Access patcher: `this.patcher.getnamed('object_name')`
 - Use for: UI logic, data transformation, algorithmic composition, anything needing scripted control
+- **`js` vs `v8`:** the installed refpages describe `js` / `jsui` as the Legacy Engine (ECMAScript 5) and `v8` / `v8ui` / `v8.codebox` as the Modern Engine (ECMAScript 6+). All five are in the DB; modern syntax (`const`, arrow functions, `async`) belongs in the `v8` family.
+- **Max 9.2 `v8` additions (9.2-only, `v8` family, not `js`):** networking workalikes (`fetch`, `require('http')`, `require('net')`, `require('dgram')`, `WebSocket` / `WebSocketServer`, `XMLHttpRequest`), `console.log` / `console.error`, and the `MaxFFT` / `MaxFFT2D` classes — all shown in the bundled examples under `Examples/javascript/v8-network` and `v8-fft`. In v8 `Buffer` is Max's audio buffer; byte buffers are `IOBuffer`. Native timers (`setTimeout`, `setInterval`) and `toJSON()` on Dict / MaxArray / MaxString are release-notes-only and untested (the bundled user guide still says timers are unavailable) — keep using `Task`. Generate network clients/servers only when the task asks for them. Details and evidence: `.claude/skills/references/max-9.2-changes.md`.
 
 ### Max for Live (M4L / .amxd)
 
@@ -304,6 +310,8 @@ All patches target MAX 9. This is the required version for all projects -- do no
 - Check `min_version` field before using objects
 - MAX 9 objects (`array.*`, `string.*`, `abl.*`): only available in MAX 9+
 - MC objects (`mc.*`): available from MAX 8.1+
+- MAX 9.2 objects (`min_version: 9.2`): `dspstress~`, `jit.web`, `jit.web~`, `jit.gl.web`, `jit.gl.web~`, `jit.message`, `jit.path.ui`, `jit.unpack.geomat`, `jit.gl.tex2mat`, `abl.device.reverb2~`, `abl.device.stereocompressor~`, `abl.dsp.djfilter~`
+- Messages and attributes added in 9.2 (e.g. `buffer~` `trim`, `udpsend` `@port` / `@host` / `@active`, `coll` `minany`) are NOT version-tagged in the DB — the schema stores plain name lists. They are listed in `.claude/skills/references/max-9.2-changes.md`. A patch meant to open on an older 9.x build must avoid both the 12 objects and those messages/attributes.
 
 ## Bpatcher and Abstraction Arguments (`#N` Substitution)
 

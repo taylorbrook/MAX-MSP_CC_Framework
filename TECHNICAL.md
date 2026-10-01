@@ -72,19 +72,19 @@ The knowledge base lives at `.claude/max-objects/` with one JSON file per domain
 
 | File | Domain | Objects | Coverage |
 |------|--------|---------|----------|
-| `max/objects.json` | Control, data, UI, MIDI, OSC | 471 | Core MAX objects |
-| `msp/objects.json` | Audio, signal processing | 246 | All MSP~ objects |
-| `jitter/objects.json` | Video, matrix, OpenGL | 218 | Jitter pipeline |
+| `max/objects.json` | Control, data, UI, MIDI, OSC | 473 | Core MAX objects |
+| `msp/objects.json` | Audio, signal processing | 247 | All MSP~ objects |
+| `jitter/objects.json` | Video, matrix, OpenGL | 222 | Jitter pipeline |
 | `mc/objects.json` | Multichannel wrappers | 222 | MC signal routing |
 | `gen/objects.json` | Gen~ DSP operators | 189 | GenExpr operators |
 | `m4l/objects.json` | Max for Live | 35 | Live API objects |
 | `rnbo/objects.json` | RNBO export-compatible | 560 | Export-safe subset |
 
-**Core domains: 1,941 objects across 7 files.**
+**Core domains: 1,948 objects across 7 files.**
 
-Package objects no longer live in a single `packages/objects.json`. As of v4.0 package integration they are stored as **29 per-package files** under `.claude/max-objects/packages/<Name>/objects.json` (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more), totaling **1,489 objects** with per-package source tracking.
+Package objects no longer live in a single `packages/objects.json`. As of v4.0 package integration they are stored as **29 per-package files** under `.claude/max-objects/packages/<Name>/objects.json` (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more), totaling **1,496 objects** with per-package source tracking.
 
-**Grand total: 3,430 objects** (1,941 core + 1,489 package).
+**Grand total: 3,444 objects** (1,948 core + 1,496 package).
 
 ### Object Entry Schema
 

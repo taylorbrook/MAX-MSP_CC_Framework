@@ -54,11 +54,22 @@ Before any generation:
 |---------|-------------------|----------------|
 | Module system | CommonJS (require) | None (global scope) |
 | MAX communication | maxAPI.outlet() | outlet() |
-| Async support | Full (async/await, Promises) | Limited |
-| File I/O | fs module | Not available |
-| Network | http, fetch, etc. | Not available |
+| Async support | Full (async/await, Promises) | `v8` family: `async`/`await` and Promises (used by the bundled Max 9.2 fetch example). `js`: Legacy Engine, ECMAScript 5. Timing: `Task`; native `setTimeout`/`setInterval` are release-notes-only for 9.2 and untested |
+| File I/O | fs module | `File` / `Folder` classes (bundled `Examples/javascript/file`). Node's `fs` is not among the Max 9.2 additions |
+| Network | http, fetch, etc. | **Max 9.2, `v8` family only:** `fetch`, `require('http')`, `require('net')`, `require('dgram')`, `WebSocket` / `WebSocketServer`; `XMLHttpRequest` was rewritten in 9.2. Use `node.script` for older builds |
 | Patcher access | Via maxAPI | this.patcher |
 | Best for | Data processing, I/O, network | UI logic, algorithmic control |
+
+### Max 9.2 additions (`v8` family)
+
+Read `.claude/skills/references/max-9.2-changes.md` (section "v8") before writing code against any of these. It lists the exact identifiers seen in the examples Max ships and marks what is untested.
+
+- **Which object:** the installed refpages call `js` / `jsui` the Legacy Engine (ECMAScript 5) and `v8` / `v8ui` / `v8.codebox` the Modern Engine (ECMAScript 6+). The 9.2 additions are shown only in the `v8` family. The "js (V8 object)" column above covers both; modern syntax and every 9.2 API need a `v8` object.
+- **Shown in bundled examples:** `fetch`, `http`, `net` (TCP), `dgram` (UDP), `WebSocket` / `WebSocketServer`, `XMLHttpRequest`, `console.log` / `console.error`, `MaxFFT`, `MaxFFT2D`. In v8 `Buffer` is Max's audio buffer — byte buffers are `IOBuffer`.
+- **Release notes only, untested:** native timers (`setTimeout`, `setInterval`), `toJSON()` on Dict / MaxArray / MaxString, named pipes. Keep using `Task` for timing until confirmed in MAX.
+- **Older builds:** all of the above needs Max 9.2. `node.script` remains the choice when a patch must also run on an older build.
+- **Network code is opt-in:** generate network clients or servers only when the task explicitly asks for them — a server opened from a patch listens on the user's machine.
+- The generator and validator functions listed above are unchanged by 9.2.
 
 ### Control-Rate Fan-Out
 - **MUST** use `trigger` (t) for any control-rate outlet that fans out to 2+ destinations in the .maxpat wiring around js/node.script boxes
