@@ -20,7 +20,8 @@ Sections
 --------
 ``install``             installed Max version + refpage roots (Info.plist)
 ``db_age``              extraction timestamp age + per-domain count drift
-``missing_from_db``     refpage object names ObjectDatabase.lookup() misses
+``missing_from_db``     refpage object names ObjectDatabase.lookup() misses,
+                        plus what filename keying would have reported
 ``absent_from_bundle``  core-domain DB names with no installed refpage;
                         ``max define`` aliases are listed apart, not counted
 ``empty_io``            audit_empty_io() / audit_half_empty_io() + refpage flag
@@ -374,8 +375,11 @@ def build_refpage_index(install: dict) -> dict:
     the filename stem (with ``.maxref`` stripped) only when the attribute is
     absent or empty -- mirroring ``parse_standard_xml`` in
     ``.claude/scripts/extract_objects.py``. Keying on the filename instead
-    manufactures ~795 phantom gaps (SF-07), so ``name_vs_filename_differs``
-    is emitted as this harness's own self-check that it is keyed correctly.
+    manufactures hundreds of phantom gaps (SF-07), so
+    ``name_vs_filename_differs`` is emitted as this harness's own self-check
+    that it is keyed correctly, and ``stems`` (filename stem -> the name that
+    file is indexed under) lets ``audit_missing_from_db`` recompute the
+    phantom-gap figure.
 
     One exception, the sync tool's rule: a refpage whose filename stem is a
     ``max define`` alias documents that alias even when its name attribute
@@ -395,6 +399,7 @@ def build_refpage_index(install: dict) -> dict:
         }
 
     objects: dict[str, dict] = {}
+    stems: dict[str, str] = {}
     parse_errors: list[dict] = []
     unreadable_roots: list[dict] = []
     alias_documents: list[dict] = []
@@ -430,6 +435,7 @@ def build_refpage_index(install: dict) -> dict:
                         {"alias": stem, "name_attribute": attr, "file": str(path)}
                     )
                     name = stem
+            stems.setdefault(stem, name)
             inletlist = element.find("inletlist")
             outletlist = element.find("outletlist")
             objects.setdefault(
@@ -448,11 +454,13 @@ def build_refpage_index(install: dict) -> dict:
         "files_scanned": files_scanned,
         "object_count": len(objects),
         "name_vs_filename_differs": name_differs,
+        "filename_stems": len(stems),
         "alias_documents": alias_documents,
         "define_alias_count": len(defines),
         "parse_errors": parse_errors,
         "unreadable_roots": unreadable_roots,
         "objects": objects,
+        "stems": stems,
         "defines": defines,
     }
 
@@ -479,11 +487,22 @@ def audit_missing_from_db(refpages: dict, db: ObjectDatabase) -> dict:
 
     Against a matched bundle this is single-digit. A result in the hundreds
     means the name derivation regressed to filename keying (SF-07).
+
+    ``filename_keyed`` reports what that regression would cost, so the figure
+    quoted in CLAUDE.md can be recomputed: ``unresolved_count`` is the number
+    of distinct refpage filename stems lookup() cannot resolve, and
+    ``phantom_count`` is how many of those belong to a file whose indexed name
+    does resolve -- gaps that exist only because of the keying.
     """
     if not refpages.get("available"):
         return _unavailable(refpages.get("reason", "refpage index unavailable"))
     resolved = _lookup_many(db, refpages["objects"])
     names = sorted(n for n, obj in resolved.items() if obj is None)
+
+    stems = refpages.get("stems", {})
+    stem_resolved = _lookup_many(db, stems)
+    unresolved_stems = sorted(s for s, obj in stem_resolved.items() if obj is None)
+    phantom = [s for s in unresolved_stems if resolved.get(stems[s]) is not None]
     return {
         "available": True,
         "count": len(names),
@@ -493,6 +512,12 @@ def audit_missing_from_db(refpages: dict, db: ObjectDatabase) -> dict:
             "c74object@name attribute (filename stem as fallback, and for "
             "`max define` alias documents)"
         ),
+        "filename_keyed": {
+            "stems_checked": len(stems),
+            "unresolved_count": len(unresolved_stems),
+            "phantom_count": len(phantom),
+            "phantom_stems": phantom,
+        },
     }
 
 
@@ -863,7 +888,7 @@ def run_audit(
     # Index payload is large and redundant with the sections above; keep only
     # its provenance + self-check counters in the emitted document.
     refpage_meta = {
-        k: v for k, v in refpages.items() if k not in ("objects", "defines")
+        k: v for k, v in refpages.items() if k not in ("objects", "stems", "defines")
     }
 
     return {
@@ -916,7 +941,9 @@ def format_summary(report: dict) -> str:
         "  missing from DB : "
         + _headline(
             s["missing_from_db"],
-            lambda x: f"{x['count']} refpage names unresolved",
+            lambda x: f"{x['count']} refpage names unresolved (keyed by filename: "
+            f"{x['filename_keyed']['unresolved_count']} unresolved, "
+            f"{x['filename_keyed']['phantom_count']} phantom)",
         ),
         "  absent from Max : "
         + _headline(

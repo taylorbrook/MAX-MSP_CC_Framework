@@ -238,8 +238,8 @@ class TestRefpageIndex:
         assert index["objects"] == {}
 
 
-# ── package layouts and define aliases ────────────────────────────
-# (quick-261001-hwb follow-up DEF-hwb-11)
+# ── package layouts, define aliases, filename-keying figures ──────
+# (quick-261001-hwb follow-ups DEF-hwb-11 and DEF-hwb-25)
 
 
 def _object_xml(name: str) -> str:
@@ -364,6 +364,40 @@ class TestDefineAliases:
         )
         assert "1 DB names with no refpage" in line
         assert "+1 define-mapped" in line
+
+
+class TestFilenameKeyingFigures:
+    def test_phantom_gaps_are_stems_whose_indexed_name_resolves(self, tmp_path: Path) -> None:
+        from src.maxpat.db_lookup import ObjectDatabase
+
+        app = _make_fake_bundle(tmp_path)
+        db_root = _fake_db(tmp_path, ["&"])
+        index = audit_db.build_refpage_index(audit_db.audit_install(app))
+        section = audit_db.audit_missing_from_db(index, ObjectDatabase(db_root=db_root))
+        # Keyed by name attribute: only `noname` is unresolved.
+        assert section["names"] == ["noname"]
+        keyed = section["filename_keyed"]
+        assert keyed["stems_checked"] == 2
+        # Keyed by filename: `bitand` and `noname` both fail ...
+        assert keyed["unresolved_count"] == 2
+        # ... but only `bitand` is manufactured by the keying.
+        assert keyed["phantom_count"] == 1
+        assert keyed["phantom_stems"] == ["bitand"]
+
+    def test_figures_reach_the_summary_and_the_json(self, tmp_path: Path) -> None:
+        app = _make_fake_bundle(tmp_path)
+        db_root = _fake_db(tmp_path, ["&"])
+        report = audit_db.run_audit(
+            repo_root=db_root.parent.parent, db_root=db_root, max_app=app
+        )
+        summary = audit_db.format_summary(report)
+        assert "1 name!=filename" in summary
+        assert "keyed by filename: 2 unresolved, 1 phantom" in summary
+        meta = report["refpage_index"]
+        assert meta["files_scanned"] == 2
+        assert meta["filename_stems"] == 2
+        # The bulky lookup tables stay out of the emitted document.
+        assert not {"objects", "stems", "defines"} & set(meta)
 
 
 # ── write guard (T-knq-01) ────────────────────────────────────────
