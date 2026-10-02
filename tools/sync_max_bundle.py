@@ -43,6 +43,7 @@ Usage
     python3 tools/sync_max_bundle.py --json /tmp/sync.json   # + full JSON
     python3 tools/sync_max_bundle.py --apply new --names dspstress~ jit.web
     python3 tools/sync_max_bundle.py --apply define --names jit.gl.web jit.gl.tex2mat
+    python3 tools/sync_max_bundle.py --apply define --names OLD.ALIAS --min-version 8
     python3 tools/sync_max_bundle.py --apply deltas
     python3 tools/sync_max_bundle.py --snapshot-io /tmp/io.json
     python3 tools/sync_max_bundle.py --compare-io /tmp/io.json
@@ -1436,10 +1437,33 @@ def update_package_counts(db_root: Path, packages: set[str]) -> list[str]:
     return changed
 
 
+def parse_min_version(text: str) -> int | float:
+    """`--min-version` value: a Max major (`8`) or major.minor (`9.2`), 4 <= v < 10.
+
+    Whole numbers stay ints, matching how the DB stores them.
+    """
+    if not re.fullmatch(r"\d+(\.\d+)?", text.strip()):
+        raise argparse.ArgumentTypeError(f"not a Max version: {text!r}")
+    value = float(text)
+    if not 4 <= value < 10:
+        raise argparse.ArgumentTypeError(f"outside the supported range 4 <= v < 10: {text!r}")
+    return int(value) if value == int(value) else value
+
+
 def apply_objects(
-    modes: list[str], names: list[str], index: dict, db_root: Path
+    modes: list[str],
+    names: list[str],
+    index: dict,
+    db_root: Path,
+    min_version: int | float | None = None,
 ) -> list[dict]:
-    """--apply new / --apply define: land explicitly named objects only."""
+    """--apply new / --apply define: land explicitly named objects only.
+
+    `min_version` replaces C5's default (the installed major.minor) on every
+    object landed by this call. It exists for objects the bundle has shipped
+    since an earlier release and the DB only now picks up: tagging those with
+    the installed version would claim they need it.
+    """
     db = load_db(db_root)
     raw_db = load_raw_db(db_root)
     classified = classify_refs(index, db, db_root)
@@ -1474,6 +1498,9 @@ def apply_objects(
             results.append(_abort(built, f"key set does not match any existing entry in {rel}"))
             continue
         entry = order_like(built.pop("entry"), template)
+        if min_version is not None:
+            entry["min_version"] = min_version
+            built["notes"]["min_version"] = f"{min_version} (explicit --min-version)"
         pending.setdefault(rel, {})[name] = entry
         built["status"] = "written"
         built["file"] = rel
@@ -1633,6 +1660,16 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Explicit allow-list of object names (mandatory for new and define).",
     )
+    parser.add_argument(
+        "--min-version",
+        type=parse_min_version,
+        default=None,
+        help=(
+            "min_version for the objects landed by --apply new / define "
+            "(default: the installed major.minor). Use for objects that predate "
+            "the installed Max."
+        ),
+    )
     parser.add_argument("--snapshot-io", default=None, help="Write an I/O snapshot of every DB name.")
     parser.add_argument(
         "--compare-io", default=None, help="Exit non-zero if any snapshotted name's I/O changed."
@@ -1664,6 +1701,9 @@ def main(argv: list[str] | None = None) -> int:
             file=sys.stderr,
         )
         return 2
+    if args.min_version is not None and not object_modes:
+        print("error: --min-version applies only to --apply new / --apply define.", file=sys.stderr)
+        return 2
     exit_code = 0
     applied: dict = {}
     index = build_bundle_index(args.max_app)
@@ -1675,7 +1715,9 @@ def main(argv: list[str] | None = None) -> int:
         else:
             try:
                 if object_modes:
-                    applied["objects"] = apply_objects(object_modes, args.names, index, db_root)
+                    applied["objects"] = apply_objects(
+                        object_modes, args.names, index, db_root, args.min_version
+                    )
                     if any(r["status"] == "aborted" for r in applied["objects"]):
                         exit_code = 1
                 if "deltas" in modes:

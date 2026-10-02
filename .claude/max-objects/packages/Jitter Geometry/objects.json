@@ -1238,6 +1238,66 @@
     "package": "Jitter Geometry",
     "rnbo_compatible": false
   },
+  "jit.geom.topoints": {
+    "name": "jit.geom.topoints",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "Converters",
+    "digest": "Convert geometry to a matrix of unique points",
+    "description": "The jit.geom.topoints op converts Jitter half-edge geometry to a jit.matrix containing unique point values. If texture coordinates and normals are present, they will be included as additional planes in the matrix according to the Jitter matrixoutput spec.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "geometry input",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "matrix",
+        "signal": false,
+        "digest": "converted matrix"
+      },
+      {
+        "id": 1,
+        "type": "control",
+        "signal": false,
+        "digest": "dumpout"
+      }
+    ],
+    "arguments": [],
+    "messages": [],
+    "attributes": {
+      "auto_normals": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "crease_angle": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
+    "seealso": [
+      "bogus"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Geometry",
+    "rnbo_compatible": false
+  },
   "jit.geom.twist": {
     "name": "jit.geom.twist",
     "maxclass": "newobj",

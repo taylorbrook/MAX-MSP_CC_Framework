@@ -8834,6 +8834,48 @@
     "package": "Jitter Tools",
     "rnbo_compatible": false
   },
+  "jit.gl.textureinfo": {
+    "name": "jit.gl.textureinfo",
+    "maxclass": "newobj",
+    "module": "max",
+    "domain": "Packages",
+    "category": "",
+    "digest": "Report texture planecount, type, dimensions",
+    "description": "jit.gl.textureinfo reports a given textures's planecount, type, and dim attributes in the form\n\t\t\n\t\tplanecount  number-of-planes \t\t\n\t\ttype  data-type \t\t\n\t\tdim  dimension0... dimensionN.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "jitgltextureinfo.js: Inlet 0",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "control",
+        "signal": false,
+        "digest": "jitgltextureinfo.js: Outlet 0"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "jit_gl_texture"
+    ],
+    "attributes": {},
+    "seealso": [
+      "jit.gl.texture",
+      "jit.fpsgui",
+      "jit.matrixinfo"
+    ],
+    "tags": [],
+    "min_version": 8,
+    "verified": true,
+    "variable_io": false,
+    "package": "Jitter Tools",
+    "rnbo_compatible": false
+  },
   "jit.gl.textureset": {
     "name": "jit.gl.textureset",
     "maxclass": "newobj",

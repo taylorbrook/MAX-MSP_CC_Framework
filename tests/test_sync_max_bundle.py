@@ -942,6 +942,34 @@ class TestApplyDefine:
         assert after == before
         assert not {"special", "dim", "cloneattr"} & (set(after["messages"]) | set(after["attributes"]))
 
+    def test_min_version_flag_tags_an_object_that_predates_the_install(
+        self, world: dict, tmp_path: Path
+    ) -> None:
+        """DEF-hwb-13: an older alias must not be tagged with the installed version."""
+        code, results = _results(
+            world, tmp_path, "--apply", "define", "--names", "jit.gl.fresh", "--min-version", "8"
+        )
+        assert code == 0
+        entry = _load(world, "jitter/objects.json")["jit.gl.fresh"]
+        assert entry["min_version"] == 8 and isinstance(entry["min_version"], int)
+        assert "explicit --min-version" in results["jit.gl.fresh"]["notes"]["min_version"]
+
+    def test_min_version_flag_keeps_a_point_release_as_a_float(self) -> None:
+        assert sync.parse_min_version("9.1") == 9.1
+        assert sync.parse_min_version("9") == 9
+
+    @pytest.mark.parametrize("bad", ["10", "3", "nine", "9.x", "-8"])
+    def test_min_version_flag_rejects_out_of_range_values(self, bad: str) -> None:
+        import argparse
+
+        with pytest.raises(argparse.ArgumentTypeError):
+            sync.parse_min_version(bad)
+
+    def test_min_version_flag_without_an_object_apply_is_refused(self, world: dict) -> None:
+        before = _tree_bytes(world["db_root"])
+        assert _run(world, "--apply", "deltas", "--min-version", "8") == 2
+        assert _tree_bytes(world["db_root"]) == before
+
     def test_define_apply_is_idempotent(self, world: dict) -> None:
         argv = ["--apply", "define", "--names", "jit.gl.fresh", "pkg.alias", "pkg.clone"]
         assert _run(world, *argv) == 0
