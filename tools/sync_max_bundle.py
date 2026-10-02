@@ -19,9 +19,11 @@ What this is, and is not
 * ``overrides.json`` is read only through ``ObjectDatabase``. The tool has no
   write path to it: :func:`write_db_file` -- the single function that writes
   into the DB tree -- accepts only the core domain object files, the
-  per-package object files and ``package_info.json``. The only other write
-  site is :func:`write_report` (``--json`` / ``--snapshot-io`` targets), which
-  refuses any path inside ``patches/`` or the DB tree.
+  per-package object files and ``package_info.json``. The other write sites
+  are :func:`write_report` (``--json`` / ``--snapshot-io`` targets), which
+  refuses any path inside ``patches/`` or the DB tree, and
+  :func:`write_extraction_log` (``--refresh-log``), which can only replace
+  ``<db-root>/extraction-log.json``.
 
 Sources of shape
 ----------------
@@ -52,6 +54,7 @@ Usage
     python3 tools/sync_max_bundle.py --apply define --names OLD.ALIAS --min-version 8
     python3 tools/sync_max_bundle.py --apply deltas
     python3 tools/sync_max_bundle.py --apply inherited --attributes alpha_mode
+    python3 tools/sync_max_bundle.py --refresh-log           # after an apply
     python3 tools/sync_max_bundle.py --snapshot-io /tmp/io.json
     python3 tools/sync_max_bundle.py --compare-io /tmp/io.json
 
@@ -66,6 +69,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import datetime as _dt
 import importlib.util
 import json
 import os
@@ -84,9 +88,11 @@ sys.path.insert(0, str(ROOT))
 
 from src.maxpat.db_lookup import ObjectDatabase  # noqa: E402
 from tools.audit_db import (  # noqa: E402
+    CORE_DOMAIN_DIRS,
     CORE_REFPAGE_DIRS,
     DEFAULT_MAX_APP,
     OutputPathRejected,
+    _live_domain_counts,
     audit_install,
     guard_output_path,
 )
@@ -1676,6 +1682,118 @@ def apply_inherited(
 
 
 # ---------------------------------------------------------------------------
+# Extraction log
+# ---------------------------------------------------------------------------
+
+EXTRACTION_LOG = "extraction-log.json"
+
+# What a superseded log state keeps in `history`.
+_LOG_HISTORY_FIELDS = (
+    "extraction_timestamp",
+    "total_files_found",
+    "total_objects",
+    "domain_counts",
+    "max_version",
+    "max_build",
+)
+
+
+def build_extraction_log(db_root: Path, report: dict, old: dict, now: _dt.datetime) -> dict:
+    """The extraction log re-stated from the DB on disk, after a sync.
+
+    The log's own fields (written by ``.claude/scripts/extract_objects.py``)
+    keep their names, order and meaning: counts are recomputed over every
+    ``objects.json`` the DB holds, with the traversal ``tests/conftest.py``
+    and ``tools/audit_db.py`` use. Fields this tool cannot recompute
+    (``errors``, ``error_count``, ``inlet_type_fallback_count``,
+    ``max_installation_path``) are carried over. The superseded state is
+    appended to ``history``; nothing recorded there is ever dropped.
+    """
+    files = [db_root / domain / "objects.json" for domain in CORE_DOMAIN_DIRS]
+    pkg_root = db_root / "packages"
+    if pkg_root.is_dir():
+        files.extend(sorted(d / "objects.json" for d in pkg_root.iterdir() if d.is_dir()))
+    files = [path for path in files if path.exists()]
+    variable_io = empty_inlets = empty_outlets = 0
+    for path in files:
+        for entry in json.loads(path.read_text()).values():
+            if not isinstance(entry, dict):
+                continue
+            variable_io += bool(entry.get("variable_io"))
+            empty_inlets += not entry.get("inlets")
+            empty_outlets += not entry.get("outlets")
+    live = _live_domain_counts(db_root)
+    # Keep the log's own domain order; domains it never listed go last.
+    order = [*(old.get("domain_counts") or {}), *CORE_DOMAIN_DIRS, "packages"]
+    domain_counts = {d: live[d] for d in dict.fromkeys(order) if d in live}
+
+    sections = report["sections"]
+    install = sections["install"]
+    history = list(old.get("history") or [])
+    if old:
+        history.append({k: old[k] for k in _LOG_HISTORY_FIELDS if k in old})
+
+    log = dict(old)
+    log.update(
+        {
+            "total_files_found": len(files),
+            "total_objects": sum(domain_counts.values()),
+            "domain_counts": domain_counts,
+            "error_count": old.get("error_count", 0),
+            "errors": old.get("errors", []),
+            "inlet_type_fallback_count": old.get("inlet_type_fallback_count", 0),
+            "variable_io_count": variable_io,
+            "empty_inlets_count": empty_inlets,
+            "empty_outlets_count": empty_outlets,
+            "extraction_timestamp": now.isoformat(),
+            "max_installation_path": old.get("max_installation_path", str(db_root)),
+            "max_version": install.get("short_version"),
+            "max_build": install.get("build_id"),
+            "sync": {
+                "tool": "tools/sync_max_bundle.py --refresh-log",
+                "refpage_files": report.get("refpage_files"),
+                "pending_new_objects": len(sections["new_objects"]["names"]),
+                "documentation_pages": len(sections["new_objects"]["doc_pages"]),
+                "define_missing": sections["define_missing"]["names"],
+                "pending_messages": sections["deltas"]["pending_messages"],
+                "pending_attributes": sections["deltas"]["pending_attributes"],
+            },
+            "history": history,
+        }
+    )
+    return log
+
+
+def write_extraction_log(db_root: Path, log: dict) -> Path:
+    """Replace <db-root>/extraction-log.json atomically. The path is not a parameter."""
+    target = Path(db_root) / EXTRACTION_LOG
+    payload = (json.dumps(log, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+    handle, tmp_name = tempfile.mkstemp(prefix=".sync-", suffix=".tmp", dir=str(target.parent))
+    try:
+        with os.fdopen(handle, "wb") as fh:
+            fh.write(payload)
+        os.replace(tmp_name, target)
+    finally:
+        if os.path.exists(tmp_name):
+            os.unlink(tmp_name)
+    return target
+
+
+def refresh_extraction_log(db_root: Path, report: dict, now: _dt.datetime | None = None) -> dict:
+    """--refresh-log: record this sync in the extraction log."""
+    path = Path(db_root) / EXTRACTION_LOG
+    try:
+        old = json.loads(path.read_text())
+    except FileNotFoundError:
+        old = {}
+    if not isinstance(old, dict):
+        raise StyleUnreproducible(f"{path} is not a JSON object; refusing to replace it")
+    log = build_extraction_log(Path(db_root), report, old, now or _dt.datetime.now(_dt.timezone.utc))
+    write_extraction_log(Path(db_root), log)
+    return log
+
+
+# ---------------------------------------------------------------------------
 # I/O regression guard
 # ---------------------------------------------------------------------------
 
@@ -1813,6 +1931,15 @@ def build_parser() -> argparse.ArgumentParser:
             "the installed Max."
         ),
     )
+    parser.add_argument(
+        "--refresh-log",
+        action="store_true",
+        help=(
+            "Re-state extraction-log.json from the DB on disk (counts, timestamp, "
+            "installed Max version) after any apply in this run; the superseded "
+            "state is appended to its history."
+        ),
+    )
     parser.add_argument("--snapshot-io", default=None, help="Write an I/O snapshot of every DB name.")
     parser.add_argument(
         "--compare-io", default=None, help="Exit non-zero if any snapshotted name's I/O changed."
@@ -1905,6 +2032,22 @@ def main(argv: list[str] | None = None) -> int:
             f"objects in {len(a['files'])} files"
             + (f"; no refpage offers: {', '.join(a['not_offered'])}" if a["not_offered"] else "")
         )
+
+    if args.refresh_log:
+        if not index["available"]:
+            print(f"error: cannot refresh the log -- {index['reason']}", file=sys.stderr)
+            exit_code = 1
+        else:
+            try:
+                log = refresh_extraction_log(db_root, report)
+            except (StyleUnreproducible, OSError, ValueError) as exc:
+                print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
+                return 2
+            print(
+                f"  extraction log  : {log['total_objects']} objects in "
+                f"{log['total_files_found']} files, Max {log['max_version']}, "
+                f"{len(log['history'])} earlier states kept"
+            )
 
     if json_path is not None:
         write_report(json_path, report)

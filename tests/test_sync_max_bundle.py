@@ -747,6 +747,87 @@ class TestInheritedAttributes:
         assert "Fake Group Messages" not in new["names"]
 
 
+class TestRefreshLog:
+    """DEF-hwb-10: the extraction log is re-stated from the DB after a sync."""
+
+    def _seed(self, world: dict) -> dict:
+        old = {
+            "total_files_found": 1,
+            "total_objects": 1,
+            "domain_counts": {"max": 1},
+            "error_count": 0,
+            "errors": [],
+            "inlet_type_fallback_count": 0,
+            "variable_io_count": 0,
+            "empty_inlets_count": 0,
+            "empty_outlets_count": 0,
+            "extraction_timestamp": "2026-01-01T00:00:00+00:00",
+            "max_installation_path": ".claude/max-objects",
+        }
+        (world["db_root"] / "extraction-log.json").write_text(json.dumps(old, indent=2) + "\n")
+        return old
+
+    def _log(self, world: dict) -> dict:
+        return json.loads((world["db_root"] / "extraction-log.json").read_text())
+
+    def test_counts_are_restated_from_disk_and_old_fields_survive(self, world: dict) -> None:
+        old = self._seed(world)
+        assert _run(world, "--refresh-log") == 0
+        log = self._log(world)
+        # Every field the extractor writes is still there, in the same order.
+        assert list(log)[: len(old)] == list(old)
+        assert log["domain_counts"] == {"max": 4, "msp": 1, "jitter": 1, "gen": 1, "packages": 1}
+        assert list(log["domain_counts"])[0] == "max"  # the log's own order leads
+        assert log["total_objects"] == 8
+        assert log["total_files_found"] == 5
+        assert log["max_installation_path"] == old["max_installation_path"]
+        assert log["extraction_timestamp"] > old["extraction_timestamp"]
+        assert log["max_version"] == "9.7.3" and log["max_build"] == "abc123"
+        assert log["sync"]["pending_messages"] > 0  # nothing was applied in this run
+
+    def test_superseded_state_is_appended_to_history(self, world: dict) -> None:
+        old = self._seed(world)
+        assert _run(world, "--refresh-log") == 0
+        assert _run(world, "--apply", "deltas", "--refresh-log") == 0
+        log = self._log(world)
+        assert [h["extraction_timestamp"] for h in log["history"]][0] == old["extraction_timestamp"]
+        assert len(log["history"]) == 2
+        assert log["history"][0]["domain_counts"] == {"max": 1}
+        assert log["history"][1]["max_version"] == "9.7.3"
+        # The log is written after the apply, so it records the post-apply state.
+        assert log["sync"]["pending_messages"] == 0
+
+    def test_audit_reads_the_refreshed_log_as_fresh_and_undrifted(self, world: dict) -> None:
+        import tools.audit_db as audit_db
+
+        self._seed(world)
+        assert audit_db.audit_db_age(world["db_root"])["domains_drifted"] != []
+        assert _run(world, "--refresh-log") == 0
+        section = audit_db.audit_db_age(world["db_root"])
+        assert section["domains_drifted"] == []
+        assert section["age_days"] < 1
+
+    def test_only_the_log_is_written(self, world: dict) -> None:
+        self._seed(world)
+        before = _tree_bytes(world["db_root"])
+        assert _run(world, "--refresh-log") == 0
+        after = _tree_bytes(world["db_root"])
+        assert [k for k in after if after[k] != before.get(k)] == ["extraction-log.json"]
+        assert set(after) == set(before)
+
+    def test_missing_log_is_created_with_empty_history(self, world: dict) -> None:
+        assert _run(world, "--refresh-log") == 0
+        assert self._log(world)["history"] == []
+
+    def test_unavailable_bundle_leaves_the_log_alone(self, world: dict, tmp_path: Path) -> None:
+        self._seed(world)
+        before = _tree_bytes(world["db_root"])
+        argv = ["--max-app", str(tmp_path / "absent.app"), "--db-root", str(world["db_root"]),
+                "--repo-root", str(world["repo"]), "--refresh-log"]
+        assert sync.main(argv) == 1
+        assert _tree_bytes(world["db_root"]) == before
+
+
 class TestAdditiveSelfCheck:
     """T-hwb-02: the writer refuses anything but growth on a pre-existing entry."""
 

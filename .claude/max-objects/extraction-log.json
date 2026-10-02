@@ -1,22 +1,53 @@
 {
   "total_files_found": 36,
-  "total_objects": 3430,
+  "total_objects": 3445,
   "domain_counts": {
-    "max": 471,
-    "msp": 246,
-    "jitter": 218,
+    "max": 473,
+    "msp": 247,
+    "jitter": 222,
     "mc": 222,
     "gen": 189,
     "m4l": 35,
     "rnbo": 560,
-    "packages": 1489
+    "packages": 1497
   },
   "error_count": 0,
   "errors": [],
   "inlet_type_fallback_count": 0,
   "variable_io_count": 30,
   "empty_inlets_count": 270,
-  "empty_outlets_count": 293,
-  "extraction_timestamp": "2026-07-01T21:43:50.189201+00:00",
-  "max_installation_path": ".claude/max-objects"
+  "empty_outlets_count": 294,
+  "extraction_timestamp": "2026-10-02T20:24:00.005153+00:00",
+  "max_installation_path": ".claude/max-objects",
+  "max_version": "9.2.0",
+  "max_build": "e9c80e453de",
+  "sync": {
+    "tool": "tools/sync_max_bundle.py --refresh-log",
+    "refpage_files": 1404,
+    "pending_new_objects": 0,
+    "documentation_pages": 6,
+    "define_missing": [
+      "jit.gl.grab",
+      "jit.gl.movie~"
+    ],
+    "pending_messages": 0,
+    "pending_attributes": 0
+  },
+  "history": [
+    {
+      "extraction_timestamp": "2026-07-01T21:43:50.189201+00:00",
+      "total_files_found": 36,
+      "total_objects": 3430,
+      "domain_counts": {
+        "max": 471,
+        "msp": 246,
+        "jitter": 218,
+        "mc": 222,
+        "gen": 189,
+        "m4l": 35,
+        "rnbo": 560,
+        "packages": 1489
+      }
+    }
+  ]
 }
