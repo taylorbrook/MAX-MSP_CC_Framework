@@ -82,9 +82,9 @@ The knowledge base lives at `.claude/max-objects/` with one JSON file per domain
 
 **Core domains: 1,948 objects across 7 files.**
 
-Package objects no longer live in a single `packages/objects.json`. As of v4.0 package integration they are stored as **29 per-package files** under `.claude/max-objects/packages/<Name>/objects.json` (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more), totaling **1,496 objects** with per-package source tracking.
+Package objects no longer live in a single `packages/objects.json`. As of v4.0 package integration they are stored as **29 per-package files** under `.claude/max-objects/packages/<Name>/objects.json` (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more), totaling **1,497 objects** with per-package source tracking.
 
-**Grand total: 3,444 objects** (1,948 core + 1,496 package).
+**Grand total: 3,445 objects** (1,948 core + 1,497 package).
 
 ### Object Entry Schema
 
@@ -776,7 +776,7 @@ Results are saved to `test-results/` for tracking.
 
 ## Test Suite
 
-The project includes 2,034 tests across 46 test files covering all modules. Run with:
+The project includes 2,309 tests across 55 test files covering all modules. Run with:
 
 ```bash
 python3 -m pytest tests/ -v
