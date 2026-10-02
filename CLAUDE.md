@@ -265,16 +265,17 @@ inner.add_connection(some_box, 0, inlets[2], 0)
 - `node.script` has a fixed 1 inlet / 2 outlets (not argument-configurable): the left outlet carries whatever the script sends via `maxAPI.outlet()`, the right outlet is the dump out (stdout, stderr, and status updates). `node.codebox` has the same fixed shape but embeds its JavaScript in the box rather than taking a filename argument.
 - Use for: file I/O, network requests, complex data processing, anything Node.js does better than MAX
 
-### js (V8 JavaScript / js object)
+### js / v8 (JavaScript inside MAX)
 
-- `js` object runs V8 JavaScript inline in MAX
+- `js` object runs JavaScript inline in MAX on the **Legacy Engine (ECMAScript 5)** -- it is NOT V8. `v8` is the separate Modern Engine object (ECMAScript 6+). `js` is the default: `Patcher.add_js()` and `generate_js_script()` target it, and every confirmed-working script in `patches/` is ES5 in a `js` box.
+- **Write ES5 only for `js` / `jsui`:** `var` and `function` declarations. No `const`/`let`, arrow functions, template literals, classes, destructuring, default parameters, or `async`/`await`. Reach for `v8` / `v8ui` / `v8.codebox` only when the task needs modern syntax or a Max 9.2 API; there is no `add_v8()` builder (use the generic box API), and a first use is untested until confirmed in MAX.
 - `inlets = N` and `outlets = N` to configure I/O count
 - Handler functions: `bang()`, `msg_int(v)`, `msg_float(v)`, `list()`, `anything(msg, args)`
 - `outlet(outlet_index, value)` to send data
 - `post('message')` for console output
 - Access patcher: `this.patcher.getnamed('object_name')`
 - Use for: UI logic, data transformation, algorithmic composition, anything needing scripted control
-- **`js` vs `v8`:** the installed refpages describe `js` / `jsui` as the Legacy Engine (ECMAScript 5) and `v8` / `v8ui` / `v8.codebox` as the Modern Engine (ECMAScript 6+). All five are in the DB; modern syntax (`const`, arrow functions, `async`) belongs in the `v8` family.
+- **`js` vs `v8`:** the installed refpages describe `js` / `jsui` as the Legacy Engine (ECMAScript 5) and `v8` / `v8ui` / `v8.codebox` as the Modern Engine (ECMAScript 6+). All five are in the DB; modern syntax (`const`, arrow functions, `async`) belongs in the `v8` family. The bundled `v8` examples (`Examples/javascript/v8-fft`) use the same `inlets = N` / `function bang()` / `outlet()` / `post()` conventions as `js`.
 - **Max 9.2 `v8` additions (9.2-only, `v8` family, not `js`):** networking workalikes (`fetch`, `require('http')`, `require('net')`, `require('dgram')`, `WebSocket` / `WebSocketServer`, `XMLHttpRequest`), `console.log` / `console.error`, and the `MaxFFT` / `MaxFFT2D` classes — all shown in the bundled examples under `Examples/javascript/v8-network` and `v8-fft`. In v8 `Buffer` is Max's audio buffer; byte buffers are `IOBuffer`. Native timers (`setTimeout`, `setInterval`) and `toJSON()` on Dict / MaxArray / MaxString are release-notes-only and untested (the bundled user guide still says timers are unavailable) — keep using `Task`. Generate network clients/servers only when the task asks for them. Details and evidence: `.claude/skills/references/max-9.2-changes.md`.
 
 ### Max for Live (M4L / .amxd)

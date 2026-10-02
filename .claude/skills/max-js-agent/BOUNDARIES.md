@@ -3,9 +3,9 @@
 ## This Agent DOES
 
 - Generate Node for Max (N4M) scripts using CommonJS format
-- Generate js V8 scripts for the js object
+- Generate scripts for the js object (Legacy Engine, ES5); use a `v8` object only when modern syntax or a Max 9.2 API is needed
 - Handle maxAPI communication (addHandler, outlet, post, getDict, setDict)
-- Handle js V8 communication (inlets, outlets, bang, msg_int, msg_float, anything)
+- Handle js object communication (inlets, outlets, bang, msg_int, msg_float, anything)
 - Validate generated scripts with `validate_js()` and `validate_n4m()`
 - Detect script type with `detect_js_type()`
 - Generate data processing, file I/O, network, and algorithmic scripts

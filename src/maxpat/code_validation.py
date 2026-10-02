@@ -1,13 +1,13 @@
-"""Code validation for GenExpr, js object V8, and Node for Max JavaScript.
+"""Code validation for GenExpr, js object, and Node for Max JavaScript.
 
 Report-only validators that catch common errors before opening MAX.
 No auto-fix -- all results are informational or diagnostic.
 
 Exports:
 - validate_genexpr: Validate GenExpr DSP code (operators, syntax, Params)
-- validate_js: Validate js object V8 JavaScript (inlets/outlets, handlers, bounds)
+- validate_js: Validate js object (Legacy Engine, ES5) JavaScript (inlets/outlets, handlers, bounds)
 - validate_n4m: Validate Node for Max JavaScript (require, handlers, outlet)
-- detect_js_type: Detect whether JavaScript code is N4M or js V8
+- detect_js_type: Detect whether JavaScript code is N4M or js object
 """
 
 from __future__ import annotations
@@ -339,7 +339,7 @@ def validate_genexpr(
 
 
 def validate_js(code: str) -> list[ValidationResult]:
-    """Validate js object V8 JavaScript code.
+    """Validate js object (Legacy Engine, ES5) JavaScript code.
 
     Checks:
     1. inlets declaration present
@@ -350,7 +350,7 @@ def validate_js(code: str) -> list[ValidationResult]:
     All results use layer="code". Report-only, no auto-fix.
 
     Args:
-        code: js V8 JavaScript source code string.
+        code: js object JavaScript source code string.
 
     Returns:
         List of ValidationResult.
@@ -467,7 +467,7 @@ def validate_n4m(code: str) -> list[ValidationResult]:
 
 
 def detect_js_type(code: str) -> str | None:
-    """Detect whether JavaScript code is Node for Max or js V8.
+    """Detect whether JavaScript code is Node for Max or js object.
 
     Args:
         code: JavaScript source code string.

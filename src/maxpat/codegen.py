@@ -2,14 +2,14 @@
 
 Provides tools for building syntactically correct GenExpr DSP code,
 generating standalone .gendsp files with correct patcher structure,
-and generating Node for Max (N4M) and js object V8 JavaScript.
+and generating Node for Max (N4M) and js object (Legacy Engine, ES5) JavaScript.
 
 Exports:
 - parse_genexpr_io: Extract input/output counts from GenExpr code
 - build_genexpr: Build formatted GenExpr code with Params and sections
 - generate_gendsp: Generate a complete .gendsp JSON dict
 - generate_n4m_script: Generate Node for Max JavaScript with CommonJS require
-- generate_js_script: Generate js object V8 JavaScript with handlers
+- generate_js_script: Generate js object (Legacy Engine, ES5) JavaScript with handlers
 """
 
 from __future__ import annotations
@@ -360,7 +360,7 @@ def generate_js_script(
     num_outlets: int = 1,
     handlers: list[dict] | None = None,
 ) -> str:
-    """Generate a complete js object V8 JavaScript string.
+    """Generate a complete js object (Legacy Engine, ES5) JavaScript string.
 
     Produces code with ``inlets``/``outlets`` declarations and handler
     functions. If no handlers are specified, generates default handlers
@@ -375,7 +375,7 @@ def generate_js_script(
             If None, default handlers are generated.
 
     Returns:
-        Complete js object V8 JavaScript source string.
+        Complete js object (Legacy Engine, ES5) JavaScript source string.
     """
     sections: list[str] = []
 

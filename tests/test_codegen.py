@@ -632,11 +632,11 @@ class TestN4M:
 
 
 # ---------------------------------------------------------------------------
-# TestJsObject -- js object V8 code generation (CODE-05)
+# TestJsObject -- js object code generation (CODE-05)
 # ---------------------------------------------------------------------------
 
 class TestJsObject:
-    """Tests for js object V8 code generation."""
+    """Tests for js object code generation."""
 
     def test_generate_js_basic(self):
         """generates valid js with inlets/outlets and handlers."""

@@ -277,7 +277,7 @@ def validate_code_file(path: str | Path) -> list[ValidationResult]:
     and runs validate_genexpr on it.
 
     For .js files: reads content, uses detect_js_type to determine
-    if N4M or js V8, and runs the appropriate validator.
+    if N4M or js object, and runs the appropriate validator.
 
     Args:
         path: Path to the .gendsp or .js file.
@@ -337,7 +337,7 @@ def validate_code_file(path: str | Path) -> list[ValidationResult]:
         else:
             return [ValidationResult(
                 "code", "warning",
-                "Could not determine JavaScript type (N4M or js V8) -- "
+                "Could not determine JavaScript type (N4M or js object) -- "
                 "missing require('max-api') or inlets declaration",
             )]
 
@@ -360,7 +360,7 @@ def write_js(
     and never blocks the write.
 
     Args:
-        code: JavaScript source code (N4M or js V8).
+        code: JavaScript source code (N4M or js object).
         path: Output file path for the .js file.
 
     Returns:

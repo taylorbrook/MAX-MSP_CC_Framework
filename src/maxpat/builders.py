@@ -1149,7 +1149,7 @@ class BuildersMixin:
         x: float = 0.0,
         y: float = 0.0,
     ) -> tuple[Box, str | None]:
-        """Add a js object box for V8 JavaScript.
+        """Add a js object box (Legacy Engine, ES5 JavaScript).
 
         In .maxpat files, js uses maxclass="newobj" with text="js filename.js"
         (not maxclass="js"). Uses Box.__new__ to bypass DB lookup and ensure
@@ -1157,7 +1157,7 @@ class BuildersMixin:
 
         Args:
             filename: JavaScript file name (e.g., "myobject.js").
-            code: Optional js V8 JavaScript code string. Caller is responsible
+            code: Optional js object JavaScript code string. Caller is responsible
                 for writing it to disk.
             num_inlets: Number of inlets.
             num_outlets: Number of outlets.

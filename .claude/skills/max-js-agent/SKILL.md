@@ -1,6 +1,6 @@
 ---
 name: max-js-agent
-description: Generate JavaScript code for Max js objects (V8) and Node for Max scripts (N4M)
+description: Generate JavaScript code for Max js objects (Legacy Engine, ES5), v8 objects (Modern Engine), and Node for Max scripts (N4M)
 allowed-tools:
   - Read
   - Write
@@ -14,7 +14,7 @@ preconditions:
 
 # JavaScript/Node Specialist Agent
 
-The js agent generates JavaScript code for two MAX scripting environments: the `js` object (V8 JavaScript running inline in MAX) and `node.script` (Node.js via Node for Max / N4M). It handles all code that runs inside MAX's JavaScript engines.
+The js agent generates JavaScript code for two MAX scripting environments: the `js` object (Legacy Engine, ECMAScript 5, running inline in MAX — the default; the `v8` family is the Modern Engine, used only when modern syntax or a Max 9.2 API is needed) and `node.script` (Node.js via Node for Max / N4M). It handles all code that runs inside MAX's JavaScript engines.
 
 ## Domain Context Loading
 
@@ -34,8 +34,9 @@ Before any generation:
 - Dict access: `maxAPI.getDict('name')`, `maxAPI.setDict('name', data)`
 - Use for: file I/O, network requests, complex data processing, anything Node.js does better than MAX
 
-### js Object (V8) Script Generation
-- `generate_js_script(num_inlets=1, num_outlets=1, handlers=None)` -- generate a complete js V8 script
+### js Object Script Generation (Legacy Engine, ES5)
+- **Write ES5 only for `js` / `jsui`:** `var` and `function` declarations. No `const`/`let`, arrow functions, template literals, classes, destructuring, default parameters, or `async`/`await` -- those need a `v8` / `v8ui` / `v8.codebox` object. `Patcher.add_js()` and `generate_js_script()` both target `js`; every confirmed-working script in `patches/` is ES5 in a `js` box.
+- `generate_js_script(num_inlets=1, num_outlets=1, handlers=None)` -- generate a complete js object script
 - I/O configuration: `inlets = N`, `outlets = N`
 - Handler functions: `bang()`, `msg_int(v)`, `msg_float(v)`, `list()`, `anything(msg, args)`
 - Output: `outlet(outlet_index, value)` to send data
@@ -44,13 +45,13 @@ Before any generation:
 - Use for: UI logic, data transformation, algorithmic composition, scripted control
 
 ### Code Validation
-- `validate_js(code)` -- validate js V8 script structure
+- `validate_js(code)` -- validate js object script structure
 - `validate_n4m(code)` -- validate N4M script structure
-- `detect_js_type(code)` -- determine if code is N4M or js V8
+- `detect_js_type(code)` -- determine if code is N4M or js object
 
 ### Key Differences: N4M vs js
 
-| Feature | N4M (node.script) | js (V8 object) |
+| Feature | N4M (node.script) | js (Legacy, ES5) / v8 (Modern) |
 |---------|-------------------|----------------|
 | Module system | CommonJS (require) | None (global scope) |
 | MAX communication | maxAPI.outlet() | outlet() |
@@ -64,7 +65,7 @@ Before any generation:
 
 Read `.claude/skills/references/max-9.2-changes.md` (section "v8") before writing code against any of these. It lists the exact identifiers seen in the examples Max ships and marks what is untested.
 
-- **Which object:** the installed refpages call `js` / `jsui` the Legacy Engine (ECMAScript 5) and `v8` / `v8ui` / `v8.codebox` the Modern Engine (ECMAScript 6+). The 9.2 additions are shown only in the `v8` family. The "js (V8 object)" column above covers both; modern syntax and every 9.2 API need a `v8` object.
+- **Which object:** the installed refpages call `js` / `jsui` the Legacy Engine (ECMAScript 5) and `v8` / `v8ui` / `v8.codebox` the Modern Engine (ECMAScript 6+). The 9.2 additions are shown only in the `v8` family. The right-hand column above covers both; modern syntax and every 9.2 API need a `v8` object. There is no `add_v8()` builder -- `v8` is in the object DB, so add it with the generic box API, and treat a first use as untested until confirmed in MAX.
 - **Shown in bundled examples:** `fetch`, `http`, `net` (TCP), `dgram` (UDP), `WebSocket` / `WebSocketServer`, `XMLHttpRequest`, `console.log` / `console.error`, `MaxFFT`, `MaxFFT2D`. In v8 `Buffer` is Max's audio buffer — byte buffers are `IOBuffer`.
 - **Release notes only, untested:** native timers (`setTimeout`, `setInterval`), `toJSON()` on Dict / MaxArray / MaxString, named pipes. Keep using `Task` for timing until confirmed in MAX.
 - **Older builds:** all of the above needs Max 9.2. `node.script` remains the choice when a patch must also run on an older build.
@@ -98,7 +99,7 @@ When scripting interactions with package modules:
 
 ## Output Protocol (New Patches)
 
-1. Determine script type: N4M or js V8 (based on task requirements)
+1. Determine script type: N4M or js object (based on task requirements)
 2. Generate script using appropriate `generate_*_script()` function
 3. Validate with `validate_n4m()` or `validate_js()`
 4. Return code for critic review
@@ -118,7 +119,7 @@ When scripting interactions with package modules:
 
 - Any task requiring JavaScript code for MAX
 - Node for Max scripts (file I/O, network, data processing, MIDI processing)
-- js V8 scripts (UI logic, data transformation, algorithmic composition)
+- js object scripts (UI logic, data transformation, algorithmic composition)
 - Data parsing, JSON handling, complex algorithms
 - Network communication (API calls, WebSocket, OSC via Node)
 - File system operations (reading/writing data, presets, samples)

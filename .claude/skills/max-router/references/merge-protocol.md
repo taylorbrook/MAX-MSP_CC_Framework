@@ -16,7 +16,7 @@ When multiple specialist agents contribute to a single task, their outputs must 
 | `.maxpat` (main patch) | Lead agent (usually Patch or DSP) | Request boxes/connections to be added |
 | `.gendsp` | DSP agent | N/A -- only DSP generates gen~ files |
 | `.js` (N4M) | js agent | N/A -- only js generates Node scripts |
-| `.js` (V8) | js agent | N/A -- only js generates V8 scripts |
+| `.js` (js object) | js agent | N/A -- only js generates js-object scripts |
 | Layout/presentation | UI agent | Other agents provide box list, UI positions them |
 
 ## Merge Sequence

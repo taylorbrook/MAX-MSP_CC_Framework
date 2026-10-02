@@ -298,11 +298,11 @@ class TestGenExprChecks:
 
 
 # ---------------------------------------------------------------------------
-# TestJsValidator -- js object V8 validation
+# TestJsValidator -- js object validation
 # ---------------------------------------------------------------------------
 
 class TestJsValidator:
-    """Tests for js object V8 code validation."""
+    """Tests for js object code validation."""
 
     def test_valid_js(self):
         """valid code returns no errors."""
