@@ -238,6 +238,134 @@ class TestRefpageIndex:
         assert index["objects"] == {}
 
 
+# ── package layouts and define aliases ────────────────────────────
+# (quick-261001-hwb follow-up DEF-hwb-11)
+
+
+def _object_xml(name: str) -> str:
+    return (
+        '<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n'
+        f'<c74object name="{name}" module="max" category="Test">\n'
+        "  <digest>fixture</digest>\n"
+        '  <inletlist><inlet id="0" type="bang"/></inletlist>\n'
+        '  <outletlist><outlet id="0" type="bang"/></outletlist>\n'
+        "</c74object>\n"
+    )
+
+
+def _add_packages(app: Path) -> Path:
+    """Add bundled packages in every refpage layout the real bundle uses."""
+    c74 = app / "Contents" / "Resources" / "C74"
+    pkgs = c74 / "packages"
+    flat = pkgs / "Flat Pack" / "docs"  # ableton-dsp / Jitter Tools layout
+    (flat / "group").mkdir(parents=True)
+    (flat / "flat.obj.maxref.xml").write_text(_object_xml("flat.obj"))
+    (flat / "group" / "nested.obj.maxref.xml").write_text(_object_xml("nested.obj"))
+    # An alias document: the stem is a `max define` alias, the name attribute
+    # is the implementing class.
+    (flat / "pack.alias.maxref.xml").write_text(_object_xml("impl"))
+    init = pkgs / "Flat Pack" / "init"
+    init.mkdir(parents=True)
+    (init / "flat-objectmappings.txt").write_text(
+        "max define pack.alias impl script.js;\n"
+        "max define bare.alias cycle~ @x 1;\n"
+    )
+    classic = pkgs / "Classic Pack" / "docs" / "refpages"  # VIDDLL layout
+    classic.mkdir(parents=True)
+    (classic / "classic.obj.maxref.xml").write_text(_object_xml("classic.obj"))
+    gen = pkgs / "Gen" / "docs"  # skipped by the sync walk; docs/refpages only
+    (gen / "refpages" / "dsp").mkdir(parents=True)
+    (gen / "refpages1").mkdir(parents=True)
+    (gen / "refpages" / "dsp" / "gen_dsp_thing.maxref.xml").write_text(_object_xml("thing"))
+    (gen / "refpages1" / "old.maxref.xml").write_text(_object_xml("old"))
+    (pkgs / "No Refpages" / "docs").mkdir(parents=True)  # docs/ without refpages
+    return c74
+
+
+class TestPackageRefpageDiscovery:
+    def test_flat_and_nested_package_docs_are_indexed(self, tmp_path: Path) -> None:
+        app = _make_fake_bundle(tmp_path)
+        _add_packages(app)
+        index = audit_db.build_refpage_index(audit_db.audit_install(app))
+        for name in ("flat.obj", "nested.obj", "classic.obj", "thing"):
+            assert name in index["objects"], name
+
+    def test_roots_come_from_the_sync_tools_walk(self, tmp_path: Path) -> None:
+        import tools.sync_max_bundle as sync
+
+        app = _make_fake_bundle(tmp_path)
+        c74 = _add_packages(app)
+        roots = set(audit_db.audit_install(app)["refpage_roots"])
+        walked = {str(docs) for docs, _pkg in sync.package_docs_dirs(c74)}
+        # Every docs/ directory the sync tool walks is an audit root, unless it
+        # holds no refpage at all.
+        assert walked - roots == {str(c74 / "packages" / "No Refpages" / "docs")}
+        # Gen is skipped by that walk and keeps its docs/refpages root only.
+        assert str(c74 / "packages" / "Gen" / "docs" / "refpages") in roots
+        assert str(c74 / "packages" / "Gen" / "docs") not in roots
+        assert len(roots) == 4
+
+    def test_no_file_is_scanned_twice(self, tmp_path: Path) -> None:
+        app = _make_fake_bundle(tmp_path)
+        _add_packages(app)
+        index = audit_db.build_refpage_index(audit_db.audit_install(app))
+        # 2 core + 3 flat + 1 classic + 1 gen (refpages1/ is outside every root).
+        assert index["files_scanned"] == 7
+        assert "old" not in index["objects"]
+
+    def test_alias_document_is_indexed_under_the_define_alias(self, tmp_path: Path) -> None:
+        app = _make_fake_bundle(tmp_path)
+        _add_packages(app)
+        index = audit_db.build_refpage_index(audit_db.audit_install(app))
+        assert "pack.alias" in index["objects"]
+        assert "impl" not in index["objects"]
+        assert [d["alias"] for d in index["alias_documents"]] == ["pack.alias"]
+        assert index["alias_documents"][0]["name_attribute"] == "impl"
+        # The raw disagreement is still counted: "&", the alias document and
+        # Gen's prefix-keyed file.
+        assert index["name_vs_filename_differs"] == 3
+        assert index["define_alias_count"] == 2
+
+
+def _fake_db(tmp_path: Path, names: list[str]) -> Path:
+    root = _make_fake_repo(tmp_path)
+    db_root = root / ".claude" / "max-objects"
+    port = [{"id": 0, "type": "bang"}]
+    (db_root / "max" / "objects.json").write_text(
+        json.dumps({n: {"name": n, "inlets": port, "outlets": port} for n in names})
+    )
+    return db_root
+
+
+class TestDefineAliases:
+    def test_define_alias_without_refpage_is_not_counted_absent(self, tmp_path: Path) -> None:
+        app = _make_fake_bundle(tmp_path)
+        _add_packages(app)
+        db_root = _fake_db(tmp_path, ["bare.alias", "pack.alias", "ghost"])
+        index = audit_db.build_refpage_index(audit_db.audit_install(app))
+        section = audit_db.audit_absent_from_bundle(db_root, index)
+        # `ghost` has no refpage and no mapping line: a real finding.
+        assert section["names"] == ["ghost"]
+        assert section["count"] == 1
+        # `bare.alias` has no refpage by design; `pack.alias` has an alias
+        # document and so is not absent at all.
+        assert section["define_mapped"] == [{"name": "bare.alias", "target": "cycle~"}]
+        assert section["define_mapped_count"] == 1
+
+    def test_summary_names_the_define_mapped_count(self, tmp_path: Path) -> None:
+        app = _make_fake_bundle(tmp_path)
+        _add_packages(app)
+        db_root = _fake_db(tmp_path, ["bare.alias", "ghost"])
+        report = audit_db.run_audit(
+            repo_root=db_root.parent.parent, db_root=db_root, max_app=app
+        )
+        line = next(
+            ln for ln in audit_db.format_summary(report).splitlines() if "absent from Max" in ln
+        )
+        assert "1 DB names with no refpage" in line
+        assert "+1 define-mapped" in line
+
+
 # ── write guard (T-knq-01) ────────────────────────────────────────
 
 

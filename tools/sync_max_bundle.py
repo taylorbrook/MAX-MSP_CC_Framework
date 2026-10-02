@@ -257,6 +257,33 @@ def _scan_refpage_file(path: Path, root_kind: str, package: str | None, hints) -
     }
 
 
+def package_docs_dirs(c74: Path) -> list[tuple[Path, str]]:
+    """(docs directory, package name) for every bundled package this tool walks.
+
+    Flat docs/ (ableton-dsp, jit.mo, Jitter Geometry, Jitter Tools),
+    docs/refpages/ (VIDDLL, Node for Max) and nested groups such as Jitter
+    Tools' docs/jit.fx/ are all reached by one recursive walk from docs/.
+    Gen and RNBO are skipped (SKIPPED_PACKAGES). Shared with
+    ``tools/audit_db.py`` so both tools see the same package refpages.
+    """
+    packages = c74 / "packages"
+    try:
+        package_dirs = sorted(p for p in packages.iterdir() if p.is_dir())
+    except (FileNotFoundError, PermissionError, OSError):
+        return []
+    found: list[tuple[Path, str]] = []
+    for pkg in package_dirs:
+        if pkg.name in SKIPPED_PACKAGES:
+            continue
+        docs = pkg / "docs"
+        try:
+            if docs.is_dir():
+                found.append((docs, pkg.name))
+        except (PermissionError, OSError):
+            continue
+    return found
+
+
 def scan_refpages(c74: Path) -> tuple[list[dict], list[dict]]:
     """Index every walked refpage file. Parse failures are tallied, never fatal."""
     refs: list[dict] = []
@@ -285,20 +312,8 @@ def scan_refpages(c74: Path) -> tuple[list[dict], list[dict]]:
         if directory.is_dir():
             scan_dir(directory, "core", None, CORE_ROOT_HINTS.get(directory.name, ("max", "Max")))
 
-    packages = c74 / "packages"
-    try:
-        package_dirs = sorted(p for p in packages.iterdir() if p.is_dir())
-    except (FileNotFoundError, PermissionError, OSError):
-        package_dirs = []
-    for pkg in package_dirs:
-        if pkg.name in SKIPPED_PACKAGES:
-            continue
-        docs = pkg / "docs"
-        # Flat docs/ (ableton-dsp, jit.mo, Jitter Geometry, Jitter Tools),
-        # docs/refpages/ (VIDDLL, Node for Max) and nested groups such as
-        # Jitter Tools' docs/jit.fx/ are all reached by one recursive walk.
-        if docs.is_dir():
-            scan_dir(docs, "package", pkg.name, PACKAGE_HINTS)
+    for docs, package in package_docs_dirs(c74):
+        scan_dir(docs, "package", package, PACKAGE_HINTS)
     return refs, errors
 
 

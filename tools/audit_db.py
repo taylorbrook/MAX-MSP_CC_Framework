@@ -21,7 +21,8 @@ Sections
 ``install``             installed Max version + refpage roots (Info.plist)
 ``db_age``              extraction timestamp age + per-domain count drift
 ``missing_from_db``     refpage object names ObjectDatabase.lookup() misses
-``absent_from_bundle``  core-domain DB names with no installed refpage
+``absent_from_bundle``  core-domain DB names with no installed refpage;
+                        ``max define`` aliases are listed apart, not counted
 ``empty_io``            audit_empty_io() / audit_half_empty_io() + refpage flag
 ``patch_objects``       object resolution across committed .maxpat files
 ``ui_maxclasses_gap``   observed maxclasses not in UI_MAXCLASSES
@@ -72,7 +73,10 @@ CORE_REFPAGE_DIRS = [
     "docs/refpages/m4l-ref",
 ]
 
-# Bundled packages ship their own refpages under packages/<Pkg>/docs/refpages.
+# Gen and RNBO keep their refpages under packages/<Pkg>/docs/refpages. Every
+# other bundled package is walked from packages/<Pkg>/docs by the sync tool's
+# package_docs_dirs(), which also reaches the flat docs/ layouts (ableton-dsp,
+# jit.mo, Jitter Geometry, Jitter Tools) this glob alone never saw.
 PACKAGE_REFPAGE_GLOB = "packages/*/docs/refpages"
 
 # Domain dirs holding a single objects.json (DOMAIN_LOAD_ORDER minus the
@@ -141,8 +145,34 @@ def guard_output_path(json_path: str | Path, repo_root: str | Path) -> Path:
 # ---------------------------------------------------------------------------
 
 
+def _sync():
+    """``tools/sync_max_bundle.py``, imported on first use.
+
+    The sync tool imports this module at load time, so the reverse import has
+    to be deferred. It owns the bundle-walking logic this audit reuses rather
+    than copies: ``package_docs_dirs`` (which package directories hold
+    refpages) and ``parse_define_mappings`` (``max define`` alias lines).
+    """
+    from tools import sync_max_bundle
+
+    return sync_max_bundle
+
+
+def _holds_refpages(directory: Path) -> bool:
+    try:
+        return next(directory.rglob("*.maxref.xml"), None) is not None
+    except (PermissionError, OSError):
+        return False
+
+
 def _refpage_roots(c74: Path) -> list[Path]:
-    """Existing core + bundled-package refpage directories under Contents/Resources/C74."""
+    """Existing core + bundled-package refpage directories under Contents/Resources/C74.
+
+    Package directories come from the sync tool's ``package_docs_dirs`` (one
+    recursive walk from ``docs/``, so flat layouts are covered). The packages
+    that walk skips -- Gen and RNBO -- keep their ``docs/refpages`` root. A
+    package ``docs/`` directory holding no refpage is not a root.
+    """
     roots: list[Path] = []
     for rel in CORE_REFPAGE_DIRS:
         candidate = c74 / rel
@@ -151,11 +181,29 @@ def _refpage_roots(c74: Path) -> list[Path]:
                 roots.append(candidate)
         except (PermissionError, OSError):
             continue
+    sync = _sync()
+    walked_dirs = sync.package_docs_dirs(c74)
+    walked = {package for _docs, package in walked_dirs}
+    package_roots = [docs for docs, _package in walked_dirs if _holds_refpages(docs)]
     try:
-        roots.extend(sorted(p for p in c74.glob(PACKAGE_REFPAGE_GLOB) if p.is_dir()))
+        package_roots.extend(
+            p
+            for p in c74.glob(PACKAGE_REFPAGE_GLOB)
+            if p.is_dir() and p.parent.parent.name not in walked
+        )
     except (PermissionError, OSError):
         pass
+    roots.extend(sorted(package_roots))
     return roots
+
+
+def _define_aliases(install: dict) -> dict[str, str]:
+    """``max define`` alias -> target, from the bundle's objectmappings files."""
+    c74 = Path(install["app_path"]) / "Contents" / "Resources" / "C74"
+    return {
+        alias: define["target"]
+        for alias, define in _sync().parse_define_mappings(c74).items()
+    }
 
 
 def _split_short_version(raw: object) -> tuple[str | None, str | None]:
@@ -329,6 +377,12 @@ def build_refpage_index(install: dict) -> dict:
     manufactures ~795 phantom gaps (SF-07), so ``name_vs_filename_differs``
     is emitted as this harness's own self-check that it is keyed correctly.
 
+    One exception, the sync tool's rule: a refpage whose filename stem is a
+    ``max define`` alias documents that alias even when its name attribute
+    says otherwise (``jit.gl.tex2mat.maxref.xml`` carries ``name="v8"``, the
+    implementing class). Such alias documents are indexed under the stem and
+    tallied in ``alias_documents``.
+
     Per-file XML parse failures and per-root permission failures are tallied
     into ``parse_errors`` / ``unreadable_roots`` rather than aborting the walk
     (T-knq-03; TCC-blocked trees per SF-05).
@@ -343,8 +397,10 @@ def build_refpage_index(install: dict) -> dict:
     objects: dict[str, dict] = {}
     parse_errors: list[dict] = []
     unreadable_roots: list[dict] = []
+    alias_documents: list[dict] = []
     files_scanned = 0
     name_differs = 0
+    defines = _define_aliases(install)
 
     for root in (Path(p) for p in install.get("refpage_roots", [])):
         try:
@@ -369,6 +425,11 @@ def build_refpage_index(install: dict) -> dict:
             name = attr or stem
             if attr and attr != stem:
                 name_differs += 1
+                if stem in defines:
+                    alias_documents.append(
+                        {"alias": stem, "name_attribute": attr, "file": str(path)}
+                    )
+                    name = stem
             inletlist = element.find("inletlist")
             outletlist = element.find("outletlist")
             objects.setdefault(
@@ -387,9 +448,12 @@ def build_refpage_index(install: dict) -> dict:
         "files_scanned": files_scanned,
         "object_count": len(objects),
         "name_vs_filename_differs": name_differs,
+        "alias_documents": alias_documents,
+        "define_alias_count": len(defines),
         "parse_errors": parse_errors,
         "unreadable_roots": unreadable_roots,
         "objects": objects,
+        "defines": defines,
     }
 
 
@@ -425,7 +489,10 @@ def audit_missing_from_db(refpages: dict, db: ObjectDatabase) -> dict:
         "count": len(names),
         "names": names,
         "refpage_names_checked": len(resolved),
-        "keyed_on": "c74object@name attribute (filename stem only as fallback)",
+        "keyed_on": (
+            "c74object@name attribute (filename stem as fallback, and for "
+            "`max define` alias documents)"
+        ),
     }
 
 
@@ -443,7 +510,12 @@ _ABSENT_SCOPE = (
 
 
 def audit_absent_from_bundle(db_root: str | Path, refpages: dict) -> dict:
-    """Core-domain DB names with no corresponding refpage in the installed bundle."""
+    """Core-domain DB names with no corresponding refpage in the installed bundle.
+
+    A name that is a ``max define`` alias in the bundle's objectmappings files
+    has no refpage by design (Max instantiates the define target), so it is
+    listed under ``define_mapped`` with its target and left out of ``count``.
+    """
     if not refpages.get("available"):
         return _unavailable(refpages.get("reason", "refpage index unavailable"))
     root = Path(db_root)
@@ -456,11 +528,18 @@ def audit_absent_from_bundle(db_root: str | Path, refpages: dict) -> dict:
                 db_names.update(json.loads(path.read_text()))
         except (PermissionError, OSError, json.JSONDecodeError) as exc:
             read_errors.append({"file": str(path), "reason": str(exc)})
-    absent = sorted(n for n in db_names if n not in refpages["objects"])
+    defines = refpages.get("defines", {})
+    without_refpage = sorted(n for n in db_names if n not in refpages["objects"])
+    absent = [n for n in without_refpage if n not in defines]
+    define_mapped = [
+        {"name": n, "target": defines[n]} for n in without_refpage if n in defines
+    ]
     return {
         "available": True,
         "count": len(absent),
         "names": absent,
+        "define_mapped": define_mapped,
+        "define_mapped_count": len(define_mapped),
         "db_names_checked": len(db_names),
         "scope": _ABSENT_SCOPE,
         "read_errors": read_errors,
@@ -783,7 +862,9 @@ def run_audit(
 
     # Index payload is large and redundant with the sections above; keep only
     # its provenance + self-check counters in the emitted document.
-    refpage_meta = {k: v for k, v in refpages.items() if k != "objects"}
+    refpage_meta = {
+        k: v for k, v in refpages.items() if k not in ("objects", "defines")
+    }
 
     return {
         "refpage_index": refpage_meta,
@@ -829,13 +910,19 @@ def format_summary(report: dict) -> str:
             report.get("refpage_index", {}),
             lambda x: f"{x['object_count']} objects from {x['files_scanned']} files, "
             f"{x['name_vs_filename_differs']} name!=filename, "
+            f"{len(x['alias_documents'])} alias documents, "
             f"{len(x['parse_errors'])} parse errors",
         ),
         "  missing from DB : "
-        + _headline(s["missing_from_db"], lambda x: f"{x['count']} refpage names unresolved"),
+        + _headline(
+            s["missing_from_db"],
+            lambda x: f"{x['count']} refpage names unresolved",
+        ),
         "  absent from Max : "
         + _headline(
-            s["absent_from_bundle"], lambda x: f"{x['count']} DB names with no refpage"
+            s["absent_from_bundle"],
+            lambda x: f"{x['count']} DB names with no refpage "
+            f"(+{x['define_mapped_count']} define-mapped aliases, no refpage by design)",
         ),
         "  empty I/O       : "
         + _headline(
