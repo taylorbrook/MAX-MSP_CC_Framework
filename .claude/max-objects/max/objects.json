@@ -35148,7 +35148,8 @@
       "anything",
       "end",
       "savewindow",
-      "setactivetab"
+      "setactivetab",
+      "showparameterwindow"
     ],
     "attributes": {},
     "seealso": [
