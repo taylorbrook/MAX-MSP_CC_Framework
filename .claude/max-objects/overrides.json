@@ -3902,6 +3902,80 @@
         "source": "io_count_finding"
       }
     },
+    "jit.gl.web": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "control",
+          "signal": false,
+          "digest": "Messages and attributes",
+          "hot": true
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "control",
+          "signal": false,
+          "digest": "texture output"
+        },
+        {
+          "id": 1,
+          "type": "control",
+          "signal": false,
+          "digest": "dumpout"
+        }
+      ],
+      "_note": "Digests only: no refpage exists for this define alias, so they are taken from the define target jit.web; the texture outlet is named from the help-patch box (outlettype jit_gl_texture). Counts and types equal the base entry.",
+      "_audit": {
+        "source": "define target jit.web (jit-ref jit.web.maxref.xml) + jit.gl.web box in jit.web.maxhelp",
+        "confidence": "MEDIUM",
+        "date": "2026-10-02"
+      }
+    },
+    "jit.gl.web~": {
+      "inlets": [
+        {
+          "id": 0,
+          "type": "control",
+          "signal": false,
+          "digest": "Messages and attributes",
+          "hot": true
+        }
+      ],
+      "outlets": [
+        {
+          "id": 0,
+          "type": "signal",
+          "signal": true,
+          "digest": "Audio Output"
+        },
+        {
+          "id": 1,
+          "type": "signal",
+          "signal": true,
+          "digest": "Audio Output"
+        },
+        {
+          "id": 2,
+          "type": "control",
+          "signal": false,
+          "digest": "texture output"
+        },
+        {
+          "id": 3,
+          "type": "control",
+          "signal": false,
+          "digest": "dumpout"
+        }
+      ],
+      "_note": "Digests only: no refpage exists for this define alias, so they are taken from the define target jit.web~; the texture outlet is named from the help-patch box (outlettype jit_gl_texture). Counts and types equal the base entry.",
+      "_audit": {
+        "source": "define target jit.web~ (jit-ref jit.web~.maxref.xml) + jit.gl.web~ box in jit.web~.maxhelp",
+        "confidence": "MEDIUM",
+        "date": "2026-10-02"
+      }
+    },
     "_domain_mc": "--- MC Objects ---",
     "mc.adsr~": {
       "inlets": [
