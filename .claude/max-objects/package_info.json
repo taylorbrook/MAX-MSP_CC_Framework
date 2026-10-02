@@ -50,7 +50,7 @@
     "version": "9.0",
     "install_method": "bundled",
     "description": "Additional Jitter rendering, effects, and utility objects",
-    "object_count": 103,
+    "object_count": 102,
     "extracted": true,
     "installed": true
   },
