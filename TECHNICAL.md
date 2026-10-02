@@ -274,7 +274,7 @@ After generation, the router passes output through the critic loop before writin
 | **max-patch-agent** | Control, MIDI, routing | `.maxpat` | Hot/cold inlet ordering, explicit `trigger` for fan-out |
 | **max-dsp-agent** | Audio, Gen~ | `.maxpat`, `.gendsp` | GenExpr declarations before expressions, gain staging, `dac~` termination |
 | **max-rnbo-agent** | RNBO export | `.maxpat` | Only `rnbo_compatible` objects, self-contained patches, target constraints |
-| **max-js-agent** | JavaScript | `.js` | N4M uses CommonJS (`require`), js V8 uses global scope |
+| **max-js-agent** | JavaScript | `.js` | N4M uses CommonJS (`require`), the `js` object (Legacy Engine, ES5) uses global scope |
 | **max-ui-agent** | UI layout | `.maxpat` modifications | Presentation mode attributes, spacing rules |
 | **max-ext-agent** | C++ externals | `.cpp`, `.mxo` | Min-DevKit scaffolding, cmake/make build loop, Mach-O validation |
 
@@ -437,7 +437,7 @@ Separate validators for code files (`src/maxpat/code_validation.py`). These are 
 - Declaration ordering (all `Param`/`History`/`Delay`/`Buffer`/`Data` before expressions)
 - Operator existence in gen~ database
 
-**js V8** (`validate_js`):
+**js object** (`validate_js`):
 - `inlets` and `outlets` declarations present
 - At least one handler function (`bang`, `msg_int`, `msg_float`, `list`, `anything`)
 - `outlet()` index within bounds
@@ -638,7 +638,7 @@ Generates Node.js scripts for `node.script`:
 
 ### js Object (`generate_js_script`)
 
-Generates V8 JavaScript for `js` objects:
+Generates ES5 JavaScript for `js` objects (Legacy Engine; `v8` is the separate Modern Engine object):
 - Declares `inlets = N` and `outlets = N`
 - Creates handler functions: `bang()`, `msg_int(v)`, `msg_float(v)`, `list()`, `anything(msg)`
 - Default handlers output to outlet 0
