@@ -7262,7 +7262,9 @@
         "int",
         "float",
         "list",
-        "anything"
+        "anything",
+        "offset",
+        "set"
       ],
       "arguments": [
         {
@@ -7318,7 +7320,26 @@
         "ft7",
         "ft8",
         "ft9",
-        "setall"
+        "setall",
+        "in1",
+        "in2",
+        "in3",
+        "in4",
+        "in5",
+        "in6",
+        "in7",
+        "in8",
+        "in9",
+        "set",
+        "sm1",
+        "sm2",
+        "sm3",
+        "sm4",
+        "sm5",
+        "sm6",
+        "sm7",
+        "sm8",
+        "sm9"
       ],
       "arguments": [
         {
@@ -7420,7 +7441,20 @@
         "set",
         "setbuffer",
         "displayrange",
-        "selection"
+        "selection",
+        "bpm",
+        "buftime",
+        "crop",
+        "line",
+        "mode",
+        "mouseoutput",
+        "name",
+        "normalize",
+        "replacebuffercontents",
+        "setbpm",
+        "snap",
+        "undo",
+        "unit"
       ],
       "arguments": [
         {
