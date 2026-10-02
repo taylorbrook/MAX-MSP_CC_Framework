@@ -33,6 +33,12 @@ Sources of shape
 * I/O counts: refpage, cross-checked against the help-patch box Max itself
   serialized. A disagreement aborts that object.
 * Outlet types: the help-patch box ``outlettype``.
+* Inherited attributes: Jitter object refpages name their shared (OB3D / MOP)
+  attributes in a names-only ``<jitterattributelist>``; the definition lives
+  in a group page (``jit.group-gl.maxref.xml``), which is a documentation
+  page with no DB entry. The DB does not record inherited attributes as a
+  rule, so these are report-only and land only for attribute names given
+  explicitly to ``--apply inherited --attributes``.
 
 The refpage parser is the repo's one parser, ``parse_standard_xml`` in
 ``.claude/scripts/extract_objects.py``, loaded by file path -- not a copy.
@@ -45,6 +51,7 @@ Usage
     python3 tools/sync_max_bundle.py --apply define --names jit.gl.web jit.gl.tex2mat
     python3 tools/sync_max_bundle.py --apply define --names OLD.ALIAS --min-version 8
     python3 tools/sync_max_bundle.py --apply deltas
+    python3 tools/sync_max_bundle.py --apply inherited --attributes alpha_mode
     python3 tools/sync_max_bundle.py --snapshot-io /tmp/io.json
     python3 tools/sync_max_bundle.py --compare-io /tmp/io.json
 
@@ -119,13 +126,14 @@ _WHOLE_VALUE_TOKENS = ("undefined", "Dummy")
 # Bound on recursion into nested patchers when walking help patches (T-hwb-06).
 MAX_PATCHER_DEPTH = 32
 
-APPLY_MODES = ("new", "define", "deltas")
+APPLY_MODES = ("new", "define", "deltas", "inherited")
 
 SECTION_KEYS = [
     "install",
     "new_objects",
     "define_missing",
     "deltas",
+    "inherited_attributes",
     "collisions",
     "alias_docs",
     "shadowed_by_override",
@@ -254,6 +262,12 @@ def _scan_refpage_file(path: Path, root_kind: str, package: str | None, hints) -
             if methodlist is not None
             else None
         ),
+        # Names-only references to attributes a group page defines.
+        "inherited_attributes": [
+            a.get("name", "")
+            for a in element.findall("jitterattributelist/jitterattribute")
+            if a.get("name")
+        ],
         "class": "normal",
     }
 
@@ -991,6 +1005,91 @@ def compute_deltas(index: dict, classified: dict, db: ObjectDatabase, raw_db: di
     }
 
 
+def group_attribute_definitions(index: dict) -> tuple[dict[str, dict], list[str]]:
+    """Attribute definitions carried by the bundle's group (documentation) pages.
+
+    A group page is a refpage whose name contains whitespace ("Jitter GL
+    Object (OB3D) Messages", "Jitter Matrix Operators"): it can never be an
+    object box. Returns ({attribute: {"definition", "source"}}, ambiguous
+    names). A name two group pages define differently is ambiguous and never
+    offered.
+    """
+    definitions: dict[str, dict] = {}
+    ambiguous: set[str] = set()
+    for ref in index["refs"]:
+        if ref["class"] != "normal" or not any(ch.isspace() for ch in ref["name"]):
+            continue
+        parsed = parse_refpage(ref)
+        if parsed is None or "_error" in parsed:
+            continue
+        for attr, definition in (parsed.get("attributes") or {}).items():
+            known = definitions.get(attr)
+            if known is not None and not _same(known["definition"], definition):
+                ambiguous.add(attr)
+                continue
+            definitions.setdefault(attr, {"definition": definition, "source": ref["file"]})
+    for attr in ambiguous:
+        definitions.pop(attr, None)
+    return definitions, sorted(ambiguous)
+
+
+def compute_inherited(index: dict, classified: dict, db: ObjectDatabase, raw_db: dict) -> dict:
+    """Group-page attributes an object refpage lists and its raw base entry lacks.
+
+    `_pending` is what --apply inherited can write, restricted there to an
+    explicit attribute allow-list. `undefined` counts the referenced names no
+    group page defines (they cannot be added: there is no type to record).
+    """
+    definitions, ambiguous = group_attribute_definitions(index)
+    objects: list[dict] = []
+    by_attribute: dict[str, int] = {}
+    undefined: dict[str, int] = {}
+    for name in sorted(classified["authoritative"]):
+        ref = classified["authoritative"][name]
+        referenced = _dedupe(ref.get("inherited_attributes") or [])
+        if not referenced or _is_doc_page(ref):
+            continue
+        resolved = _muted_lookup(db, name)
+        if resolved is None:
+            continue
+        located = locate_base_entry(resolved, name, raw_db)
+        if located is None:
+            continue
+        rel, key = located
+        raw_attributes = raw_db[rel][key].get("attributes")
+        if not isinstance(raw_attributes, dict):
+            continue
+        pending = {}
+        for attr in referenced:
+            if attr in raw_attributes:
+                continue
+            if attr in definitions:
+                pending[attr] = copy.deepcopy(definitions[attr]["definition"])
+                by_attribute[attr] = by_attribute.get(attr, 0) + 1
+            elif attr not in ambiguous:
+                undefined[attr] = undefined.get(attr, 0) + 1
+        if pending:
+            objects.append({"name": key, "file": rel, "attributes": pending})
+    return {
+        "available": True,
+        "note": (
+            "report-only: the DB does not record inherited group attributes as a "
+            "rule; --apply inherited needs an explicit --attributes list"
+        ),
+        "object_count": len(objects),
+        "pending_attributes": sum(len(o["attributes"]) for o in objects),
+        "by_attribute": dict(sorted(by_attribute.items())),
+        "group_pages": sorted({d["source"] for d in definitions.values()}),
+        "undefined": dict(sorted(undefined.items())),
+        "ambiguous": ambiguous,
+        "objects": [
+            {"name": o["name"], "file": o["file"], "attributes": sorted(o["attributes"])}
+            for o in objects
+        ],
+        "_pending": objects,
+    }
+
+
 def _unavailable(reason: str) -> dict:
     return {"available": False, "reason": reason}
 
@@ -1014,6 +1113,9 @@ def run_report(db_root: str | Path, max_app: str | Path, index: dict | None = No
     sections["new_objects"] = section_new_objects(index, classified, db)
     sections["define_missing"] = section_define_missing(index, db)
     sections["deltas"] = deltas
+    inherited = compute_inherited(index, classified, db, raw_db)
+    inherited.pop("_pending")
+    sections["inherited_attributes"] = inherited
     sections["collisions"] = {
         "available": True,
         "count": len(classified["collisions"]),
@@ -1544,6 +1646,35 @@ def apply_deltas(index: dict, db_root: Path, names: list[str] | None) -> dict:
     return applied
 
 
+def apply_inherited(
+    index: dict, db_root: Path, attributes: list[str], names: list[str] | None
+) -> dict:
+    """--apply inherited: add the NAMED group-page attributes where refpages list them."""
+    db = load_db(db_root)
+    raw_db = load_raw_db(db_root)
+    classified = classify_refs(index, db, db_root)
+    inherited = compute_inherited(index, classified, db, raw_db)
+    wanted = set(attributes)
+    touched: dict[str, dict] = {}
+    applied = {"objects": [], "attributes": 0, "files": []}
+    applied["not_offered"] = sorted(wanted - set(inherited["by_attribute"]))
+    for item in inherited["_pending"]:
+        if names is not None and item["name"] not in names:
+            continue
+        chosen = {k: v for k, v in item["attributes"].items() if k in wanted}
+        if not chosen:
+            continue
+        data = touched.setdefault(item["file"], copy.deepcopy(raw_db[item["file"]]))
+        data[item["name"]]["attributes"].update(chosen)
+        applied["objects"].append(item["name"])
+        applied["attributes"] += len(chosen)
+    for rel, data in touched.items():
+        if write_db_file(db_root / rel, data, db_root):
+            applied["files"].append(rel)
+    applied["files"].sort()
+    return applied
+
+
 # ---------------------------------------------------------------------------
 # I/O regression guard
 # ---------------------------------------------------------------------------
@@ -1615,6 +1746,12 @@ def format_summary(report: dict) -> str:
         f"{d['pending_messages']} messages on {d['objects_gaining_messages']}, "
         f"{d['pending_attributes']} attributes on {d['objects_gaining_attributes']}"
     )
+    inherited = s["inherited_attributes"]
+    lines.append(
+        f"  inherited attrs : {len(inherited['by_attribute'])} group-page attributes "
+        f"unrecorded on {inherited['object_count']} objects (report-only; "
+        "--apply inherited --attributes NAME)"
+    )
     lines.append(f"  collisions      : {s['collisions']['count']} (reported, ignored)")
     lines.append(f"  alias documents : {s['alias_docs']['count']}")
     shadow = s["shadowed_by_override"]
@@ -1652,13 +1789,19 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         choices=APPLY_MODES,
         default=[],
-        help="Apply mode; repeatable. new / define require --names.",
+        help="Apply mode; repeatable. new / define require --names; inherited requires --attributes.",
     )
     parser.add_argument(
         "--names",
         nargs="+",
         default=None,
         help="Explicit allow-list of object names (mandatory for new and define).",
+    )
+    parser.add_argument(
+        "--attributes",
+        nargs="+",
+        default=None,
+        help="Explicit allow-list of group-page attribute names (mandatory for inherited).",
     )
     parser.add_argument(
         "--min-version",
@@ -1701,6 +1844,13 @@ def main(argv: list[str] | None = None) -> int:
             file=sys.stderr,
         )
         return 2
+    if "inherited" in modes and not args.attributes:
+        print(
+            "error: --apply inherited requires --attributes: inherited group "
+            "attributes land only by name.",
+            file=sys.stderr,
+        )
+        return 2
     if args.min_version is not None and not object_modes:
         print("error: --min-version applies only to --apply new / --apply define.", file=sys.stderr)
         return 2
@@ -1724,6 +1874,10 @@ def main(argv: list[str] | None = None) -> int:
                     applied["deltas"] = apply_deltas(
                         index, db_root, args.names if not object_modes else None
                     )
+                if "inherited" in modes:
+                    applied["inherited"] = apply_inherited(
+                        index, db_root, args.attributes, args.names if not object_modes else None
+                    )
             except (WriteRefused, AdditiveViolation, StyleUnreproducible) as exc:
                 print(f"error: {type(exc).__name__}: {exc}", file=sys.stderr)
                 return 2
@@ -1742,6 +1896,14 @@ def main(argv: list[str] | None = None) -> int:
         print(
             f"  applied deltas  : {a['messages']} messages, {a['attributes']} attributes "
             f"on {a['objects']} objects in {len(a['files'])} files"
+        )
+
+    if "inherited" in applied:
+        a = applied["inherited"]
+        print(
+            f"  applied inherited: {a['attributes']} attributes on {len(a['objects'])} "
+            f"objects in {len(a['files'])} files"
+            + (f"; no refpage offers: {', '.join(a['not_offered'])}" if a["not_offered"] else "")
         )
 
     if json_path is not None:

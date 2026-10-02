@@ -4839,6 +4839,11 @@
         "type": "float",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -5024,6 +5029,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -5164,6 +5174,11 @@
       },
       "upper_right": {
         "type": "float",
+        "get": true,
+        "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
         "get": true,
         "set": true
       }
@@ -5402,6 +5417,11 @@
         "type": "float",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -5487,6 +5507,11 @@
         "set": true
       },
       "shape": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "alpha_mode": {
         "type": "symbol",
         "get": true,
         "set": true
@@ -5719,6 +5744,11 @@
         "type": "int",
         "get": true,
         "set": false
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -6012,6 +6042,11 @@
         "type": "symbol",
         "get": true,
         "set": false
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -6388,6 +6423,11 @@
         "type": "int",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -6572,6 +6612,11 @@
         "type": "int",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -6710,6 +6755,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -6818,6 +6868,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -6893,6 +6948,11 @@
       },
       "order": {
         "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
         "get": true,
         "set": true
       }
@@ -7164,6 +7224,11 @@
       },
       "texturemode": {
         "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
         "get": true,
         "set": true
       }
@@ -7525,6 +7590,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -7765,6 +7835,11 @@
         "set": true
       },
       "type": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      },
+      "alpha_mode": {
         "type": "symbol",
         "get": true,
         "set": true
@@ -8065,6 +8140,11 @@
         "type": "int",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -8269,6 +8349,11 @@
       },
       "up": {
         "type": "float",
+        "get": true,
+        "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
         "get": true,
         "set": true
       }
@@ -8487,7 +8572,13 @@
       "tri",
       "worldtoscreen"
     ],
-    "attributes": {},
+    "attributes": {
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
+      }
+    },
     "seealso": [
       "jit.gl.graph",
       "jit.gl.gridshape",
@@ -8720,6 +8811,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -8869,6 +8965,11 @@
       },
       "weight": {
         "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
         "get": true,
         "set": true
       }
@@ -9176,6 +9277,11 @@
         "type": "symbol",
         "get": true,
         "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [
@@ -9261,6 +9367,11 @@
       },
       "slices": {
         "type": "int",
+        "get": true,
+        "set": true
+      },
+      "alpha_mode": {
+        "type": "symbol",
         "get": true,
         "set": true
       }

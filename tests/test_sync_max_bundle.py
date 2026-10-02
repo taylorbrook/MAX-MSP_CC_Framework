@@ -662,6 +662,91 @@ class TestDeltas:
         assert gen.read_bytes() == before
 
 
+def _add_group_fixtures(world: dict) -> None:
+    """A group page plus an object refpage that lists its attributes by name only."""
+    jit_ref = world["app"] / "Contents" / "Resources" / "C74" / "docs" / "refpages" / "jit-ref"
+    (jit_ref / "jit.group-fake.maxref.xml").write_text(
+        _refpage("Fake Group Messages", module="jit", methods=["draw"], attributes=["alpha_mode", "blend"])
+    )
+    # A second group page that defines `blend` differently: ambiguous.
+    (jit_ref / "jit.group-other.maxref.xml").write_text(
+        _refpage("Other Group Features", module="jit", attributes=["blend"]).replace(
+            'type="int"', 'type="symbol"'
+        )
+    )
+    listing = (
+        "  <jitterattributelist>\n"
+        '    <jitterattribute name="alpha_mode" />\n'
+        '    <jitterattribute name="blend" />\n'
+        '    <jitterattribute name="nowhere" />\n'
+        "  </jitterattributelist>\n</c74object>\n"
+    )
+    (jit_ref / "jit.old.maxref.xml").write_text(
+        _refpage(
+            "jit.old", module="jit", inlets=[("int", "in")], outlets=[("int", "out")], methods=["bang"]
+        ).replace("</c74object>\n", listing)
+    )
+
+
+class TestInheritedAttributes:
+    """DEF-hwb-24: names-only <jitterattribute> references to a group page."""
+
+    def test_report_names_what_the_group_page_defines(self, world: dict) -> None:
+        _add_group_fixtures(world)
+        before = _tree_bytes(world["db_root"])
+        section = _report(world)["inherited_attributes"]
+        assert section["by_attribute"] == {"alpha_mode": 1}
+        assert section["ambiguous"] == ["blend"]
+        assert section["undefined"] == {"nowhere": 1}
+        assert section["objects"] == [
+            {"name": "jit.old", "file": "jitter/objects.json", "attributes": ["alpha_mode"]}
+        ]
+        assert [Path(g).name for g in section["group_pages"]] == ["jit.group-fake.maxref.xml"]
+        # Report-only: a dry run and a plain deltas apply both leave it alone.
+        assert _run(world) == 0
+        assert _tree_bytes(world["db_root"]) == before
+        assert _run(world, "--apply", "deltas") == 0
+        assert "alpha_mode" not in _load(world, "jitter/objects.json")["jit.old"]["attributes"]
+
+    def test_apply_needs_an_explicit_attribute_list(self, world: dict) -> None:
+        _add_group_fixtures(world)
+        before = _tree_bytes(world["db_root"])
+        assert _run(world, "--apply", "inherited") == 2
+        assert _tree_bytes(world["db_root"]) == before
+
+    def test_apply_adds_only_the_named_attribute_with_the_group_definition(
+        self, world: dict
+    ) -> None:
+        _add_group_fixtures(world)
+        before = _load(world, "jitter/objects.json")["jit.old"]
+        assert _run(world, "--apply", "inherited", "--attributes", "alpha_mode", "blend") == 0
+        after = _load(world, "jitter/objects.json")["jit.old"]
+        # `blend` is ambiguous and `nowhere` undefined: neither lands.
+        assert after["attributes"] == {"alpha_mode": {"type": "int", "get": True, "set": True}}
+        for field in before:
+            if field != "attributes":
+                assert after[field] == before[field], field
+        assert _report(world)["inherited_attributes"]["by_attribute"] == {}
+
+    def test_apply_is_idempotent_and_respects_names(self, world: dict) -> None:
+        _add_group_fixtures(world)
+        before = _tree_bytes(world["db_root"])
+        argv = ("--apply", "inherited", "--attributes", "alpha_mode")
+        assert _run(world, *argv, "--names", "someone.else") == 0
+        assert _tree_bytes(world["db_root"]) == before
+        assert _run(world, *argv) == 0
+        first = _tree_bytes(world["db_root"])
+        assert first != before
+        assert _run(world, *argv) == 0
+        assert _tree_bytes(world["db_root"]) == first
+
+    def test_group_page_itself_never_becomes_an_object(self, world: dict) -> None:
+        _add_group_fixtures(world)
+        new = _report(world)["new_objects"]
+        assert "Fake Group Messages" in new["doc_pages"]
+        assert "Fake Group Messages" not in new["names"]
+
+
 class TestAdditiveSelfCheck:
     """T-hwb-02: the writer refuses anything but growth on a pre-existing entry."""
 
