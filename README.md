@@ -20,7 +20,7 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 - **RNBO export support** — generate export-ready patches for VST3/AU plugins, Web Audio, and C++ embedded targets. The RNBO builders (`add_rnbo`, `generate_rnbo_wrapper`): **Experimental:** not yet confirmed in MAX.
 - **Node for Max & js scripting** — generate JavaScript for `js` objects (Legacy Engine, ES5), `v8` objects (Modern Engine), and Node for Max `node.script`
 - **C++ external development** — scaffold, generate, and build Min-DevKit externals with help patches
-- **Help patch audit pipeline** — offline tool that parses 973 .maxhelp files to extract ground truth object metadata and automatically correct database entries
+- **Help patch audit pipeline** — offline tool (`python3 tools/audit_db.py --help-io`) that compares every box in 2,114 bundle .maxhelp files (Max 9.2.0) and 1,333 installed-package help files with the database; reviewed corrections land through `tools/sync_max_bundle.py --apply`
 - **Professional patch aesthetics** — styled section comments, background panels, contrast-aware text colors, obstacle-avoiding cord routing, grid-snapped layout, and inlet-aligned cables for polished output; edits never restyle a patch you arranged in MAX
 - **Project lifecycle management** — structured workflow from ideation through build and verification with automatic version tracking
 
@@ -28,7 +28,7 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 
 - **macOS only.** The framework assumes macOS throughout: it reads the Max bundle at `/Applications/Max.app` and packages under `~/Documents/Max 9/Packages`, and checks built externals as arm64 Mach-O binaries with `file` and `lipo`.
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (requires an Anthropic account)
-- [MAX 9](https://cycling74.com/products/max) (required for opening and testing generated patches)
+- [MAX 9](https://cycling74.com/products/max) (required for opening and testing generated patches; the Vision package `jit.vis.*` objects and the other objects tagged `min_version` 9.2, listed in `.claude/skills/references/max-9.2-changes.md`, need Max 9.2+)
 - Python 3.10+ (for the validation and editing engine), with the packages in `requirements-dev.txt`: numpy and scipy (the `dsp_sim` DSP pre-flight simulation) and pytest (the test suite, and the DSP agent's pre-flight gate, which runs the simulation tests before saving). Install them with `python3 -m pip install -r requirements-dev.txt`; `npx create-max-framework --check-deps` or `install.sh --check-deps` re-checks Python, these packages and git without installing.
 - git (every patch save is auto-committed)
 - RNBO (optional — only needed for export targets)
@@ -158,9 +158,9 @@ The `patches/` directory contains example and user-created projects. It is repos
 | **barnett-dbap** | 8-channel Distance-Based Amplitude Panning (DBAP) spatializer for the Roy Barnett Recital Hall speaker rig, ported from the O-Octagon VST | `.maxpat`, `.js` |
 | **bassoon-model** | Physical model of a bassoon with conical waveguide and reed nonlinearity for high-accuracy microtonal pitch | `.maxpat`, `.gendsp` |
 | **disintegrate** | One-knob stereo "disintegration" effect in a single gen~ codebox — filtering, saturation, and detuning sweep the sound from bypass to silence | `.maxpat` |
-| **FDNVerb** | Feedback delay network reverb with 8 delay lines, Hadamard matrix, decay/diffusion/damping/freeze controls | `.maxpat`, `.gendsp` |
-| **gen-eq** | 5-band parametric EQ with TPT SVF filters in gen~, Neve-warm asymmetric saturation, and SSL-style horizontal UI | `.maxpat`, `.gendsp` |
 | **face-tracker** | Vision package face tracking showcase (jit.vis.face / facemesh) with normalized `face.*` sends, live feature readouts and a drone sonification demo | `.maxpat` |
+| **FDNVerb** | Feedback delay network reverb with 8 delay lines, Hadamard matrix, decay/diffusion/damping/freeze controls | `.maxpat`, `.gendsp`, `.maxhelp` |
+| **gen-eq** | 5-band parametric EQ with TPT SVF filters in gen~, Neve-warm asymmetric saturation, and SSL-style horizontal UI | `.maxpat`, `.gendsp` |
 | **gong-model** | Physical model of a gong using gen~ modal synthesis with pitch/timbre control, MIDI and audio excitation, drift engine | `.maxpat`, `.gendsp`, `.js` |
 | **granularsynthtest** | Granular synthesizer with Gen~ DSP engine and MC multichannel output for flexible speaker arrays | `.maxpat`, `.gendsp` |
 | **intelligent-corpus-remixer** | Corpus-based concatenative synthesis using FluCoMa (MFCC + UMAP + k-means), EARS, and Odot; 2D plotter-triggered playback | `.maxpat`, `.js` |
@@ -219,6 +219,7 @@ MAX-MSP_CC_Framework/
 │   └── {project-name}/
 │       ├── context.md      # Design conversation and decisions
 │       ├── status.md       # Project stage and progress
+│       ├── versions.json   # Version history (bumped on every iteration)
 │       ├── generated/      # Output (.maxpat, .gendsp, .js)
 │       └── test-results/   # Manual test records
 ├── CHANGELOG.md            # Release notes (each section is the GitHub release body)
@@ -233,10 +234,10 @@ This project uses the [Get Shit Done (GSD)](https://github.com/gsd-build/get-shi
 
 | Command | Description |
 |---------|-------------|
-| `/gsd:discuss-phase` | Discuss and scope a phase before planning |
-| `/gsd:plan-phase` | Create executable plans with dependency analysis |
-| `/gsd:execute-phase` | Run plans with automated verification |
-| `/gsd:verify-phase` | Check phase completion against requirements |
+| `/gsd-discuss-phase` | Discuss and scope a phase before planning |
+| `/gsd-plan-phase` | Create executable plans with dependency analysis |
+| `/gsd-execute-phase` | Run plans with automated verification |
+| `/gsd-verify-work` | Validate built features through conversational UAT |
 
 ### Project planning state
 
@@ -259,9 +260,9 @@ Planning artifacts live in `.planning/`:
 | **v2.4.0 Visual Organization** | 2026-04-05 | — | — | Obstacle-aware cord routing (dog-leg around intermediate objects), 21 live.* objects added to UI system, contrast-adaptive text colors, subpatcher grouping heuristic |
 | **v3.0.0 Milestone Archive** | 2026-04-09 | 7 | 15 | v2.0 milestone archived — 26/26 requirements verified, full PROJECT.md evolution, retrospective |
 | **v4.0 Package Integration** | 2026-04-15 | 6 | 17 | Package-aware DB (2,450 objects), bundled extraction (BEAP/Vizzie/Jitter), generation gating, agent intelligence, community stubs (10 packages), package critics |
+| **v5.0 DB Schema Hardening + Validator Depth** | 2026-05-01 | 5 | 24 | `signal_role`/`domain_restricted`/`verified_installed` schema fields, deepened validation pipeline (Layers 1-5 with sub-layers), MSP outlet coverage sweep, Phase 31 layout/UX builders (labeled param banks, overlay readouts, safe box replacement, M4L gen-synth), dsp_sim pre-flight simulation |
 | **v6.0.0 Non-destructive Validation + Safe Saves** | 2026-10-23 | — | — | Fix-plan Q1-Q40 + review fixes: non-destructive `validate_patch` + `apply_fixes`, per-scope validation and critics, save gate (`PatchValidationError`, `LayoutRefusedError`), byte-identical no-op saves for every Max layout, `edit_patch` sessions + semantic diff, Q23 vocabulary checks, codebox smoke test, `/max-diagnose`, `/max-verify --live`, critic quick fixes, M4L device builder + `.amxd` export (experimental), npm trusted publishing. See [CHANGELOG.md](CHANGELOG.md) |
 | **v6.1.0 Vision Package** | 2026-10-25 | — | — | Cycling '74 Vision 1.0.2 in the object DB (22 `jit.vis.*` entries, Max 9.2+), `dict.unpack` variable outlet count. See [CHANGELOG.md](CHANGELOG.md) |
-| **v5.0 DB Schema Hardening + Validator Depth** | 2026-05-01 | 5 | 24 | `signal_role`/`domain_restricted`/`verified_installed` schema fields, deepened validation pipeline (Layers 1-5 with sub-layers), MSP outlet coverage sweep, Phase 31 layout/UX builders (labeled param banks, overlay readouts, safe box replacement, M4L gen-synth), dsp_sim pre-flight simulation |
 
 ## License
 
