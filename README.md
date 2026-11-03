@@ -10,7 +10,7 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 - **Conversational patch creation** — describe what you want in natural language; Claude generates valid `.maxpat` files
 - **Patch analysis and onboarding** — analyze any existing `.maxpat` file to understand its structure, signal flow, and sections before editing or extending it
 - **Intelligent editing** — `edit_patch` sessions that modify objects in-place, insert into signal chains, replace/swap objects (box ids kept), query upstream/downstream signal paths, auto-position new objects, and show a semantic diff of what changed; a no-op save is byte-identical for patches from any Max version
-- **3,445-object knowledge base** — verified database covering MAX, MSP, Jitter, MC, Gen~, Max for Live, RNBO, and 29 packages (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more) with full inlet/outlet schemas and typed per-outlet signal metadata (`signal_role`) backing the connection validator
+- **3,467-object knowledge base** — verified database covering MAX, MSP, Jitter, MC, Gen~, Max for Live, RNBO, and 30 packages (BEAP, Vizzie, FluCoMa, CNMAT, Bach, and more) with full inlet/outlet schemas and typed per-outlet signal metadata (`signal_role`) backing the connection validator
 - **Package-aware generation** — project-level package selection, DB-driven bpatcher sizing, allowed_packages gating, and community package stubs with extraction CLI for installed packages
 - **9 specialist agents** — router, patch, DSP/Gen~, RNBO, JavaScript, UI layout, C++ externals, critic, and lifecycle management with package-specific domain guidance
 - **5-layer validation pipeline** — run on every subpatcher scope: structure checks, `signal_role`-aware connection verification, vocabulary checks (`expr clip()`, `line~` comma segments, bpatcher args, message selectors), domain-restriction guards, seven domain-specific critics (DSP signal flow, structure, layout, RNBO compatibility, C++ review, package conventions, Max for Live device conventions), and iterative revision
@@ -74,7 +74,7 @@ claude
 Claude walks you through a full project kickoff in one continuous conversation:
 1. **Kickoff** — asks about your goals, audio/MIDI requirements, signal flow, UI needs, and which packages to use (BEAP, Vizzie, FluCoMa, etc.)
 2. **Discuss** — dives deeper into implementation decisions (object choices, signal architecture, control design)
-3. **Research** — looks up the best MAX objects, patterns, and techniques from the 3,445-object database
+3. **Research** — looks up the best MAX objects, patterns, and techniques from the 3,467-object database
 
 By the end, all findings are saved to `patches/my-synth/context.md` and Claude suggests a concrete `/max-build` command.
 
@@ -195,7 +195,7 @@ The framework has four core layers:
 
 **Direct .maxpat Editing (v3.0)** — The `.maxpat` file is the single source of truth. Patches are loaded into `Patcher`/`Box`/`Patchline` objects, edited with search, mutation, and graph query methods inside a `with edit_patch(path) as p:` session, and written back with lossless round-trip preservation in the file's own JSON layout. All user state — positions, colors, varnames, custom attributes, manual edits made in MAX — survives the load-edit-save cycle. Every patch save under `patches/<project>/` auto-commits just that file to git for safety. No intermediate code generation step.
 
-**Object Database** — A verified knowledge base of 3,445 MAX objects (`.claude/max-objects/`) across 7 core domains plus 29 packages (bundled and community) with full inlet/outlet schemas, typed per-outlet signal metadata (`signal_role`), domain-restriction and install-state flags, argument formats, variable I/O rules, RNBO compatibility flags, and package source tracking. Package objects include DB-driven bpatcher dimensions for layout. Every object used in generation is looked up here — nothing is guessed.
+**Object Database** — A verified knowledge base of 3,467 MAX objects (`.claude/max-objects/`) across 7 core domains plus 30 packages (bundled and community) with full inlet/outlet schemas, typed per-outlet signal metadata (`signal_role`), domain-restriction and install-state flags, argument formats, variable I/O rules, RNBO compatibility flags, and package source tracking. Package objects include DB-driven bpatcher dimensions for layout. Every object used in generation is looked up here — nothing is guessed.
 
 **Agent System** — A router analyzes your task description and dispatches to one or more specialist agents (DSP, patch, RNBO, js, UI, externals). Agents read existing patches, analyze their structure, make surgical edits or build new ones, and write the result directly.
 
@@ -208,12 +208,12 @@ For full technical documentation — agent internals, validation details, object
 ```
 MAX-MSP_CC_Framework/
 ├── .claude/
-│   ├── max-objects/        # Object database (3,445 objects across 7 core domains + 29 packages)
+│   ├── max-objects/        # Object database (3,467 objects across 7 core domains + 30 packages)
 │   ├── skills/             # Agent definitions (9 specialist agents)
 │   └── commands/           # Slash command definitions
 ├── src/maxpat/             # Python editing, validation, and analysis engine (~40,800 LOC)
 ├── tools/                  # DB audit/sync tools, max-bridge client + bridge patch (tools/max_bridge/)
-├── tests/                  # Test suite (7,509 tests)
+├── tests/                  # Test suite (7,550 tests)
 ├── patches/                # Your projects live here
 │   ├── .active-project.json
 │   └── {project-name}/
