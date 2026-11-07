@@ -79,6 +79,15 @@
         "reverse-delay.maxpat",
         "reverse-delay-mono.maxpat"
       ]
+    },
+    {
+      "version": "0.3.4",
+      "description": "round-robin grain spawn outside the for loop (first-free-slot pending flag not carried in compiled gen~: all grains spawned together, +25 dB)",
+      "timestamp": "2026-11-06T00:00:00+00:00",
+      "files_changed": [
+        "reverse-delay.maxpat",
+        "reverse-delay-mono.maxpat"
+      ]
     }
   ]
 }
