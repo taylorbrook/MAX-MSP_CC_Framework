@@ -156,6 +156,7 @@ Objects with `variable_io: true` change inlet/outlet count based on arguments. T
 | `second_arg` | Second argument is the count | `router 4 2` → 2 outlets |
 | `second_arg+1` | Second argument plus one | `matrix~ 4 2` → 3 outlets (2 signal + 1 dump) |
 | `second_arg+2` | Second argument plus two | `record~ buf 2` → 4 inlets |
+| `sfplay_outlets` | Channels + position flag (0-2) + done-bang; a leading sflist~ name is skipped | `sfplay~ sf.cues 2 0 1` → 4 outlets |
 | `inherited_from_subpatch` | Counts follow the inlet/outlet boxes of the loaded subpatcher | `bpatcher` |
 | `fixed:N` | Always N regardless of args | `pack 0 0 0 0` → 1 outlet (`fixed:1`) |
 

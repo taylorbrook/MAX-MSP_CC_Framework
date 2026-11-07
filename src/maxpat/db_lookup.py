@@ -39,6 +39,7 @@ SUPPORTED_IO_FORMULAS = frozenset({
     "second_arg",
     "second_arg+1",
     "second_arg+2",
+    "sfplay_outlets",
     "inherited_from_subpatch",
 })
 
@@ -1596,6 +1597,11 @@ class ObjectDatabase:
           outlets + the dump outlet; play~ buf N: N audio + the done-bang)
         - "second_arg+2": second numeric argument + 2 (mc.matrix~ N M: M
           audio outlets + 2 control outlets, per MAX-saved help boxes)
+        - "sfplay_outlets": sfplay~ ``[sflist-name] [chans] [bufsize]
+          [posflag] [refname]``: chans signal outlets + posflag (0-2)
+          position outlets + the done-bang. A leading symbol is the sflist~
+          name and is skipped; no numeric args -> ``default`` (refpage
+          objarglist; ``sfplay~ sf.cues 2 0 1`` = L, R, position, bang).
         The second_arg family falls back to ``default`` with fewer than 2
         args, and warns once and falls back on a non-integer second arg.
 
@@ -1639,6 +1645,21 @@ class ObjectDatabase:
             except ValueError:
                 self._warn_non_integer_first_arg(formula, args[0], default)
                 return default
+
+        if formula == "sfplay_outlets":
+            nums: list[int] = []
+            for i, tok in enumerate(args):
+                try:
+                    nums.append(int(float(tok)))
+                except ValueError:
+                    if i == 0 and not nums:
+                        continue  # leading sflist~ name
+                    break  # trailing object-reference name
+            if not nums:
+                return default
+            chans = max(nums[0], 1)
+            posflag = nums[2] if len(nums) >= 3 and nums[2] in (1, 2) else 0
+            return chans + posflag + 1
 
         if formula in ("second_arg", "second_arg+1", "second_arg+2"):
             if len(args) < 2:

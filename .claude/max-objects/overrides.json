@@ -17272,11 +17272,11 @@
     },
     "sfplay~": {
       "inlet_count": "fixed:2",
-      "outlet_count": "first_arg+1",
+      "outlet_count": "sfplay_outlets",
       "default_inlets": 2,
       "default_outlets": 2,
       "trailing_outlets": 1,
-      "description": "sfplay~ N: N signal outlets + 1 bang outlet (when done). Symbol first arg (sflist~ name) falls back to the default 2. trailing_outlets 1: with args, the LAST outlet is the DB's last (the done-bang) and every earlier outlet repeats DB outlet 0 (audio).",
+      "description": "sfplay~ [sflist] N [bufsize] [posflag]: N signal outlets + posflag (0-2) position signal outlets + 1 bang outlet (when done). A leading symbol (sflist~ name) is skipped (Ambire v0.14.0: sfplay~ sf.cues 2 0 1 = 4 outlets, per refpage objarglist). trailing_outlets 1: with args, the LAST outlet is the DB's last (the done-bang) and every earlier outlet repeats DB outlet 0 (audio).",
       "_audit": {
         "source": "barnett-dbap v0.3.0 build (sfplay~ 2 confirmed 3 outlets in the v0.2 patch: sfplay~ 1 saved with 2)",
         "confidence": "HIGH"

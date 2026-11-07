@@ -330,8 +330,19 @@ class TestInvariants:
         assert SUPPORTED_IO_FORMULAS == frozenset({
             "", "arg_count", "arg_count+1", "arg_count_or_default",
             "first_arg", "first_arg+1", "second_arg", "second_arg+1",
-            "second_arg+2", "inherited_from_subpatch",
+            "second_arg+2", "sfplay_outlets", "inherited_from_subpatch",
         })
+
+    def test_sfplay_outlets_formula(self, db) -> None:
+        # sfplay_outlets stays a formula (not a resolver) so the rule keeps
+        # trailing_outlets typing: the done-bang is always the last outlet.
+        assert db.compute_io_counts("sfplay~", []) == (2, 2)
+        assert db.compute_io_counts("sfplay~", ["2"]) == (2, 3)
+        assert db.compute_io_counts("sfplay~", ["sf.cues", "2"]) == (2, 3)
+        assert db.compute_io_counts("sfplay~", ["sf.cues", "2", "0", "1"]) == (2, 4)
+        assert db.compute_io_counts("sfplay~", ["2", "0", "2", "ref"]) == (2, 5)
+        assert db.get_outlet_types("sfplay~", ["sf.cues", "2", "0", "1"]) == [
+            "signal", "signal", "signal", ""]
 
     def test_resolver_keys_are_canonical_db_names(self, db) -> None:
         for name in IO_RESOLVERS:
