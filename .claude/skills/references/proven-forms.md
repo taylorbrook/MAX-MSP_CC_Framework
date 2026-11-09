@@ -1,6 +1,6 @@
 # Proven Forms
 
-> General MAX knowledge learned while building and testing real patches: forms that work, and traps the object database and the validator do not catch. Read it before generating control logic, MC, FluCoMa, poly~ or waveform~ / flonum UI, and before editing subpatcher layouts.
+> General MAX knowledge learned while building and testing real patches: forms that work, and traps the object database and the validator do not catch. Read it before generating control logic, MC, FluCoMa, poly~, Jitter matrix maths or waveform~ / flonum UI, and before editing subpatcher layouts.
 > Path: `.claude/skills/references/proven-forms.md`. `C74/` below means `/Applications/Max.app/Contents/Resources/C74/`. Console errors are in `troubleshooting.md`; finding severities in `severity-contract.md`.
 
 ## Evidence tiers
@@ -123,6 +123,16 @@ Every object, message and attribute named below resolves in `ObjectDatabase` or 
 - **Form:** local alignment and spacing within a section, `send` / `receive` for long cords. `finalize_patch(patcher, is_new=False)` and `edit_patch` sessions never move boxes and never clear existing midpoints: they route only cords that have no midpoints and are new or touch an added or moved box, so they are safe on large MAX-saved patches. `finalize_patch(is_new=True)` refuses a MAX-saved or large patcher with `LayoutRefusedError` before anything moves.
 - **Why:** the row-based layout maps depth to rows and spreads each row sideways: about 200 objects became a ~7900 px wide band, stacked co-targeted controls, and illegible flow. User arrangements encode grouping the engine cannot see. Even on a new build with large UI boxes, hand-place sections.
 - Evidence: [observed] ji-harmonizer v0.7.1 (the user rejected it; reverted in v0.7.2); [observed] barnett-dbap v0.1.0 and v0.5.0 (2026-09-19).
+
+## Jitter
+
+### jit.expr @cache 0 when the expression reads a named matrix
+
+- **Rule:** add `@cache 0` to every `jit.expr` whose expression reads a named matrix (`name` or `name.p[N]`), whether the name comes from `jit.matrix name`, `@out_name` or `jit.slide @out_name`.
+- **Form:** `jit.expr @adapt 0 @type float32 @dim 8 @planecount 3 @cache 0 @expr in[0]*(rgstate.p[6]==0) ...`.
+- **Why:** `@cache` defaults to 1, which caches intermediate values. In MAX, any sub-expression built only from named matrices, with no `in[N]` in it, was computed on the first frame and then stayed constant. A bare `name.p[N]` operand still updated, so positions moved while masks, colours and ripple rings stayed at their first-frame values. There was no Console message. Changing `==` to arithmetic masks and splitting planes into 1-plane named matrices changed nothing.
+- **Debug:** probe the failing object's own output with `jit.spill @plane N` -> `prepend set` -> a message box. A constant output that equals the expression's first-frame value means caching.
+- Evidence: [bundle] `C74/docs/refpages/jit-ref/jit.expr.maxref.xml` (`cache`: "Cache intermediary values", default 1); [confirmed] Resonant Garden objects version, MUSC420 (2026-11-09).
 
 ## Framework workflow
 

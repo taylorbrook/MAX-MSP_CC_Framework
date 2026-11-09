@@ -66,3 +66,4 @@ These produce no error, only wrong behavior. Each has a proven-forms.md entry.
 - `waveform~` ignores clicks: no `setmode` (proven-forms.md "waveform~").
 - Messages hit the wrong subpatcher inlet: port boxes reordered by x (proven-forms.md "subpatcher port x-order").
 - `jit.bfg` outputs zeros: an invalid `@basis` name accepted silently (proven-forms.md "enum values").
+- `jit.expr` output frozen at its first-frame values while bare references still update: named-matrix maths cached under the default `@cache 1` (proven-forms.md "jit.expr @cache 0").

@@ -176,6 +176,10 @@ Full text, derivations and per-version evidence: `.claude/skills/references/gene
 - **Codebox safe-construct rules** (treat the full set as the proven-safe pattern): spaces only, NEVER tab characters (error in new code, warning in a loaded codebox); no `else if` chains (nest `else { if ... }`); `peek(buf, idx, 0)` / `poke(buf, val, idx, 0)` with explicit channel; for loops single, non-nested, CONSTANT bounds with a variable inner guard; Amortize heavy scans across samples with a `History` cursor.
 - **Max 9.2's Gen compiler fixes do NOT retire any rule above**; each workaround stays until individually re-verified in MAX.
 
+### Jitter
+
+- **`jit.expr` that reads a named matrix (`name.p[N]`, an `@out_name` matrix) needs `@cache 0`:** with the default `@cache 1`, sub-expressions without `in[N]` are computed once and stay constant, silently (proven-forms.md "Jitter").
+
 ### Subpatcher Inlet/Outlet Access
 
 Inside a subpatcher from `add_subpatcher()`, get inlet/outlet boxes by index with `inner.get_inlets()` / `inner.get_outlets()`, never by `box.text` (every inlet's text is `"inlet"`, every outlet's `"outlet"`).
