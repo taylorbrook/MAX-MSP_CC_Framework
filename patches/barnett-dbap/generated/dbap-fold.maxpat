@@ -417,8 +417,9 @@
                     "fontname": "Arial",
                     "fontsize": 9.0,
                     "presentation": 1,
-                    "presentation_rect": [ 138.0, 124.0, 168.0, 30.0 ],
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
+                    "presentation_rect": [ 225.0, 12.0, 364.0, 17.0 ],
+                    "textcolor": [ 0.62, 0.64, 0.68, 1.0 ],
+                    "textjustification": 2
                 }
             },
             {
@@ -938,23 +939,6 @@
                     "presentation_rect": [ 20.0, 8.0, 300.0, 22.0 ],
                     "textcolor": [ 0.8, 0.8, 0.82, 1.0 ],
                     "fontface": 1
-                }
-            },
-            {
-                "box": {
-                    "maxclass": "comment",
-                    "id": "obj-41",
-                    "numinlets": 1,
-                    "numoutlets": 0,
-                    "outlettype": [],
-                    "patching_rect": [ 1640.0, 11.0, 149.0, 19.0 ],
-                    "text": "3rd-order AmbiX, 16 ch",
-                    "fontname": "Arial",
-                    "fontsize": 11.0,
-                    "presentation": 1,
-                    "presentation_rect": [ 440.0, 11.0, 149.0, 19.0 ],
-                    "textcolor": [ 0.8, 0.8, 0.82, 1.0 ],
-                    "textjustification": 2
                 }
             },
             {
