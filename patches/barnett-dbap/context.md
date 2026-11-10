@@ -1132,3 +1132,94 @@ limiter (teaching patch, no change).
 
 Verify in MAX (v0.7.4): opens with no console error on `mc.limi~`; normal levels unchanged; push a trim to
 +12 dB with a loud source: that speaker's meter stops at about -1 dBFS and the others are not pulled down.
+
+## Review + build v0.7.5 (2026-11-10)
+
+Review of v0.7.4 (validator clean on all four patches; critics: layout / init warnings only). Fixes built:
+
+- **Host:** title v0.7.5. Venue broadcast gated on success: `dict venue` dump `read <file> 0/1` (dict refpage)
+  -> `route read` -> `zl nth 2` (was `t b`, obj-40) -> `sel 1` (obj-53) -> `venue` -> `s dbap-venue`.
+  bpatcher varnames `dbap-source[1]` / `dbap-source` -> `srcA` / `srcB` (no host-level pattr reads them).
+- **Source:** `p gaininterp` `dbtoa` -> `expr ($f1 > -69.95) * exp($f1 * 0.1151293)`: the bottom of the master
+  dial (-70 dB) is a true mute, identical to dbtoa above it. `p mc` / `p mcramp`: `dspstate~` (sr) ->
+  `expr int($f1 * 0.0213333 + 0.5)` -> `rampup $1, rampdown $1` -> `mc.rampsmooth~`, so the gain ramp is
+  21.3 ms at any sample rate (1024 at 48 k, as before; the `1024 1024` args stay as the pre-DSP default).
+  `loadmess 1` -> the "adc ch" number. Presentation: POSITION header y 174 and its dial row +2 px (was a 4 px
+  overlap), `x m` / `y m` labels 22 wide (ended 4 px inside the flonums), weight index labels centred on the
+  slider columns (`textjustification 1`) at y 412, trims slider y 450 (clear of the TRIMS header).
+- Not changed: decorrelator depth-slew crackle (plugin parity), ping bypassing master, 60 Hz readout lists,
+  play / loop toggle init, subpatcher inlet assistance.
+
+Verify in MAX (v0.7.5), with the v0.7.3 / v0.7.4 lists above still pending:
+1. Both patches open with no console errors (`expr`, `zl nth 2`, `rampup` / `rampdown` on `mc.rampsmooth~`).
+2. Master fully down = silence; -69 dB and up unchanged. "adc ch" reads 1 on load.
+3. Venue `read`, then cancel the dialog or pick a non-venue file: no "venue loaded" post from dbap.js; a good
+   file still reloads every instance and the align status.
+4. Gains still glide (no zipper) at 48 k; at 96 k the ramp feels the same.
+5. Presentation: POSITION row, x m / y m, the 1-8 labels under WEIGHTS and the TRIMS slider sit clear.
+
+## v0.8 build brief: ambisonic fold-down + headphone monitor (for /max-build in a fresh context)
+
+**Goal.** A MODULE that folds any number of DBAP sources down to ambisonics, records it, and monitors it on
+headphones. It must be optional: `barnett-dbap.maxpat`, `dbap-source.maxpat`, `dbap-motion.maxpat` and
+`control-demo.maxpat` are NOT edited (diffusion-only patches carry no fold-down code and no new dependency).
+
+**Decisions (user-approved 2026-11-10 unless marked ASSUMED)**
+| # | Decision |
+|---|----------|
+| D36 | Virtual-speaker encode of the 8-channel speaker mix: each speaker feed is a point source at that speaker's direction from the listener. Folds exactly what the hall gets (trims and master included). |
+| D37 | AmbiX (ACN order, SN3D), 3rd order, 16 channels; channels 1-4 are valid first order. |
+| D38 | Listener = rig centroid (x, y) at `earHeight(centroid y)`; true elevation, `flat 0/1` zeroes it. Equal gain per speaker (direction only, no 1/d). Front = toward the stage (-y), +azimuth = audience left. |
+| D39 | New bpatcher `dbap-fold.maxpat` with ONE mc signal inlet: every source's 8-ch outlet is patched to it and the cords sum at the inlet (the same implicit mc sum the host uses at `mc.delay~`, confirmed). Any number of sources, no arg for the count. Tap = source outlets, so no ping, alignment delay or limiter. |
+| D40 | Fold trim default -9 dB (W sums amplitudes: 0 dB on one speaker, up to +9 dB spread evenly), W meter, `mc.sfrecord~ 16` recorder (open / record toggle), 16-ch mc outlet for further routing. |
+| D41 | Headphone monitor inside the module: binaural decode -> 2 signal outlets + its own level dial and on/off; the demo patches it to `dac~ 1 2`. ASSUMED decoder: abclib `abc_3d_binaural3~` (installed, v1.1.2; `abc.hoa.binaural~` is only a js wrapper that scripts it in). |
+| D42 | Demo host `fold-demo.maxpat` (control-demo style): two `dbap-source` bpatchers (A mono, B stereo) -> `dbap-fold` -> headphones, plus the embedded `dict venue`. No `mc.dac~` needed to audition at a desk. |
+
+**Signal path inside `dbap-fold.maxpat`**
+```
+inlet (mc 8, N sources summed) -> mc.unpack~ 8 -> matrix~ 8 16 0. -> mc.pack~ 16 -> mc.*~ (fold trim, line~ ramp)
+   -> outlet 1 (mc 16 AmbiX)      -> mc.sfrecord~ 16        -> W meter (ch 1)
+   -> mc.unpack~ 16 -> binaural decoder -> *~ monitor gain (L, R) -> outlets 2, 3
+r dbap-venue + loadbang -> js fold.js -> "in out gain" x 128 -> matrix~      (flat 0/1 -> fold.js)
+```
+- `fold.js` (ES5, modelled on `venue-align.js`): reads `speakers::sN::x/y/z` and `rake::front/rear` from
+  Dict "venue" (fallback: the built-in Barnett layout in `dbap.js`), derives the listener like `deriveVenue()`
+  + `earHeight()`, computes real SH up to order 3 (ACN, SN3D, no Condon-Shortley phase) per speaker and sends
+  `<in 0-7> <out 0-15> <gain>`. Reference directions for the default venue (az, el in degrees): s1 +37.0 / 12.9,
+  s2 -37.0 / 12.9, s3 -66.5 / 20.8, s4 -120.5 / 22.5, s5 -154.9 / 22.3, s6 +154.9 / 22.3, s7 +120.5 / 22.5,
+  s8 +66.5 / 20.8; listener (6.50, 12.46, 2.21).
+- Gain safety: fold trim and monitor dials in dB (-70..0, bottom = mute, same `expr` as the source's
+  `p gaininterp`), ramped with `line~`.
+- UI: presentation face in the source module's style (dark panels, 12 pt headers, 11 pt labels, live.dials):
+  FOLD-DOWN (trim, W meter, flat toggle, open / rec), MONITOR (on, level, L / R meters). Every control in
+  presentation with its label (Rule #9).
+
+**Must verify before / while building (Rule #1; nothing below is confirmed in MAX)**
+1. `matrix~ 8 16 0.`: DB gives 8 in / 17 out; confirm the `in out gain` message form and that the third
+   argument enables float gains against the refpage / help patch.
+2. `abc_3d_binaural3~` is NOT in the object DB. Read
+   `~/Documents/Max 9/Packages/abclib/help/abc.hoa.binaural~.maxhelp`, `patchers/abc.hoa.binaural~.maxpat`,
+   `javascript/abc_wrp.js` and the abclib docs for its inlet / outlet count, channel order, normalisation and
+   azimuth convention; add an `overrides.json` entry (package abclib) before using it. If its convention is
+   not ACN / SN3D, convert in a second small gain stage for the monitor only; the recorded stream stays AmbiX.
+   If it cannot be established, STOP and ask (multiple choice): (A) abclib anyway, convention fixed by ear with
+   the left / right / front / back test below, (B) ship v0.8.0 without the monitor.
+3. numpy pre-flight (`test-results/preflight_fold.py`): the matrix from the default venue; a unit feed on
+   speaker N decodes (max-rE or energy-vector direction) to that speaker's az / el within 1 degree; a puck
+   sweep through `dbap.js`-equivalent gains gives an energy vector that follows the puck; W gain range
+   0 .. +9 dB.
+4. Rule #9 parity and text contrast on the new face; `review_patch(..., is_new=True)` clean of blockers.
+
+**Version:** v0.8.0 (minor). Files: `generated/dbap-fold.maxpat`, `generated/fold.js`,
+`generated/fold-demo.maxpat`, `test-results/preflight_fold.py`. Save abstractions before the demo host.
+
+**Verify in MAX (v0.8.0)**
+1. `fold-demo.maxpat` opens with no console errors; DSP on, source A File playing: W meter moves, headphones
+   carry sound.
+2. Puck to audience left / right: the image is left / right in the headphones. Puck at the stage vs. the rear:
+   front / back changes (expect weaker than left / right). If mirrored, flip the azimuth sign in `fold.js`.
+3. `flat` on: the image drops to the horizon, levels unchanged.
+4. Patch only source A, then A + B: both are heard, nothing else changes (inlet sum).
+5. Record 10 s: a 16-channel file; channels 1-4 decode as first order in any AmbiX tool.
+6. Venue `read` in a host with a different layout: fold.js posts the new listener and the image follows.
+7. `barnett-dbap.maxpat` still opens and behaves as v0.7.5 (untouched).

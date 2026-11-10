@@ -128,6 +128,15 @@
       "files_changed": [
         "generated/barnett-dbap.maxpat"
       ]
+    },
+    {
+      "version": "0.7.5",
+      "description": "v0.7.5 review fixes: venue broadcast only on a successful read, master -70 dB = mute, gain ramps follow the sample rate (21 ms), adc ch shows 1 on load, bpatcher varnames srcA / srcB, presentation spacing (POSITION row, x m / y m, weight index labels centred, trims slider)",
+      "timestamp": "2026-11-10T21:14:04.444102+00:00",
+      "files_changed": [
+        "generated/dbap-source.maxpat",
+        "generated/barnett-dbap.maxpat"
+      ]
     }
   ]
 }
