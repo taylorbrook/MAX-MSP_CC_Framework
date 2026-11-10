@@ -185,7 +185,7 @@
                     "numinlets": 1,
                     "numoutlets": 1,
                     "outlettype": [ "" ],
-                    "patching_rect": [ 400.0, 819.0, 24.0, 24.0 ],
+                    "patching_rect": [ 424.0, 819.0, 24.0, 24.0 ],
                     "parameter_enable": 0
                 }
             },
@@ -196,7 +196,7 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "outlettype": [],
-                    "patching_rect": [ 432, 822, 400.0, 19.0 ],
+                    "patching_rect": [ 456.0, 822, 400.0, 19.0 ],
                     "text": "DSP on / off.   Monitor L / R -> outputs 1 / 2 (headphones).",
                     "fontname": "Arial",
                     "fontsize": 11.0,
