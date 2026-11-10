@@ -3289,5 +3289,163 @@
     "variable_io": false,
     "package": "abclib",
     "rnbo_compatible": false
+  },
+  "abc_3d_binaural3~": {
+    "name": "abc_3d_binaural3~",
+    "maxclass": "newobj",
+    "module": "abclib",
+    "domain": "Packages",
+    "category": "",
+    "digest": "3D 3rd-order ambisonic binaural decoder (the Faust external abc.hoa.binaural~ 3 @dimensions 3 scripts in)",
+    "description": "Faust external compiled from P. Lecomte's ambitools binaural decoder (Neumann KU100 HRIR, 120-tap FIRs at 48 kHz). 16 signal inlets in ACN order, N3D normalisation (multiply AmbiX / SN3D channels by sqrt(2l+1) before it), +Y = left; left / right signal outlets and a message outlet. One Faust parameter: gain (dB, -127..18, default 0). abc.hoa.binaural~ is a js wrapper (abc_wrp.js) that instantiates this object between mc.unpack~ 16 and mc.pack~ 2.",
+    "inlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 0 W (0,0) / messages (gain)",
+        "hot": true
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 1 Y (1,-1)",
+        "hot": true
+      },
+      {
+        "id": 2,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 2 Z (1,0)",
+        "hot": true
+      },
+      {
+        "id": 3,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 3 X (1,1)",
+        "hot": true
+      },
+      {
+        "id": 4,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 4 V (2,-2)",
+        "hot": true
+      },
+      {
+        "id": 5,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 5 T (2,-1)",
+        "hot": true
+      },
+      {
+        "id": 6,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 6 R (2,0)",
+        "hot": true
+      },
+      {
+        "id": 7,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 7 S (2,1)",
+        "hot": true
+      },
+      {
+        "id": 8,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 8 U (2,2)",
+        "hot": true
+      },
+      {
+        "id": 9,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 9 Q (3,-3)",
+        "hot": true
+      },
+      {
+        "id": 10,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 10 O (3,-2)",
+        "hot": true
+      },
+      {
+        "id": 11,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 11 M (3,-1)",
+        "hot": true
+      },
+      {
+        "id": 12,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 12 K (3,0)",
+        "hot": true
+      },
+      {
+        "id": 13,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 13 L (3,1)",
+        "hot": true
+      },
+      {
+        "id": 14,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 14 N (3,2)",
+        "hot": true
+      },
+      {
+        "id": 15,
+        "type": "signal",
+        "signal": true,
+        "digest": "ACN 15 P (3,3)",
+        "hot": true
+      }
+    ],
+    "outlets": [
+      {
+        "id": 0,
+        "type": "signal",
+        "signal": true,
+        "digest": "Left ear"
+      },
+      {
+        "id": 1,
+        "type": "signal",
+        "signal": true,
+        "digest": "Right ear"
+      },
+      {
+        "id": 2,
+        "type": "",
+        "signal": false,
+        "digest": "Faust message outlet"
+      }
+    ],
+    "arguments": [],
+    "messages": [
+      "gain"
+    ],
+    "attributes": {},
+    "seealso": [
+      "abc.hoa.binaural~"
+    ],
+    "tags": [],
+    "min_version": "8",
+    "verified": true,
+    "variable_io": false,
+    "package": "abclib",
+    "rnbo_compatible": false,
+    "_evidence": "barnett-dbap v0.8 (2026-11-10), measured in MAX 9.2 through max-bridge with patches/barnett-dbap/test-results/binaural_probe.maxpat: loads with 16 inlets / 3 outlets and no console errors; per-channel impulse responses are L/R antisymmetric exactly on ACN 1, 4, 5, 9, 10, 11 (m < 0); a plane wave at +90 deg gives a 200-600 Hz ITD of 0.76 ms with N3D input (rigid-sphere radius 8.7 cm) against 0.59 ms with SN3D input"
   }
 }
