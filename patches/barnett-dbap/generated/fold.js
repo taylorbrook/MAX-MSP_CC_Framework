@@ -156,7 +156,7 @@ function send() {
             outlet(0, i, n, v);    // a 0 gain disconnects that node, which is the same thing
         }
     }
-    var label = venueName.length > 30 ? venueName.substring(0, 29) + "..." : venueName;
+    var label = venueName.length > 24 ? venueName.substring(0, 23) + "..." : venueName;
     var txt = (label.length ? label + "  |  " : "") + "listener " + lis[0].toFixed(2) + ", " +
         lis[1].toFixed(2) + ", " + lis[2].toFixed(2) + " m" + (flatOn ? "  |  flat" : "") +
         (mirrorOn ? "  |  mirrored" : "");
