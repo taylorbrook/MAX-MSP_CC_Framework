@@ -401,8 +401,8 @@
         ],
         "dependency_cache": [],
         "autosave": 0,
-        "bgcolor": [ 0.333, 0.333, 0.333, 1.0 ],
-        "editing_bgcolor": [ 0.333, 0.333, 0.333, 1.0 ],
-        "locked_bgcolor": [ 0.333, 0.333, 0.333, 1.0 ]
+        "bgcolor": [ 0.13, 0.13, 0.15, 1.0 ],
+        "editing_bgcolor": [ 0.13, 0.13, 0.15, 1.0 ],
+        "locked_bgcolor": [ 0.13, 0.13, 0.15, 1.0 ]
     }
 }
