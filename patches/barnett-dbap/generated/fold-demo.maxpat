@@ -157,8 +157,8 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "outlettype": [],
-                    "patching_rect": [ 30, 580, 420.0, 19.0 ],
-                    "text": "both 8-channel outlets into the ONE inlet: the cords sum",
+                    "patching_rect": [ 674.0, 850.0, 580.0, 19.0 ],
+                    "text": "Both sources' 8-channel outlets go into the fold module's ONE inlet: the cords sum. Patch more sources in the same way.",
                     "fontname": "Arial",
                     "fontsize": 11.0,
                     "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
@@ -196,8 +196,8 @@
                     "numinlets": 1,
                     "numoutlets": 0,
                     "outlettype": [],
-                    "patching_rect": [ 456.0, 822, 400.0, 19.0 ],
-                    "text": "DSP on / off.   Monitor L / R -> outputs 1 / 2 (headphones).",
+                    "patching_rect": [ 456.0, 822, 196.0, 19.0 ],
+                    "text": "DSP.  Monitor -> outputs 1 / 2",
                     "fontname": "Arial",
                     "fontsize": 11.0,
                     "textcolor": [ 0.8, 0.8, 0.82, 1.0 ]
