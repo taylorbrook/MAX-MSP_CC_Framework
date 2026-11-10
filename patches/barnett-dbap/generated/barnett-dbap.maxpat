@@ -69,7 +69,7 @@
                         493.0,
                         24.0
                     ],
-                    "text": "BARNETT DBAP  v0.7.3   two sources -> 8 ch   (A mono, B stereo)",
+                    "text": "BARNETT DBAP  v0.7.5   two sources -> 8 ch   (A mono, B stereo)",
                     "textcolor": [
                         0.8,
                         0.8,
@@ -258,7 +258,7 @@
                         609.0,
                         500.0
                     ],
-                    "varname": "dbap-source[1]",
+                    "varname": "srcA",
                     "viewvisibility": 1
                 }
             },
@@ -301,7 +301,7 @@
                         612.0,
                         500.0
                     ],
-                    "varname": "dbap-source",
+                    "varname": "srcB",
                     "viewvisibility": 1
                 }
             },
@@ -1104,22 +1104,23 @@
             },
             {
                 "box": {
-                    "fontname": "Arial",
-                    "fontsize": 12.0,
-                    "id": "obj-40",
                     "maxclass": "newobj",
-                    "numinlets": 1,
-                    "numoutlets": 1,
+                    "id": "obj-40",
+                    "numinlets": 2,
+                    "numoutlets": 2,
                     "outlettype": [
-                        "bang"
+                        "",
+                        ""
                     ],
                     "patching_rect": [
                         1081.0,
                         792.0,
-                        37.0,
+                        72.0,
                         22.0
                     ],
-                    "text": "t b"
+                    "text": "zl nth 2",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
                 }
             },
             {
@@ -1135,7 +1136,7 @@
                     ],
                     "patching_rect": [
                         1081.0,
-                        822.0,
+                        852.0,
                         51.0,
                         22.0
                     ],
@@ -1152,7 +1153,7 @@
                     "numoutlets": 0,
                     "patching_rect": [
                         1081.0,
-                        852.0,
+                        882.0,
                         100.0,
                         22.0
                     ],
@@ -1812,6 +1813,27 @@
                     "fontname": "Arial",
                     "fontsize": 12.0
                 }
+            },
+            {
+                "box": {
+                    "maxclass": "newobj",
+                    "id": "obj-53",
+                    "numinlets": 2,
+                    "numoutlets": 2,
+                    "outlettype": [
+                        "",
+                        ""
+                    ],
+                    "patching_rect": [
+                        1081.0,
+                        822.0,
+                        54.0,
+                        22.0
+                    ],
+                    "text": "sel 1",
+                    "fontname": "Arial",
+                    "fontsize": 12.0
+                }
             }
         ],
         "lines": [
@@ -2246,30 +2268,6 @@
             {
                 "patchline": {
                     "destination": [
-                        "obj-40",
-                        0
-                    ],
-                    "source": [
-                        "obj-39",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
-                        "obj-41",
-                        0
-                    ],
-                    "source": [
-                        "obj-40",
-                        0
-                    ]
-                }
-            },
-            {
-                "patchline": {
-                    "destination": [
                         "obj-42",
                         0
                     ],
@@ -2423,6 +2421,42 @@
                     ],
                     "destination": [
                         "obj-11",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-39",
+                        0
+                    ],
+                    "destination": [
+                        "obj-40",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-40",
+                        0
+                    ],
+                    "destination": [
+                        "obj-53",
+                        0
+                    ]
+                }
+            },
+            {
+                "patchline": {
+                    "source": [
+                        "obj-53",
+                        0
+                    ],
+                    "destination": [
+                        "obj-41",
                         0
                     ]
                 }
