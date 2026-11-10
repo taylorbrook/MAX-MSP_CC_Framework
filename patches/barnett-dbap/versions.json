@@ -137,6 +137,18 @@
         "generated/dbap-source.maxpat",
         "generated/barnett-dbap.maxpat"
       ]
+    },
+    {
+      "version": "0.8.0",
+      "description": "v0.8.0 ambisonic fold-down module: dbap-fold.maxpat (virtual-speaker encode of the 8 speaker feeds to 3rd-order AmbiX via fold.js + matrix~, fold trim, W meter, 16-channel recorder, 16-ch outlet, abclib binaural headphone monitor with SN3D->N3D stage) + fold-demo.maxpat; numpy pre-flight; decoder convention measured in MAX",
+      "timestamp": "2026-11-10T22:31:23.335612+00:00",
+      "files_changed": [
+        "generated/dbap-fold.maxpat",
+        "generated/fold.js",
+        "generated/fold-demo.maxpat",
+        "test-results/preflight_fold.py",
+        "test-results/binaural_probe.maxpat"
+      ]
     }
   ]
 }

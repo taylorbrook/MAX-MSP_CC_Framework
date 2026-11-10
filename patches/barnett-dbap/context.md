@@ -1223,3 +1223,60 @@ r dbap-venue + loadbang -> js fold.js -> "in out gain" x 128 -> matrix~      (fl
 5. Record 10 s: a 16-channel file; channels 1-4 decode as first order in any AmbiX tool.
 6. Venue `read` in a host with a different layout: fold.js posts the new listener and the image follows.
 7. `barnett-dbap.maxpat` still opens and behaves as v0.7.5 (untouched).
+
+## Build v0.8.0 (2026-11-10): ambisonic fold-down + headphone monitor
+
+Built as briefed (D36-D42). `barnett-dbap.maxpat`, `dbap-source.maxpat`, `dbap-motion.maxpat` and
+`control-demo.maxpat` are untouched. `config.json` now lists `abclib` (used only by the fold patches).
+
+**Must-verify results**
+1. `matrix~`: `<in> <out> <gain>` lists and float gains confirmed against the refpage and `matrix~.maxhelp`
+   (`matrix~ 4 2 1.`, `matrix~ 2 2 1. @ramp 74`, message `0 0 0.5`). Built as `matrix~ 8 16 1. @ramp 20`:
+   `1.` is the form the help patch ships (the third argument only sets the gain `connect` uses, which is
+   never sent); `@ramp 20` keeps a `flat` toggle or venue reload click-free.
+2. `abc_3d_binaural3~` (abclib 1.1.2), MEASURED in MAX 9.2 through max-bridge with
+   `test-results/binaural_probe.maxpat` (gen~ impulse into each inlet in turn, 12000 samples apart, a marker
+   slot for sync): loads with 16 signal inlets / L, R, message outlets and no console errors; 120-tap FIRs at
+   48 k; one Faust parameter `gain` (dB, default 0). The impulse responses are L / R antisymmetric on exactly
+   channels 1, 4, 5, 9, 10, 11 (the m < 0 harmonics) = **ACN**; +Y = left. Normalisation = **N3D**: a plane
+   wave at +90 deg gives a 200-600 Hz ITD of 0.76 ms with N3D input (rigid-sphere radius 8.7 cm, the KU100)
+   against 0.59 ms with SN3D input (smaller than its own broadband ITD, 0.69 ms, which is not physical), and
+   the 100-300 Hz ear levels match the sphere model only with N3D. Agrees with the ambitools docs (N3D);
+   abclib's own encoder / decoder are SN3D and its help patch feeds one into the other unconverted. Its Faust
+   source is not in the package or the abclib repo. DB: `packages/abclib/objects.json` entry (verified), not
+   `overrides.json`.
+3. `test-results/preflight_fold.py` (runs the real `fold.js` under node): matrix == independent ACN / SN3D
+   reference (4e-16), brief's listener and directions reproduced, unit feed on speaker N decodes to that
+   speaker (0.000 deg), flat / mirror / dict / fallback paths, W 0 .. +9.03 dB (8.0 .. 9.03 dB over the whole
+   puck and blur range, so -9 dB is the right default). Puck sweep: the image follows the puck and left /
+   right never swaps, but the DBAP mix is diffuse, so the energy vector is short: rE.y +-0.35 at the side
+   walls at rolloff 4 (+-0.70 at 12); rE.x +0.15 at the stage, -0.41 at the rear (+0.46 / -0.69 at 12).
+4. Validation: no errors. Critics: no blockers; warnings left as is (signal fan-out from `p mongain`,
+   unconnected `mc.sfrecord~` outlet, unrouted bus cords). Loaded in MAX through the bridge: no console
+   errors, `fold.js` posts the listener and the eight directions.
+
+**`dbap-fold.maxpat`** (bpatcher, 1 inlet, 3 outlets; face 600 x 166)
+- inlet (mc 8, sources sum) -> `mc.unpack~ 8` -> `matrix~ 8 16 1. @ramp 20` -> `mc.pack~ 16` -> `mc.*~`
+  (fold trim) -> outlet 1 (mc 16 AmbiX), `mc.sfrecord~ 16`, `mc.unpack~ 16`.
+- Monitor: `mc.unpack~ 16` -> `matrix~ 16 16 1. @ramp 20` (diagonal 1, 1.732051 x3, 2.236068 x5,
+  2.645751 x7 from a `loadbang` message: SN3D -> N3D, monitor only) -> `abc_3d_binaural3~` -> `*~` L / R
+  -> outlets 2, 3 and two meters. W meter = channel 1 after the trim.
+- `r dbap-venue` and the `flat` toggle (`flat $1`) -> `js fold.js` -> matrix lists; outlet 1 -> status
+  comment (venue name, listener, flat). fold.js's own `loadbang()` does the first read.
+- `live.dial` `foldtrim` (-70..0 dB, init -9) -> `p gaininterp` (the source's expr, `$1 20`, `line~`).
+  `live.dial` `monitor` (init -12 dB) + on toggle (`loadmess 1`) -> `p mongain`
+  (`expr ($f2 > 0.5) * ($f1 > -69.95) * exp($f1 * 0.1151293)`, `t b i` on the cold inlet). Record:
+  `open` message + toggle (`loadmess 0`).
+- `fold.js` also takes `mirror 0/1` (azimuth sign flip); nothing is patched to it. It flips the ENCODE, so
+  it would also mirror the recorded stream: use it only if the hall itself turns out mirrored.
+
+**`fold-demo.maxpat`**: `dbap-source` A (`A 1`) and B (`B 2`) -> the one inlet of `dbap-fold` -> outlets
+2 / 3 -> `dac~ 1 2`, DSP toggle, embedded `dict venue`, how-it-works panel.
+
+**Seen while testing (NOT changed, the source module is out of scope):** on load through the bridge both
+`fold-demo` and the existing `control-demo` show `x m 0.50`, `y m nan`, `z nan` under the plan and no puck
+until the puck is moved. Pre-existing in `dbap-source.maxpat`; check it with the v0.7.5 list.
+
+Verify in MAX (v0.8.0): the list at the end of the brief above, plus
+8. Monitor `on` off = silence on outputs 1 / 2; level dial at the bottom = silence; the W meter is unaffected.
+9. Front / back test at rolloff 12 (at 4 the mix is too diffuse to judge).
