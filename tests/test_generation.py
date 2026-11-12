@@ -606,6 +606,8 @@ class TestRegression:
                 "tests/test_object_schema.py",
                 "tests/test_rnbo_flag.py",
                 "-x", "--tb=short", "-q",
+                # serial child: no xdist worker pool inside an xdist worker
+                "-o", "addopts=",
             ],
             capture_output=True,
             text=True,
