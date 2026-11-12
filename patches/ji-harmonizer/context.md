@@ -8,6 +8,24 @@ A wavetable pad synth where one MIDI note triggers a full chord (up to 12 sub-vo
 every pitch tuned by a microtonal engine (built-in temperaments, Scala .scl/.kbm,
 scale generators). Complex system — build a part first, then grow.
 
+## Wavetable banks (not in git)
+
+- The 20 `generated/bankNN-*.wav` banks (~23 MB each, ~461 MB total) were untracked on
+  2026-11-12 (quick 261112-est) and are ignored by
+  `/patches/ji-harmonizer/generated/bank[0-9][0-9]-*.wav` in the repo-root `.gitignore`.
+  `tools/render_wavetables.py` is the source of truth.
+- Regenerate from the repo root: `python3 patches/ji-harmonizer/tools/render_wavetables.py --all`
+  (writes to `patches/ji-harmonizer/generated/` regardless of cwd, ~1 s, needs numpy).
+  Output is deterministic (no RNG): a 2026-11-12 re-render with numpy 2.4.0 matched all 20
+  previously tracked files by sha256, so regenerated banks are byte-identical.
+- Fresh clones and agent worktrees (`.claude/worktrees/`) have no banks: render before opening
+  `ji-harmonizer.maxpat` in MAX, otherwise `buffer~ jiharmA` / `buffer~ jiharmB` and the bank
+  umenu `replace` loads log "can't find file" and the wavetable oscillators have no data.
+- History was not rewritten: commits before the untrack commit still hold the banks, so
+  `git show <untrack-commit>^:patches/ji-harmonizer/generated/<name>.wav > patches/ji-harmonizer/generated/<name>.wav`
+  recovers one without numpy.
+- Never `git add -f` them.
+
 ## Source-plugin functional summary (from code exploration, 2026-08-13)
 
 ### Tuning engine (`Source/DSP/TuningEngine.{h,cpp}`)
@@ -109,7 +127,7 @@ scale generators). Complex system — build a part first, then grow.
 - **Banks: render bank 0 only; tool supports all 20.** Both oscs play JI Harmonic this
   slice; per-osc bank umenu arrives when more banks are rendered.
 - **Rendered WAV committed to git** (~23 MB float32). Patch works on clone with no build
-  step; the Python tool remains the source of truth for regeneration.
+  step; the Python tool remains the source of truth for regeneration. *(Superseded 2026-11-12: banks untracked — see "Wavetable banks (not in git)".)*
 - **Buffer layout: one mono buffer~ per bank**, mipmaps concatenated:
   `index = mip*(256*2048) + frame*2048 + sample` (5,767,168 samples). Mipmap level
   computed per channel in gen~ as `clamp(floor(log2(max(freq,1)/20)), 0, 10)` —
@@ -234,7 +252,7 @@ Item Text Evaluated as a Message"), `buffer~` (`replace` message verified), `pre
 - **Banks rendered: all 20** via `tools/render_wavetables.py --all` → `generated/
   bankNN-name.wav`, 23.1 MB each (~461 MB total). Committed per the slice-2 decision
   (patch works on clone, no build step). Flag: pushes to origin get heavy; each file is
-  well under GitHub's 100 MB per-file limit.
+  well under GitHub's 100 MB per-file limit. *(Superseded 2026-11-12: banks untracked — see "Wavetable banks (not in git)".)*
 - **Per-osc buffers, switch by `replace`** (recommended over 20 resident buffers +
   gen~ if/else chains): rename `buffer~ jiharm0` → `buffer~ jiharmA`, add
   `buffer~ jiharmB`, both arg-loading `bank00-ji-harmonic.wav` so the default sound

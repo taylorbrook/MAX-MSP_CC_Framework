@@ -26,3 +26,9 @@ __maxbridge_*
 # only the .md deliverables are project content. Already-tracked files stay tracked.
 /.planning/quick/*/*
 !/.planning/quick/*/*.md
+
+# Generated wavetable banks (~23 MB each) are derived data: regenerate, never commit (quick 261112-est).
+# ji-harmonizer: python3 patches/ji-harmonizer/tools/render_wavetables.py --all
+# terrain-synth: retired bake_geometry banks, covered so they cannot be re-added.
+/patches/ji-harmonizer/generated/bank[0-9][0-9]-*.wav
+/patches/terrain-synth/generated/bank[0-9][0-9]-*.wav
