@@ -2,10 +2,10 @@
 gsd_state_version: "1.0"
 milestone: v5.0
 status: completed
-last_updated: "2026-11-12T05:27:08.258Z"
-last_activity: 2026-11-03
+last_updated: "2026-11-12T15:53:39.284Z"
+last_activity: 2026-11-11
 last_activity_desc: "Completed quick task 261001-hwb: Max 9.2.0 update — object DB re-synced from the installed bundle, 9.2 guidance added"
-state_head: fff246284ff2c88a7f9e69f6bf6da5eefe5830dc
+state_head: 317975d67f434ec88c2e5fd490b9e4c59cf04593
 progress:
   total_phases: 5
   completed_phases: 5
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-11-11 - Completed quick task 261111-u3n: Add pytest-xdist and make parallel test runs safe
+Last activity: 2026-11-12 - Completed quick task 261112-bve: Cut wall time of MAX bridge tests without weakening them
 
 Previous: 2026-10-22 - Completed quick task 261022-pqu: Implement Q40 in .planning/reviews/2026-10-11-fix-plan.md — M4L device builder and .amxd export
 
@@ -145,6 +145,7 @@ None.
 | 261023-mma | Add Cycling 74 Vision package (22 jit.vis.* entries) to the object DB | 2026-10-23 | 837acc8f | — | [261023-mma-add-cycling-74-vision-package-to-the-obj](./quick/261023-mma-add-cycling-74-vision-package-to-the-obj/) |
 | 261103-gah | review the readme to see if it needs updating | 2026-11-03 | 3f66cb64 | — | [261103-gah-review-the-readme-to-see-if-it-needs-upd](./quick/261103-gah-review-the-readme-to-see-if-it-needs-upd/) |
 | 261111-u3n | Add pytest-xdist and make parallel test runs safe | 2026-11-11 | fff24628 | — | [261111-u3n-add-pytest-xdist-and-make-parallel-test-](./quick/261111-u3n-add-pytest-xdist-and-make-parallel-test-/) |
+| 261112-bve | Cut wall time of MAX bridge tests without weakening them | 2026-11-12 | 317975d6 | — | [261112-bve-cut-wall-time-of-max-bridge-tests-withou](./quick/261112-bve-cut-wall-time-of-max-bridge-tests-withou/) |
 
 ## Deferred Items
 
