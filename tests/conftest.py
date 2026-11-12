@@ -5,7 +5,7 @@ Markers (registered in ``pytest_configure``):
   skipped when it is absent. ``MAXPAT_TEST_MAX_APP`` overrides the bundle path
   (default ``/Applications/Max.app``), e.g. ``MAXPAT_TEST_MAX_APP=/nonexistent``
   simulates a machine without Max, as CI is.
-- ``slow``: slow test (release archive build, full repo smoke sweep).
+- ``slow``: slow test (release archive build, full repo smoke sweep, real-time bridge timing).
 """
 
 import json
@@ -34,7 +34,7 @@ def pytest_configure(config):
     )
     config.addinivalue_line(
         "markers",
-        'slow: slow test (release archive build, full repo smoke sweep); deselect with -m "not slow"',
+        'slow: slow test (release archive build, full repo smoke sweep, real-time bridge timing); deselect with -m "not slow"',
     )
 
 

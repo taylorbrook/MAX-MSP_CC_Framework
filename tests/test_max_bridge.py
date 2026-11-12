@@ -125,6 +125,12 @@ class FakeBridge:
     def __exit__(self, *exc) -> None:
         FakeBridge.PORTS.discard(self.port)
         self._stop.set()
+        # wake the receive loop now instead of after its 0.05 s poll timeout
+        wake = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            wake.sendto(b"", ("127.0.0.1", self.port))
+        finally:
+            wake.close()
         self._thread.join(2.0)
         self.sock.close()
 
@@ -143,6 +149,10 @@ class FakeBridge:
                 continue
             except OSError:
                 return
+            if not data:  # the __exit__ wake (decoding an empty packet raises)
+                if self._stop.is_set():
+                    return
+                continue
             msg = bridge.osc_decode(data)
             if msg is None:
                 continue
@@ -189,6 +199,17 @@ class FakeBridge:
                 self._reply(addr, "/state/sr", float(self.max_sr))
         elif address == "/dsp" and args == [0]:
             self.dsp_on = 0
+
+
+def _wait_until(predicate, timeout: float = 2.0):
+    """Poll *predicate* every 5 ms on the real clock until it holds or *timeout*
+    passes; return its last value."""
+    deadline = time.monotonic() + timeout
+    while True:
+        value = predicate()
+        if value or time.monotonic() >= deadline:
+            return value
+        time.sleep(0.005)
 
 
 # ---------------------------------------------------------------------------
@@ -657,7 +678,7 @@ class TestPing:
         port = _free_port()
         t0 = time.monotonic()
         rc = bridge.main(["ping", "--port", str(port), "--reply-port", "0",
-                          "--timeout", "0.5"])
+                          "--timeout", "0.05"])
         assert rc == 2
         assert time.monotonic() - t0 < 1.5
         err = capsys.readouterr().err
@@ -676,7 +697,7 @@ class TestPing:
 
     def test_ping_hint_names_toggle(self, capsys):
         rc = bridge.main(["ping", "--port", str(_free_port()), "--reply-port", "0",
-                          "--timeout", "0.5"])
+                          "--timeout", "0.05"])
         assert rc == 2
         assert "toggle" in capsys.readouterr().err
 
@@ -1783,7 +1804,8 @@ class TestDspOnLoad:
         src = _tone_patch(tmp_path / "tone.maxpat", db)
         with FakeBridge(mute_after_open=True, dsp_on=0) as fb:
             rc, rep = _check(fb, src, "--dsp-on-load", capsys=capsys)
-            time.sleep(0.2)  # let the fake receive the fire-and-forget cleanup
+            # let the fake receive the fire-and-forget cleanup
+            _wait_until(lambda: ("/dsp", [0]) in fb.received)
         assert rc == 2 and rep["verdict"] == "bridge_failed"
         assert ("/dsp", [0]) in fb.received
         assert fb.received.index(("/dsp", [1])) < fb.addresses.index("/open")

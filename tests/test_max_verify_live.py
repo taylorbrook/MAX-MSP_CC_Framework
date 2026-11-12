@@ -20,7 +20,7 @@ import tools.max_bridge as bridge
 import tools.max_verify_live as live
 from src.maxpat.db_lookup import ObjectDatabase
 from src.maxpat.patcher import Patcher
-from tests.test_max_bridge import FakeBridge, _free_port, _tone_patch
+from tests.test_max_bridge import FakeBridge, _free_port, _install_virtual_time, _tone_patch
 
 LIVE_PY = Path(live.__file__)
 
@@ -28,6 +28,12 @@ LIVE_PY = Path(live.__file__)
 @pytest.fixture(scope="module")
 def db():
     return ObjectDatabase()
+
+
+@pytest.fixture(autouse=True)
+def _virtual_bridge_time(monkeypatch):
+    """Every bridge wait on a virtual clock (quick 261112-bve); no test here needs real time."""
+    return _install_virtual_time(monkeypatch)
 
 
 @pytest.fixture(autouse=True)
@@ -371,7 +377,7 @@ class TestSkip:
         monkeypatch.setattr(bridge, "run_check", lambda a: calls.append(a))
         src = _tone_patch(tmp_path / "tone.maxpat", db)
         rc = live.main([str(src), "--port", str(_free_port()), "--reply-port", "0",
-                        "--timeout", "0.3", "--json"])
+                        "--timeout", "0.05", "--json"])
         res = json.loads(capsys.readouterr().out)
         assert rc == 2 and res["status"] == "skipped" and res["exit_code"] == 2
         assert "toggle" in res["hint"] and res["patches"] == []
@@ -782,7 +788,7 @@ class TestFormatReport:
     def test_main_prints_human_report(self, tmp_path, db, capsys):
         src = _tone_patch(tmp_path / "tone.maxpat", db)
         rc = live.main([str(src), "--port", str(_free_port()), "--reply-port", "0",
-                        "--timeout", "0.3"])
+                        "--timeout", "0.05"])
         out = capsys.readouterr().out
         assert rc == 2
         assert out.startswith("Live check (MAX 9.2)") and "Live check skipped:" in out
