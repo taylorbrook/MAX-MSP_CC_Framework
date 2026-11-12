@@ -2,10 +2,10 @@
 gsd_state_version: "1.0"
 milestone: v5.0
 status: completed
-last_updated: "2026-11-12T17:02:44.854Z"
+last_updated: "2026-11-12T17:50:03.221Z"
 last_activity: 2026-11-12
 last_activity_desc: "Completed quick task 261001-hwb: Max 9.2.0 update — object DB re-synced from the installed bundle, 9.2 guidance added"
-state_head: 8991da7ff7763c128e233d35d630241fbf052436
+state_head: 019ce9b7d23deed1dabc63cec441bda983a66d4d
 progress:
   total_phases: 5
   completed_phases: 5
@@ -29,7 +29,7 @@ See: .planning/PROJECT.md (updated 2026-05-01 after v5.0)
 Phase: —
 Plan: —
 Status: v5.0 shipped; awaiting `/gsd-new-milestone` to start next cycle
-Last activity: 2026-11-12 - Completed quick task 261112-dci: Reduce the size of CLAUDE.md without losing any rule
+Last activity: 2026-11-12 - Completed quick task 261112-est: Untrack 23 MB WAV banks from ji-harmonizer working tree and report history cleanup
 
 Previous: 2026-10-22 - Completed quick task 261022-pqu: Implement Q40 in .planning/reviews/2026-10-11-fix-plan.md — M4L device builder and .amxd export
 
@@ -147,6 +147,7 @@ None.
 | 261111-u3n | Add pytest-xdist and make parallel test runs safe | 2026-11-11 | fff24628 | — | [261111-u3n-add-pytest-xdist-and-make-parallel-test-](./quick/261111-u3n-add-pytest-xdist-and-make-parallel-test-/) |
 | 261112-bve | Cut wall time of MAX bridge tests without weakening them | 2026-11-12 | 317975d6 | — | [261112-bve-cut-wall-time-of-max-bridge-tests-withou](./quick/261112-bve-cut-wall-time-of-max-bridge-tests-withou/) |
 | 261112-dci | Reduce the size of CLAUDE.md without losing any rule | 2026-11-12 | 8991da7f | — | [261112-dci-reduce-the-size-of-claude-md-without-los](./quick/261112-dci-reduce-the-size-of-claude-md-without-los/) |
+| 261112-est | Untrack 23 MB WAV banks from ji-harmonizer working tree and report history cleanup | 2026-11-12 | 019ce9b7 | — | [261112-est-untrack-23-mb-wav-banks-from-ji-harmoniz](./quick/261112-est-untrack-23-mb-wav-banks-from-ji-harmoniz/) |
 
 ## Deferred Items
 
