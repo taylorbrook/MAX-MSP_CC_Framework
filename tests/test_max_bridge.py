@@ -52,6 +52,13 @@ def _free_port() -> int:
 # FakeBridge: an in-process stand-in for the MAX bridge patch
 # ---------------------------------------------------------------------------
 
+# Test-only OSC barrier (quick 261112-bve): BarrierSocket sends it on the
+# Bridge's own socket and FakeBridge answers it after every earlier reply, so
+# "nothing more will arrive" is known exactly instead of waited out.
+BARRIER_ADDRESS = "/__test_barrier"
+BARRIER_ACK = "/__test_barrier_ack"
+BARRIER_WAIT = 5.0  # real-seconds safety net; passing runs never reach it
+
 class FakeBridge:
     """A UDP thread on 127.0.0.1:0 that decodes packets, records them and
     answers the way the bridge patch is expected to.
@@ -68,7 +75,15 @@ class FakeBridge:
       DSP is on, ``/state/sr max_sr`` (unless ``answers_query`` is False:
       an older bridge patch); ``/dsp 1`` sets dsp_on and auto-reports
       ``/state/sr`` (dspstate~); ``/dsp 0`` clears it.
+    - ``BARRIER_ADDRESS`` (test-only) -> ``BARRIER_ACK`` with the same
+      arguments, after every earlier reply; answered even when muted and
+      never recorded in ``received``/``times``.
+
+    ``PORTS`` holds the ports of the fakes that are running (between
+    ``__enter__`` and ``__exit__``); BarrierSocket only barriers those.
     """
+
+    PORTS: set[int] = set()
 
     def __init__(self, errors: bool = False, flood: int = 0,
                  mute_after_open: bool = False, dsp_on: int = 0,
@@ -103,10 +118,12 @@ class FakeBridge:
         self._thread = threading.Thread(target=self._run, daemon=True)
 
     def __enter__(self) -> "FakeBridge":
+        FakeBridge.PORTS.add(self.port)
         self._thread.start()
         return self
 
     def __exit__(self, *exc) -> None:
+        FakeBridge.PORTS.discard(self.port)
         self._stop.set()
         self._thread.join(2.0)
         self.sock.close()
@@ -130,6 +147,9 @@ class FakeBridge:
             if msg is None:
                 continue
             address, args = msg
+            if address == BARRIER_ADDRESS:
+                self._reply(addr, BARRIER_ACK, *args)
+                continue
             self.received.append((address, list(args)))
             self.times.append(time.monotonic())
             if self.muted:
@@ -169,6 +189,112 @@ class FakeBridge:
                 self._reply(addr, "/state/sr", float(self.max_sr))
         elif address == "/dsp" and args == [0]:
             self.dsp_on = 0
+
+
+# ---------------------------------------------------------------------------
+# Virtual time: the real Bridge code against FakeBridge, without real waits
+# ---------------------------------------------------------------------------
+
+class VirtualClock:
+    """The real monotonic clock plus an offset that only grows.
+
+    Installed as ``bridge._monotonic``; ``sleep`` (installed as
+    ``bridge._sleep``) jumps the offset instead of blocking.
+    """
+
+    def __init__(self) -> None:
+        self.offset = 0.0
+
+    def __call__(self) -> float:
+        return time.monotonic() + self.offset
+
+    def advance(self, seconds: float) -> None:
+        self.offset += max(0.0, seconds)
+
+    sleep = advance
+
+
+class BarrierSocket:
+    """Wraps the socket a Bridge would have used.
+
+    A receive from a running FakeBridge never blocks on the OS: it sends
+    BARRIER_ADDRESS to the fake and reads until the matching ack. FakeBridge
+    answers packets one at a time, in order, so every reply the Bridge's
+    earlier packets caused is in hand by then. With something buffered the
+    oldest packet is returned; with nothing, the virtual clock jumps by the
+    socket timeout and ``socket.timeout`` is raised, exactly as after a real
+    block of that length. Any other peer (a port nobody reads) gets the real
+    socket and a real timeout.
+    """
+
+    def __init__(self, real_sock: socket.socket, clock: VirtualClock) -> None:
+        self._sock = real_sock
+        self._clock = clock
+        self._timeout: float | None = None
+        self._peer = None
+        self._buffer: list[tuple[bytes, tuple]] = []
+        self._seq = 0
+
+    def __getattr__(self, name):
+        return getattr(self._sock, name)
+
+    def settimeout(self, timeout) -> None:
+        self._timeout = timeout
+
+    def sendto(self, data, addr):
+        self._peer = addr
+        return self._sock.sendto(data, addr)
+
+    def recvfrom(self, bufsize: int):
+        if self._buffer:
+            return self._buffer.pop(0)
+        peer = self._peer
+        if peer is None or peer[1] not in FakeBridge.PORTS:
+            self._sock.settimeout(self._timeout)
+            return self._sock.recvfrom(bufsize)
+        self._seq += 1
+        seq = self._seq
+        self._sock.sendto(bridge.osc_encode(BARRIER_ADDRESS, seq), peer)
+        self._sock.settimeout(BARRIER_WAIT)
+        while True:
+            try:
+                data, addr = self._sock.recvfrom(bufsize)
+            except socket.timeout:
+                raise AssertionError(
+                    f"FakeBridge on port {peer[1]} did not ack barrier {seq} "
+                    f"within {BARRIER_WAIT:g} s"
+                ) from None
+            try:
+                msg = bridge.osc_decode(data)
+            except ValueError:
+                msg = None
+            if msg is not None and msg[0] == BARRIER_ACK:
+                if list(msg[1]) == [seq]:
+                    break
+                continue  # a stale ack
+            self._buffer.append((data, addr))
+        if self._buffer:
+            return self._buffer.pop(0)
+        self._clock.advance(self._timeout or 0.0)
+        raise socket.timeout("virtual timeout")
+
+
+def _install_virtual_time(monkeypatch) -> VirtualClock:
+    """Run every bridge wait on a new VirtualClock; Bridge sockets barrier fakes."""
+    clock = VirtualClock()
+    make_socket = bridge._udp_socket
+    monkeypatch.setattr(bridge, "_monotonic", clock)
+    monkeypatch.setattr(bridge, "_sleep", clock.sleep)
+    monkeypatch.setattr(bridge, "_udp_socket", lambda: BarrierSocket(make_socket(), clock))
+    return clock
+
+
+@pytest.fixture(autouse=True)
+def _virtual_bridge_time(request, monkeypatch):
+    """Virtual time for every test except ``slow`` ones (real clock and socket)."""
+    if request.node.get_closest_marker("slow") is not None:
+        return None
+    return _install_virtual_time(monkeypatch)
 
 
 def _write_sine(path: Path, freq: float, amp: float, seconds: float = 1.0,
@@ -501,6 +627,20 @@ class TestBridgePatch:
     def test_version_comment(self, patch):
         p, _ = patch
         assert "v0.2.0" in [b.text for b in p.boxes if b.maxclass == "comment"]
+
+
+class TestSeams:
+
+    def test_production_defaults(self, monkeypatch):
+        monkeypatch.undo()  # drop the autouse virtual time: these are the real seams
+        assert bridge._monotonic is time.monotonic
+        assert bridge._sleep is time.sleep
+        sock = bridge._udp_socket()
+        try:
+            assert sock.family == socket.AF_INET
+            assert sock.type == socket.SOCK_DGRAM
+        finally:
+            sock.close()
 
 
 class TestPing:
@@ -1449,6 +1589,9 @@ class TestNote:
         assert bridge._resolve_note_ms(2, 0) == 1
         assert bridge._resolve_note_ms(0.001, None) == 1
 
+    # asserts >= 80 ms of real time between note-on and note-off at the fake, so it
+    # runs on the real clock and socket: the real-time coverage of collect, ping, _wait_stable
+    @pytest.mark.slow
     def test_note_run(self, tmp_path, db, run_dir, capsys):
         src = _tone_patch(tmp_path / "tone.maxpat", db)
         extra = ["--record", "0.4", "--note", "60", "100", "--note-ms", "100"]

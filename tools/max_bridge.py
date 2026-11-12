@@ -114,6 +114,19 @@ DEFAULT_TIMEOUT = 2.0
 MAX_EVENTS = 1000
 _RCVBUF = 1 << 20
 
+# Test seams: every clock read, poll sleep and the Bridge socket in this module
+# go through these, so tests can run the waits on a virtual clock. Production
+# uses the real functions; nothing else ever rebinds them.
+# the clock behind every deadline and Bridge.now
+_monotonic = time.monotonic
+# every poll sleep (window, file and wav-size waits)
+_sleep = time.sleep
+
+
+def _udp_socket() -> socket.socket:
+    """A new IPv4 UDP socket: the one the Bridge binds, sends and receives on."""
+    return socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
 
 # ---------------------------------------------------------------------------
 # OSC codec (stdlib)
@@ -243,8 +256,8 @@ class Bridge:
         self.events: list[tuple[float, str, list]] = []
         self.sent: list[tuple[str, tuple]] = []
         self.feedback_suspected = False
-        self.t0 = time.monotonic()
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.t0 = _monotonic()
+        self.sock = _udp_socket()
         try:
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, _RCVBUF)
         except OSError:
@@ -266,7 +279,7 @@ class Bridge:
         self.sock.close()
 
     def now(self) -> float:
-        return time.monotonic() - self.t0
+        return _monotonic() - self.t0
 
     def send(self, address: str, *args) -> None:
         """Send one OSC message. /open and /openfile only take a COPY_PREFIX file."""
@@ -284,7 +297,7 @@ class Bridge:
     def _recv(self, deadline: float):
         """One decoded message before *deadline*, or None at the deadline."""
         while True:
-            remaining = deadline - time.monotonic()
+            remaining = deadline - _monotonic()
             if remaining <= 0:
                 return None
             self.sock.settimeout(remaining)
@@ -317,7 +330,7 @@ class Bridge:
 
     def collect(self, seconds: float) -> None:
         """Receive (and record) events for *seconds*."""
-        deadline = time.monotonic() + max(0.0, seconds)
+        deadline = _monotonic() + max(0.0, seconds)
         while True:
             msg = self._recv(deadline)
             if msg is None:
@@ -331,7 +344,7 @@ class Bridge:
         Events arriving meanwhile are recorded. Raises BridgeTimeout.
         """
         timeout = self.timeout if timeout is None else timeout
-        start = time.monotonic()
+        start = _monotonic()
         self.send("/ping")
         deadline = start + timeout
         while True:
@@ -341,7 +354,7 @@ class Bridge:
                     f"no /pong from {self.host}:{self.port} within {timeout:g} s"
                 )
             if msg[0] == "/pong":
-                return time.monotonic() - start
+                return _monotonic() - start
             self._record(*msg)
 
 
@@ -805,38 +818,38 @@ def _find_window(prefix: str):
 
 def _wait_window(prefix: str, timeout: float):
     """The window row once it exists and its title has held still."""
-    deadline = time.monotonic() + timeout
+    deadline = _monotonic() + timeout
     while True:
         row = _find_window(prefix)
         if row is not None:
             break
-        if time.monotonic() >= deadline:
+        if _monotonic() >= deadline:
             raise ShotError(f"no Max window named {prefix!r} within {timeout:g} s "
                             "(Screen Recording permission missing?)")
-        time.sleep(SHOT_POLL)
-    time.sleep(SHOT_LOAD_SETTLE)
-    stable_deadline = time.monotonic() + SHOT_TITLE_TIMEOUT
+        _sleep(SHOT_POLL)
+    _sleep(SHOT_LOAD_SETTLE)
+    stable_deadline = _monotonic() + SHOT_TITLE_TIMEOUT
     last = None
-    while time.monotonic() < stable_deadline:
+    while _monotonic() < stable_deadline:
         row = _find_window(prefix)
         if row is None:
             raise ShotError(f"window for {prefix!r} vanished while loading")
         if last is not None and row[1] == last[1]:
             return row
         last = row
-        time.sleep(SHOT_POLL)
+        _sleep(SHOT_POLL)
     raise ShotError(f"title of the {prefix!r} window kept changing")
 
 
 def wait_gone(window_id: int, timeout: float = 5.0) -> bool:
     """True once *window_id* is no longer in the window list."""
-    deadline = time.monotonic() + timeout
+    deadline = _monotonic() + timeout
     while True:
         if all(row[0] != window_id for row in cg_windows()):
             return True
-        if time.monotonic() >= deadline:
+        if _monotonic() >= deadline:
             return False
-        time.sleep(min(0.25, SHOT_POLL))
+        _sleep(min(0.25, SHOT_POLL))
 
 
 def _capture(window_id: int, png: Path) -> None:
@@ -974,25 +987,25 @@ def plan_messages(copy: Path, run_dir: Path, opts, tapped: bool = True) -> list[
 
 
 def _wait_file(path: Path, timeout: float) -> bool:
-    deadline = time.monotonic() + timeout
+    deadline = _monotonic() + timeout
     while True:
         if path.is_file():
             return True
-        if time.monotonic() >= deadline:
+        if _monotonic() >= deadline:
             return False
-        time.sleep(0.05)
+        _sleep(0.05)
 
 
 def _wait_stable(path: Path, timeout: float = WAV_STABLE_TIMEOUT) -> bool:
     """True once *path* exists and its size holds for 3 reads 100 ms apart."""
-    deadline = time.monotonic() + timeout
+    deadline = _monotonic() + timeout
     sizes: list[int] = []
-    while time.monotonic() < deadline:
+    while _monotonic() < deadline:
         size = path.stat().st_size if path.is_file() else -1
         sizes = (sizes + [size])[-3:]
         if len(sizes) == 3 and size > 0 and len(set(sizes)) == 1:
             return True
-        time.sleep(0.1)
+        _sleep(0.1)
     return False
 
 
