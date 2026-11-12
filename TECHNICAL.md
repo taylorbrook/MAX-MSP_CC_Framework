@@ -835,8 +835,14 @@ Results are saved by `save_test_results(project_dir, test_name, ...)` to `test-r
 The project includes 7,509 tests across 134 test files covering all modules (`python3 -m pytest --collect-only -q`; 6.0.0). Run with:
 
 ```bash
-python3 -m pytest tests/ -v
+python3 -m pytest -q                  # parallel (default): pytest.ini adds -n auto (pytest-xdist)
+python3 -m pytest -q -n 0             # serial
+python3 -m pytest -q -o addopts=      # serial, works without pytest-xdist installed
+python3 -m pytest -q -n 0 tests/test_defaults.py   # quick single-file run (no worker-pool start-up)
+python3 -m pytest --pdb tests/test_defaults.py     # debugging: xdist forces -n 0 under --pdb
 ```
+
+`PYTEST_XDIST_AUTO_NUM_WORKERS=N` caps the worker count for `-n auto`. Tests must not share state across workers: write under `tmp_path` (never the repo), hold sockets bound to port 0, and use `monkeypatch` for env, cwd and module attributes.
 
 Key test areas:
 - Patcher/Box/Patchline creation and serialization

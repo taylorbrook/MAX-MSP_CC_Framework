@@ -349,7 +349,8 @@ if fixture.exists():
             f"installed for {sys.executable} (pip install -r requirements-dev.txt)"
         )
     result = subprocess.run(
-        [sys.executable, "-m", "pytest", str(fixture), "-q", "-p", "no:cacheprovider"],
+        [sys.executable, "-m", "pytest", str(fixture), "-q", "-p", "no:cacheprovider",
+         "-o", "addopts="],
         cwd=str(REPO_ROOT),
         check=False,
         capture_output=True,
@@ -361,6 +362,8 @@ if fixture.exists():
             f"DSP pre-flight simulation failed for {stem}:\n{result.stdout}\n{result.stderr}"
         )
 ```
+
+`-o addopts=` clears the maintainer `pytest.ini` addopts (`-n auto`), so the gate stays serial and needs no pytest-xdist in any checkout.
 
 `sys.executable -m pytest` with `cwd=REPO_ROOT` is what makes the gate work in
 a release install: `tests/` is not shipped there, so a registered fixture has

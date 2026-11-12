@@ -32,6 +32,8 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements-dev.txt
 
+      # Parallel via pytest.ini addopts (-n auto = runner core count, pytest-xdist from
+      # requirements-dev.txt). `python -m pytest -q -n 0` runs the suite serially.
       - name: Run tests
         run: python -m pytest -q
 

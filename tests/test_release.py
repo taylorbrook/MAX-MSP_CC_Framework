@@ -48,7 +48,10 @@ EXCLUDED_TREES = (
     ".claude/projects",
 )
 # Anchored export-ignore patterns .gitattributes must carry (S2).
-EXPORT_IGNORE_PATTERNS = tuple("/" + t for t in EXCLUDED_TREES) + ("/.gitattributes",)
+# /pytest.ini: the maintainer config sets `-n auto` (pytest-xdist); a shipped copy
+# would break the DSP pre-flight gate in installs without xdist (quick 261111-u3n).
+EXPORT_IGNORE_PATTERNS = tuple("/" + t for t in EXCLUDED_TREES) + (
+    "/.gitattributes", "/pytest.ini")
 AUDIT_DIR = ".claude/max-objects/audit"
 WIDTH_TABLE = AUDIT_DIR + "/width-overrides.json"  # OQ1-A: the only audit file shipped
 RUNTIME_FILES = (
@@ -173,6 +176,7 @@ class TestReleaseArchive:
         )
         assert not leaked, f"maintainer trees shipped: {leaked[:20]}"
         assert ".gitattributes" not in rels
+        assert "pytest.ini" not in rels
         audit_extra = sorted(
             r
             for r in rels

@@ -17,6 +17,9 @@
 /installer export-ignore
 /.claude/projects export-ignore
 /.gitattributes export-ignore
+# pytest.ini sets `-n auto` (pytest-xdist). Release installs ship no tests and may
+# lack xdist, so a shipped copy would break the DSP pre-flight gate's pytest call.
+/pytest.ini export-ignore
 
 # Audit reports are maintainer-only, but src/maxpat/sizing.py loads the width
 # table at import time, so that one file ships (Q8 OQ1, option A).
