@@ -117,7 +117,7 @@ Overlays are not agents. When an overlay's keywords or object names match, it se
 - plus max-ui-agent for `live.*` controls in presentation;
 - plus max-js-agent only for Live API scripting asked for in JS.
 
-**Pass to specialists:** CLAUDE.md "Max for Live (M4L / .amxd)" (no `gain~` / `live.gain~` / `ezdac~` before `plugout~`; `live.dial` / `live.slider` bind through `param_connect` with `parameter_enable`); the `add_m4l_device` and `add_m4l_gen_synth` docstrings; "Builder API" in `.claude/skills/references/shared-capabilities.md` (both builders, and `export_amxd`).
+**Pass to specialists:** "Max for Live Device Rules" in `.claude/skills/references/shared-capabilities.md` (no `gain~` / `live.gain~` / `ezdac~` before `plugout~`; `live.dial` / `live.slider` bind through `param_connect` with `parameter_enable`); the `add_m4l_device` and `add_m4l_gen_synth` docstrings; "Builder API" in `.claude/skills/references/shared-capabilities.md` (both builders, and `export_amxd`).
 
 **Checks:**
 - `review_patch` runs the M4L critic only when `detect_m4l_device_type` finds `plugin~`, `plugout~` or `live.thisdevice` (`plugin~` gives an audio effect, else `plugout~` an instrument, else `midiin` / `midiout` a MIDI effect; `live.thisdevice` alone is a helper abstraction, `m4l_abstraction`, which gets only the per-scope checks), so every M4L build includes them;

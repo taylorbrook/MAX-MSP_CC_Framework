@@ -198,7 +198,8 @@ class TestM4LGenSynth:
         assert [r for r in results if r.severity == "blocker"] == []
 
     def test_no_gain_between_gen_and_plugout(self):
-        # CLAUDE.md M4L rule: NO gain~/live.gain~/ezdac~ in the output path.
+        # M4L device rule (shared-capabilities.md "Max for Live Device Rules"):
+        # NO gain~/live.gain~/ezdac~ in the output path.
         p, _, _, _, _ = self._basic_synth()
         forbidden = {"gain~", "live.gain~", "ezdac~"}
         offenders = [b for b in p.boxes if b.name in forbidden]

@@ -484,11 +484,11 @@ def _check_bach_out_mode(
     """Flag a bach box sending native lllls to plain MAX objects (Q39 / Q23 row).
 
     Every bach object's ``@out`` defaults to ``n`` (native), which plain MAX
-    objects reject with "wrong message or type" (CLAUDE.md bach section). A
-    source is a Bach-package box whose ``@out`` character for the cord's llll
-    outlet is not readable by MAX (:func:`_bach_outlet_readable`: t, m or x;
-    quick 261022-ud6 IN-04 -- ``@out tn`` with outlet 0 feeding ``print`` is
-    fine); an offending cord leaves an outlet whose DB digest has no "bang"
+    objects reject with "wrong message or type" (shared-capabilities.md
+    "bach (package) Rules"). A source is a Bach-package box whose ``@out``
+    character for the cord's llll outlet is not readable by MAX
+    (:func:`_bach_outlet_readable`: t, m or x; quick 261022-ud6 IN-04 --
+    ``@out tn`` with outlet 0 feeding ``print`` is fine); an offending cord leaves an outlet whose DB digest has no "bang"
     and enters a consumer that is neither a Bach-package object nor in
     ``_BACH_OUT_FORWARDERS``. One warning per bach box (consumers in edge
     order), port = the first offending outlet, with a ``set_bach_out`` fix

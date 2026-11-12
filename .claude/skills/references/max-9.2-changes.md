@@ -143,7 +143,7 @@ All [notes]. "No change" means the repo rule stands as written.
 
 | Fix | Guidance it touches | Change |
 |---|---|---|
-| Param Connect: short name no longer overridden when loading or pasting | CLAUDE.md M4L `param_connect` rule (`parameter_shortname` in `saved_attribute_attributes`) | No change — keep setting both names explicitly |
+| Param Connect: short name no longer overridden when loading or pasting | shared-capabilities.md "Max for Live Device Rules" `param_connect` rule (`parameter_shortname` in `saved_attribute_attributes`) | No change — keep setting both names explicitly |
 | `jweb`: `window.max.outlet()` now outputs single-argument messages | none (no jweb guidance) | No change |
 | `counter`: fixed internal state before any output | skills use `counter` in examples | No change |
 | `sfrecord~`: correct sample rate used for saved files | none | No change; `start` message is new (above) |
@@ -151,7 +151,7 @@ All [notes]. "No change" means the repo rule stands as written.
 | `mc.mixdown~`: `pans` no longer changes when `pancontrolmode` changes | no rule; `patches/granularsynthtest` and `patches/ji-harmonizer` use `mc.mixdown~` | No change; re-check those two if panning differs on 9.2 |
 | `mc.record~`: inlets properly created; `stepfun~`: fixed right signal outlet | DB I/O | No change — DB already 3 / 1 and 2 / 2, equal to the 9.2 refpages [db] |
 | `pattrstorage`: outputmode 1 / subscribemode 1, client registration | skills mention pattrstorage | No change |
-| `live.gain~`: automation dot drawing | CLAUDE.md M4L "no `live.gain~` before `plugout~`" | No change |
+| `live.gain~`: automation dot drawing | shared-capabilities.md "Max for Live Device Rules" (no `live.gain~` before `plugout~`) | No change |
 | `loadbang`: defeating disabled when opening help files | CLAUDE.md loadbang chains | No change |
 | poundsign arguments: suppress "bad number" errors | CLAUDE.md `#N` rules | No change — standalone-token and JSON-number rules stay; the message it suppresses is not the "bad arguments creating object" error those rules prevent |
 | `rnbo~`: CPU spike when typing a space in the object box | editor only | No change |

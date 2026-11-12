@@ -553,7 +553,7 @@ class BuildersMixin:
         max(maxes)]`` envelope across all params (D-10). Returns
         ``(multislider, [comment, ...])``; caller wires ``fetch $1`` -> the
         multislider input themselves and reads values from the multislider's
-        RIGHT outlet (outlet 1) per D-09 and CLAUDE.md Rule #4
+        RIGHT outlet (outlet 1) per D-09 and shared-capabilities.md
         "Reading values by index" (``fetch`` not ``fetchindex``;
         outlet 1 not 0; do NOT insert ``split`` between multislider and
         consumer).
@@ -1227,9 +1227,10 @@ class BuildersMixin:
         ``param_connect``. ``plugout~`` is bare (no channel argument) and
         gen~ outlet 0 feeds BOTH of its inlets, so the device is stereo.
         There is NO ``gain~``/``live.gain~``/``ezdac~``
-        between ``gen~`` and ``plugout~`` (CLAUDE.md M4L rule -- Ableton's
-        channel strip handles volume). Caller fills in DSP via ``gen_code``
-        or by editing the gen~ inner patcher returned via ``gen_obj``.
+        between ``gen~`` and ``plugout~`` (shared-capabilities.md
+        "Max for Live Device Rules" -- Ableton's channel strip handles
+        volume). Caller fills in DSP via ``gen_code`` or by editing the
+        gen~ inner patcher returned via ``gen_obj``.
 
         The skeleton is polish-pipeline compatible: running
         ``ensure_parameter_enable`` / ``polish_m4l_device`` from

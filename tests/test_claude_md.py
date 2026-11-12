@@ -112,7 +112,8 @@ REPO_ROOT = CLAUDE_MD.parent
 SKILLS_ROOT = REPO_ROOT / ".claude" / "skills"
 
 # Ratchet: base 725f568f was 49,752 bytes; Q18 cuts it by at least 40%.
-CLAUDE_BUDGET_BYTES = 30_000
+# 261112-dci: four section bodies moved to skill homes, 29,891 -> 27,293 bytes.
+CLAUDE_BUDGET_BYTES = 27_500
 
 BASE_HEADINGS = [
     "# MAX Development Framework",
