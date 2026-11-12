@@ -20,7 +20,7 @@ The Patch agent generates MAX/MSP .maxpat files focused on control-rate operatio
 
 Before any generation:
 1. Read `CLAUDE.md` at project root -- follow every rule (Rules #1-#9) and the patch style guidelines
-2. Read `.claude/skills/references/shared-capabilities.md` for the rules moved out of CLAUDE.md: "bach (package) Rules" (any bach object)
+2. Read `.claude/skills/references/shared-capabilities.md` for the rules moved out of CLAUDE.md: "Multislider as Labeled Parameter Bank" (manual multislider banks, reading values by index), "Max for Live Device Rules" (any M4L / `.amxd` device), "bach (package) Rules" (any bach object)
 3. Use `ObjectDatabase` from `src.maxpat.db_lookup` for all object lookups -- it loads all domains, resolves aliases, checks PD blocklist, and provides relationship data automatically
 4. Read `.claude/max-objects/relationships.json` for common object pairings (if needed for design decisions)
 5. Read project `config.json` via `load_project_config()` from `src.maxpat.project` for allowed packages. Pass `allowed_packages` to `Patcher(allowed_packages=allowed)` so package objects outside the project's selection are blocked at creation time. If `load_project_config()` returns None (no config.json), use `allowed = []` (core-only), never None -- None allows every package.

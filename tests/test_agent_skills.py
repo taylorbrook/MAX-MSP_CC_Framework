@@ -954,13 +954,22 @@ def test_dsp_agent_loads_genexpr_rules() -> None:
 # Domain Context Loading must carry a numbered Read step naming the moved sections.
 # agent -> (home marker on the step line, section titles that line must name)
 _MOVED_RULE_LOADERS = {
-    "max-patch-agent": ("shared-capabilities.md", ("bach (package) Rules",)),
-    "max-dsp-agent": ("shared-capabilities.md", ("bach (package) Rules",)),
+    "max-patch-agent": ("shared-capabilities.md", (
+        "Multislider as Labeled Parameter Bank", "Max for Live Device Rules", "bach (package) Rules",
+    )),
+    "max-ui-agent": ("shared-capabilities.md", ("Multislider as Labeled Parameter Bank",)),
+    "max-dsp-agent": ("shared-capabilities.md", ("Max for Live Device Rules", "bach (package) Rules")),
+    "max-rnbo-agent": ("RNBO Export Rules", ("RNBO Export Rules",)),
 }
 
 # destination file -> heading lines that must exist there
 _MOVED_RULE_HOMES = {
-    SHARED_CAPABILITIES: ("## bach (package) Rules",),
+    SHARED_CAPABILITIES: (
+        "#### Multislider as Labeled Parameter Bank",
+        "## Max for Live Device Rules",
+        "## bach (package) Rules",
+    ),
+    SKILLS_DIR / "max-rnbo-agent" / "SKILL.md": ("## RNBO Export Rules",),
 }
 
 _NUMBERED_READ_RE = re.compile(r"^\d+\. Read ")

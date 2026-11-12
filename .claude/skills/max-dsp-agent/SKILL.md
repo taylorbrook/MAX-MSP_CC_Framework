@@ -21,7 +21,7 @@ The DSP agent generates audio signal processing components: GenExpr code for gen
 Before any generation:
 1. Read `CLAUDE.md` at project root -- follow MSP and Gen~ domain-specific rules
 2. Read `.claude/skills/references/genexpr-rules.md` before writing or editing any GenExpr (codebox, `.gendsp`, `mc.gen~`) -- the full gen~ rule set with derivations and evidence
-3. Read `.claude/skills/references/shared-capabilities.md` "bach (package) Rules" before using any bach object (moved out of CLAUDE.md)
+3. Read `.claude/skills/references/shared-capabilities.md` "Max for Live Device Rules" before any M4L / `.amxd` device work and "bach (package) Rules" before using any bach object (both moved out of CLAUDE.md)
 4. Use `ObjectDatabase` from `src.maxpat.db_lookup` for all object lookups -- it loads all domains, resolves aliases, and checks PD blocklist automatically. No need to read individual domain JSON files.
 5. Check `.claude/max-objects/pd-blocklist.json` if you need to browse PD equivalents in bulk
 6. Read project `config.json` via `load_project_config()` from `src.maxpat.project` for allowed packages. Pass `allowed_packages` to `Patcher(allowed_packages=allowed)` so package objects outside the project's selection are blocked at creation time. If `load_project_config()` returns None (no config.json), use `allowed = []` (core-only), never None -- None allows every package.
@@ -108,7 +108,7 @@ gen_box.outlettype = ["signal"]  # Use ["signal", "signal"] for stereo
 
 > **Shared Capabilities:** See `.claude/skills/references/shared-capabilities.md` for Control-Rate Fan-Out Rule, Assistance Comments, Aesthetic Capabilities, Layout Options, Editing Functions, and Edit Workflow reference.
 
-**Max for Live devices (experimental, unconfirmed in Live):** lead audio-effect and instrument builds with `Patcher.add_m4l_device(kind, params)` (or `add_m4l_gen_synth(params)` for a gen~ synth body), save the `.maxpat`, then write the `.amxd` with `export_amxd(maxpat_path)` from `src.maxpat.m4l_device`. Signatures and reuse / refusal rules: "Builder API" in `.claude/skills/references/shared-capabilities.md`; device rules: CLAUDE.md "Max for Live (M4L / .amxd)".
+**Max for Live devices (experimental, unconfirmed in Live):** lead audio-effect and instrument builds with `Patcher.add_m4l_device(kind, params)` (or `add_m4l_gen_synth(params)` for a gen~ synth body), save the `.maxpat`, then write the `.amxd` with `export_amxd(maxpat_path)` from `src.maxpat.m4l_device`. Signatures and reuse / refusal rules: "Builder API" in `.claude/skills/references/shared-capabilities.md`; device rules: "Max for Live Device Rules" in the same file.
 
 ## Package Intelligence
 

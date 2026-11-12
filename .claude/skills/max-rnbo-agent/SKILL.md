@@ -35,10 +35,18 @@ Generate RNBO patches for VST3/AU plugin, Web Audio, and C++ embedded export tar
 ## Domain Context Loading
 
 When invoked:
-1. Read `CLAUDE.md` RNBO section for export rules and constraints
+1. Read the "RNBO Export Rules" section below (this file) for export rules and constraints
 2. Use `RNBODatabase()` from `src.maxpat.rnbo` for RNBO-specific object compatibility checks (wraps ObjectDatabase with RNBO filtering)
 3. Use `ObjectDatabase` from `src.maxpat.db_lookup` for general object lookups when checking companion MSP/Gen objects
 4. Read project `config.json` via `load_project_config()` from `src.maxpat.project` for allowed packages. Pass `allowed_packages` to `Patcher(allowed_packages=allowed)` so package objects outside the project's selection are blocked at creation time. If `load_project_config()` returns None (no config.json), use `allowed = []` (core-only), never None -- None allows every package. Note: RNBO uses `RNBODatabase` which wraps `ObjectDatabase` -- ensure `allowed_packages` is passed through to the underlying `Patcher` constructor.
+
+## RNBO Export Rules
+
+**Experimental:** not yet confirmed in MAX.
+
+- ONLY use objects with `rnbo_compatible: true` in the database; some differ from their MAX counterparts (e.g. outlet count), so check the `rnbo/` domain for RNBO-specific definitions.
+- RNBO uses `rnbo~` as the container object (like `gen~` but for full patches). Patches must be self-contained -- no external file dependencies for export targets (VST3/AU plugin, Web Audio, C++).
+- `param` objects in RNBO map to plugin parameters for VST3/AU export.
 
 ## Python API References
 

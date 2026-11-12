@@ -153,7 +153,7 @@ Replaces the 5-step manual recipe in "Z-Order Manipulation" above and in the `ad
 ### `Patcher.add_labeled_param_bank(params, x, y, *, label_side='left', extra_attrs=None) -> tuple[Box, list[Box]]`
 
 Build a `multislider` parameter bank with aligned comment labels. Codifies
-CLAUDE.md §"Multislider as Labeled Parameter Bank" — bakes in
+the "Multislider as Labeled Parameter Bank" rules below — bakes in
 `size=len(params)`, `height=size*24`, `orientation=0`, `contdata=1`,
 `setstyle=1`, `setminmax=[min(mins), max(maxes)]`.
 
@@ -165,12 +165,20 @@ CLAUDE.md §"Multislider as Labeled Parameter Bank" — bakes in
 
 Returns `(multislider, [comment, ...])`. **Caller wires `fetch $1` to the
 multislider input themselves and reads values from the multislider's RIGHT
-outlet (outlet 1)** — see CLAUDE.md Rule #4, "Reading values by index".
+outlet (outlet 1)** — see "Reading values by index" below.
 
 **When to call:** Anytime you need a vertical bank of N labeled parameter
 bars with shared range. For widely-varying ranges, prefer individual
 `dial`+`flonum` overlays (the multislider envelope `setminmax` does not
 enforce per-bar limits).
+
+#### Multislider as Labeled Parameter Bank
+
+> Codified: `Patcher.add_labeled_param_bank(params, x, y)` (Phase 31). Its docstring holds the full recipe (alignment formula, attributes, 14-param example); prefer the builder.
+
+Manual banks: `orientation: 0`, `contdata: 1`, `setstyle: 1`, height = size * 24 for 24px label spacing; put utility/routing objects (prepend chains, init messages, js engines) in named subpatchers.
+
+**Reading values by index:** send `fetch $1` (NOT `fetchindex` -- it does not exist). The fetched value emerges from the **right** outlet (outlet 1); outlet 0 is for direct-edit/drag interaction. Don't insert `split` between multislider and the consumer -- multislider already emits the correct values, and `split` filters out valid step data.
 
 ### `Patcher.add_m4l_gen_synth(params, *, gen_varname='synth', gen_code=None) -> tuple[Box, list[Box], Box]`
 
@@ -179,7 +187,7 @@ enforce per-bar limits).
 Build a Live-ready M4L gen synth skeleton: `gen~` (with stable `varname`),
 one `live.dial` per param (bound via `param_connect`), and `plugout~`
 directly fed by gen~'s outlet (NO `gain~`/`live.gain~`/`ezdac~` between —
-CLAUDE.md M4L rule).
+"Max for Live Device Rules" below).
 
 - `params`: List of `(name, min, max)` tuples — one `live.dial` per param.
   Names MUST be valid MAX symbols.
@@ -241,6 +249,17 @@ yourself or use `add_overlay_readout` explicitly.
 | M4L gen synth skeleton | `add_m4l_gen_synth([(name, mn, mx), ...])` | §"Domain-Specific Rules → Max for Live (M4L)" recipe |
 | M4L device skeleton (any kind) + `.amxd` | `add_m4l_device(kind, params)`, then `export_amxd(maxpat_path)` | §"Max for Live (M4L / .amxd)" |
 | Auto-place meter~ on audio outlet / flonum on status outlet | (none — `apply_layout` does it via `_ROLE_COMPANION_MAP`) | manual companion positioning |
+
+## Max for Live Device Rules
+
+**Experimental:** not yet confirmed in MAX or Live.
+
+> Codified (EXPERIMENTAL, unconfirmed in Live): `Patcher.add_m4l_device(kind, params)` (kind `instrument` / `audio_effect` / `midi_effect`) builds the skeleton: Live-template wiring, the `live.thisdevice` init chain, `live.dial` params with unit/type inferred from range and name (explicit keys win), unique short names and Push `parameterbanks`. `Patcher.add_m4l_gen_synth(params)` (Phase 31) is built on it. Save the .maxpat (the source of truth), then `export_amxd(maxpat_path)` from `src.maxpat.m4l_device` writes the .amxd next to it. It reuses existing device I/O and refuses taken parameter names; `export_amxd` refuses a `live.thisdevice`-only helper abstraction without `kind=`. The rules below still apply.
+
+- **No `gain~` / `live.gain~` / `ezdac~` before `plugout~`.** Route the final stage directly to `plugout~`; Ableton's mixer handles volume, pan and mute (`gain~` defaults to 0, silence on load).
+- **`live.dial` / `live.slider` bind to gen~ Params via `param_connect`, not message-box patching:** `param_connect: "<gen~_varname>::<param_name>"`, `parameter_enable: 1` and the `saved_attribute_attributes.valueof` block (keys in the `add_m4l_gen_synth` docstring). The gen~ needs a stable `varname` matching the prefix; no patch cord -- `param_connect` IS the binding.
+- Without `param_connect`, the dial is not in Live's parameter list and is not Live-automatable.
+- **Slider -> line~ -> gen~ signal-rate exception:** `param_connect` binds only Params, so keep the `slider -> line~ -> gen~` path and add `parameter_enable: 1` + `saved_attribute_attributes.valueof` to the slider itself so Live can still automate it.
 
 ## bach (package) Rules
 

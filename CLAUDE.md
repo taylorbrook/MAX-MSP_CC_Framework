@@ -97,11 +97,7 @@ Judge text color by WCAG contrast ratio (minimum 4.5:1, `MIN_CONTRAST_RATIO` in 
 
 #### Multislider as Labeled Parameter Bank
 
-> Codified: `Patcher.add_labeled_param_bank(params, x, y)` (Phase 31). Its docstring holds the full recipe (alignment formula, attributes, 14-param example); prefer the builder.
-
-Manual banks: `orientation: 0`, `contdata: 1`, `setstyle: 1`, height = size * 24 for 24px label spacing; put utility/routing objects (prepend chains, init messages, js engines) in named subpatchers.
-
-**Reading values by index:** send `fetch $1` (NOT `fetchindex` -- it does not exist). The fetched value emerges from the **right** outlet (outlet 1); outlet 0 is for direct-edit/drag interaction. Don't insert `split` between multislider and the consumer -- multislider already emits the correct values, and `split` filters out valid step data.
+Use the builder `Patcher.add_labeled_param_bank(params, x, y)`; manual-bank attributes and reading values by index (`fetch $1`, right outlet): `.claude/skills/references/shared-capabilities.md` "Multislider as Labeled Parameter Bank".
 
 ### Rule #5: No Generator Scripts
 
@@ -190,11 +186,7 @@ Inside a subpatcher from `add_subpatcher()`, get inlet/outlet boxes by index wit
 
 ### RNBO (Export-Ready Patches)
 
-**Experimental:** not yet confirmed in MAX.
-
-- ONLY use objects with `rnbo_compatible: true` in the database; some differ from their MAX counterparts (e.g. outlet count), so check the `rnbo/` domain for RNBO-specific definitions.
-- RNBO uses `rnbo~` as the container object (like `gen~` but for full patches). Patches must be self-contained -- no external file dependencies for export targets (VST3/AU plugin, Web Audio, C++).
-- `param` objects in RNBO map to plugin parameters for VST3/AU export.
+Experimental. Use only `rnbo_compatible: true` objects; export rules (the `rnbo~` container, self-contained export targets, `param` mapping): `.claude/skills/max-rnbo-agent/SKILL.md` "RNBO Export Rules".
 
 ### Node for Max (N4M / node.script)
 
@@ -210,14 +202,7 @@ Inside a subpatcher from `add_subpatcher()`, get inlet/outlet boxes by index wit
 
 ### Max for Live (M4L / .amxd)
 
-**Experimental:** not yet confirmed in MAX or Live.
-
-> Codified (EXPERIMENTAL, unconfirmed in Live): `Patcher.add_m4l_device(kind, params)` (kind `instrument` / `audio_effect` / `midi_effect`) builds the skeleton: Live-template wiring, the `live.thisdevice` init chain, `live.dial` params with unit/type inferred from range and name (explicit keys win), unique short names and Push `parameterbanks`. `Patcher.add_m4l_gen_synth(params)` (Phase 31) is built on it. Save the .maxpat (the source of truth), then `export_amxd(maxpat_path)` from `src.maxpat.m4l_device` writes the .amxd next to it. It reuses existing device I/O and refuses taken parameter names; `export_amxd` refuses a `live.thisdevice`-only helper abstraction without `kind=`. The rules below still apply.
-
-- **No `gain~` / `live.gain~` / `ezdac~` before `plugout~`.** Route the final stage directly to `plugout~`; Ableton's mixer handles volume, pan and mute (`gain~` defaults to 0, silence on load).
-- **`live.dial` / `live.slider` bind to gen~ Params via `param_connect`, not message-box patching:** `param_connect: "<gen~_varname>::<param_name>"`, `parameter_enable: 1` and the `saved_attribute_attributes.valueof` block (keys in the `add_m4l_gen_synth` docstring). The gen~ needs a stable `varname` matching the prefix; no patch cord -- `param_connect` IS the binding.
-- Without `param_connect`, the dial is not in Live's parameter list and is not Live-automatable.
-- **Slider -> line~ -> gen~ signal-rate exception:** `param_connect` binds only Params, so keep the `slider -> line~ -> gen~` path and add `parameter_enable: 1` + `saved_attribute_attributes.valueof` to the slider itself so Live can still automate it.
+Experimental. Build devices with `Patcher.add_m4l_device(kind, params)` or `Patcher.add_m4l_gen_synth(params)`, then `export_amxd(maxpat_path)`; read the device rules (`plugout~` output path, `param_connect` binding, Live automation) first: `.claude/skills/references/shared-capabilities.md` "Max for Live Device Rules".
 
 ### bach (package)
 
