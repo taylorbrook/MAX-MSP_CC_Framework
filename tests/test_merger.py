@@ -623,7 +623,7 @@ def _db_copy(tmp_path: Path) -> Path:
 
     src = REAL_OVERRIDES_PATH.parent
     dst = tmp_path / "max-objects"
-    shutil.copytree(src, dst, ignore=shutil.ignore_patterns("audit"))
+    shutil.copytree(src, dst, ignore=shutil.ignore_patterns("audit", "_pkg-source"))
     return dst
 
 

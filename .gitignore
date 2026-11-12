@@ -21,3 +21,8 @@ __pycache__/
 
 # MAX bridge temp copies (tools/max_bridge.py) -- never committed
 __maxbridge_*
+
+# GSD quick-task scratch (baselines, triage dumps, junit, helper scripts):
+# only the .md deliverables are project content. Already-tracked files stay tracked.
+/.planning/quick/*/*
+!/.planning/quick/*/*.md

@@ -471,15 +471,15 @@ class TestProvenForms:
 
     def test_unknown_section(self, copy):
         with pytest.raises(ValueError, match="Control and data"):
-            testing_mod.append_proven_form("Jitter", path=copy, **_form_args())
+            testing_mod.append_proven_form("No Such Section", path=copy, **_form_args())
 
     def test_create_section(self, copy):
-        testing_mod.append_proven_form("Jitter", path=copy, create_section=True,
+        testing_mod.append_proven_form("No Such Section", path=copy, create_section=True,
                                        **_form_args())
         new = copy.read_text(encoding="utf-8")
-        assert "\n## Jitter\n\n### dial step size\n" in new
+        assert "\n## No Such Section\n\n### dial step size\n" in new
         parsed = testing_mod.parse_proven_forms(new)
-        assert parsed[-1].section == "Jitter" and parsed[-1].title == "dial step size"
+        assert parsed[-1].section == "No Such Section" and parsed[-1].title == "dial step size"
 
     def test_evidence_tiers_section_refused(self, copy):
         with pytest.raises(ValueError):

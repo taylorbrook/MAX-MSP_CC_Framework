@@ -63,14 +63,6 @@
         "maxclass": "toggle",
         "path": "",
         "reason": "On/off toggle with no init route: off at load until clicked, while the DSP keeps its own default. Committed baseline, never edited (fix-plan rule 3); listed in the Q24 SUMMARY."
-      },
-      {
-        "severity": "warning",
-        "kind": "uninitialized_state",
-        "box_id": "obj-20",
-        "maxclass": "number",
-        "path": "",
-        "reason": "Parameter control with no init route: shows its default until touched while the DSP runs on its own value (pre-R8 debt). Committed baseline, never edited (fix-plan rule 3); listed in the Q24 SUMMARY."
       }
     ],
     "patches/disintegrate/generated/disintegrate-helper.maxpat": [

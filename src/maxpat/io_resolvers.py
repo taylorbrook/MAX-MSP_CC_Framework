@@ -31,6 +31,7 @@ module; the reverse import would be a cycle).
 
 from __future__ import annotations
 
+import functools
 import re
 from typing import Callable, Dict, List, Tuple
 
@@ -60,6 +61,14 @@ def split_box_text(text: str) -> list[str]:
         return []
     if not isinstance(text, str):
         text = str(text)
+    # Memoized: critics and validation re-tokenize the same box text tens of
+    # thousands of times per save. A fresh list per call keeps callers free
+    # to mutate the result.
+    return list(_split_box_text_cached(text))
+
+
+@functools.lru_cache(maxsize=16384)
+def _split_box_text_cached(text: str) -> tuple[str, ...]:
     tokens: list[str] = []
     cur: list[str] = []
     in_token = False
@@ -89,7 +98,7 @@ def split_box_text(text: str) -> list[str]:
         i += 1
     if in_token:
         tokens.append("".join(cur))
-    return tokens
+    return tuple(tokens)
 
 
 def _positional(tokens: list[str]) -> list[str]:
