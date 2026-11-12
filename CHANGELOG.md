@@ -6,6 +6,43 @@ All notable changes to the MAX/MSP Claude Code Framework. The format follows
 that version's GitHub release (`scripts/release_notes.sh`). Releases before 6.0.0
 are summarized in the README milestone table.
 
+## [6.2.0] - 2026-11-12
+
+Object-DB fixes and rules from the Ambire, barnett-dbap and resonant-garden builds, a
+smaller `CLAUDE.md`, and a faster validation path. No API changes.
+
+### Added
+
+- **`abc_3d_binaural3~` in the object DB** (`packages/abclib/objects.json`): 16 inlets,
+  3 outlets, ACN channel order, N3D normalization, measured in MAX 9.2.
+- **`jit.gl.multiple` variable I/O rule**: the first argument sets the number of matrix
+  inlets, with 2 outlets (from shipped help boxes).
+- **Jitter rule: `jit.expr` that reads a named matrix needs `@cache 0`** (`CLAUDE.md`,
+  `proven-forms.md` "Jitter"). With the default `@cache 1`, sub-expressions without
+  `in[N]` are computed once and stay constant.
+
+### Changed
+
+- **`CLAUDE.md` is shorter and no rule was dropped.** The multislider parameter-bank,
+  Max for Live and bach rules moved to `shared-capabilities.md`, and the RNBO export
+  rules moved to the `max-rnbo-agent` skill. `CLAUDE.md` names each rule's new home.
+- **Validation and critics are faster on large patches**: `split_box_text` is memoized.
+
+### Fixed
+
+- **`sfplay~` outlet count** skips a leading `sflist~` name and counts the position
+  outlets (`sfplay_outlets` formula): `sfplay~ sf.cues 2 0 1` has 4 outlets (L, R,
+  position, done-bang). Cords from the position and bang outlets were flagged out of
+  bounds before.
+
+### Maintenance
+
+- The test suite runs in parallel by default (`pytest-xdist`, `-n auto` in
+  `pytest.ini`). `pytest.ini` is export-ignored, so release archives do not ship it.
+- MAX bridge tests use virtual-time seams instead of real waits.
+- Generated wavetable banks (ji-harmonizer, about 23 MB) are untracked and regenerated
+  on demand.
+
 ## [6.1.0] - 2026-10-25
 
 Object-DB additions from the face-tracker build (2026-10-23). No API changes.

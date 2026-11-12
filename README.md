@@ -263,6 +263,7 @@ Planning artifacts live in `.planning/`:
 | **v5.0 DB Schema Hardening + Validator Depth** | 2026-05-01 | 5 | 24 | `signal_role`/`domain_restricted`/`verified_installed` schema fields, deepened validation pipeline (Layers 1-5 with sub-layers), MSP outlet coverage sweep, Phase 31 layout/UX builders (labeled param banks, overlay readouts, safe box replacement, M4L gen-synth), dsp_sim pre-flight simulation |
 | **v6.0.0 Non-destructive Validation + Safe Saves** | 2026-10-23 | — | — | Fix-plan Q1-Q40 + review fixes: non-destructive `validate_patch` + `apply_fixes`, per-scope validation and critics, save gate (`PatchValidationError`, `LayoutRefusedError`), byte-identical no-op saves for every Max layout, `edit_patch` sessions + semantic diff, Q23 vocabulary checks, codebox smoke test, `/max-diagnose`, `/max-verify --live`, critic quick fixes, M4L device builder + `.amxd` export (experimental), npm trusted publishing. See [CHANGELOG.md](CHANGELOG.md) |
 | **v6.1.0 Vision Package** | 2026-10-25 | — | — | Cycling '74 Vision 1.0.2 in the object DB (22 `jit.vis.*` entries, Max 9.2+), `dict.unpack` variable outlet count. See [CHANGELOG.md](CHANGELOG.md) |
+| **v6.2.0 DB Fixes + Leaner CLAUDE.md** | 2026-11-12 | — | — | `sfplay~` outlet count with an `sflist~` name and position outlets, `jit.gl.multiple` variable inlets, `abc_3d_binaural3~` (abclib), `jit.expr` `@cache 0` rule, shorter `CLAUDE.md` (rules moved to skill references), memoized box-text tokenizing, parallel test suite. See [CHANGELOG.md](CHANGELOG.md) |
 
 ## License
 
