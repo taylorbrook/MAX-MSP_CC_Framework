@@ -17140,6 +17140,17 @@
         "finding": "DQ-02 / FN-01: lifted from per-domain inline io_rule (router had variable_io=true but no overrides.json rule; compute_io_counts was returning wrong default counts)."
       }
     },
+    "jit.gl.multiple": {
+      "inlet_count": "first_arg",
+      "outlet_count": "fixed:2",
+      "default_inlets": 2,
+      "default_outlets": 2,
+      "description": "jit.gl.multiple N: the first argument sets the number of matrix inlets (one per @glparams entry). 2 outlets.",
+      "_audit": {
+        "source": "resonant-garden objects build 2026-11-09: Max 9 help jit.gl.multiple.maxhelp boxes 'jit.gl.multiple 3 ...' numinlets 3 and 'jit.gl.multiple 4 ...' numinlets 4",
+        "confidence": "HIGH"
+      }
+    },
     "mc.combine~": {
       "inlet_count": "first_arg",
       "outlet_count": "fixed:1",
