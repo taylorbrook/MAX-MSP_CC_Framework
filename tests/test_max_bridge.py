@@ -10,6 +10,7 @@ functions directly.
 
 from __future__ import annotations
 
+import atexit
 import json
 import socket
 import struct
@@ -30,12 +31,21 @@ def db():
     return ObjectDatabase()
 
 
+# Reserving sockets stay bound (and are never read) until the process exits.
+# Under pytest-xdist every worker shares the OS port namespace: closing the
+# socket and handing out the bare number let another worker's ephemeral bind
+# (FakeBridge, a Bridge reply socket) take the port before the test sent to
+# it. A bound, unread UDP socket still answers nothing, so callers keep their
+# "nobody listens here" timeout path.
+_RESERVED_PORT_SOCKETS: list[socket.socket] = []
+atexit.register(lambda: [s.close() for s in _RESERVED_PORT_SOCKETS])
+
+
 def _free_port() -> int:
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.bind(("127.0.0.1", 0))
-    port = s.getsockname()[1]
-    s.close()
-    return port
+    _RESERVED_PORT_SOCKETS.append(s)
+    return s.getsockname()[1]
 
 
 # ---------------------------------------------------------------------------
@@ -1325,18 +1335,29 @@ def _note_boxes(p):
     return rcv, up
 
 
+@pytest.fixture
+def simple_fm_copy(tmp_path):
+    """A tmp copy of simple-fm.maxpat. instrument() writes its __maxbridge_ copy
+    beside the source, so instrumenting the repo file wrote into patches/ and
+    two xdist workers raced on the same sibling path."""
+    src = tmp_path / SIMPLE_FM.name
+    src.write_bytes(SIMPLE_FM.read_bytes())
+    return src
+
+
 class TestNote:
     """D-06: --note drives the temp copy's notein cords (kslider fallback)."""
 
-    def test_note_mirror_simple_fm(self, db):
+    def test_note_mirror_simple_fm(self, db, simple_fm_copy):
         before = SIMPLE_FM.read_bytes()
-        copy, report = bridge.instrument(SIMPLE_FM, note=True)
+        copy, report = bridge.instrument(simple_fm_copy, note=True)
         try:
             inst = _load(copy)
             errors = [r for r in validate_patch(json.loads(copy.read_text()), db=db)
                       if r.level == "error"]
         finally:
             copy.unlink()
+        assert simple_fm_copy.read_bytes() == before
         assert SIMPLE_FM.read_bytes() == before
         assert errors == []
         orig = _load(SIMPLE_FM)
@@ -1378,8 +1399,8 @@ class TestNote:
         assert report["note_target"] is None
         assert _note_boxes(inst) == ([], [])
 
-    def test_note_off_by_default(self):
-        copy, report = bridge.instrument(SIMPLE_FM)
+    def test_note_off_by_default(self, simple_fm_copy):
+        copy, report = bridge.instrument(simple_fm_copy)
         try:
             text = copy.read_text()
         finally:
@@ -1479,9 +1500,13 @@ class TestFixtures:
         ("fx-clean", True), ("fx-dc", True), ("fx-genfail", True),
         ("fx-nosuchobj", False), ("fx-badargs", False),
     ])
-    def test_instrument_fixture(self, name, tapped):
-        src = PROJECT_DIR / "fixtures" / f"{name}.maxpat"
-        before = src.read_bytes()
+    def test_instrument_fixture(self, name, tapped, tmp_path):
+        # instrument() writes its __maxbridge_ copy beside the source: work on
+        # a tmp copy so the test never writes into patches/ (xdist isolation)
+        fixture = PROJECT_DIR / "fixtures" / f"{name}.maxpat"
+        before = fixture.read_bytes()
+        src = tmp_path / fixture.name
+        src.write_bytes(before)
         copy, report = bridge.instrument(src)
         try:
             if tapped:
@@ -1491,6 +1516,7 @@ class TestFixtures:
         finally:
             copy.unlink()
         assert src.read_bytes() == before
+        assert fixture.read_bytes() == before
         assert not copy.exists()
 
     @pytest.mark.parametrize("name", FIXTURES)
