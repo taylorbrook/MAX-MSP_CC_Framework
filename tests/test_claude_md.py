@@ -176,7 +176,7 @@ RULE_ANCHORS = [
     "node.script", "node.codebox", "max-api", "maxAPI.outlet", "1 inlet / 2 outlets",
     "Legacy Engine", "ES5", "v8", "messagename", "arrayfromargs(arguments)", "Task",
     "plugout~", "param_connect", "parameter_enable: 1", "saved_attribute_attributes.valueof", "add_m4l_gen_synth",
-    "bach.llll2list", "bach.nth", "@unwrap 1", "@out t",
+    "bach.llll2list", "bach.nth", "@out t",
     "osc~", "lop~", "hip~", "bp~", "tabread~", "throw~",
     "MAX 9", "min_version",
     "standalone token", "JSON numbers", "set Label #1",
@@ -232,6 +232,10 @@ MOVED_DETAIL = {
                  ["StaleFileError", "SaveGateWarning", "x-rank", "force=True", "PatchValidationError"]),
     "max92": (".claude/skills/references/max-9.2-changes.md",
               ["dspstress~", "abl.dsp.djfilter~", "replacechannel_samples", "trim_samples", "MaxFFT2D", "IOBuffer", "setTimeout"]),
+    # 261112-dci: CLAUDE.md section bodies moved verbatim to skill-loaded homes
+    "bach": (".claude/skills/references/shared-capabilities.md",
+             ["## bach (package) Rules", "bach.llll2list", "bach.nth", "@unwrap 1", "@out t",
+              "Flat sublists then arrive as regular lists (`unpack f f` works)"]),
 }
 
 # CLAUDE.md must name each detail home by its full path.

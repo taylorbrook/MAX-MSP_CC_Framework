@@ -221,8 +221,7 @@ Inside a subpatcher from `add_subpatcher()`, get inlet/outlet boxes by index wit
 
 ### bach (package)
 
-- `bach.llll2list` and `bach.list2llll` do NOT exist in the installed bach package (stale DB entries; "No such object" at load). Extract sub-llll values with `bach.nth N` (1-based, one call per index), adding `@unwrap 1` when the element is itself a sublist. Flat MAX lists connect directly; use `bach.flat`, `bach.iter` or `bach.pack` for complex conversions.
-- Every bach object's `@out` defaults to `n` (native), which plain MAX objects (`f`, `select`, `unpack`, `expr`) reject with "wrong message or type": set `@out t` (one char per llll outlet) on any bach object feeding a non-bach consumer. Flat sublists then arrive as regular lists (`unpack f f` works).
+Before using any bach object, read `.claude/skills/references/shared-capabilities.md` "bach (package) Rules" (missing `bach.llll2list` / `bach.list2llll`, `bach.nth` extraction, `@out t` toward plain MAX objects).
 
 ## PD Confusion Guard
 

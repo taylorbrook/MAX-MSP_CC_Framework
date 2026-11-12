@@ -8,6 +8,7 @@ required content patterns rather than runtime behavior.
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import pytest
@@ -947,6 +948,51 @@ def test_dsp_agent_loads_genexpr_rules() -> None:
     section = _h2_section(_read_skill("max-dsp-agent"), "## Domain Context Loading")
     assert section is not None, "max-dsp-agent lost 'Domain Context Loading'"
     assert "genexpr-rules.md" in section
+
+
+# 261112-dci: CLAUDE.md section bodies moved to skill-loaded homes. Each loader's
+# Domain Context Loading must carry a numbered Read step naming the moved sections.
+# agent -> (home marker on the step line, section titles that line must name)
+_MOVED_RULE_LOADERS = {
+    "max-patch-agent": ("shared-capabilities.md", ("bach (package) Rules",)),
+    "max-dsp-agent": ("shared-capabilities.md", ("bach (package) Rules",)),
+}
+
+# destination file -> heading lines that must exist there
+_MOVED_RULE_HOMES = {
+    SHARED_CAPABILITIES: ("## bach (package) Rules",),
+}
+
+_NUMBERED_READ_RE = re.compile(r"^\d+\. Read ")
+
+
+@pytest.mark.parametrize("agent_name", list(_MOVED_RULE_LOADERS))
+def test_moved_claude_rules_loaded_by_specialist(agent_name: str) -> None:
+    """261112-dci: rules moved out of CLAUDE.md are loaded by an explicit numbered step."""
+    marker, titles = _MOVED_RULE_LOADERS[agent_name]
+    section = _h2_section(_read_skill(agent_name), "## Domain Context Loading")
+    assert section is not None, f"{agent_name} lost 'Domain Context Loading'"
+    steps = [
+        line for line in section.split("\n")
+        if _NUMBERED_READ_RE.match(line) and marker in line
+    ]
+    assert steps, f"{agent_name}: no numbered Read step naming {marker!r}"
+    step = steps[0]
+    for title in titles:
+        assert title in step, f"{agent_name}: Read step for {marker!r} does not name {title!r}"
+    if marker == "RNBO Export Rules":
+        assert "RNBO section" not in step, f"{agent_name}: step still cites the old RNBO section"
+
+
+@pytest.mark.parametrize(
+    "home,heading",
+    [(home, h) for home, heads in _MOVED_RULE_HOMES.items() for h in heads],
+    ids=[h for heads in _MOVED_RULE_HOMES.values() for h in heads],
+)
+def test_moved_claude_rule_homes_have_headings(home: Path, heading: str) -> None:
+    """261112-dci: each moved CLAUDE.md section has its heading at the new home."""
+    lines = home.read_text(encoding="utf-8").split("\n")
+    assert heading in lines, f"{home.name} lacks heading line {heading!r}"
 
 
 def test_ui_agent_points_to_uicontrast_section() -> None:

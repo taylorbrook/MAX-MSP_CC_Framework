@@ -242,6 +242,11 @@ yourself or use `add_overlay_readout` explicitly.
 | M4L device skeleton (any kind) + `.amxd` | `add_m4l_device(kind, params)`, then `export_amxd(maxpat_path)` | §"Max for Live (M4L / .amxd)" |
 | Auto-place meter~ on audio outlet / flonum on status outlet | (none — `apply_layout` does it via `_ROLE_COMPANION_MAP`) | manual companion positioning |
 
+## bach (package) Rules
+
+- `bach.llll2list` and `bach.list2llll` do NOT exist in the installed bach package (stale DB entries; "No such object" at load). Extract sub-llll values with `bach.nth N` (1-based, one call per index), adding `@unwrap 1` when the element is itself a sublist. Flat MAX lists connect directly; use `bach.flat`, `bach.iter` or `bach.pack` for complex conversions.
+- Every bach object's `@out` defaults to `n` (native), which plain MAX objects (`f`, `select`, `unpack`, `expr`) reject with "wrong message or type": set `@out t` (one char per llll outlet) on any bach object feeding a non-bach consumer. Flat sublists then arrive as regular lists (`unpack f f` works).
+
 ## Editing Functions
 
 - `with edit_patch(path) as patcher:` -- edit session on an existing patch (Q36): re-reads the file on entry; a clean exit routes touched cords, sets contrast on added boxes that carry an explicit textcolor and saves through the gate (keep `session = edit_patch(path)` to read `session.diff`, `session.saved`, `session.commit_hash`)
