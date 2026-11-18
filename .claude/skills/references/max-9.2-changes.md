@@ -1,6 +1,6 @@
 # Max 9.2 Changes
 
-> On-demand reference for patch and code generation. Synced 2026-10-01 against the installed bundle `Max 9.2.0 (e9c80e453de)` by quick task 261001-hwb.
+> On-demand reference for patch and code generation. Synced 2026-10-01 against the installed bundle `Max 9.2.0 (e9c80e453de)` by quick task 261001-hwb; re-synced 2026-11-18 against Max 9.2.1 (b6a40ee953d) by quick task 261118-j2w.
 > Path: `.claude/skills/references/max-9.2-changes.md`. `C74/` below means `/Applications/Max.app/Contents/Resources/C74/`.
 
 ## Evidence tiers
@@ -9,7 +9,7 @@ Every claim here carries one tier. Nothing in this file comes from memory.
 
 - **[bundle]** — read from a file under `/Applications/Max.app` (refpage, help patch, objectmappings, example, user guide).
 - **[db]** — follows from the object database as synced by `tools/sync_max_bundle.py`.
-- **[notes]** — stated only by the Max 9.2.0 release notes. Unverified. **Do not rely on a [notes] item without a test in MAX**, and never invent an argument form, enum value or API name for one.
+- **[notes]** — stated only by the Max 9.2.0 or Max 9.2.1 release notes. Unverified. **Do not rely on a [notes] item without a test in MAX**, and never invent an argument form, enum value or API name for one.
 
 Nothing in this file has been run in MAX 9.2. [bundle] means "Max ships a file that says so", not "confirmed working".
 
@@ -168,6 +168,52 @@ All [notes]. "No change" means the repo rule stands as written.
 - `bpatcher` box sizing when typing a filename, Inspector / Preferences / Save dialog fixes — interactive editing only.
 - Standalone / collective / Project packaging fixes, `vst~` / `amxd~` crash fixes, audio-driver fixes — runtime stability, no generation rule.
 
+## Max 9.2.1 (point release)
+
+Installed bundle `9.2.1 (b6a40ee953d)`. Tiers as above; [notes] now covers the 9.2.1 release notes too. The sync found 0 new objects, no I/O change on any existing object (`--compare-io`: 3114 names unchanged), groups +0, version-io +0 -0 ~0 (the same 8 names), and lowered the help-io bundle mismatches from 87 names / 848 boxes to 85 / 823.
+
+### Landed by the sync
+
+| Object | Names | Tier | Source |
+|---|---|---|---|
+| `jit.web`, `jit.web~` | message `executejavascript` | [db] | 9.2.1 refpages: one non-optional `script` symbol argument, run in the page's main frame; "Code containing spaces must be enclosed in quotes so that it is received as a single symbol" [bundle] |
+| `abl.device.reverb2~` | attributes `highshelf` (int), `highshelffreq` (float, 20.–16000.), `highshelftype` (int), `highshelfgain` (float, 0.2–1.) | [db] | refpage; each says "The former name @highpass… is also accepted" [bundle]. The old `highpass`, `highpassfreq`, `highpasstype`, `highpassgain` stay in the DB, so existing patches validate unchanged. Prefer the new names in new patches. |
+| `jit.mgraphics` | message `updatetextfield` | [db] | refpage, but digest and description are `TEXT_HERE` templates [bundle]. Not named by the notes (like the 9.2.0 "DB gaps closed by the same sync"). Purpose and arguments unknown: do not generate it. |
+| `jit.gl.tex2mat` | attribute `dimscale`, message `jit_matrix` | [db] | 9.2.1 refpage (name attribute `v8`), landed by the alias-document deltas fix in `tools/sync_max_bundle.py` (quick task 261118-j2w). `dimscale` scales the incoming texture dim when `dim` is `0 0`; the refpage types it `int` size 2 and the DB copies that, but the bundled `jit.gl.tex2mat.js` declares it `float` size 2, default `1 1`, and its own comment uses `dimscale .5 .5` [bundle] — send floats. `jit_matrix` is a pass-through. The refpage no longer lists `adapt`; the DB keeps it because the js `anything()` handler forwards unknown names to its internal `jit.gl.asyncread`, which has `adapt` [bundle]. |
+| idioms | `attrui` outlet 0 → `jit.gl.tex2mat` inlet 0 | [db] | 9.2.1 help patch cord |
+| RNBO | package 1.4.6 in the bundle | [bundle] | no RNBO DB delta |
+
+### Not landed
+
+- `jit.gl.web` / `jit.gl.web~` do **not** gain `executejavascript`. Their DB lists were copied from `jit.web` / `jit.web~` when 9.2.0 landed; the define line makes them `jit.web` plus `output_texture`, so the message very likely works, but they have no refpage and no sync step propagates define-target names. Follow-up: confirm in MAX, then add the name by an explicit DB step. Until then use `jit.web` + `executejavascript` [db].
+- `mc.abl.dsp.djfilter~`: new `max objectfile mc.abl.dsp.djfilter~ mc.wrapper~ abl.dsp.djfilter~;` line [bundle] that the DB cannot resolve. It joins the ~40 unaliased `mc.abl.dsp.*` names left by quick task 261022-mis; alias the family together or not at all. Follow-up: family-wide alias decision.
+- `jit.gl.grab` / `jit.gl.movie~`: still define lines with no refpage and no help box (DEF-hwb-13), unchanged since 9.2.0.
+- [notes] only, no DB field: `jit.web` `reload` argument fix; `abl.device.stereocompressor~` `@expansion` default and attribute storage (the attribute is already in the DB); `abl.dsp.stereolfo~` "Spin Amount" fix ("Spin Amount" is a UI label, the DB name is `abl.dsp.stereolfo~`).
+
+### Fixed bugs that touch this repo's guidance
+
+All [notes]. "No change" means the repo rule stands as written; no gen~ rule is retired.
+
+| Fix | Guidance it touches | Change |
+|---|---|---|
+| `gen.codebox~`: nested-loop compile regression | genexpr-rules.md and CLAUDE.md codebox safe-construct "single, non-nested" `for` loop rule; memory "gen~ loops + Data proven forms" | No change — the rule stands (older 9.x builds, untested here) |
+| gen~ `cycle` phase wrapping with a `Buffer` / `Data` | no rule | No change |
+| `Buffer` lock leak inside GenExpr functions; `buffer~` replace crash | no rule | No change; no tracked repo codebox defines a GenExpr function (scan of `patches/` at 261118-j2w), so there is nothing to re-check |
+| Gen Define reference files | the [notes] item above on requiring `.gendsp` files | No change — stays [notes] |
+| codebox syntax highlighting for `in` / `out` above 19 | editor only | No change |
+| `poly~ @parallel 1` with resampling | memory "poly~ voice proven forms" | No change; no repo patch uses `@parallel 1` |
+| `subdiv~` step output | no repo user | No change |
+| `playlist~` / `jit.playlist` pause | `patches/spectraldetector` and `patches/tape-wobble` use `playlist~` | No change; re-check only if they rely on pause after play |
+| MC wrapper `+` urn | no rule | No change |
+| `v8` crash fixes | v8 timers and `toJSON()` items above stay untested | No change — keep using `Task` |
+| `amxd~` Save As | `export_amxd` writes files directly | No change |
+
+### No repo impact
+
+- `jit.anim.node` fixes, `jit.gl` `scalefactor`, `jit.playlist` / AVFoundation fixes, the `jweb` triangle menu.
+- Windows search-path fix (this repo targets macOS).
+- RNBO OSCQuery, export sidebar, preferences caching and external export fixes.
+
 ## Check in MAX before relying on it
 
 1. Instantiate each of the 12 new objects and confirm inlet / outlet counts match the table above.
@@ -178,6 +224,15 @@ All [notes]. "No change" means the repo rule stands as written.
 6. `v8`: `setTimeout` / `setInterval` (release notes say yes, bundled user guide says no), `toJSON()` on a Dict, one network example.
 7. `udpsend` / `udpreceive` with `@port`, `@host`, `@active` as attributes.
 8. Save a patch with one patch cord in the background layer, commit it, and read the new patchline key from the committed JSON.
+
+Max 9.2.1 additions:
+
+9. `jit.gl.tex2mat @dimscale 0.5 0.5` with `dim 0 0`, and a `jit_matrix` message into it (pass-through).
+10. `jit.web` `executejavascript "document.title"` (quoted, a single symbol) on a loaded page.
+11. `abl.device.reverb2~`: both the old `@highpass*` and the new `@highshelf*` names are accepted.
+12. `jit.gl.web` `executejavascript` — decides the follow-up that adds it to the DB.
+13. `mc.abl.dsp.djfilter~`: instantiates, and its I/O — decides the `mc.abl.dsp.*` family alias.
+14. `playlist~` pause after play in `patches/spectraldetector` and `patches/tape-wobble`, only if they rely on it.
 
 ## Keeping the DB in step with Max
 

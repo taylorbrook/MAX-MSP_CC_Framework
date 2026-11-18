@@ -20,7 +20,7 @@ An AI-assisted MAX/MSP/Jitter/RNBO development system that enables conversationa
 - **RNBO export support** — generate export-ready patches for VST3/AU plugins, Web Audio, and C++ embedded targets. The RNBO builders (`add_rnbo`, `generate_rnbo_wrapper`): **Experimental:** not yet confirmed in MAX.
 - **Node for Max & js scripting** — generate JavaScript for `js` objects (Legacy Engine, ES5), `v8` objects (Modern Engine), and Node for Max `node.script`
 - **C++ external development** — scaffold, generate, and build Min-DevKit externals with help patches
-- **Help patch audit pipeline** — offline tool (`python3 tools/audit_db.py --help-io`) that compares every box in 2,114 bundle .maxhelp files (Max 9.2.0) and 1,333 installed-package help files with the database; reviewed corrections land through `tools/sync_max_bundle.py --apply`
+- **Help patch audit pipeline** — offline tool (`python3 tools/audit_db.py --help-io`) that compares every box in 2,114 bundle .maxhelp files (Max 9.2.1) and 1,333 installed-package help files with the database; reviewed corrections land through `tools/sync_max_bundle.py --apply`
 - **Professional patch aesthetics** — styled section comments, background panels, contrast-aware text colors, obstacle-avoiding cord routing, grid-snapped layout, and inlet-aligned cables for polished output; edits never restyle a patch you arranged in MAX
 - **Project lifecycle management** — structured workflow from ideation through build and verification with automatic version tracking
 

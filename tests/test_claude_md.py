@@ -214,7 +214,7 @@ RULE_ANCHORS = [
 MOVED_DETAIL = {
     "dbmaint": (".claude/skills/references/db-maintenance.md",
                 ["813 of 2156", "640 of 1175", "jit.gl.tex2mat", "jit.unpack.geomat", "--apply groups", "--refresh-log",
-                 "--min-version", "alpha_mode", "2 inlets / 1 outlet", "by_source", "Last synced against Max 9.2.0",
+                 "--min-version", "alpha_mode", "2 inlets / 1 outlet", "by_source", "Last synced against Max 9.2.1",
                  "define-mapped", "TEXT_HERE", "jit.web~", "Merged per port", "mcwrapper", "kbm.data",
                  "If a control connection from an MSP object's non-primary outlet"]),
     "genexpr": (".claude/skills/references/genexpr-rules.md",

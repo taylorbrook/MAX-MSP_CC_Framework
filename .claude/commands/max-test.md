@@ -34,7 +34,7 @@ Generate a manual test checklist for patches in the active project, then record 
 
 6. **Record confirmations** -- whenever the user confirms in MAX that a feature works (a passing checklist item, or in conversation, including after a `/max-iterate` fix), record it:
    ```python
-   path = record_confirmation(project_dir, feature, evidence, version=version, max_version="9.2.0", files=["generated/<name>.maxpat"])
+   path = record_confirmation(project_dir, feature, evidence, version=version, max_version="9.2.1", files=["generated/<name>.maxpat"])
    ```
    - `evidence` is the user's own words; `feature` is one short line.
    - This writes `test-results/v<version>-<slug>-confirmed.md` (`<date>-<slug>-confirmed.md` for an unversioned project), never overwrites an earlier confirmation (`-2`, `-3`, ...), and commits only that path.

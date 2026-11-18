@@ -5,11 +5,11 @@
 
 ## Max 9.2
 
-The installed Max is 9.2.0 and the object database was synced against it (2026-10-01).
+The installed Max is 9.2.1 and the object database was synced against it (9.2.0 on 2026-10-01, 9.2.1 on 2026-11-18; the 9.2.1 point-release surface is in the "Max 9.2.1" section of `max-9.2-changes.md`).
 
 - **What changed for generation:** `.claude/skills/references/max-9.2-changes.md` — the 12 new objects (`min_version: 9.2`), 9.2-only messages and attributes on existing objects (`buffer~`, `udpsend` / `udpreceive`, `coll`, `pattrstorage`, ...), the `v8` additions, and what is still untested. Every claim there carries an evidence tier; `[notes]` items must not be relied on without a test in MAX.
 - **Compatibility:** 9.2-only messages and attributes are not version-tagged in the DB. If a patch must open on an older 9.x build, avoid them and the 12 new objects.
-- **Gen~:** 9.2's compiler fixes retire none of CLAUDE.md's gen~ rules.
+- **Gen~:** 9.2's compiler fixes retire none of CLAUDE.md's gen~ rules, and 9.2.1's Gen fixes (nested-loop codebox compile, cycle phase wrapping, buffer locks) retire none either.
 - **After a Max update:** `python3 tools/audit_db.py` (read-only drift report), then `python3 tools/sync_max_bundle.py` (dry-run), then `--apply` with explicit `--names`. Never hand-write a DB entry for a new object. Full procedure: `.claude/skills/references/db-maintenance.md`.
 
 ## Reference Docs
