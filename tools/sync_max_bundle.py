@@ -53,6 +53,9 @@ Sources of shape
   the bundle's ``*objectmappings*.txt``), whose refpage name attribute can be
   the implementing class (``v8``) or a typo. For those the alias is the name
   and the refpage is never merged into the object its name attribute points at.
+  The deltas pass diffs such an alias document against the alias's own entry
+  (keyed by the filename stem) and skips an alias the DB lacks or one whose
+  lookup lands on any other entry (quick-261118-j2w).
 * I/O counts: refpage, cross-checked against the help-patch box Max itself
   serialized. A disagreement aborts that object.
 * Outlet types: the help-patch box ``outlettype``.
@@ -1357,8 +1360,76 @@ def _dedupe(items: list) -> list:
     return out
 
 
+def _diff_ref_against_entry(
+    parsed: dict,
+    resolved: dict,
+    located: tuple[str, str],
+    raw_db: dict,
+    objects: list[dict],
+    shadowed: list[dict],
+) -> None:
+    """Append one parsed refpage's delta / shadow rows for the raw entry at `located`."""
+    ref_messages = _dedupe(parsed.get("messages", []))
+    ref_attributes = parsed.get("attributes", {})
+
+    rel, key = located
+    raw = raw_db[rel][key]
+    raw_messages = raw.get("messages")
+    raw_attributes = raw.get("attributes")
+
+    new_messages = (
+        [m for m in ref_messages if m not in raw_messages]
+        if isinstance(raw_messages, list)
+        else []
+    )
+    new_attributes = (
+        {k: v for k, v in ref_attributes.items() if k not in raw_attributes}
+        if isinstance(raw_attributes, dict)
+        else {}
+    )
+    if new_messages or new_attributes:
+        objects.append(
+            {
+                "name": key,
+                "file": rel,
+                "messages": new_messages,
+                "attributes": new_attributes,
+            }
+        )
+
+    # An override that carries its own list replaces the base list, so the
+    # resolved list differs from the raw one. Detected through lookup();
+    # overrides.json itself is never opened here.
+    shadow_messages: list | None = None
+    shadow_attributes: list | None = None
+    resolved_messages = resolved.get("messages")
+    resolved_attributes = resolved.get("attributes")
+    if isinstance(resolved_messages, list) and resolved_messages != raw_messages:
+        shadow_messages = [m for m in ref_messages if m not in resolved_messages]
+    if isinstance(resolved_attributes, dict) and resolved_attributes != raw_attributes:
+        shadow_attributes = [k for k in ref_attributes if k not in resolved_attributes]
+    if shadow_messages is not None or shadow_attributes is not None:
+        shadowed.append(
+            {
+                "name": key,
+                "messages_missing": shadow_messages or [],
+                "attributes_missing": shadow_attributes or [],
+            }
+        )
+
+
 def compute_deltas(index: dict, classified: dict, db: ObjectDatabase, raw_db: dict) -> dict:
     """Messages / attributes the bundle documents and the raw base entry lacks.
+
+    Two passes. The first diffs every authoritative refpage against the entry
+    its name attribute resolves to. The second (quick-261118-j2w) diffs every
+    define-mapped alias document (``ref["class"] == "alias_doc"``, set by
+    :func:`classify_refs`, which must run first) against the ALIAS's own
+    entry, keyed by the filename stem: the alias is the real object name, and
+    the refpage's name attribute (``v8``, ``jit.geom.tomatrix``, ...) is never
+    written. An alias missing from the DB, or one whose lookup lands on any
+    entry other than its own key, is skipped; ``define_missing`` still lists
+    the former.
 
     `objects` is what --apply deltas writes. `shadowed` lists objects whose
     overrides.json entry replaces the messages / attributes list, with the
@@ -1376,57 +1447,32 @@ def compute_deltas(index: dict, classified: dict, db: ObjectDatabase, raw_db: di
         parsed = parse_refpage(ref)
         if parsed is None or "_error" in parsed:
             continue
-        ref_messages = _dedupe(parsed.get("messages", []))
-        ref_attributes = parsed.get("attributes", {})
-
         located = locate_base_entry(resolved, name, raw_db)
         if located is None:
             unwritable.append(name)
             continue
-        rel, key = located
-        raw = raw_db[rel][key]
-        raw_messages = raw.get("messages")
-        raw_attributes = raw.get("attributes")
+        _diff_ref_against_entry(parsed, resolved, located, raw_db, objects, shadowed)
 
-        new_messages = (
-            [m for m in ref_messages if m not in raw_messages]
-            if isinstance(raw_messages, list)
-            else []
-        )
-        new_attributes = (
-            {k: v for k, v in ref_attributes.items() if k not in raw_attributes}
-            if isinstance(raw_attributes, dict)
-            else {}
-        )
-        if new_messages or new_attributes:
-            objects.append(
-                {
-                    "name": key,
-                    "file": rel,
-                    "messages": new_messages,
-                    "attributes": new_attributes,
-                }
-            )
-
-        # An override that carries its own list replaces the base list, so the
-        # resolved list differs from the raw one. Detected through lookup();
-        # overrides.json itself is never opened here.
-        shadow_messages: list | None = None
-        shadow_attributes: list | None = None
-        resolved_messages = resolved.get("messages")
-        resolved_attributes = resolved.get("attributes")
-        if isinstance(resolved_messages, list) and resolved_messages != raw_messages:
-            shadow_messages = [m for m in ref_messages if m not in resolved_messages]
-        if isinstance(resolved_attributes, dict) and resolved_attributes != raw_attributes:
-            shadow_attributes = [k for k in ref_attributes if k not in resolved_attributes]
-        if shadow_messages is not None or shadow_attributes is not None:
-            shadowed.append(
-                {
-                    "name": key,
-                    "messages_missing": shadow_messages or [],
-                    "attributes_missing": shadow_attributes or [],
-                }
-            )
+    handled = {o["name"] for o in objects} | set(classified["authoritative"])
+    alias_refs = sorted(
+        (r for r in index.get("refs", []) if r.get("class") == "alias_doc"),
+        key=lambda r: (r["stem"], r["file"]),
+    )
+    for ref in alias_refs:
+        alias = ref["stem"]
+        if alias in handled:
+            continue
+        handled.add(alias)
+        resolved = _muted_lookup(db, alias)
+        if resolved is None:
+            continue
+        located = locate_base_entry(resolved, alias, raw_db)
+        if located is None or located[1] != alias:
+            continue
+        parsed = parse_refpage(ref)
+        if parsed is None or "_error" in parsed:
+            continue
+        _diff_ref_against_entry(parsed, resolved, located, raw_db, objects, shadowed)
 
     with_messages = [o for o in objects if o["messages"]]
     with_attributes = [o for o in objects if o["attributes"]]

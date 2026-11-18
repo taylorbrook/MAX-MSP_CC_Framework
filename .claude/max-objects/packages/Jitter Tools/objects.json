@@ -8686,7 +8686,8 @@
       }
     ],
     "messages": [
-      "jit_gl_texture"
+      "jit_gl_texture",
+      "jit_matrix"
     ],
     "attributes": {
       "adapt": {
@@ -8695,6 +8696,11 @@
         "set": true
       },
       "dim": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "dimscale": {
         "type": "int",
         "get": true,
         "set": true

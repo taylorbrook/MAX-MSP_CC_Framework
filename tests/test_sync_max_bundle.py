@@ -1108,6 +1108,77 @@ class TestApplyDefine:
         assert after == before
         assert not {"special", "dim", "cloneattr"} & (set(after["messages"]) | set(after["attributes"]))
 
+    # quick-261118-j2w: the deltas pass diffs an alias document against the
+    # alias's own DB entry (Max 9.2.1 added dimscale / jit_matrix to the
+    # jit.gl.tex2mat refpage, whose name attribute is `v8`).
+
+    @staticmethod
+    def _seed_alias_entry(world: dict) -> None:
+        """pkg.alias in the DB, lacking the `special` / `dim` its refpage documents."""
+        path = world["db_root"] / "packages" / "FakePkg" / "objects.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["pkg.alias"] = _entry(
+            "pkg.alias", "Packages", "max", package="FakePkg", messages=["bang"], attributes={}
+        )
+        path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+    def test_alias_document_delta_is_keyed_by_the_alias(self, world: dict) -> None:
+        self._seed_alias_entry(world)
+        before = _tree_bytes(world["db_root"])
+        deltas = _report(world)["deltas"]
+        row = next(o for o in deltas["objects"] if o["name"] == "pkg.alias")
+        assert row["file"] == "packages/FakePkg/objects.json"
+        assert row["messages"] == ["special"]
+        assert list(row["attributes"]) == ["dim"]
+        assert "corething" not in {o["name"] for o in deltas["objects"]}
+        assert _tree_bytes(world["db_root"]) == before
+
+    def test_alias_document_apply_writes_the_alias_only(self, world: dict) -> None:
+        self._seed_alias_entry(world)
+        core_before = _load(world, "max/objects.json")["corething"]
+        alias_before = _load(world, "packages/FakePkg/objects.json")["pkg.alias"]
+        assert _run(world, "--apply", "deltas") == 0
+        alias_after = _load(world, "packages/FakePkg/objects.json")["pkg.alias"]
+        assert alias_after["messages"] == ["bang", "special"]
+        assert list(alias_after["attributes"]) == ["dim"]
+        for field in alias_before:
+            if field not in ("messages", "attributes"):
+                assert alias_after[field] == alias_before[field], field
+        assert _load(world, "max/objects.json")["corething"] == core_before
+
+    def test_alias_document_for_an_alias_missing_from_the_db_is_skipped(self, world: dict) -> None:
+        """pkg.clone has an alias document but no DB entry: no delta, no error."""
+        sections = _report(world)
+        assert "pkg.clone" not in {o["name"] for o in sections["deltas"]["objects"]}
+        assert "pkg.clone" in sections["define_missing"]["names"]
+        assert _run(world, "--apply", "deltas") == 0
+
+    def test_alias_resolving_to_its_name_attribute_target_is_never_written(
+        self, world: dict
+    ) -> None:
+        """An alias whose lookup lands on the target entry must not write the target."""
+        (world["db_root"] / "aliases.json").write_text(
+            json.dumps({"aliases": {"pkg.clone": "corething"}}, indent=2) + "\n"
+        )
+        core_before = _load(world, "max/objects.json")["corething"]
+        deltas = _report(world)["deltas"]
+        assert not {"pkg.clone", "corething"} & {o["name"] for o in deltas["objects"]}
+        assert _run(world, "--apply", "deltas") == 0
+        assert _load(world, "max/objects.json")["corething"] == core_before
+
+    def test_alias_document_apply_is_idempotent_and_keeps_the_section_shape(
+        self, world: dict
+    ) -> None:
+        self._seed_alias_entry(world)
+        shape_before = _report(world)["alias_docs"]
+        assert _run(world, "--apply", "deltas") == 0
+        first = _tree_bytes(world["db_root"])
+        deltas = _report(world)["deltas"]
+        assert deltas["pending_messages"] == 0 and deltas["pending_attributes"] == 0
+        assert _run(world, "--apply", "deltas") == 0
+        assert _tree_bytes(world["db_root"]) == first
+        assert _report(world)["alias_docs"] == shape_before
+
     def test_min_version_flag_tags_an_object_that_predates_the_install(
         self, world: dict, tmp_path: Path
     ) -> None:
