@@ -2334,6 +2334,26 @@
         "type": "float",
         "get": true,
         "set": true
+      },
+      "highshelf": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "highshelffreq": {
+        "type": "float",
+        "get": true,
+        "set": true
+      },
+      "highshelftype": {
+        "type": "int",
+        "get": true,
+        "set": true
+      },
+      "highshelfgain": {
+        "type": "float",
+        "get": true,
+        "set": true
       }
     },
     "seealso": [

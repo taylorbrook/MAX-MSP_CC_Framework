@@ -11794,7 +11794,8 @@
       "transform",
       "translate",
       "translate_source_rgba",
-      "user_to_device"
+      "user_to_device",
+      "updatetextfield"
     ],
     "attributes": {
       "autofill": {
@@ -21315,7 +21316,8 @@
       "mousemove",
       "mousescroll",
       "readfile",
-      "reload"
+      "reload",
+      "executejavascript"
     ],
     "attributes": {
       "automatic": {
@@ -21447,7 +21449,8 @@
       "mousescroll",
       "mute",
       "readfile",
-      "reload"
+      "reload",
+      "executejavascript"
     ],
     "attributes": {
       "automatic": {

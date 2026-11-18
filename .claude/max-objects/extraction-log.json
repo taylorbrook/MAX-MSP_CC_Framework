@@ -1,6 +1,6 @@
 {
   "total_files_found": 37,
-  "total_objects": 3457,
+  "total_objects": 3468,
   "domain_counts": {
     "max": 473,
     "msp": 247,
@@ -9,7 +9,7 @@
     "gen": 189,
     "m4l": 35,
     "rnbo": 560,
-    "packages": 1509
+    "packages": 1520
   },
   "error_count": 0,
   "errors": [],
@@ -17,10 +17,10 @@
   "variable_io_count": 30,
   "empty_inlets_count": 270,
   "empty_outlets_count": 294,
-  "extraction_timestamp": "2026-10-23T23:29:34.643386+00:00",
+  "extraction_timestamp": "2026-11-18T20:55:53.773078+00:00",
   "max_installation_path": ".claude/max-objects",
-  "max_version": "9.2.0",
-  "max_build": "e9c80e453de",
+  "max_version": "9.2.1",
+  "max_build": "b6a40ee953d",
   "sync": {
     "tool": "tools/sync_max_bundle.py --refresh-log",
     "refpage_files": 1404,
@@ -81,6 +81,23 @@
         "m4l": 35,
         "rnbo": 560,
         "packages": 1497
+      },
+      "max_version": "9.2.0",
+      "max_build": "e9c80e453de"
+    },
+    {
+      "extraction_timestamp": "2026-10-23T23:29:34.643386+00:00",
+      "total_files_found": 37,
+      "total_objects": 3457,
+      "domain_counts": {
+        "max": 473,
+        "msp": 247,
+        "jitter": 222,
+        "mc": 222,
+        "gen": 189,
+        "m4l": 35,
+        "rnbo": 560,
+        "packages": 1509
       },
       "max_version": "9.2.0",
       "max_build": "e9c80e453de"

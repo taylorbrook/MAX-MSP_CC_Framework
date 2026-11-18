@@ -1,7 +1,7 @@
 {
   "_comment": "Per-version I/O changes mined from the installed Max bundle's help boxes (Q38): a change is recorded only when boxes of one name and argument list, saved by different Max versions, form a strict version-ordered partition of their (numinlets, numoutlets). validate_patch(target_version=...) warns on ports an older build lacks. Regenerated wholesale, only by tools/sync_max_bundle.py --apply version-io.",
   "generator": "tools/sync_max_bundle.py --apply version-io",
-  "max_version": "9.2.0",
+  "max_version": "9.2.1",
   "source": "bundle help (*.maxhelp under Contents/Resources/C74), patcher.appversion",
   "objects": {
     "live.meter~": {

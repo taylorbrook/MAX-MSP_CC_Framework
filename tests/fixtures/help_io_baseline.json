@@ -1,6 +1,6 @@
 {
  "generator": "python3 tools/audit_db.py --help-io --write-baseline tests/fixtures/help_io_baseline.json",
- "max_version": "9.2.0",
+ "max_version": "9.2.1",
  "names": {
   "bundle": {
    "abl.dsp.distortion~": {
@@ -147,17 +147,6 @@
     },
     "type_mismatches": 0
    },
-   "dict.unpack": {
-    "boxes": 37,
-    "count_mismatches": 14,
-    "signatures": {
-     "count args=2 max=1,3 db=1,2": 9,
-     "count args=3 max=1,4 db=1,2": 1,
-     "count args=4 max=1,5 db=1,2": 1,
-     "count args=6 max=1,7 db=1,2": 3
-    },
-    "type_mismatches": 0
-   },
    "fffb~": {
     "boxes": 2,
     "count_mismatches": 1,
@@ -253,11 +242,8 @@
    },
    "jit.gl.multiple": {
     "boxes": 18,
-    "count_mismatches": 13,
+    "count_mismatches": 3,
     "signatures": {
-     "count args=1 max=1,2 db=2,2": 1,
-     "count args=1 max=3,2 db=2,2": 7,
-     "count args=1 max=4,2 db=2,2": 2,
      "count args=2 max=3,2 db=2,2": 3
     },
     "type_mismatches": 0
@@ -686,14 +672,6 @@
     "signatures": {
      "count args=0 max=2,2 db=2,8": 2,
      "count args=1 max=2,2 db=2,8": 4
-    },
-    "type_mismatches": 0
-   },
-   "sfplay~": {
-    "boxes": 18,
-    "count_mismatches": 1,
-    "signatures": {
-     "count args=3 max=2,4 db=2,3": 1
     },
     "type_mismatches": 0
    },
@@ -1233,7 +1211,7 @@
     "type_mismatches": 0
    },
    "comment": {
-    "boxes": 1384,
+    "boxes": 1388,
     "count_mismatches": 2,
     "signatures": {
      "count args=0 max=0,0 db=1,0": 2
@@ -1719,16 +1697,6 @@
    }
   },
   "package:Vision": {
-   "dict.unpack": {
-    "boxes": 25,
-    "count_mismatches": 11,
-    "signatures": {
-     "count args=2 max=1,3 db=1,2": 4,
-     "count args=3 max=1,4 db=1,2": 6,
-     "count args=6 max=1,7 db=1,2": 1
-    },
-    "type_mismatches": 0
-   },
    "jit.gl.environment": {
     "boxes": 1,
     "count_mismatches": 1,
@@ -3729,11 +3697,11 @@
  "schema": 1,
  "sources": {
   "bundle": {
-   "boxes_compared": 77911,
+   "boxes_compared": 77913,
    "files": 2114,
-   "mismatching_boxes": 848,
-   "mismatching_names": 87,
-   "version": "9.2.0"
+   "mismatching_boxes": 823,
+   "mismatching_names": 85,
+   "version": "9.2.1"
   },
   "package:CNMAT Externals": {
    "boxes_compared": 4444,
@@ -3750,11 +3718,11 @@
    "version": "2.6.1"
   },
   "package:FluidCorpusManipulation": {
-   "boxes_compared": 7312,
+   "boxes_compared": 7320,
    "files": 78,
    "mismatching_boxes": 280,
    "mismatching_names": 51,
-   "version": "1.0.9"
+   "version": "1.0.10"
   },
   "package:RNBO": {
    "boxes_compared": 2605,
@@ -3771,10 +3739,10 @@
    "version": "1.0.0"
   },
   "package:Vision": {
-   "boxes_compared": 607,
+   "boxes_compared": 646,
    "files": 17,
-   "mismatching_boxes": 14,
-   "mismatching_names": 3,
+   "mismatching_boxes": 3,
+   "mismatching_names": 2,
    "version": "1.0.2"
   },
   "package:abclib": {
@@ -3817,7 +3785,7 @@
    "files": 6,
    "mismatching_boxes": 0,
    "mismatching_names": 0,
-   "version": "1.2.3"
+   "version": "1.2.4"
   },
   "package:grainflow": {
    "boxes_compared": 2389,
@@ -3842,11 +3810,11 @@
   }
  },
  "totals": {
-  "boxes_compared": 127312,
-  "count_mismatch_names": 301,
+  "boxes_compared": 127361,
+  "count_mismatch_names": 300,
   "files": 3447,
-  "mismatching_boxes": 3303,
-  "mismatching_names": 366,
+  "mismatching_boxes": 3267,
+  "mismatching_names": 365,
   "type_mismatch_names": 73
  }
 }

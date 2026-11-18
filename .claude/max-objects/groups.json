@@ -514,7 +514,7 @@
       "source": "docs/refpages/msp-ref/mcwrapper-group.maxref.xml"
     }
   },
-  "max_version": "9.2.0",
+  "max_version": "9.2.1",
   "members": {
     "jit.3m": [
       "jit-89f4d052"

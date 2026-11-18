@@ -1,7 +1,7 @@
 {
   "_comment": "Cords the installed Max bundle's own help patches ship (Q38): validation Layer 3 never type/role-checks a listed (source, outlet, class, destination, inlet) cord while index bounds are always checked, and only tools/sync_max_bundle.py --apply idioms writes this file, additively.",
   "generator": "tools/sync_max_bundle.py --apply idioms",
-  "max_version": "9.2.0",
+  "max_version": "9.2.1",
   "source": "bundle help (*.maxhelp under Contents/Resources/C74)",
   "pairs": {
     "!-": [
@@ -1712,6 +1712,7 @@
       "0 control jit.gl.render 0",
       "0 control jit.gl.sketch 0",
       "0 control jit.gl.skybox 0",
+      "0 control jit.gl.tex2mat 0",
       "0 control jit.gl.text 0",
       "0 control jit.gl.textmult 0",
       "0 control jit.gl.texture 0",
